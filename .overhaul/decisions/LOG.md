@@ -56,3 +56,5 @@ pm); the Gradle 9.8.1 distribution through the wrapper into D:\.caches\gradle (W
   - Foldables: run 12's emulator results plus the unit tests and the Redmi's display-size overrides are enough for the Android release.
 
 - Oct 20 01:17 (the user): full quota every window, day and night; the 08:55 wind-down one-shot is cancelled (work continues; a closed lid only pauses it, and the hourly save means nothing is lost); the pause starts at 95 % because the pause itself costs about 3 points with several runs and a large orchestrator context.
+
+- Oct 20 08:36 (the user, 15 questions with pros, cons and catches): approved Telegram P1, P2, P3, P5, P7, P8, P9; P4 opt-in per screen; P6 as a trial kept only if it wins; P10 opt-in off by default; P11 only if P6 wins; District P3; overlay pill with a dot, recomposition in the score with its own card, an opaque DEV badge if it costs frames; District re-run covers filters/sort, location picker, movie/event detail sheets and any safe sheet. Recorded as REQUIREMENTS 51; staging's requirements matrix routes each to its owner.

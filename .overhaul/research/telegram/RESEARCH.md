@@ -618,3 +618,8 @@ bugs.telegram.org/c/59829, news.ycombinator.com/item?id=41148996, developer.andr
 The phone study's two helpers are in `tools/` here: `tg_target.py` (tap points for a messenger, allow-listed and
 refusing anything that changes a setting or a draft) and `tg_fit.py` (the District fitter with Telegram's curves added).
 Both were checked on synthetic dumps and tracks only.
+
+
+## The user's decisions (Oct 20 08:36)
+
+Approved: P1, P2, P3, P5, P7, P8, P9. P4 as opt-in per screen. P6 as a trial, kept only if the phone numbers win. P10 opt-in, off by default. P11 only if P6's trial wins. See REQUIREMENTS 51.

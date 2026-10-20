@@ -592,3 +592,10 @@ the badge in a release-like build uses `devRelease`; REQUIREMENTS 40's "dev-flav
 | `"devReleaseImplementation"` is copied into measured builds (blocking) | F20 and F21 added; wiring is `"devReleaseRuntimeOnly"`; guard on every variant but debug and `devRelease`; guard filter test, CI `check` and the acceptance run cover the real plugin; the `"devReleaseImplementation"` mutation must fail. |
 | `OverlayRecomposesNothingTest` cannot work with one tracer slot (blocking) | `CompositionWatch` forwards to a delegate; the test passes `RecompositionCounter`'s tracer and compares both counts; `RecompositionCounter` fails when it counted nothing. |
 | Non-blocking | Line + 1 with a pinned test (F22); why `setTracer` despite being more internal, with version-pinned tests (F7, 2.1.6); question 3 turned into information; `JankyAfterFirst` presented as comparable, not the gate; idle split into a periodic finding tied to `idle.frames = 0` and a labelled heuristic, and the back-gesture citation removed from the 50 % rule; blocking GC instead of all GCs; "process allocation per frame drawn"; ANR red only after this build's install, with its time; marker pin test; draw-phase reads for the REC marker and the dot; AppScaffold heads-up in calibration and notes. |
+
+
+## The user's answers (Oct 20 08:36)
+
+1. The pill shows FPS, janky % and one coloured dot for the worst open finding (option a).
+2. Recomposition counts in the 0-100 score and has its own card (option a).
+3. If the A/B test shows the DEV badge costs frames: opaque at rest (option a).

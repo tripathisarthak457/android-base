@@ -436,3 +436,8 @@ proposal was asking to change it.
    - preferably District compiled by the phone's own overnight maintenance (`dumpsys package` shows speed-profile;
      the run must never compile it), or its state recorded beside every number;
    - S2 run on sheets at Medium first.
+
+
+## The user's decisions (Oct 20 08:36)
+
+P3 approved (prepare a list sheet's list off-screen before it opens). The re-run measures, in order: filters and sort sheets, the location and city picker, movie and event detail sheets (never seats or booking), then any other sheet it can safely open. Other proposals wait for the re-run.

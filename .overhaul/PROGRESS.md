@@ -200,3 +200,6 @@ Oct 20, 04:35 | Only staging was running (about 4 % usage per 20 minutes), so un
 Oct 20, 05:14 | Hourly save: staging +95 commits pushed (secret-scan clean); workspace sync | Save
 Oct 20, 06:18 | Smoothness docs draft finished (docs-draft/, for WP12 after staging). It found a probable merge loss (9ed16d25's Play Store cold-start fix) and four code gaps; noted in staging/MERGE-NOTES.md, which staging's reviewers read | Done
 Oct 20, 06:20 | Paused for usage at 94% (staging in its phone tests); resume one-shot c04f9fcc at 07:12 | Paused
+Oct 20, 07:09 | The user: start working. Staging resumed (wcyijk728); the 07:12 one-shot cancelled | Resumed
+Oct 20, 08:36 | The user answered 15 queued questions: Telegram P1-P3, P5, P7-P9 approved, P4 opt-in, P6 trial, P10 opt-in off by default, P11 if P6 wins; District P3 approved and the re-run's sheets chosen; overlay pill, score and badge answers. REQUIREMENTS 51 | Decision
+Oct 20, 08:37 | Memory deadlock: staging's test run waited from 08:30 for commit (742 MB left) while this project's idle Gradle 9.7.1 daemon (pid 19284, 4530 MB) and Kotlin daemon (7416, 1883 MB) from 07:58 sat at 0 CPU; stopped both under the user's approval; commit back to 5.2 GB. wlanext still holds 2.7 GB of commit (restart pending) | Fix
