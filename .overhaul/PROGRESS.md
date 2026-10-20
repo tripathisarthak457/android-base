@@ -198,3 +198,5 @@ Oct 20, 03:42 | Overlay metrics design finished (18 metrics, recomposition score
 Oct 20, 04:14 | Hourly save: staging +28 commits pushed (secret-scan clean); workspace sync | Save
 Oct 20, 04:35 | Only staging was running (about 4 % usage per 20 minutes), so under the full-quota rule the smoothness docs draft (REQUIREMENTS 50) started beside it: docs-smoothness-draft.js (task whjq6sejm, run wf_601c27b2-e33), read-only, outside the repo | Started
 Oct 20, 05:14 | Hourly save: staging +95 commits pushed (secret-scan clean); workspace sync | Save
+Oct 20, 06:18 | Smoothness docs draft finished (docs-draft/, for WP12 after staging). It found a probable merge loss (9ed16d25's Play Store cold-start fix) and four code gaps; noted in staging/MERGE-NOTES.md, which staging's reviewers read | Done
+Oct 20, 06:20 | Paused for usage at 94% (staging in its phone tests); resume one-shot c04f9fcc at 07:12 | Paused
