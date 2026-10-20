@@ -211,3 +211,5 @@ Oct 20, 09:55 | The user: test video too. REQUIREMENTS 53 gains a short-video fe
 Oct 20, 09:56 | The user: Coil and ExoPlayer as opt-in features with every optimisation built in (REQUIREMENTS 53) | Decision
 Oct 20, 09:57 | Found the generator fixtures named after the user's private apps (public on overhaul branches since Oct 9); the user chose rename now, keep history: REQUIREMENTS 54, blocking in staging's fix phase | Decision
 Oct 20, 10:12 | Wound down for the user's 10:20 stop: staging (review next) and the approved-work plans (two revisions left) stopped, crons deleted, no resume; notes saved; staging already pushed | Paused by the user
+Oct 20, 10:20 | The user: work 15 more minutes. Resumed only the approved-work plans (wym8km0xt) to finish the two revisions; staging stays paused (its review would be cut off); stop one-shot d18ddbfb at 10:35 | Resumed
+Oct 20, 10:35 | The user's 15 extra minutes ended: the plans run stopped with one revision returned and both revised plan files updated; no crons, no resume; 'start' resumes staging (review next) and the last revision | Paused by the user
