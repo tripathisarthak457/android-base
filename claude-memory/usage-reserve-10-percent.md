@@ -8,7 +8,7 @@ metadata:
   modified: 2026-10-19T14:17:53.872Z
 ---
 
-**Current rule (the user, Oct 20 01:12: "always work till 99-98 while keeping saving work. Utilise fukl quotes every 5 hr"): every 5-hour window, day and night, until the Android release: cap 99%, start the pause at 95% (it lands near 98%), resume 3 minutes after each reset, and back up every hour even without a merge.** The 80% day / 98% night rule below is history.
+**Current rule (the user, Oct 20 01:12: "always work till 99-98 while keeping saving work. Utilise fukl quotes every 5 hr"): every 5-hour window, day and night, until the Android release: cap 99%, start the pause at 95% (it lands near 98%), resume early, 6 minutes before each reset when the window is at 92% or less, to use the leftover (the user, Oct 20 16:55: "Start working 5-7 mins before reset so u can use the leftover 13% here too"), and back up every hour even without a merge.** The 80% day / 98% night rule below is history.
 
 **Previous rule (Oct 19 09:25):** run in every 5-hour window until the
 Android release, 80% by day, 98% at night, resuming by itself.
