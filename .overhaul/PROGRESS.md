@@ -237,3 +237,5 @@ Oct 21, 02:14 | Paused for usage at 91% (reset 03:10): the work project's build 
 Oct 21, 03:05 | Work project's build resumed after the usage reset as we01mxceq (run wf_d3a5ccd0-efb; foundation and writers cached; integrate restarted) | Resumed
 Oct 21, 04:19 | Work project v1 (verified safety zip, 04:05; clean-copy checks and the phone smoke run green) sent to the user; five reviews running, the reviewed v2 follows before the wind-down | Delivered v1
 Oct 21, 07:03 | Work project v2 (reviewed zip, three review rounds, 15 blocking findings fixed, verified from a fresh unzip) sent to the user; final fixes for the two findings the last round left open running as w3bomosko (run wf_aa32b70f-2ec), v2.1 by about 08:30 | Delivered v2
+Oct 21, 08:11 | Staging resumed after the 08:10 reset as w31ybfn0r (run wf_8be4c97d-b05; fix#1 restarts); the work project's final fix run keeps lock precedence | Resumed
+Oct 21, 08:56 | Wind-down on the user's word after the work project's final zip: staging w31ybfn0r stopped (nothing unpushed, d429cbfb), crons and one-shots deleted, Gradle/Kotlin daemons, adb and thermlog stopped; the user resumes by hand | Paused by the user
