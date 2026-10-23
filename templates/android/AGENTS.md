@@ -152,8 +152,17 @@ screen to read an id from.
 <!-- <opt:paging> -->
 - **A paged list:** return `Flow<PagingData<T>>` from the repository, `cachedIn(viewModelScope)` in
   the ViewModel, and render it with `AppPagingList`, which already draws loading, error, empty
-  and the load-more footer. `feature/feed` is the example.
+  and the load-more footer. `feature/feed` is the example. Size `PagingConfig` so a fling never
+  reaches the end: about five screens of rows ahead, in pages bigger than that distance (the feed
+  asks for 30 posts while 20 remain). With numbered pages the first load is one page.
 <!-- </opt:paging> -->
+- **A very large list:** rows take ready-to-draw models built off the main thread, in the
+  repository or the ViewModel (formatted strings, dates, counts, `AnnotatedString`s): a row lays
+  out and draws, it never formats. Long text is lazy items by paragraph, not one `Text`. A change
+  that replaces most rows at once (a new filter, a different page) swaps the list in one frame,
+  `key(filter) { LazyColumn(…) }`, instead of animating every row. The list's own prefetch composes
+  the next row in the time left after each frame; a row heavier than that is composed inside the
+  frame that shows it, and the fling drops frames.
 <!-- <opt:network> -->
 <!-- <opt:database> -->
 - **Show saved data at once, then the latest:** make the database the source of truth. The

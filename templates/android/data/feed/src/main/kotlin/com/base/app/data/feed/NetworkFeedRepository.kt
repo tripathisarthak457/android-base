@@ -11,7 +11,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Pages through the same public API the reference feature reads, ten posts at a time, straight from
+ * Pages through the same public API the reference feature reads, thirty posts at a time, straight from
  * the network. Point [FeedPagingSource.load] at your endpoint; a cursor-based API uses a `String` key.
  */
 @Singleton
@@ -20,18 +20,20 @@ internal class NetworkFeedRepository @Inject constructor(
 ) : FeedRepository {
 
     override fun posts(): Flow<PagingData<FeedPost>> = Pager(
-        config = PagingConfig(
-            pageSize = PAGE_SIZE,
-            initialLoadSize = PAGE_SIZE,
-            // Three rows before the end rather than a whole page: the next page is on screen
-            // before the user reaches the footer, without fetching pages nobody scrolls to.
-            prefetchDistance = 3,
-            enablePlaceholders = false,
-        ),
+        config = FeedPagingConfig,
         pagingSourceFactory = { FeedPagingSource(networkClient) },
     ).flow
-
-    private companion object {
-        const val PAGE_SIZE = 10
-    }
 }
+
+/**
+ * Thirty posts a page, the next one asked for while twenty rows remain: about five screens of feed
+ * cards, more than a hard fling coasts (about 6,000 px on a 1080 x 2400 phone) plus what is scrolled
+ * while a page is on its way, so a fling never stops at the loading footer. The first load is one
+ * page because [FeedPagingSource] numbers its pages: a bigger first load would overlap page 2.
+ */
+internal val FeedPagingConfig = PagingConfig(
+    pageSize = 30,
+    prefetchDistance = 20,
+    initialLoadSize = 30,
+    enablePlaceholders = false,
+)
