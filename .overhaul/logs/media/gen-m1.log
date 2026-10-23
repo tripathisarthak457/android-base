@@ -1,0 +1,42 @@
+....................................................................F.....................................s.......................s...........................................ss..............................................................................................................................................s...........s.........................s..........s........................................................................................s....................
+======================================================================
+FAIL: test_a_dry_run_says_what_a_build_would_do (tests.test_android_target.ProjectTest.test_a_dry_run_says_what_a_build_would_do)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_android_target.py", line 232, in test_a_dry_run_says_what_a_build_would_do
+    self.assertIn("core/image", plan["removed_paths"])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'core/ui/src/main/kotlin/com/acme/field/core/ui/AppNetworkImage.kt' not found in ['.agents/skills/camerax', '.agents/skills/restore-credentials', '.agents/skills/verified-email', '.claude/skills/camerax', '.claude/skills/restore-credentials', '.claude/skills/verified-email', '.github', 'app/src/main/kotlin/com/acme/field/deeplink', 'app/src/main/kotlin/com/acme/field/di/AppEnvironmentModule.kt', 'app/src/main/kotlin/com/acme/field/di/AppModule.kt', 'app/src/main/kotlin/com/acme/field/ui/ReportCurrentScreen.kt', 'app/src/main/res/resources.properties', 'app/src/test/kotlin/com/acme/field/deeplink', 'benchmark', 'build-logic/convention/src/main/kotlin/AndroidLicensesConventionPlugin.kt', 'build-logic/convention/src/main/kotlin/AndroidRoomConventionPlugin.kt', 'build-logic/convention/src/main/kotlin/com/acme/field/buildlogic/guard/DevToolingGuard.kt', 'build-logic/convention/src/main/kotlin/com/acme/field/buildlogic/licenses/BundleLicensesTask.kt', 'build-logic/convention/src/test/kotlin/com/acme/field/buildlogic/guard/DevToolingGuardTest.kt', 'catalog', 'catalog/src/main/kotlin/com/acme/field/catalog/sections/CatalogCollections.kt', 'catalog/src/main/kotlin/com/acme/field/catalog/sections/CatalogData.kt', 'catalog/src/main/kotlin/com/acme/field/catalog/sections/CatalogFields.kt', 'catalog/src/main/kotlin/com/acme/field/catalog/sections/CatalogPickers.kt', 'core/analytics', 'core/analytics/src/main/kotlin/com/acme/field/core/analytics/firebase/CrashlyticsReporter.kt', 'core/analytics/src/main/kotlin/com/acme/field/core/analytics/firebase/FirebaseAnalyticsTracker.kt', 'core/applock', 'core/common/src/main/kotlin/com/acme/field/core/common/environment', 'core/common/src/main/kotlin/com/acme/field/core/common/validation', 'core/common/src/test/kotlin/com/acme/field/core/common/validation', 'core/database', 'core/database/schemas/com.acme.field.core.database.AppDatabase', 'core/database/schemas/com.acme.field.core.database.queue.QueueDatabase', 'core/database/src/main/kotlin/com/acme/field/core/database/queue', 'core/database/src/main/kotlin/com/acme/field/core/database/sample', 'core/database/src/test/kotlin/com/acme/field/core/database/queue', 'core/database/src/test/kotlin/com/acme/field/core/database/sample', 'core/designsystem/src/main/kotlin/com/acme/field/core/designsystem/component/collections', 'core/designsystem/src/main/kotlin/com/acme/field/core/designsystem/component/datadisplay', 'core/designsystem/src/main/kotlin/com/acme/field/core/designsystem/component/formfields', 'core/designsystem/src/main/kotlin/com/acme/field/core/designsystem/component/pickers', 'core/designsystem/src/main/kotlin/com/acme/field/core/designsystem/foundation/glass', 'core/designsystem/src/main/res/values/font_certs.xml', 'core/designsystem/src/test/kotlin/com/acme/field/core/designsystem/component/collections', 'core/designsystem/src/test/kotlin/com/acme/field/core/designsystem/component/datadisplay', 'core/designsystem/src/test/kotlin/com/acme/field/core/designsystem/component/formfields', 'core/designsystem/src/test/kotlin/com/acme/field/core/designsystem/component/pickers', 'core/designsystem/src/test/kotlin/com/acme/field/core/designsystem/foundation/glass', 'core/devtools', 'core/devtools/src/main/kotlin/com/acme/field/core/devtools/panel/FlagsTab.kt', 'core/flags', 'core/flags/src/main/kotlin/com/acme/field/core/flags/remoteconfig', 'core/image', 'core/media', 'core/network', 'core/network/src/main/kotlin/com/acme/field/core/network/appstatus', 'core/network/src/main/kotlin/com/acme/field/core/network/queue', 'core/network/src/main/kotlin/com/acme/field/core/network/websocket', 'core/network/src/test/kotlin/com/acme/field/core/network/queue', 'core/perfhud', 'core/playstore', 'core/ui/src/main/kotlin/com/acme/field/core/ui/appstatus', 'core/ui/src/main/kotlin/com/acme/field/core/ui/browser', 'core/ui/src/main/kotlin/com/acme/field/core/ui/form', 'core/ui/src/main/kotlin/com/acme/field/core/ui/locale', 'core/ui/src/main/kotlin/com/acme/field/core/ui/paging', 'core/ui/src/main/kotlin/com/acme/field/core/ui/tooling', 'data/auth', 'data/feed', 'data/profile', 'data/sample', 'data/search', 'docs/PERFORMANCE-OVERLAY.md', 'feature/auth', 'feature/auth/src/main/kotlin/com/acme/field/feature/auth/GoogleSignIn.kt', 'feature/feed', 'feature/onboarding', 'feature/profile', 'feature/sample', 'feature/search', 'feature/settings', 'feature/settings/src/main/kotlin/com/acme/field/feature/settings/Licenses.kt', 'tools/adaptive', 'tools/perf']
+
+----------------------------------------------------------------------
+Ran 477 tests in 287.307s
+
+FAILED (failures=1, skipped=9)
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.

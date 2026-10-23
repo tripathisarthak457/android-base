@@ -11,4 +11,5 @@
 - [Status shows parked work](status-show-parked-work.md) — every update lists parked packages, what they wait for and since when (glass was missed for days)
 - [Killing starving processes approved](kill-starving-processes-approved.md) — Oct 19: stop what starves the machine (own leftovers first); never Windows core, Defender, drivers, Claude or the user's apps
 - [Private work project](private-work-project.md) — Oct 20: the user's employer app, a hand-built CMP project; private-*.md memories never reach the public backup
+- [Deadlines: flag slips early](deadline-flag-slips-early.md) — Oct 21: final work-project zip came 3 h after the 06:00 deadline; announce slips before the deadline
 - [Log times from the clock](log-times-from-clock.md) — run date before writing any time; estimates ran up to 18 min ahead on Oct 19

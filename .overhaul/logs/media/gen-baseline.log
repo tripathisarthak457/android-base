@@ -1,0 +1,295 @@
+...................................................................................................EFFFFFFsFF.EFFFFF..............s............................FFF..FFFF.........ss...................................F.E........................................................................................................s...........s.........................s..........s........................................................................................s....................
+======================================================================
+ERROR: test_a_preset_replaces_a_specs_features (tests.test_cli.CliTest.test_a_preset_replaces_a_specs_features)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_cli.py", line 184, in test_a_preset_replaces_a_specs_features
+    ["ci", "coil", "deeplink", "googlefonts", "leakcanary", "network"], json.loads(result.stdout)["enabled"]
+                                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+KeyError: 'enabled'
+
+======================================================================
+ERROR: test_list_features_json (tests.test_cli.CliTest.test_list_features_json)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_cli.py", line 204, in test_list_features_json
+    self.assertIn("network", {feature["key"] for feature in features})
+                              ~~~~~~~^^^^^^^
+TypeError: string indices must be integers, not 'str'
+
+======================================================================
+ERROR: test_every_target_loads (tests.test_manifest.RealManifestTest.test_every_target_loads) (target='android')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_manifest.py", line 25, in test_every_target_loads
+    manifest = TemplateManifest.load(target.template_dir)
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\genkit\core\manifest.py", line 130, in load
+    features = _load_features(root, groups, path_token)
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\genkit\core\manifest.py", line 315, in _load_features
+    raise TemplateError(source, None, f"owns '{owned}', which is not in the template")
+genkit.core.markers.TemplateError: D:\projects\tools\.overhaul\wt\MEDIA\templates\android\features\coil.toml: owns 'core/ui/src/main/kotlin/{pkg_path}/core/ui/AppNetworkImage.kt', which is not in the template
+
+======================================================================
+FAIL: test_a_refusal_with_json_is_the_headless_shape (tests.test_cli.CliTest.test_a_refusal_with_json_is_the_headless_shape)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_cli.py", line 84, in test_a_refusal_with_json_is_the_headless_shape
+    self.assertEqual(2, result.returncode)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 1
+
+======================================================================
+FAIL: test_a_zip_path_must_say_zip (tests.test_cli.CliTest.test_a_zip_path_must_say_zip)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_cli.py", line 100, in test_a_zip_path_must_say_zip
+    self.assertEqual(2, result.returncode)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 1
+
+======================================================================
+FAIL: test_an_unknown_preset_names_the_ones_that_exist (tests.test_cli.CliTest.test_an_unknown_preset_names_the_ones_that_exist)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_cli.py", line 189, in test_an_unknown_preset_names_the_ones_that_exist
+    self.assertEqual(2, result.returncode)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 1
+
+======================================================================
+FAIL: test_force_never_deletes_the_current_directory (tests.test_cli.CliTest.test_force_never_deletes_the_current_directory)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_cli.py", line 157, in test_force_never_deletes_the_current_directory
+    self.assertIn("the current directory", result.stderr + result.stdout)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'the current directory' not found in 'Traceback (most recent call last):\n  File "D:\\projects\\tools\\.overhaul\\wt\\MEDIA\\generator\\create_project.py", line 385, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File "D:\\projects\\tools\\.overhaul\\wt\\MEDIA\\generator\\create_project.py", line 80, in main\n    parsed, warnings = pipeline.read_spec(raw, target, overrides)\n                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File "D:\\projects\\tools\\.overhaul\\wt\\MEDIA\\generator\\genkit\\core\\pipeline.py", line 47, in read_spec\n    parsed = specs.parse(raw, target.manifest, target.vocabulary(), overrides)\n                              ^^^^^^^^^^^^^^^\n  File "C:\\Users\\crazyhusir\\AppData\\Local\\Python\\pythoncore-3.15-64\\Lib\\functools.py", line 1169, in __get__\n    val = self.func(instance)\n  File "D:\\projects\\tools\\.overhaul\\wt\\MEDIA\\generator\\genkit\\targets\\android\\target.py", line 81, in manifest\n    return TemplateManifest.load(self.template_dir)\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^\n  File "D:\\projects\\tools\\.overhaul\\wt\\MEDIA\\generator\\genkit\\core\\manifest.py", line 130, in load\n    features = _load_features(root, groups, path_token)\n  File "D:\\projects\\tools\\.overhaul\\wt\\MEDIA\\generator\\genkit\\core\\manifest.py", line 315, in _load_features\n    raise TemplateError(source, None, f"owns \'{owned}\', which is not in the template")\ngenkit.core.markers.TemplateError: D:\\projects\\tools\\.overhaul\\wt\\MEDIA\\templates\\android\\features\\coil.toml: owns \'core/ui/src/main/kotlin/{pkg_path}/core/ui/AppNetworkImage.kt\', which is not in the template\n'
+
+======================================================================
+FAIL: test_force_never_deletes_the_current_directory_spelled_in_another_case (tests.test_cli.CliTest.test_force_never_deletes_the_current_directory_spelled_in_another_case)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_cli.py", line 168, in test_force_never_deletes_the_current_directory_spelled_in_another_case
+    self.assertIn("the current directory", result.stderr + result.stdout)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'the current directory' not found in 'Traceback (most recent call last):\n  File "D:\\projects\\tools\\.overhaul\\wt\\MEDIA\\generator\\create_project.py", line 385, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File "D:\\projects\\tools\\.overhaul\\wt\\MEDIA\\generator\\create_project.py", line 80, in main\n    parsed, warnings = pipeline.read_spec(raw, target, overrides)\n                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File "D:\\projects\\tools\\.overhaul\\wt\\MEDIA\\generator\\genkit\\core\\pipeline.py", line 47, in read_spec\n    parsed = specs.parse(raw, target.manifest, target.vocabulary(), overrides)\n                              ^^^^^^^^^^^^^^^\n  File "C:\\Users\\crazyhusir\\AppData\\Local\\Python\\pythoncore-3.15-64\\Lib\\functools.py", line 1169, in __get__\n    val = self.func(instance)\n  File "D:\\projects\\tools\\.overhaul\\wt\\MEDIA\\generator\\genkit\\targets\\android\\target.py", line 81, in manifest\n    return TemplateManifest.load(self.template_dir)\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^\n  File "D:\\projects\\tools\\.overhaul\\wt\\MEDIA\\generator\\genkit\\core\\manifest.py", line 130, in load\n    features = _load_features(root, groups, path_token)\n  File "D:\\projects\\tools\\.overhaul\\wt\\MEDIA\\generator\\genkit\\core\\manifest.py", line 315, in _load_features\n    raise TemplateError(source, None, f"owns \'{owned}\', which is not in the template")\ngenkit.core.markers.TemplateError: D:\\projects\\tools\\.overhaul\\wt\\MEDIA\\templates\\android\\features\\coil.toml: owns \'core/ui/src/main/kotlin/{pkg_path}/core/ui/AppNetworkImage.kt\', which is not in the template\n'
+
+======================================================================
+FAIL: test_force_replaces_a_junction_and_not_the_directory_it_points_at (tests.test_cli.CliTest.test_force_replaces_a_junction_and_not_the_directory_it_points_at)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_cli.py", line 134, in test_force_replaces_a_junction_and_not_the_directory_it_points_at
+    self.assert_force_replaces_only(link, real)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_cli.py", line 144, in assert_force_replaces_only
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : 
+
+======================================================================
+FAIL: test_force_replaces_exactly_the_destination (tests.test_cli.CliTest.test_force_replaces_exactly_the_destination)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_cli.py", line 118, in test_force_replaces_exactly_the_destination
+    self.assertEqual(0, forced.returncode, forced.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\create_project.py", line 385, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\create_project.py", line 80, in main
+    parsed, warnings = pipeline.read_spec(raw, target, overrides)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\genkit\core\pipeline.py", line 47, in read_spec
+    parsed = specs.parse(raw, target.manifest, target.vocabulary(), overrides)
+                              ^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\functools.py", line 1169, in __get__
+    val = self.func(instance)
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\genkit\targets\android\target.py", line 81, in manifest
+    return TemplateManifest.load(self.template_dir)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\genkit\core\manifest.py", line 130, in load
+    features = _load_features(root, groups, path_token)
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\genkit\core\manifest.py", line 315, in _load_features
+    raise TemplateError(source, None, f"owns '{owned}', which is not in the template")
+genkit.core.markers.TemplateError: D:\projects\tools\.overhaul\wt\MEDIA\templates\android\features\coil.toml: owns 'core/ui/src/main/kotlin/{pkg_path}/core/ui/AppNetworkImage.kt', which is not in the template
+
+
+======================================================================
+FAIL: test_json_means_only_json_on_stdout (tests.test_cli.CliTest.test_json_means_only_json_on_stdout)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_cli.py", line 57, in test_json_means_only_json_on_stdout
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : 
+
+======================================================================
+FAIL: test_out_is_the_zip_itself (tests.test_cli.CliTest.test_out_is_the_zip_itself)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_cli.py", line 89, in test_out_is_the_zip_itself
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : 
+
+======================================================================
+FAIL: test_set_overrides_after_the_spec_is_read (tests.test_cli.CliTest.test_set_overrides_after_the_spec_is_read)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_cli.py", line 176, in test_set_overrides_after_the_spec_is_read
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : 
+
+======================================================================
+FAIL: test_the_reported_path_spells_out_a_short_name (tests.test_cli.CliTest.test_the_reported_path_spells_out_a_short_name)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_cli.py", line 78, in test_the_reported_path_spells_out_a_short_name
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : 
+
+======================================================================
+FAIL: test_the_reported_path_spells_the_directories_one_way (tests.test_cli.CliTest.test_the_reported_path_spells_the_directories_one_way)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_cli.py", line 67, in test_the_reported_path_spells_the_directories_one_way
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : 
+
+======================================================================
+FAIL: test_the_summary_says_when_the_build_desugars (tests.test_cli.CliTest.test_the_summary_says_when_the_build_desugars)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_cli.py", line 198, in test_the_summary_says_when_the_build_desugars
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\create_project.py", line 385, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\create_project.py", line 80, in main
+    parsed, warnings = pipeline.read_spec(raw, target, overrides)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\genkit\core\pipeline.py", line 47, in read_spec
+    parsed = specs.parse(raw, target.manifest, target.vocabulary(), overrides)
+                              ^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\functools.py", line 1169, in __get__
+    val = self.func(instance)
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\genkit\targets\android\target.py", line 81, in manifest
+    return TemplateManifest.load(self.template_dir)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\genkit\core\manifest.py", line 130, in load
+    features = _load_features(root, groups, path_token)
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\genkit\core\manifest.py", line 315, in _load_features
+    raise TemplateError(source, None, f"owns '{owned}', which is not in the template")
+genkit.core.markers.TemplateError: D:\projects\tools\.overhaul\wt\MEDIA\templates\android\features\coil.toml: owns 'core/ui/src/main/kotlin/{pkg_path}/core/ui/AppNetworkImage.kt', which is not in the template
+
+
+======================================================================
+FAIL: test_a_good_spec_writes_a_zip_and_says_so (tests.test_headless.ScriptTest.test_a_good_spec_writes_a_zip_and_says_so)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_headless.py", line 41, in test_a_good_spec_writes_a_zip_and_says_so
+    self.assertEqual(0, code)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_a_path_on_the_server_is_never_read (tests.test_headless.ScriptTest.test_a_path_on_the_server_is_never_read)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_headless.py", line 79, in test_a_path_on_the_server_is_never_read
+    self.assertEqual(2, code)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^
+AssertionError: 2 != 1
+
+======================================================================
+FAIL: test_a_schema_one_spec_reports_what_it_ignored (tests.test_headless.ScriptTest.test_a_schema_one_spec_reports_what_it_ignored)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_headless.py", line 56, in test_a_schema_one_spec_reports_what_it_ignored
+    self.assertEqual(0, code)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_refusals_exit_2_with_the_field (tests.test_headless.ScriptTest.test_refusals_exit_2_with_the_field) (stdin=b'{"schema": 2, "platform": "android", "app_name": "x"}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_headless.py", line 72, in test_refusals_exit_2_with_the_field
+    self.assertEqual(2, code)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^
+AssertionError: 2 != 1
+
+======================================================================
+FAIL: test_refusals_exit_2_with_the_field (tests.test_headless.ScriptTest.test_refusals_exit_2_with_the_field) (stdin=b'{"schema": 2, "platform": "android", "app_name": "Head Less"')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_headless.py", line 72, in test_refusals_exit_2_with_the_field
+    self.assertEqual(2, code)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^
+AssertionError: 2 != 1
+
+======================================================================
+FAIL: test_refusals_exit_2_with_the_field (tests.test_headless.ScriptTest.test_refusals_exit_2_with_the_field) (stdin=b'[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_headless.py", line 72, in test_refusals_exit_2_with_the_field
+    self.assertEqual(2, code)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^
+AssertionError: 2 != 1
+
+======================================================================
+FAIL: test_refusals_exit_2_with_the_field (tests.test_headless.ScriptTest.test_refusals_exit_2_with_the_field) (stdin=b'null')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_headless.py", line 72, in test_refusals_exit_2_with_the_field
+    self.assertEqual(2, code)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^
+AssertionError: 2 != 1
+
+======================================================================
+FAIL: test_every_owned_path_exists (tests.test_manifest.RealManifestTest.test_every_owned_path_exists) (feature='coil', path='core/ui/src/main/kotlin/{pkg_path}/core/ui/AppNetworkImage.kt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_manifest.py", line 34, in test_every_owned_path_exists
+    self.assertTrue((target.template_dir / owned.format(pkg_path=manifest.package_path_token)).exists())
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 477 tests in 216.201s
+
+FAILED (failures=21, errors=3, skipped=9)
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.

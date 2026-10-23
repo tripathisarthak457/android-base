@@ -1,0 +1,204 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:image:testDebugUnitTest
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:processResources NO-SOURCE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:verifyApiPurity UP-TO-DATE
+> Task :core:image:verifyApiPurity UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity UP-TO-DATE
+> Task :core:designsystem:preBuild UP-TO-DATE
+> Task :core:designsystem:preDebugBuild UP-TO-DATE
+> Task :core:image:verifyModuleDependencies
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:image:preBuild
+> Task :core:image:preDebugBuild
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:image:javaPreCompileDebug UP-TO-DATE
+> Task :core:image:preDebugUnitTestBuild
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:testing:verifyApiPurity
+> Task :core:designsystem:compileDebugLibraryResources FROM-CACHE
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:image:writeDebugAarMetadata
+> Task :core:testing:verifyModuleDependencies
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :core:testing:compose:verifyApiPurity
+> Task :core:testing:writeDebugAarMetadata
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:testing:compose:verifyModuleDependencies
+> Task :core:testing:compose:preBuild
+> Task :core:testing:compose:preDebugBuild
+> Task :core:common:jar UP-TO-DATE
+> Task :core:image:mapDebugUnitTestSourceSetPaths
+> Task :core:image:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:testing:compose:writeDebugAarMetadata
+> Task :core:testing:generateDebugEmptyResourceFiles
+> Task :core:image:generateDebugUnitTestResources FROM-CACHE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :core:testing:compose:generateDebugEmptyResourceFiles
+> Task :core:image:processDebugManifest UP-TO-DATE
+> Task :core:testing:processDebugManifest FROM-CACHE
+> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:testing:compose:processDebugManifest FROM-CACHE
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:designsystem:processDebugJavaRes
+> Task :core:image:compileDebugKotlin
+> Task :core:image:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:image:bundleLibRuntimeToJarDebug
+> Task :core:image:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:image:checkDebugUnitTestAarMetadata
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:compileDebugKotlin FROM-CACHE
+> Task :core:image:mergeDebugUnitTestManifest
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :core:image:processDebugUnitTestManifest
+> Task :core:image:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:testing:compose:javaPreCompileDebug FROM-CACHE
+> Task :core:image:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:image:generateDebugAssets UP-TO-DATE
+> Task :core:image:mergeDebugAssets
+> Task :core:designsystem:mergeDebugAssets
+> Task :core:testing:compose:generateDebugAssets UP-TO-DATE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:mergeDebugAssets
+> Task :core:testing:compose:mergeDebugAssets
+> Task :core:image:koverFindJar
+> Task :core:image:processDebugJavaRes
+> Task :core:testing:bundleLibRuntimeToJarDebug
+> Task :core:testing:processDebugJavaRes
+> Task :core:image:mergeDebugUnitTestAssets
+> Task :core:testing:compose:compileDebugKotlin FROM-CACHE
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:bundleLibRuntimeToJarDebug
+> Task :core:testing:compose:bundleLibCompileToJarDebug
+> Task :core:testing:compose:processDebugJavaRes
+> Task :core:image:mergeDebugUnitTestResources
+> Task :core:image:processDebugUnitTestResources
+> Task :core:image:packageDebugUnitTestForUnitTest
+> Task :core:image:generateDebugUnitTestConfig
+
+> Task :core:image:compileDebugUnitTestKotlin FAILED
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:9:22 Unresolved reference 'NetworkFetcher'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:21:8 Unresolved reference 'okhttp3'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:22:8 Unresolved reference 'okhttp3'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:23:8 Unresolved reference 'okhttp3'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:24:8 Unresolved reference 'okhttp3'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:25:8 Unresolved reference 'okhttp3'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:44:35 Unresolved reference 'imageMemoryBytes'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:45:35 Unresolved reference 'imageMemoryBytes'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:46:41 Unresolved reference 'imageMemoryBytes'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:51:22 Unresolved reference 'appImageLoader'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:54:22 Unresolved reference 'imageMemoryBytes'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:54:112 Unresolved reference 'maxSize'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:55:22 Unresolved reference 'DECODES_AT_ONCE'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:56:22 Unresolved reference 'BACKGROUND_SHARE'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:65:21 Unresolved reference 'appImageLoader'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:66:26 Unresolved reference 'maxSize'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:70:30 Unresolved reference 'BACKGROUND_SHARE'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:70:64 Unresolved reference 'maxSize'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:76:40 Unresolved reference 'appImageLoader'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:81:20 Unresolved reference 'appImageLoader'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:83:80 Unresolved reference 'directory'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:84:28 Unresolved reference 'maxSize'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:84:44 Unresolved reference 'maxSize'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:89:22 Unresolved reference 'appImageLoader'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:92:68 Cannot infer type for implicit value parameter 'it'. Specify it explicitly.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:92:68 Operator call 'component1()' is ambiguous for destructuring of type '??? (Unknown type for value parameter <destruct>)'. Applicable candidates:
+fun <T> Array<out T>.component1(): T
+fun ByteArray.component1(): Byte
+fun ShortArray.component1(): Short
+fun IntArray.component1(): Int
+fun LongArray.component1(): Long
+fun FloatArray.component1(): Float
+fun DoubleArray.component1(): Double
+fun BooleanArray.component1(): Boolean
+fun CharArray.component1(): Char
+fun <T> List<T>.component1(): T
+fun <K, V> Map.Entry<K, V>.component1(): K
+fun UIntArray.component1(): UInt
+fun ULongArray.component1(): ULong
+fun UByteArray.component1(): UByte
+fun UShortArray.component1(): UShort
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:92:68 Operator call 'component2()' is ambiguous for destructuring of type '??? (Unknown type for value parameter <destruct>)'. Applicable candidates:
+fun <T> Array<out T>.component2(): T
+fun ByteArray.component2(): Byte
+fun ShortArray.component2(): Short
+fun IntArray.component2(): Int
+fun LongArray.component2(): Long
+fun FloatArray.component2(): Float
+fun DoubleArray.component2(): Double
+fun BooleanArray.component2(): Boolean
+fun CharArray.component2(): Char
+fun <T> List<T>.component2(): T
+fun <K, V> Map.Entry<K, V>.component2(): V
+fun UIntArray.component2(): UInt
+fun ULongArray.component2(): ULong
+fun UByteArray.component2(): UByte
+fun UShortArray.component2(): UShort
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:92:95 Unresolved reference 'NetworkFetcher'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:98:22 Unresolved reference 'OkHttpClient'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:99:31 Cannot infer type for value parameter 'chain'. Specify it explicitly.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:100:31 Unresolved reference 'request'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:101:17 Unresolved reference 'Response'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:102:36 Unresolved reference 'request'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:103:31 Unresolved reference 'Protocol'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:105:22 Unresolved reference 'message'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:106:40 Unresolved reference 'toResponseBody' on receiver of type 'ByteArray'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:106:67 Unresolved reference 'toMediaType' on receiver of type 'String'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:110:22 Unresolved reference 'appImageLoader'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:112:9 Cannot infer type for type parameter 'T'. Specify it explicitly.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt:113:13 Cannot infer type for type parameter 'T'. Specify it explicitly.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppNetworkImageTest.kt:127:25 No parameter with name 'fadeIn' found.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppNetworkImageTest.kt:135:25 No parameter with name 'fadeIn' found.
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:image:compileDebugUnitTestKotlin' (registered by plugin 'com.android.internal.library').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: UNRESOLVED_IMPORT
+       Kotlin compiler error
+         Unresolved reference 'NetworkFetcher'.
+         Location: D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/image/src/test/kotlin/com/base/app/core/image/AppImageLoaderTest.kt line 9
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 18s
+72 actionable tasks: 37 executed, 9 from cache, 26 up-to-date
+Configuration cache entry stored.
+exit 1

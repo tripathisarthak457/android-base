@@ -57,6 +57,8 @@
 
 ## 4. REGENERABLE (build outputs, downloaded artifacts, lock files)
 - *.lock
+# the lock's waiter markers (locked.py, Oct 23)
+- *.lock.wait.*
 - *.apk
 - *.aab
 - *.apks

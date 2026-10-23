@@ -265,14 +265,50 @@ def holder(kind):
     return f"pid {info['pid']} since {info['since']}: {info.get('command', '')[:120]}"
 
 
+# Fast-tracked packages (Oct 23) build and use the phone beside staging, whose fixes are the critical path: their
+# commands run with LOCKED_PRIORITY=low and take a lock only while no normal-priority command is waiting for it.
+LOW_PRIORITY = os.environ.get("LOCKED_PRIORITY") == "low"
+
+
+def waiter_path(kind, pid):
+    return lock_path(kind) + f".wait.{pid}"
+
+
+def normal_waiting(kind):
+    prefix = os.path.basename(lock_path(kind)) + ".wait."
+    for name in os.listdir(OV):
+        if not name.startswith(prefix):
+            continue
+        pid = name[len(prefix):]
+        if pid.isdigit() and process_started(int(pid)):
+            return True
+        try:
+            os.remove(os.path.join(OV, name))  # a waiter that died left its marker behind
+        except OSError:
+            pass
+    return False
+
+
 def acquire(kind, argv):
     fd = os.open(lock_path(kind), os.O_RDWR | os.O_CREAT)
     said = None
-    while not try_lock(fd):
-        if said is None or time.monotonic() - said >= 300:
-            say(kind, f"waiting for the lock ({holder(kind)})")
-            said = time.monotonic()
-        time.sleep(2)
+    marker = None
+    if not LOW_PRIORITY:
+        marker = waiter_path(kind, os.getpid())
+        open(marker, "w").close()
+    try:
+        while (LOW_PRIORITY and normal_waiting(kind)) or not try_lock(fd):
+            if said is None or time.monotonic() - said >= 300:
+                waiting = "yielding to normal-priority waiters" if LOW_PRIORITY and normal_waiting(kind) else "waiting"
+                say(kind, f"{waiting} for the lock ({holder(kind)})")
+                said = time.monotonic()
+            time.sleep(2)
+    finally:
+        if marker:
+            try:
+                os.remove(marker)
+            except OSError:
+                pass
     # A holder that died (killed, crashed) freed the lock but not its command; wait for that command to finish.
     previous, said = read_holder(kind), None
     while previous.get("child") and process_started(previous["child"]) == previous.get("child_started"):
