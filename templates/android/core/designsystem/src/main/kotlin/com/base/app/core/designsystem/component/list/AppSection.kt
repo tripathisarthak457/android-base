@@ -11,7 +11,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.semantics.heading
@@ -25,6 +24,7 @@ import androidx.compose.ui.layout.ParentDataModifier
 import com.base.app.core.designsystem.component.button.AppLinkButton
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.adaptive.centeredMaxWidth
+import com.base.app.core.designsystem.foundation.draw.drawHairline
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -121,10 +121,9 @@ private fun SeparatedColumn(modifier: Modifier, content: @Composable () -> Unit)
             drawContent()
             val fallback = defaultInset.toPx()
             for (i in 0 until lines.count) {
-                val y = lines.y[i] - 0.5f
                 val inset = lines.insets[i]?.start?.takeUnless { it.isNaN() } ?: fallback
                 val (start, end) = if (layoutDirection == LayoutDirection.Ltr) inset to size.width else 0f to size.width - inset
-                drawLine(color, Offset(start, y), Offset(end, y), strokeWidth = 1f)
+                drawHairline(color, start, end, lines.y[i] - 1f)
             }
         },
     ) { measurables: List<Measurable>, constraints: Constraints ->

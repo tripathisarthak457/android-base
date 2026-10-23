@@ -46,6 +46,7 @@ import com.base.app.core.designsystem.component.sheet.LocalSheetSurface
 import com.base.app.core.designsystem.component.sheet.chrome.AppSheetCloseButton
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.component.text.grownWithFontScale
+import com.base.app.core.designsystem.foundation.draw.drawHairline
 import com.base.app.core.designsystem.foundation.layout.ChromeInset
 import com.base.app.core.designsystem.foundation.layout.LocalTopChrome
 import com.base.app.core.designsystem.icon.AppIcons
@@ -100,7 +101,7 @@ fun AppTopBar(
                 val shown = scrolled?.let { (it() / fadeDistance.toPx()).coerceIn(0f, 1f) } ?: 1f
                 if (shown > 0f) {
                     drawRect(fill, alpha = shown)
-                    drawLine(colors.separator, Offset(0f, size.height - 0.5f), Offset(size.width, size.height - 0.5f), 1f, alpha = shown)
+                    drawHairline(colors.separator, 0f, size.width, size.height - 1f, alpha = shown)
                 }
             }
             .windowInsetsPadding(windowInsets),
@@ -171,7 +172,7 @@ fun AppLargeTitleTopBar(
                 val shown = if (!large) 1f else ((scrolled() - fadeFrom) / surfaceFade.toPx()).coerceIn(0f, 1f)
                 if (shown > 0f) {
                     drawRect(fill, size = Size(size.width, inline), alpha = shown)
-                    drawLine(colors.separator, Offset(0f, inline - 0.5f), Offset(size.width, inline - 0.5f), 1f, alpha = shown)
+                    drawHairline(colors.separator, 0f, size.width, inline - 1f, alpha = shown)
                 }
             }
             .windowInsetsPadding(windowInsets),
