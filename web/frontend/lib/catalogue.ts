@@ -24,10 +24,7 @@ export const CATALOGUE = offerOnly(data as unknown as Catalogue, OFFERED);
 /** Every platform the site names, offered or coming soon, in the order it shows them. */
 export const PLATFORMS = platformsOf(CATALOGUE, ANNOUNCED);
 
-export const REPO = "https://github.com/tripathisarthak457/android-base";
-
-/** The privacy page: exactly what is stored, on the server and in the browser. */
-export const PRIVACY = `${REPO}/blob/main/docs/telemetry-and-privacy.md`;
+export { PRIVACY, REPO } from "./links.ts";
 
 export function android(): Target {
   const target = CATALOGUE.targets.find((candidate) => candidate.key === "android") ?? CATALOGUE.targets[0];
