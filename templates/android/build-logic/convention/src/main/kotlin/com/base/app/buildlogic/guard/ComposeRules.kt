@@ -127,10 +127,11 @@ internal object ComposeRules {
             lines = pattern(Regex("""\bby\s+(?:[\w.]+\.)?animate\w*\s*(?:<[^>]*>)?\s*\(""")),
             reference = "jetpack-compose-performance/references/animation.md",
         ),
-        // No whole screen is rendered offscreen, with one exception outside this rule's modules: the back
-        // gesture's card in :core:navigation draws the screen under it from one texture, rendered once per
-        // gesture while that screen is still and released when the card is gone. BackCardState.textures
-        // says why that is allowed and which tests hold it to those conditions.
+        // No whole screen is rendered offscreen. The shell has two exceptions, both in :core:navigation,
+        // outside this rule's modules: the back gesture's card draws the screen it shows from one texture,
+        // rendered once per gesture while that screen is still and released when the card is gone
+        // (BackCardState.textures says why that is allowed and which tests hold it to those conditions),
+        // and HostCrossfade fades whole hosts, only when the session changes.
         Rule(
             id = "layer-alpha-fill",
             advice = "alpha on a full-screen layer renders it offscreen every frame; draw a scrim rect, or use " +

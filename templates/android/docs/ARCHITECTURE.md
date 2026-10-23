@@ -8,7 +8,9 @@ Contents:
 1. [Modules](#modules)
 2. [MVI](#mvi)
 3. [Navigation](#navigation)
+<!-- <opt:network> -->
 4. [Data and the network](#data-and-the-network)
+<!-- </opt:network> -->
 5. [Storage and the session](#storage-and-the-session)
 6. [App-wide services](#app-wide-services)
 7. [The design system](#the-design-system)
@@ -127,18 +129,21 @@ The screen is a stateless function, `OrdersScreen(state, onEvent)`. A route comp
 to the ViewModel through `MviScreen`, which collects state with the lifecycle and hands effects to
 a callback. Previews and UI tests call the screen and never need a ViewModel.
 
-### Events are queued, not launched
+### Events never suspend
 
-`MviViewModel.onEvent` puts each event on a channel, and a single coroutine handles them in order.
-The alternative, `viewModelScope.launch { handleEvent(event) }` for each call, starts a coroutine
-per event. Two events that both read and then write the state can then interleave between the read
-and the write, and one update is lost. That only happens under fast input, which makes it very
-hard to reproduce.
+`MviViewModel.onEvent` calls `handleEvent` at once, on the main thread, and `handleEvent` cannot
+suspend. A read of `current` followed by `setState` is therefore never interleaved with another
+event. The alternative, `viewModelScope.launch { handleEvent(event) }` for each call, starts a
+coroutine per event: two events that both read and then write the state can interleave between the
+read and the write, and one update is lost. That only happens under fast input, which makes it very
+hard to reproduce. And since no handler waits, nothing an event starts can make Back or a keystroke
+wait.
 
-The cost is that a slow handler delays the next event. That is usually what you want, because the
-next event often depends on what this one writes. Work that should not hold the queue goes through
-`launchWork { }`, and work where only the newest request matters, like search-as-you-type, goes
-through `launchLatest(key)`, which cancels the previous job with the same key.
+Slow work goes through the keyed launchers. `launchLatest(key, debounce)` cancels the previous run
+under the same key, for work where only the newest request matters (search-as-you-type, reload,
+paging); `launchExclusive(key)` ignores a new request while one runs (submit, pay, save). Repository
+flows go through `observe(flow) { … }`, which collects them only while the screen observes the
+state.
 
 ### Effects are delivered once
 
@@ -151,9 +156,10 @@ arrives, so a lifecycle stop in between cannot lose it.
 ### Messages and errors
 
 `showMessage(text, kind)` is the effect for transient notes such as "Saved" or "Could not refresh".
-An exception that escapes an event handler goes to `onError`, which logs it and shows a generic
-error message. A handler that expects a failure should turn it into state (usually
-`LoadState.Error`) and not rely on `onError`.
+An exception that escapes work started with `launchLatest`, `launchExclusive` or `observe` is logged
+and passed to `onUnexpected`, which does nothing unless the ViewModel overrides it. A handler that
+expects a failure should turn it into state (usually `LoadState.Error`) and not rely on
+`onUnexpected`.
 
 ### LoadState, not a boolean and a nullable
 
@@ -168,8 +174,10 @@ it. Treating them as the same state is why pull-to-refresh often blanks the list
 ### Surviving process death
 
 Loaded data is fetched again after process death and is not saved. What the user typed is saved:
-`persistState(savedStateHandle, save, restore)` in `init` writes chosen fields to the
-`SavedStateHandle` whenever they change and restores them on the next start.
+the ViewModel holds each typed field as
+`savedStateHandle.saveable(KEY, saver = TextFieldState.Saver) { TextFieldState() }`, which writes it
+to the `SavedStateHandle` and restores it on the next start. A password is never saved: the system
+writes that bundle to disk.
 
 ## Navigation
 
@@ -252,10 +260,12 @@ it was given as popped and discards its state. If the display were handed a diff
 on every switch, the tab being left would lose its scroll position, query and loaded data. Keeping
 every tab decorated means leaving a tab only hides it.
 
-A tab switch crossfades instead of sliding. A slide between tabs looks like forward navigation, and
-Back would then not undo it. The tab bar slides away over pushed screens instead of being removed
-from the layout: tab roots reserve the bar's height and pushed screens are full height, so nothing
-resizes during a transition.
+A tab switch does not slide: a slide between tabs looks like forward navigation, and Back would then
+not undo it. The incoming tab is nudged 12dp toward the direction of travel and springs into place,
+and nothing cross-fades: the tab being left is parked at once ([PERFORMANCE.md](PERFORMANCE.md#how-the-shell-moves-screens)
+says why). The tab bar slides away over pushed screens instead of being removed from the layout: tab
+roots reserve the bar's height and pushed screens are full height, so nothing resizes during a
+transition.
 
 Tapping the active tab again pops it to its root, as it does in most apps.
 
@@ -531,8 +541,8 @@ themes against WCAG AA, so a change to a colour or surface tone that breaks cont
 
 ### Motion
 
-`AppMotionStyle` (Standard, Bouncy, Calm, Snappy) sets the durations and easing read through
-`AppTheme.motion`. Components animate `graphicsLayer` properties (alpha, offset, scale) rather
+`AppMotionStyle` (Standard, Bouncy, Calm, Snappy) sets the springs and fades read through
+`AppTheme.springs`. Components animate `graphicsLayer` properties (alpha, offset, scale) rather
 than size, so an animation never moves the elements around it. `rememberAppTransitions()` turns
 transitions off when the system's remove-animations setting is on.
 
@@ -554,9 +564,10 @@ The same app runs on a phone, a foldable, a tablet, a Chromebook, a desktop wind
 of the screens assumes one: no activity is locked to an orientation, and lint fails the build if
 one is (`LockedOrientationActivity`, `SourceLockedOrientationActivity`, `NonResizeableActivity`).
 
-Layout is decided from the window, never from the device or its orientation. `AppTheme.windowSize`
-holds Android's window size classes, computed by `androidx.window` from the window the app is
-actually in — which changes when the window is resized, split or unfolded:
+Layout is decided from the window, never from the device or its orientation. `AppTheme.windowClass`
+holds Android's window size classes (`AppTheme.containerClass` those of the pane a screen is in),
+computed by `androidx.window` from the window the app is actually in — which changes when the window
+is resized, split or unfolded:
 
 | Width | From | Typically |
 |---|---|---|
@@ -581,7 +592,8 @@ What adapts, and how:
 - **List and detail:** side by side from Expanded width (see Navigation).
 - **Two halves of one screen** (`AppTwoPane`): side by side from Expanded width, and on a short
   window of Medium width or more — a phone held sideways has no height to stack them in.
-- **Grids** (`AppResponsiveGrid`): as many equal columns as fit at `gridMinCellWidth`.
+- **Grids** (`LazyVerticalGrid` with `GridCells.Adaptive`): as many equal columns as fit at
+  `gridMinCardWidth` or `gridMinTileWidth`.
 - **Sheets, dialogs and snackbars** stop at `sheetMaxWidth` and centre.
 - **Display cutouts:** `AppScaffold` pads both sides for them. A screen with a full-bleed panel turns
   that off (`clearDisplayCutout = false`) and pads the panel's content itself, so the colour reaches
@@ -609,7 +621,7 @@ These tasks run as part of `./gradlew build` and fail it:
 | Task | Checks |
 |---|---|
 | `verifyModuleDependencies` | The module tier rules above. |
-| `verifyCodeRules` | The forbidden patterns, each rule in `build-logic/…/guard/`: no Material or ripple, no raw tweens, colours or sizes in screens, keyed lazy rows, no `Dispatchers.IO` in a class, no orientation or screen-size branching, every `@Composable` module on the Compose compiler, no prose literal in a copy parameter, and the rest. A justified exception is `// allow(<rule>): <reason>` on the line above. No whole screen is rendered offscreen (`layer-alpha-fill`) except by the back gesture's card, which draws the screen under it from one texture for the gesture's span and releases it after (`BackCardState.textures` in `:core:navigation`). |
+| `verifyCodeRules` | The forbidden patterns, each rule in `build-logic/…/guard/`: no Material or ripple, no raw tweens, colours or sizes in screens, keyed lazy rows, no `Dispatchers.IO` in a class, no orientation or screen-size branching, every `@Composable` module on the Compose compiler, no prose literal in a copy parameter, and the rest. A justified exception is `// allow(<rule>): <reason>` on the line above. No whole screen is rendered offscreen (`layer-alpha-fill`) in a feature or a component; the shell in `:core:navigation` has two bounded exceptions, the back gesture's card, which draws the screen it shows from one texture for the gesture's span and releases it after (`BackCardState.textures`), and `HostCrossfade` between whole hosts when the session changes. |
 <!-- <opt:devtools> -->
 | `verify<Variant>CarriesNoDevTooling` | A release-like build outside the dev flavour (any build type but debug: stagingRelease, prodRelease, playstoreRelease and, with baseline profiles, their benchmark builds) depends on no dev tooling module, directly or through another module. Also runs before that build. |
 <!-- </opt:devtools> -->
@@ -652,8 +664,8 @@ its own `BuildConfig` and injects it, and it sets `AppLogger.debugEnabled` at st
 and a `checksums.sha256` file sits beside them. With four files all called `app-release.apk` in
 four sibling directories, sending the wrong one to a tester is easy.
 
-ABI splits are enabled only when the requested tasks assemble a release, so debug builds are not
-slowed down by them.
+Per-ABI APKs are built only with `-PabiSplits=true`: Play already delivers one ABI per device from
+the bundle, and the template's native code is small enough that splitting saves little.
 
 ### Signing falls back to the debug key
 

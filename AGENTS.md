@@ -78,6 +78,22 @@ A new optional feature needs all of:
 A new user-facing string in the template also needs a translation in every file under
 `generator/translations/`. `tests/test_translations.py` names any that are missing.
 
+## Smooth and light
+
+Every generated app has to hold 120 Hz on a budget phone, so a change to the template follows the
+rules the template gives its apps: section 6 of `templates/android/AGENTS.md` ("Smooth and light", the
+short list the build and review enforce) and `templates/android/docs/PERFORMANCE.md` (each rule with
+its reason and the number it protects). Judge smoothness only on a release build on a real phone, with
+`templates/android/tools/perf/perf.sh` and the limits in its `gates.toml`, never on a debug build. A
+change to motion, a list or start-up ships with its paragraph in that guide.
+
+The guide is fenced by feature like the code: a sentence about the perf harness, the overlay, glass or
+Coil sits behind that feature's markers (in Markdown, `<!-- <opt:performance> -->` on a line of its
+own), because a project without the feature has none of it. `generator/tests/test_docs.py` generates
+projects with no features and with the Lean, Standard and Everything presets, and fails on a rule id,
+gate row, scenario, spring, path, name or link that the guide or that section cites and the project
+lacks.
+
 ## Google's Android skills
 
 The Android and Compose Multiplatform templates ship Google's Android skills in `templates/*/.agents/skills/`

@@ -66,8 +66,8 @@ By hand, a feature is:
 
 1. A repository **interface** plus a `Default…` implementation, bound in a Hilt `@Module`.
 2. A contract: an `@Immutable` state, a sealed event, and a sealed effect.
-3. A ViewModel extending `MviViewModel`. State changes go through `updateState`, one-off things
-   (navigate, show a message) through `emitEffect` or `showMessage`.
+3. A ViewModel extending `MviViewModel`. State changes go through `setState`, one-off things
+   (navigate, show a message) through `emit` or `showMessage`.
 4. A **stateless** screen, `Screen(state, onEvent)`, and a route that connects it to the
    ViewModel through `MviScreen`. Previews call the screen, never the route.
 5. A `@Serializable` key implementing `AppNavKey`, registered twice with `@Provides @IntoSet`:
@@ -84,8 +84,8 @@ left out.
 
 | It is… | Use | Example |
 |---|---|---|
-| Something the screen renders, now or after rotation | `updateState { copy(…) }` | the list, a field's error, a loading flag |
-| Something that happens once and must not replay | `emitEffect(…)` | navigate, open the share sheet, close the screen |
+| Something the screen renders, now or after rotation | `setState { copy(…) }` | the list, a field's error, a loading flag |
+| Something that happens once and must not replay | `emit(…)` | navigate, open the share sheet, close the screen |
 | A transient note the user may miss without harm | `showMessage(…)` | "Saved", "Could not refresh" |
 
 Effects are collected only while the screen is started and on `Main.immediate`, so a navigation
@@ -136,11 +136,12 @@ screen to read an id from.
 ### Recipes
 
 - **A new tab:** add a `ShellTab` to `AppDestinations.tabs`. Each tab keeps its own back stack,
-  scroll position and ViewModels; switching crossfades.
-- **Keep typed input across process death:** `persistState(savedStateHandle, save, restore)` in
-  the ViewModel's `init`, for the fields the user typed — not for loaded data, which is fetched
-  again.
-- **Search as you type:** `launchLatest(key, debounceMillis)` cancels the previous request, so a
+  scroll position and ViewModels; a switch nudges the incoming tab in and cross-fades nothing.
+- **Keep typed input across process death:** inject `SavedStateHandle` into the ViewModel and hold
+  each field the user types as
+  `savedStateHandle.saveable(KEY, saver = TextFieldState.Saver) { TextFieldState() }` — not
+  loaded data, which is fetched again, and never a password.
+- **Search as you type:** `launchLatest(key, debounce)` cancels the previous request, so a
   slow answer for an old query can never overwrite a newer one.
 <!-- <opt:search> -->
   `SearchViewModel` shows it.
@@ -177,17 +178,19 @@ screen to read an id from.
 Android runs on phones, foldables, tablets, desktop windows and cars. A screen built for a phone
 held upright is not finished.
 
-- Decide layout from `AppTheme.windowSize` (window size classes), never from orientation, screen
-  size or device type. Never lock orientation: lint fails the build.
+- Decide layout from `AppTheme.windowClass` (the window's size class) and `AppTheme.containerClass`
+  (the pane's), never from orientation, screen size or device type. Never lock orientation: lint
+  fails the build.
 - Give content a width to stop at: `AppScaffold(contentMaxWidth = AppTheme.layout.readableMaxWidth)`
   for text and lists, `formMaxWidth` for a form. Full-width lines on a tablet are unreadable.
 - A list with a detail registers both halves: `entry<ListKey>(pane = NavPane.List)` and
   `entry<DetailKey>(pane = NavPane.Detail)`. They share the window when it is wide; do not build
   your own two-pane layout for it.
-- Two halves of one screen use `AppTwoPane`; a set of cards uses `AppResponsiveGrid` or
-  `LazyVerticalGrid(GridCells.Adaptive(AppTheme.layout.gridMinCellWidth))`.
+- Two halves of one screen use `AppTwoPane`; a set of cards uses
+  `LazyVerticalGrid(GridCells.Adaptive(AppTheme.layout.gridMinCardWidth))`.
 - Check the screen at Compact, Medium and Expanded width, and in landscape. On the emulator,
-  `adb shell wm size 1600x2560` plus `adb shell wm density 320` is a tablet; `wm size reset` undoes it.
+  `adb shell wm size 1600x2560` plus `adb shell wm density 320` is a tablet; `wm size reset` and
+  `wm density reset` undo it.
 
 ## 5. The base components are a starting point
 
@@ -215,11 +218,130 @@ intended way to give the app its own look everywhere at once.
 - Changed a colour or a surface tone? Run `./gradlew :core:designsystem:test`.
   `PaletteContrastTest` checks every text colour against its background in every style and both
   themes against WCAG AA.
-- Animate with the theme's tokens (`AppTheme.motion`, `rememberAppTransitions()`), never a raw
+- Animate with the theme's tokens (`AppTheme.springs`, `rememberAppTransitions()`), never a raw
   `tween(300)`. Animate `graphicsLayer` properties (alpha, offset, scale) rather than size, so
   nothing around the animated element moves.
 
-## 6. Code quality: write like the person who owns this code
+## 6. Smooth and light
+
+The target is 120 Hz on a budget phone: 8.33 ms a frame. Each rule below is one way an app on this
+template has lost frames or memory before, and each is explained, with the number it protects, in
+[docs/PERFORMANCE.md](docs/PERFORMANCE.md). Read that before you change a screen's motion, a list or
+the start-up path. The part after the dash is what enforces the rule: a `verifyCodeRules` rule id, a
+lint id, a build task, a test or a measured limit; *review* means nothing checks it automatically.
+
+**Measuring**
+
+<!-- <opt:performance> -->
+- Judge smoothness only on `devRelease` or `devBenchmarkRelease`, compiled with its profile, on a real phone; never quote a debug build's numbers. — *review*
+- A change to motion, a list or start-up is done when `tools/perf/perf.sh --gate solid` passes on a release build and, against the previous build measured the same day, `--baseline <previous run>/summary.json --gate smoke` passes and no other row got worse. — `perf.sh --gate` (`--gate solid` checks the limits only; it never compares builds)
+<!-- </opt:performance> -->
+<!-- <opt-else:performance> -->
+<!--~ - Judge smoothness only on `devRelease`, compiled with its profile, on a real phone; never quote a debug build's numbers. — *review* -->
+<!--~ - A change to motion, a list or start-up is done when, measured on a release build against the previous build the same day on the same phone, no journey it touches got worse. — *review* -->
+<!-- </opt-else:performance> -->
+<!-- <opt:perfhud> -->
+- Measure with the performance overlay hidden: a number taken with it shown is not the app's. — *review*
+<!-- </opt:perfhud> -->
+- Never call `Debug.getMemoryInfo` or `dumpsys meminfo` while the app animates or inside a measured journey. — *review*
+
+**Composition**
+
+- Read animated, dragged or scrolled values only in `offset { }`, `layout { }`, `graphicsLayer { }`, a draw block or a `Modifier.Node`; hold an animation as `val x = animate…()` and read `x.value` there, never `by`. — `animated-delegate`, lint `FrequentlyChangingValue`, `UseOfNonLambdaOffsetOverload`
+- A composable that receives a value changing every frame takes `() -> T`, never `State<T>`. — `state-param`
+- Write custom modifiers as `Modifier.Node`; never `Modifier.composed` or a `@Composable` modifier factory. — `composed`
+- Collect state with `collectAsStateWithLifecycle()`, never `collectAsState()`. — `collect-as-state`
+- `UiState` holds read-only collections and `val`s built by the ViewModel, and no per-frame values; never `.map`/`.filter` state in composition without `remember(keys)`. — `uistate-mutable`, `api-immutable`
+- No parameter of `:core:designsystem`, `:core:ui` or `:core:navigation` compared by identity; a baseline entry needs a `# reason`; never `ImmutableList`, never `@Immutable` on a model carrying a large list into a lazy layout. — `checkComposeStability`
+- Never write state from a `SideEffect` that the same composition reads, and never give a static composition local or a screen's lifecycle owner a new value on a transition frame. — *review*
+- Lay out from `AppTheme.windowClass` and `AppTheme.containerClass`; read the exact window size only from `LocalWindowMetrics` inside layout or draw. — `adaptive-screen-metrics`, `adaptive-orientation`, `adaptive-device-type`
+- Compose lint is an error in every Compose module (`Compose.kt` in `build-logic` lists the ids); never suppress one to pass the build. — lint
+- A new screen or component that animates adds a recomposition test: its journey through `RecompositionCounter` and `framesUntilIdle`, then `assertQuietBetweenEnds()`. — the test
+
+**Lists**
+
+- Every lazy `items(…)` has a stable `key`; a scope that mixes kinds of item gives each a `contentType`. — `lazy-key`, `lazy-content-type`
+- Pad scrolling content inside the scroll: `contentPadding = chromeContentPadding(…)`, or `.verticalScroll(…).padding(chromeContentPadding(…))`; inside an `AppSheet`, the sheet's `contentPadding`; never pad the parent, never read `LocalBottomChrome` in composition. — `scroll-chrome` (vertical lists, grids and `verticalScroll` in features)
+- Every lazy list, grid, `verticalScroll` and `horizontalScroll` passes `flingBehavior = AppScrollDefaults.flingBehavior()`, a pager `AppScrollDefaults.pagerFlingBehavior(state)`. — `scroll-fling`
+- Call `ReportScrollEdge(state)` beside a screen's primary list, and `ScrollToTopOnReselect(state)` on a tab's root screen. — *review*
+- No `SubcomposeAsyncImage`, `BoxWithConstraints` or other subcomposition in a feature's rows. — `subcompose-image`, `adaptive-box-constraints`
+- Animate rows only with `appAnimateItem()` (an extension on the row's `LazyItemScope`: `modifier = appAnimateItem()`; pass a modifier to chain) on keyed rows; never `animateContentSize()` on a list item. — *review*
+- A loading list is the real rows inside `AppRedacted`, with its own `LazyListState` and the loaded list's padding, swapped in one frame: no `AnimatedContent`, no cross-fade. — *review*
+
+**Screens and navigation**
+
+- A feature never sets `NavDisplay` transitions or touches a back stack: it registers `entry<Key>(…)` and navigates through `AppNavigator`. — `nav-fade` (the `NavDisplay` transition specs); *review* (the back stack)
+- A destination's first composition is final: seed its state from a repository's in-memory `peek(id)` when the data is there, and load secondary sections after `LocalNavigationSettled.current()` turns true, read in an effect. — *review*
+- Never add a full-screen background under a screen: the navigation entry paints it and `AppScaffold` paints none on top. — *review*
+- Never put alpha below 1 on a full-screen layer, and never cross-fade two full screens: scrims are drawn rectangles, short fades use `CompositingStrategy.ModulateAlpha`. No exception in features or components; the shell in `:core:navigation` has two, the back card's texture and `HostCrossfade` between hosts. — `layer-alpha-fill` (layer alpha on a full-screen chain); *review* (cross-fades)
+- Handle Back with `NavigationBackHandler` (overlays at overlay priority), never `BackHandler`, `PredictiveBackHandler` or the Activity's dispatcher. — `legacy-back`, `verifyManifestRules`
+
+**Sheets**
+
+- Keep `AppSheet` composed and drive `visible`; never put it in an `if`, a `when` or a lazy item. — `sheet-conditional`
+- A sheet's content is one root, a lazy list or `SheetColumn`, taking `contentPadding`; no `imePadding()` or IME insets inside a sheet. — `sheet-root`, `sheet-ime-padding`
+- `AppSheet(modifier = …)` carries test tags, semantics and focus only. — `sheet-modifier`
+- Inside the sheet system: no `Dialog` or `Popup` window, no shadow modifier or elevation, no `dispatchRawDelta` or `settle`. Outside it, a `when` over a sheet type has an `else`, and features never opt into `ShellSeamApi`. — `sheet-window`, `sheet-shadow`, `sheet-raw-delta`, `sheet-when-else`, `shell-seam`
+- A `SheetDetent.Custom` resolver reads no state. — *review*
+<!-- <opt:coil> -->
+
+**Images**
+
+- Show remote images with `AppNetworkImage`, or `AsyncImage` with painters; never `SubcomposeAsyncImage`. — `subcompose-image`
+<!-- <opt:network> -->
+- The app has one image loader, set in `BaseAppApplication` on the app's `OkHttpClient`; never build a second. — *review*
+<!-- </opt:network> -->
+<!-- <opt-else:network> -->
+<!--~ - The app has one image loader, Coil's own singleton; never build a second. — *review* -->
+<!-- </opt-else:network> -->
+<!-- </opt:coil> -->
+
+**Motion**
+
+- Every spring and decay comes from `AppTheme.springs`, fades from `springs.fadeIn()`/`fadeOut()`; no raw colour, and no raw `dp` but `0.dp` and `1.dp`. — `raw-tween`, `raw-color`, `raw-dp`
+- A motion a finger released ends on a spring seeded with the release velocity; interrupt with `animateTo`, never `snapTo` what the user can see. — *review*
+- Every tappable control says its feedback: `Modifier.pressable(onClick, feedback = PressFeedback.…)`; no ripple, no bare `clickable`. — `bare-clickable`, `ripple`
+<!-- <opt:performance> -->
+- Nothing animates while idle: a loop pauses while `LocalTabVisible.current.isVisible` is false (read in an effect or a draw block), steps on a timer in a `graphicsLayer()` of its own, and stops or slows under reduce motion (decoration stops; `AppActivityIndicator` slows); ambient decoration winds down after a few seconds and votes `FrameRateCategory.Normal`. — gate `idle.frames = 0`
+<!-- </opt:performance> -->
+<!-- <opt-else:performance> -->
+<!--~ - Nothing animates while idle: a loop pauses while `LocalTabVisible.current.isVisible` is false (read in an effect or a draw block), steps on a timer in a `graphicsLayer()` of its own, and stops or slows under reduce motion (decoration stops; `AppActivityIndicator` slows); ambient decoration winds down after a few seconds and votes `FrameRateCategory.Normal`. — *review* -->
+<!-- </opt-else:performance> -->
+- Motion that changes only layer properties sets `preferredFrameRate(FrameRateCategory.High)` while it moves and drops it after; never a fixed rate. — *review*
+- A shape clipped or filled every frame of a motion is a rounded rectangle, never a path of cubics; nothing allocates in a draw, layer or placement block. — *review*
+<!-- <opt:liquidglass> -->
+
+**Glass**
+
+- With the glass foundation: only chrome in a `GlassStage`'s `chrome` slot samples the scene; glass inside a screen is `Modifier.glassSurface`. (The shell draws no glass chrome yet.) — the scene's run-time check
+- Never alpha below 1, `AnimatedVisibility` or `saveLayer` around a sampling surface; never read state inside backdrop effects; remember the backdrop chain once. — *review*
+<!-- </opt:liquidglass> -->
+
+**Keyboard**
+
+- Read the keyboard in layout or placement (`imePadding()`, `WindowInsetsRulers.Ime`), never `WindowInsets.ime` in composition; `chromeContentPadding()` already counts it. — *review*
+
+**Start-up and build**
+
+<!-- <opt:performance> -->
+- No I/O and no eager singletons in `Application.onCreate` or the first screen; start what the first frame does not need after it. — gates `coldstart` 380 ms, `coldstart_installed` 400 ms
+<!-- </opt:performance> -->
+<!-- <opt-else:performance> -->
+<!--~ - No I/O and no eager singletons in `Application.onCreate` or the first screen; start what the first frame does not need after it. — *review* -->
+<!-- </opt-else:performance> -->
+- Decide signed in or out from `AuthTokenStore.isAuthenticated`, never by reading the tokens. — *review*
+- Never add `preloaded_fonts` meta-data to the manifest. — *review*
+<!-- <opt:performance> -->
+- After a journey changes, regenerate the baseline profile (`./gradlew :app:generateBaselineProfile` on a phone with gesture navigation, then `tools/perf/split_profile.py`) and check the file is not empty. — *review*
+<!-- </opt:performance> -->
+- Never add `-assumenosideeffects` for Compose's `traceEventStart`. — *review*
+<!-- <opt:devtools> -->
+- Dev tooling reaches `:app` only as `debugImplementation` and `"devImplementation"`. — `verify<Variant>CarriesNoDevTooling`
+<!-- </opt:devtools> -->
+- One Preferences DataStore file per concern: inject `DataStoreFiles` and call `preferences("name")` once per file from a `@Singleton` provider (two instances of one file corrupt it). — *review*
+- `./gradlew build` runs R8 for every release-like variant at once; on a machine short of memory, build the variant you need or pass `--max-workers=2`, and set the heap in `gradle.properties`, never with `-Dorg.gradle.jvmargs`. — *review*
+
+## 7. Code quality: write like the person who owns this code
 
 This is what separates a good agent change from a typical one. Follow it exactly.
 
@@ -251,7 +373,7 @@ This is what separates a good agent change from a typical one. Follow it exactly
 - Small, named functions over long ones. No `!!`, no `runBlocking`, no `GlobalScope`, no
   `Dispatchers.IO` inside a class (inject the dispatcher).
 
-## 7. Where things live
+## 8. Where things live
 
 | You want to… | Go to |
 |---|---|
@@ -262,7 +384,7 @@ This is what separates a good agent change from a typical one. Follow it exactly
 | Call an API | a `data/` module, through `NetworkClient` |
 | Store something | `core/database` for the app's data, `core/datastore` for preferences: a file per concern, cleared on sign-out through `SessionScopedStore` when it belongs to the person |
 
-## 8. Google's Android skills
+## 9. Google's Android skills
 
 `.agents/skills/` holds Google's official Android skills (Apache-2.0, unmodified; `.agents/skills/README.md` says
 which version). Before work in one of these areas, read that skill's `SKILL.md` and follow it. Where it disagrees
@@ -275,11 +397,16 @@ with this file, this file wins; the known differences are in the last column.
 | `adaptive` | build or change any screen | no `NavigationSuiteScaffold` or Material components: the shell's bar, rail and sidebar; panes through `NavPane`; `LazyVerticalGrid`, not `Grid`/`FlexBox` (experimental in Compose 1.12); `AppTheme.containerClass`, `posture` and `input`, not `MediaQuery`; Roborazzi, not `com.android.compose.screenshot`; `AppLargeTitleTopBar`, not M3 scroll behaviours |
 | `edge-to-edge` | touch insets, the keyboard or system bars | pad scrolling content with `chromeContentPadding()` as `contentPadding`, never on the list's parent |
 | `testing-setup` | add tests or test infrastructure | fakes in `testFixtures`; screenshots with Roborazzi at the sizes in `docs/ADAPTIVE.md`; never re-record goldens to make a test pass |
+<!-- <opt:performance> -->
 | `android-profiler` | investigate jank, startup or memory | release builds only, through `tools/perf/perf.sh`; its `trace_processor` script downloads Google's binary on first run |
+<!-- </opt:performance> -->
+<!-- <opt-else:performance> -->
+<!--~ | `android-profiler` | investigate jank, startup or memory | release builds only (`devRelease`); its `trace_processor` script downloads Google's binary on first run | -->
+<!-- </opt-else:performance> -->
 | `r8-analyzer` | change keep rules or chase app size | upstream ships no `scripts/`: run `./gradlew :app:analyzeProdReleaseR8Config` (one task per variant; the report is `app/build/reports/r8/`), then follow its manual path |
 | `android-intent-security`, `android-permissions-security` | touch the manifest, deep links, notifications or permissions | links land in `LinkActivity` and become typed keys in a `DeepLinkRoute` |
 | `agp-9-upgrade` | bump AGP or Gradle | the project is already on AGP 9 with built-in Kotlin |
-| `jetpack-compose-performance` | change a composable, a modifier chain or a lazy list, and again before you call that change done: run its audit over every composable you touched | read the category's `references/*.md` before you change what it flags; Compose is 1.12, so `derivedStateOf`, not `computedStateOf`; ViewModel state stays on `collectAsStateWithLifecycle()`, because `MviViewModel.observe` runs its flows only while a screen collects; `List`, `Set` and `Map` are in `config/compose-stability.conf`, so never `ImmutableList`, and never `@Immutable` on a model that carries a large list into a lazy layout |
+| `jetpack-compose-performance` | change a composable, a modifier chain or a lazy list, and again before you call that change done: run its audit over every composable you touched | read the category's `references/*.md` before you change what it flags, and `docs/PERFORMANCE.md`, this project's own reading of the same rules; Compose is 1.12, so `derivedStateOf`, not `computedStateOf`; ViewModel state stays on `collectAsStateWithLifecycle()`, because `MviViewModel.observe` runs its flows only while a screen collects; `List`, `Set` and `Map` are in `config/compose-stability.conf`, so never `ImmutableList`, and never `@Immutable` on a model that carries a large list into a lazy layout |
 | `android-cli` | look up an API (`android docs`), run the app, inspect a screen (`android layout`, `android screen`) | never run its install line, which pipes a downloaded script into a shell: if `android` is not on the PATH, ask the person to install it; measure performance on release builds, never through it |
 <!-- <opt:auth> -->
 | `restore-credentials`, `verified-email` | change sign-in or sign-up | flows live in `:feature:auth`, credentials in `:data:auth` |
@@ -291,18 +418,28 @@ with this file, this file wins; the known differences are in the last column.
 Not vendored on purpose: `styles` (experimental; the design system stays on stable foundation APIs). Before a Play
 submission, add Google's `play-policy-insights` audit with `android skills` and run it.
 
-## 9. Before you say it is done
+## 10. Before you say it is done
 
 1. `./gradlew build` is green, or you have said exactly what fails and why.
 2. Every new screen has loading, empty, error and offline states, and works in dark theme.
-3. A change to Compose UI has been through the `jetpack-compose-performance` audit (§8), and its findings are
+3. A change to Compose UI has been through the `jetpack-compose-performance` audit (§9), and its findings are
    fixed.
 4. Every new string is in `strings.xml`; every new colour, size and duration is a token.
 5. New logic has a test beside the existing ones; no test was deleted or weakened.
 6. The diff contains only what the task needed, with comments that explain decisions, not the
    change.
+<!-- <opt:performance> -->
+7. A change to motion, a list or start-up has `tools/perf/perf.sh --gate solid` passing on a release
+   build, and `--baseline <previous run>/summary.json --gate smoke` passing against the previous build
+   measured the same day (§6).
+8. Any new motion has a recording from `tools/perf/record.sh`.
+<!-- </opt:performance> -->
+<!-- <opt-else:performance> -->
+<!--~ 7. A change to motion, a list or start-up was measured on a release build against the previous build, -->
+<!--~    the same day on the same phone, and no journey it touches got worse (§6). -->
+<!-- </opt-else:performance> -->
 
-## 10. Never
+## 11. Never
 
 - Commit `keystore.properties`, `keys/`, `local.properties` or a real `google-services.json`.
 - Print tokens, passwords or personal data to the log.

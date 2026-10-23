@@ -98,8 +98,8 @@ internal abstract class VerifyCodeRulesTask : DefaultTask() {
                     reports.forEach { appendLine("  $it") }
                     appendLine()
                     append(
-                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; see " +
-                            "docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes " +
+                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; " +
+                            "AGENTS.md and docs/PERFORMANCE.md say why. A justified exception goes " +
                             "on the line above: // allow(<rule-id>): <reason>",
                     )
                 },

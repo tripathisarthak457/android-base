@@ -254,7 +254,11 @@ file per flavour under `app/src/<flavour>/`.
   from `:app`, so a library cannot behave differently depending on which variant compiled it.
 - **Dispatchers are injected**, never `Dispatchers.IO` inside a class, so tests get a virtual
   clock instead of real seconds.
-- **Events are queued, not launched.** `MviViewModel` drains them in order on one coroutine, so
-  two events cannot interleave between a read and a write of the state.
+- **Events never suspend.** `MviViewModel.onEvent` handles each event on the main thread, so two
+  events cannot interleave between a read and a write of the state; slow work goes through
+  `launchLatest` or `launchExclusive`, and nothing an event starts can make Back or a keystroke wait.
 - **`LoadState` is sealed.** There is no `isLoading` + `error` pair, and therefore no way to
   represent "loading and errored at the same time".
+- **Smoothness has rules and numbers.** [docs/PERFORMANCE.md](docs/PERFORMANCE.md) says what keeps
+  the app at 120 Hz on a budget phone, why, and how to measure it; section 6 of `AGENTS.md` is the
+  short list that the build and review enforce.
