@@ -1,0 +1,2 @@
+HSPLcom/base/app/core/image/**->**(**)**
+Lcom/base/app/core/image/**;

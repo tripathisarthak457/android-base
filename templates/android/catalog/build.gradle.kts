@@ -37,4 +37,11 @@ dependencies {
     implementation(libs.androidx.navigationevent.compose)
     // lifecycleScope, which holds the first frame until the fonts are in.
     implementation(libs.androidx.lifecycle.runtime.compose)
+    // Installs the baseline profiles the catalog and its libraries ship, as an app does, so its frame
+    // times are measured on code compiled the way an installed app's is.
+    implementation(libs.androidx.profileinstaller)
+    // <opt:coil>
+    // The photo scenes run the app's own image component and loader, with its limits.
+    implementation(project(":core:image"))
+    // </opt:coil>
 }

@@ -57,6 +57,9 @@ include(":core:navigation")
 include(":core:ui")
 include(":core:testing")
 include(":core:testing:compose")
+// <opt:coil>
+include(":core:image")
+// </opt:coil>
 // <opt:network>
 include(":core:network")
 // </opt:network>

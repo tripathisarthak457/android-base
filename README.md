@@ -101,7 +101,7 @@ The three presets:
 | Preset | Feature count | What's in it |
 |---|---|---|
 | `lean` | 4 | Ktor, the design system, the catalog app, one reference feature, LeakCanary. |
-| `standard` | 18 | The lean set plus Room caching, Coil, forms, auth, settings with a language picker, onboarding, a profile tab, media, deep links, the in-app browser, the inspector and feature flags. |
+| `standard` | 18 | The lean set plus Room caching, forms, auth, settings with a language picker, onboarding, a profile tab, media, deep links, the in-app browser, the inspector and feature flags. |
 | `everything` | 28 | The standard set plus Firebase, FCM push, Google sign-in, a paged feed, search, a home-screen widget, WorkManager, WebSocket and baseline profiles. |
 
 ---
@@ -272,7 +272,7 @@ dead code behind.
 | WebSocket | off | One long-lived socket, exponential backoff with jitter, a connection state a UI can render |
 | Offline cache + queue (Room) | on | Per-call-site response caching with stale-on-failure, force refresh and saved-then-latest streams, and failed mutations replayed with idempotency keys when connectivity returns |
 | App database (Room) | off | The app's own data, separate from the network cache: an entity, a DAO returning flows, a hand-written migration, and a test that replays it against a database that really was at the older version |
-| Image loading (Coil) | on | Remote images with a skeleton placeholder and a failure glyph |
+| Image loading (Coil) | off | Remote images that cost a list nothing: decoded at the size drawn, the items ahead fetched to disk, one loader with set memory, disk and decode limits; a photo feed and a shop grid in the catalog |
 | Paged feed | off | A Feed tab on Paging 3. A failed page keeps what is loaded and offers a retry; pull to refresh reloads from where you are. The list component is in `:core:ui` for your own feeds |
 | WorkManager | off | Hilt-injected workers, including the manifest fix that stops WorkManager self-initialising past the Hilt factory |
 | Auth | on | Sign in, sign up and password reset against your endpoints, writing the encrypted token store |

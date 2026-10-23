@@ -2,12 +2,18 @@ key = "coil"
 title = "Image loading (Coil)"
 headline = "Load images from URLs"
 description = """
-Remote images with a skeleton placeholder and a failure glyph."""
+Remote images that cost a list nothing: decoded at the size they are drawn, on the skeleton colour
+until they arrive, with the items ahead fetched to disk before a fling reaches them. One loader with
+set limits: a capped memory cache that halves in the background, a bounded disk cache, hardware bitmaps
+and a measured number of decodes at once. The catalog shows a photo feed and a shop grid of real photos."""
 group = "Networking and data"
-default = true
+default = false
 requires = []
 implied_only = false
 owns = [
-  "core/ui/src/main/kotlin/{pkg_path}/core/ui/AppNetworkImage.kt",
+  "core/image",
+  "docs/IMAGES.md",
+  "catalog/src/main/kotlin/{pkg_path}/catalog/media/photos",
 ]
 legacy = []
+footprint = ["coil3", "io.coil-kt", "AppNetworkImage", "core:image", "core.image", "core/image"]

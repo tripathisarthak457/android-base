@@ -21,6 +21,9 @@ IDENTITY = re.compile(r"(?<![\w.])com\.base\.app(?!\w)|com/base/app(?!\w)|(?<!\w
 BINARY = {".jar", ".png", ".jpg", ".jpeg", ".webp", ".jks", ".ttf", ".otf", ".ico"}
 #: Upstream files the template vendors byte for byte; their text is not the template's to rename.
 VERBATIM = get("android").manifest.verbatim
+FEATURES = get("android").manifest.features
+#: Pointers to the vendored skills, which repeat each upstream skill's own description.
+SKILL_POINTERS = ".claude/skills/"
 
 #: Operator and delegate names a Kotlin import provides without the name appearing in the code.
 _IMPLICIT = {
@@ -29,7 +32,9 @@ _IMPLICIT = {
 }
 
 
-def check(root: Path, package: str, reference: Project | None, identity: bool = True) -> list[str]:
+def check(
+    root: Path, package: str, reference: Project | None, identity: bool = True, enabled: frozenset[str] | None = None,
+) -> list[str]:
     project = Project(root)
     issues: list[str] = []
     issues += _leftovers(root, identity)
@@ -46,6 +51,32 @@ def check(root: Path, package: str, reference: Project | None, identity: bool = 
     issues += _unused_resources(root, project)
     issues += _translations(root)
     issues += _hollow(root, project)
+    if enabled is not None:
+        issues += _footprints(root, enabled)
+    return issues
+
+
+def _footprints(root: Path, enabled: frozenset[str]) -> list[str]:
+    """Text a feature brings, found in a project generated without that feature: something of it was left behind."""
+    tokens = [
+        (feature.key, token) for feature in FEATURES.values() if feature.key not in enabled for token in feature.footprint
+    ]
+    if not tokens:
+        return []
+    issues = []
+    for path in sorted(root.rglob("*")):
+        if path.is_dir() or path.suffix in BINARY:
+            continue
+        relative = path.relative_to(root).as_posix()
+        if is_verbatim(relative, VERBATIM) or relative.startswith(SKILL_POINTERS):
+            continue
+        issues += [f"FOOTPRINT {key} {relative}: {token} in the path" for key, token in tokens if token in relative]
+        try:
+            text = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue
+        for number, line in enumerate(text.splitlines(), 1):
+            issues += [f"FOOTPRINT {key} {relative}:{number}: {token}" for key, token in tokens if token in line]
     return issues
 
 

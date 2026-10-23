@@ -130,7 +130,7 @@ test("a customised feature set keeps what the new platform also has", () => {
   state = reducer(state, { type: "preset", key: "lean" }, three);
   state = reducer(state, { type: "feature", key: "database" }, three);
   state = reducer(state, { type: "target", target: "multiplatform" }, three);
-  assert.deepEqual(state.features, ["coil", "database", "network"]);
+  assert.deepEqual(state.features, ["database", "network"]);
 });
 
 test("a design style that needs a feature turns it on", () => {

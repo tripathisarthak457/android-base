@@ -1,4 +1,4 @@
-package com.base.app.core.ui
+package com.base.app.core.image
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,6 +19,9 @@ import androidx.compose.ui.graphics.vector.VectorPainter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.base.app.core.designsystem.component.feedback.AppSkeleton
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.foundation.draw.LocalRedacted
@@ -32,6 +35,11 @@ import com.base.app.core.designsystem.theme.AppTheme
  *
  * Both stand-ins are painters, so a load changes only what is drawn: nothing recomposes when the
  * image arrives, which keeps a scrolling list of these at one composition per row.
+ *
+ * In a list, give it a fixed size or an aspect ratio taken from your data, and leave [fadeIn] off:
+ * with both sides fixed the image is never measured again when it arrives, and the request asks for
+ * the slot's pixels, never the original's. A header or a hero outside a list may pass [fadeIn]; it
+ * fades in over the theme's slow fade, not under reduce motion and not from the memory cache.
  */
 @Composable
 fun AppNetworkImage(
@@ -40,6 +48,7 @@ fun AppNetworkImage(
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Crop,
     errorIcon: ImageVector = AppIcons.ImageIcon,
+    fadeIn: Boolean = false,
 ) {
     if (LocalRedacted.current) {
         AppSkeleton(modifier = modifier, shape = RectangleShape)
@@ -57,8 +66,16 @@ fun AppNetworkImage(
         GlyphPainter(glyph, background = colors.fill, tint = colors.contentTertiary)
     }
 
+    val context = LocalPlatformContext.current
+    val fadeMillis = if (fadeIn && !AppTheme.reduceMotion) AppTheme.springs.fadeSlow else 0
+    // Coil compares requests by value, but one built per recomposition still allocates; the same url
+    // keeps the same request.
+    val request = remember(url, context, fadeMillis) {
+        ImageRequest.Builder(context).data(url).crossfade(fadeMillis).build()
+    }
+
     AsyncImage(
-        model = url,
+        model = request,
         contentDescription = contentDescription,
         modifier = modifier,
         placeholder = loading,

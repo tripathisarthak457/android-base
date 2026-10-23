@@ -16,6 +16,10 @@ import androidx.compose.ui.text.font.createFontFamilyResolver
 import androidx.lifecycle.lifecycleScope
 import com.base.app.core.designsystem.theme.AppFontPreload
 import kotlinx.coroutines.launch
+// <opt:coil>
+import coil3.SingletonImageLoader
+import com.base.app.core.image.appImageLoader
+// </opt:coil>
 
 /**
  * The catalog: every component, every state, on a device. `--es section Buttons` opens a page
@@ -29,6 +33,10 @@ class CatalogActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // <opt:coil>
+        // The photo scenes load through the same loader, with the same limits, as the app's screens.
+        SingletonImageLoader.setSafe { context -> appImageLoader(context) }
+        // </opt:coil>
         frames = FrameTimes(this)
         val section = CatalogSection.entries.firstOrNull { it.name == intent.getStringExtra("section") }
         val environment = CatalogEnvironment.from(intent)

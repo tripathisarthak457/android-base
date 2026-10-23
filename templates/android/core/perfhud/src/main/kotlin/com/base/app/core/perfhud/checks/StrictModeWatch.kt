@@ -104,7 +104,10 @@ internal class StrictModeWatch @Inject constructor(dispatchers: AppDispatchers) 
         // included: a violation inside one is reported at the app's call into it.
         val PLATFORM_PREFIXES = listOf(
             "android.", "androidx.", "java.", "javax.", "kotlin.", "kotlinx.", "dalvik.", "com.android.",
-            "libcore.", "sun.", "okhttp3.", "okio.", "io.ktor.", "com.google.", "dagger.", "coil3.",
+            "libcore.", "sun.", "okhttp3.", "okio.", "io.ktor.", "com.google.", "dagger.",
+            // <opt:coil>
+            "coil3.",
+            // </opt:coil>
             "com.airbnb.lottie.", "leakcanary.", "shark.",
         )
     }

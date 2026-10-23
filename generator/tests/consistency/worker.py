@@ -44,7 +44,10 @@ def run_one(name: str, raw: dict, directory: str, keep: bool) -> tuple[str, list
     except Exception as error:  # noqa: BLE001 - a crash is itself the finding
         return name, [f"GENERATION {type(error).__name__}: {error}"]
     hostile = name.startswith("hostile-")
-    issues = check(project, raw["package_name"], None if hostile else reference(directory), identity=not hostile)
+    enabled = target.manifest.resolve(frozenset(parsed.spec.features))
+    issues = check(
+        project, raw["package_name"], None if hostile else reference(directory), identity=not hostile, enabled=enabled,
+    )
     issues += missing_bindings(project)
     if not keep:
         shutil.rmtree(project)

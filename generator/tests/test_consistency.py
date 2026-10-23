@@ -11,7 +11,7 @@ from pathlib import Path
 from unittest import mock
 
 from tests.consistency import __main__ as runner
-from tests.consistency.checks import _hollow, _manifests, _resources, _translations, _unused_resources
+from tests.consistency.checks import _footprints, _hollow, _manifests, _resources, _translations, _unused_resources
 from tests.consistency.project import Project
 
 FILES = {
@@ -82,6 +82,38 @@ class UnusedResourcesTest(unittest.TestCase):
             "UNUSED-RES app/src/main/res/values/strings.xml: string/unused",
             "UNUSED-RES app/src/main/res/values/themes.xml: color/orphan",
         ], issues)
+
+
+class FootprintTest(unittest.TestCase):
+
+    def footprints(self, files: dict[str, str], enabled: frozenset[str]) -> list[str]:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            for relative, text in files.items():
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(text, encoding="utf-8")
+            return _footprints(root, enabled)
+
+    def test_a_feature_left_out_leaves_none_of_its_text_behind(self):
+        stray = {"core/ui/build.gradle.kts": 'dependencies {\n    implementation("io.coil-kt.coil3:coil-compose")\n}\n'}
+
+        self.assertEqual(
+            ["FOOTPRINT coil core/ui/build.gradle.kts:2: coil3", "FOOTPRINT coil core/ui/build.gradle.kts:2: io.coil-kt"],
+            self.footprints(stray, frozenset()),
+        )
+        self.assertEqual([], self.footprints(stray, frozenset({"coil"})))
+
+    def test_vendored_skills_and_their_pointers_are_not_the_template_s_text(self):
+        line = "Load images with coil3.\n"
+        files = {".agents/skills/x/SKILL.md": line, ".claude/skills/x/SKILL.md": line}
+
+        self.assertEqual([], self.footprints(files, frozenset()))
+
+    def test_a_file_named_after_the_feature_is_left_behind_too(self):
+        issues = self.footprints({"core/ui/src/main/kotlin/AppNetworkImage.kt": "package x\n"}, frozenset())
+
+        self.assertEqual(["FOOTPRINT coil core/ui/src/main/kotlin/AppNetworkImage.kt: AppNetworkImage in the path"], issues)
 
 
 class IssuePathTest(unittest.TestCase):

@@ -1,7 +1,7 @@
 # R8 rules for the catalog.
 #
-# The catalog depends on :core:designsystem alone, which has no serialization and no reflection,
-# so there is nothing here beyond keeping crash reports readable.
+# The catalog's own code has no serialization and no reflection, and the libraries it uses ship
+# their own rules, so there is nothing here beyond keeping crash reports readable.
 
 -keepattributes SourceFile,LineNumberTable
 -renamesourcefileattribute SourceFile

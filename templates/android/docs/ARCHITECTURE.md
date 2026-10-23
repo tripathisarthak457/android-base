@@ -74,7 +74,10 @@ the cart repository, not the cart feature.
 | `:core:coroutines` | Dispatcher qualifiers and the application `CoroutineScope`. |
 | `:core:datastore` | The settings and session DataStores, the token store and the Keystore cipher. |
 | `:core:designsystem` | Tokens, theme, components, icons and motion. No Material. |
-| `:core:ui` | Composables that need more than the design system, such as network images, paging lists, forms and the in-app browser. |
+| `:core:ui` | Composables that need more than the design system, such as paging lists, forms and the in-app browser. |
+<!-- <opt:coil> -->
+| `:core:image` | `AppNetworkImage`, `PrefetchImages` and the app's one image loader, `appImageLoader()`, with its limits: remote images that cost a scrolling list nothing. The only module that names Coil. |
+<!-- </opt:coil> -->
 | `:core:navigation` | `AppNavKey`, the navigator, the nav host and the tab shell. The only module that names Navigation 3. |
 | `:core:testing` | `MainDispatcherRule`, `FakeNetworkMonitor` and the test libraries, as one dependency. |
 <!-- <opt:network> -->

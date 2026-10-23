@@ -5,6 +5,9 @@
     <!-- Permissions, services and providers are declared by the module whose code needs them, and
          manifest merging brings them here: INTERNET from :core:network, POST_NOTIFICATIONS from
          :core:notification. -->
+    <!-- <opt:coil> -->
+    <!-- :core:image declares INTERNET as well, so remote images load without :core:network. -->
+    <!-- </opt:coil> -->
     <application
         android:name=".BaseAppApplication"
         android:allowBackup="false"

@@ -1,5 +1,5 @@
 {
-  "generator_commit": "ab27ac9e0bbb",
+  "generator_commit": "d429cbfbf8d9",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -337,8 +337,8 @@
           "title": "Forced update and maintenance screens"
         },
         {
-          "default": true,
-          "description": "Remote images with a skeleton placeholder and a failure glyph.",
+          "default": false,
+          "description": "Remote images that cost a list nothing: decoded at the size they are drawn, on the skeleton colour until they arrive, with the items ahead fetched to disk before a fling reaches them. One loader with set limits: a capped memory cache that halves in the background, a bounded disk cache, hardware bitmaps and a measured number of decodes at once. The catalog shows a photo feed and a shop grid of real photos.",
           "group": "networking-and-data",
           "headline": "Load images from URLs",
           "implied_only": false,
@@ -800,7 +800,7 @@
         },
         {
           "default": true,
-          "description": "A second installable app showing every component and token, in the project's own design and motion style. A bar switches theme, style, motion, right-to-left, font scale and reduced motion live; each page opens directly with `--es section <Name>`, and a frame-time readout shows what each interaction costs. Depends on the design system alone, so design work rebuilds two modules.",
+          "description": "A second installable app showing every component and token, in the project's own design and motion style. A bar switches theme, style, motion, right-to-left, font scale and reduced motion live; each page opens directly with `--es section <Name>`, and a frame-time readout shows what each interaction costs. Depends on the design system alone, so design work rebuilds two modules, and on the image module when image loading is on.",
           "group": "design",
           "headline": "A second app showing every component",
           "implied_only": false,
@@ -1473,10 +1473,9 @@
       "presets": [
         {
           "default": false,
-          "description": "The design system, the navigation shell and one home screen, with networking, images and CI. The smallest app that still looks and moves like the rest.",
+          "description": "The design system, the navigation shell and one home screen, with networking and CI. The smallest app that still looks and moves like the rest.",
           "features": [
             "ci",
-            "coil",
             "deeplink",
             "googlefonts",
             "leakcanary",
@@ -1493,7 +1492,6 @@
             "browser",
             "catalog",
             "ci",
-            "coil",
             "database",
             "deeplink",
             "devtools",

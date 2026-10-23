@@ -12,6 +12,15 @@ internal object ComposeRules {
     private val designedCode: (Location) -> Boolean = { (it.inFeature || it.inDesignSystem) && it.isProduction }
     private val composeApi: (Location) -> Boolean =
         { (it.inFeature || it.inCoreUi || it.inDesignSystem) && it.isProduction }
+    // <opt:coil>
+
+    /** Where the one image loader is built, and the two places that install it: the app and the catalog. */
+    private val imageLoaderHome: (Location) -> Boolean = {
+        (it.module == "core/image" && it.fileName == "AppImageLoader.kt") ||
+            (it.inApp && it.fileName == "BaseAppApplication.kt") ||
+            (it.module == "catalog" && it.fileName == "CatalogActivity.kt")
+    }
+    // </opt:coil>
 
     val ALL: List<Rule> = listOf(
         Rule(
@@ -75,6 +84,21 @@ internal object ComposeRules {
             lines = pattern(Regex("""\bSubcomposeAsyncImage\b""")),
             reference = "jetpack-compose-performance/references/layouts.md",
         ),
+        // <opt:coil>
+        Rule(
+            id = "image-loader",
+            advice = "the app has one image loader, built by appImageLoader() in :core:image; change a limit there",
+            applies = { it.isProduction && !imageLoaderHome(it) },
+            // Reading the singleton (SingletonImageLoader.get, context.imageLoader) stays allowed: a second
+            // loader cannot be built or installed without one of these calls.
+            lines = pattern(
+                Regex(
+                    """\bImageLoader\s*\.\s*Builder\s*\(|\bSingletonImageLoader\s*\.\s*(?:set|setSafe|setUnsafe|Factory)\b|""" +
+                        """(?<![\w.])ImageLoader\s*\(""",
+                ),
+            ),
+        ),
+        // </opt:coil>
         Rule(
             id = "bare-clickable",
             advice = "say which press feedback a control uses: Modifier.pressable(onClick, feedback = PressFeedback.…)",

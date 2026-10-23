@@ -163,6 +163,12 @@ screen to read an id from.
   `key(filter) { LazyColumn(…) }`, instead of animating every row. The list's own prefetch composes
   the next row in the time left after each frame; a row heavier than that is composed inside the
   frame that shows it, and the fling drops frames.
+<!-- <opt:coil> -->
+- **Remote images:** `AppNetworkImage` from `:core:image`, with a fixed size or an aspect ratio
+  from your data in a row, and `fadeIn` only outside lists; a scrolling list of images calls
+  `PrefetchImages`. The app has one image loader, `appImageLoader()`: change a limit there. Never
+  `SubcomposeAsyncImage` or a second `ImageLoader` (the build fails). `docs/IMAGES.md` says why.
+<!-- </opt:coil> -->
 <!-- <opt:network> -->
 <!-- <opt:database> -->
 - **Show saved data at once, then the latest:** make the database the source of truth. The

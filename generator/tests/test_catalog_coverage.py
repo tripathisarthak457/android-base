@@ -16,6 +16,11 @@ from pathlib import Path
 from genkit.targets.android.target import TEMPLATE_DIR
 
 DESIGN_SYSTEM = TEMPLATE_DIR / "core" / "designsystem" / "src" / "main" / "kotlin"
+#: The optional modules that draw what the catalog's media scenes show: remote images and video.
+MEDIA_MODULES = (
+    TEMPLATE_DIR / "core" / "image" / "src" / "main" / "kotlin",
+    TEMPLATE_DIR / "core" / "video" / "src" / "main" / "kotlin",
+)
 CATALOG = TEMPLATE_DIR / "catalog" / "src" / "main" / "kotlin"
 
 # `@Composable`, any further annotations, then a top-level `fun` whose name starts with `App`,
@@ -50,7 +55,8 @@ def not_for_apps(source: str, start: int) -> bool:
 def public_components() -> dict[str, Path]:
     """Every public, current `@Composable fun App…` an app calls, with the file that declares it."""
     found: dict[str, Path] = {}
-    for path, source in kotlin_sources(DESIGN_SYSTEM).items():
+    sources = {path: text for root in (DESIGN_SYSTEM, *MEDIA_MODULES) for path, text in kotlin_sources(root).items()}
+    for path, source in sources.items():
         for match in COMPOSABLE.finditer(source):
             if match.group("visibility") and match.group("visibility").strip() != "public":
                 continue

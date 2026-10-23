@@ -129,7 +129,8 @@ internal object CodeRules {
 
         val inFeature: Boolean = inTier("feature")
         val inData: Boolean = inTier("data")
-        val inCoreUi: Boolean = module == "core/ui"
+        /** `:core:ui`, and the modules split out of it so that a project can leave them out, held to the same rules. */
+        val inCoreUi: Boolean = module in UI_LIBRARIES
         val inDesignSystem: Boolean = module == "core/designsystem"
         val inNavigation: Boolean = module == "core/navigation"
         val inApp: Boolean = module == "app"
@@ -150,6 +151,13 @@ internal object CodeRules {
     ) {
         val message: String = if (reference == null) advice else "$advice (read .agents/skills/$reference)"
     }
+
+    private val UI_LIBRARIES = setOf(
+        "core/ui",
+        // <opt:coil>
+        "core/image",
+        // </opt:coil>
+    )
 
     val ALL: List<Rule> = ComposeRules.ALL + KotlinRules.ALL + StructureRules.ALL + AdaptiveRules.ALL + SheetRules.ALL + ScrollRules.ALL
 

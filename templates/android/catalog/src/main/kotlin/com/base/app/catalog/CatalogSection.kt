@@ -52,6 +52,10 @@ enum class CatalogSection(val title: String, val summary: String) {
     Sheets("Sheets", "Detents, the card stack, non-modal and side sheets, materials, action and choice sheets"),
     Feedback("Feedback", "States, banners, skeletons, spinners, progress, badges, avatars"),
     Loading("Loading screen", "Redacted rows under a large title: one sweep, and the swap to content"),
+    // <opt:coil>
+    Feed("Photo feed", "Full-width photos over the network, at their own aspect ratios, fetched ahead"),
+    Shop("Shop grid", "Product photos in two or three columns, scaled down to their tiles"),
+    // </opt:coil>
     Motion("Animation", "Transitions, first appearance, list placement, emphasis, deceleration, rubber band"),
     Adaptive("Adaptive", "Panes of any width, foldable postures, the hardware keyboard"),
     // <opt:pickers>
@@ -85,6 +89,9 @@ fun CatalogSection.Content() {
         CatalogSection.Sheets -> SheetsSection()
         CatalogSection.Feedback -> FeedbackSection()
         CatalogSection.Loading -> error("Loading is a whole screen, not a page of groups")
+        // <opt:coil>
+        CatalogSection.Feed, CatalogSection.Shop -> error("$name is a whole screen, not a page of groups")
+        // </opt:coil>
         CatalogSection.Motion -> MotionSection()
         CatalogSection.Adaptive -> AdaptiveSection()
         // <opt:pickers>

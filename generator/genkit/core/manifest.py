@@ -20,7 +20,7 @@ BOUNDARIES: tuple[str, ...] = ("dotted", "path", "prefix", "snake")
 
 _FEATURE_FIELDS = {
     "key", "title", "headline", "description", "group", "default", "requires", "implied_only",
-    "owns", "legacy", "licence", "platforms",
+    "owns", "legacy", "licence", "platforms", "footprint",
 }
 _PRESET_FIELDS = {"title", "description", "features", "all"}
 
@@ -68,6 +68,9 @@ class Feature:
     licence: Licence | None
     #: Targets whose website card shows this feature. Empty: the manifest's own target.
     platforms: tuple[str, ...]
+    #: Text only this feature brings. A project generated without it holds none of it outside vendored files,
+    #: which the consistency matrix checks: what proves that leaving a feature out leaves nothing of it behind.
+    footprint: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -276,6 +279,9 @@ def _load_features(root: Path, groups: tuple[str, ...], path_token: str) -> dict
         if data["group"] not in groups:
             raise TemplateError(source, None, f"group '{data['group']}' is not in template.toml [groups]")
         licence = data.get("licence")
+        footprint = data.get("footprint", [])
+        if not isinstance(footprint, list) or not all(isinstance(token, str) and token for token in footprint):
+            raise TemplateError(source, None, "footprint must be a list of non-empty strings")
         loaded.append(
             Feature(
                 key=data["key"],
@@ -290,6 +296,7 @@ def _load_features(root: Path, groups: tuple[str, ...], path_token: str) -> dict
                 legacy=tuple(_legacy(source, entry) for entry in data.get("legacy", [])),
                 licence=Licence(licence["name"], licence["spdx"], licence["url"]) if licence else None,
                 platforms=tuple(data.get("platforms", [])),
+                footprint=tuple(footprint),
             )
         )
 

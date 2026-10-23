@@ -104,8 +104,7 @@ dependencies {
     // </opt:offlinequeue>
 
     // <opt:coil>
-    implementation(libs.coil.compose)
-    implementation(libs.coil.network.okhttp)
+    implementation(project(":core:image"))
     // </opt:coil>
 
     // Hands the baseline profiles the app and its libraries ship to ART when the app is installed

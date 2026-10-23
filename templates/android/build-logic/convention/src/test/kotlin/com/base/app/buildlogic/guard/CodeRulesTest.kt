@@ -25,6 +25,9 @@ class CodeRulesTest {
             FEATURE,
             "private val i = SubcomposeAsyncImage(model = url, contentDescription = null) /*!*/",
         ),
+        // <opt:coil>
+        Fixture("image-loader", FEATURE, "private val l = ImageLoader.Builder(context).build() /*!*/"),
+        // </opt:coil>
         Fixture("bare-clickable", FEATURE, "private fun f(m: Modifier) = m.clickable { } /*!*/"),
         Fixture(
             "lazy-key",
@@ -296,6 +299,22 @@ class CodeRulesTest {
         assertEquals(emptyList<Finding>(), CodeRules.check("feature/orders/src/test/kotlin/A.kt", "val c = Color(0xFF000000)"))
         assertEquals(emptyList<Finding>(), CodeRules.check("feature/orders/src/test/kotlin/A.kt", "fun `loads the rows`() = Unit"))
     }
+
+    // <opt:coil>
+    @Test
+    fun `only the loader's home builds an image loader, and only the app and the catalog install it`() {
+        val building = "private val l = ImageLoader.Builder(context).build()"
+        val installing = "fun f() { SingletonImageLoader.setSafe { appImageLoader(it) } }"
+
+        assertEquals(listOf("image-loader"), CodeRules.check(CORE_UI, installing).map { it.rule })
+        assertEquals(listOf("image-loader"), CodeRules.check("core/image/src/main/kotlin/A.kt", building).map { it.rule })
+        assertEquals(emptyList<Finding>(), CodeRules.check("core/image/src/main/kotlin/com/acme/core/image/AppImageLoader.kt", building))
+        assertEquals(emptyList<Finding>(), CodeRules.check("app/src/main/kotlin/com/acme/BaseAppApplication.kt", installing))
+        assertEquals(emptyList<Finding>(), CodeRules.check("catalog/src/main/kotlin/com/acme/catalog/CatalogActivity.kt", installing))
+        assertEquals(emptyList<Finding>(), CodeRules.check(FEATURE, "private val l = SingletonImageLoader.get(context)"))
+        assertEquals(emptyList<Finding>(), CodeRules.check("feature/orders/src/test/kotlin/A.kt", building))
+    }
+    // </opt:coil>
 
     @Test
     fun `a modular impl module is a feature module`() {

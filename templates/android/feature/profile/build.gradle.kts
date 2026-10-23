@@ -11,4 +11,7 @@ dependencies {
     // <opt:media>
     implementation(project(":core:media"))
     // </opt:media>
+    // <opt:coil>
+    implementation(project(":core:image"))
+    // </opt:coil>
 }

@@ -44,6 +44,14 @@ class RealManifestTest(unittest.TestCase):
                 selectable = {feature.key for feature in manifest.selectable}
                 self.assertTrue(selectable <= manifest.preset_features("everything"))
 
+    def test_image_loading_is_opt_in_and_everything_has_it(self):
+        manifest = REGISTRY["android"].manifest
+        self.assertFalse(manifest.features["coil"].default)
+        self.assertIn("coil", manifest.preset_features("everything"))
+        for preset in ("lean", "standard"):
+            with self.subTest(preset=preset):
+                self.assertNotIn("coil", manifest.preset_features(preset))
+
     def test_android_hides_only_the_firebase_base(self):
         manifest = REGISTRY["android"].manifest
         self.assertEqual(["firebase"], [key for key, feature in manifest.features.items() if feature.implied_only])
@@ -184,6 +192,12 @@ class BrokenManifestTest(unittest.TestCase):
         self.write("features/bad.toml", self.feature(requires='["worse"]'))
         self.write("features/worse.toml", self.feature(key='"worse"', requires='["bad"]'))
         self.assertBroken("cycle")
+
+    def test_a_footprint_that_is_not_a_list_of_text(self):
+        for footprint in ('[""]', '"coil3"', "[3]"):
+            with self.subTest(footprint=footprint):
+                self.write("features/bad.toml", self.feature(footprint=footprint))
+                self.assertBroken("footprint must be a list of non-empty strings")
 
     def test_an_unknown_key(self):
         self.write("features/bad.toml", self.feature(colour='"blue"'))

@@ -43,6 +43,10 @@ import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
 import com.base.app.catalog.sections.LoadingScreen
+// <opt:coil>
+import com.base.app.catalog.media.photos.PhotoFeedScreen
+import com.base.app.catalog.media.photos.ShopGridScreen
+// </opt:coil>
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.container.AppVerticalDivider
 import com.base.app.core.designsystem.component.list.AppRow
@@ -149,6 +153,16 @@ private fun SectionPage(section: CatalogSection, onBack: (() -> Unit)?) {
         LoadingScreen(onBack)
         return
     }
+    // <opt:coil>
+    if (section == CatalogSection.Feed) {
+        PhotoFeedScreen(onBack)
+        return
+    }
+    if (section == CatalogSection.Shop) {
+        ShopGridScreen(onBack)
+        return
+    }
+    // </opt:coil>
     val scroll = rememberScrollState()
     AppScaffold(topBar = { AppTopBar(title = section.title, onBack = onBack, scrolled = { scroll.value }) }) {
         MasonryColumns(

@@ -31,7 +31,7 @@ import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.MviScreen
 // <opt:coil>
-import com.base.app.core.ui.AppNetworkImage
+import com.base.app.core.image.AppNetworkImage
 // </opt:coil>
 // <opt:media>
 import androidx.compose.foundation.layout.Row
@@ -94,7 +94,7 @@ internal fun ProfileScreen(
                         size = AvatarSize,
                         // <opt:coil>
                         content = state.saved.photoUri?.let { uri ->
-                            { AppNetworkImage(url = uri, contentDescription = null, modifier = Modifier.fillMaxSize()) }
+                            { AppNetworkImage(url = uri, contentDescription = null, modifier = Modifier.fillMaxSize(), fadeIn = true) }
                         },
                         // </opt:coil>
                     )

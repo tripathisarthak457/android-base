@@ -229,7 +229,7 @@ class ProjectTest(unittest.TestCase):
         plan = pipeline.plan(parsed, ANDROID, warnings)
         self.assertEqual({"enabled", "disabled", "removed_paths", "modules", "tabs", "notes", "warnings"}, set(plan))
         self.assertIn("firebase", plan["enabled"])
-        self.assertIn("core/ui/src/main/kotlin/com/acme/field/core/ui/AppNetworkImage.kt", plan["removed_paths"])
+        self.assertIn("core/image", plan["removed_paths"])
         self.assertEqual([":data:orders", ":feature:orders"], plan["modules"])
 
     def test_a_seam_without_its_vendor_binds_the_no_op(self):
@@ -323,6 +323,18 @@ class ProjectTest(unittest.TestCase):
         guard = "build-logic/convention/src/main/kotlin/com/acme/field/buildlogic/guard/DevToolingGuard.kt"
         for name in ("settings.gradle.kts", "app/build.gradle.kts", "docs/ARCHITECTURE.md", guard):
             self.assertNotIn("perfhud", (project / name).read_text(encoding="utf-8"), name)
+
+    def test_without_images_nothing_of_coil_is_left(self):
+        features = ["network", "devtools", "perfhud", "catalog"]
+        project = generate(self.root, features=features)
+        self.assertFalse((project / "core/image").exists())
+        self.assertEqual([], checks._footprints(project, spec(features=features).features))
+
+    def test_images_without_the_network_module_can_still_reach_the_network(self):
+        project = generate(self.root, features=["coil"])
+        self.assertFalse((project / "core/network").exists())
+        manifest = (project / "core/image/src/main/AndroidManifest.xml").read_text(encoding="utf-8")
+        self.assertIn('<uses-permission android:name="android.permission.INTERNET" />', manifest)
 
     def test_a_module_name_that_is_a_template_token_stays_itself(self):
         project = generate(self.root, app_name="Store", feature_modules=["database_app"])
