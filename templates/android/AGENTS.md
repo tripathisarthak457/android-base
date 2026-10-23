@@ -163,6 +163,12 @@ screen to read an id from.
   `key(filter) { LazyColumn(…) }`, instead of animating every row. The list's own prefetch composes
   the next row in the time left after each frame; a row heavier than that is composed inside the
   frame that shows it, and the fling drops frames.
+- **A sheet with a list:** give the control that opens it `Modifier.sheetTrigger(state)`, with the
+  state the sheet uses (`AppChoiceSheet(state = …)` for a choice sheet). While the finger is down the
+  hidden sheet builds its list a few rows per frame, so the frame after the tap has nothing left to
+  build and is not dropped. Its content composes on the press, so count an opening from
+  `sheetState.isVisible`, never from the content's first composition (no loading, logging or timers
+  there). Not on every row of a list: a press that starts a scroll still builds the first slice.
 <!-- <opt:coil> -->
 - **Remote images:** `AppNetworkImage` from `:core:image`, with a fixed size or an aspect ratio
   from your data in a row, and `fadeIn` only outside lists; a scrolling list of images calls

@@ -36,6 +36,8 @@ internal fun Modifier.sheetFocus(controller: SheetController, host: OverlayHostS
     }
     .focusRequester(controller.surfaceFocus)
     .focusGroup()
+    // On the surface itself, not the group: a hidden sheet that stays composed is no Tab stop.
+    .focusProperties { canFocus = controller.sheetState.isVisible }
     .focusable()
     .onKeyEvent { event ->
         if (event.key == Key.Escape && event.type == KeyEventType.KeyDown) {

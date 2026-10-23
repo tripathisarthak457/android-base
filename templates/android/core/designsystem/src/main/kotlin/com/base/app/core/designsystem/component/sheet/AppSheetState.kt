@@ -71,6 +71,14 @@ class AppSheetState @RememberInComposition constructor(
 
     internal var shown by mutableStateOf(false)
     internal var leaving by mutableStateOf(false)
+
+    /** A finger is down on a control that opens this sheet: it composes and measures, hidden, ahead of the tap. */
+    internal var preparing by mutableStateOf(false)
+        private set
+
+    /** Shown at least once: from here on a sheet that keeps its content stays composed while hidden. */
+    internal var opened by mutableStateOf(false)
+        private set
     private var current by mutableStateOf<SheetDetent?>(null)
     private var target by mutableStateOf<SheetDetent?>(null)
 
@@ -226,6 +234,8 @@ class AppSheetState @RememberInComposition constructor(
         }
         val turning = leaving
         shown = true
+        opened = true
+        preparing = false
         leaving = false
         snapshotFlow { host?.readyToPresent == true && stops != null }.first { it }
         present(detent, turning)
@@ -266,6 +276,8 @@ class AppSheetState @RememberInComposition constructor(
         val stops = stops ?: return
         val stop = if (stops.single) stops.detents[0] else activeFor(detent)
         shown = true
+        opened = true
+        preparing = false
         leaving = false
         fade = 1f
         stretch = 0f
@@ -349,6 +361,16 @@ class AppSheetState @RememberInComposition constructor(
         backProgress = 0f
         backFollow = 0f
         fade = 1f
+    }
+
+    /** A press on a control that opens the sheet began: prepare it, unless it is already up. */
+    internal fun prepare() {
+        if (!shown) preparing = true
+    }
+
+    /** The press ended without opening the sheet, or became a scroll. */
+    internal fun releasePreparation() {
+        if (!shown) preparing = false
     }
 
     internal fun canMoveProgrammatically(): Boolean =

@@ -74,7 +74,9 @@ internal class SheetLayers(private val controller: SheetController) {
         }
 
         var alpha = state.fade
-        if (state.parkedInstantly || controller.hiddenBehindStack()) alpha = 0f
+        // A hidden sheet still composed (prepared by a press, or keeping its content) sits just below the
+        // window, where a non-modal sheet's shadow would show above its top edge.
+        if (state.parkedInstantly || controller.hiddenBehindStack() || !state.isVisible) alpha = 0f
         pose.reset(size, density, fontScale)
         controller.applyEntryPose(pose)
         if (!pose.isIdentity) {

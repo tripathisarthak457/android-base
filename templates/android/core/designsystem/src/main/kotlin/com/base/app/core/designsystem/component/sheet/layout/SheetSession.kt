@@ -180,6 +180,7 @@ internal fun SheetSession(
     SheetMotionEffects(controller, expandForKeyboard = properties.keyboard == SheetKeyboard.Expand)
     SheetBack(controller)
     SheetFocusEffect(controller)
+    SheetPrepareEffect(controller)
     CompositionLocalProvider(
         LocalSheetSlots provides controller.slots,
         LocalSheetContentWidth provides contentWidth,

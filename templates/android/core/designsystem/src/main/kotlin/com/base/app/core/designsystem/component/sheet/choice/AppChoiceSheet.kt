@@ -14,6 +14,7 @@ import com.base.app.core.designsystem.component.list.AppChoiceRow
 import com.base.app.core.designsystem.component.sheet.AppSheetDefaults
 import com.base.app.core.designsystem.component.sheet.AppSheetProperties
 import com.base.app.core.designsystem.component.sheet.AppSheetScope
+import com.base.app.core.designsystem.component.sheet.AppSheetState
 import com.base.app.core.designsystem.component.sheet.HostedSheet
 import com.base.app.core.designsystem.component.sheet.SheetDetent
 import com.base.app.core.designsystem.component.sheet.SheetModality
@@ -31,7 +32,8 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens
  * [AppChoiceSheetDefaults.SearchFrom] choices; it matches the label and the supporting text, ignoring
  * case and accents. [onSelectNone] adds a row labelled [noneLabel] that selects nothing. Choosing
  * calls onSelect, then onDismissRequest. [key] must return a value a Bundle can hold; by default rows
- * are keyed by position.
+ * are keyed by position. Hoist [state] with [AppChoiceSheetDefaults.rememberState] to give the control
+ * that opens the sheet `Modifier.sheetTrigger(state)`, so the list is built while the finger is down.
  */
 @Composable
 fun <T : Any> AppChoiceSheet(
@@ -48,8 +50,8 @@ fun <T : Any> AppChoiceSheet(
     onSelectNone: (() -> Unit)? = null,
     noneLabel: String = stringResource(R.string.designsystem_none),
     key: ((T) -> Any)? = null,
+    state: AppSheetState = AppChoiceSheetDefaults.rememberState(),
 ) {
-    val state = rememberAppSheetState(ChoiceDetents)
     HostedSheet(
         visible = visible,
         onDismissRequest = onDismissRequest,
@@ -78,6 +80,10 @@ object AppChoiceSheetDefaults {
 
     /** The most of Large's height the sheet opens at before the list scrolls or the person pulls it up. */
     const val MaxFitFraction: Float = DesignTokens.Sheet.Choice.maxFitFraction
+
+    /** The state a choice sheet rests and moves with: its list's own height, then Large. */
+    @Composable
+    fun rememberState(): AppSheetState = rememberAppSheetState(ChoiceDetents)
 }
 
 @Composable

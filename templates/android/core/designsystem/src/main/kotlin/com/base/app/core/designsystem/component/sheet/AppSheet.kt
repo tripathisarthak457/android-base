@@ -122,7 +122,8 @@ internal fun HostedSheet(
             state.hide()
         }
     }
-    if (!visible && !state.isVisible && !properties.keepContent) return
+    // A hidden sheet is composed only while a press prepares it, or, keeping its content, once it has opened.
+    if (!visible && !state.isVisible && !state.preparing && !(properties.keepContent && state.opened)) return
     HostedOverlay(modal = { state.blocking }, onRemoved = { state.host?.leftComposition() }) {
         SheetSession(
             state = state,
@@ -184,7 +185,7 @@ fun <T : Any> AppSheet(
         }
     }
     val current = shown ?: return
-    if (item == null && !state.isVisible && !properties.keepContent) return
+    if (item == null && !state.isVisible && !(properties.keepContent && state.opened)) return
     HostedOverlay(modal = { state.blocking }, onRemoved = { state.host?.leftComposition() }) {
         SheetSession(
             state = state,

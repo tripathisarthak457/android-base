@@ -28,8 +28,9 @@ class AppSheetProperties(
      */
     val contentUnderGrabber: Boolean = false,
     /**
-     * True keeps the content composed, parked, between openings, so opening it again composes
-     * nothing. For a sheet opened often from one screen; it holds its memory meanwhile.
+     * True keeps the content composed, parked, from its first opening on, so opening it again composes
+     * nothing. For a sheet opened often from one screen; it holds its memory meanwhile. While hidden it
+     * draws nothing, takes no focus and its content counts as not visible.
      */
     val keepContent: Boolean = false,
 ) {

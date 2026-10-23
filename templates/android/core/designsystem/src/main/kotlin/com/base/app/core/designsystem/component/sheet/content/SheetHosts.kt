@@ -133,7 +133,10 @@ internal fun sheetOwnerVisibility(): EntryVisibility {
 private fun SheetLocals(controller: SheetController, content: @Composable () -> Unit) {
     val owner = sheetOwnerVisibility()
     val tab = LocalTabVisible.current
-    val visibility = remember(tab, controller) { TabVisibility { tab.isVisible && !controller.isCovered } }
+    // Hidden, the content holds its skeletons and spinners still: it may be composed ahead of an opening.
+    val visibility = remember(tab, controller) {
+        TabVisibility { tab.isVisible && !controller.isCovered && controller.sheetState.isVisible }
+    }
     val presenting = remember(controller, owner) {
         SheetPresenting(
             content = EntryVisibility(

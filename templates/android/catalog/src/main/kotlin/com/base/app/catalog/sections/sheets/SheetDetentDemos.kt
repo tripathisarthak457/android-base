@@ -74,10 +74,12 @@ internal fun DetentDemos() {
 @Composable
 private fun BasicDemo() {
     var shown by remember { mutableStateOf(false) }
-    DemoTrigger("basic", "Basic", onClick = { shown = true })
+    val state = rememberAppSheetState()
+    DemoTrigger("basic", "Basic", onClick = { shown = true }, prepares = state)
     AppSheet(
         visible = shown,
         onDismissRequest = { shown = false },
+        state = state,
         header = { AppSheetHeader(title = "Inbox") },
     ) {
         LazyColumn(
@@ -92,11 +94,12 @@ private fun BasicDemo() {
 private fun FiltersDemo() {
     var shown by remember { mutableStateOf(false) }
     var scrollsFirst by remember { mutableStateOf(false) }
-    DemoTrigger("filters", "Filters", onClick = { shown = true })
+    val state = rememberAppSheetState(listOf(SheetDetent.Medium, SheetDetent.Large))
+    DemoTrigger("filters", "Filters", onClick = { shown = true }, prepares = state)
     AppSheet(
         visible = shown,
         onDismissRequest = { shown = false },
-        state = rememberAppSheetState(listOf(SheetDetent.Medium, SheetDetent.Large)),
+        state = state,
         properties = AppSheetProperties(
             contentInteraction = if (scrollsFirst) SheetContentInteraction.Scrolls else SheetContentInteraction.Resizes,
         ),

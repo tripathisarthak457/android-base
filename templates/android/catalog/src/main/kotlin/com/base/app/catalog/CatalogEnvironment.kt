@@ -21,6 +21,8 @@ import com.base.app.core.designsystem.theme.ThemeMode
  * What every page is seen in. It starts from the project's own look, so a generated catalog opens
  * in the style the app ships with, and each value can be changed from the index or set from the
  * launch intent for screenshots: `--es theme dark --ef fontScale 2.0 --ez rtl true`.
+ * [prepareSheets] false (`--ez prepareSheets false`) opens the list sheets without preparing them on
+ * the press, the path measured against.
  */
 @Immutable
 data class CatalogEnvironment(
@@ -30,6 +32,7 @@ data class CatalogEnvironment(
     val rtl: Boolean = false,
     val fontScale: Float = 1f,
     val reduceMotion: Boolean = false,
+    val prepareSheets: Boolean = true,
 ) {
     companion object {
         val FontScales = listOf(1f, 1.3f, 2f)
@@ -48,11 +51,14 @@ data class CatalogEnvironment(
                 rtl = intent.getBooleanExtra("rtl", base.rtl),
                 fontScale = intent.getFloatExtra("fontScale", base.fontScale),
                 reduceMotion = intent.getBooleanExtra("reduceMotion", base.reduceMotion),
+                prepareSheets = intent.getBooleanExtra("prepareSheets", base.prepareSheets),
             )
         }
 
         val Saver: Saver<CatalogEnvironment, List<Any>> = Saver(
-            save = { listOf(it.themeMode.name, it.designStyle.name, it.motionStyle.name, it.rtl, it.fontScale, it.reduceMotion) },
+            save = {
+                listOf(it.themeMode.name, it.designStyle.name, it.motionStyle.name, it.rtl, it.fontScale, it.reduceMotion, it.prepareSheets)
+            },
             restore = {
                 CatalogEnvironment(
                     themeMode = ThemeMode.valueOf(it[0] as String),
@@ -61,6 +67,7 @@ data class CatalogEnvironment(
                     rtl = it[3] as Boolean,
                     fontScale = it[4] as Float,
                     reduceMotion = it[5] as Boolean,
+                    prepareSheets = it[6] as Boolean,
                 )
             },
         )

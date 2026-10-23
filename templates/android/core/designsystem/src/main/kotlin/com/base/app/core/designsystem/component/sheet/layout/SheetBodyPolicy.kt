@@ -147,7 +147,21 @@ internal class SheetBodyPolicy(private val controller: SheetController) : MultiC
             sidePanel -> panelHeight - band
             else -> restBottom - largeTop - band
         }.coerceAtLeast(0f)
-        val content = contentSlot.first().measure(Constraints(maxWidth = sheetWidth.roundToInt(), maxHeight = contentRoom.roundToInt()))
+        // While a press prepares the hidden sheet, the content is measured in a room that grows a step per
+        // frame, so a lazy list composes its rows over the press instead of in the frame after the tap.
+        val prepare = controller.prepare
+        val ramping = state.preparing && !state.isVisible
+        val room = when {
+            !ramping -> contentRoom
+            else -> minOf(contentRoom, prepare.room.takeUnless { it.isNaN() } ?: PrepareRamp.FirstStep.toPx())
+        }
+        val started = if (ramping) System.nanoTime() else 0L
+        val content = contentSlot.first().measure(Constraints(maxWidth = sheetWidth.roundToInt(), maxHeight = room.roundToInt()))
+        val partial = room.roundToInt() < contentRoom.roundToInt()
+        if (ramping) {
+            prepare.record(room, contentRoom, nanos = System.nanoTime() - started, ended = content.height < room.roundToInt())
+        }
+        if (prepare.partial != partial) prepare.partial = partial
         // What the reach added to the content's height, in the content's own whole pixels; nothing
         // when the content does not apply the padding.
         val reachMeasured = if (!keyboardUp && controller.padding.bottomRead) {
@@ -160,7 +174,7 @@ internal class SheetBodyPolicy(private val controller: SheetController) : MultiC
             reach == 0f -> Float.POSITIVE_INFINITY
             else -> known
         }
-        if (!keyboardUp && (known.isNaN() || (natural != known && abs(natural - known) >= 0.5f))) {
+        if (!keyboardUp && !partial && (known.isNaN() || (natural != known && abs(natural - known) >= 0.5f))) {
             controller.contentNatural = natural
         }
 

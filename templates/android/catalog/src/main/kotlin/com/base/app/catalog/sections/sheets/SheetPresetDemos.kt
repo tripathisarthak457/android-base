@@ -20,6 +20,7 @@ import com.base.app.core.designsystem.component.sheet.action.SheetAction
 import com.base.app.core.designsystem.component.sheet.action.rememberSheetAnchor
 import com.base.app.core.designsystem.component.sheet.action.sheetAnchor
 import com.base.app.core.designsystem.component.sheet.choice.AppChoiceSheet
+import com.base.app.core.designsystem.component.sheet.choice.AppChoiceSheetDefaults
 import com.base.app.core.designsystem.component.sheet.chrome.AppSheetHeader
 import com.base.app.core.designsystem.component.sheet.content.sheetFooterItem
 import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
@@ -73,7 +74,8 @@ private fun ActionsDemo() {
 private fun ChoiceDemo() {
     var shown by remember { mutableStateOf(false) }
     var language by remember { mutableStateOf<Language?>(Languages[3]) }
-    DemoTrigger("choice", language?.name ?: "No language", onClick = { shown = true })
+    val state = AppChoiceSheetDefaults.rememberState()
+    DemoTrigger("choice", language?.name ?: "No language", onClick = { shown = true }, prepares = state)
     AppChoiceSheet(
         visible = shown,
         choices = Languages,
@@ -86,6 +88,7 @@ private fun ChoiceDemo() {
         enabled = { it.name != "Klingon" },
         onSelectNone = { language = null },
         key = { it.name },
+        state = state,
     )
 }
 
@@ -94,11 +97,12 @@ private fun ChoiceDemo() {
 private fun MultiChoiceDemo() {
     var shown by remember { mutableStateOf(false) }
     var picked by remember { mutableStateOf(setOf("Español")) }
-    DemoTrigger("choice_multi", "Several languages", onClick = { shown = true })
+    val state = rememberAppSheetState(listOf(SheetDetent.Medium, SheetDetent.Large))
+    DemoTrigger("choice_multi", "Several languages", onClick = { shown = true }, prepares = state)
     AppSheet(
         visible = shown,
         onDismissRequest = { shown = false },
-        state = rememberAppSheetState(listOf(SheetDetent.Medium, SheetDetent.Large)),
+        state = state,
         header = { AppSheetHeader(title = "Languages", trailing = null) },
         footer = {
             AppBottomActionBar {

@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.sheet.content.SheetSlots
 import com.base.app.core.designsystem.component.sheet.gesture.SheetNestedScroll
 import com.base.app.core.designsystem.component.sheet.gesture.exit
+import com.base.app.core.designsystem.component.sheet.layout.PrepareProgress
 import com.base.app.core.designsystem.component.sheet.layout.RulerImeSource
 import com.base.app.core.designsystem.component.sheet.layout.SheetFrameInfo
 import com.base.app.core.designsystem.component.sheet.layout.SheetImeSource
@@ -144,6 +145,9 @@ internal class SheetController(
      */
     var contentNatural by mutableFloatStateOf(Float.NaN)
 
+    /** A press preparing the sheet while it is hidden: how far its content has been measured. */
+    val prepare = PrepareProgress()
+
     /** Before API 30, where the keyboard lift is springing toward. */
     var liftGoal by mutableFloatStateOf(0f)
 
@@ -226,7 +230,7 @@ internal class SheetController(
 
     override val callerHides: Boolean get() = callerShows == false
 
-    override val readyToPresent: Boolean get() = frame != null && !slots.pending && entry.isSettled
+    override val readyToPresent: Boolean get() = frame != null && !slots.pending && entry.isSettled && !prepare.partial
 
     /** The person can close it some way: a close button shows only then. */
     val closable: Boolean get() = dismissible || slots.guard != null

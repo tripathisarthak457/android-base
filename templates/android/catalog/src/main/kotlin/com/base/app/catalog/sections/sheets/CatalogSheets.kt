@@ -16,10 +16,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.base.app.catalog.CatalogGroup
+import com.base.app.catalog.LocalCatalogEnvironment
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.list.AppRow
+import com.base.app.core.designsystem.component.sheet.AppSheetState
+import com.base.app.core.designsystem.component.sheet.sheetTrigger
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -39,13 +42,25 @@ fun SheetsSection() {
     PresetDemos()
 }
 
-/** A button that opens the demo [id]: its test tag is what `record.sh` and `perf.sh` tap. */
+/**
+ * A button that opens the demo [id]: its test tag is what `record.sh` and `perf.sh` tap. Given the
+ * state of a sheet with a list, it prepares that sheet while a finger is down on it.
+ */
 @Composable
-internal fun DemoTrigger(id: String, label: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+internal fun DemoTrigger(
+    id: String,
+    label: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    prepares: AppSheetState? = null,
+) {
+    val trigger = prepares?.takeIf { LocalCatalogEnvironment.current.prepareSheets }
     AppButton(
         text = label,
         onClick = onClick,
-        modifier = modifier.testTag("catalog_sheet_$id"),
+        modifier = modifier
+            .testTag("catalog_sheet_$id")
+            .then(if (trigger != null) Modifier.sheetTrigger(trigger) else Modifier),
         variant = ButtonVariant.Tinted,
         size = ButtonSize.Small,
     )
