@@ -65,6 +65,10 @@ object AppIcons {
     val Download: ImageVector get() = ActionsGlyphs.Download
     val Upload: ImageVector get() = ActionsGlyphs.Upload
     val Refresh: ImageVector get() = ActionsGlyphs.Refresh
+    val Play: ImageVector get() = ActionsGlyphs.Play
+    val Pause: ImageVector get() = ActionsGlyphs.Pause
+    val VolumeOn: ImageVector get() = ActionsGlyphs.VolumeOn
+    val VolumeOff: ImageVector get() = ActionsGlyphs.VolumeOff
     val Camera: ImageVector get() = ContentGlyphs.Camera
     val ImageIcon: ImageVector get() = ContentGlyphs.ImageIcon
     val File: ImageVector get() = ContentGlyphs.File

@@ -1,5 +1,7 @@
 package com.base.app.core.designsystem.icon.glyph
 
+import androidx.compose.ui.graphics.vector.ImageVector
+
 /** Glyphs of things a person does: close, add, share, delete. Read through `AppIcons`. */
 internal object ActionsGlyphs {
     val Close by icon("Close") {
@@ -106,5 +108,26 @@ internal object ActionsGlyphs {
             curveTo(15.3f, 3.4f, 18.2f, 5.3f, 19.6f, 8f)
         }
         stroke { moveTo(20.6f, 3.4f); lineTo(19.9f, 8.4f); lineTo(15f, 7.6f) }
+    }
+    val Play by icon("Play") {
+        stroke { moveTo(7.6f, 4.8f); lineTo(19f, 12f); lineTo(7.6f, 19.2f); close() }
+    }
+    val Pause by icon("Pause") {
+        stroke { moveTo(7f, 5f); lineTo(10f, 5f); lineTo(10f, 19f); lineTo(7f, 19f); close() }
+        stroke { moveTo(14f, 5f); lineTo(17f, 5f); lineTo(17f, 19f); lineTo(14f, 19f); close() }
+    }
+    val VolumeOn by icon("VolumeOn") {
+        speaker()
+        stroke { moveTo(15f, 9.2f); curveTo(16.5f, 10.7f, 16.5f, 13.3f, 15f, 14.8f) }
+        stroke { moveTo(17.8f, 6.4f); curveTo(20.9f, 9.5f, 20.9f, 14.5f, 17.8f, 17.6f) }
+    }
+    val VolumeOff by icon("VolumeOff") {
+        speaker()
+        stroke { moveTo(15.4f, 9.6f); lineTo(20.2f, 14.4f); moveTo(20.2f, 9.6f); lineTo(15.4f, 14.4f) }
+    }
+
+    private fun ImageVector.Builder.speaker() = stroke {
+        moveTo(3.6f, 9.2f); lineTo(7.2f, 9.2f); lineTo(11.6f, 5.2f); lineTo(11.6f, 18.8f)
+        lineTo(7.2f, 14.8f); lineTo(3.6f, 14.8f); close()
     }
 }
