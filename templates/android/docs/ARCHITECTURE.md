@@ -78,6 +78,9 @@ the cart repository, not the cart feature.
 <!-- <opt:coil> -->
 | `:core:image` | `AppNetworkImage`, `PrefetchImages` and the app's one image loader, `appImageLoader()`, with its limits: remote images that cost a scrolling list nothing. The only module that names Coil. |
 <!-- </opt:coil> -->
+<!-- <opt:video> -->
+| `:core:video` | `AppVideo` and `rememberVideoFeedState`: a feed of clips on a few shared players, preloaded and released when the screen stops. The only module that names Media3. |
+<!-- </opt:video> -->
 | `:core:navigation` | `AppNavKey`, the navigator, the nav host and the tab shell. The only module that names Navigation 3. |
 | `:core:testing` | `MainDispatcherRule`, `FakeNetworkMonitor` and the test libraries, as one dependency. |
 <!-- <opt:network> -->

@@ -8,6 +8,9 @@
     <!-- <opt:coil> -->
     <!-- :core:image declares INTERNET as well, so remote images load without :core:network. -->
     <!-- </opt:coil> -->
+    <!-- <opt:video> -->
+    <!-- So does :core:video, for the clips it streams. -->
+    <!-- </opt:video> -->
     <application
         android:name=".BaseAppApplication"
         android:allowBackup="false"

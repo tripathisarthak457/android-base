@@ -1,5 +1,5 @@
 {
-  "generator_commit": "d429cbfbf8d9",
+  "generator_commit": "0ebb4b31fe18",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -413,6 +413,23 @@
         },
         {
           "default": false,
+          "description": "Muted autoplay of the clip in view, as in a reels feed: a few shared ExoPlayer instances reused across the feed instead of one per row, each clip drawn on a SurfaceView so a playing clip costs the app no frames, its poster until the first frame, the next clips preloaded and cached on disk, playback paused off screen and every player released when the app goes to the background. Brings image loading for the posters. The catalog shows a short-video feed of public-domain clips.",
+          "group": "networking-and-data",
+          "headline": "Autoplaying video feeds that stay smooth",
+          "implied_only": false,
+          "implies": [
+            "coil"
+          ],
+          "key": "video",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "coil"
+          ],
+          "title": "Video playback (Media3)"
+        },
+        {
+          "default": false,
           "description": "One long-lived socket that is open while the app is in front: pings, a backoff that grows until a frame gets through, the new token after an account change, and a connection state a screen can render.",
           "group": "networking-and-data",
           "headline": "Keep a live connection open",
@@ -800,7 +817,7 @@
         },
         {
           "default": true,
-          "description": "A second installable app showing every component and token, in the project's own design and motion style. A bar switches theme, style, motion, right-to-left, font scale and reduced motion live; each page opens directly with `--es section <Name>`, and a frame-time readout shows what each interaction costs. Depends on the design system alone, so design work rebuilds two modules, and on the image module when image loading is on.",
+          "description": "A second installable app showing every component and token, in the project's own design and motion style. A bar switches theme, style, motion, right-to-left, font scale and reduced motion live; each page opens directly with `--es section <Name>`, and a frame-time readout shows what each interaction costs. Depends on the design system and the navigation shell, and on the image and video modules when those features are on.",
           "group": "design",
           "headline": "A second app showing every component",
           "implied_only": false,
@@ -1556,6 +1573,7 @@
             "sample",
             "search",
             "settings",
+            "video",
             "websocket"
           ],
           "key": "everything",

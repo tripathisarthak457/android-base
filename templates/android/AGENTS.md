@@ -175,6 +175,11 @@ screen to read an id from.
   `PrefetchImages`. The app has one image loader, `appImageLoader()`: change a limit there. Never
   `SubcomposeAsyncImage` or a second `ImageLoader` (the build fails). `docs/IMAGES.md` says why.
 <!-- </opt:coil> -->
+<!-- <opt:video> -->
+- **Video:** `AppVideo` on a `rememberVideoFeedState`, in a `VerticalPager` with
+  `AppVideoDefaults.BeyondPages`. Never an `ExoPlayer` per row, a `TextureView` or Media3's View or
+  Material player (the build fails). `docs/VIDEO.md` has the example and what happens when.
+<!-- </opt:video> -->
 <!-- <opt:network> -->
 <!-- <opt:database> -->
 - **Show saved data at once, then the latest:** make the database the source of truth. The

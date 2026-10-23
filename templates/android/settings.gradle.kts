@@ -60,6 +60,9 @@ include(":core:testing:compose")
 // <opt:coil>
 include(":core:image")
 // </opt:coil>
+// <opt:video>
+include(":core:video")
+// </opt:video>
 // <opt:network>
 include(":core:network")
 // </opt:network>

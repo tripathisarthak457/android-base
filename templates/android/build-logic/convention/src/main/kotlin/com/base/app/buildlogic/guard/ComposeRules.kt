@@ -99,6 +99,27 @@ internal object ComposeRules {
             ),
         ),
         // </opt:coil>
+        // <opt:video>
+        Rule(
+            id = "video-player",
+            advice = "players come from the feed's pool, through rememberVideoFeedState and AppVideo; a player " +
+                "per row holds a decoder each",
+            applies = { it.isProduction && it.module != "core/video" },
+            lines = pattern(Regex("""\bExoPlayer\s*\.\s*Builder\s*\(|\bDefaultPreloadManager\s*\.\s*Builder\s*\(|\bPlayerPool\s*[(<]""")),
+        ),
+        Rule(
+            id = "video-surface",
+            advice = "video draws on a SurfaceView: on a TextureView the app draws every video frame itself",
+            applies = uiCode,
+            lines = pattern(Regex("""\bSURFACE_TYPE_TEXTURE_VIEW\b|\bTextureView\b""")),
+        ),
+        Rule(
+            id = "media3-views",
+            advice = "no View player and no Material player: AppVideo is the player UI",
+            applies = { true },
+            lines = pattern(Regex("""^\s*import\s+androidx\.media3\.ui\.(?:PlayerView\b|compose\.material3\b)"""), imports = true),
+        ),
+        // </opt:video>
         Rule(
             id = "bare-clickable",
             advice = "say which press feedback a control uses: Modifier.pressable(onClick, feedback = PressFeedback.…)",

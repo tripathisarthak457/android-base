@@ -44,4 +44,8 @@ dependencies {
     // The photo scenes run the app's own image component and loader, with its limits.
     implementation(project(":core:image"))
     // </opt:coil>
+    // <opt:video>
+    // The short-video scene runs the app's own feed state and player surface.
+    implementation(project(":core:video"))
+    // </opt:video>
 }

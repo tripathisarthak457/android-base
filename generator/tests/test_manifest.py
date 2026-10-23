@@ -44,13 +44,15 @@ class RealManifestTest(unittest.TestCase):
                 selectable = {feature.key for feature in manifest.selectable}
                 self.assertTrue(selectable <= manifest.preset_features("everything"))
 
-    def test_image_loading_is_opt_in_and_everything_has_it(self):
+    def test_images_and_video_are_opt_in_and_everything_has_both(self):
         manifest = REGISTRY["android"].manifest
         self.assertFalse(manifest.features["coil"].default)
-        self.assertIn("coil", manifest.preset_features("everything"))
+        self.assertFalse(manifest.features["video"].default)
+        self.assertEqual(("coil",), manifest.features["video"].requires)
+        self.assertTrue({"coil", "video"} <= manifest.preset_features("everything"))
         for preset in ("lean", "standard"):
             with self.subTest(preset=preset):
-                self.assertNotIn("coil", manifest.preset_features(preset))
+                self.assertFalse({"coil", "video"} & manifest.preset_features(preset))
 
     def test_android_hides_only_the_firebase_base(self):
         manifest = REGISTRY["android"].manifest

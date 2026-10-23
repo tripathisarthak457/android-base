@@ -46,6 +46,9 @@ import okhttp3.OkHttpClient
 //~ import com.base.app.core.image.MediaCallFactory
 // </opt-else:network>
 // </opt:coil>
+// <opt:video>
+import com.base.app.core.video.AppVideoSetup
+// </opt:video>
 
 /** The composition root. Deliberately thin. */
 @HiltAndroidApp
@@ -150,6 +153,10 @@ class BaseAppApplication : Application(), Configuration.Provider {
         // <opt:coil>
         SingletonImageLoader.setSafe { context -> appImageLoader(context, callFactory = { mediaClient }) }
         // </opt:coil>
+        // <opt:video>
+        // Nothing of Media3 loads here: the client is kept, and the first feed that opens reads it.
+        AppVideoSetup.install(callFactory = { mediaClient })
+        // </opt:video>
     }
 }
 

@@ -157,6 +157,9 @@ internal object CodeRules {
         // <opt:coil>
         "core/image",
         // </opt:coil>
+        // <opt:video>
+        "core/video",
+        // </opt:video>
     )
 
     val ALL: List<Rule> = ComposeRules.ALL + KotlinRules.ALL + StructureRules.ALL + AdaptiveRules.ALL + SheetRules.ALL + ScrollRules.ALL

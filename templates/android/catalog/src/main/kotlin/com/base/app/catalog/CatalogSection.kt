@@ -56,6 +56,9 @@ enum class CatalogSection(val title: String, val summary: String) {
     Feed("Photo feed", "Full-width photos over the network, at their own aspect ratios, fetched ahead"),
     Shop("Shop grid", "Product photos in two or three columns, scaled down to their tiles"),
     // </opt:coil>
+    // <opt:video>
+    Reels("Short videos", "A reels feed of public-domain clips: muted autoplay on shared players"),
+    // </opt:video>
     Motion("Animation", "Transitions, first appearance, list placement, emphasis, deceleration, rubber band"),
     Adaptive("Adaptive", "Panes of any width, foldable postures, the hardware keyboard"),
     // <opt:pickers>
@@ -92,6 +95,9 @@ fun CatalogSection.Content() {
         // <opt:coil>
         CatalogSection.Feed, CatalogSection.Shop -> error("$name is a whole screen, not a page of groups")
         // </opt:coil>
+        // <opt:video>
+        CatalogSection.Reels -> error("Reels is a whole screen, not a page of groups")
+        // </opt:video>
         CatalogSection.Motion -> MotionSection()
         CatalogSection.Adaptive -> AdaptiveSection()
         // <opt:pickers>

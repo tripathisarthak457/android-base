@@ -133,6 +133,15 @@ test("a customised feature set keeps what the new platform also has", () => {
   assert.deepEqual(state.features, ["database", "network"]);
 });
 
+test("ticking video brings image loading, and unticking image loading takes video with it", () => {
+  const ticked = run(initialState(catalogue), { type: "preset", key: "lean" }, { type: "feature", key: "video" });
+  assert.ok(ticked.features.includes("video"));
+  assert.ok(ticked.features.includes("coil"));
+  const unticked = run(ticked, { type: "feature", key: "coil" });
+  assert.ok(!unticked.features.includes("coil"));
+  assert.ok(!unticked.features.includes("video"));
+});
+
 test("a design style that needs a feature turns it on", () => {
   const withGlass = loadCatalogue();
   const android = withGlass.targets[0]!;

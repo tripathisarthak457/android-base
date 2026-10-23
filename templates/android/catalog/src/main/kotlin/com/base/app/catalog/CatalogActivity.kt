@@ -23,6 +23,10 @@ import com.base.app.catalog.media.photos.MediaPerfLog
 import com.base.app.catalog.media.photos.registerPerfGc
 import com.base.app.core.image.appImageLoader
 // </opt:coil>
+// <opt:video>
+import com.base.app.catalog.media.video.VideoPerfLog
+import com.base.app.core.video.AppVideoSetup
+// </opt:video>
 
 /**
  * The catalog: every component, every state, on a device. `--es section Buttons` opens a page
@@ -48,6 +52,9 @@ class CatalogActivity : ComponentActivity() {
         }
         if (MediaPerfLog.enabled(intent)) unregisterPerfGc = registerPerfGc(this)
         // </opt:coil>
+        // <opt:video>
+        AppVideoSetup.install(callFactory = { CatalogMediaClient }, events = VideoPerfLog.events(intent))
+        // </opt:video>
         frames = FrameTimes(this)
         val section = CatalogSection.entries.firstOrNull { it.name == intent.getStringExtra("section") }
         val environment = CatalogEnvironment.from(intent)

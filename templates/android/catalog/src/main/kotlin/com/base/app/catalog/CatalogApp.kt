@@ -47,6 +47,9 @@ import com.base.app.catalog.sections.LoadingScreen
 import com.base.app.catalog.media.photos.PhotoFeedScreen
 import com.base.app.catalog.media.photos.ShopGridScreen
 // </opt:coil>
+// <opt:video>
+import com.base.app.catalog.media.video.ReelsScreen
+// </opt:video>
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.container.AppVerticalDivider
 import com.base.app.core.designsystem.component.list.AppRow
@@ -163,6 +166,12 @@ private fun SectionPage(section: CatalogSection, onBack: (() -> Unit)?) {
         return
     }
     // </opt:coil>
+    // <opt:video>
+    if (section == CatalogSection.Reels) {
+        ReelsScreen(onBack)
+        return
+    }
+    // </opt:video>
     val scroll = rememberScrollState()
     AppScaffold(topBar = { AppTopBar(title = section.title, onBack = onBack, scrolled = { scroll.value }) }) {
         MasonryColumns(

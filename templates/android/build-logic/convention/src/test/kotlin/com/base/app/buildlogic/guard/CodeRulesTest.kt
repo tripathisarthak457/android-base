@@ -28,6 +28,11 @@ class CodeRulesTest {
         // <opt:coil>
         Fixture("image-loader", FEATURE, "private val l = ImageLoader.Builder(context).build() /*!*/"),
         // </opt:coil>
+        // <opt:video>
+        Fixture("video-player", FEATURE, "private val p = ExoPlayer.Builder(context).build() /*!*/"),
+        Fixture("video-surface", FEATURE, "private val s = SURFACE_TYPE_TEXTURE_VIEW /*!*/"),
+        Fixture("media3-views", CORE_UI, "import androidx.media3.ui.PlayerView /*!*/"),
+        // </opt:video>
         Fixture("bare-clickable", FEATURE, "private fun f(m: Modifier) = m.clickable { } /*!*/"),
         Fixture(
             "lazy-key",
@@ -315,6 +320,25 @@ class CodeRulesTest {
         assertEquals(emptyList<Finding>(), CodeRules.check("feature/orders/src/test/kotlin/A.kt", building))
     }
     // </opt:coil>
+    // <opt:video>
+
+    @Test
+    fun `players are built only in the video module, and nothing draws video on a TextureView`() {
+        val building = "private val p = ExoPlayer.Builder(context).build()"
+
+        assertEquals(emptyList<Finding>(), CodeRules.check("core/video/src/main/kotlin/com/acme/core/video/Engine.kt", building))
+        assertEquals(listOf("video-player"), CodeRules.check("app/src/main/kotlin/com/acme/Player.kt", building).map { it.rule })
+        assertEquals(
+            listOf("video-surface"),
+            CodeRules.check("core/video/src/main/kotlin/A.kt", "private val s = SURFACE_TYPE_TEXTURE_VIEW").map { it.rule },
+        )
+        assertEquals(
+            listOf("media3-views"),
+            CodeRules.check(FEATURE, "import androidx.media3.ui.compose.material3.Player").map { it.rule },
+        )
+        assertEquals(emptyList<Finding>(), CodeRules.check(FEATURE, "import androidx.media3.ui.compose.ContentFrame"))
+    }
+    // </opt:video>
 
     @Test
     fun `a modular impl module is a feature module`() {

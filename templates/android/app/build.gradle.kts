@@ -106,6 +106,9 @@ dependencies {
     // <opt:coil>
     implementation(project(":core:image"))
     // </opt:coil>
+    // <opt:video>
+    implementation(project(":core:video"))
+    // </opt:video>
 
     // Hands the baseline profiles the app and its libraries ship to ART when the app is installed
     // outside Play, so a sideloaded or CI build starts compiled rather than interpreted. Every preset

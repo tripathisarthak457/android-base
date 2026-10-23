@@ -273,6 +273,7 @@ dead code behind.
 | Offline cache + queue (Room) | on | Per-call-site response caching with stale-on-failure, force refresh and saved-then-latest streams, and failed mutations replayed with idempotency keys when connectivity returns |
 | App database (Room) | off | The app's own data, separate from the network cache: an entity, a DAO returning flows, a hand-written migration, and a test that replays it against a database that really was at the older version |
 | Image loading (Coil) | off | Remote images that cost a list nothing: decoded at the size drawn, the items ahead fetched to disk, one loader with set memory, disk and decode limits; a photo feed and a shop grid in the catalog |
+| Video playback (Media3) | off | Muted autoplay of the clip in view on a few shared players, SurfaceView drawing, posters until the first frame, preloading, release in the background; a short-video feed in the catalog. Brings image loading |
 | Paged feed | off | A Feed tab on Paging 3. A failed page keeps what is loaded and offers a retry; pull to refresh reloads from where you are. The list component is in `:core:ui` for your own feeds |
 | WorkManager | off | Hilt-injected workers, including the manifest fix that stops WorkManager self-initialising past the Hilt factory |
 | Auth | on | Sign in, sign up and password reset against your endpoints, writing the encrypted token store |

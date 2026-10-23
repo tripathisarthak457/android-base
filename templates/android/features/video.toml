@@ -1,0 +1,20 @@
+key = "video"
+title = "Video playback (Media3)"
+headline = "Autoplaying video feeds that stay smooth"
+description = """
+Muted autoplay of the clip in view, as in a reels feed: a few shared ExoPlayer instances reused across
+the feed instead of one per row, each clip drawn on a SurfaceView so a playing clip costs the app no
+frames, its poster until the first frame, the next clips preloaded and cached on disk, playback paused
+off screen and every player released when the app goes to the background. Brings image loading for
+the posters. The catalog shows a short-video feed of public-domain clips."""
+group = "Networking and data"
+default = false
+requires = ["coil"]
+implied_only = false
+owns = [
+  "core/video",
+  "docs/VIDEO.md",
+  "catalog/src/main/kotlin/{pkg_path}/catalog/media/video",
+]
+legacy = []
+footprint = ["media3", "ExoPlayer", "core:video", "core.video", "core/video", "AppVideo"]

@@ -1,0 +1,2 @@
+HSPLcom/base/app/core/video/**->**(**)**
+Lcom/base/app/core/video/**;
