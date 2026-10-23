@@ -1,0 +1,7 @@
+USER           PID   TID PPID     VSZ    RSS WCHAN            ADDR S CMD
+u0_a321       5555  5555  820 6789012 234567 0                   0 S com.base.app.catalog
+u0_a321       5555  5601  820 6789012 234567 0                   0 S RenderThread
+u0_a321       5555  5640  820 6789012 234567 0                   0 S ExoPlayer:Playback
+u0_a321       5555  5641  820 6789012 234567 0                   0 S ExoPlayer:Preload
+u0_a321       5555  5650  820 6789012 234567 0                   0 S CodecLooper
+u0_a321       5555  5651  820 6789012 234567 0                   0 S MediaCodec_loop

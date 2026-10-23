@@ -14,6 +14,9 @@ owns = [
   "core/image",
   "docs/IMAGES.md",
   "catalog/src/main/kotlin/{pkg_path}/catalog/media/photos",
+  "tools/perf/scenes_images.py",
+  "tools/perf/test_scenes_images.py",
+  "tools/perf/testdata/media/images",
 ]
 legacy = []
-footprint = ["coil3", "io.coil-kt", "AppNetworkImage", "core:image", "core.image", "core/image"]
+footprint = ["coil3", "io.coil-kt", "AppNetworkImage", "core:image", "core.image", "core/image", "scenes_images", "media_feed"]

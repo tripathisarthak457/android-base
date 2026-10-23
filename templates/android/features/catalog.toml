@@ -11,5 +11,14 @@ group = "Design"
 default = true
 requires = []
 implied_only = false
-owns = ["catalog"]
+# The scene packs measure the catalog's media scenes: without the catalog they have nothing to run.
+owns = [
+  "catalog",
+  "tools/perf/scenes_images.py",
+  "tools/perf/test_scenes_images.py",
+  "tools/perf/testdata/media/images",
+  "tools/perf/scenes_video.py",
+  "tools/perf/test_scenes_video.py",
+  "tools/perf/testdata/media/video",
+]
 legacy = []

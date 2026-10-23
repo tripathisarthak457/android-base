@@ -440,3 +440,239 @@ large = 7.0
 metric = "sidebar_toggle.janky_pct"
 label = "Large window: fold and open the sidebar, janky frames (%)"
 large = 0.5
+
+# <opt:coil&catalog>
+# `images`: the catalog's photo feed and shop grid (scenes_images.py), measured on the catalog's release
+# APK: perf.sh --package <app id>.catalog --apk catalog/build/outputs/apk/release/catalog-release.apk
+# --gate images media_feed media_feed_warm media_grid media_grid_warm media_feed_memory media_trace.
+# Scrolling holds REQUIREMENTS 42's limits (0.5 % after each fling's first frame, 5 ms/s of hitches) and
+# 41's GPU p90; no photo is decoded on a frame thread (hardware bitmaps, Coil's own threads). Memory is
+# read after the catalog collects garbage; its growth rows are ratchets until the acceptance runs, then
+# their worst growth plus their worst spread between collections, never above 8 MB.
+
+[[row]]
+metric = "media_feed.janky_after_first_pct"
+label = "Photo feed, cold: janky frames after each fling's first (%)"
+images = 0.5
+
+[[row]]
+metric = "media_feed_warm.janky_after_first_pct"
+label = "Photo feed, warm: janky frames after each fling's first (%)"
+images = 0.5
+
+[[row]]
+metric = "media_grid.janky_after_first_pct"
+label = "Shop grid, cold: janky frames after each fling's first (%)"
+images = 0.5
+
+[[row]]
+metric = "media_grid_warm.janky_after_first_pct"
+label = "Shop grid, warm: janky frames after each fling's first (%)"
+images = 0.5
+
+[[row]]
+metric = "media_feed.hitch_ms_per_s"
+label = "Photo feed, cold: hitch time per second of motion (ms/s)"
+images = 5.0
+
+[[row]]
+metric = "media_feed_warm.hitch_ms_per_s"
+label = "Photo feed, warm: hitch time per second of motion (ms/s)"
+images = 5.0
+
+[[row]]
+metric = "media_grid.hitch_ms_per_s"
+label = "Shop grid, cold: hitch time per second of motion (ms/s)"
+images = 5.0
+
+[[row]]
+metric = "media_grid_warm.hitch_ms_per_s"
+label = "Shop grid, warm: hitch time per second of motion (ms/s)"
+images = 5.0
+
+[[row]]
+metric = "media_feed.gpu_p90_ms"
+label = "Photo feed, cold: GPU p90 (ms)"
+images = 7.0
+
+[[row]]
+metric = "media_feed_warm.gpu_p90_ms"
+label = "Photo feed, warm: GPU p90 (ms)"
+images = 7.0
+
+[[row]]
+metric = "media_grid.gpu_p90_ms"
+label = "Shop grid, cold: GPU p90 (ms)"
+images = 7.0
+
+[[row]]
+metric = "media_grid_warm.gpu_p90_ms"
+label = "Shop grid, warm: GPU p90 (ms)"
+images = 7.0
+
+[[row]]
+metric = "media_feed.janky_pct"
+label = "Photo feed, cold: janky frames (%)"
+images = "ratchet"
+
+[[row]]
+metric = "media_feed_warm.janky_pct"
+label = "Photo feed, warm: janky frames (%)"
+images = "ratchet"
+
+[[row]]
+metric = "media_grid.janky_pct"
+label = "Shop grid, cold: janky frames (%)"
+images = "ratchet"
+
+[[row]]
+metric = "media_grid_warm.janky_pct"
+label = "Shop grid, warm: janky frames (%)"
+images = "ratchet"
+
+[[row]]
+metric = "media_feed.late_first_frames"
+label = "Photo feed, cold: flings whose first frame was late"
+images = "ratchet"
+
+[[row]]
+metric = "media_feed_warm.late_first_frames"
+label = "Photo feed, warm: flings whose first frame was late"
+images = "ratchet"
+
+[[row]]
+metric = "media_grid.late_first_frames"
+label = "Shop grid, cold: flings whose first frame was late"
+images = "ratchet"
+
+[[row]]
+metric = "media_grid_warm.late_first_frames"
+label = "Shop grid, warm: flings whose first frame was late"
+images = "ratchet"
+
+[[row]]
+metric = "media_trace.frame_thread_decodes"
+label = "Photo feed, cold: photos decoded or uploaded on the main thread or RenderThread"
+images = 0
+
+[[row]]
+metric = "media_feed_memory.graphics_growth_mb"
+label = "Photo feed: graphics memory grown over twelve flings of new photos, after a collection (MB)"
+images = "ratchet"
+
+[[row]]
+metric = "media_feed_memory.app_growth_mb"
+label = "Photo feed: app memory grown over twelve flings of new photos, after a collection (MB)"
+images = "ratchet"
+
+[[row]]
+metric = "media_feed_memory.pss_mb"
+label = "Photo feed: PSS at rest after fifteen flings, after a collection (MB)"
+images = "ratchet"
+# </opt:coil&catalog>
+# <opt:video&catalog>
+# `video`: the catalog's short-video feed (scenes_video.py), on the catalog's release APK:
+# --gate video media_reels media_reels_warm media_background. Swipes hold the scrolling limits; the zeros
+# are design claims (the next clip ready before a swipe lands, a SurfaceView that costs the app no frames
+# while a clip plays, everything released in the background) and the decoders never exceed the pool.
+
+[[row]]
+metric = "media_reels.janky_after_first_pct"
+label = "Short videos, cold: janky frames after each swipe's first (%)"
+video = 0.5
+
+[[row]]
+metric = "media_reels_warm.janky_after_first_pct"
+label = "Short videos, warm: janky frames after each swipe's first (%)"
+video = 0.5
+
+[[row]]
+metric = "media_reels.hitch_ms_per_s"
+label = "Short videos, cold: hitch time per second of motion (ms/s)"
+video = 5.0
+
+[[row]]
+metric = "media_reels_warm.hitch_ms_per_s"
+label = "Short videos, warm: hitch time per second of motion (ms/s)"
+video = 5.0
+
+[[row]]
+metric = "media_reels.janky_pct"
+label = "Short videos, cold: janky frames (%)"
+video = "ratchet"
+
+[[row]]
+metric = "media_reels.late_first_frames"
+label = "Short videos, cold: swipes whose first frame was late"
+video = "ratchet"
+
+[[row]]
+metric = "media_reels.open_first_frame_ms"
+label = "Short videos, cold: from the scene's first frame to its first clip's first frame (ms)"
+video = "ratchet"
+
+[[row]]
+metric = "media_reels_warm.open_first_frame_ms"
+label = "Short videos, warm: from the scene's first frame to its first clip's first frame (ms)"
+video = "ratchet"
+
+[[row]]
+metric = "media_reels.settle_to_frame_ms.median"
+label = "Short videos, cold: from a swipe landing to its clip's first frame, median (ms)"
+video = "ratchet"
+
+[[row]]
+metric = "media_reels.settle_to_frame_ms.max"
+label = "Short videos, cold: from a swipe landing to its clip's first frame, max (ms)"
+video = "ratchet"
+
+[[row]]
+metric = "media_reels_warm.posters_after_settle"
+label = "Short videos, warm: swipes that landed on a poster instead of a frame"
+video = 0
+
+[[row]]
+metric = "media_reels_warm.playing_app_frames"
+label = "Short videos, warm: app frames in five seconds of a playing clip"
+video = 0
+
+[[row]]
+metric = "media_reels.codecs_max"
+label = "Short videos, cold: decoders held at once, never one per page"
+video = 3
+
+[[row]]
+metric = "media_reels.dropped_video_pct"
+label = "Short videos, cold: video frames the decoders dropped (%)"
+video = "ratchet"
+
+[[row]]
+metric = "media_reels.graphics_growth_mb"
+label = "Short videos: graphics memory grown over twenty more clips, after a collection (MB)"
+video = "ratchet"
+
+[[row]]
+metric = "media_reels.app_growth_mb"
+label = "Short videos: app memory grown over twenty more clips, after a collection (MB)"
+video = "ratchet"
+
+[[row]]
+metric = "media_background.codecs"
+label = "Short videos in the background: decoders still held"
+video = 0
+
+[[row]]
+metric = "media_background.player_threads"
+label = "Short videos in the background: player threads still running"
+video = 0
+
+[[row]]
+metric = "media_background.pss_mb"
+label = "Short videos in the background: PSS ten seconds after Home (MB)"
+video = "ratchet"
+
+[[row]]
+metric = "media_background.resume_first_frame_ms"
+label = "Short videos: from coming back to the clip's first frame (ms)"
+video = "ratchet"
+# </opt:video&catalog>

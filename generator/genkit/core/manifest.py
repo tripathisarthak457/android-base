@@ -180,12 +180,13 @@ class TemplateManifest:
     def owned_paths(self, enabled: frozenset[str]) -> list[str]:
         """Template-relative paths that belong to features which are off."""
         token = self.package_path_token
-        return sorted(
+        # A path several features own (a scene pack: its feature and the catalog) is listed once.
+        return sorted({
             path.format(pkg_path=token)
             for feature in self.features.values()
             if feature.key not in enabled
             for path in feature.owns
-        )
+        })
 
     def upgrade_keys(self, keys: tuple[str, ...], schema: int) -> tuple[list[str], list[str], list[str]]:
         """

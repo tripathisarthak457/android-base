@@ -581,6 +581,38 @@ class LaunchExtrasTest(unittest.TestCase):
         self.assertEqual("on", app.extras["perf.hud"])
 
 
+class ScenePackTest(unittest.TestCase):
+    def test_a_folder_without_packs_adds_no_scenario(self):
+        with tempfile.TemporaryDirectory() as folder:
+            self.assertEqual([], perf.scene_packs(folder))
+
+    def test_a_pack_adds_its_scenarios_in_its_declared_order(self):
+        with tempfile.TemporaryDirectory() as folder:
+            with open(os.path.join(folder, "scenes_stubpack.py"), "w", encoding="utf-8") as handle:
+                handle.write("SCENES = {'stub_second': None, 'stub_first': None}\nCATALOG = True\n")
+            try:
+                packs = perf.scene_packs(folder)
+            finally:
+                sys.path.remove(folder)
+                sys.modules.pop("scenes_stubpack", None)
+
+        self.assertEqual(["stub_second", "stub_first"], [name for pack in packs for name in pack.SCENES])
+
+    def test_the_apps_scenarios_come_first_and_keep_their_order(self):
+        own = [name for name in perf.SCENARIOS if name not in perf.PACK_SCENES]
+        self.assertEqual(own, perf.SCENARIOS[:len(own)])
+
+    def test_catalog_scenes_and_app_scenarios_are_never_run_together(self):
+        if not perf.CATALOG_SCENARIOS:
+            self.skipTest("this project measures no catalog scene")
+        catalog = sorted(perf.CATALOG_SCENARIOS)[0]
+
+        self.assertIs(perf.CatalogRun, perf.run_kind([catalog]))
+        self.assertIs(perf.Run, perf.run_kind(["tabs"]))
+        with self.assertRaisesRegex(perf.HarnessError, "two invocations"):
+            perf.run_kind([catalog, "tabs"])
+
+
 class MeminfoTest(unittest.TestCase):
     def test_graphics_is_split_from_what_the_app_holds(self):
         memory = perf.parse_meminfo(fixture("meminfo.txt"))

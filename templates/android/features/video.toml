@@ -15,6 +15,9 @@ owns = [
   "core/video",
   "docs/VIDEO.md",
   "catalog/src/main/kotlin/{pkg_path}/catalog/media/video",
+  "tools/perf/scenes_video.py",
+  "tools/perf/test_scenes_video.py",
+  "tools/perf/testdata/media/video",
 ]
 legacy = []
-footprint = ["media3", "ExoPlayer", "core:video", "core.video", "core/video", "AppVideo"]
+footprint = ["media3", "ExoPlayer", "core:video", "core.video", "core/video", "AppVideo", "scenes_video", "media_reels"]

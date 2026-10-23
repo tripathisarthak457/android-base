@@ -54,6 +54,16 @@ class RealManifestTest(unittest.TestCase):
             with self.subTest(preset=preset):
                 self.assertFalse({"coil", "video"} & manifest.preset_features(preset))
 
+    def test_a_path_several_features_own_is_generated_only_when_all_of_them_are_on(self):
+        manifest = REGISTRY["android"].manifest
+        every = frozenset(manifest.preset_features("everything"))
+        pack = "tools/perf/scenes_images.py"
+        self.assertNotIn(pack, manifest.owned_paths(every))
+        for off in ({"coil"}, {"catalog"}, {"coil", "catalog"}):
+            with self.subTest(off=off):
+                self.assertEqual(1, manifest.owned_paths(every - off).count(pack))
+        self.assertIn("tools/perf", manifest.owned_paths(every - {"performance"}))
+
     def test_android_hides_only_the_firebase_base(self):
         manifest = REGISTRY["android"].manifest
         self.assertEqual(["firebase"], [key for key, feature in manifest.features.items() if feature.implied_only])

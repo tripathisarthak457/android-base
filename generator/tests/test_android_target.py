@@ -6,6 +6,7 @@ import io
 import json
 import re
 import tempfile
+import tomllib
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
@@ -31,6 +32,17 @@ def generate(directory: Path, **fields) -> Path:
     project = directory / "project"
     pipeline.build(spec(**fields), ANDROID, project, zip_output=False, commit="test")
     return project
+
+
+def scenarios_of(project: Path, *prefixes: str) -> list[str]:
+    """The scenarios the generated project's perf harness knows that start with one of [prefixes]."""
+    import subprocess
+    import sys
+
+    code = "import perf; print(' '.join(perf.SCENARIOS))"
+    result = subprocess.run([sys.executable, "-I", "-c", f"import sys; sys.path.insert(0, '.'); {code}"],
+                            cwd=project / "tools/perf", capture_output=True, text=True, check=True)
+    return [name for name in result.stdout.split() if name.startswith(prefixes)]
 
 
 class SettingsTest(unittest.TestCase):
@@ -325,10 +337,73 @@ class ProjectTest(unittest.TestCase):
             self.assertNotIn("perfhud", (project / name).read_text(encoding="utf-8"), name)
 
     def test_without_images_nothing_of_coil_is_left(self):
-        features = ["network", "devtools", "perfhud", "catalog"]
+        features = ["network", "devtools", "perfhud", "catalog", "performance"]
         project = generate(self.root, features=features)
         self.assertFalse((project / "core/image").exists())
+        self.assertFalse((project / "docs/IMAGES.md").exists())
+        self.assertFalse((project / "tools/perf/scenes_images.py").exists())
         self.assertEqual([], checks._footprints(project, spec(features=features).features))
+        gates = tomllib.loads((project / "tools/perf/gates.toml").read_text(encoding="utf-8"))["row"]
+        self.assertFalse([row for row in gates if "images" in row or row["metric"].startswith("media_")])
+        sections = (project / "catalog/src/main/kotlin/com/acme/field/catalog/CatalogSection.kt").read_text(encoding="utf-8")
+        self.assertNotIn("Feed(", sections)
+        self.assertNotIn("Shop(", sections)
+
+    def test_the_image_scenes_harness_needs_the_catalog(self):
+        project = generate(self.root / "harness", features=["coil", "performance"])
+        self.assertTrue((project / "core/image").is_dir())
+        for owned in ("scenes_images.py", "test_scenes_images.py", "testdata/media/images"):
+            self.assertFalse((project / "tools/perf" / owned).exists(), owned)
+        gates = tomllib.loads((project / "tools/perf/gates.toml").read_text(encoding="utf-8"))["row"]
+        self.assertFalse([row for row in gates if "images" in row])
+        self.assertEqual([], scenarios_of(project, "media_"))
+
+        catalog = generate(self.root / "catalog", features=["coil", "catalog"])
+        self.assertFalse((catalog / "tools/perf").exists())
+
+    def test_video_is_all_or_nothing(self):
+        on = generate(self.root / "on", features=["video", "catalog", "performance"])
+        catalog = (on / "gradle/libs.versions.toml").read_text(encoding="utf-8")
+        self.assertTrue((on / "core/video").is_dir())
+        self.assertTrue((on / "core/image").is_dir(), "video brings image loading for its posters")
+        self.assertIn('media3 = "', catalog)
+        self.assertIn("Reels(", (on / "catalog/src/main/kotlin/com/acme/field/catalog/CatalogSection.kt").read_text(encoding="utf-8"))
+        self.assertIn('<uses-permission android:name="android.permission.INTERNET" />',
+                      (on / "core/video/src/main/AndroidManifest.xml").read_text(encoding="utf-8"))
+        self.assertTrue((on / "tools/perf/scenes_video.py").is_file())
+        gates = tomllib.loads((on / "tools/perf/gates.toml").read_text(encoding="utf-8"))["row"]
+        self.assertIn("media_reels.codecs_max", [row["metric"] for row in gates if "video" in row])
+        self.assertEqual(["media_reels", "media_reels_warm", "media_background"], scenarios_of(on, "media_reels", "media_back"))
+        # Media3's View player and its Material player never reach a project: AppVideo is the player UI.
+        self.assertNotIn('"media3-ui"', catalog)
+        self.assertNotIn("media3-ui-compose-material3", catalog)
+
+        harness = generate(self.root / "harness", features=["video", "performance"])
+        self.assertTrue((harness / "core/video").is_dir())
+        self.assertFalse((harness / "tools/perf/scenes_video.py").exists())
+        gates = tomllib.loads((harness / "tools/perf/gates.toml").read_text(encoding="utf-8"))["row"]
+        self.assertFalse([row for row in gates if "video" in row])
+
+        off = generate(self.root / "off", features=["coil", "catalog", "performance"])
+        self.assertFalse((off / "core/video").exists())
+        self.assertFalse((off / "tools/perf/scenes_video.py").exists())
+        self.assertEqual([], checks._footprints(off, spec(features=["coil", "catalog", "performance"]).features))
+
+    def test_images_and_video_share_one_client(self):
+        def application(project: Path) -> str:
+            return next((project / "app/src/main/kotlin").rglob("*Application.kt")).read_text(encoding="utf-8")
+
+        shared = application(generate(self.root / "shared", features=["video", "network"]))
+        self.assertIn("private val mediaClient: Call.Factory by lazy { okHttp.get().newBuilder().cache(null).build() }", shared)
+        self.assertNotIn("MediaCallFactory", shared)
+
+        alone = application(generate(self.root / "alone", features=["video"]))
+        self.assertIn("private val mediaClient: Call.Factory = MediaCallFactory()", alone)
+        self.assertIn("import com.acme.field.core.image.MediaCallFactory", alone)
+        self.assertNotIn("okHttp", alone)
+        for source in (shared, alone):
+            self.assertIn("appImageLoader(context, callFactory = { mediaClient })", source)
+            self.assertIn("AppVideoSetup.install(callFactory = { mediaClient })", source)
 
     def test_images_without_the_network_module_can_still_reach_the_network(self):
         project = generate(self.root, features=["coil"])

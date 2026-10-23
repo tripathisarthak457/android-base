@@ -19,6 +19,7 @@ profile, on a real phone; debug builds are an order of magnitude jankier.
 
 import argparse
 import contextlib
+import importlib
 import json
 import os
 import random
@@ -47,6 +48,28 @@ SCENARIOS = [
     "idle", "nav_stress", "restore", "meminfo", "scroll_minimize", "recompose", "trace",
     "coldstart", "coldstart_installed",
 ]
+
+def scene_packs(folder=HERE):
+    """The scene packs in [folder], `scenes_*.py`, each owned by the feature whose scenes it measures.
+
+    A pack names its scenarios in `SCENES`, each a function of the run and the scenario's name, in the
+    order they run; `CATALOG = True` says they measure the catalog app, not the app. A project has a pack
+    only when the feature, the catalog and this harness are all in it, so nothing here names a feature.
+    """
+    if folder not in sys.path:
+        sys.path.insert(0, folder)
+    return [
+        importlib.import_module(name[:-3])
+        for name in sorted(os.listdir(folder))
+        if name.startswith("scenes_") and name.endswith(".py")
+    ]
+
+
+SCENE_PACKS = scene_packs()
+PACK_SCENES = {name: scene for pack in SCENE_PACKS for name, scene in pack.SCENES.items()}
+CATALOG_SCENARIOS = {name for pack in SCENE_PACKS if getattr(pack, "CATALOG", False) for name in pack.SCENES}
+SCENARIOS = SCENARIOS + list(PACK_SCENES)
+
 # Scenarios that measure the large-window layouts. They need a window of at least Expanded width, where
 # the shell shows a rail or the sidebar and a list has its detail beside it.
 LARGE_SCENARIOS = {"tabs_large", "pushpop_large", "listdetail_select", "scroll_large", "sidebar_toggle"}
@@ -1033,6 +1056,9 @@ class Run:
             self.wait_for(lambda t: t.tabs(), "the tab bar (tab_0)", timeout=30)
 
     def run(self, scenario):
+        if scenario in PACK_SCENES:
+            PACK_SCENES[scenario](self, scenario)
+            return
         handler = {
             "tabs": self.tabs_scenario,
             "tabs_tap": lambda: self.tabs_scenario("tabs_tap"),
@@ -1061,6 +1087,140 @@ class Run:
         if scenario in LARGE_SCENARIOS:
             self.require_window(scenario)
         handler()
+
+
+class CatalogRun(Run):
+    """A run of the catalog app's scenes: no tab bar and no first uses; each scene opens its own page.
+
+    The scenes log on the `perf.media` tag when launched with `--ez perfLog true`, and the harness's
+    own marks go to the same buffer, so logcat's order says what happened between two marks.
+    """
+
+    LOG_TAG = "perf.media"
+    GC_READINGS = 3
+    GC_APART_S = 2.0
+    GC_TIMEOUT_S = 10.0
+    #: The cleaners that free a collected bitmap's native and graphics memory run after the collection.
+    GC_SETTLE_S = 1.0
+
+    def start(self, apk):
+        self.device.wake()
+        self.app.install(apk)
+        self.app.clear()
+        self.app.compile_with_apk_profile()
+        self.device.shell("input keyevent KEYCODE_HOME")
+        # The index once, so the fonts are on disk before any scene is measured.
+        self.app.launch()
+        time.sleep(3.0)
+        self.app.stop()
+
+    def launch_section(self, section, tag, timeout=30.0):
+        """Starts the catalog afresh on page [section] with the scenes' log on, and waits for its [tag]."""
+        self.device.shell(f"am start -W -S -n {self.app.activity} --es section {section} --ez perfLog true")
+        self.wait_for(lambda tree: tree.find(tag), f"the {section} scene ({tag})", timeout=timeout)
+
+    def clear_log(self):
+        self.device.adb("logcat", "-c", check=False)
+
+    def media_log(self):
+        """The scenes' lines and the harness's marks, in logcat's order."""
+        return self.device.adb("logcat", "-d", "-v", "brief", "-s", f"{self.LOG_TAG}:I", check=False).splitlines()
+
+    def log_mark(self, text):
+        self.device.shell(f"log -p i -t {self.LOG_TAG} {shlex.quote(text)}")
+
+    def device_clock_ms(self):
+        """The phone's `SystemClock.elapsedRealtime()`, the clock the scenes log on."""
+        uptime = self.device.shell("cat /proc/uptime").split()
+        return round(float(uptime[0]) * 1000) if uptime else None
+
+    def check_hosts(self, name, hosts):
+        """Fails the scenario when a host its media comes from does not answer; records the worst round trip."""
+        worst = None
+        for host in hosts:
+            output = self.device.shell(f"ping -c 3 -W 2 {host}")
+            self.save(f"{name}_ping_{host}.txt", output)
+            rtt = parse_ping(output)
+            if rtt is None:
+                self.fail(f"{host} does not answer from the phone, so {name} cannot load its media")
+            worst = rtt if worst is None else max(worst, rtt)
+        self.record(f"{name}.rtt_ms", worst)
+
+    def check_http(self, name, lines):
+        """A 429 stops the session, as the media hosts ask; other HTTP errors are noted with their host."""
+        for status, host in http_errors(lines):
+            if status == 429:
+                self.fail(f"{host} answered 429 (too many requests) during {name}: the session stops here")
+            note = f"{name}: HTTP {status} from {host}"
+            if note not in self.notes:
+                self.notes.append(note)
+
+    def gc_reading(self, name, required=True):
+        """Memory as the median of three readings, each after the catalog has collected garbage.
+
+        `dumpsys meminfo` collects nothing, and an evicted bitmap still counts in the graphics memory
+        until ART collects its object, so a reading without a collection measures when ART last ran.
+        A stopped process may not answer (a frozen one cannot): unless [required], the readings are then
+        taken without a collection and the result says `no_gc`.
+        """
+        readings, collected = [], True
+        for index in range(self.GC_READINGS):
+            if index:
+                time.sleep(self.GC_APART_S)
+            if collected:
+                collected = self.collect_garbage(required)
+            output = self.device.shell(f"dumpsys meminfo {self.app.package}")
+            self.save(f"{name}_meminfo_{index + 1}.txt", output)
+            memory = parse_meminfo(output)
+            if memory is None:
+                self.fail("dumpsys meminfo has no TOTAL PSS line")
+            readings.append(memory)
+        reading = gc_median(readings)
+        if not collected:
+            reading["no_gc"] = True
+        return reading
+
+    def collect_garbage(self, required=True):
+        """Asks the catalog to collect garbage and waits for its answer; False if it never came and not [required]."""
+        before = sum(1 for line in self.media_log() if "gc done" in line)
+        self.device.shell(f"am broadcast -a {self.app.package}.PERF_GC -p {self.app.package}")
+        deadline = time.time() + self.GC_TIMEOUT_S
+        while time.time() < deadline:
+            if sum(1 for line in self.media_log() if "gc done" in line) > before:
+                time.sleep(self.GC_SETTLE_S)
+                return True
+            time.sleep(0.3)
+        if required:
+            self.fail("the GC hook did not answer: is this a catalog launched with --ez perfLog true?")
+        return False
+
+
+def gc_median(readings):
+    """The median of each field over [readings], and `gc_spread_mb`, the widest max minus min of a field."""
+    fields = sorted({key for reading in readings for key in reading})
+    median, spread = {}, 0.0
+    for field in fields:
+        values = [reading[field] for reading in readings if field in reading]
+        median[field] = round(statistics.median(values), 1)
+        spread = max(spread, max(values) - min(values))
+    median["gc_spread_mb"] = round(spread, 1)
+    return median
+
+
+def parse_ping(output):
+    """The average round trip of a `ping` run, in ms, or None when nothing answered."""
+    match = re.search(r"min/avg/max(?:/mdev)? = [\d.]+/([\d.]+)/", output)
+    return round(float(match.group(1)), 1) if match else None
+
+
+def http_errors(lines):
+    """(status, host) for every `http status=<code> host=<host>` line the scenes logged."""
+    errors = []
+    for line in lines:
+        match = re.search(r"http status=(\d+) host=(\S+)", line)
+        if match:
+            errors.append((int(match.group(1)), match.group(2)))
+    return errors
 
 
 # The middle of the window, which the back card covers at any point of a gesture: x from 25 to 75 %,
@@ -1295,22 +1455,35 @@ def parse_extras(pairs):
     return extras
 
 
-def started_run(device, app, out, index, seed, apk):
+def started_run(device, app, out, index, seed, apk, kind=None):
     """A run that has installed the app and paid its first uses.
 
     The first screens of most presets load from a live API, which now and then does not answer
     within a step's wait. That is not what a run measures, so a start that fails is made once more
     from a clean install before the invocation gives up.
     """
+    kind = kind or Run
     try:
-        run = Run(device, app, out, index, seed)
+        run = kind(device, app, out, index, seed)
         run.start(apk)
         return run
     except HarnessError as error:
         print(f"run {index}: the start failed ({error}); starting it again", flush=True)
-    run = Run(device, app, out, index, seed)
+    run = kind(device, app, out, index, seed)
     run.start(apk)
     return run
+
+
+def run_kind(scenarios):
+    """The run the scenarios need: the catalog's scenes and the app's scenarios measure different APKs."""
+    catalog = sorted(name for name in scenarios if name in CATALOG_SCENARIOS)
+    app = sorted(name for name in scenarios if name not in CATALOG_SCENARIOS)
+    if catalog and app:
+        raise HarnessError(
+            f"{', '.join(catalog)} measure the catalog app and {', '.join(app)} the app: run them in two invocations, "
+            "the catalog's with --package <app id>.catalog and --apk catalog/build/outputs/apk/release/catalog-release.apk"
+        )
+    return CatalogRun if catalog else Run
 
 
 def measure(args):
@@ -1327,6 +1500,7 @@ def measure_on(device, args):
     unknown = [name for name in args.scenarios if name not in SCENARIOS]
     if unknown:
         raise HarnessError(f"unknown scenarios {unknown}; known: {', '.join(SCENARIOS)}")
+    kind = run_kind(args.scenarios)
     for compared in ("back_during_push", "back_card_held"):
         if compared in args.scenarios:
             require_tools(["ffmpeg"], f"{compared} (it compares screenshots)")
@@ -1361,7 +1535,7 @@ def measure_on(device, args):
     for index in range(1, args.runs + 1):
         wait_until_cool(device)
         print(f"run {index}/{args.runs}: install, profile, warm-up", flush=True)
-        run = started_run(device, app, args.out, index, seed, apk)
+        run = started_run(device, app, args.out, index, seed, apk, kind)
         for scenario in scenarios:
             print(f"run {index}/{args.runs}: {scenario}", flush=True)
             run.run(scenario)
