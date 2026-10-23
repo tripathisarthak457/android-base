@@ -6,6 +6,16 @@ The user answered media.md 9.2 (self-host the sample clips as a release of the p
 
 ## Progress
 
+- **Run 2 started 2026-10-24 01:14 IST** (staging still `d429cbfb`; merge = up to date). Found three commits from the end of
+  run 1 (`e0edc8b4` P7, `a7f4ff1c` V0 glyphs, `20b21c1f` images M1-M4 + W6-1/W6-2/W3-1 + G1 + G2) and the rest uncommitted.
+  Run 2 so far: District P3 tests green (15/15; the open-frame test now compares a prepared open with an unprepared
+  click, `logs/media/r2-sheets2.log`); M2 brought back to the plan (`MediaCallFactory`, the loader always takes the one
+  client, Coil's own `coil3_disk_cache` folder name, checked in the 3.6.3 jar); `PrefetchImages` counts lines (grid rows),
+  cancels in-flight items that come within a line, reads one index per frame; video: no `DefaultHttpDataSource`, a
+  writing `CacheDataSource` inside Media3's read-only one (checked in the jar), muted `TrackSelector.Factory` on the
+  builder, `onWindow`/`onAcquire`/once-per-preparation first frames; the catalog's `CatalogMediaClient`, `MediaPerfLog`,
+  `PerfGc`; reels scene themed with tokens. Batch `logs/media/r2-batch1.log` running.
+
 - Run 1 started 2026-10-23 21:51 IST. Branch `staging-wp/MEDIA` at staging `d429cbfb` (merge of staging: up to date).
 - State at 23:55: NOTHING COMMITTED YET. All work is in the worktree, uncommitted (git status shows it). The Gradle
   lock was held by staging's experiments and other fast-track packages most of the evening, and memory was short,

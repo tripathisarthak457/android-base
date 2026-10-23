@@ -1,0 +1,19 @@
+key = "liquidglass"
+title = "Liquid glass foundation"
+headline = "Glass tiers, a backdrop and a lens to build glass chrome on; nothing uses them yet"
+description = """
+The foundation liquid glass is drawn with, on Kyant's backdrop library: the glass tier the device
+can afford (live, live without the lens, frosted, solid), which battery saver, heat, a GPU that
+falls behind and Reduce transparency step down; the scene backdrop floating chrome samples; glass
+surfaces; and the travelling lens. No bar, sheet or other component draws with it yet: the
+project gets the pieces and Kyant's two libraries, and its look does not change."""
+group = "Design"
+default = false
+requires = []
+implied_only = false
+owns = [
+  "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/foundation/glass",
+  "core/designsystem/src/test/kotlin/{pkg_path}/core/designsystem/foundation/glass",
+]
+legacy = []
+licence = { name = "Kyant backdrop", spdx = "Apache-2.0", url = "https://github.com/Kyant0/AndroidLiquidGlass" }

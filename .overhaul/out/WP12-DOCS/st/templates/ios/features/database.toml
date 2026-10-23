@@ -1,0 +1,18 @@
+key = "database"
+title = "App database (SwiftData)"
+headline = "Keep data on the device"
+description = """
+SwiftData with one model actor per data domain, so reads and writes never run on the main actor.
+The reference feature becomes offline-first: it shows what it saved, refreshes when stale, and
+falls back to the saved list when the network is gone."""
+group = "Networking and data"
+default = false
+requires = []
+implied_only = false
+owns = [
+  "Packages/Core/Sources/Persistence/Database",
+  "Packages/Core/Tests/PersistenceTests/ModelContainerFactoryTests.swift",
+  "Packages/Features/Sources/SampleData/Local",
+  "Packages/Features/Tests/SampleDataTests/SampleLocalStoreTests.swift",
+]
+legacy = []

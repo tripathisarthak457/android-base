@@ -1,0 +1,1540 @@
+{
+  "base": {
+    "schema": 2,
+    "platform": "android",
+    "app_name": "Trail Notes",
+    "package_name": "com.example.trail"
+  },
+  "cases": [
+    {
+      "name": "minimal",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail"
+      }
+    },
+    {
+      "name": "display name with any characters",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "display_name": "Café & Co's 🚀"
+      }
+    },
+    {
+      "name": "python keywords are fine in a package",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.global.pass"
+      }
+    },
+    {
+      "name": "kotlin soft keywords are fine in a package",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.value"
+      }
+    },
+    {
+      "name": "eight segments",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "a.b.c.d.e.f.g.h"
+      }
+    },
+    {
+      "name": "twelve modules",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "feature_modules": [
+          "m0",
+          "m1",
+          "m2",
+          "m3",
+          "m4",
+          "m5",
+          "m6",
+          "m7",
+          "m8",
+          "m9",
+          "m10",
+          "m11"
+        ]
+      }
+    },
+    {
+      "name": "ten languages listed once each",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "languages": [
+          "de",
+          "es",
+          "fr",
+          "hi",
+          "pt-BR"
+        ]
+      }
+    },
+    {
+      "name": "hex with and without the hash",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "accent_colour": "#2c6bed",
+        "secondary_colour": "16A34A"
+      }
+    },
+    {
+      "name": "font names as fonts.google.com spells them",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "font_name": "M PLUS 1p",
+        "mono_font_name": "IBM Plex Mono"
+      }
+    },
+    {
+      "name": "font name of 60",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "font_name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    },
+    {
+      "name": "every motion and design style",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "motion_style": "Calm",
+        "design_style": "Editorial"
+      }
+    },
+    {
+      "name": "android settings",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "min_sdk": 24,
+          "target_sdk": 35,
+          "compile_sdk": 37,
+          "version_name": "2.10.3",
+          "version_code": 42,
+          "api_base_urls": {
+            "dev": "http://10.0.2.2:8080/api/?a=b&c=d"
+          },
+          "web_socket_urls": {
+            "prod": "wss://api.example.com/ws"
+          },
+          "deeplink_scheme": "trail+notes",
+          "deeplink_host": "links.example.co.uk"
+        }
+      }
+    },
+    {
+      "name": "an ordinary https url",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "api_base_urls": {
+            "prod": "https://api.example.com/v1/"
+          }
+        }
+      }
+    },
+    {
+      "name": "a scheme with a hyphen, a plus and a digit",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "deeplink_scheme": "my-app+v2"
+        }
+      }
+    },
+    {
+      "name": "a keystore",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "keystores": [
+            {
+              "name": "prod",
+              "alias": "upload",
+              "store_password": "hunter22"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "schema 1 with flat android fields",
+      "valid": true,
+      "spec": {
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "min_sdk": 28,
+        "features": [
+          "room",
+          "crashlytics"
+        ]
+      }
+    },
+    {
+      "name": "no package",
+      "valid": false,
+      "field": "package_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes"
+      }
+    },
+    {
+      "name": "no app name",
+      "valid": false,
+      "field": "app_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "package_name": "com.example.trail"
+      }
+    },
+    {
+      "name": "app name starting with a digit",
+      "valid": false,
+      "field": "app_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "2048",
+        "package_name": "com.example.trail"
+      }
+    },
+    {
+      "name": "app name with an apostrophe",
+      "valid": false,
+      "field": "app_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Mom's Kitchen",
+        "package_name": "com.example.trail"
+      }
+    },
+    {
+      "name": "app name over 50",
+      "valid": false,
+      "field": "app_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "package_name": "com.example.trail"
+      }
+    },
+    {
+      "name": "display name over 30",
+      "valid": false,
+      "field": "display_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "display_name": "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD"
+      }
+    },
+    {
+      "name": "display name with a newline",
+      "valid": false,
+      "field": "display_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "display_name": "Two\nLines"
+      }
+    },
+    {
+      "name": "display name with a zero-width non-joiner and a no-break space",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "display_name": "کتاب‌ها Notes"
+      }
+    },
+    {
+      "name": "display name with a joined emoji sequence",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "display_name": "👨‍👩‍👧 Family"
+      }
+    },
+    {
+      "name": "display name of 30 characters outside the BMP, counted as code points",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "display_name": "🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀"
+      }
+    },
+    {
+      "name": "display name of 31 characters outside the BMP",
+      "valid": false,
+      "field": "display_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "display_name": "🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀"
+      }
+    },
+    {
+      "name": "display name with a line separator",
+      "valid": false,
+      "field": "display_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "display_name": "Two Lines"
+      }
+    },
+    {
+      "name": "one segment",
+      "valid": false,
+      "field": "package_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "trail"
+      }
+    },
+    {
+      "name": "nine segments",
+      "valid": false,
+      "field": "package_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "a.b.c.d.e.f.g.h.i"
+      }
+    },
+    {
+      "name": "package over 100",
+      "valid": false,
+      "field": "package_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.cccccccccccccccccccccccccccccc.dddd"
+      }
+    },
+    {
+      "name": "segment over 30",
+      "valid": false,
+      "field": "package_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    },
+    {
+      "name": "uppercase segment",
+      "valid": false,
+      "field": "package_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.Example.trail"
+      }
+    },
+    {
+      "name": "segment starting with a digit",
+      "valid": false,
+      "field": "package_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.1example"
+      }
+    },
+    {
+      "name": "kotlin hard keyword",
+      "valid": false,
+      "field": "package_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.fun"
+      }
+    },
+    {
+      "name": "java literal",
+      "valid": false,
+      "field": "package_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.null"
+      }
+    },
+    {
+      "name": "typealias",
+      "valid": false,
+      "field": "package_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.typealias"
+      }
+    },
+    {
+      "name": "java first segment",
+      "valid": false,
+      "field": "package_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "java.trail.notes"
+      }
+    },
+    {
+      "name": "kotlin first segment",
+      "valid": false,
+      "field": "package_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "kotlin.trail"
+      }
+    },
+    {
+      "name": "trailing newline in a package",
+      "valid": false,
+      "field": "package_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail\n"
+      }
+    },
+    {
+      "name": "thirteen modules",
+      "valid": false,
+      "field": "feature_modules",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "feature_modules": [
+          "m0",
+          "m1",
+          "m2",
+          "m3",
+          "m4",
+          "m5",
+          "m6",
+          "m7",
+          "m8",
+          "m9",
+          "m10",
+          "m11",
+          "m12"
+        ]
+      }
+    },
+    {
+      "name": "module keyword",
+      "valid": false,
+      "field": "feature_modules",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "feature_modules": [
+          "object"
+        ]
+      }
+    },
+    {
+      "name": "module taken by the template",
+      "valid": false,
+      "field": "feature_modules",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "feature_modules": [
+          "settings"
+        ]
+      }
+    },
+    {
+      "name": "module with a double underscore",
+      "valid": false,
+      "field": "feature_modules",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "feature_modules": [
+          "order__history"
+        ]
+      }
+    },
+    {
+      "name": "module with a trailing underscore",
+      "valid": false,
+      "field": "feature_modules",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "feature_modules": [
+          "orders_"
+        ]
+      }
+    },
+    {
+      "name": "module with a newline",
+      "valid": false,
+      "field": "feature_modules",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "feature_modules": [
+          "orders\n"
+        ]
+      }
+    },
+    {
+      "name": "modules whose classes collide",
+      "valid": false,
+      "field": "feature_modules",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "feature_modules": [
+          "v_2",
+          "v2"
+        ]
+      }
+    },
+    {
+      "name": "duplicate modules",
+      "valid": false,
+      "field": "feature_modules",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "feature_modules": [
+          "orders",
+          "orders"
+        ]
+      }
+    },
+    {
+      "name": "module given as a string",
+      "valid": false,
+      "field": "feature_modules",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "feature_modules": "home"
+      }
+    },
+    {
+      "name": "eleven languages",
+      "valid": false,
+      "field": "languages",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "languages": [
+          "de",
+          "es",
+          "fr",
+          "hi",
+          "pt-BR",
+          "de",
+          "es",
+          "fr",
+          "hi",
+          "pt-BR",
+          "de"
+        ]
+      }
+    },
+    {
+      "name": "language listed twice",
+      "valid": false,
+      "field": "languages",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "languages": [
+          "de",
+          "de"
+        ]
+      }
+    },
+    {
+      "name": "language with no translation",
+      "valid": false,
+      "field": "languages",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "languages": [
+          "xx"
+        ]
+      }
+    },
+    {
+      "name": "unknown feature",
+      "valid": false,
+      "field": "features",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "features": [
+          "telepathy"
+        ]
+      }
+    },
+    {
+      "name": "features given as a string",
+      "valid": false,
+      "field": "features",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "features": "network"
+      }
+    },
+    {
+      "name": "five-digit hex",
+      "valid": false,
+      "field": "accent_colour",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "accent_colour": "#12345"
+      }
+    },
+    {
+      "name": "named colour",
+      "valid": false,
+      "field": "tertiary_colour",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "tertiary_colour": "blue"
+      }
+    },
+    {
+      "name": "font with a quote",
+      "valid": false,
+      "field": "font_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "font_name": "Inter\" ; val x = \""
+      }
+    },
+    {
+      "name": "font with a backslash",
+      "valid": false,
+      "field": "font_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "font_name": "Inter\\"
+      }
+    },
+    {
+      "name": "font over 60",
+      "valid": false,
+      "field": "font_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "font_name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    },
+    {
+      "name": "font with markup",
+      "valid": false,
+      "field": "font_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "font_name": "<b>"
+      }
+    },
+    {
+      "name": "font with a trailing newline",
+      "valid": false,
+      "field": "mono_font_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "mono_font_name": "Inter\n"
+      }
+    },
+    {
+      "name": "unknown motion style",
+      "valid": false,
+      "field": "motion_style",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "motion_style": "Wobbly"
+      }
+    },
+    {
+      "name": "unknown design style",
+      "valid": false,
+      "field": "design_style",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "design_style": "Brutal"
+      }
+    },
+    {
+      "name": "unknown architecture",
+      "valid": false,
+      "field": "architecture",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "architecture": "layered"
+      }
+    },
+    {
+      "name": "modular is accepted",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "architecture": "modular"
+      }
+    },
+    {
+      "name": "unknown top-level field",
+      "valid": false,
+      "field": "colour",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "colour": "#2C6BED"
+      }
+    },
+    {
+      "name": "unknown android field",
+      "valid": false,
+      "field": "android.sdk",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "sdk": 26
+        }
+      }
+    },
+    {
+      "name": "schema from the future",
+      "valid": false,
+      "field": "schema",
+      "spec": {
+        "schema": 3,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail"
+      }
+    },
+    {
+      "name": "haptics as a string",
+      "valid": false,
+      "field": "haptics_enabled",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "haptics_enabled": "false"
+      }
+    },
+    {
+      "name": "min sdk below the table",
+      "valid": false,
+      "field": "android.min_sdk",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "min_sdk": 21
+        }
+      }
+    },
+    {
+      "name": "min sdk as a string",
+      "valid": false,
+      "field": "android.min_sdk",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "min_sdk": "26"
+        }
+      }
+    },
+    {
+      "name": "target below min",
+      "valid": false,
+      "field": "android.target_sdk",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "min_sdk": 34,
+          "target_sdk": 30
+        }
+      }
+    },
+    {
+      "name": "compile below the libraries' floor",
+      "valid": false,
+      "field": "android.compile_sdk",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "target_sdk": 35,
+          "compile_sdk": 36
+        }
+      }
+    },
+    {
+      "name": "target sdk past the newest release",
+      "valid": false,
+      "field": "android.target_sdk",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "target_sdk": 99,
+          "compile_sdk": 99
+        }
+      }
+    },
+    {
+      "name": "compile sdk past the newest release",
+      "valid": false,
+      "field": "android.compile_sdk",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "compile_sdk": 99
+        }
+      }
+    },
+    {
+      "name": "version name with two parts",
+      "valid": false,
+      "field": "android.version_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "version_name": "1.0"
+        }
+      }
+    },
+    {
+      "name": "version name with a trailing newline",
+      "valid": false,
+      "field": "android.version_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "version_name": "1.0.0\n"
+        }
+      }
+    },
+    {
+      "name": "fractional version code",
+      "valid": false,
+      "field": "android.version_code",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "version_code": 1.5
+        }
+      }
+    },
+    {
+      "name": "zero version code",
+      "valid": false,
+      "field": "android.version_code",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "version_code": 0
+        }
+      }
+    },
+    {
+      "name": "url closing the string",
+      "valid": false,
+      "field": "android.api_base_urls",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "api_base_urls": {
+            "dev": "https://x.com/\" + System.exit(0) + \""
+          }
+        }
+      }
+    },
+    {
+      "name": "url with a template",
+      "valid": false,
+      "field": "android.api_base_urls",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "api_base_urls": {
+            "dev": "https://x.com/${env}"
+          }
+        }
+      }
+    },
+    {
+      "name": "url with a backslash",
+      "valid": false,
+      "field": "android.api_base_urls",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "api_base_urls": {
+            "dev": "https://x.com/\\path"
+          }
+        }
+      }
+    },
+    {
+      "name": "url with a space",
+      "valid": false,
+      "field": "android.api_base_urls",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "api_base_urls": {
+            "dev": "https://x.com/a b"
+          }
+        }
+      }
+    },
+    {
+      "name": "ftp url",
+      "valid": false,
+      "field": "android.api_base_urls",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "api_base_urls": {
+            "dev": "ftp://x.com/"
+          }
+        }
+      }
+    },
+    {
+      "name": "javascript url",
+      "valid": false,
+      "field": "android.api_base_urls",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "api_base_urls": {
+            "dev": "javascript:alert(1)"
+          }
+        }
+      }
+    },
+    {
+      "name": "url with a trailing newline",
+      "valid": false,
+      "field": "android.api_base_urls",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "api_base_urls": {
+            "dev": "https://a.com/\n"
+          }
+        }
+      }
+    },
+    {
+      "name": "unknown flavour",
+      "valid": false,
+      "field": "android.api_base_urls",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "api_base_urls": {
+            "qa": "https://a.com/"
+          }
+        }
+      }
+    },
+    {
+      "name": "http where a socket belongs",
+      "valid": false,
+      "field": "android.web_socket_urls",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "web_socket_urls": {
+            "dev": "https://a.com/ws"
+          }
+        }
+      }
+    },
+    {
+      "name": "urls as a list",
+      "valid": false,
+      "field": "android.api_base_urls",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "api_base_urls": [
+            "https://a.com/"
+          ]
+        }
+      }
+    },
+    {
+      "name": "scheme with markup",
+      "valid": false,
+      "field": "android.deeplink_scheme",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "deeplink_scheme": "my<app"
+        }
+      }
+    },
+    {
+      "name": "uppercase scheme",
+      "valid": false,
+      "field": "android.deeplink_scheme",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "deeplink_scheme": "My"
+        }
+      }
+    },
+    {
+      "name": "scheme starting with a digit",
+      "valid": false,
+      "field": "android.deeplink_scheme",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "deeplink_scheme": "1app"
+        }
+      }
+    },
+    {
+      "name": "scheme with a space",
+      "valid": false,
+      "field": "android.deeplink_scheme",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "deeplink_scheme": "a b"
+        }
+      }
+    },
+    {
+      "name": "host without a dot",
+      "valid": false,
+      "field": "android.deeplink_host",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "deeplink_host": "localhost"
+        }
+      }
+    },
+    {
+      "name": "host closing the string",
+      "valid": false,
+      "field": "android.deeplink_host",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "deeplink_host": "example.com</string>"
+        }
+      }
+    },
+    {
+      "name": "host starting with a hyphen",
+      "valid": false,
+      "field": "android.deeplink_host",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "deeplink_host": "-x.com"
+        }
+      }
+    },
+    {
+      "name": "host with an empty label",
+      "valid": false,
+      "field": "android.deeplink_host",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "deeplink_host": "a..com"
+        }
+      }
+    },
+    {
+      "name": "unknown keystore",
+      "valid": false,
+      "field": "android.keystores",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "keystores": [
+            {
+              "name": "release",
+              "alias": "upload",
+              "store_password": "hunter22"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "short keystore password",
+      "valid": false,
+      "field": "android.keystores",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "keystores": [
+            {
+              "name": "prod",
+              "alias": "upload",
+              "store_password": "short"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "keystore password short in characters, long in UTF-16 units",
+      "valid": false,
+      "field": "android.keystores",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "keystores": [
+            {
+              "name": "prod",
+              "alias": "upload",
+              "store_password": "🔑🔑🔑"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "generated keystore password outside ASCII",
+      "valid": false,
+      "field": "android.keystores",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "keystores": [
+            {
+              "name": "prod",
+              "alias": "upload",
+              "store_password": "pässwörd1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "existing keystore with passwords outside ASCII",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "keystores": [
+            {
+              "name": "prod",
+              "alias": "upload",
+              "existing_path": "keys/prod.jks",
+              "store_password": "pässwörd1",
+              "key_password": "schlüssel1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "alias that reads as a flag",
+      "valid": false,
+      "field": "android.keystores",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "keystores": [
+            {
+              "name": "prod",
+              "alias": "-storetype",
+              "store_password": "hunter22"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "dname that splits",
+      "valid": false,
+      "field": "android.keystores",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "keystores": [
+            {
+              "name": "prod",
+              "alias": "upload",
+              "store_password": "hunter22",
+              "common_name": "Acme, O=Else"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "three-letter country",
+      "valid": false,
+      "field": "android.keystores",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "keystores": [
+            {
+              "name": "prod",
+              "alias": "upload",
+              "store_password": "hunter22",
+              "country": "USA"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "same key twice",
+      "valid": false,
+      "field": "android.keystores",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "keystores": [
+            {
+              "name": "prod",
+              "alias": "upload",
+              "store_password": "hunter22"
+            },
+            {
+              "name": "prod",
+              "alias": "upload",
+              "store_password": "hunter22"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "five keystores",
+      "valid": false,
+      "field": "android.keystores",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "keystores": [
+            {
+              "name": "dev",
+              "alias": "upload",
+              "store_password": "hunter22"
+            },
+            {
+              "name": "staging",
+              "alias": "upload",
+              "store_password": "hunter22"
+            },
+            {
+              "name": "prod",
+              "alias": "upload",
+              "store_password": "hunter22"
+            },
+            {
+              "name": "playstore",
+              "alias": "upload",
+              "store_password": "hunter22"
+            },
+            {
+              "name": "dev",
+              "alias": "upload",
+              "store_password": "hunter22"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

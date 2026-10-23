@@ -1,0 +1,32 @@
+[target]
+key = "ios"
+title = "Swift"
+status = "coming_soon"                      # until the macOS CI job builds a generated project
+summary = "SwiftUI with @Observable stores, local Swift packages and XcodeGen. iOS 17 and later."
+
+[identity]                                  # any order: the renamer tries longer tokens first and enforces boundaries
+tokens = [
+  { from = "com.base.app", to = "{bundle_id}",    boundary = "dotted" },   # bundle id and its prefix
+  # The engine reads `{pkg_path}` in `owns` paths from the path token, so every template declares
+  # one. Nothing in this template spells it.
+  { from = "com/base/app", to = "{package_path}", boundary = "path" },
+  { from = "BaseApp",      to = "{pascal}",       boundary = "prefix" },   # BaseAppApp → TrailNotesApp, BaseAppTests
+  { from = "baseapp",      to = "{lower}",        boundary = "snake" },    # the URL scheme
+]
+
+[regions]                                   # every point and region the target fills
+required = [
+  "display-name", "deployment-target", "development-team", "localizations", "app-dependencies",  # project.yml
+  "feature-products", "feature-targets",                                                         # Packages/Features/Package.swift
+  "shell-tabs",                                                                                  # BaseApp/AppTabs.swift
+  "readme-features",                                                                             # README.md
+]
+
+[files]
+template_only = ["template.toml", "presets.toml", "features"]
+binary_suffixes = [".png", ".jpg", ".jpeg", ".pdf", ".ttf", ".otf"]
+executable = []
+syntax = { ".xcconfig" = "//" }
+
+[groups]                                    # display order of catalogue groups
+order = ["Networking and data", "Screens", "Design"]

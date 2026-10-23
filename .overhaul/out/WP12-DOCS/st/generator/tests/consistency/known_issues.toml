@@ -1,0 +1,14 @@
+# Issues generated projects have today, each with the package that fixes it. The runner fails on an
+# issue that is not listed, and the full run also fails on a listed one that no longer occurs, so
+# this list only shrinks. `match` is a regular expression searched in the issue line; {pkg} is the
+# package path and {package} the package.
+
+[[issue]]
+match = "^UNUSED-IMPORT app/src/main/kotlin/\\{pkg\\}/ui/AppDestinations\\.kt: \\{package\\}\\.(R|core\\.designsystem\\.icon\\.AppIcons)$"
+owner = "WP04"
+why = "the imports sit outside the <opt:> blocks of the tabs that use them"
+
+[[issue]]
+match = "^RES core/designsystem/src/test/kotlin/\\{pkg\\}/core/designsystem/component/sheet/shape/SheetApiShapeTest\\.kt: R\\.string\\.(orders_filters|lists_rename)$"
+owner = "WP03"
+why = "the API-shape test writes its call sites against a stand-in R object of its own, which the check reads as missing resources"

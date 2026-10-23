@@ -1,0 +1,11 @@
+{
+  "notification_channel_default": "Général",
+  "notification_channel_default_description": "Activité du compte et informations importantes.",
+  "notification_channel_urgent": "Urgent",
+  "notification_channel_urgent_description": "Ce qui demande votre attention tout de suite.",
+  "notification_channel_promotions": "Offres",
+  "notification_channel_promotions_description": "Promotions et nouveautés.",
+  "notification_channel_silent": "Arrière-plan",
+  "notification_channel_silent_description": "Synchronisation et progression.",
+  "notification_public_text": "Nouvelle notification"
+}

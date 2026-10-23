@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Settings</string>
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_theme_system">System</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_theme_explanation">System follows your device setting.</string>
+    <string name="settings_about">About</string>
+    <string name="settings_version">Version</string>
+    <!-- <opt:language> -->
+    <string name="settings_language">Language</string>
+    <string name="settings_language_explanation">Choose the app's language in your device's settings for this app.</string>
+    <!-- </opt:language> -->
+</resources>

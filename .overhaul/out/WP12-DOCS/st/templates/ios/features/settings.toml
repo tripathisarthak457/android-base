@@ -1,0 +1,15 @@
+key = "settings"
+title = "Settings screen"
+headline = "A settings screen"
+description = """
+Appearance, haptics and the app's version in an inset-grouped list, written to the settings store
+that the whole app observes."""
+group = "Screens"
+default = true
+requires = []
+implied_only = false
+owns = [
+  "Packages/Features/Sources/SettingsFeature",
+  "Packages/Features/Tests/SettingsFeatureTests",
+]
+legacy = []

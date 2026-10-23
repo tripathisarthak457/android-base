@@ -1,0 +1,10 @@
+key = "extra"
+title = "Extra"
+headline = "Something extra"
+description = "Owns a whole directory."
+group = "Extras"
+default = false
+requires = []
+implied_only = false
+owns = ["extra", "src/main/kotlin/{pkg_path}/ExtraHook.kt"]
+legacy = []

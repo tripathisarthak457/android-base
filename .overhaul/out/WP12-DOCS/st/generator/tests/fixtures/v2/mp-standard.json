@@ -1,0 +1,18 @@
+{
+  "schema": 2,
+  "platform": "multiplatform",
+  "app_name": "Mp Standard",
+  "package_name": "com.example.mpstandard",
+  "architecture": "compact",
+  "features": [
+    "coil",
+    "database",
+    "language",
+    "network",
+    "onboarding",
+    "sample",
+    "settings"
+  ],
+  "feature_modules": [],
+  "languages": []
+}

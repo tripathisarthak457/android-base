@@ -1,0 +1,79 @@
+
+== 01:22:39 a. build-logic tests on the branch
+[locked:gradle] waiting for the lock (pid 15380 since 2026-10-24 01:19:55: ./gradlew --console=plain --offline :build-logic:convention:test :build-logic:convention:validatePlugins verifyCodeRules)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :build-logic:convention:test
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :build-logic:convention:processTestResources NO-SOURCE
+> Task :build-logic:convention:pluginUnderTestMetadata
+> Task :build-logic:convention:compileTestKotlin
+> Task :build-logic:convention:compileTestJava NO-SOURCE
+> Task :build-logic:convention:testClasses UP-TO-DATE
+
+> Task :build-logic:convention:test
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+BUILD SUCCESSFUL in 1m 12s
+7 actionable tasks: 7 executed
+Configuration cache entry stored.
+rc=0
+
+== 01:25:24 b. H-8 on staging's code: the check after an incremental compile (expect it to PASS on a partial report: the bug)
+probe lines removed: 1
+> Task :core:designsystem:compileDebugKotlin
+BUILD SUCCESSFUL in 9s
+> Task :core:designsystem:compileDebugKotlin
+BUILD SUCCESSFUL in 4s
+raw report after the incremental compile: 62 lines, H8Planted: 0
+check rc=0
+13:> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+16:BUILD SUCCESSFUL in 3s
+
+== 01:25:45 b2. control on staging's code: a full compile, then the check (expect FAIL on H8Planted: the probe is detectable)
+rc=1
+33:    com.example.standard.core.designsystem.H8Planted(box)
+48:BUILD FAILED in 37s
+probe lines removed: 1
+
+== 01:26:25 c. H-8 on the branch: the same sequence (expect FAIL on H8Planted)
+probe lines removed: 1
+[locked:gradle] waiting for the lock (pid 17436 since 2026-10-24 01:26:26: ./gradlew :core:designsystem:testDebugUnitTest --tests *SheetPrepareTest* --tests *PrepareRampTest*)
+> Task :core:designsystem:compileDebugKotlin
+BUILD SUCCESSFUL in 15s
+> Task :core:designsystem:compileDebugKotlin
+BUILD SUCCESSFUL in 3s
+raw report after the incremental compile: 62 lines, H8Planted: 0
+check rc=1
+13:> Task :core:designsystem:compileDebugKotlin
+22:    com.example.standard.core.designsystem.H8Planted(box)
+37:BUILD FAILED in 12s
+probe lines removed: 1
+
+== 01:28:09 c2. the branch, probe removed: the check passes again
+rc=0
+13:> Task :core:designsystem:compileDebugKotlin
+16:BUILD SUCCESSFUL in 11s
+
+== 01:28:22 d. generator suite on the branch
+rc=0
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+
+V2 DONE 01:33:10

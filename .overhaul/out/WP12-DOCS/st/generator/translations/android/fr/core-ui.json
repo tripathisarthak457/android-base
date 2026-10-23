@@ -1,0 +1,24 @@
+{
+  "ui_error_generic": "Un problème est survenu. Veuillez réessayer.",
+  "ui_validation_required": "Ce champ est obligatoire.",
+  "ui_validation_email": "Saisissez une adresse e-mail valide.",
+  "ui_validation_mismatch": "Ne correspond pas.",
+  "ui_validation_password_letter": "Ajoutez au moins une lettre.",
+  "ui_validation_password_digit": "Ajoutez au moins un chiffre.",
+  "ui_validation_min_length": {
+    "one": "Doit contenir au moins %1$d caractère.",
+    "other": "Doit contenir au moins %1$d caractères."
+  },
+  "ui_validation_password_length": {
+    "one": "Utilisez au moins %1$d caractère.",
+    "other": "Utilisez au moins %1$d caractères."
+  },
+  "ui_error_offline": "Vous êtes hors ligne. Vérifiez votre connexion et réessayez.",
+  "ui_error_unreachable": "Impossible de joindre le serveur. Réessayez dans un instant.",
+  "ui_appstatus_update_title": "Mise à jour requise",
+  "ui_appstatus_update_message": "Cette version n'est plus prise en charge. Mettez l'application à jour pour continuer à l'utiliser.",
+  "ui_appstatus_update_action": "Mettre à jour",
+  "ui_appstatus_maintenance_title": "Maintenance en cours",
+  "ui_appstatus_maintenance_message": "Nous intervenons sur le service. Réessayez dans quelques minutes.",
+  "ui_appstatus_maintenance_action": "Réessayer"
+}

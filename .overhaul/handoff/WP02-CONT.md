@@ -5,6 +5,11 @@ Lane `WP02`: worktree `D:/projects/tools/.overhaul/wt/sw-WP02`, branch `staging-
 
 ## Progress
 
+Run 2 (started 2026-10-24 01:14 IST): staging still at `d429cbfb` (nothing to merge). Run 1's work was uncommitted;
+its batch `v1.sh` showed the logger and AuthFrame tests red on staging and green here, but its H-8 probe was void
+(`MutableList<String>` counts as stable through `compose-stability.conf`'s `kotlin.collections.List<*>`, so neither
+side could fail) and its step (a) never ran (`rc=66` behind the lock). Batch `v2.sh` redoes both.
+
 Run 1 (started 2026-10-23 23:29 IST).
 
 - [x] Worktree and branch created from staging `d429cbfbf` (no earlier run; `release/STATE.md` and

@@ -1,0 +1,14 @@
+key = "googlefonts"
+title = "Downloadable Google Font"
+headline = "Use any Google Font"
+description = """
+The typefaces the spec names (DM Sans and JetBrains Mono unless you choose others), downloaded
+through the Play Services font provider in exactly the weights the design style draws with. They
+are fetched while the splash is up; a launch where they take longer than 150 ms draws in the
+platform font throughout, so text never swaps under the reader."""
+group = "Design"
+default = true
+requires = []
+implied_only = false
+owns = ["core/designsystem/src/main/res/values/font_certs.xml"]
+legacy = []

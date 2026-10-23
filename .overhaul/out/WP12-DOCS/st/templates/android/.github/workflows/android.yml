@@ -1,0 +1,53 @@
+# Builds, tests and lints every push and pull request: `check` runs the unit tests, Android Lint,
+# the code rules, the module graph and the Compose stability gate, then both shippable builds are
+# assembled so a release-only failure (R8, resource shrinking) shows up before a release.
+name: Android
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# A newer push to the same branch makes the running build pointless.
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Check and assemble
+        run: ./gradlew check assembleDevDebug assembleProdRelease --continue
+
+      # `check` renders every preview; this compares them with the goldens the team records once
+      # (./gradlew recordRoborazziDebug) and commits under src/test/screenshots/.
+      - name: Screenshots
+        run: |
+          if git ls-files '*src/test/screenshots/*.png' | grep -q .; then
+            ./gradlew verifyRoborazziDebug
+          else
+            echo "::warning::No screenshot goldens yet. Record them with ./gradlew recordRoborazziDebug and commit src/test/screenshots/."
+            ./gradlew compareRoborazziDebug
+          fi
+
+      - name: Upload reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: "**/build/reports/**"
+          retention-days: 14

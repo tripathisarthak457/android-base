@@ -1,0 +1,3 @@
+// Debug builds talk to the development backend.
+// `//` starts a comment in an xcconfig file, so `$()` keeps the URL's two slashes apart.
+API_BASE_URL = https:/$()/dev.example.com/api/

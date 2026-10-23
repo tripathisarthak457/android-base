@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Standard</string>
+
+    <string name="tab_home">Home</string>
+    <string name="tab_settings">Settings</string>
+
+    <!--
+      Kept as resources rather than hardcoded in the manifest so a flavour can override them:
+      dropping a strings.xml into src/dev/res gives the dev build its own host without a second
+      intent filter.
+    -->
+    <string name="deeplink_scheme" translatable="false">standard</string>
+    <string name="deeplink_host" translatable="false">example.com</string>
+</resources>

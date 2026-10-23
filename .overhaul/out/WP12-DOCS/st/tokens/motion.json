@@ -1,0 +1,88 @@
+{
+  "styles": {
+    "Standard": { "bounce": 0.15, "speed": 1.0, "description": "Crisp, a trace of overshoot. Lively without asking for attention." },
+    "Bouncy": { "bounce": 0.35, "speed": 1.0, "description": "Springy, with a visible overshoot. Playful; wrong for anything financial." },
+    "Calm": { "bounce": 0.0, "speed": 0.87, "description": "No overshoot anywhere, slightly longer. For dense, professional interfaces." },
+    "Snappy": { "bounce": 0.1, "speed": 1.15, "description": "The shortest response that still reads as motion. For utilities." }
+  },
+  "springs": {
+    "press": { "response": 0.16, "bounceScale": 0, "bySpeed": false },
+    "release": { "response": 0.32, "bounceScale": 1, "bySpeed": false },
+    "thumb": { "response": 0.28, "bounceScale": 0, "bySpeed": false },
+    "indicatorLead": { "response": 0.22, "bounceScale": 1, "bySpeed": false },
+    "indicatorTrail": { "response": 0.32, "bounceScale": 0, "bySpeed": false },
+    "screen": { "response": 0.344, "bounceScale": 0, "bySpeed": true },
+    "sheet": { "response": 0.34, "bounceScale": 0, "bySpeed": true },
+    "dialog": { "response": 0.275, "bounceScale": 0, "bySpeed": true },
+    "layout": { "response": 0.36, "bounceScale": 0, "bySpeed": true },
+    "emphasis": { "response": 0.5, "bounceScale": 1, "bySpeed": false },
+    "interactive": { "response": 0.15, "bounce": 0.14, "bySpeed": false },
+    "bounceBack": { "response": 0.444, "bounce": -0.1, "bySpeed": false },
+    "iconBounceDown": { "response": 0.1622, "bounce": 0, "bySpeed": false },
+    "iconBounceUp": { "response": 0.281, "bounce": 0.55, "bySpeed": false }
+  },
+  "scroll": {
+    "rubberBand": 0.55,
+    "flingFriction": 0.4767,
+    "pagingFriction": 2.393,
+    "overscrollRelease": { "stiffness": 9800000, "dampingRatio": 158.1 }
+  },
+  "visibilityThreshold": { "float": 0.001, "offsetPx": 1 },
+  "fades": { "shortMs": 120, "longMs": 200, "enterEasing": [0.05, 0.7, 0.1, 1], "exitEasing": [0.3, 0, 0.8, 0.15] },
+  "stagger": { "stepMs": 24, "maxItems": 6, "offset": 12 },
+  "press": { "scale": 0.96, "scaleLarge": 0.98, "scaleIcon": 0.9, "dimAlpha": 0.45, "highlightFadeOutMs": 220 },
+  "navigation": {
+    "parallax": 0.333,
+    "scrimAlpha": { "light": 0.1, "dark": 0.24 },
+    "edgeShadow": 8,
+    "edgeShadowAlpha": 0.04,
+    "backGateRelease": 0.99
+  },
+  "tabBar": {
+    "revealShift": 12,
+    "revealVeilAlpha": 0.6,
+    "indicatorHeight": 44,
+    "indicatorMaxStretch": 1.5,
+    "indicatorSquash": 0.06,
+    "iconBounceScale": 0.84,
+    "minimizeHysteresis": 10
+  },
+  "skeleton": {
+    "bandWidth": 240,
+    "tiltDegrees": 20,
+    "sweepMs": 1200,
+    "pauseMs": 800,
+    "easing": [0.3, 0, 0.7, 1],
+    "referenceTravel": 900,
+    "maxSlowdown": 2
+  },
+  "sheet": {
+    "detent": { "mediumFraction": 0.5, "largeTopGap": 10, "mediumMinGap": 48, "minHeight": 48 },
+    "release": { "projectionSeconds": 0.099, "detentFlick": 400, "dismissFlick": 2.0, "dismissPosition": 0.48 },
+    "stretch": { "aboveLarge": 0.008 },
+    "grabber": {
+      "width": 36, "height": 5, "top": 5, "touchTarget": 48, "touchBand": 14, "alpha": 0.45, "hoverAlpha": 0.7,
+      "contrastAlpha": 0.7, "contentTop": 15
+    },
+    "header": { "top": 14, "minHeight": 44, "scrollEdgeHeight": 24, "scrollEdgeRamp": 8 },
+    "keyboard": { "dragHidesAfter": 24, "formLiftGap": 16 },
+    "form": { "heightFraction": 0.85, "maxHeight": 620 },
+    "side": { "inset": 16, "backShrink": 24, "backGrow": 12, "backY": 48 },
+    "cardStack": {
+      "scale": 0.9165, "corner": 12, "deviceCornerFactor": 0.9, "deviceCornerMin": 20,
+      "overlayAlpha": 0.1, "overlayColor": { "light": "#000000", "dark": "#C8C8C8" }, "statusBarFlip": 0.5
+    },
+    "stack": { "coveredScale": 0.9165, "coveredLift": 0.005, "peek": 10, "maxCoveredDrawn": 2 },
+    "back": {
+      "shrinkX": 48, "shrinkY": 24, "easing": [0.1, 0.1, 0.0, 1.0], "guardedShare": 0.2, "persistentFollow": 24,
+      "formScale": 0.9
+    },
+    "haptic": { "arrivalShare": 0.02 },
+    "frosted": { "bodyAlpha": { "light": 0.92, "dark": 0.94 } },
+    "glass": { "opaqueAt": 0.5, "blur": 16, "bodyAlpha": { "light": 0.55, "dark": 0.5 } },
+    "rim": { "solidDarkAlpha": 0.08 },
+    "shadow": { "blur": 20, "y": 6, "alpha": 0.1, "faintScrimAlpha": 0.2 },
+    "actionSheet": { "rowHeight": 56, "maxFitFraction": 0.6, "cardWidth": 320 },
+    "choice": { "maxFitFraction": 0.6, "searchFrom": 6 }
+  }
+}

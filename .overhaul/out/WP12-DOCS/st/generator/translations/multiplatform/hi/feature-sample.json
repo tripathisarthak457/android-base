@@ -1,0 +1,12 @@
+{
+  "sample_no_matches_for_query": "“%1$s” से कुछ भी मेल नहीं खाता।",
+  "sample_nothing_here_yet": "अभी यहां कुछ नहीं है",
+  "sample_pulled_from_a_live_api": "एक असली एपीआई से लिया गया",
+  "sample_reload": "फिर से लोड करें",
+  "sample_refresh_failed": "रीफ़्रेश नहीं हो सका।",
+  "sample_detail_title": "विवरण",
+  "sample_related": "संबंधित",
+  "sample_title": "उदाहरण",
+  "sample_search_titles": "शीर्षक खोजें",
+  "sample_empty_explanation": "दिखाने के लिए कुछ होने पर वह इस स्क्रीन पर दिखेगा।"
+}

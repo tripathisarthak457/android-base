@@ -1,0 +1,119 @@
+# XcodeGen 2.46 spec. The .xcodeproj is generated from this file and never committed:
+#   xcodegen generate && open BaseApp.xcodeproj
+name: BaseApp
+options:
+  bundleIdPrefix: com.base.app
+  # <generated:deployment-target>
+  deploymentTarget:
+    iOS: "17.0"
+  # </generated:deployment-target>
+  createIntermediateGroups: true
+  developmentLanguage: en
+configs:
+  Debug: debug
+  Release: release
+packages:
+  Core:
+    path: Packages/Core
+  Features:
+    path: Packages/Features
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    # <generated:development-team>
+    DEVELOPMENT_TEAM: ""
+    # </generated:development-team>
+targets:
+  BaseApp:
+    type: application
+    platform: iOS
+    sources:
+      - path: BaseApp
+        type: syncedFolder
+    # Swift packages only know Debug and Release, so the configurations keep those names and the
+    # environment comes from the xcconfig each one reads.
+    configFiles:
+      Debug: Config/Dev.xcconfig
+      Release: Config/Prod.xcconfig
+    dependencies:
+      - package: Core
+        products:
+          - AppCore
+          - DesignSystem
+          - Navigation
+          # <opt:network>
+          - Networking
+          # </opt:network>
+          - Persistence
+      # <generated:app-dependencies>
+      - package: Features
+        products:
+          - SampleFeature
+          - SettingsFeature
+          - OnboardingFeature
+      # </generated:app-dependencies>
+    # Written by XcodeGen. It stays outside the BaseApp synced folder, which would otherwise copy it
+    # into the bundle as a resource as well.
+    info:
+      path: Config/Info.plist
+      properties:
+        # <generated:display-name>
+        CFBundleDisplayName: BaseApp
+        # </generated:display-name>
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        # <generated:localizations>
+        CFBundleLocalizations:
+          - en
+        # </generated:localizations>
+        CFBundleURLTypes:
+          - CFBundleURLName: com.base.app
+            CFBundleURLSchemes:
+              - baseapp
+        # Without it, ProMotion iPhones cap custom SwiftUI and CADisplayLink animations at 60 Hz.
+        CADisableMinimumFrameDurationOnPhone: true
+        UILaunchScreen: {}
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: true
+        # Every orientation, and no UIRequiresFullScreen: iPad windows resize freely, and the app
+        # lays itself out by its window's width rather than by device or orientation.
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        APIBaseURL: $(API_BASE_URL)
+        ITSAppUsesNonExemptEncryption: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.base.app
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        LOCALIZATION_PREFERS_STRING_CATALOGS: "YES"
+        SWIFT_EMIT_LOC_STRINGS: "YES"
+        # The app target is all interface code: main actor by default, as the UI packages are.
+        SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor
+        SWIFT_APPROACHABLE_CONCURRENCY: "YES"
+    scheme:
+      testTargets:
+        - BaseAppTests
+      gatherCoverageData: true
+  BaseAppTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: BaseAppTests
+    dependencies:
+      - target: BaseApp
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: "YES"
+        SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor
+        SWIFT_APPROACHABLE_CONCURRENCY: "YES"

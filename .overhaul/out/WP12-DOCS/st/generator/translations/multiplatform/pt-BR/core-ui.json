@@ -1,0 +1,5 @@
+{
+  "common_error_generic": "Algo deu errado. Tente de novo.",
+  "common_error_offline": "Você está off-line. Verifique a conexão e tente de novo.",
+  "common_error_unreachable": "Não foi possível falar com o servidor. Tente de novo daqui a pouco."
+}

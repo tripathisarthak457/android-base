@@ -1,0 +1,167 @@
+test_every_guide_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_code_points_to_is_in_the_project) ... 
+  test_every_guide_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_code_points_to_is_in_the_project) (preset='none', page='docs/ADAPTIVE.md') ... FAIL
+  test_every_guide_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_code_points_to_is_in_the_project) (preset='none', page='docs/MOTION-AND-PERFORMANCE.md') ... FAIL
+  test_every_guide_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_code_points_to_is_in_the_project) (preset='lean', page='docs/ADAPTIVE.md') ... FAIL
+  test_every_guide_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_code_points_to_is_in_the_project) (preset='lean', page='docs/MOTION-AND-PERFORMANCE.md') ... FAIL
+  test_every_guide_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_code_points_to_is_in_the_project) (preset='standard', page='docs/ADAPTIVE.md') ... FAIL
+  test_every_guide_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_code_points_to_is_in_the_project) (preset='standard', page='docs/MOTION-AND-PERFORMANCE.md') ... FAIL
+  test_every_guide_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_code_points_to_is_in_the_project) (preset='everything', page='docs/ADAPTIVE.md') ... FAIL
+  test_every_guide_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_code_points_to_is_in_the_project) (preset='everything', page='docs/MOTION-AND-PERFORMANCE.md') ... FAIL
+test_every_link_reaches_its_file_and_heading (tests.test_docs.GeneratedDocsTest.test_every_link_reaches_its_file_and_heading) ... 
+  test_every_link_reaches_its_file_and_heading (tests.test_docs.GeneratedDocsTest.test_every_link_reaches_its_file_and_heading) (preset='none', page='ARCHITECTURE.md', link='#data-and-the-network') ... FAIL
+test_every_path_the_rules_cite_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_rules_cite_is_in_the_project) ... ERROR
+test_no_name_the_rules_cite_was_left_out_of_the_project (tests.test_docs.GeneratedDocsTest.test_no_name_the_rules_cite_was_left_out_of_the_project) ... ERROR
+test_the_docs_speak_to_the_project_not_the_workshop (tests.test_docs.GeneratedDocsTest.test_the_docs_speak_to_the_project_not_the_workshop) ... ERROR
+setUpClass (tests.test_docs.TemplateDocsTest) ... ERROR
+
+======================================================================
+ERROR: test_every_path_the_rules_cite_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_rules_cite_is_in_the_project)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP12-DOCS\st\generator\tests\test_docs.py", line 248, in test_every_path_the_rules_cite_is_in_the_project
+    for token in backticked(self.cited(project)):
+                            ~~~~~~~~~~^^^^^^^^^
+  File "D:\projects\tools\.overhaul\out\WP12-DOCS\st\generator\tests\test_docs.py", line 228, in cited
+    return prose((project / GUIDE).read_text(encoding="utf-8")) + smooth_section(
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 986, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 970, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpx98ctv_f\\none\\docs\\PERFORMANCE.md'
+
+======================================================================
+ERROR: test_no_name_the_rules_cite_was_left_out_of_the_project (tests.test_docs.GeneratedDocsTest.test_no_name_the_rules_cite_was_left_out_of_the_project)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP12-DOCS\st\generator\tests\test_docs.py", line 259, in test_no_name_the_rules_cite_was_left_out_of_the_project
+    missing = {word for word in cited_names(self.cited(project)) if word in self.template_names and word not in present}
+                                            ~~~~~~~~~~^^^^^^^^^
+  File "D:\projects\tools\.overhaul\out\WP12-DOCS\st\generator\tests\test_docs.py", line 228, in cited
+    return prose((project / GUIDE).read_text(encoding="utf-8")) + smooth_section(
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 986, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 970, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpx98ctv_f\\none\\docs\\PERFORMANCE.md'
+
+======================================================================
+ERROR: test_the_docs_speak_to_the_project_not_the_workshop (tests.test_docs.GeneratedDocsTest.test_the_docs_speak_to_the_project_not_the_workshop)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP12-DOCS\st\generator\tests\test_docs.py", line 273, in test_the_docs_speak_to_the_project_not_the_workshop
+    text = prose(page.read_text(encoding="utf-8"))
+                 ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 986, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 970, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpx98ctv_f\\none\\docs\\PERFORMANCE.md'
+
+======================================================================
+ERROR: setUpClass (tests.test_docs.TemplateDocsTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP12-DOCS\st\generator\tests\test_docs.py", line 136, in setUpClass
+    cls.guide = (TEMPLATE / GUIDE).read_text(encoding="utf-8")
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 986, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 970, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'D:\\projects\\tools\\.overhaul\\out\\WP12-DOCS\\st\\templates\\android\\docs\\PERFORMANCE.md'
+
+======================================================================
+FAIL: test_every_guide_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_code_points_to_is_in_the_project) (preset='none', page='docs/ADAPTIVE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP12-DOCS\st\generator\tests\test_docs.py", line 268, in test_every_guide_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/ADAPTIVE.md, not in the project
+
+======================================================================
+FAIL: test_every_guide_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_code_points_to_is_in_the_project) (preset='none', page='docs/MOTION-AND-PERFORMANCE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP12-DOCS\st\generator\tests\test_docs.py", line 268, in test_every_guide_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/MOTION-AND-PERFORMANCE.md, not in the project
+
+======================================================================
+FAIL: test_every_guide_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_code_points_to_is_in_the_project) (preset='lean', page='docs/ADAPTIVE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP12-DOCS\st\generator\tests\test_docs.py", line 268, in test_every_guide_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/ADAPTIVE.md, not in the project
+
+======================================================================
+FAIL: test_every_guide_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_code_points_to_is_in_the_project) (preset='lean', page='docs/MOTION-AND-PERFORMANCE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP12-DOCS\st\generator\tests\test_docs.py", line 268, in test_every_guide_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/MOTION-AND-PERFORMANCE.md, not in the project
+
+======================================================================
+FAIL: test_every_guide_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_code_points_to_is_in_the_project) (preset='standard', page='docs/ADAPTIVE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP12-DOCS\st\generator\tests\test_docs.py", line 268, in test_every_guide_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/ADAPTIVE.md, not in the project
+
+======================================================================
+FAIL: test_every_guide_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_code_points_to_is_in_the_project) (preset='standard', page='docs/MOTION-AND-PERFORMANCE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP12-DOCS\st\generator\tests\test_docs.py", line 268, in test_every_guide_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/MOTION-AND-PERFORMANCE.md, not in the project
+
+======================================================================
+FAIL: test_every_guide_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_code_points_to_is_in_the_project) (preset='everything', page='docs/ADAPTIVE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP12-DOCS\st\generator\tests\test_docs.py", line 268, in test_every_guide_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/ADAPTIVE.md, not in the project
+
+======================================================================
+FAIL: test_every_guide_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_code_points_to_is_in_the_project) (preset='everything', page='docs/MOTION-AND-PERFORMANCE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP12-DOCS\st\generator\tests\test_docs.py", line 268, in test_every_guide_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/MOTION-AND-PERFORMANCE.md, not in the project
+
+======================================================================
+FAIL: test_every_link_reaches_its_file_and_heading (tests.test_docs.GeneratedDocsTest.test_every_link_reaches_its_file_and_heading) (preset='none', page='ARCHITECTURE.md', link='#data-and-the-network')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP12-DOCS\st\generator\tests\test_docs.py", line 244, in test_every_link_reaches_its_file_and_heading
+    self.assertIn(anchor, anchors(linked.read_text(encoding="utf-8")))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'data-and-the-network' not found in {'list-and-detail-share-the-window', 'build', 'no-library-has-a-buildconfig', 'release-artifacts-are-named', 'mvi', 'keys-carry-ids-not-models', 'motion', 'what-each-core-module-holds', 'copy-and-languages', 'navigation', 'messages-and-errors', 'effects-are-delivered-once', 'connectivity', 'every-form-factor', 'testing', 'architecture', 'sign-out-clears-everything-that-belongs-to-the-person', 'build-guards', 'surviving-process-death', 'app-wide-services', 'signing-falls-back-to-the-debug-key', 'the-entry-point-is-derived-not-navigated-to', 'the-design-system', 'events-are-queued-not-launched', 'each-tab-keeps-its-own-back-stack', 'loadstate-not-a-boolean-and-a-nullable', 'registering-the-serializer-is-easy-to-forget', 'modules', 'design-styles', 'storage-and-the-session', 'flavours-are-only-on-the-application-modules', 'where-a-feature-lives'}
+
+----------------------------------------------------------------------
+Ran 5 tests in 12.513s
+
+FAILED (failures=9, errors=4)

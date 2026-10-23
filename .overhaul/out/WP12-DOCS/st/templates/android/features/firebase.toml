@@ -1,0 +1,19 @@
+key = "firebase"
+title = "Firebase"
+headline = "The Firebase project file"
+description = """
+The google-services plugin and the project file it reads. Arrives with push, Firebase Analytics,
+Crashlytics or Remote Config, each of which adds only its own SDK."""
+group = "Observability"
+default = false
+requires = []
+# Hidden from the wizard and the website: Firebase arrives with the features that need it.
+implied_only = true
+owns = [
+  # The placeholder json is renamed by the ordinary text pass, like any other file. It has to be:
+  # the plugin matches the applicationId against a client entry and fails the build when none
+  # matches, so a copy still saying `com.base.app` breaks the first build.
+  "app/google-services.json",
+  "build-logic/convention/src/main/kotlin/AndroidFirebaseConventionPlugin.kt",
+]
+legacy = []

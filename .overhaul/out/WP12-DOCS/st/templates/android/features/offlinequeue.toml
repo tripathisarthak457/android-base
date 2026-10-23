@@ -1,0 +1,20 @@
+key = "offlinequeue"
+title = "Offline request queue"
+headline = "Send what was written offline"
+description = """
+Changes made without a connection are queued and sent when one returns, by a WorkManager worker
+that waits for the network. Refusals are kept with the server's answer; rate limits and timeouts
+are retried. WorkManager carries a copy of Room of its own, so this adds more code than it looks."""
+group = "Networking and data"
+default = false
+requires = ["network", "database"]
+implied_only = false
+owns = [
+  "core/network/src/main/kotlin/{pkg_path}/core/network/queue",
+  "core/network/src/test/kotlin/{pkg_path}/core/network/queue",
+  "core/database/src/main/kotlin/{pkg_path}/core/database/queue",
+  "core/database/src/test/kotlin/{pkg_path}/core/database/queue",
+  "core/database/schemas/com.base.app.core.database.queue.QueueDatabase",
+]
+# The old offline cache and queue. Its cache is gone (the HTTP cache keeps GETs); its queue is this.
+legacy = [{ key = "room", schema = 1 }]

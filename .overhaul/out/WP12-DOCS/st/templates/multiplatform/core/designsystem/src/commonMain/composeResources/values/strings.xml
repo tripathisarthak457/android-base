@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copy the components draw by default. Every parameter that takes one of these can be overridden. -->
+<resources>
+    <string name="designsystem_try_again">Try again</string>
+    <string name="designsystem_offline_title">You are offline</string>
+    <string name="designsystem_error_title">Something went wrong</string>
+    <string name="designsystem_navigate_back">Navigate back</string>
+    <string name="designsystem_search">Search</string>
+    <string name="designsystem_clear_search">Clear search</string>
+    <string name="designsystem_loading">Loading</string>
+</resources>

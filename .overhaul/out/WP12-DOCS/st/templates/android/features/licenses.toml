@@ -1,0 +1,16 @@
+key = "licenses"
+title = "Open source licences screen"
+headline = "Show the licences you have to show"
+description = """
+The real dependency list, generated from the resolved classpath at build time and rendered by the
+design system. The build also fails on a licence the project has not allowed."""
+group = "Screens"
+default = false
+requires = ["settings"]
+implied_only = false
+owns = [
+  "feature/settings/src/main/kotlin/{pkg_path}/feature/settings/Licenses.kt",
+  "build-logic/convention/src/main/kotlin/AndroidLicensesConventionPlugin.kt",
+  "build-logic/convention/src/main/kotlin/{pkg_path}/buildlogic/licenses/BundleLicensesTask.kt",
+]
+legacy = []

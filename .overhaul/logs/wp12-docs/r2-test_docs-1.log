@@ -1,0 +1,14 @@
+test_every_link_reaches_its_file_and_heading (tests.test_docs.GeneratedDocsTest.test_every_link_reaches_its_file_and_heading) ... ok
+test_every_path_the_rules_cite_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_rules_cite_is_in_the_project) ... ok
+test_no_name_the_rules_cite_was_left_out_of_the_project (tests.test_docs.GeneratedDocsTest.test_no_name_the_rules_cite_was_left_out_of_the_project) ... ok
+test_the_docs_speak_to_the_project_not_the_workshop (tests.test_docs.GeneratedDocsTest.test_the_docs_speak_to_the_project_not_the_workshop) ... ok
+test_agents_md_carries_the_rules_and_links_the_guide (tests.test_docs.TemplateDocsTest.test_agents_md_carries_the_rules_and_links_the_guide) ... ok
+test_every_check_the_docs_name_exists (tests.test_docs.TemplateDocsTest.test_every_check_the_docs_name_exists) ... ok
+test_every_gate_row_the_docs_name_exists (tests.test_docs.TemplateDocsTest.test_every_gate_row_the_docs_name_exists) ... ok
+test_every_scenario_the_docs_run_exists (tests.test_docs.TemplateDocsTest.test_every_scenario_the_docs_run_exists) ... ok
+test_the_spring_table_is_the_standard_style (tests.test_docs.TemplateDocsTest.test_the_spring_table_is_the_standard_style) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 13.004s
+
+OK
