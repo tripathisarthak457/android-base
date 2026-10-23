@@ -1,6 +1,6 @@
 HSPLcom/base/app/data/sample/remote/SampleDto$$serializer;->deserialize(Lkotlinx/serialization/encoding/Decoder;)Lcom/base/app/data/sample/remote/SampleDto;
-Lcom/base/app/AndroidLogger$WhenMappings;
-Lcom/base/app/AndroidLogger;
+Lcom/base/app/log/AndroidLogger$WhenMappings;
+Lcom/base/app/log/AndroidLogger;
 Lcom/base/app/DaggerEverythingApplication_HiltComponents_SingletonC$ActivityCBuilder;
 Lcom/base/app/DaggerEverythingApplication_HiltComponents_SingletonC$ActivityCImpl;
 Lcom/base/app/DaggerEverythingApplication_HiltComponents_SingletonC$ActivityRetainedCBuilder;
@@ -899,9 +899,9 @@ HPLcom/base/app/feature/sample/navigation/SampleNavigation;->sampleNavGraph$lamb
 SPLcom/base/app/feature/settings/SettingsViewModel$$ExternalSyntheticLambda1;->invoke(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 SPLcom/base/app/feature/settings/SettingsViewModel;->_init_$lambda$0(Lcom/base/app/feature/settings/SettingsState;Lcom/base/app/core/datastore/AppSettings;)Lcom/base/app/feature/settings/SettingsState;
 SPLcom/base/app/feature/settings/api/SettingsKey;->equals(Ljava/lang/Object;)Z
-SPLcom/base/app/AndroidLogger$WhenMappings;-><clinit>()V
-SPLcom/base/app/AndroidLogger;-><init>(ZLkotlin/jvm/functions/Function2;)V
-SPLcom/base/app/AndroidLogger;->log(Lcom/base/app/core/common/log/LogLevel;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
+SPLcom/base/app/log/AndroidLogger$WhenMappings;-><clinit>()V
+SPLcom/base/app/log/AndroidLogger;-><init>(ZLkotlin/jvm/functions/Function1;)V
+SPLcom/base/app/log/AndroidLogger;->log(Lcom/base/app/core/common/log/LogLevel;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
 SPLcom/base/app/DaggerEverythingApplication_HiltComponents_SingletonC$ActivityCBuilder;-><init>(Lcom/base/app/DaggerEverythingApplication_HiltComponents_SingletonC$SingletonCImpl;Lcom/base/app/DaggerEverythingApplication_HiltComponents_SingletonC$ActivityRetainedCImpl;)V
 SPLcom/base/app/DaggerEverythingApplication_HiltComponents_SingletonC$ActivityCBuilder;-><init>(Lcom/base/app/DaggerEverythingApplication_HiltComponents_SingletonC$SingletonCImpl;Lcom/base/app/DaggerEverythingApplication_HiltComponents_SingletonC$ActivityRetainedCImpl;Lcom/base/app/DaggerEverythingApplication_HiltComponents_SingletonC-IA;)V
 SPLcom/base/app/DaggerEverythingApplication_HiltComponents_SingletonC$ActivityCBuilder;->activity(Landroid/app/Activity;)Lcom/base/app/DaggerEverythingApplication_HiltComponents_SingletonC$ActivityCBuilder;

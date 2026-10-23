@@ -643,7 +643,8 @@ and only the inspector reads it.
 
 A library that reads `BuildConfig.DEBUG` behaves differently depending on which variant compiled
 it, and the difference often only shows up in release builds. `:app` builds `NetworkConfig` from
-its own `BuildConfig` and injects it, and it sets `AppLogger.debugEnabled` at startup.
+its own `BuildConfig` and injects it, and at startup it installs `app/.../log/AndroidLogger.kt` as
+`Log.logger` with `verbose = BuildConfig.DEBUG`, so every module's `Log.d` is silent in a release.
 
 ### Release artifacts are named
 
