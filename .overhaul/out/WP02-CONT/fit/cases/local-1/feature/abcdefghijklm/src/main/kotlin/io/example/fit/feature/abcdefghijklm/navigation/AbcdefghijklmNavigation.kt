@@ -1,0 +1,44 @@
+package io.example.fit.feature.abcdefghijklm.navigation
+
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityRetainedComponent
+import dagger.multibindings.IntoSet
+import io.example.fit.core.navigation.AppNavigator
+import io.example.fit.core.navigation.NavGraphEntry
+import io.example.fit.core.navigation.NavPane
+import io.example.fit.core.navigation.navGraph
+import io.example.fit.core.navigation.navKeys
+import io.example.fit.feature.abcdefghijklm.api.AbcdefghijklmDetailKey
+import io.example.fit.feature.abcdefghijklm.api.AbcdefghijklmListKey
+import io.example.fit.feature.abcdefghijklm.detail.AbcdefghijklmDetailRoute
+import io.example.fit.feature.abcdefghijklm.list.AbcdefghijklmListRoute
+import kotlinx.serialization.modules.SerializersModule
+
+/**
+ * How this feature joins the navigation graph: what renders each key, and how the keys are saved.
+ * On a wide window the detail opens beside the list, because the two declare their panes.
+ */
+@Module
+@InstallIn(ActivityRetainedComponent::class)
+internal object AbcdefghijklmNavigation {
+
+    @Provides
+    @IntoSet
+    fun abcdefghijklmNavGraph(navigator: AppNavigator): NavGraphEntry = navGraph {
+        entry<AbcdefghijklmListKey>(pane = NavPane.List) {
+            AbcdefghijklmListRoute(navigator = navigator)
+        }
+        entry<AbcdefghijklmDetailKey>(pane = NavPane.Detail) { key ->
+            AbcdefghijklmDetailRoute(id = key.id, navigator = navigator)
+        }
+    }
+
+    @Provides
+    @IntoSet
+    fun abcdefghijklmNavKeys(): SerializersModule = navKeys {
+        subclass(AbcdefghijklmListKey::class, AbcdefghijklmListKey.serializer())
+        subclass(AbcdefghijklmDetailKey::class, AbcdefghijklmDetailKey.serializer())
+    }
+}

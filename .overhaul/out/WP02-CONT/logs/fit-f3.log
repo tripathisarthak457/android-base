@@ -1,0 +1,13 @@
+[locked:gradle] waiting for the lock (pid 11904 since 2026-10-24 01:44:41: ./gradlew --continue :core:image:testDebugUnitTest :core:video:testDebugUnitTest :catalog:compileReleaseKotlin :app:comp)
+[locked:gradle] 969 MB available, 9346 MB commit left; waiting for 1500 MB
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Starting a Gradle Daemon, 1 stopped Daemon could not be reused, use --status for details
+> Task :spotlessKotlin
+> Task :spotlessKotlinApply
+> Task :spotlessKotlinGradle
+> Task :spotlessKotlinGradleApply
+> Task :spotlessApply
+
+BUILD SUCCESSFUL in 1m 20s
+4 actionable tasks: 4 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.7.1/userguide/configuration_cache_enabling.html

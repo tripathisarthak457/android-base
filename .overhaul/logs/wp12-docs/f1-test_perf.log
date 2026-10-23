@@ -1,0 +1,7 @@
+[locked:memwait] 1029 MB available, 8471 MB commit left; waiting for 1500 MB
+[locked:memwait] 1471 MB available, 8722 MB commit left; waiting for 1500 MB
+......................................................
+----------------------------------------------------------------------
+Ran 54 tests in 6.973s
+
+OK

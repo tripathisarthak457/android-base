@@ -1,0 +1,34 @@
+# Findings verifyCodeRules accepts in code written before its rule existed: `<path> <rule> <count>`.
+# A file may break the rule at most `count` times. An entry higher than what the file breaks fails
+# the build too, so the list only shrinks: lower or delete a line when you fix the code. New code
+# never goes here; fix it, or put a reasoned `// allow(<rule>): <why>` on the line above.
+
+# Screens
+feature/auth/src/main/kotlin/com/example/videoalone/feature/auth/AuthFrame.kt adaptive-box-constraints 1
+feature/auth/src/main/kotlin/com/example/videoalone/feature/auth/AuthFrame.kt scroll-chrome 1
+feature/auth/src/main/kotlin/com/example/videoalone/feature/auth/PasswordReset.kt adaptive-preview 1
+feature/auth/src/main/kotlin/com/example/videoalone/feature/auth/SignIn.kt adaptive-preview 1
+feature/auth/src/main/kotlin/com/example/videoalone/feature/auth/SignUp.kt adaptive-preview 1
+feature/feed/src/main/kotlin/com/example/videoalone/feature/feed/FeedScreen.kt adaptive-preview 1
+feature/onboarding/src/main/kotlin/com/example/videoalone/feature/onboarding/Onboarding.kt adaptive-preview 1
+feature/onboarding/src/main/kotlin/com/example/videoalone/feature/onboarding/Onboarding.kt raw-dp 2
+feature/profile/src/main/kotlin/com/example/videoalone/feature/profile/ProfileScreen.kt adaptive-preview 1
+feature/profile/src/main/kotlin/com/example/videoalone/feature/profile/ProfileScreen.kt raw-dp 1
+feature/sample/src/main/kotlin/com/example/videoalone/feature/sample/detail/SampleDetailScreen.kt adaptive-preview 1
+feature/search/src/main/kotlin/com/example/videoalone/feature/search/SearchScreen.kt adaptive-preview 1
+feature/settings/src/main/kotlin/com/example/videoalone/feature/settings/Licenses.kt adaptive-preview 1
+feature/settings/src/main/kotlin/com/example/videoalone/feature/settings/Settings.kt adaptive-preview 1
+
+# Design system and catalog
+catalog/src/main/kotlin/com/example/videoalone/catalog/sections/CatalogAdaptive.kt adaptive-screen-metrics 1
+core/designsystem/src/main/kotlin/com/example/videoalone/core/designsystem/animation/Emphasis.kt animated-delegate 1
+core/designsystem/src/main/kotlin/com/example/videoalone/core/designsystem/component/datadisplay/AppBarChart.kt animated-delegate 1
+core/designsystem/src/main/kotlin/com/example/videoalone/core/designsystem/component/datadisplay/AppSparkline.kt animated-delegate 1
+core/designsystem/src/main/kotlin/com/example/videoalone/core/designsystem/component/formfields/AppRangeSlider.kt animated-delegate 2
+core/designsystem/src/main/kotlin/com/example/videoalone/core/designsystem/theme/tokens/DesignTokens.kt file-length 1
+
+# Navigation shell
+core/navigation/src/main/kotlin/com/example/videoalone/core/navigation/presentation/PresentationCard.kt layer-package 1
+core/navigation/src/main/kotlin/com/example/videoalone/core/navigation/presentation/PresentationHost.kt layer-package 1
+core/navigation/src/main/kotlin/com/example/videoalone/core/navigation/shell/ShellShortcuts.kt legacy-back 1
+core/navigation/src/test/kotlin/com/example/videoalone/core/navigation/presentation/PresentationCardTest.kt layer-package 1

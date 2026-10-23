@@ -1,0 +1,66 @@
+[locked:memwait] 1395 MB available, 9241 MB commit left; waiting for 1500 MB
+.....................................................................................................FF........s..........................s...........................................ss.................................................................................................................................................s...........s.........................s..........s........................................................................................s....................
+======================================================================
+FAIL: test_a_copy_with_crlf_line_endings_is_stale_until_written_again (tests.test_catalogue.WebsiteCopyTest.test_a_copy_with_crlf_line_endings_is_stale_until_written_again)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_catalogue.py", line 109, in test_a_copy_with_crlf_line_endings_is_stale_until_written_again
+    self.assertIn("not laid out as --write writes it", output.getvalue())
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'not laid out as --write writes it' not found in '--- web/frontend/lib/catalogue.json (checked in)\n+++ web/frontend/lib/catalogue.json (fresh)\n@@ -816,7 +816,7 @@\n         },\n         {\n           "default": true,\n-          "description": "A second installable app showing every component and token, in the project\'s own design and motion style. A bar switches theme, style, motion, right-to-left, font scale and reduced motion live; each page opens directly with `--es section <Name>`, and a frame-time readout shows what each interaction costs. Depends on the design system alone, so design work rebuilds two modules, and on the image module when image loading is on.",\n+          "description": "A second installable app showing every component and token, in the project\'s own design and motion style. A bar switches theme, style, motion, right-to-left, font scale and reduced motion live; each page opens directly with `--es section <Name>`, and a frame-time readout shows what each interaction costs. Depends on the design system and the navigation shell, and on the image and video modules when those features are on.",\n           "group": "design",\n           "headline": "A second app showing every component",\n           "implied_only": false,\n\nweb/frontend/lib/catalogue.json is stale. Run: python3 -m genkit.core.catalogue --write\n'
+
+======================================================================
+FAIL: test_the_checked_in_copy_is_current (tests.test_catalogue.WebsiteCopyTest.test_the_checked_in_copy_is_current)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_catalogue.py", line 97, in test_the_checked_in_copy_is_current
+    self.assertEqual(0, code, output.getvalue()[-2000:])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : --- web/frontend/lib/catalogue.json (checked in)
++++ web/frontend/lib/catalogue.json (fresh)
+@@ -816,7 +816,7 @@
+         },
+         {
+           "default": true,
+-          "description": "A second installable app showing every component and token, in the project's own design and motion style. A bar switches theme, style, motion, right-to-left, font scale and reduced motion live; each page opens directly with `--es section <Name>`, and a frame-time readout shows what each interaction costs. Depends on the design system alone, so design work rebuilds two modules, and on the image module when image loading is on.",
++          "description": "A second installable app showing every component and token, in the project's own design and motion style. A bar switches theme, style, motion, right-to-left, font scale and reduced motion live; each page opens directly with `--es section <Name>`, and a frame-time readout shows what each interaction costs. Depends on the design system and the navigation shell, and on the image and video modules when those features are on.",
+           "group": "design",
+           "headline": "A second app showing every component",
+           "implied_only": false,
+
+web/frontend/lib/catalogue.json is stale. Run: python3 -m genkit.core.catalogue --write
+
+
+----------------------------------------------------------------------
+Ran 488 tests in 372.704s
+
+FAILED (failures=2, skipped=9)
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+exit 1

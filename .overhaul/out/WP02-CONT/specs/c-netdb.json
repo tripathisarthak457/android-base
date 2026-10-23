@@ -1,0 +1,20 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Fit c-netdb",
+  "package_name": "io.example.fitcnetdb",
+  "architecture": "compact",
+  "features": [
+    "network",
+    "database"
+  ],
+  "feature_modules": [
+    "abc",
+    "abcdefghi",
+    "abcdefghijklmno",
+    "abcdefghijklmnopqrs",
+    "abcdefghijklmnopqrstuvw",
+    "abcdefghijklmnopqrstuvwxyzabcd"
+  ],
+  "languages": []
+}

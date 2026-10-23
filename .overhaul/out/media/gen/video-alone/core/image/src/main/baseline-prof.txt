@@ -1,0 +1,2 @@
+HSPLcom/example/videoalone/core/image/**->**(**)**
+Lcom/example/videoalone/core/image/**;

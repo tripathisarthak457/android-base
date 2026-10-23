@@ -1,0 +1,54 @@
+.FFF..FF..
+======================================================================
+FAIL: test_being_done_excuses_only_the_rows_the_guide_lists_as_over (tests.test_docs.TemplateDocsTest.test_being_done_excuses_only_the_rows_the_guide_lists_as_over) (condition='- A change to motion, a list or start-up is done when `tools')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\sw-WP12\generator\tests\test_docs.py", line 271, in test_being_done_excuses_only_the_rows_the_guide_lists_as_over
+    self.assertIsNotNone(clause, f"{over} are over their limits today")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unexpectedly None : ['Push and pop with the Back key', 'Back gesture', 'Rapid Back', 'Scroll a root list; with the bar minimizing', 'Navigation stress'] are over their limits today
+
+======================================================================
+FAIL: test_being_done_excuses_only_the_rows_the_guide_lists_as_over (tests.test_docs.TemplateDocsTest.test_being_done_excuses_only_the_rows_the_guide_lists_as_over) (condition='7. A change to motion, a list or start-up has `tools/perf/pe')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\sw-WP12\generator\tests\test_docs.py", line 271, in test_being_done_excuses_only_the_rows_the_guide_lists_as_over
+    self.assertIsNotNone(clause, f"{over} are over their limits today")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unexpectedly None : ['Push and pop with the Back key', 'Back gesture', 'Rapid Back', 'Scroll a root list; with the bar minimizing', 'Navigation stress'] are over their limits today
+
+======================================================================
+FAIL: test_being_done_excuses_only_the_rows_the_guide_lists_as_over (tests.test_docs.TemplateDocsTest.test_being_done_excuses_only_the_rows_the_guide_lists_as_over) (condition='8. `perf.sh --gate solid` passes on a release build, and aga')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\sw-WP12\generator\tests\test_docs.py", line 271, in test_being_done_excuses_only_the_rows_the_guide_lists_as_over
+    self.assertIsNotNone(clause, f"{over} are over their limits today")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unexpectedly None : ['Push and pop with the Back key', 'Back gesture', 'Rapid Back', 'Scroll a root list; with the bar minimizing', 'Navigation stress'] are over their limits today
+
+======================================================================
+FAIL: test_every_name_the_docs_cite_exists (tests.test_docs.TemplateDocsTest.test_every_name_the_docs_cite_exists) (page='AGENTS.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\sw-WP12\generator\tests\test_docs.py", line 253, in test_every_name_the_docs_cite_exists
+    self.assertEqual(STALE_NAMES.get(page, set()), names & unknown)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'userMessage'
+
+======================================================================
+FAIL: test_every_name_the_docs_cite_exists (tests.test_docs.TemplateDocsTest.test_every_name_the_docs_cite_exists) (page='docs/ARCHITECTURE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\sw-WP12\generator\tests\test_docs.py", line 253, in test_every_name_the_docs_cite_exists
+    self.assertEqual(STALE_NAMES.get(page, set()), names & unknown)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'gridMinCellWidth'
+'isOffline'
+'userMessage'
+
+----------------------------------------------------------------------
+Ran 7 tests in 1.002s
+
+FAILED (failures=5)

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_title">प्रोफ़ाइल</string>
+    <string name="profile_name">नाम</string>
+    <string name="profile_name_placeholder">हम आपको किस नाम से बुलाएं?</string>
+    <string name="profile_bio">आपके बारे में</string>
+    <string name="profile_bio_placeholder">प्रोफ़ाइल के लिए एक-दो पंक्तियां</string>
+    <string name="profile_save">बदलाव सेव करें</string>
+    <string name="profile_saved">प्रोफ़ाइल सेव हो गई</string>
+    <string name="profile_name_required">नाम जोड़ें, ताकि लोग जान सकें कि आप कौन हैं।</string>
+    <string name="profile_unnamed">आप</string>
+    <string name="profile_change_photo">फ़ोटो बदलें</string>
+    <string name="profile_remove_photo">फ़ोटो हटाएं</string>
+</resources>

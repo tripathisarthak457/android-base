@@ -1,0 +1,10 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+> Task :spotlessKotlin
+> Task :spotlessKotlinApply
+> Task :spotlessKotlinGradle
+> Task :spotlessKotlinGradleApply
+> Task :spotlessApply
+
+BUILD SUCCESSFUL in 1m 46s
+4 actionable tasks: 4 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.7.1/userguide/configuration_cache_enabling.html

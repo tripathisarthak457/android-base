@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="navigation_more">Plus</string>
+    <string name="navigation_back">Retour</string>
+    <string name="navigation_show_sidebar">Afficher la barre latérale</string>
+    <string name="navigation_hide_sidebar">Masquer la barre latérale</string>
+</resources>

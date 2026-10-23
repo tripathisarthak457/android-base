@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Every piece of copy this feature shows. Translations go in values-<language>/ beside it. -->
+<resources>
+    <string name="abcdefghi_title">Abcdefghi</string>
+    <string name="abcdefghi_empty_title">Nothing here yet</string>
+    <string name="abcdefghi_empty_message">When there is something to show, it appears on this screen.</string>
+    <string name="abcdefghi_reload">Reload</string>
+</resources>

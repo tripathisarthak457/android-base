@@ -1,0 +1,150 @@
+[locked:memwait] 1001 MB available, 8299 MB commit left; waiting for 1500 MB
+===== coil features: ['coil']
+
+### Draw remote images as painters
+
+**Rule.** Show a remote image with `AppNetworkImage` (or Coil's `AsyncImage` with `placeholder` and
+`error` painters), never `SubcomposeAsyncImage`. Inside an active `AppRedacted` it draws a skeleton and
+loads nothing.
+
+**Why.** `SubcomposeAsyncImage` composes per load state and swaps the subcomposed content when the load
+finishes, mid-scroll; Coil's own documentation calls subcomposition slower than regular composition.
+With painters a finished load changes only what is drawn: nothing recomposes, and a scrolling list stays
+at one composition per row.
+
+**Enforced by.** `subcompose-image`.
+
+### One image loader
+
+**Rule.** Never build a second image loader. This project has no network module, so Coil's own
+singleton loader fetches images with an `OkHttpClient` it builds itself. Once the app has a client of
+its own, set the singleton loader on it (`SingletonImageLoader.setSafe` in the `Application`), so images
+share its connection pool and certificate pins.
+
+**Why.** A second loader means a second memory cache, and a second client a second connection pool.
+
+**Enforced by.** *review* (`AGENTS.md`: no second image loader).
+
+---
+
+## 
+ch 0.78-1.19 ms/s, janky after the first 0 % | within |
+| Push and pop with the Back key | hitch 6.6-8.2 ms/s, janky after the first 0.2-0.49 % | hitch over 5.0 |
+| Back gesture | hitch 5.7-10.6 ms/s, janky after the first 1.09-1.5 % | both over |
+| Rapid Back | hitch 2.3-4.6 ms/s, janky after the first 0.92-1.07 % | hitch within; janky at its 1.0 limit, over it in one session |
+| Scroll a root list; with the bar minimizing | janky 0.66-0.78 %; 0.85-1.06 %; GPU p90 7-8 ms | over 0.5 % and 7.0 ms |
+| Navigation stress | janky 6.5-7.1 % | over 4.0 % |
+| Idle, recomposition, memory, cold start | 0 frames; tab, push, pop, back card 1, 5, 2, 0; app PSS 55.1 MB; cold start 366-381 ms as installed | within |
+
+The rows over their limits are open work in the template, not targets it meets: build nothing that makes
+them worse, and measure a change to the shell, a list or the bar against them.
+
+---
+ce page read before each fix.
+2. The changed journey composes nothing in its middle frames: `assertQuietBetweenEnds()` passes for it.
+3. No full-screen layer has alpha below 1, and no screen adds a second full-screen fill.
+4. Every spring comes from `AppTheme.springs`, and a motion a finger started is released with the
+   finger's velocity.
+5. Every new lazy list has keys, content types where kinds mix, its padding inside the scroll
+   (`chromeContentPadding()` on a screen, the sheet's `contentPadding` in an `AppSheet`) and the design
+   system's fling.
+6. A new destination's first frame shows its content when the data is in memory, and its secondary
+   sections wait for `LocalNavigationSettled`.
+7. Nothing new animates while idle or while its screen is hidden.
+8. Measured on a release build against the previous build, the same day on the same phone, no journey
+   you touched got worse.
+
+AGENTS: - A change to motion, a list or start-up is done when, measured on a release build against the previous build the same day on the same phone, no journey it touches got worse. — *review*
+AGENTS: 7. A change to motion, a list or start-up was measured on a release build against the previous build,
+===== everything features: ['analytics', 'applock', 'appstatus', 'auth', 'browser', 'catalog', 'ci', 'coil', 'collections', 'coverage', 'crashlytics', 'database', 'datadisplay', 'deeplink', 'depsanalysis', 'devtools', 'firebase', 'firebaseanalytics', 'flags', 'formatting', 'formfields', 'forms', 'googlefonts', 'googlesignin', 'language', 'leakcanary', 'licenses', 'liquidglass', 'media', 'network', 'offlinequeue', 'onboarding', 'paging', 'perfhud', 'performance', 'pickers', 'playstore', 'profile', 'push', 'remoteconfig', 'sample', 'search', 'settings', 'websocket']
+
+### Draw remote images as painters
+
+**Rule.** Show a remote image with `AppNetworkImage` (or Coil's `AsyncImage` with `placeholder` and
+`error` painters), never `SubcomposeAsyncImage`. Inside an active `AppRedacted` it draws a skeleton and
+loads nothing.
+
+**Why.** `SubcomposeAsyncImage` composes per load state and swaps the subcomposed content when the load
+finishes, mid-scroll; Coil's own documentation calls subcomposition slower than regular composition.
+With painters a finished load changes only what is drawn: nothing recomposes, and a scrolling list stays
+at one composition per row.
+
+**Enforced by.** `subcompose-image`.
+
+### One image loader, on the app's client
+
+**Rule.** Coil's singleton loader is set once, in `DocsCheckApplication.onCreate`, on the app's own
+`OkHttpClient` (`newBuilder().cache(null)`: Coil keeps images in a disk cache of its own). Never build a
+second loader, and never let Coil build its default client.
+
+**Why.** One client means one connection pool and one set of certificate pins for HTTP, sockets and
+images; a default loader builds a client of its own with neither, and a second loader means a second
+memory cache.
+
+**Enforced by.** *review* (`AGENTS.md`: no second image loader).
+
+---
+
+## 
+anky 0.66-0.78 %; 0.85-1.06 %; GPU p90 7-8 ms | over 0.5 % and 7.0 ms |
+| Navigation stress | janky 6.5-7.1 % | over 4.0 % |
+| Idle, recomposition, memory, cold start | 0 frames; tab, push, pop, back card 1, 5, 2, 0; app PSS 55.1 MB; cold start 366-381 ms as installed | within |
+
+The rows over their limits are open work in the template, not targets it meets: build nothing that makes
+them worse, and measure a change to the shell, a list or the bar against them.
+
+While a row here is over, `--gate solid` fails on every build, whatever the change. So being done (item 8
+of [Before you merge UI work](#before-you-merge-ui-work), and `AGENTS.md`) excuses exactly the limits
+this table lists as over, at no worse than the values it gives. A change that brings a row within its
+limits updates this table in the same change; when every row reads "within", that exception goes from
+all three places.
+
+---
+d is released with the
+   finger's velocity.
+5. Every new lazy list has keys, content types where kinds mix, its padding inside the scroll
+   (`chromeContentPadding()` on a screen, the sheet's `contentPadding` in an `AppSheet`) and the design
+   system's fling.
+6. A new destination's first frame shows its content when the data is in memory, and its secondary
+   sections wait for `LocalNavigationSettled`.
+7. Nothing new animates while idle or while its screen is hidden.
+8. On a release build, `perf.sh --gate solid` fails on no limit but those
+   [Where the template stands](#where-the-template-stands) lists as over, none of those is worse than it
+   lists there, and against the previous build measured the same day,
+   `--baseline <previous run>/summary.json --gate smoke` passes and no other row of the two `summary.md`
+   files got worse.
+9. Any new motion has a recording from `record.sh`.
+
+AGENTS: - **Show a failure:** `error.toUiText(UiText.of(R.string.x))` (`AppError.toUiText` in `:core:ui`): the
+AGENTS: - A change to motion, a list or start-up is done when, on a release build, `tools/perf/perf.sh --gate solid` fails on no limit but those [Where the template stands](docs/PERFORMANCE.md#where-the-template-stands) lists as over, none of those is worse than it lists there, and against the previous build measured the same day `--baseline <previous run>/summary.json --gate smoke` passes and no other ro
+AGENTS: 7. A change to motion, a list or start-up, on a release build: `tools/perf/perf.sh --gate solid` fails on
+===== none features: []
+(no images section)
+ch 0.78-1.19 ms/s, janky after the first 0 % | within |
+| Push and pop with the Back key | hitch 6.6-8.2 ms/s, janky after the first 0.2-0.49 % | hitch over 5.0 |
+| Back gesture | hitch 5.7-10.6 ms/s, janky after the first 1.09-1.5 % | both over |
+| Rapid Back | hitch 2.3-4.6 ms/s, janky after the first 0.92-1.07 % | hitch within; janky at its 1.0 limit, over it in one session |
+| Scroll a root list; with the bar minimizing | janky 0.66-0.78 %; 0.85-1.06 %; GPU p90 7-8 ms | over 0.5 % and 7.0 ms |
+| Navigation stress | janky 6.5-7.1 % | over 4.0 % |
+| Idle, recomposition, memory, cold start | 0 frames; tab, push, pop, back card 1, 5, 2, 0; app PSS 55.1 MB; cold start 366-381 ms as installed | within |
+
+The rows over their limits are open work in the template, not targets it meets: build nothing that makes
+them worse, and measure a change to the shell, a list or the bar against them.
+
+---
+ce page read before each fix.
+2. The changed journey composes nothing in its middle frames: `assertQuietBetweenEnds()` passes for it.
+3. No full-screen layer has alpha below 1, and no screen adds a second full-screen fill.
+4. Every spring comes from `AppTheme.springs`, and a motion a finger started is released with the
+   finger's velocity.
+5. Every new lazy list has keys, content types where kinds mix, its padding inside the scroll
+   (`chromeContentPadding()` on a screen, the sheet's `contentPadding` in an `AppSheet`) and the design
+   system's fling.
+6. A new destination's first frame shows its content when the data is in memory, and its secondary
+   sections wait for `LocalNavigationSettled`.
+7. Nothing new animates while idle or while its screen is hidden.
+8. Measured on a release build against the previous build, the same day on the same phone, no journey
+   you touched got worse.
+
+AGENTS: - A change to motion, a list or start-up is done when, measured on a release build against the previous build the same day on the same phone, no journey it touches got worse. — *review*
+AGENTS: 7. A change to motion, a list or start-up was measured on a release build against the previous build,

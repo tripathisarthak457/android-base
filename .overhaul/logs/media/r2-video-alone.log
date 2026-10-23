@@ -1,0 +1,255 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :app:compileDevReleaseKotlin :catalog:compileReleaseKotlin :core:image:testDebugUnitTest
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDevReleaseBuild UP-TO-DATE
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies
+> Task :core:datastore:verifyApiPurity
+> Task :core:common:verifyApiPurity
+> Task :core:datastore:verifyModuleDependencies
+> Task :core:datastore:preBuild
+> Task :core:datastore:preReleaseBuild
+> Task :core:datastore:generateReleaseEmptyResourceFiles
+> Task :app:generateDevReleaseBuildConfig
+> Task :app:generateDevReleaseResources
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:image:verifyApiPurity
+> Task :core:image:verifyModuleDependencies
+> Task :core:image:preBuild
+> Task :core:image:preReleaseBuild
+> Task :core:image:generateReleaseEmptyResourceFiles
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preReleaseBuild
+> Task :core:designsystem:processReleaseNavigationResources
+> Task :core:mvi:verifyModuleDependencies
+> Task :core:mvi:verifyApiPurity
+> Task :core:mvi:preBuild
+> Task :core:mvi:preReleaseBuild
+> Task :app:packageDevReleaseResources
+> Task :core:mvi:generateReleaseEmptyResourceFiles
+> Task :core:navigation:verifyModuleDependencies
+> Task :core:ui:verifyModuleDependencies
+> Task :core:ui:verifyApiPurity
+> Task :core:ui:preBuild
+> Task :core:ui:preReleaseBuild
+> Task :core:ui:processReleaseNavigationResources
+> Task :core:video:verifyApiPurity
+> Task :core:video:verifyModuleDependencies
+> Task :core:video:preBuild
+> Task :core:video:preReleaseBuild
+> Task :core:video:processReleaseNavigationResources
+> Task :core:navigation:verifyApiPurity
+> Task :data:home:verifyApiPurity
+> Task :core:navigation:preBuild
+> Task :data:home:verifyModuleDependencies
+> Task :core:navigation:preReleaseBuild
+> Task :data:home:preBuild
+> Task :data:home:preReleaseBuild
+> Task :core:navigation:processReleaseNavigationResources
+> Task :data:home:generateReleaseEmptyResourceFiles
+> Task :feature:home:verifyModuleDependencies
+> Task :feature:home:verifyApiPurity
+> Task :feature:home:preBuild
+> Task :feature:home:preReleaseBuild
+> Task :core:designsystem:generateReleaseResources
+> Task :feature:home:processReleaseNavigationResources
+> Task :core:designsystem:packageReleaseResources
+> Task :core:datastore:javaPreCompileRelease
+> Task :core:designsystem:javaPreCompileRelease
+> Task :core:image:javaPreCompileRelease FROM-CACHE
+> Task :core:mvi:javaPreCompileRelease FROM-CACHE
+> Task :core:navigation:generateReleaseResources
+> Task :core:navigation:packageReleaseResources
+> Task :core:designsystem:parseReleaseLocalResources
+> Task :core:navigation:parseReleaseLocalResources
+> Task :core:navigation:generateReleaseRFile
+> Task :core:designsystem:generateReleaseRFile
+> Task :core:navigation:javaPreCompileRelease FROM-CACHE
+> Task :core:ui:generateReleaseResources
+> Task :core:ui:packageReleaseResources
+> Task :core:ui:parseReleaseLocalResources
+> Task :core:ui:generateReleaseRFile
+> Task :core:ui:javaPreCompileRelease FROM-CACHE
+> Task :core:video:generateReleaseResources
+> Task :core:video:packageReleaseResources
+> Task :core:video:parseReleaseLocalResources
+> Task :core:video:generateReleaseRFile
+> Task :app:processDevReleaseNavigationResources
+> Task :core:video:javaPreCompileRelease FROM-CACHE
+> Task :app:parseDevReleaseLocalResources
+> Task :app:generateDevReleaseRFile
+> Task :data:home:javaPreCompileRelease FROM-CACHE
+> Task :feature:home:javaPreCompileRelease FROM-CACHE
+> Task :catalog:preBuild UP-TO-DATE
+> Task :catalog:preReleaseBuild UP-TO-DATE
+> Task :feature:home:generateReleaseResources
+> Task :feature:home:packageReleaseResources
+> Task :catalog:generateReleaseBuildConfig
+> Task :feature:home:parseReleaseLocalResources
+> Task :feature:home:generateReleaseRFile
+> Task :catalog:generateReleaseResources
+> Task :catalog:processReleaseNavigationResources
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:designsystem:packageDebugResources
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:generateDebugRFile FROM-CACHE
+> Task :catalog:packageReleaseResources
+> Task :catalog:parseReleaseLocalResources
+> Task :catalog:generateReleaseRFile
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:image:preDebugBuild
+> Task :core:image:javaPreCompileDebug FROM-CACHE
+> Task :core:image:preDebugUnitTestBuild
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:designsystem:compileDebugLibraryResources
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:image:writeDebugAarMetadata
+> Task :core:testing:verifyApiPurity
+> Task :core:testing:verifyModuleDependencies
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :core:testing:writeDebugAarMetadata
+> Task :core:testing:compose:verifyApiPurity
+> Task :core:testing:compose:verifyModuleDependencies
+> Task :core:testing:compose:preBuild
+> Task :core:testing:compose:preDebugBuild
+> Task :core:common:compileKotlin
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:testing:compose:writeDebugAarMetadata
+> Task :core:common:jar
+> Task :core:image:checkDebugUnitTestAarMetadata
+> Task :core:mvi:compileReleaseKotlin
+> Task :core:mvi:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibCompileToJarRelease
+> Task :core:designsystem:compileReleaseKotlin
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:datastore:kspReleaseKotlin
+> Task :data:home:kspReleaseKotlin
+> Task :data:home:compileReleaseKotlin
+> Task :core:datastore:compileReleaseKotlin
+> Task :data:home:compileReleaseJavaWithJavac
+> Task :data:home:bundleLibCompileToJarRelease
+> Task :core:image:mapDebugUnitTestSourceSetPaths
+> Task :core:image:generateDebugEmptyResourceFiles
+> Task :core:image:generateDebugUnitTestResources
+> Task :core:testing:generateDebugEmptyResourceFiles
+> Task :core:datastore:compileReleaseJavaWithJavac
+> Task :core:testing:compose:generateDebugEmptyResourceFiles
+> Task :core:datastore:bundleLibCompileToJarRelease
+> Task :core:designsystem:extractDeepLinksDebug
+> Task :core:designsystem:processDebugManifest
+> Task :core:image:processDebugManifest
+> Task :core:testing:processDebugManifest
+> Task :core:testing:compose:processDebugManifest
+> Task :core:image:mergeDebugUnitTestManifest
+> Task :core:image:processDebugUnitTestManifest
+> Task :core:image:mergeDebugUnitTestResources
+> Task :core:testing:compileDebugKotlin
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:image:processDebugUnitTestResources
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:bundleLibCompileToJarRelease
+> Task :core:designsystem:bundleLibRuntimeToJarRelease
+> Task :core:designsystem:processDebugJavaRes
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:testing:compose:compileDebugKotlin
+> Task :core:testing:compose:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:bundleLibCompileToJarDebug
+> Task :core:image:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets
+> Task :core:image:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:image:generateDebugAssets UP-TO-DATE
+> Task :core:image:mergeDebugAssets
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:mergeDebugAssets
+> Task :core:testing:compose:generateDebugAssets UP-TO-DATE
+> Task :core:testing:compose:mergeDebugAssets
+> Task :core:image:compileDebugKotlin
+> Task :core:image:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:image:bundleLibRuntimeToJarDebug
+> Task :core:image:bundleLibCompileToJarDebug
+> Task :core:image:compileReleaseKotlin
+> Task :core:image:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:image:bundleLibCompileToJarRelease
+> Task :core:image:mergeDebugUnitTestAssets
+> Task :core:image:packageDebugUnitTestForUnitTest
+> Task :core:image:generateDebugUnitTestConfig
+> Task :core:image:processDebugJavaRes
+> Task :core:testing:bundleLibRuntimeToJarDebug
+> Task :core:testing:processDebugJavaRes
+> Task :core:testing:compose:bundleLibRuntimeToJarDebug
+> Task :core:testing:compose:processDebugJavaRes
+> Task :core:navigation:kspReleaseKotlin
+
+> Task :core:image:compileDebugUnitTestKotlin
+w: file:///D:/projects/tools/.overhaul/out/media/gen/video-alone/core/image/src/test/kotlin/com/example/videoalone/core/image/AppNetworkImageTest.kt:77:30 This declaration needs opt-in. Its usage should be marked with '@coil3.annotation.DelicateCoilApi' or '@OptIn(coil3.annotation.DelicateCoilApi::class)'
+w: file:///D:/projects/tools/.overhaul/out/media/gen/video-alone/core/image/src/test/kotlin/com/example/videoalone/core/image/AppNetworkImageTest.kt:81:46 This declaration needs opt-in. Its usage should be marked with '@coil3.annotation.DelicateCoilApi' or '@OptIn(coil3.annotation.DelicateCoilApi::class)'
+w: file:///D:/projects/tools/.overhaul/out/media/gen/video-alone/core/image/src/test/kotlin/com/example/videoalone/core/image/PrefetchImagesTest.kt:73:30 This declaration needs opt-in. Its usage should be marked with '@coil3.annotation.DelicateCoilApi' or '@OptIn(coil3.annotation.DelicateCoilApi::class)'
+w: file:///D:/projects/tools/.overhaul/out/media/gen/video-alone/core/image/src/test/kotlin/com/example/videoalone/core/image/PrefetchImagesTest.kt:79:30 This declaration needs opt-in. Its usage should be marked with '@coil3.annotation.DelicateCoilApi' or '@OptIn(coil3.annotation.DelicateCoilApi::class)'
+
+> Task :core:image:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:image:processDebugUnitTestJavaRes
+
+> Task :core:video:compileReleaseKotlin
+w: file:///D:/projects/tools/.overhaul/out/media/gen/video-alone/core/video/src/main/kotlin/com/example/videoalone/core/video/engine/PreloadingEngine.kt:175:70 'static fun getDefaults(p0: Context): TrackSelectionParameters' is deprecated. Deprecated in Java.
+
+> Task :core:video:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:video:bundleLibCompileToJarRelease
+
+> Task :core:image:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :core:navigation:compileReleaseKotlin
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+> Task :core:navigation:compileReleaseJavaWithJavac
+> Task :core:navigation:transformReleaseClassesWithAsm
+> Task :core:navigation:bundleLibCompileToJarRelease
+> Task :core:ui:compileReleaseKotlin
+> Task :core:ui:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:ui:bundleLibCompileToJarRelease
+> Task :feature:home:kspReleaseKotlin
+> Task :feature:home:compileReleaseKotlin
+> Task :feature:home:compileReleaseJavaWithJavac
+> Task :feature:home:bundleLibCompileToJarRelease
+> Task :catalog:compileReleaseKotlin
+> Task :app:kspDevReleaseKotlin
+> Task :app:compileDevReleaseKotlin
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/out/media/gen/video-alone/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 3m 27s
+168 actionable tasks: 152 executed, 16 from cache
+Configuration cache entry stored.

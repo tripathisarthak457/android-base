@@ -1,0 +1,17 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Audit",
+  "package_name": "io.example.audit",
+  "architecture": "compact",
+  "features": [
+    "network",
+    "sample",
+    "database"
+  ],
+  "feature_modules": [
+    "order",
+    "abcdefghijklmnopqrstuvwxyzabcd"
+  ],
+  "languages": []
+}

@@ -249,3 +249,4 @@ Oct 23, 22:56 | The user chose full scope with the gate about Nov 3 (measured ro
 Oct 23, 23:25 | Release-pipeline plan finished (revision 2: 41 stages; gate likely Nov 4 22:30, best Nov 2 06:20, risk Nov 9 14:00, about 44 h later than the Nov 3 accepted at 23:0x; announced). Draft reviewed (no push, no main, no PeriFlow, Sonnet only on runs with Opus verifiers, low-priority locks on the fast track) and launched in fast-track mode as w58v287n1 (run wf_31bb8b89-166) | Fast track
 Oct 24, 00:03 | Paused for usage at 90% (reset 01:20): staging wvm1eg5yt, media wfv7lfze2, fast-track release w58v287n1 stopped; one-shot resume at 01:14 | Paused
 Oct 24, 01:14 | Resumed after the usage pause: staging wkebg71u2, media w9p595mmn, fast-track release wi90qb78r (same run ids) | Resumed
+Oct 24, 02:27 | Pacing: media w9p595mmn and fast-track release wi90qb78r stopped at 47% (u + 0.2m = 93.4) so staging runs alone to the 06:20 reset; resume one-shot at 06:14 | Paced

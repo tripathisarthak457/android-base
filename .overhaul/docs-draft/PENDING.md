@@ -30,7 +30,14 @@ edit the template files, never the drafts). When you paste an entry:
   rule id, gate row, scenario, spring or link a generated project lacks.
 - "Where the template stands" (in "Screen transitions") holds the last measured release rows of the
   Everything preset. A stage that re-measures them on the merged code (HUD-O1, REG, every train's phone
-  gate, WP13) updates that table in the same change; a row that goes green moves to "within".
+  gate, WP13) updates that table in the same change; a row that goes green moves to "within". While any
+  row is over, the done-condition (section 6 and section 10 item 7 of `AGENTS.md`, the guide's "Before
+  you merge UI work" item 8) excuses exactly those limits, in one wording; when the last row reads
+  "within", the stage that made it so removes that exception from all three places
+  (`test_docs.test_being_done_excuses_only_the_rows_the_guide_lists_as_over` fails until it does).
+- Headings: a rule directly under a `##` section is `###`, under `### Start-up` or `### Rules for
+  screens` it is `####`. The `####` in the entries below are written for the second case; match the
+  section you paste into.
 - T-P1's "also" note: the sentence to replace in "The back gesture" is the one beginning "No signal tells
   a screen that it is in the card"; it is no longer that paragraph's last sentence.
 - O-1's replacement bullet for "Builds that mean something" keeps the `devtools` fence around it.
@@ -147,7 +154,7 @@ the reference phone, and uses a short cross-fade only outside lists. A build wit
 network module gets the same limits from a `<opt:coil&!network>` block, without the OkHttp fetcher.
 Exactly one loader per build, with a test that the singleton's fetcher uses the app's `OkHttpClient`.
 
-**Text for `docs/PERFORMANCE.md`** (section "Images", after "One image loader, on the app's client"):
+**Text for `docs/PERFORMANCE.md`** (section "Images", after "One image loader", both its `network` and its `opt-else` wording):
 
 ~~~markdown
 The loader's limits are set, not Coil's defaults: a memory cache of {bound}, hardware bitmaps, at most

@@ -1,0 +1,2 @@
+HSPLcom/example/everything/core/image/**->**(**)**
+Lcom/example/everything/core/image/**;

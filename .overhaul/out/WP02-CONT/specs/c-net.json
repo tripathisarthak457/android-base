@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Fit c-net",
+  "package_name": "io.example.fitcnet",
+  "architecture": "compact",
+  "features": [
+    "network"
+  ],
+  "feature_modules": [
+    "abc",
+    "abcdefghi",
+    "abcdefghijklmno",
+    "abcdefghijklmnopqrs",
+    "abcdefghijklmnopqrstuvw",
+    "abcdefghijklmnopqrstuvwxyzabcd"
+  ],
+  "languages": []
+}
