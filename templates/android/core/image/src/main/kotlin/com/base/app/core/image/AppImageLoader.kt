@@ -9,8 +9,10 @@ import coil3.bitmapFactoryMaxParallelism
 import coil3.disk.DiskCache
 import coil3.memory.MemoryCache
 import coil3.memoryCacheMaxSizePercentWhileInBackground
+import coil3.network.HttpException
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.allowHardware
+import coil3.request.ErrorResult
 import coil3.request.crossfade
 import coil3.request.maxBitmapSize
 import coil3.serviceLoaderEnabled
@@ -32,15 +34,15 @@ import okio.Path.Companion.toOkioPath
  *   its image on every frame of the fade.
  * - Coil's disk bounds, in the app's cache directory, which the system may clear and never backs up.
  *
- * [callFactory] is the app's own HTTP client when it has one, so images share its connections and its
- * certificate pins; without it Coil builds a client of its own the first time an image is fetched.
- * Coil's service loader is off, so nothing joins the pipeline unseen: a decoder for another format
- * (SVG, GIF) is added here, explicitly. [events] lets dev tooling watch loads and decodes; production
- * builds pass nothing.
+ * [callFactory] is the one HTTP client the app's images and video share: the app's own, so they share
+ * its connections and its certificate pins, or a [MediaCallFactory] when it has none. Coil never builds
+ * a client of its own, and its service loader is off, so nothing joins the pipeline unseen: a decoder
+ * for another format (SVG, GIF) is added here, explicitly. [events] lets dev tooling and the catalog's
+ * perf log watch loads and decodes; production builds pass nothing.
  */
 fun appImageLoader(
     context: PlatformContext,
-    callFactory: (() -> Call.Factory)? = null,
+    callFactory: () -> Call.Factory,
     events: EventListener.Factory? = null,
 ): ImageLoader = ImageLoader.Builder(context)
     .memoryCache { MemoryCache.Builder().maxSizeBytes { imageMemoryBytes(context) }.build() }
@@ -51,11 +53,12 @@ fun appImageLoader(
     .allowHardware(true)
     .crossfade(false)
     .serviceLoaderEnabled(false)
-    .components {
-        add(if (callFactory == null) OkHttpNetworkFetcherFactory() else OkHttpNetworkFetcherFactory(callFactory = callFactory))
-    }
+    .components { add(OkHttpNetworkFetcherFactory(callFactory = callFactory)) }
     .apply { if (events != null) eventListenerFactory(events) }
     .build()
+
+/** The HTTP status a failed load got from its server, or null when it failed some other way. For dev tooling's logs. */
+val ErrorResult.httpStatus: Int? get() = (throwable as? HttpException)?.response?.code
 
 private fun imageMemoryBytes(context: Context): Long {
     val activities = context.getSystemService(ActivityManager::class.java)
@@ -83,4 +86,6 @@ private const val MEMORY_SHARE = 0.20
 private const val LOW_RAM_SHARE = 0.15
 private const val MAX_MEMORY_BYTES = 64L * 1024 * 1024
 private const val BYTES_PER_MB = 1024L * 1024
-private const val DISK_DIRECTORY = "image_cache"
+
+/** Coil's own folder name: an app that already ran Coil's default loader keeps the cache it has. */
+private const val DISK_DIRECTORY = "coil3_disk_cache"

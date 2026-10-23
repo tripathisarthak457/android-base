@@ -38,11 +38,14 @@ import com.base.app.core.network.websocket.RealtimeLifecycle
 // <opt:coil>
 import coil3.SingletonImageLoader
 import com.base.app.core.image.appImageLoader
-// </opt:coil>
-// <opt:coil&network>
 import okhttp3.Call
+// <opt:network>
 import okhttp3.OkHttpClient
-// </opt:coil&network>
+// </opt:network>
+// <opt-else:network>
+//~ import com.base.app.core.image.MediaCallFactory
+// </opt-else:network>
+// </opt:coil>
 
 /** The composition root. Deliberately thin. */
 @HiltAndroidApp
@@ -95,15 +98,21 @@ class BaseAppApplication : Application(), Configuration.Provider {
     lateinit var realtime: RealtimeLifecycle
     // </opt:websocket>
 
-    // <opt:coil&network>
+    // <opt:coil>
+    // <opt:network>
     // Lazy: injecting the client itself would build it during start-up, before any image needs it.
     @Inject
     lateinit var okHttp: dagger.Lazy<OkHttpClient>
 
-    // The app's own client without its HTTP cache, which media does not need: it keeps disk caches
-    // of its own.
+    // One client for images and video: the app's own, so they share its connections and its
+    // certificate pins, without its HTTP cache, because each keeps a disk cache of its own.
     private val mediaClient: Call.Factory by lazy { okHttp.get().newBuilder().cache(null).build() }
-    // </opt:coil&network>
+    // </opt:network>
+    // <opt-else:network>
+    //~ // Images and video share one client, built on their first request.
+    //~ private val mediaClient: Call.Factory = MediaCallFactory()
+    // </opt-else:network>
+    // </opt:coil>
 
     override fun onCreate() {
         super.onCreate()
@@ -138,12 +147,9 @@ class BaseAppApplication : Application(), Configuration.Provider {
         realtime.start()
         // </opt:websocket>
 
-        // <opt:coil&network>
-        // Images go through the app's own client, so they share its connections and its certificate
-        // pins; Coil's default would build a client of its own that has neither.
+        // <opt:coil>
         SingletonImageLoader.setSafe { context -> appImageLoader(context, callFactory = { mediaClient }) }
-        // </opt:coil&network>
-        // <opt:coil&!network>        SingletonImageLoader.setSafe { context -> appImageLoader(context) }
+        // </opt:coil>
     }
 }
 

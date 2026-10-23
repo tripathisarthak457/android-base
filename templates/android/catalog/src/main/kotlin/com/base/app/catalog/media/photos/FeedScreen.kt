@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import com.base.app.catalog.catalogContentPadding
 import com.base.app.core.designsystem.component.button.AppIconButton
 import com.base.app.core.designsystem.component.container.AppScaffold
@@ -67,6 +66,8 @@ internal fun PhotoFeedScreen(onBack: (() -> Unit)?) {
 
 @Composable
 private fun Stories() {
+    // A story is the size of a list row, larger than a post's avatar, which keeps AppAvatar's own size.
+    val storySize = AppTheme.sizes.rowHeight
     LazyRow(
         contentPadding = PaddingValues(horizontal = AppTheme.spacing.gutter),
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
@@ -74,11 +75,11 @@ private fun Stories() {
     ) {
         items(StoryItems, key = { "story-${it.id}" }, contentType = { "story" }) { story ->
             Column(
-                modifier = Modifier.width(StorySize),
+                modifier = Modifier.width(storySize),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.xs),
             ) {
-                AppAvatar(name = story.author, size = StorySize) {
+                AppAvatar(name = story.author, size = storySize) {
                     AppNetworkImage(url = story.photoUrl, contentDescription = null, modifier = Modifier.fillMaxSize())
                 }
                 AppText(
@@ -100,7 +101,7 @@ private fun FeedPost(post: Post) {
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            AppAvatar(name = post.author, size = AvatarSize) {
+            AppAvatar(name = post.author) {
                 AppNetworkImage(url = post.avatarUrl, contentDescription = null, modifier = Modifier.fillMaxSize())
             }
             AppText(
@@ -193,8 +194,6 @@ private val StoryItems: List<Story> = SamplePhotos.takeLast(STORY_COUNT).map { p
 }
 
 private const val FeedCredits = "Photos from Unsplash, through Lorem Picsum"
-private val StorySize = 64.dp
-private val AvatarSize = 32.dp
 private const val FEED_LENGTH = 120
 private const val STORY_COUNT = 12
 private const val FEED_WIDTH = 1080

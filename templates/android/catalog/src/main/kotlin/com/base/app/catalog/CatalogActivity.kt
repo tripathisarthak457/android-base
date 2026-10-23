@@ -18,6 +18,9 @@ import com.base.app.core.designsystem.theme.AppFontPreload
 import kotlinx.coroutines.launch
 // <opt:coil>
 import coil3.SingletonImageLoader
+import com.base.app.catalog.media.photos.CatalogMediaClient
+import com.base.app.catalog.media.photos.MediaPerfLog
+import com.base.app.catalog.media.photos.registerPerfGc
 import com.base.app.core.image.appImageLoader
 // </opt:coil>
 
@@ -29,13 +32,21 @@ class CatalogActivity : ComponentActivity() {
 
     private lateinit var frames: FrameTimes
     private var fontsDecided by mutableStateOf(false)
+    // <opt:coil>
+    private var unregisterPerfGc: (() -> Unit)? = null
+    // </opt:coil>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         // <opt:coil>
-        // The photo scenes load through the same loader, with the same limits, as the app's screens.
-        SingletonImageLoader.setSafe { context -> appImageLoader(context) }
+        // The media scenes load through the app's own loader, with its limits, on the one client an app
+        // without the networking module has. The perf harness launches with `--ez perfLog true` to read
+        // decodes, first frames and memory after a collection.
+        SingletonImageLoader.setSafe { context ->
+            appImageLoader(context, callFactory = { CatalogMediaClient }, events = MediaPerfLog.events(intent))
+        }
+        if (MediaPerfLog.enabled(intent)) unregisterPerfGc = registerPerfGc(this)
         // </opt:coil>
         frames = FrameTimes(this)
         val section = CatalogSection.entries.firstOrNull { it.name == intent.getStringExtra("section") }
@@ -59,6 +70,9 @@ class CatalogActivity : ComponentActivity() {
     }
 
     override fun onDestroy() {
+        // <opt:coil>
+        unregisterPerfGc?.invoke()
+        // </opt:coil>
         frames.stop()
         super.onDestroy()
     }

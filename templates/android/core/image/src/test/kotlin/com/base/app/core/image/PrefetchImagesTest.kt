@@ -167,13 +167,61 @@ class PrefetchImagesTest {
             }
         }
         rule.waitForIdle()
-        assertEquals(list.layoutInfo.visibleItemsInfo.last().index + Prefetcher.GAP, startedIndices().first())
+        assertEquals(list.layoutInfo.visibleItemsInfo.last().index + 2, startedIndices().first())
 
+        // Two columns: the grid composes the whole next row itself, so prefetch starts on the row after it.
         val forGrid = startedBy { which = 1 }
-        assertEquals(grid.layoutInfo.visibleItemsInfo.last().index + Prefetcher.GAP, forGrid.first())
+        val lastOnScreen = grid.layoutInfo.visibleItemsInfo.last().index
+        assertEquals(lastOnScreen + 3, forGrid.first())
 
         val forPager = startedBy { which = 2 }
-        assertEquals(pager.layoutInfo.visiblePagesInfo.last().index + Prefetcher.GAP, forPager.first())
+        assertEquals(pager.layoutInfo.visiblePagesInfo.last().index + 2, forPager.first())
+    }
+
+    @Test
+    fun `a three-column grid starts two rows past the last one on screen`() {
+        prefetcher().onWindow(ListWindow(first = 0, last = 11, count = 120, span = 3))
+        idle()
+
+        // Row 4 (12..14) is the grid's own next row; 15 opens the row after it.
+        assertEquals(listOf(15, 16), startedIndices())
+    }
+
+    @Test
+    fun `an item coming within a line of the screen is left to its row`() {
+        val prefetcher = prefetcher()
+        prefetcher.onWindow(ListWindow(first = 10, last = 19, count = 100))
+        idle()
+        assertEquals(setOf(21, 22), unfinished.keys)
+
+        // The screen moves on by two: 21 is now the next line, which the list composes itself.
+        prefetcher.onWindow(ListWindow(first = 12, last = 20, count = 100))
+        idle()
+
+        assertTrue("still fetching ${unfinished.keys}", 21 !in unfinished.keys)
+        assertTrue("${startedIndices()}", startedIndices().count { it == 21 } == 1)
+    }
+
+    @Test
+    fun `within one item the list is not looked at again`() {
+        val list = LazyListState()
+        var asked = 0
+        rule.setContent {
+            LazyColumn(state = list) { items(100, key = { it }, contentType = { "row" }) { Box(Modifier.height(400.dp)) } }
+            PrefetchImages(list) { asked++; "https://img.test/$it" }
+        }
+        rule.waitForIdle()
+        val before = asked
+
+        // Thirty small steps that never bring a new item to the top: the first visible item stays the same.
+        repeat(30) {
+            rule.runOnIdle { list.dispatchRawDelta(4f) }
+            rule.mainClock.advanceTimeByFrame()
+        }
+        rule.waitForIdle()
+
+        assertEquals(0, list.firstVisibleItemIndex)
+        assertEquals(before, asked)
     }
 
     /** What starts after [change]: the previous list's requests stay blocked, and leave with it. */

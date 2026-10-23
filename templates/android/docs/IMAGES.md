@@ -70,18 +70,28 @@ It has `LazyGridState` and `PagerState` overloads too.
 
 **Why.** A fling outruns the network: rows arrive faster than their pictures. Prefetch fetches the bytes of about
 three screens of items ahead into the disk cache, so a fling meets pictures that only need decoding. It decodes
-nothing and holds nothing in memory: the row decodes its picture at its own size when it composes. It starts two
-items past the last one on screen, because the list composes the next item itself; it runs at most two requests
-at once, so the pictures on screen never queue behind it in the HTTP client; turning back drops what waits.
+nothing and holds nothing in memory: the row decodes its picture at its own size when it composes. It starts on the
+second line past the last one on screen (a line is an item of a list or a pager, a row of a grid), because the list
+composes the next line itself; an item that comes within a line of the screen is left to its row, dropped while it
+waits and cancelled while it fetches, so nothing is downloaded twice. It runs at most two requests at once, so the
+pictures on screen never queue behind it in the HTTP client, and turning back drops what waits. It looks at the list
+once per item that reaches the top, never per scroll frame.
 
 **Don't.** Prefetch with a plain `ImageRequest` and `enqueue`: without a size it decodes the original, up to the
 screen's size, and keeps it in the memory cache.
 
 ## The loader and its limits
 
-`appImageLoader()` builds the app's one Coil loader, installed when the app starts. Change a limit there and
-nowhere else; a second loader, or a limit set at a call site, splits the caches and the HTTP client. The build fails
-on a second loader (`image-loader`).
+`appImageLoader()` builds the app's one Coil loader, installed in `BaseAppApplication.onCreate` with the app's one
+media client. Change a limit there and nowhere else; a second loader, or a limit set at a call site, splits the
+caches and the HTTP client. The build fails on a second loader (`image-loader`).
+
+```kotlin
+// BaseAppApplication: the app's own client, or MediaCallFactory() in a project without the networking module.
+private val mediaClient: Call.Factory by lazy { okHttp.get().newBuilder().cache(null).build() }
+
+SingletonImageLoader.setSafe { context -> appImageLoader(context, callFactory = { mediaClient }) }
+```
 
 | Limit | Value | Why |
 |---|---|---|
@@ -91,8 +101,8 @@ on a second loader (`image-loader`).
 | Decodes at once | 2, until the reference phone's A/B sets it | a decode competes with the frame for the CPU |
 | Bitmaps | hardware | the pixels reach the GPU once, when decoded, not in the frame that first draws them |
 | Fade | none unless an image asks | see above |
-| Disk cache | Coil's bounds (2 % of free space, 10 to 250 MB), in the cache directory | the system may clear it and never backs it up |
-| Network | the app's own client without its HTTP cache, when the project has the networking module | one connection pool and one set of certificate pins for everything |
+| Disk cache | Coil's bounds (2 % of free space, 10 to 250 MB), in the cache directory under Coil's own folder name, `coil3_disk_cache` | the system may clear it and never backs it up; an app that ran Coil's default loader keeps the cache it has |
+| Network | the one client images and video share: the app's own without its HTTP cache with the networking module, otherwise `MediaCallFactory`, one OkHttp client built on the first request | one connection pool, one set of certificate pins and one dispatcher for every picture and clip; Coil never builds a client of its own |
 
 Coil's service loader is off, so nothing joins the pipeline unseen. To decode another format, add its decoder in
 `appImageLoader()` explicitly:
@@ -115,7 +125,28 @@ An API that sends a colour per picture (Unsplash's `color`, Pexels' `avg_color`)
 
 `--es section Feed` opens a photo feed: a row of stories, then full-width photos at their own aspect ratios.
 `--es section Shop` opens a shop grid: two columns of product photos on a phone, more on wider windows. Both load
-real photos over the network and are where the image measurements run.
+real photos over the network, through the catalog's own `MediaCallFactory`, which names the catalog in its
+User-Agent, and are where the image measurements run.
+
+## How the image scenes are measured
+
+`tools/perf/perf.sh` measures the two scenes on the catalog's release APK, beside the app's own gates:
+
+```bash
+tools/perf/perf.sh --package <app id>.catalog --apk catalog/build/outputs/apk/release/catalog-release.apk     --gate images media_feed media_feed_warm media_grid media_grid_warm media_feed_memory media_trace
+```
+
+- **Cold** runs start from `pm clear`: every photo comes over the network. **Warm** runs start a fresh process after a
+  cold pass: every photo comes from the disk cache. Scrolling back within a run is the memory cache.
+- Each fling is measured on its own and held to the release limits: janky frames after each fling's first at most
+  0.5 %, hitches at most 5 ms per second of motion, GPU p90 at most 7 ms.
+- `media_trace` counts photos decoded or uploaded on the main thread or RenderThread: none, because bitmaps are
+  hardware bitmaps decoded on Coil's own threads. An upload counts as a photo only when a photo of that size was
+  decoded in the run: icons are uploaded too, the first time a row draws them, and are not image decoding.
+- Memory is read after the catalog collects garbage, three times, and the median kept: an evicted bitmap stays in
+  the graphics memory until ART collects its object, so a reading without a collection measures when ART last ran.
+  Twelve flings of new photos after the cache is full may grow it by noise only.
+- A host that does not answer fails the scenario, and a `429` from any host stops the session.
 
 The photos are by their photographers on Unsplash, served through Lorem Picsum (picsum.photos), under the Unsplash
 License; the catalog credits them by name. Each was looked at before it was listed: no person in focus, no brand

@@ -20,6 +20,7 @@ import kotlinx.coroutines.withTimeout
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
+import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
@@ -47,7 +48,7 @@ class AppImageLoaderTest {
 
     @Test
     fun `the loader carries the app's limits`() {
-        val loader = appImageLoader(context)
+        val loader = loader()
         val activities = context.getSystemService(ActivityManager::class.java)
 
         assertEquals(imageMemoryBytes(activities.memoryClass, activities.isLowRamDevice), loader.memoryCache!!.maxSize)
@@ -62,38 +63,32 @@ class AppImageLoaderTest {
     @Test
     fun `the largest decode is the display's longest side`() {
         // 891 dp at three pixels per dp: a decode that resolves to the original size stops at the screen.
-        assertEquals(Size(2673, 2673), appImageLoader(context).requestAsSeen().maxBitmapSize)
+        assertEquals(Size(2673, 2673), loader().requestAsSeen().maxBitmapSize)
     }
 
     @Test
-    fun `the disk cache lives in the app's cache directory, within Coil's bounds`() {
-        val disk = appImageLoader(context).diskCache!!
+    fun `the disk cache lives in the app's cache directory under Coil's own name, within Coil's bounds`() {
+        val disk = loader().diskCache!!
 
-        assertEquals(File(context.cacheDir, "image_cache").canonicalFile, disk.directory.toFile().canonicalFile)
+        assertEquals(File(context.cacheDir, "coil3_disk_cache").canonicalFile, disk.directory.toFile().canonicalFile)
         assertTrue("${disk.maxSize}", disk.maxSize in 10L * 1024 * 1024..250L * 1024 * 1024)
     }
 
     @Test
     fun `nothing joins the pipeline through Coil's service loader`() {
-        val loader = appImageLoader(context)
+        val loader = loader()
 
         assertEquals(false, loader.coilOption("getServiceLoaderEnabled"))
         assertEquals(1, loader.components.fetcherFactories.count { (factory, _) -> factory is NetworkFetcher.Factory })
     }
 
     @Test
-    fun `images go through the app's client when it has one`() {
+    fun `images go through the client the app hands over`() {
         val seen = CopyOnWriteArrayList<String>()
         val client = OkHttpClient.Builder()
             .addInterceptor { chain ->
                 seen += chain.request().url.toString()
-                Response.Builder()
-                    .request(chain.request())
-                    .protocol(Protocol.HTTP_1_1)
-                    .code(200)
-                    .message("OK")
-                    .body(ByteArray(0).toResponseBody("image/png".toMediaType()))
-                    .build()
+                ok(chain.request())
             }
             .build()
         val loader = appImageLoader(context, callFactory = { client })
@@ -104,6 +99,41 @@ class AppImageLoaderTest {
 
         assertEquals(listOf("https://img.test/a.png"), seen)
     }
+
+    @Test
+    fun `the shared client is built on the first request, once, and names the app`() {
+        var built = 0
+        val agents = CopyOnWriteArrayList<String?>()
+        val factory = MediaCallFactory(userAgent = "BaseAppTest (https://example.test)") { builder ->
+            built++
+            builder.addInterceptor { chain ->
+                agents += chain.request().header("User-Agent")
+                ok(chain.request())
+            }.build()
+        }
+        assertEquals(0, built)
+
+        val loader = appImageLoader(context, callFactory = { factory })
+        runBlocking(Dispatchers.IO) {
+            withTimeout(10_000) {
+                loader.execute(ImageRequest.Builder(context).data("https://img.test/a.png").build())
+                loader.execute(ImageRequest.Builder(context).data("https://img.test/b.png").build())
+            }
+        }
+
+        assertEquals(1, built)
+        assertEquals(listOf("BaseAppTest (https://example.test)", "BaseAppTest (https://example.test)"), agents)
+    }
+
+    private fun loader(): ImageLoader = appImageLoader(context, callFactory = { OkHttpClient() })
+
+    private fun ok(request: Request): Response = Response.Builder()
+        .request(request)
+        .protocol(Protocol.HTTP_1_1)
+        .code(200)
+        .message("OK")
+        .body(ByteArray(0).toResponseBody("image/png".toMediaType()))
+        .build()
 
     /** The request as the loader's pipeline sees it, with the loader's defaults applied, without fetching it. */
     private fun ImageLoader.requestAsSeen(): ImageRequest {
