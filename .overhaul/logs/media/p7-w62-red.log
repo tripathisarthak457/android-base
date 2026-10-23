@@ -1,0 +1,172 @@
+[locked:gradle] waiting for the lock (pid 3352 since 2026-10-23 22:36:19: bash staging/scripts/f82-build-exp.sh nobar+nofade nobar noband layer+nofade)
+[locked:gradle] waiting for the lock (pid 3352 since 2026-10-23 22:36:19: bash staging/scripts/f82-build-exp.sh nobar+nofade nobar noband layer+nofade)
+[locked:gradle] 702 MB available, 8469 MB commit left; waiting for 1500 MB
+[locked:gradle] 574 MB available, 8393 MB commit left; waiting for 1500 MB
+[locked:gradle] 572 MB available, 8449 MB commit left; waiting for 1500 MB
+[locked:gradle] 563 MB available, 8480 MB commit left; waiting for 1500 MB
+[locked:gradle] 578 MB available, 8378 MB commit left; waiting for 1500 MB
+[locked:gradle] 569 MB available plus 4362 MB of system cache Windows will trim; continuing
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :data:feed:testDebugUnitTest :build-logic:convention:test
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :build-logic:convention:processTestResources NO-SOURCE
+> Task :build-logic:convention:pluginUnderTestMetadata
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies
+> Task :core:common:verifyApiPurity
+> Task :core:database:verifyModuleDependencies
+> Task :core:database:verifyApiPurity
+> Task :core:database:preBuild
+> Task :core:database:preDebugBuild
+> Task :core:datastore:verifyApiPurity
+> Task :core:database:javaPreCompileDebug UP-TO-DATE
+> Task :core:datastore:verifyModuleDependencies
+> Task :core:datastore:preBuild
+> Task :core:datastore:preDebugBuild
+> Task :core:datastore:javaPreCompileDebug UP-TO-DATE
+> Task :core:network:verifyModuleDependencies
+> Task :core:testing:verifyApiPurity
+> Task :core:network:verifyApiPurity
+> Task :core:network:preBuild
+> Task :core:network:preDebugBuild
+> Task :core:testing:verifyModuleDependencies
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :core:network:javaPreCompileDebug UP-TO-DATE
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar UP-TO-DATE
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+> Task :data:feed:verifyApiPurity
+> Task :core:testing:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:testing:processDebugJavaRes UP-TO-DATE
+> Task :data:feed:verifyModuleDependencies
+> Task :data:feed:preBuild
+> Task :data:feed:preDebugBuild
+> Task :data:feed:javaPreCompileDebug UP-TO-DATE
+> Task :core:testing:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:feed:preDebugUnitTestBuild
+> Task :data:feed:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :data:feed:koverFindJar
+> Task :core:database:kspDebugKotlin UP-TO-DATE
+> Task :core:datastore:kspDebugKotlin UP-TO-DATE
+> Task :core:database:compileDebugKotlin UP-TO-DATE
+> Task :core:datastore:compileDebugKotlin UP-TO-DATE
+> Task :core:datastore:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:database:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:database:processDebugJavaRes
+> Task :core:database:copyRoomSchemas NO-SOURCE
+> Task :core:database:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:database:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:datastore:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:datastore:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:datastore:processDebugJavaRes
+> Task :core:network:kspDebugKotlin UP-TO-DATE
+> Task :core:network:compileDebugKotlin UP-TO-DATE
+> Task :core:network:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:network:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:network:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:network:processDebugJavaRes
+> Task :data:feed:kspDebugKotlin UP-TO-DATE
+> Task :data:feed:compileDebugKotlin UP-TO-DATE
+> Task :data:feed:compileDebugJavaWithJavac UP-TO-DATE
+> Task :data:feed:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:feed:processDebugJavaRes
+> Task :data:feed:kspDebugUnitTestKotlin
+> Task :data:feed:bundleLibRuntimeToJarDebug
+> Task :build-logic:convention:compileTestKotlin
+> Task :build-logic:convention:compileTestJava NO-SOURCE
+> Task :build-logic:convention:testClasses UP-TO-DATE
+
+> Task :build-logic:convention:test
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :data:feed:compileDebugUnitTestKotlin FAILED
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/data/feed/src/test/kotlin/com/base/app/data/feed/FeedPagingConfigTest.kt:11:26 Unresolved reference 'FeedPagingConfig'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/data/feed/src/test/kotlin/com/base/app/data/feed/FeedPagingConfigTest.kt:12:26 Unresolved reference 'FeedPagingConfig'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/data/feed/src/test/kotlin/com/base/app/data/feed/FeedPagingConfigTest.kt:13:22 Unresolved reference 'FeedPagingConfig'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/data/feed/src/test/kotlin/com/base/app/data/feed/FeedPagingConfigTest.kt:13:49 Unresolved reference 'FeedPagingConfig'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/data/feed/src/test/kotlin/com/base/app/data/feed/FeedPagingConfigTest.kt:14:21 Unresolved reference 'FeedPagingConfig'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/data/feed/src/test/kotlin/com/base/app/data/feed/FeedPagingSourceTest.kt:31:58 Unresolved reference 'FeedPagingConfig'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/data/feed/src/test/kotlin/com/base/app/data/feed/FeedPagingSourceTest.kt:32:81 Unresolved reference 'FeedPagingConfig'.
+
+> Task :build-logic:convention:test
+
+CodeRulesTest > every rule fires on its fixture, on the right line FAILED
+    java.lang.AssertionError at CodeRulesTest.kt:203
+
+CodeRulesTest > an allow marker with a reason on the line above silences each rule FAILED
+    java.lang.AssertionError at CodeRulesTest.kt:216
+
+CodeRulesTest > only the loader's home builds an image loader, and only the app and the catalog install it FAILED
+    java.lang.AssertionError at CodeRulesTest.kt:309
+
+The Daemon will expire after the build after running out of JVM Metaspace.
+The project memory settings are likely not configured or are configured to an insufficient value.
+The daemon will restart for the next build, which may increase subsequent build times.
+These settings can be adjusted by setting 'org.gradle.jvmargs' in 'gradle.properties'.
+The currently configured max heap space is '2 GiB' and the configured max metaspace is '1 GiB'.
+For more information on how to set these values, please refer to https://docs.gradle.org/9.7.1/userguide/build_environment.html#sec:configuring_jvm_memory in the Gradle documentation.
+To disable this warning, set 'org.gradle.daemon.performance.disable-logging=true'.
+Daemon will be stopped at the end of the build after running out of JVM Metaspace
+
+> Task :build-logic:convention:test
+
+78 tests completed, 3 failed
+
+> Task :build-logic:convention:test FAILED
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/build/reports/problems/problems-report.html
+
+FAILURE: Build completed with 2 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':build-logic:convention:test'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/build-logic/convention/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+2: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':data:feed:compileDebugUnitTestKotlin' (registered by plugin 'com.android.internal.library').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: UNRESOLVED_REFERENCE
+       Kotlin compiler error
+         Unresolved reference 'FeedPagingConfig'.
+         Location: D:/projects/tools/.overhaul/wt/MEDIA/templates/android/data/feed/src/test/kotlin/com/base/app/data/feed/FeedPagingConfigTest.kt line 11
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+BUILD FAILED in 1m 46s
+58 actionable tasks: 25 executed, 1 from cache, 32 up-to-date
+Configuration cache entry stored.
+exit 1
