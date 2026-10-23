@@ -17,6 +17,7 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.register
 import org.gradle.work.DisableCachingByDefault
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.File
 
 /**
@@ -29,15 +30,23 @@ internal val STABILITY_CHECKED_MODULES = setOf(":core:designsystem", ":core:ui",
 internal fun Project.configureComposeStability() {
     if (path !in STABILITY_CHECKED_MODULES) return
 
-    // A file tree rather than the directory itself: the compiler has not written it at
-    // configuration time, and Gradle rejects an @InputDirectory that does not exist.
+    // Every Kotlin compilation of the module writes its report to the same file here, since a test
+    // compilation takes the module's name to see its `internal` declarations: the file holds
+    // whichever compilation ran last. The main compilation's is copied aside as it ends, and that
+    // copy is all the check reads.
     val reportsDir = layout.buildDirectory.dir(COMPOSE_REPORTS)
+    val stabilityReport = layout.buildDirectory.dir(STABILITY_REPORT)
 
     tasks.matching { it.name == COMPILE_TASK }.configureEach {
-        outputs.dir(reportsDir).withPropertyName("composeStabilityReports")
+        outputs.dir(stabilityReport).withPropertyName("composeStabilityReport")
+        doLast("copyComposeStabilityReport") {
+            copyReports(from = reportsDir.get().asFile, to = stabilityReport.get().asFile)
+        }
     }
 
-    val written = fileTree(reportsDir) {
+    // A file tree rather than the directory itself: the compiler has not written it at
+    // configuration time, and Gradle rejects an @InputDirectory that does not exist.
+    val written = fileTree(stabilityReport) {
         include("**/*-composables.txt")
     }
     val baseline = rootProject.layout.projectDirectory.file(ComposeStability.BASELINE)
@@ -61,16 +70,29 @@ internal fun Project.configureComposeStability() {
         dependsOn(COMPILE_TASK)
     }
 
-    // Every Kotlin compilation of the module writes its report to the same file, since a test
-    // compilation takes the module's name to see its `internal` declarations. A unit-test compile
-    // that ran in between would leave the report holding the tests' composables and none of the
-    // module's, so the other compilations write theirs only once the report has been read.
-    tasks.matching { it.name != COMPILE_TASK && KOTLIN_COMPILE.matches(it.name) }.configureEach {
-        mustRunAfter(check, record)
+    // The compiler reports only the files it compiles, so an incremental compile leaves a report of
+    // the files that changed and nothing else: read alone, it would pass every composable it left
+    // out. A build that reads the report compiles the module in full, and the compile carries that
+    // as an input, so a report an earlier incremental compile wrote is never taken for a whole one.
+    gradle.taskGraph.whenReady {
+        val reads = hasTask(check.get()) || hasTask(record.get())
+        tasks.named(COMPILE_TASK).configure {
+            inputs.property("composeStabilityReportIsWhole", reads)
+            if (reads) (this as KotlinCompile).incremental = false
+        }
     }
 
     // There is nothing to read until the module has been compiled, so it runs with `check`.
     tasks.matching { it.name == "check" }.configureEach { dependsOn(check) }
+}
+
+/** Replaces what [to] holds with the reports in [from]. */
+internal fun copyReports(from: File, to: File) {
+    to.deleteRecursively()
+    to.mkdirs()
+    from.listFiles { file -> file.name.endsWith("-composables.txt") }.orEmpty().forEach { report ->
+        report.copyTo(to.resolve(report.name))
+    }
 }
 
 /**
@@ -79,8 +101,8 @@ internal fun Project.configureComposeStability() {
  */
 private const val COMPILE_TASK = "compileDebugKotlin"
 
-/** A Kotlin compilation of any variant or test source set: `compileReleaseUnitTestKotlin`. */
-private val KOTLIN_COMPILE = Regex("""compile\w*Kotlin""")
+/** Where the check finds the report of [COMPILE_TASK], under the module's build directory. */
+private const val STABILITY_REPORT = "compose_stability"
 
 /** The report reading and the baseline, apart from Gradle so they can be unit tested. */
 internal object ComposeStability {
@@ -176,7 +198,7 @@ internal abstract class CheckComposeStabilityTask : DefaultTask() {
             whenever its caller passes a new instance, even an equal one. Pass a stable type (a
             read-only collection, an @Immutable class, a type listed in config/compose-stability.conf),
             make it a () -> T provider, or accept it in ${ComposeStability.BASELINE} with a
-            `# reason` in a commit that says why. Read build/$COMPOSE_REPORTS/*-composables.txt for
+            `# reason` in a commit that says why. Read build/$STABILITY_REPORT/*-composables.txt for
             the parameter's type.
             """.trimIndent(),
         )

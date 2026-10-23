@@ -59,23 +59,36 @@ class ComposeStabilityTest {
     }
 
     @Test
-    fun `the module's other compilations write their report only after the check has read this one`() {
+    fun `the check reads the main compilation's report as it ended, whatever compiles after it`() {
         val root = ProjectBuilder.builder().withProjectDir(folder.root).build()
         val core = ProjectBuilder.builder().withName("core").withParent(root).build()
         val module = ProjectBuilder.builder().withName("designsystem").withParent(core).build()
-        val compiles = listOf(
-            "compileDebugKotlin", "compileReleaseKotlin", "compileDebugUnitTestKotlin",
-            "compileReleaseUnitTestKotlin", "compileDebugAndroidTestKotlin",
-        )
-        (compiles + listOf("kspDebugKotlin", "compileDebugJavaWithJavac")).forEach { module.tasks.register(it) }
-
+        val compile = module.tasks.register("compileDebugKotlin").get()
         module.configureComposeStability()
+        val written = module.layout.buildDirectory.dir("compose_reports").get().asFile.apply { mkdirs() }
 
-        val readers = setOf(module.tasks.getByName("checkComposeStability"), module.tasks.getByName("recordComposeStability"))
-        fun after(name: String) = module.tasks.getByName(name).mustRunAfter.getDependencies(null)
-        assertEquals(emptySet<Any>(), after("compileDebugKotlin"))
-        compiles.drop(1).forEach { assertEquals(it, readers, after(it)) }
-        assertEquals(emptySet<Any>(), after("kspDebugKotlin"))
-        assertEquals(emptySet<Any>(), after("compileDebugJavaWithJavac"))
+        written.resolve("designsystem-composables.txt").writeText("main")
+        written.resolve("designsystem-classes.txt").writeText("classes")
+        compile.actions.forEach { it.execute(compile) }
+        // A test compilation takes the module's name, so it writes over the same file afterwards.
+        written.resolve("designsystem-composables.txt").writeText("tests")
+
+        val check = module.tasks.getByName("checkComposeStability") as CheckComposeStabilityTask
+        assertEquals(listOf("main"), check.reports.files.map { it.readText() })
+        val record = module.tasks.getByName("recordComposeStability") as RecordComposeStabilityTask
+        assertEquals(listOf("main"), record.reports.files.map { it.readText() })
+    }
+
+    @Test
+    fun `a report the main compilation no longer writes is not read again`() {
+        val from = folder.newFolder("reports").apply { resolve("old-composables.txt").writeText("old") }
+        val to = folder.newFolder("stability")
+
+        copyReports(from, to)
+        from.resolve("old-composables.txt").delete()
+        from.resolve("designsystem-composables.txt").writeText("new")
+        copyReports(from, to)
+
+        assertEquals(listOf("designsystem-composables.txt"), to.list()?.toList())
     }
 }

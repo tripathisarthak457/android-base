@@ -613,7 +613,7 @@ These tasks run as part of `./gradlew build` and fail it:
 <!-- <opt:devtools> -->
 | `verify<Variant>CarriesNoDevTooling` | A release-like build outside the dev flavour (any build type but debug: stagingRelease, prodRelease, playstoreRelease and, with baseline profiles, their benchmark builds) depends on no dev tooling module, directly or through another module. Also runs before that build. |
 <!-- </opt:devtools> -->
-| `checkComposeStability` | No composable parameter in the design system, `:core:ui` or `:core:navigation` is compared by identity beyond `config/compose-stability-baseline.txt`, where each accepted entry carries its reason. |
+| `checkComposeStability` | No composable parameter in the design system, `:core:ui` or `:core:navigation` is compared by identity beyond `config/compose-stability-baseline.txt`, where each accepted entry carries its reason. The compiler reports only the files it compiles, so a build that runs the check compiles those three modules in full rather than incrementally, and reads the report of their main sources (`build/compose_stability/`), never one a test compile wrote over. |
 
 ### Flavours are only on the application modules
 
