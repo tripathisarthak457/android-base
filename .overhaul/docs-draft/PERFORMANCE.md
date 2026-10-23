@@ -1,5 +1,8 @@
 # Performance
 
+> **Merged (WP12-DOCS, Oct 24 2026).** This draft is history. The live text is `templates/android/docs/PERFORMANCE.md` on
+> `staging-wp/WP12-DOCS` (then staging): edit that file, never this one. `PENDING.md` says how to paste into it.
+
 How an app built on this template stays light and smooth on a budget phone at 120 Hz: what to do in a
 screen, what not to do, why, and the number each rule protects. The reference phone is a Redmi Note 10
 Pro Max (M2101K6I): 1080 × 2400 at 120 Hz, so a frame has 8.33 ms. If a screen is smooth there, it is

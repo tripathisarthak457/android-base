@@ -1,0 +1,1264 @@
+fun com.example.lean.core.designsystem.animation.rememberAppTransitions()
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.animation.AppAppear(
+  stable modifier: Modifier? = @static <expression>
+  stable delayMillis: Long = @static 0L
+  stable content: Function2<Composer, Int, Unit>
+)
+fun com.example.lean.core.designsystem.animation.appAnimateItem(
+  stable <this>: LazyItemScope
+  stable modifier: Modifier? = @static <expression>
+): Modifier
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.animation.AppStaggeredColumn(
+  stable itemCount: Int
+  stable modifier: Modifier? = @static <expression>
+  stable content: Function3<@[ParameterName(name = 'index')] Int, Composer, Int, Unit>
+)
+fun com.example.lean.core.designsystem.animation.rememberAppearProgress(
+  stable delayMillis: Long
+  stable durationMillis: Int
+  stable linear: Boolean = @static false
+): Animatable<Float, AnimationVector1D>
+fun com.example.lean.core.designsystem.animation.rememberCountUp(
+  stable target: Int
+): Int
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.animation.AppSymbolReplace(
+  stable icon: ImageVector
+  stable contentDescription: String?
+  stable modifier: Modifier? = @static <expression>
+  stable tint: Color = @dynamic <expression>
+  stable size: Dp = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.button.AppButton(
+  stable text: String
+  stable onClick: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable variant: ButtonVariant? = @static <expression>
+  stable size: ButtonSize? = @static <expression>
+  stable enabled: Boolean = @static true
+  stable loading: Boolean = @static false
+  stable leadingIcon: ImageVector? = @static null
+  stable trailingIcon: ImageVector? = @static null
+  stable shape: Shape? = @dynamic <expression>
+  stable colors: ButtonColors? = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.button.AppIconButton(
+  stable icon: ImageVector
+  stable contentDescription: String
+  stable onClick: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable variant: ButtonVariant? = @static <expression>
+  stable size: ButtonSize? = @static <expression>
+  stable enabled: Boolean = @static true
+  stable colors: ButtonColors? = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.button.FieldIconButton(
+  stable icon: ImageVector
+  stable contentDescription: String
+  stable onClick: Function0<Unit>
+  stable textStyle: TextStyle
+  stable modifier: Modifier? = @static <expression>
+  stable enabled: Boolean = @static true
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.button.IconButton(
+  stable icon: ImageVector
+  stable contentDescription: String
+  stable onClick: Function0<Unit>
+  stable modifier: Modifier
+  stable variant: ButtonVariant
+  stable diameter: Dp
+  stable glyphSize: Dp
+  stable enabled: Boolean
+  stable colors: ButtonColors
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.button.AppLinkButton(
+  stable text: String
+  stable onClick: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable enabled: Boolean = @static true
+  stable style: TextStyle? = @dynamic <expression>
+)
+fun com.example.lean.core.designsystem.component.button.AppButtonDefaults.colors(
+  stable variant: ButtonVariant
+  unused stable <this>: AppButtonDefaults
+): ButtonColors
+fun com.example.lean.core.designsystem.component.button.AppButtonDefaults.iconButtonColors(
+  stable variant: ButtonVariant? = @static <expression>
+  stable content: Color = @static <expression>
+  stable <this>: AppButtonDefaults
+): ButtonColors
+fun com.example.lean.core.designsystem.component.button.AppButtonDefaults.metrics(
+  stable size: ButtonSize
+  unused stable <this>: AppButtonDefaults
+): Metrics
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.container.AppBottomActionBar(
+  stable modifier: Modifier? = @static <expression>
+  stable content: @[ExtensionFunctionType] Function3<RowScope, Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.container.AppCard(
+  stable modifier: Modifier? = @static <expression>
+  stable shape: Shape? = @dynamic <expression>
+  stable color: Color = @dynamic <expression>
+  stable border: BorderStroke? = @dynamic <expression>
+  stable elevation: Dp = @dynamic <expression>
+  stable contentPadding: PaddingValues? = @dynamic <expression>
+  stable content: @[ExtensionFunctionType] Function3<ColumnScope, Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.container.AppCard(
+  stable onClick: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable enabled: Boolean = @static true
+  stable onClickLabel: String? = @static null
+  stable shape: Shape? = @dynamic <expression>
+  stable color: Color = @dynamic <expression>
+  stable border: BorderStroke? = @dynamic <expression>
+  stable elevation: Dp = @dynamic <expression>
+  stable contentPadding: PaddingValues? = @dynamic <expression>
+  stable content: @[ExtensionFunctionType] Function3<ColumnScope, Composer, Int, Unit>
+)
+fun com.example.lean.core.designsystem.component.container.AppCardDefaults.color(
+  unused stable <this>: AppCardDefaults
+): Color
+fun com.example.lean.core.designsystem.component.container.AppCardDefaults.border(
+  unused stable <this>: AppCardDefaults
+): BorderStroke?
+fun com.example.lean.core.designsystem.component.container.AppCardDefaults.elevation(
+  unused stable <this>: AppCardDefaults
+): Dp
+fun com.example.lean.core.designsystem.component.container.cardShadow(
+  stable <this>: Modifier
+  stable shape: Shape
+): Modifier
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.container.AppDivider(
+  stable modifier: Modifier? = @static <expression>
+  stable color: Color = @dynamic <expression>
+  stable startIndent: Dp = @static <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.container.AppVerticalDivider(
+  stable modifier: Modifier? = @static <expression>
+  stable color: Color = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [_], [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.container.AppScaffold(
+  stable modifier: Modifier? = @static <expression>
+  stable topBar: Function2<Composer, Int, Unit>? = @static <expression>
+  stable bottomBar: Function2<Composer, Int, Unit>? = @static null
+  stable background: Color = @static <expression>
+  stable contentMaxWidth: Dp = @static <expression>
+  stable clearDisplayCutout: Boolean = @static true
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.feedback.AppAvatar(
+  stable name: String
+  stable modifier: Modifier? = @static <expression>
+  stable size: Dp = @static <expression>
+  stable content: Function2<Composer, Int, Unit>? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.feedback.AppAvatarGroup(
+  stable names: List<String>
+  stable modifier: Modifier? = @static <expression>
+  stable size: Dp = @static <expression>
+  stable maxShown: Int = @static 4
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.feedback.AppBadge(
+  stable count: Int
+  stable modifier: Modifier? = @static <expression>
+  stable maxCount: Int = @static 99
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.feedback.AppBadgedBox(
+  stable count: Int
+  stable modifier: Modifier? = @static <expression>
+  stable maxCount: Int = @static 99
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.feedback.AppDotBadge(
+  stable visible: Boolean
+  stable modifier: Modifier? = @static <expression>
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.feedback.AppStatusPill(
+  stable text: String
+  stable status: StatusColors
+  stable modifier: Modifier? = @static <expression>
+  stable icon: ImageVector? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.feedback.AppBanner(
+  stable text: String
+  stable modifier: Modifier? = @static <expression>
+  stable tone: AppTone? = @static <expression>
+  stable icon: ImageVector? = @static null
+  stable actionLabel: String? = @static null
+  stable onAction: Function0<Unit>? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.feedback.AppLoadingOverlay(
+  stable visible: Boolean
+  stable modifier: Modifier? = @static <expression>
+  stable label: String? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.feedback.AppActivityIndicator(
+  stable modifier: Modifier? = @static <expression>
+  stable size: Dp = @static <expression>
+  stable color: Color = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.feedback.AppLinearProgress(
+  stable progress: Function0<Float>
+  stable modifier: Modifier? = @static <expression>
+  stable color: Color = @dynamic <expression>
+  stable trackColor: Color = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.feedback.AppRedacted(
+  stable active: Boolean
+  stable modifier: Modifier? = @static <expression>
+  stable contentDescription: String? = @static null
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.feedback.AppSkeleton(
+  stable modifier: Modifier? = @static <expression>
+  stable shape: Shape? = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.feedback.AppSkeletonLine(
+  stable modifier: Modifier? = @static <expression>
+  stable widthFraction: Float = @static 1.0f
+  stable style: TextStyle? = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.feedback.AppSkeletonLine(
+  stable modifier: Modifier? = @static <expression>
+  stable widthFraction: Float = @static 1.0f
+  stable height: Dp
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.feedback.AppSkeletonCircle(
+  stable modifier: Modifier? = @static <expression>
+  stable size: Dp = @static <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.feedback.AppSkeletonListItem(
+  stable modifier: Modifier? = @static <expression>
+  stable showLeading: Boolean = @static true
+)
+readonly fun com.example.lean.core.designsystem.component.feedback.AppSkeletonDefaults.<get-shape>(
+  unused stable <this>: AppSkeletonDefaults
+): Shape
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.feedback.AppStateView(
+  stable modifier: Modifier? = @static <expression>
+  stable kind: StateKind? = @static <expression>
+  stable title: String? = @static null
+  stable message: String? = @static null
+  stable icon: ImageVector? = @static null
+  stable actionLabel: String? = @static null
+  stable onAction: Function0<Unit>? = @static null
+  stable contentPadding: PaddingValues? = @dynamic <expression>
+  stable illustration: Function2<Composer, Int, Unit>? = @static null
+)
+readonly fun com.example.lean.core.designsystem.component.feedback.AppTone.<get-colors>(
+  stable <this>: AppTone
+): StatusColors
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.input.AppSearchField.<anonymous>.<anonymous>.<no name provided>.Decoration(
+  stable innerTextField: Function2<Composer, Int, Unit>
+  stable <this>: <no name provided>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.input.AppSearchField(
+  stable state: TextFieldState
+  stable modifier: Modifier? = @static <expression>
+  stable placeholder: String? = @dynamic <expression>
+  stable enabled: Boolean = @static true
+  stable onSearch: Function0<Unit>? = @static null
+  stable onCancel: Function0<Unit>? = @static null
+  stable scopes: List<String>? = @static <expression>
+  stable selectedScope: Int = @static 0
+  stable onScopeChange: Function1<Int, Unit>? = @static <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.input.AppSecureField(
+  stable state: TextFieldState
+  stable modifier: Modifier? = @static <expression>
+  stable label: String? = @static null
+  stable placeholder: String? = @static null
+  stable helper: String? = @static null
+  stable error: String? = @static null
+  stable enabled: Boolean = @static true
+  stable imeAction: ImeAction = @static <expression>
+  stable onKeyboardAction: KeyboardActionHandler? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.input.AppTextField(
+  stable state: TextFieldState
+  stable modifier: Modifier? = @static <expression>
+  stable label: String? = @static null
+  stable placeholder: String? = @static null
+  stable helper: String? = @static null
+  stable error: String? = @static null
+  stable enabled: Boolean = @static true
+  stable readOnly: Boolean = @static false
+  stable lineLimits: TextFieldLineLimits? = @static <expression>
+  stable maxLength: Int? = @static null
+  stable showCounter: Boolean = @static false
+  stable prefix: String? = @static null
+  stable suffix: String? = @static null
+  stable leadingIcon: ImageVector? = @static null
+  stable trailing: Function2<Composer, Int, Unit>? = @static null
+  stable inputTransformation: InputTransformation? = @static null
+  stable outputTransformation: OutputTransformation? = @static null
+  stable keyboardOptions: KeyboardOptions? = @static <expression>
+  stable onKeyboardAction: KeyboardActionHandler? = @static null
+  stable onSubmit: Function0<Unit>? = @static null
+  stable interactionSource: MutableInteractionSource? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.input.fieldDecorator.<no name provided>.Decoration(
+  stable innerTextField: Function2<Composer, Int, Unit>
+  stable <this>: <no name provided>
+)
+scheme("[_, [androidx.compose.ui.UiComposable]: [_]]") fun com.example.lean.core.designsystem.component.input.fieldDecorator(
+  stable empty: Function0<Boolean>
+  stable focused: Boolean
+  stable label: String?
+  stable placeholder: String?
+  stable supporting: String?
+  stable isError: Boolean
+  stable counter: String? = @static null
+  stable prefix: String? = @static null
+  stable suffix: String? = @static null
+  stable leadingIcon: ImageVector? = @static null
+  stable trailing: Function2<Composer, Int, Unit>? = @static null
+  stable textStyle: TextStyle? = @dynamic <expression>
+  stable multiline: Boolean = @static false
+): TextFieldDecorator
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.list.AppDisclosure(
+  stable title: String
+  stable expanded: Boolean
+  stable onExpandedChange: Function1<Boolean, Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable subtitle: String? = @static null
+  stable enabled: Boolean = @static true
+  stable content: @[ExtensionFunctionType] Function3<ColumnScope, Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [_], [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.list.AppRow(
+  stable title: String
+  stable modifier: Modifier? = @static <expression>
+  stable subtitle: String? = @static null
+  stable value: String? = @static null
+  stable onClick: Function0<Unit>? = @static null
+  stable showChevron: Boolean = @dynamic <expression>
+  stable destructive: Boolean = @static false
+  stable enabled: Boolean = @static true
+  stable leading: Function2<Composer, Int, Unit>? = @static null
+  stable trailing: Function2<Composer, Int, Unit>? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [_]]") fun com.example.lean.core.designsystem.component.list.AppToggleRow(
+  stable title: String
+  stable checked: Boolean
+  stable onCheckedChange: Function1<Boolean, Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable subtitle: String? = @static null
+  stable enabled: Boolean = @static true
+  stable leading: Function2<Composer, Int, Unit>? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [_]]") fun com.example.lean.core.designsystem.component.list.AppChoiceRow(
+  stable title: String
+  stable selected: Boolean
+  stable onSelect: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable subtitle: String? = @static null
+  stable enabled: Boolean = @static true
+  stable leading: Function2<Composer, Int, Unit>? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.list.RowText(
+  stable title: String
+  stable subtitle: String?
+  stable titleColor: Color
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [_], [_], [_]]") fun com.example.lean.core.designsystem.component.list.RowLayout(
+  stable modifier: Modifier
+  stable interaction: Modifier
+  stable leading: Function2<Composer, Int, Unit>?
+  stable text: Function2<Composer, Int, Unit>
+  stable trailing: Function2<Composer, Int, Unit>?
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.list.AppSection(
+  stable modifier: Modifier? = @static <expression>
+  stable header: String? = @static null
+  stable footer: String? = @static null
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.list.AppSectionHeader(
+  stable title: String
+  stable modifier: Modifier? = @static <expression>
+  stable actionLabel: String? = @static null
+  stable onAction: Function0<Unit>? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.list.SeparatedColumn(
+  stable modifier: Modifier
+  stable content: Function2<Composer, Int, Unit>
+)
+fun com.example.lean.core.designsystem.component.list.rememberAppSwipeActionsState()
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.list.AppSwipeActions(
+  stable modifier: Modifier? = @static <expression>
+  stable state: AppSwipeActionsState? = @dynamic <expression>
+  stable leading: List<SwipeAction>? = @static <expression>
+  stable trailing: List<SwipeAction>? = @static <expression>
+  stable enabled: Boolean = @static true
+  stable allowFullSwipe: Boolean = @static true
+  stable shape: Shape? = @static <expression>
+  stable background: Color = @dynamic <expression>
+  stable actionWidth: Dp = @static <expression>
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.list.ActionPanel(
+  stable <this>: BoxScope
+  stable actions: List<SwipeAction>
+  stable start: Boolean
+  stable actionWidth: Dp
+  stable revealed: Function0<Float>
+  stable onAction: Function1<SwipeAction, Unit>
+)
+fun com.example.lean.core.designsystem.component.list.actionColors(
+  stable action: SwipeAction
+): Pair<Color, Color>
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.navigation.AppPager(
+  stable pageCount: Int
+  stable modifier: Modifier? = @static <expression>
+  stable state: PagerState? = @dynamic <expression>
+  stable contentPadding: PaddingValues? = @static <expression>
+  stable pageSpacing: Dp = @dynamic <expression>
+  stable showPageControl: Boolean = @static true
+  stable content: Function3<@[ParameterName(name = 'page')] Int, Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.navigation.AppPageControl(
+  stable pageCount: Int
+  stable selected: Function0<Int>
+  stable modifier: Modifier? = @static <expression>
+  stable onSelect: Function1<Int, Unit>? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.navigation.AppSidebar(
+  stable items: List<TabItem>
+  stable selected: Int
+  stable onSelect: Function1<Int, Unit>
+  stable onReselect: Function1<Int, Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable width: Dp = @static <expression>
+  stable treatment: BarTreatment? = @dynamic <expression>
+  stable header: @[ExtensionFunctionType] Function3<BarActionScope, Composer, Int, Unit>? = @static null
+  stable footer: Function2<Composer, Int, Unit>? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.navigation.SidebarRow(
+  stable item: TabItem
+  stable selected: Boolean
+  stable look: BarLook
+  stable modifier: Modifier
+  stable onClick: Function0<Unit>
+)
+abstract fun com.example.lean.core.designsystem.component.navigation.BarActionScope.Action(
+  stable icon: ImageVector
+  stable contentDescription: String
+  stable onClick: Function0<Unit>
+  stable tag: String?
+  <this>: BarActionScope
+)
+restartable skippable fun com.example.lean.core.designsystem.component.navigation.BarActionScope.ComposeDefaultImpls.Action$default(
+  stable icon: ImageVector
+  stable contentDescription: String
+  stable onClick: Function0<Unit>
+  stable tag: String? = @static null
+  $this$: BarActionScope
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.navigation.AppTabBar(
+  stable items: List<TabItem>
+  stable selected: Int
+  stable onSelect: Function1<Int, Unit>
+  stable onReselect: Function1<Int, Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable orientation: BarOrientation? = @static <expression>
+  stable treatment: BarTreatment? = @dynamic <expression>
+  stable labels: TabLabels? = @static <expression>
+  stable minimize: BarMinimize? = @static <expression>
+  stable state: AppTabBarState? = @dynamic <expression>
+  stable scrolledUnder: Function0<Float>? = @static <expression>
+  stable trailingAction: @[ExtensionFunctionType] Function3<BarActionScope, Composer, Int, Unit>? = @static null
+  stable accessory: Function2<Composer, Int, Unit>? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.navigation.AppFloatingToolbar(
+  stable modifier: Modifier? = @static <expression>
+  stable treatment: BarTreatment? = @dynamic <expression>
+  stable actions: @[ExtensionFunctionType] Function3<BarActionScope, Composer, Int, Unit>
+)
+fun com.example.lean.core.designsystem.component.navigation.AppTabBarDefaults.surface(
+  stable treatment: BarTreatment? = @dynamic <expression>
+  unused stable <this>: AppTabBarDefaults
+): Color
+fun com.example.lean.core.designsystem.component.navigation.barLook(
+  stable treatment: BarTreatment
+): BarLook
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.navigation.BarSurface(
+  stable look: BarLook
+  stable modifier: Modifier
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.navigation.TabRow(
+  stable items: List<TabItem>
+  stable selected: Int
+  stable edges: IndicatorEdges
+  stable labels: TabLabels
+  stable look: BarLook
+  stable state: AppTabBarState
+  stable bounce: TabBounce
+  stable onTap: Function1<Int, Unit>
+)
+open scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.navigation.BarActions.Action(
+  stable icon: ImageVector
+  stable contentDescription: String
+  stable onClick: Function0<Unit>
+  stable tag: String?
+  stable <this>: BarActions
+)
+fun com.example.lean.core.designsystem.component.navigation.rememberAppTabBarState()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.navigation.AppTabRow(
+  stable tabs: List<String>
+  stable selected: Int
+  stable onSelect: Function1<Int, Unit>
+  stable modifier: Modifier? = @static <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.navigation.AppTopBar(
+  stable title: String
+  stable modifier: Modifier? = @static <expression>
+  stable subtitle: String? = @static null
+  stable onBack: Function0<Unit>? = @static null
+  stable centerTitle: Boolean = @static true
+  stable scrolled: Function0<Int>? = @static null
+  stable windowInsets: WindowInsets? = @dynamic <expression>
+  stable actions: @[ExtensionFunctionType] Function3<RowScope, Composer, Int, Unit>? = @static <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.navigation.AppLargeTitleTopBar(
+  stable title: String
+  stable scrolled: Function0<Int>
+  stable modifier: Modifier? = @static <expression>
+  stable subtitle: String? = @static null
+  stable onBack: Function0<Unit>? = @static null
+  stable windowInsets: WindowInsets? = @dynamic <expression>
+  stable accessory: Function2<Composer, Int, Unit>? = @static null
+  stable actions: @[ExtensionFunctionType] Function3<RowScope, Composer, Int, Unit>? = @static <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.navigation.TitleBlock(
+  stable title: String
+  stable subtitle: String?
+  stable centred: Boolean
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable], [_]]") fun com.example.lean.core.designsystem.component.navigation.InlineBar(
+  stable onBack: Function0<Unit>?
+  stable centerTitle: Boolean
+  stable actions: @[ExtensionFunctionType] Function3<RowScope, Composer, Int, Unit>
+  stable title: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.navigation.TabCells(
+  stable items: List<TabItem>
+  stable selected: Int
+  stable layer: TabLayer
+  stable labels: TabLabels
+  stable look: BarLook
+  stable bounce: TabBounce
+  stable measure: TabMeasure
+  stable onTap: Function1<Int, Unit>?
+  stable modifier: Modifier? = @static <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.navigation.TabCell(
+  stable item: TabItem
+  stable glyph: ImageVector
+  stable color: Color
+  stable filter: ColorFilter
+  stable showLabel: Boolean
+  stable uppercase: Boolean
+  stable scale: Function0<Float>
+  stable modifier: Modifier
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.navigation.TabRail(
+  stable items: List<TabItem>
+  stable selected: Int
+  stable edges: IndicatorEdges
+  stable labels: TabLabels
+  stable look: BarLook
+  stable bounce: TabBounce
+  stable onTap: Function1<Int, Unit>
+  stable header: @[ExtensionFunctionType] Function3<BarActionScope, Composer, Int, Unit>?
+  stable footer: Function2<Composer, Int, Unit>?
+  stable modifier: Modifier
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.overlay.AppActionSheet(
+  stable actions: List<SheetAction>
+  stable onDismissRequest: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable title: String? = @static null
+  stable message: String? = @static null
+  stable cancelLabel: String? = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.overlay.AppAlert(
+  stable visible: Boolean
+  stable title: String
+  stable confirmLabel: String
+  stable onConfirm: Function0<Unit>
+  stable onDismissRequest: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable message: String? = @static null
+  stable dismissLabel: String? = @static null
+  stable destructive: Boolean = @static false
+  stable icon: ImageVector? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.overlay.AlertAction(
+  stable label: String
+  stable color: Color
+  stable bold: Boolean
+  stable onClick: Function0<Unit>
+  stable modifier: Modifier
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.overlay.AppBottomSheet(
+  stable onDismissRequest: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable title: String? = @static null
+  stable showHandle: Boolean = @static true
+  stable dismissOnClickOutside: Boolean = @static true
+  stable content: @[ExtensionFunctionType] Function3<ColumnScope, Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.overlay.AppContextMenu(
+  stable menu: Function2<Composer, Int, Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable enabled: Boolean = @static true
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.overlay.ContextMenuOverlay(
+  stable state: ContextMenuState
+  drawing: GraphicsLayer
+  stable menu: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.overlay.AppMenu(
+  stable expanded: Boolean
+  stable onDismissRequest: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.overlay.AppMenuItem(
+  stable text: String
+  stable onClick: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable icon: ImageVector? = @static null
+  stable enabled: Boolean = @static true
+  stable destructive: Boolean = @static false
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.overlay.AppMenuDivider(
+  stable modifier: Modifier? = @static <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.overlay.MenuPanel(
+  stable onItemChosen: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.overlay.MenuColumn(
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.overlay.AppOverlayHost(
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[0, [0]]") fun com.example.lean.core.designsystem.component.overlay.HostedOverlay(
+  stable modal: Function0<Boolean>
+  stable onRemoved: Function0<Unit>? = @static null
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable fun com.example.lean.core.designsystem.component.overlay.SuspendOverlays(
+  stable suspended: Function0<Boolean>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.overlay.AppToast(
+  stable message: ToastMessage
+  stable modifier: Modifier? = @static <expression>
+  stable onDismiss: Function0<Unit>? = @static <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.overlay.ToastLayer(
+  stable queue: ToastQueue
+  stable held: Function0<Boolean>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.overlay.SwipeAway(
+  stable onGone: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable fun com.example.lean.core.designsystem.component.overlay.OverlayBackHandler(
+  stable enabled: Boolean
+  stable onProgress: Function1<Float, Unit>? = @static <expression>
+  stable onCancel: Function0<Unit>? = @static <expression>
+  stable onBack: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.refresh.AppPullToRefresh(
+  stable isRefreshing: Boolean
+  stable onRefresh: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable showExternalRefresh: Boolean = @static false
+  stable content: @[ExtensionFunctionType] Function3<BoxScope, Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.selection.AppCheckbox(
+  stable checked: Boolean
+  stable onCheckedChange: Function1<Boolean, Unit>?
+  stable modifier: Modifier? = @static <expression>
+  stable label: String? = @static null
+  stable enabled: Boolean = @static true
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.selection.LabelledControl(
+  stable modifier: Modifier
+  stable label: String?
+  stable enabled: Boolean
+  stable control: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.selection.AppChip(
+  stable label: String
+  stable onClick: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable selected: Boolean = @static false
+  stable enabled: Boolean = @static true
+  stable leadingIcon: ImageVector? = @static null
+  stable onRemove: Function0<Unit>? = @static null
+)
+fun com.example.lean.core.designsystem.component.selection.rememberHeldFraction(
+  stable interactions: InteractionSource
+): Animatable<Float, AnimationVector1D>
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.selection.AppRadio(
+  stable selected: Boolean
+  stable onClick: Function0<Unit>?
+  stable modifier: Modifier? = @static <expression>
+  stable label: String? = @static null
+  stable enabled: Boolean = @static true
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.selection.AppSegmentedControl(
+  stable options: List<String>
+  stable selected: Int
+  stable onSelect: Function1<Int, Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable enabled: Boolean = @static true
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.selection.AppSlider(
+  stable value: Float
+  stable onValueChange: Function1<Float, Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable valueRange: ClosedFloatingPointRange<Float>? = @dynamic <expression>
+  stable steps: Int = @static 0
+  stable enabled: Boolean = @static true
+  stable onValueChangeFinished: Function0<Unit>? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.selection.AppSwitch(
+  stable checked: Boolean
+  stable onCheckedChange: Function1<Boolean, Unit>?
+  stable modifier: Modifier? = @static <expression>
+  stable enabled: Boolean = @static true
+  stable interactionSource: MutableInteractionSource? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.selection.SwitchTrack(
+  stable checked: Boolean
+  stable interactionSource: MutableInteractionSource
+  stable modifier: Modifier? = @static <expression>
+  stable motion: SwitchMotion? = @static <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [_], [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.sheet.AppSheet(
+  stable visible: Boolean
+  stable onDismissRequest: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable state: AppSheetState? = @dynamic <expression>
+  stable modality: SheetModality? = @static <expression>
+  stable dismissible: Boolean = @static true
+  stable properties: AppSheetProperties? = @static <expression>
+  stable style: AppSheetStyle? = @dynamic <expression>
+  stable paneTitle: String? = @static null
+  stable onDetentChange: Function1<SheetDetent, Unit>? = @static null
+  stable onHidden: Function0<Unit>? = @static null
+  stable grabber: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>? = @dynamic <expression>
+  stable header: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>? = @static null
+  stable footer: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>? = @static null
+  stable content: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [_], [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.sheet.HostedSheet(
+  stable visible: Boolean
+  stable onDismissRequest: Function0<Unit>
+  stable modifier: Modifier
+  stable state: AppSheetState
+  stable modality: SheetModality
+  stable dismissible: Boolean
+  stable properties: AppSheetProperties
+  stable style: AppSheetStyle
+  stable paneTitle: String?
+  stable onDetentChange: Function1<SheetDetent, Unit>?
+  stable onHidden: Function0<Unit>?
+  stable grabber: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>?
+  stable header: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>?
+  stable footer: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>?
+  stable content: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>
+  stable asDialog: Boolean = @static false
+)
+restartable skippable fun com.example.lean.core.designsystem.component.sheet.AppSheet(
+  item: T?
+  stable onDismissRequest: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable state: AppSheetState? = @dynamic <expression>
+  stable modality: SheetModality? = @static <expression>
+  stable dismissible: Boolean = @static true
+  stable properties: AppSheetProperties? = @static <expression>
+  stable style: AppSheetStyle? = @dynamic <expression>
+  stable paneTitle: String? = @static null
+  stable onDetentChange: Function1<SheetDetent, Unit>? = @static null
+  stable onHidden: Function0<Unit>? = @static null
+  stable grabber: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>? = @dynamic <expression>
+  stable header: @[ExtensionFunctionType] Function4<AppSheetScope, T, Composer, Int, Unit>? = @static null
+  stable footer: @[ExtensionFunctionType] Function4<AppSheetScope, T, Composer, Int, Unit>? = @static null
+  stable content: @[ExtensionFunctionType] Function4<AppSheetScope, T, Composer, Int, Unit>
+)
+readonly fun com.example.lean.core.designsystem.component.sheet.AppSheetDefaults.colors(
+  stable container: Color = @dynamic <expression>
+  stable content: Color = @dynamic <expression>
+  stable grabber: Color = @dynamic <expression>
+  stable rim: Color = @dynamic <expression>
+  stable scrim: Color = @dynamic <expression>
+  stable <this>: AppSheetDefaults
+): AppSheetColors
+readonly fun com.example.lean.core.designsystem.component.sheet.AppSheetDefaults.groupedColors(
+  stable <this>: AppSheetDefaults
+): AppSheetColors
+readonly fun com.example.lean.core.designsystem.component.sheet.AppSheetDefaults.solidRim(
+  unused stable <this>: AppSheetDefaults
+): Color
+readonly fun com.example.lean.core.designsystem.component.sheet.AppSheetDefaults.shadow(
+  unused stable <this>: AppSheetDefaults
+): Shadow?
+readonly fun com.example.lean.core.designsystem.component.sheet.AppSheetDefaults.style(
+  stable material: SheetMaterial? = @static <expression>
+  stable colors: AppSheetColors? = @dynamic <expression>
+  stable containerBrush: Brush? = @static null
+  stable cornerRadius: Dp = @dynamic <expression>
+  stable floatingInset: Dp = @dynamic <expression>
+  stable maxWidth: Dp = @static <expression>
+  stable shadow: Shadow? = @dynamic <expression>
+  stable <this>: AppSheetDefaults
+): AppSheetStyle
+fun com.example.lean.core.designsystem.component.sheet.rememberAppSheetState(
+  stable detents: List<SheetDetent>? = @dynamic <expression>
+  stable initialDetent: SheetDetent? = @dynamic <expression>
+): AppSheetState
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.sheet.action.ActionCard(
+  stable visible: Boolean
+  stable actions: List<SheetAction>
+  stable onDismissRequest: Function0<Unit>
+  stable modifier: Modifier
+  stable title: String?
+  stable message: String?
+  stable anchor: SheetAnchor?
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.sheet.action.AppActionSheet(
+  stable visible: Boolean
+  stable actions: List<SheetAction>
+  stable onDismissRequest: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable title: String? = @static null
+  stable message: String? = @static null
+  stable cancelLabel: String? = @dynamic <expression>
+  stable anchor: SheetAnchor? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.sheet.action.ActionSheetContent(
+  stable <this>: AppSheetScope
+  stable actions: List<SheetAction>
+  stable title: String?
+  stable message: String?
+  stable cancelLabel: String
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.sheet.action.ActionHeading(
+  stable title: String?
+  stable message: String?
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.sheet.action.ActionRow(
+  stable action: SheetAction
+  stable divider: Boolean
+  stable onClick: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable bold: Boolean = @static false
+)
+fun com.example.lean.core.designsystem.component.sheet.action.rememberSheetAnchor()
+restartable skippable fun com.example.lean.core.designsystem.component.sheet.back.SheetBack(
+  stable controller: SheetController
+)
+restartable skippable fun com.example.lean.core.designsystem.component.sheet.back.SheetFocusEffect(
+  stable controller: SheetController
+)
+restartable skippable fun com.example.lean.core.designsystem.component.sheet.choice.AppChoiceSheet(
+  stable visible: Boolean
+  choices: List<T>
+  selected: T?
+  stable onSelect: Function1<T, Unit>
+  stable onDismissRequest: Function0<Unit>
+  stable label: Function1<T, String>
+  stable modifier: Modifier? = @static <expression>
+  stable title: String? = @static null
+  stable supportingText: Function1<T, String?>? = @static null
+  stable enabled: Function1<T, Boolean>? = @static <expression>
+  stable onSelectNone: Function0<Unit>? = @static null
+  stable noneLabel: String? = @dynamic <expression>
+  stable key: Function1<T, Any>? = @static null
+)
+restartable skippable fun com.example.lean.core.designsystem.component.sheet.choice.ChoiceList(
+  stable <this>: AppSheetScope
+  choices: List<T>
+  selected: T?
+  stable onSelect: Function1<T, Unit>
+  stable label: Function1<T, String>
+  stable supportingText: Function1<T, String?>?
+  stable enabled: Function1<T, Boolean>
+  stable onSelectNone: Function0<Unit>?
+  stable noneLabel: String
+  stable key: Function1<T, Any>?
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.sheet.chrome.AppSheetCloseButton(
+  stable modifier: Modifier? = @static <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.sheet.chrome.AppSheetGrabber(
+  stable modifier: Modifier? = @static <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.sheet.chrome.AppSheetHeader(
+  stable title: Function2<Composer, Int, Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable subtitle: Function2<Composer, Int, Unit>? = @static null
+  stable leading: @[ExtensionFunctionType] Function3<RowScope, Composer, Int, Unit>? = @static null
+  stable trailing: @[ExtensionFunctionType] Function3<RowScope, Composer, Int, Unit>? = @static <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.sheet.chrome.AppSheetHeader(
+  stable title: String
+  stable modifier: Modifier? = @static <expression>
+  stable subtitle: String? = @static null
+  stable leading: @[ExtensionFunctionType] Function3<RowScope, Composer, Int, Unit>? = @static null
+  stable trailing: @[ExtensionFunctionType] Function3<RowScope, Composer, Int, Unit>? = @static <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [_]]") fun com.example.lean.core.designsystem.component.sheet.chrome.SheetGrabberHost(
+  stable controller: SheetController
+  stable grabber: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>?
+)
+fun com.example.lean.core.designsystem.component.sheet.chrome.rememberSheetLabels()
+restartable skippable fun com.example.lean.core.designsystem.component.sheet.content.SheetBackHandler(
+  stable enabled: Boolean = @static true
+  stable onBack: Function0<Unit>
+)
+readonly fun com.example.lean.core.designsystem.component.sheet.content.sheetContentPadding()
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.sheet.content.SheetColumn(
+  stable modifier: Modifier? = @static <expression>
+  stable state: ScrollState? = @dynamic <expression>
+  stable contentPadding: PaddingValues? = @dynamic <expression>
+  stable verticalArrangement: Vertical? = @static <expression>
+  stable horizontalAlignment: Horizontal? = @static <expression>
+  stable content: @[ExtensionFunctionType] Function3<ColumnScope, Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.sheet.content.UnpinnedSheetFooter()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.sheet.content.SheetDismissConfirmation(
+  stable enabled: Boolean
+  stable onDiscard: Function0<Unit>
+  stable title: String? = @dynamic <expression>
+  stable discardLabel: String? = @dynamic <expression>
+)
+restartable skippable fun com.example.lean.core.designsystem.component.sheet.content.SheetDismissGuard(
+  stable enabled: Boolean = @static true
+  stable onAttempt: Function1<SheetDismissSource, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.sheet.content.SheetHeaderHost(
+  stable controller: SheetController
+  stable header: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>?
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.sheet.content.SheetFooterHost(
+  stable controller: SheetController
+  stable footer: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>?
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.sheet.content.SheetFooterContent(
+  stable controller: SheetController
+  stable footer: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>?
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.sheet.content.SheetContentHost(
+  stable controller: SheetController
+  stable content: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>
+)
+readonly fun com.example.lean.core.designsystem.component.sheet.content.sheetOwnerVisibility()
+restartable skippable scheme("[0, [0]]") fun com.example.lean.core.designsystem.component.sheet.content.SheetLocals(
+  stable controller: SheetController
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable fun com.example.lean.core.designsystem.component.sheet.content.SlotEntry.Compose(
+  stable scope: AppSheetScope
+  stable <this>: SlotEntry
+)
+restartable skippable scheme("[0, [0]]") fun com.example.lean.core.designsystem.component.sheet.content.ProvideSheetHeader(
+  stable title: String? = @static null
+  stable content: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>
+)
+restartable skippable scheme("[0, [0]]") fun com.example.lean.core.designsystem.component.sheet.content.ProvideSheetFooter(
+  stable content: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>
+)
+restartable skippable scheme("[0, [0]]") fun com.example.lean.core.designsystem.component.sheet.content.ProvideSlot(
+  stable footer: Boolean
+  stable title: String?
+  stable content: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>
+)
+restartable skippable fun com.example.lean.core.designsystem.component.sheet.content.ProvideSheetStyle(
+  stable style: AppSheetStyle
+  stable grabber: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>? = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [_], [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.sheet.layout.AppSheetLayout(
+  stable state: AppSheetState
+  stable onDismissRequest: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable modality: SheetModality? = @static <expression>
+  stable dismissible: Boolean = @static true
+  stable properties: AppSheetProperties? = @static <expression>
+  stable style: AppSheetStyle? = @dynamic <expression>
+  stable paneTitle: String? = @static null
+  stable onDetentChange: Function1<SheetDetent, Unit>? = @static null
+  stable grabber: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>? = @dynamic <expression>
+  stable header: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>? = @static null
+  stable footer: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>? = @static null
+  stable content: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>
+)
+restartable skippable fun com.example.lean.core.designsystem.component.sheet.layout.SheetStackEntry(
+  stable controller: SheetController
+  stable stack: SheetStack?
+  stable ownerLevel: Int
+)
+restartable skippable fun com.example.lean.core.designsystem.component.sheet.layout.SheetMotionEffects(
+  stable controller: SheetController
+  stable expandForKeyboard: Boolean
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [_], [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.sheet.layout.SheetLayout(
+  stable controller: SheetController
+  stable modifier: Modifier
+  stable modal: Boolean
+  stable placement: SheetPlacement
+  stable paneTitle: String?
+  stable grabber: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>?
+  stable header: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>?
+  stable footer: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>?
+  stable content: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [_], [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.component.sheet.layout.SheetSession(
+  stable state: AppSheetState
+  stable onDismissRequest: Function0<Unit>
+  stable modifier: Modifier
+  stable modality: SheetModality
+  stable dismissible: Boolean
+  stable properties: AppSheetProperties
+  stable style: AppSheetStyle
+  stable paneTitle: String?
+  stable onDetentChange: Function1<SheetDetent, Unit>?
+  stable onHidden: Function0<Unit>?
+  stable callerShows: Boolean?
+  stable grabber: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>?
+  stable header: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>?
+  stable footer: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>?
+  stable content: @[ExtensionFunctionType] Function3<AppSheetScope, Composer, Int, Unit>
+  stable asDialog: Boolean = @static false
+  stable destination: Boolean = @static false
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.sheet.surface.SheetScrim(
+  stable controller: SheetController
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.text.AppExpandableText(
+  stable text: String
+  stable modifier: Modifier? = @static <expression>
+  stable collapsedMaxLines: Int = @static 3
+  stable style: TextStyle? = @dynamic <expression>
+  stable color: Color = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.text.AppIcon(
+  stable imageVector: ImageVector
+  stable contentDescription: String?
+  stable modifier: Modifier? = @static <expression>
+  stable tint: Color = @dynamic <expression>
+  stable size: Dp = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.text.AppIcon(
+  stable imageVector: ImageVector
+  stable contentDescription: String?
+  tint: ColorProducer
+  stable modifier: Modifier? = @static <expression>
+  stable size: Dp = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.text.AppText(
+  stable text: String
+  stable modifier: Modifier? = @static <expression>
+  stable color: Color = @static <expression>
+  stable style: TextStyle? = @dynamic <expression>
+  stable textAlign: TextAlign? = @static null
+  stable textDecoration: TextDecoration? = @static null
+  stable maxLines: Int = @static 2147483647
+  stable minLines: Int = @static 1
+  stable overflow: TextOverflow = @static <expression>
+  stable softWrap: Boolean = @static true
+  autoSize: TextAutoSize? = @static null
+  stable onTextLayout: Function1<TextLayoutResult, Unit>? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.text.AppText(
+  stable text: AnnotatedString
+  stable modifier: Modifier? = @static <expression>
+  stable color: Color = @static <expression>
+  stable style: TextStyle? = @dynamic <expression>
+  stable textAlign: TextAlign? = @static null
+  stable textDecoration: TextDecoration? = @static null
+  stable maxLines: Int = @static 2147483647
+  stable minLines: Int = @static 1
+  stable overflow: TextOverflow = @static <expression>
+  stable softWrap: Boolean = @static true
+  autoSize: TextAutoSize? = @static null
+  stable onTextLayout: Function1<TextLayoutResult, Unit>? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.text.AppText(
+  stable text: String
+  color: ColorProducer
+  stable modifier: Modifier? = @static <expression>
+  stable style: TextStyle? = @dynamic <expression>
+  stable textAlign: TextAlign? = @static null
+  stable maxLines: Int = @static 2147483647
+  stable overflow: TextOverflow = @static <expression>
+  stable softWrap: Boolean = @static true
+  autoSize: TextAutoSize? = @static null
+)
+fun com.example.lean.core.designsystem.component.text.rememberTextBones()
+fun com.example.lean.core.designsystem.component.text.rememberLayoutListener(
+  bones: TextBones?
+  stable onTextLayout: Function1<TextLayoutResult, Unit>?
+): Function1<TextLayoutResult, Unit>?
+fun com.example.lean.core.designsystem.component.text.resolve(
+  stable <this>: TextStyle
+  stable color: Color
+  stable textAlign: TextAlign?
+  stable textDecoration: TextDecoration?
+): TextStyle
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.text.AppMonoText(
+  stable text: String
+  stable modifier: Modifier? = @static <expression>
+  stable color: Color = @static <expression>
+  stable style: TextStyle? = @dynamic <expression>
+  stable textAlign: TextAlign? = @static null
+  stable maxLines: Int = @static 1
+  stable overflow: TextOverflow = @static <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.text.AppFiguresText(
+  stable text: String
+  stable modifier: Modifier? = @static <expression>
+  stable color: Color = @static <expression>
+  stable style: TextStyle? = @dynamic <expression>
+  stable textAlign: TextAlign? = @static null
+  stable maxLines: Int = @static 2147483647
+  stable overflow: TextOverflow = @static <expression>
+)
+readonly fun com.example.lean.core.designsystem.component.text.scaledLike(
+  stable <this>: Dp
+  stable style: TextStyle
+): Dp
+readonly fun com.example.lean.core.designsystem.component.text.grownWithFontScale(
+  stable <this>: TextStyle
+  stable maxScale: Float
+): TextStyle
+fun com.example.lean.core.designsystem.foundation.adaptive.<get-shouldUseTwoPanes>()
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.foundation.adaptive.AppTwoPane(
+  stable first: Function2<Composer, Int, Unit>
+  stable second: Function2<Composer, Int, Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable firstWeight: Float = @static 0.5f
+  stable sideBySide: Boolean = @dynamic <expression>
+  stable spacing: Dp = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [_], [_]]") fun com.example.lean.core.designsystem.foundation.adaptive.HingeSplit(
+  stable first: Function2<Composer, Int, Unit>
+  stable second: Function2<Composer, Int, Unit>
+  stable hinge: Rect
+  stable vertical: Boolean
+  stable modifier: Modifier
+)
+fun com.example.lean.core.designsystem.foundation.adaptive.rememberWindowClass()
+fun com.example.lean.core.designsystem.foundation.adaptive.rememberWindowMetrics()
+restartable skippable scheme("[0, [0]]") fun com.example.lean.core.designsystem.foundation.adaptive.ProvideContainerWidth(
+  stable width: Dp
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.foundation.content.AppSurface(
+  stable modifier: Modifier? = @static <expression>
+  stable shape: Shape? = @dynamic <expression>
+  stable color: Color = @dynamic <expression>
+  stable contentColor: Color = @dynamic <expression>
+  stable border: BorderStroke? = @static null
+  stable elevation: Dp = @static <expression>
+  stable clipContent: Boolean = @static false
+  stable contentAlignment: Alignment? = @static <expression>
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[0, [0]]") fun com.example.lean.core.designsystem.foundation.content.ProvideContentColor(
+  stable color: Color
+  stable textStyle: TextStyle? = @static null
+  stable content: Function2<Composer, Int, Unit>
+)
+fun com.example.lean.core.designsystem.foundation.content.rememberCurrentLocale()
+restartable skippable scheme("[0, [0]]") fun com.example.lean.core.designsystem.foundation.draw.ContentUnderBone(
+  stable bone: Boolean
+  stable content: Function2<Composer, Int, Unit>
+)
+fun com.example.lean.core.designsystem.foundation.interaction.rememberAppHaptics()
+restartable skippable fun com.example.lean.core.designsystem.foundation.layout.ReportScrollEdge(
+  state: ScrollableState
+)
+fun com.example.lean.core.designsystem.foundation.layout.chromeContentPadding(
+  stable base: PaddingValues? = @static <expression>
+): PaddingValues
+fun com.example.lean.core.designsystem.foundation.scroll.AppScrollDefaults.flingBehavior(
+  unused stable <this>: AppScrollDefaults
+): FlingBehavior
+fun com.example.lean.core.designsystem.foundation.scroll.AppScrollDefaults.pagerFlingBehavior(
+  stable state: PagerState
+  unused stable <this>: AppScrollDefaults
+): TargetedFlingBehavior
+restartable skippable open scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.preview.AppPreviewTheme.Wrap(
+  stable content: Function2<Composer, Int, Unit>
+  unused stable <this>: AppPreviewTheme
+)
+readonly fun com.example.lean.core.designsystem.theme.ThemeMode.isDark(
+  stable <this>: ThemeMode
+): Boolean
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.lean.core.designsystem.theme.AppTheme(
+  stable mode: ThemeMode? = @static <expression>
+  stable designStyle: AppDesignStyle? = @static <expression>
+  stable motionStyle: AppMotionStyle? = @static <expression>
+  stable hapticsEnabled: Boolean = @static <expression>
+  stable colors: AppColors? = @dynamic <expression>
+  stable fonts: AppFonts? = @dynamic <expression>
+  stable reduceMotion: Boolean? = @static null
+  stable posture: WindowPosture? = @dynamic <expression>
+  stable input: InputTraits? = @dynamic <expression>
+  stable content: Function2<Composer, Int, Unit>
+)
+readonly fun com.example.lean.core.designsystem.theme.AppTheme.<get-colors>(
+  unused stable <this>: AppTheme
+): AppColors
+readonly fun com.example.lean.core.designsystem.theme.AppTheme.<get-typography>(
+  unused stable <this>: AppTheme
+): AppTypography
+readonly fun com.example.lean.core.designsystem.theme.AppTheme.<get-spacing>(
+  unused stable <this>: AppTheme
+): AppSpacing
+readonly fun com.example.lean.core.designsystem.theme.AppTheme.<get-shapes>(
+  unused stable <this>: AppTheme
+): AppShapes
+readonly fun com.example.lean.core.designsystem.theme.AppTheme.<get-elevation>(
+  unused stable <this>: AppTheme
+): AppElevation
+readonly fun com.example.lean.core.designsystem.theme.AppTheme.<get-sizes>(
+  unused stable <this>: AppTheme
+): AppSizes
+readonly fun com.example.lean.core.designsystem.theme.AppTheme.<get-springs>(
+  unused stable <this>: AppTheme
+): AppSprings
+fun com.example.lean.core.designsystem.theme.AppTheme.<get-reduceMotion>(
+  unused stable <this>: AppTheme
+): Boolean
+readonly fun com.example.lean.core.designsystem.theme.AppTheme.<get-style>(
+  unused stable <this>: AppTheme
+): AppStyle
+readonly fun com.example.lean.core.designsystem.theme.AppTheme.<get-windowClass>(
+  unused stable <this>: AppTheme
+): SizeClass
+readonly fun com.example.lean.core.designsystem.theme.AppTheme.<get-containerClass>(
+  unused stable <this>: AppTheme
+): SizeClass
+readonly fun com.example.lean.core.designsystem.theme.AppTheme.<get-posture>(
+  unused stable <this>: AppTheme
+): WindowPosture
+readonly fun com.example.lean.core.designsystem.theme.AppTheme.<get-input>(
+  unused stable <this>: AppTheme
+): InputTraits
+readonly fun com.example.lean.core.designsystem.theme.AppTheme.<get-layout>(
+  unused stable <this>: AppTheme
+): AppLayout
+fun com.example.lean.core.designsystem.theme.rememberSystemReduceMotion()

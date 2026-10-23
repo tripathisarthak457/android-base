@@ -1,0 +1,100 @@
+
+Summary
+───────
+           App  Lean (Lean)
+       Package  com.example.lean
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  ci, coil, deeplink, googlefonts, leakcanary, network
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\WP02-CONT\h8\lean
+
+  ! No feature gives the app a tab, so a 'home' module was scaffolded under
+  ! feature/home and data/home. Its repository has no source yet: give it one,
+  ! or rename the module.
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\WP02-CONT\h8\lean and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+
+[locked:gradle] waiting for the lock (pid 9376 since 2026-10-23 23:34:32: bash staging/scripts/f87-build-exp.sh cardnolayer rootnotopbar notopbar)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:designsystem:compileDebugKotlin
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:packageDebugResources
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:generateDebugRFile
+> Task :core:designsystem:compileDebugKotlin
+
+BUILD SUCCESSFUL in 1m 30s
+12 actionable tasks: 9 executed, 3 from cache
+Configuration cache entry stored.
+total 148
+drwxr-xr-x 1 crazyhusir 197609     0 Oct 23 23:42 .
+drwxr-xr-x 1 crazyhusir 197609     0 Oct 23 23:42 ..
+-rw-r--r-- 1 crazyhusir 197609 53660 Oct 23 23:42 designsystem-classes.txt
+-rw-r--r-- 1 crazyhusir 197609 21756 Oct 23 23:42 designsystem-composables.csv
+-rw-r--r-- 1 crazyhusir 197609 67276 Oct 23 23:42 designsystem-composables.txt
+touching core/designsystem/src/main/kotlin/com/example/lean/core/designsystem/component/button/AppButton.kt
+[locked:gradle] yielding to normal-priority waiters for the lock (pid 14108 since 2026-10-23 23:41:12: bash D:/projects/tools/.overhaul/out/WP02/gw.win.sh --offline :core:designsystem:compileDebugKotlin --console=plain)
+[locked:gradle] waiting for the lock (pid 4120 since 2026-10-23 23:42:45: bash staging/scripts/f88-build-exp.sh tbnofill tbnoinline tbnoline)
+[locked:gradle] waiting for the lock (pid 4644 since 2026-10-23 23:51:13: ./gradlew :core:image:testDebugUnitTest :data:feed:testDebugUnitTest :build-logic:convention:test :core:designsystem:tes)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Reusing configuration cache.
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin
+
+BUILD SUCCESSFUL in 25s
+8 actionable tasks: 2 executed, 6 up-to-date
+Configuration cache entry reused.
+total 12
+drwxr-xr-x 1 crazyhusir 197609    0 Oct 23 23:42 .
+drwxr-xr-x 1 crazyhusir 197609    0 Oct 23 23:55 ..
+-rw-r--r-- 1 crazyhusir 197609  568 Oct 23 23:55 designsystem-classes.txt
+-rw-r--r-- 1 crazyhusir 197609  943 Oct 23 23:55 designsystem-composables.csv
+-rw-r--r-- 1 crazyhusir 197609 2804 Oct 23 23:55 designsystem-composables.txt
+ 1264 D:/projects/tools/.overhaul/out/WP02-CONT/h8/full.txt
+   62 D:/projects/tools/.overhaul/out/WP02-CONT/h8/incr.txt
+ 1326 total
+D:/projects/tools/.overhaul/out/WP02-CONT/h8/full.txt:207
+D:/projects/tools/.overhaul/out/WP02-CONT/h8/incr.txt:8
+H8 DONE

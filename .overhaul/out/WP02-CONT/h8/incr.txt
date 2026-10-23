@@ -1,0 +1,62 @@
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.button.AppButton(
+  stable text: String
+  stable onClick: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable variant: ButtonVariant? = @static <expression>
+  stable size: ButtonSize? = @static <expression>
+  stable enabled: Boolean = @static true
+  stable loading: Boolean = @static false
+  stable leadingIcon: ImageVector? = @static null
+  stable trailingIcon: ImageVector? = @static null
+  stable shape: Shape? = @dynamic <expression>
+  stable colors: ButtonColors? = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.button.AppIconButton(
+  stable icon: ImageVector
+  stable contentDescription: String
+  stable onClick: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable variant: ButtonVariant? = @static <expression>
+  stable size: ButtonSize? = @static <expression>
+  stable enabled: Boolean = @static true
+  stable colors: ButtonColors? = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.button.FieldIconButton(
+  stable icon: ImageVector
+  stable contentDescription: String
+  stable onClick: Function0<Unit>
+  stable textStyle: TextStyle
+  stable modifier: Modifier? = @static <expression>
+  stable enabled: Boolean = @static true
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.button.IconButton(
+  stable icon: ImageVector
+  stable contentDescription: String
+  stable onClick: Function0<Unit>
+  stable modifier: Modifier
+  stable variant: ButtonVariant
+  stable diameter: Dp
+  stable glyphSize: Dp
+  stable enabled: Boolean
+  stable colors: ButtonColors
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.lean.core.designsystem.component.button.AppLinkButton(
+  stable text: String
+  stable onClick: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable enabled: Boolean = @static true
+  stable style: TextStyle? = @dynamic <expression>
+)
+fun com.example.lean.core.designsystem.component.button.AppButtonDefaults.colors(
+  stable variant: ButtonVariant
+  unused stable <this>: AppButtonDefaults
+): ButtonColors
+fun com.example.lean.core.designsystem.component.button.AppButtonDefaults.iconButtonColors(
+  stable variant: ButtonVariant? = @static <expression>
+  stable content: Color = @static <expression>
+  stable <this>: AppButtonDefaults
+): ButtonColors
+fun com.example.lean.core.designsystem.component.button.AppButtonDefaults.metrics(
+  stable size: ButtonSize
+  unused stable <this>: AppButtonDefaults
+): Metrics

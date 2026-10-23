@@ -18,6 +18,23 @@ For every entry:
 Template facts below are read from `staging` at `b21f0a981`. Where a study cites older code, the entry
 says what has changed since.
 
+**Where the text goes now (WP12-DOCS, Oct 24).** The docs base is in the template on
+`staging-wp/WP12-DOCS`: `templates/android/docs/PERFORMANCE.md` and section 6 "Smooth and light" of
+`templates/android/AGENTS.md` (the drafts `PERFORMANCE.md` and `AGENTS-rules.md` in this folder are history;
+edit the template files, never the drafts). When you paste an entry:
+
+- The guide is fenced by feature like code: anything about the perf harness (`tools/perf`, `perf.sh`,
+  `gates.toml`, `record.sh`, the benchmark build) goes inside `<!-- <opt:performance> -->` with an
+  `opt-else` wording for projects without it; the overlay inside `perfhud`, dev tooling inside `devtools`,
+  Coil inside `coil`, glass inside `liquidglass`. `generator/tests/test_docs.py` fails on a path, name,
+  rule id, gate row, scenario, spring or link a generated project lacks.
+- "Where the template stands" (in "Screen transitions") holds the last measured release rows of the
+  Everything preset. A stage that re-measures them on the merged code (HUD-O1, REG, every train's phone
+  gate, WP13) updates that table in the same change; a row that goes green moves to "within".
+- T-P1's "also" note: the sentence to replace in "The back gesture" is the one beginning "No signal tells
+  a screen that it is in the card"; it is no longer that paragraph's last sentence.
+- O-1's replacement bullet for "Builds that mean something" keeps the `devtools` fence around it.
+
 ---
 
 ## Telegram (REQUIREMENTS 48; source `research/telegram/RESEARCH.md`, revision 2; phone study not run)

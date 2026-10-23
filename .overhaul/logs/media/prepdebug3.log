@@ -1,0 +1,1171 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Initialized native services in: D:\.caches\gradle\native
+Initialized jansi services in: D:\.caches\gradle\native
+The client will now receive all logging from the daemon (pid: 9700). The daemon log file: D:\.caches\gradle\daemon\9.7.1\daemon-9700.out.log
+Starting 4th build in daemon [uptime: 10 mins 8.537 secs, performance: 98%, GC rate: 0.04/s, heap usage: 18% of 2 GiB, non-heap usage: 52% of 1 GiB]
+Using 4 worker leases.
+Operational build model parameters: {cachingModelBuilding=false, configurationCache=true, configurationCacheDisabledReason=null, configurationCacheParallelLoad=true, configurationCacheParallelStore=true, configureOnDemand=false, invalidateCoupledProjects=false, isolatedProjects=false, isolatedProjectsDiagnostics=false, isolatedProjectsDangerouslyIgnoreProblems=false, modelAsProjectDependency=false, modelBuilding=false, parallelModelBuilding=false, parallelProjectConfiguration=false, parallelProjectExecution=true, vintage=false}
+Parallel Configuration Cache is an incubating feature.
+Encryption key source: default Gradle keystore (pkcs12)
+Not watching D:\projects\tools\.overhaul\wt\MEDIA\templates\android since the file system is not supported
+Not watching D:\projects\tools\.overhaul\wt\MEDIA\templates\android\build-logic since the file system is not supported
+Calculating task graph as configuration cache cannot be reused because file 'settings.gradle.kts' has changed.
+Not watching D:\projects\tools\.overhaul\wt\MEDIA\templates\android since the file system is not supported
+Watching the file system is configured to be enabled if available
+File system watching is active
+Starting Build
+Settings evaluated using settings file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\settings.gradle.kts'.
+Using local directory build cache for the root build (location = D:\.caches\gradle\caches\build-cache-1, remove unused entries = after 7 days).
+Not watching D:\projects\tools\.overhaul\wt\MEDIA\templates\android\build-logic since the file system is not supported
+Projects loaded. Root project using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\build.gradle.kts'.
+Included projects: [root project 'BaseApp', project ':app', project ':benchmark', project ':catalog', project ':core', project ':data', project ':feature', project ':core:analytics', project ':core:applock', project ':core:common', project ':core:database', project ':core:datastore', project ':core:designsystem', project ':core:devtools', project ':core:flags', project ':core:image', project ':core:media', project ':core:mvi', project ':core:navigation', project ':core:network', project ':core:notification', project ':core:perfhud', project ':core:playstore', project ':core:testing', project ':core:ui', project ':core:video', project ':data:auth', project ':data:feed', project ':data:profile', project ':data:sample', project ':data:search', project ':feature:auth', project ':feature:feed', project ':feature:onboarding', project ':feature:profile', project ':feature:sample', project ':feature:search', project ':feature:settings', project ':core:testing:compose']
+
+> Configure project :build-logic
+Evaluating project ':build-logic' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\build-logic\build.gradle'.
+
+> Configure project :
+Evaluating root project 'BaseApp' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\build.gradle.kts'.
+Resolved plugin [id: 'org.gradle.base']
+
+> Configure project :build-logic:convention
+Evaluating project ':build-logic:convention' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\build-logic\convention\build.gradle.kts'.
+Resolved plugin [id: 'org.gradle.kotlin.kotlin-dsl', version: '6.7.3']
+Build ee1aaa75-1671-46b0-b38e-db287a36ef24 is started
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\build-logic\convention\src\main\java', not found
+
+> Configure project :
+Resolved plugin [id: 'com.android.application', version: '9.4.1', apply: false]
+Resolved plugin [id: 'com.android.library', version: '9.4.1', apply: false]
+Resolved plugin [id: 'com.android.test', version: '9.4.1', apply: false]
+Resolved plugin [id: 'org.jetbrains.kotlin.jvm', version: '2.4.21', apply: false]
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.compose', version: '2.4.21', apply: false]
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.21', apply: false]
+Resolved plugin [id: 'com.google.devtools.ksp', version: '2.3.12', apply: false]
+Resolved plugin [id: 'com.google.dagger.hilt.android', version: '2.60.1', apply: false]
+Resolved plugin [id: 'androidx.room3', version: '3.0.3', apply: false]
+Resolved plugin [id: 'io.github.takahirom.roborazzi', version: '1.76.0', apply: false]
+Resolved plugin [id: 'com.google.gms.google-services', version: '4.5.0', apply: false]
+Resolved plugin [id: 'com.google.firebase.crashlytics', version: '3.0.8', apply: false]
+Resolved plugin [id: 'androidx.baselineprofile', version: '1.5.0', apply: false]
+Resolved plugin [id: 'org.jetbrains.kotlinx.kover', version: '0.9.11']
+Resolved plugin [id: 'com.autonomousapps.dependency-analysis', version: '3.19.2']
+Resolved plugin [id: 'com.diffplug.spotless', version: '8.10.4']
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':build-logic:convention:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+Build cache key for task ':build-logic:convention:compileKotlin' is 73bf2cc3f54e81dd5db1601adfa60620
+Skipping task ':build-logic:convention:compileKotlin' as it is up-to-date.
+
+> Task :build-logic:convention:compileJava NO-SOURCE
+Skipping task ':build-logic:convention:compileJava' as it has no source files and no previous output files.
+
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+Caching disabled for task ':build-logic:convention:pluginDescriptors' because:
+  Not worth caching
+Skipping task ':build-logic:convention:pluginDescriptors' as it is up-to-date.
+
+> Task :build-logic:convention:processResources UP-TO-DATE
+Caching disabled for task ':build-logic:convention:processResources' because:
+  Not worth caching
+Skipping task ':build-logic:convention:processResources' as it is up-to-date.
+
+> Task :build-logic:convention:classes UP-TO-DATE
+Skipping task ':build-logic:convention:classes' as it has no actions.
+
+> Task :build-logic:convention:jar UP-TO-DATE
+Caching disabled for task ':build-logic:convention:jar' because:
+  Not worth caching
+Skipping task ':build-logic:convention:jar' as it is up-to-date.
+
+> Configure project :app
+Evaluating project ':app' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\app\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.application']
+Resolved plugin [id: 'com.base.app.android.application.flavors']
+Resolved plugin [id: 'com.base.app.android.compose']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.21']
+Resolved plugin [id: 'com.base.app.android.firebase']
+Resolved plugin [id: 'androidx.baselineprofile', version: '1.5.0']
+Resolved plugin [id: 'app.cash.licensee', version: '1.14.1']
+Resolved plugin [id: 'com.base.app.android.licenses']
+Resolve mutations for :build-logic:convention:checkKotlinGradlePluginConfigurationErrors (Thread[#372,included builds,5,main]) started.
+:build-logic:convention:checkKotlinGradlePluginConfigurationErrors (Thread[#372,included builds,5,main]) started.
+Resolve mutations for :build-logic:convention:compileKotlin (Thread[#372,included builds,5,main]) started.
+:build-logic:convention:compileKotlin (Thread[#372,included builds,5,main]) started.
+Resolve mutations for :build-logic:convention:compileJava (Thread[#372,included builds,5,main]) started.
+:build-logic:convention:compileJava (Thread[#372,included builds,5,main]) started.
+Resolve mutations for :build-logic:convention:pluginDescriptors (Thread[#372,included builds,5,main]) started.
+:build-logic:convention:pluginDescriptors (Thread[#372,included builds,5,main]) started.
+Resolve mutations for :build-logic:convention:processResources (Thread[#372,included builds,5,main]) started.
+:build-logic:convention:processResources (Thread[#372,included builds,5,main]) started.
+Resolve mutations for :build-logic:convention:classes (Thread[#372,included builds,5,main]) started.
+:build-logic:convention:classes (Thread[#372,included builds,5,main]) started.
+Resolve mutations for :build-logic:convention:jar (Thread[#372,included builds,5,main]) started.
+:build-logic:convention:jar (Thread[#372,included builds,5,main]) started.
+Build dfc3ca0c-e2f0-4992-af53-d6fd6dbaa308 is started
+Using default execution profile
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :benchmark
+Evaluating project ':benchmark' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\benchmark\build.gradle.kts'.
+Resolved plugin [id: 'com.android.test', version: '9.4.1']
+Resolved plugin [id: 'androidx.baselineprofile', version: '1.5.0']
+Resolved plugin [id: 'com.base.app.android.library', apply: false]
+Using default execution profile
+
+> Configure project :catalog
+Evaluating project ':catalog' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\catalog\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.application']
+Resolved plugin [id: 'com.base.app.android.compose']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.21']
+Resolved plugin [id: 'com.base.app.android.screenshots']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Roborazzi: Please set 'roborazzi.record.filePathStrategy=relativePathFromRoborazziContextOutputDirectory' in the 'gradle.properties' file. This is advisable to avoid unnecessary path manipulation. Please refer to 'https://github.com/takahirom/roborazzi?tab=readme-ov-file#roborazzirecordfilepathstrategy' for more information.
+
+> Configure project :core
+Evaluating project ':core' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\build.gradle'.
+
+> Configure project :data
+Evaluating project ':data' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\data\build.gradle'.
+
+> Configure project :feature
+Evaluating project ':feature' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\feature\build.gradle'.
+
+> Configure project :core:analytics
+Evaluating project ':core:analytics' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\analytics\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Using default execution profile
+
+> Configure project :core:applock
+Evaluating project ':core:applock' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\applock\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.compose']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :core:common
+Evaluating project ':core:common' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\common\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.jvm.library']
+Using Kotlin Gradle Plugin gradle96 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :core:database
+Evaluating project ':core:database' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\database\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Resolved plugin [id: 'com.base.app.android.room']
+Using default execution profile
+
+> Configure project :core:datastore
+Evaluating project ':core:datastore' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\datastore\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.21']
+Using default execution profile
+
+> Configure project :core:designsystem
+Evaluating project ':core:designsystem' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.compose']
+Resolved plugin [id: 'com.base.app.android.screenshots']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Roborazzi: Please set 'roborazzi.record.filePathStrategy=relativePathFromRoborazziContextOutputDirectory' in the 'gradle.properties' file. This is advisable to avoid unnecessary path manipulation. Please refer to 'https://github.com/takahirom/roborazzi?tab=readme-ov-file#roborazzirecordfilepathstrategy' for more information.
+
+> Configure project :core:devtools
+Evaluating project ':core:devtools' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\devtools\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.compose']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :core:flags
+Evaluating project ':core:flags' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\flags\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Using default execution profile
+
+> Configure project :core:image
+Evaluating project ':core:image' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\image\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.compose']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :core:media
+Evaluating project ':core:media' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\media\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Resolved plugin [id: 'com.base.app.android.compose']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :core:mvi
+Evaluating project ':core:mvi' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\mvi\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Using default execution profile
+
+> Configure project :core:navigation
+Evaluating project ':core:navigation' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\navigation\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Resolved plugin [id: 'com.base.app.android.compose']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.21']
+Resolved plugin [id: 'com.google.dagger.hilt.android', version: '2.60.1']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :core:network
+Evaluating project ':core:network' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\network\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.21']
+Using default execution profile
+
+> Configure project :core:notification
+Evaluating project ':core:notification' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\notification\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.compose']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Resolved plugin [id: 'com.google.dagger.hilt.android', version: '2.60.1']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :core:perfhud
+Evaluating project ':core:perfhud' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\perfhud\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.compose']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Resolved plugin [id: 'com.google.dagger.hilt.android', version: '2.60.1']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.21']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :core:playstore
+Evaluating project ':core:playstore' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\playstore\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.compose']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :core:testing
+Evaluating project ':core:testing' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Using default execution profile
+
+> Configure project :core:ui
+Evaluating project ':core:ui' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\ui\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.compose']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :core:video
+Evaluating project ':core:video' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\video\build.gradle.kts'.
+Build cache key for Kotlin DSL script compilation (Project/TopLevel/stage1) is 723ef7e3f45122fc31e9c6cddcb0c16a
+Stored cache entry for Kotlin DSL script compilation (Project/TopLevel/stage1) with cache key 723ef7e3f45122fc31e9c6cddcb0c16a
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.compose']
+Using default execution profile
+Build cache key for Kotlin DSL script compilation (Project/TopLevel/stage2) is 02ca0a379b3e2e64524b95592208effb
+Stored cache entry for Kotlin DSL script compilation (Project/TopLevel/stage2) with cache key 02ca0a379b3e2e64524b95592208effb
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :data:auth
+Evaluating project ':data:auth' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\data\auth\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.data']
+Using default execution profile
+
+> Configure project :data:feed
+Evaluating project ':data:feed' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\data\feed\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.data']
+Using default execution profile
+
+> Configure project :data:profile
+Evaluating project ':data:profile' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\data\profile\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.data']
+Using default execution profile
+
+> Configure project :data:sample
+Evaluating project ':data:sample' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\data\sample\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.data']
+Using default execution profile
+
+> Configure project :data:search
+Evaluating project ':data:search' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\data\search\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.data']
+Using default execution profile
+
+> Configure project :feature:auth
+Evaluating project ':feature:auth' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\feature\auth\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.feature']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Roborazzi: Please set 'roborazzi.record.filePathStrategy=relativePathFromRoborazziContextOutputDirectory' in the 'gradle.properties' file. This is advisable to avoid unnecessary path manipulation. Please refer to 'https://github.com/takahirom/roborazzi?tab=readme-ov-file#roborazzirecordfilepathstrategy' for more information.
+
+> Configure project :feature:feed
+Evaluating project ':feature:feed' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\feature\feed\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.feature']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Roborazzi: Please set 'roborazzi.record.filePathStrategy=relativePathFromRoborazziContextOutputDirectory' in the 'gradle.properties' file. This is advisable to avoid unnecessary path manipulation. Please refer to 'https://github.com/takahirom/roborazzi?tab=readme-ov-file#roborazzirecordfilepathstrategy' for more information.
+
+> Configure project :feature:onboarding
+Evaluating project ':feature:onboarding' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\feature\onboarding\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.feature']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Roborazzi: Please set 'roborazzi.record.filePathStrategy=relativePathFromRoborazziContextOutputDirectory' in the 'gradle.properties' file. This is advisable to avoid unnecessary path manipulation. Please refer to 'https://github.com/takahirom/roborazzi?tab=readme-ov-file#roborazzirecordfilepathstrategy' for more information.
+
+> Configure project :feature:profile
+Evaluating project ':feature:profile' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\feature\profile\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.feature']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Roborazzi: Please set 'roborazzi.record.filePathStrategy=relativePathFromRoborazziContextOutputDirectory' in the 'gradle.properties' file. This is advisable to avoid unnecessary path manipulation. Please refer to 'https://github.com/takahirom/roborazzi?tab=readme-ov-file#roborazzirecordfilepathstrategy' for more information.
+
+> Configure project :feature:sample
+Evaluating project ':feature:sample' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\feature\sample\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.feature']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Roborazzi: Please set 'roborazzi.record.filePathStrategy=relativePathFromRoborazziContextOutputDirectory' in the 'gradle.properties' file. This is advisable to avoid unnecessary path manipulation. Please refer to 'https://github.com/takahirom/roborazzi?tab=readme-ov-file#roborazzirecordfilepathstrategy' for more information.
+
+> Configure project :feature:search
+Evaluating project ':feature:search' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\feature\search\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.feature']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Roborazzi: Please set 'roborazzi.record.filePathStrategy=relativePathFromRoborazziContextOutputDirectory' in the 'gradle.properties' file. This is advisable to avoid unnecessary path manipulation. Please refer to 'https://github.com/takahirom/roborazzi?tab=readme-ov-file#roborazzirecordfilepathstrategy' for more information.
+
+> Configure project :feature:settings
+Evaluating project ':feature:settings' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\feature\settings\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.feature']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Roborazzi: Please set 'roborazzi.record.filePathStrategy=relativePathFromRoborazziContextOutputDirectory' in the 'gradle.properties' file. This is advisable to avoid unnecessary path manipulation. Please refer to 'https://github.com/takahirom/roborazzi?tab=readme-ov-file#roborazzirecordfilepathstrategy' for more information.
+
+> Configure project :core:testing:compose
+Evaluating project ':core:testing:compose' using build file 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\compose\build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.compose']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+All projects evaluated.
+Task path ':core:designsystem:testDebugUnitTest' matched project ':core:designsystem'
+Task name matched 'testDebugUnitTest'
+Selected primary task 'testDebugUnitTest' from project :core:designsystem
+Tasks to be executed: [task ':core:common:checkKotlinGradlePluginConfigurationErrors', task ':core:common:verifyApiPurity', task ':core:common:verifyModuleDependencies', task ':core:common:compileKotlin', task ':core:common:compileJava', task ':core:common:processResources', task ':core:common:classes', task ':core:common:jar', task ':core:designsystem:verifyApiPurity', task ':core:designsystem:verifyModuleDependencies', task ':core:designsystem:preBuild', task ':core:designsystem:preDebugBuild', task ':core:designsystem:generateDebugResources', task ':core:designsystem:packageDebugResources', task ':core:designsystem:processDebugNavigationResources', task ':core:designsystem:parseDebugLocalResources', task ':core:designsystem:generateDebugRFile', task ':core:designsystem:compileDebugKotlin', task ':core:designsystem:javaPreCompileDebug', task ':core:designsystem:compileDebugJavaWithJavac', task ':core:designsystem:bundleLibRuntimeToJarDebug', task ':core:designsystem:bundleLibCompileToJarDebug', task ':core:designsystem:generateDebugComposePreviewRobolectricTests', task ':core:designsystem:preDebugUnitTestBuild', task ':core:designsystem:writeDebugAarMetadata', task ':core:testing:verifyApiPurity', task ':core:testing:verifyModuleDependencies', task ':core:testing:preBuild', task ':core:testing:preDebugBuild', task ':core:testing:writeDebugAarMetadata', task ':core:testing:compose:verifyApiPurity', task ':core:testing:compose:verifyModuleDependencies', task ':core:testing:compose:preBuild', task ':core:testing:compose:preDebugBuild', task ':core:testing:compose:writeDebugAarMetadata', task ':core:designsystem:checkDebugUnitTestAarMetadata', task ':core:designsystem:mapDebugSourceSetPaths', task ':core:designsystem:compileDebugLibraryResources', task ':core:designsystem:mapDebugUnitTestSourceSetPaths', task ':core:designsystem:generateDebugUnitTestResources', task ':core:testing:generateDebugEmptyResourceFiles', task ':core:testing:compose:generateDebugEmptyResourceFiles', task ':core:designsystem:mergeDebugUnitTestResources', task ':core:designsystem:extractDeepLinksDebug', task ':core:designsystem:processDebugManifest', task ':core:testing:processDebugManifest', task ':core:testing:compose:processDebugManifest', task ':core:designsystem:mergeDebugUnitTestManifest', task ':core:designsystem:processDebugUnitTestManifest', task ':core:designsystem:processDebugUnitTestResources', task ':core:testing:compileDebugKotlin', task ':core:testing:javaPreCompileDebug', task ':core:testing:compileDebugJavaWithJavac', task ':core:testing:bundleLibCompileToJarDebug', task ':core:testing:compose:compileDebugKotlin', task ':core:testing:compose:javaPreCompileDebug', task ':core:testing:compose:compileDebugJavaWithJavac', task ':core:testing:compose:bundleLibCompileToJarDebug', task ':core:designsystem:compileDebugUnitTestKotlin', task ':core:designsystem:javaPreCompileDebugUnitTest', task ':core:designsystem:compileDebugUnitTestJavaWithJavac', task ':core:designsystem:generateDebugUnitTestAssets', task ':core:designsystem:generateDebugAssets', task ':core:designsystem:mergeDebugAssets', task ':core:testing:generateDebugAssets', task ':core:testing:mergeDebugAssets', task ':core:testing:compose:generateDebugAssets', task ':core:testing:compose:mergeDebugAssets', task ':core:designsystem:mergeDebugUnitTestAssets', task ':core:designsystem:packageDebugUnitTestForUnitTest', task ':core:designsystem:generateDebugUnitTestConfig', task ':core:designsystem:koverFindJar', task ':core:designsystem:processDebugJavaRes', task ':core:designsystem:processDebugUnitTestJavaRes', task ':core:testing:bundleLibRuntimeToJarDebug', task ':core:testing:processDebugJavaRes', task ':core:testing:compose:bundleLibRuntimeToJarDebug', task ':core:testing:compose:processDebugJavaRes', task ':core:designsystem:testDebugUnitTest', task ':core:designsystem:finalizeTestRoborazziDebug']
+Tasks that were excluded: []
+Roborazzi: Set output dir file collection to test task
+Roborazzi: Set output dir D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\intermediates\roborazzi to test task
+Roborazzi: Set output dir D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\test-results\roborazzi\debug\results to test task
+Roborazzi: Set output file D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\test-results\roborazzi\debug\results-summary.json to test task
+Roborazzi: Set output file D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\reports\roborazzi\debug\index.html to test task
+Using local directory build cache for the root build (location = D:\.caches\gradle\caches\build-cache-1, remove unused entries = after 7 days).
+Ignoring listeners of task graph ready event, as this build (:) has already executed work.
+Resolve mutations for :core:common:checkKotlinGradlePluginConfigurationErrors (Thread[#375,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:common:processResources (Thread[#372,included builds,5,main]) started.
+Resolve mutations for :core:common:verifyApiPurity (Thread[#374,Execution worker Thread 2,5,main]) started.
+:core:common:checkKotlinGradlePluginConfigurationErrors (Thread[#375,Execution worker Thread 3,5,main]) started.
+:core:common:processResources (Thread[#372,included builds,5,main]) started.
+:core:common:verifyApiPurity (Thread[#374,Execution worker Thread 2,5,main]) started.
+Resolve mutations for :core:common:verifyModuleDependencies (Thread[#373,Execution worker,5,main]) started.
+:core:common:verifyModuleDependencies (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':core:common:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+work action Unknown value (Thread[#375,Execution worker Thread 3,5,main]) started.
+
+> Task :core:common:processResources NO-SOURCE
+Skipping task ':core:common:processResources' as it has no source files and no previous output files.
+work action Unknown value (Thread[#372,included builds,5,main]) started.
+Resolve mutations for :core:designsystem:verifyApiPurity (Thread[#372,included builds,5,main]) started.
+Resolve mutations for :core:designsystem:verifyModuleDependencies (Thread[#375,Execution worker Thread 3,5,main]) started.
+:core:designsystem:verifyApiPurity (Thread[#375,Execution worker Thread 3,5,main]) started.
+:core:designsystem:verifyModuleDependencies (Thread[#372,included builds,5,main]) started.
+
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+Build cache key for task ':core:common:verifyModuleDependencies' is 03726c96d97e7f797a3d01749cf2dff3
+Skipping task ':core:common:verifyModuleDependencies' as it is up-to-date.
+Resolve mutations for :core:designsystem:generateDebugComposePreviewRobolectricTests (Thread[#373,Execution worker,5,main]) started.
+:core:designsystem:generateDebugComposePreviewRobolectricTests (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+Build cache key for task ':core:designsystem:verifyModuleDependencies' is 19f1971ad74a249492ff7838af136c75
+Skipping task ':core:designsystem:verifyModuleDependencies' as it is up-to-date.
+Resolve mutations for :core:testing:verifyApiPurity (Thread[#372,included builds,5,main]) started.
+
+> Task :core:designsystem:generateDebugComposePreviewRobolectricTests UP-TO-DATE
+Build cache key for task ':core:designsystem:generateDebugComposePreviewRobolectricTests' is 35e8332302ae86f1c6aa8e998afc9a76
+Skipping task ':core:designsystem:generateDebugComposePreviewRobolectricTests' as it is up-to-date.
+
+> Task :core:common:verifyApiPurity UP-TO-DATE
+Build cache key for task ':core:common:verifyApiPurity' is fcb07c101e9f3e136b752bff348b9e8d
+Skipping task ':core:common:verifyApiPurity' as it is up-to-date.
+:core:testing:verifyApiPurity (Thread[#372,included builds,5,main]) started.
+Resolve mutations for :core:testing:verifyModuleDependencies (Thread[#373,Execution worker,5,main]) started.
+:core:testing:verifyModuleDependencies (Thread[#373,Execution worker,5,main]) started.
+Resolve mutations for :core:common:compileKotlin (Thread[#374,Execution worker Thread 2,5,main]) started.
+:core:common:compileKotlin (Thread[#374,Execution worker Thread 2,5,main]) started.
+
+> Task :core:testing:verifyModuleDependencies UP-TO-DATE
+Build cache key for task ':core:testing:verifyModuleDependencies' is 46b2d14542445939b6f7ba7e44d926ab
+Skipping task ':core:testing:verifyModuleDependencies' as it is up-to-date.
+Resolve mutations for :core:testing:compose:verifyApiPurity (Thread[#373,Execution worker,5,main]) started.
+:core:testing:compose:verifyApiPurity (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:testing:verifyApiPurity UP-TO-DATE
+Build cache key for task ':core:testing:verifyApiPurity' is ac88bcb39e8b408213773a9cfccec16b
+Skipping task ':core:testing:verifyApiPurity' as it is up-to-date.
+
+> Task :core:designsystem:verifyApiPurity UP-TO-DATE
+Build cache key for task ':core:designsystem:verifyApiPurity' is 6038caa089cde02e0b75e2aecc06f95e
+Skipping task ':core:designsystem:verifyApiPurity' as it is up-to-date.
+Resolve mutations for :core:testing:preBuild (Thread[#372,included builds,5,main]) started.
+Resolve mutations for :core:designsystem:preBuild (Thread[#375,Execution worker Thread 3,5,main]) started.
+
+> Task :core:testing:compose:verifyApiPurity UP-TO-DATE
+Build cache key for task ':core:testing:compose:verifyApiPurity' is 0e02152ec159daecb05b091d6bccb29e
+Skipping task ':core:testing:compose:verifyApiPurity' as it is up-to-date.
+:core:designsystem:preBuild (Thread[#375,Execution worker Thread 3,5,main]) started.
+:core:testing:preBuild (Thread[#372,included builds,5,main]) started.
+Resolve mutations for :core:testing:compose:verifyModuleDependencies (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:testing:preBuild UP-TO-DATE
+Skipping task ':core:testing:preBuild' as it has no actions.
+
+> Task :core:designsystem:preBuild UP-TO-DATE
+Skipping task ':core:designsystem:preBuild' as it has no actions.
+Resolve mutations for :core:designsystem:preDebugBuild (Thread[#375,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:designsystem:preDebugUnitTestBuild (Thread[#372,included builds,5,main]) started.
+:core:designsystem:preDebugBuild (Thread[#375,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:testing:preDebugBuild (Thread[#373,Execution worker,5,main]) started.
+:core:designsystem:preDebugUnitTestBuild (Thread[#372,included builds,5,main]) started.
+:core:testing:preDebugBuild (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:designsystem:preDebugUnitTestBuild UP-TO-DATE
+Skipping task ':core:designsystem:preDebugUnitTestBuild' as it has no actions.
+
+> Task :core:designsystem:preDebugBuild UP-TO-DATE
+Skipping task ':core:designsystem:preDebugBuild' as it has no actions.
+
+> Task :core:testing:preDebugBuild UP-TO-DATE
+Skipping task ':core:testing:preDebugBuild' as it has no actions.
+:core:testing:compose:verifyModuleDependencies (Thread[#372,included builds,5,main]) started.
+Resolve mutations for :core:designsystem:generateDebugResources (Thread[#375,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:designsystem:processDebugNavigationResources (Thread[#373,Execution worker,5,main]) started.
+:core:designsystem:generateDebugResources (Thread[#375,Execution worker Thread 3,5,main]) started.
+:core:designsystem:processDebugNavigationResources (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:testing:compose:verifyModuleDependencies UP-TO-DATE
+Build cache key for task ':core:testing:compose:verifyModuleDependencies' is 606aabf3c140156ce9a89c3c4d5f0977
+Skipping task ':core:testing:compose:verifyModuleDependencies' as it is up-to-date.
+Resolve mutations for :core:designsystem:javaPreCompileDebug (Thread[#372,included builds,5,main]) started.
+:core:designsystem:javaPreCompileDebug (Thread[#372,included builds,5,main]) started.
+
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+Build cache key for task ':core:designsystem:javaPreCompileDebug' is b069c2aaa3f9fcc4d2880e96080479a0
+Skipping task ':core:designsystem:javaPreCompileDebug' as it is up-to-date.
+
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+Build cache key for task ':core:designsystem:generateDebugResources' is c0c1c9d9a11d00511072d4e8cf7624db
+Skipping task ':core:designsystem:generateDebugResources' as it is up-to-date.
+Resolve mutations for :core:designsystem:packageDebugResources (Thread[#375,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:designsystem:writeDebugAarMetadata (Thread[#372,included builds,5,main]) started.
+
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+Build cache key for task ':core:designsystem:processDebugNavigationResources' is fd7e4f04d8426dfddec18a5fa6dceb9b
+Skipping task ':core:designsystem:processDebugNavigationResources' as it is up-to-date.
+:core:designsystem:writeDebugAarMetadata (Thread[#372,included builds,5,main]) started.
+Resolve mutations for :core:testing:writeDebugAarMetadata (Thread[#373,Execution worker,5,main]) started.
+:core:designsystem:packageDebugResources (Thread[#375,Execution worker Thread 3,5,main]) started.
+:core:testing:writeDebugAarMetadata (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':core:designsystem:writeDebugAarMetadata' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:writeDebugAarMetadata' as it is up-to-date.
+
+> Task :core:testing:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':core:testing:writeDebugAarMetadata' because:
+  Caching has been disabled for the task
+Skipping task ':core:testing:writeDebugAarMetadata' as it is up-to-date.
+Resolve mutations for :core:testing:compose:preBuild (Thread[#372,included builds,5,main]) started.
+:core:testing:compose:preBuild (Thread[#372,included builds,5,main]) started.
+work action resolve aar-metadata.properties (project ':core:designsystem') (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:testing:compose:preBuild UP-TO-DATE
+Skipping task ':core:testing:compose:preBuild' as it has no actions.
+Resolve mutations for :core:testing:compose:preDebugBuild (Thread[#372,included builds,5,main]) started.
+work action resolve aar-metadata.properties (project ':core:testing') (Thread[#373,Execution worker,5,main]) started.
+Resolve mutations for :core:designsystem:mapDebugSourceSetPaths (Thread[#373,Execution worker,5,main]) started.
+:core:testing:compose:preDebugBuild (Thread[#372,included builds,5,main]) started.
+
+> Task :core:testing:compose:preDebugBuild UP-TO-DATE
+Skipping task ':core:testing:compose:preDebugBuild' as it has no actions.
+Resolve mutations for :core:testing:compose:writeDebugAarMetadata (Thread[#372,included builds,5,main]) started.
+:core:designsystem:mapDebugSourceSetPaths (Thread[#373,Execution worker,5,main]) started.
+:core:testing:compose:writeDebugAarMetadata (Thread[#372,included builds,5,main]) started.
+
+> Task :core:testing:compose:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':core:testing:compose:writeDebugAarMetadata' because:
+  Caching has been disabled for the task
+Skipping task ':core:testing:compose:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project ':core:testing:compose') (Thread[#372,included builds,5,main]) started.
+Resolve mutations for :core:designsystem:checkDebugUnitTestAarMetadata (Thread[#372,included builds,5,main]) started.
+:core:designsystem:checkDebugUnitTestAarMetadata (Thread[#372,included builds,5,main]) started.
+
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+Caching disabled for task ':core:designsystem:mapDebugSourceSetPaths' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:mapDebugSourceSetPaths' as it is up-to-date.
+Resolve mutations for :core:designsystem:mapDebugUnitTestSourceSetPaths (Thread[#373,Execution worker,5,main]) started.
+:core:designsystem:mapDebugUnitTestSourceSetPaths (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+Caching disabled for task ':core:designsystem:mapDebugUnitTestSourceSetPaths' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:mapDebugUnitTestSourceSetPaths' as it is up-to-date.
+Resolve mutations for :core:designsystem:generateDebugUnitTestResources (Thread[#373,Execution worker,5,main]) started.
+:core:designsystem:generateDebugUnitTestResources (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+Build cache key for task ':core:designsystem:packageDebugResources' is e56a606fa38766b46d07aeca0035060e
+Skipping task ':core:designsystem:packageDebugResources' as it is up-to-date.
+Resolve mutations for :core:designsystem:parseDebugLocalResources (Thread[#375,Execution worker Thread 3,5,main]) started.
+:core:designsystem:parseDebugLocalResources (Thread[#375,Execution worker Thread 3,5,main]) started.
+
+> Task :core:designsystem:generateDebugUnitTestResources UP-TO-DATE
+Build cache key for task ':core:designsystem:generateDebugUnitTestResources' is 4cd8da99f2ba0f7f2d5d87b1453f04b9
+Skipping task ':core:designsystem:generateDebugUnitTestResources' as it is up-to-date.
+Resolve mutations for :core:designsystem:compileDebugLibraryResources (Thread[#373,Execution worker,5,main]) started.
+:core:designsystem:compileDebugLibraryResources (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:common:compileKotlin UP-TO-DATE
+Build cache key for task ':core:common:compileKotlin' is d62922d7b4d0d19a5514096b25b52f78
+Skipping task ':core:common:compileKotlin' as it is up-to-date.
+Resolve mutations for :core:common:compileJava (Thread[#374,Execution worker Thread 2,5,main]) started.
+:core:common:compileJava (Thread[#374,Execution worker Thread 2,5,main]) started.
+
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+Build cache key for task ':core:designsystem:parseDebugLocalResources' is bea8e741e781a47740e83a94c69082b9
+Skipping task ':core:designsystem:parseDebugLocalResources' as it is up-to-date.
+Resolve mutations for :core:designsystem:generateDebugRFile (Thread[#375,Execution worker Thread 3,5,main]) started.
+
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+Build cache key for task ':core:designsystem:compileDebugLibraryResources' is 2e8d0053eae77e4928b4bb6dfdade4f6
+Skipping task ':core:designsystem:compileDebugLibraryResources' as it is up-to-date.
+Resolve mutations for :core:testing:generateDebugEmptyResourceFiles (Thread[#373,Execution worker,5,main]) started.
+:core:designsystem:generateDebugRFile (Thread[#375,Execution worker Thread 3,5,main]) started.
+:core:testing:generateDebugEmptyResourceFiles (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:common:compileJava NO-SOURCE
+Skipping task ':core:common:compileJava' as it has no source files and no previous output files.
+Resolve mutations for :core:common:classes (Thread[#374,Execution worker Thread 2,5,main]) started.
+:core:common:classes (Thread[#374,Execution worker Thread 2,5,main]) started.
+
+> Task :core:common:classes UP-TO-DATE
+Skipping task ':core:common:classes' as it has no actions.
+Resolve mutations for :core:common:jar (Thread[#374,Execution worker Thread 2,5,main]) started.
+:core:common:jar (Thread[#374,Execution worker Thread 2,5,main]) started.
+
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+Build cache key for task ':core:designsystem:generateDebugRFile' is 0a699c34e5844af64706f19ad8d291b6
+Skipping task ':core:designsystem:generateDebugRFile' as it is up-to-date.
+Resolve mutations for :core:designsystem:compileDebugKotlin (Thread[#375,Execution worker Thread 3,5,main]) started.
+:core:designsystem:compileDebugKotlin (Thread[#375,Execution worker Thread 3,5,main]) started.
+
+> Task :core:common:jar UP-TO-DATE
+Caching disabled for task ':core:common:jar' because:
+  Not worth caching
+Skipping task ':core:common:jar' as it is up-to-date.
+work action resolve common.jar (project ':core:common') (Thread[#374,Execution worker Thread 2,5,main]) started.
+IdentityTransform (Thread[#374,Execution worker Thread 2,5,main]) started.
+IdentityTransform (Thread[#374,Execution worker Thread 2,5,main]) started.
+IdentityTransform (Thread[#374,Execution worker Thread 2,5,main]) started.
+Resolve mutations for :core:testing:compose:generateDebugEmptyResourceFiles (Thread[#374,Execution worker Thread 2,5,main]) started.
+:core:testing:compose:generateDebugEmptyResourceFiles (Thread[#374,Execution worker Thread 2,5,main]) started.
+
+> Task :core:testing:compose:generateDebugEmptyResourceFiles UP-TO-DATE
+Caching disabled for task ':core:testing:compose:generateDebugEmptyResourceFiles' because:
+  Caching has been disabled for the task
+Skipping task ':core:testing:compose:generateDebugEmptyResourceFiles' as it is up-to-date.
+
+> Task :core:testing:generateDebugEmptyResourceFiles UP-TO-DATE
+Caching disabled for task ':core:testing:generateDebugEmptyResourceFiles' because:
+  Caching has been disabled for the task
+Skipping task ':core:testing:generateDebugEmptyResourceFiles' as it is up-to-date.
+work action resolve res (project ':core:testing:compose') (Thread[#374,Execution worker Thread 2,5,main]) started.
+work action resolve packageDebugResources (project ':core:designsystem') (Thread[#374,Execution worker Thread 2,5,main]) started.
+Resolve mutations for :core:designsystem:extractDeepLinksDebug (Thread[#374,Execution worker Thread 2,5,main]) started.
+:core:designsystem:extractDeepLinksDebug (Thread[#374,Execution worker Thread 2,5,main]) started.
+
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+Build cache key for task ':core:designsystem:extractDeepLinksDebug' is 96c683bab62481239634f1d32fd3e384
+Skipping task ':core:designsystem:extractDeepLinksDebug' as it is up-to-date.
+Resolve mutations for :core:designsystem:processDebugManifest (Thread[#374,Execution worker Thread 2,5,main]) started.
+:core:designsystem:processDebugManifest (Thread[#374,Execution worker Thread 2,5,main]) started.
+work action resolve res (project ':core:testing') (Thread[#373,Execution worker,5,main]) started.
+Resolve mutations for :core:designsystem:mergeDebugUnitTestResources (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+Build cache key for task ':core:designsystem:processDebugManifest' is 98284d18600de330c221fc0cf30c88be
+Skipping task ':core:designsystem:processDebugManifest' as it is up-to-date.
+Resolve mutations for :core:testing:processDebugManifest (Thread[#374,Execution worker Thread 2,5,main]) started.
+:core:testing:processDebugManifest (Thread[#374,Execution worker Thread 2,5,main]) started.
+:core:designsystem:mergeDebugUnitTestResources (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:testing:processDebugManifest UP-TO-DATE
+Build cache key for task ':core:testing:processDebugManifest' is 71d72c8ef33ea95b4f0561996dd27d77
+Skipping task ':core:testing:processDebugManifest' as it is up-to-date.
+Resolve mutations for :core:testing:compose:processDebugManifest (Thread[#374,Execution worker Thread 2,5,main]) started.
+:core:testing:compose:processDebugManifest (Thread[#374,Execution worker Thread 2,5,main]) started.
+
+> Task :core:testing:compose:processDebugManifest UP-TO-DATE
+Build cache key for task ':core:testing:compose:processDebugManifest' is fb3c3eb3f0785f7e413687249112bd72
+Skipping task ':core:testing:compose:processDebugManifest' as it is up-to-date.
+work action resolve AndroidManifest.xml (project ':core:testing') (Thread[#374,Execution worker Thread 2,5,main]) started.
+work action resolve AndroidManifest.xml (project ':core:testing:compose') (Thread[#374,Execution worker Thread 2,5,main]) started.
+work action resolve navigation.json (project ':core:designsystem') (Thread[#374,Execution worker Thread 2,5,main]) started.
+work action resolve AndroidManifest.xml (project ':core:designsystem') (Thread[#374,Execution worker Thread 2,5,main]) started.
+Resolve mutations for :core:designsystem:mergeDebugUnitTestManifest (Thread[#374,Execution worker Thread 2,5,main]) started.
+:core:designsystem:mergeDebugUnitTestManifest (Thread[#374,Execution worker Thread 2,5,main]) started.
+
+> Task :core:designsystem:mergeDebugUnitTestResources UP-TO-DATE
+Build cache key for task ':core:designsystem:mergeDebugUnitTestResources' is f0ca1dc77f6bb9d7375d331551bcd49d
+Skipping task ':core:designsystem:mergeDebugUnitTestResources' as it is up-to-date.
+
+> Task :core:designsystem:checkDebugUnitTestAarMetadata UP-TO-DATE
+Caching disabled for task ':core:designsystem:checkDebugUnitTestAarMetadata' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:checkDebugUnitTestAarMetadata' as it is up-to-date.
+work action resolve out (project ':core:designsystem') (Thread[#372,included builds,5,main]) started.
+work action resolve file-map.txt (project ':core:designsystem') (Thread[#373,Execution worker,5,main]) started.
+work action resolve package-aware-r.txt (project ':core:designsystem') (Thread[#372,included builds,5,main]) started.
+work action Unknown value (Thread[#373,Execution worker,5,main]) started.
+Resolve mutations for :core:testing:javaPreCompileDebug (Thread[#372,included builds,5,main]) started.
+IdentityTransform (Thread[#373,Execution worker,5,main]) started.
+:core:testing:javaPreCompileDebug (Thread[#372,included builds,5,main]) started.
+Resolve mutations for :core:testing:compileDebugKotlin (Thread[#373,Execution worker,5,main]) started.
+:core:testing:compileDebugKotlin (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+Build cache key for task ':core:testing:javaPreCompileDebug' is b069c2aaa3f9fcc4d2880e96080479a0
+Skipping task ':core:testing:javaPreCompileDebug' as it is up-to-date.
+Resolve mutations for :core:testing:compose:compileDebugKotlin (Thread[#372,included builds,5,main]) started.
+:core:testing:compose:compileDebugKotlin (Thread[#372,included builds,5,main]) started.
+
+> Task :core:designsystem:mergeDebugUnitTestManifest UP-TO-DATE
+Caching disabled for task ':core:designsystem:mergeDebugUnitTestManifest' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:mergeDebugUnitTestManifest' as it is up-to-date.
+Resolve mutations for :core:designsystem:processDebugUnitTestManifest (Thread[#374,Execution worker Thread 2,5,main]) started.
+:core:designsystem:processDebugUnitTestManifest (Thread[#374,Execution worker Thread 2,5,main]) started.
+
+> Task :core:designsystem:processDebugUnitTestManifest UP-TO-DATE
+Caching disabled for task ':core:designsystem:processDebugUnitTestManifest' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:processDebugUnitTestManifest' as it is up-to-date.
+Resolve mutations for :core:designsystem:processDebugUnitTestResources (Thread[#374,Execution worker Thread 2,5,main]) started.
+:core:designsystem:processDebugUnitTestResources (Thread[#374,Execution worker Thread 2,5,main]) started.
+
+> Task :core:testing:compileDebugKotlin UP-TO-DATE
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\src\debug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\src\debug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\src\debug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\src\debug\java', not found
+Build cache key for task ':core:testing:compileDebugKotlin' is 939d6061b545ee5bf68b3c2c48d6fe3d
+Skipping task ':core:testing:compileDebugKotlin' as it is up-to-date.
+Resolve mutations for :core:testing:compileDebugJavaWithJavac (Thread[#373,Execution worker,5,main]) started.
+:core:testing:compileDebugJavaWithJavac (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+Skipping task ':core:testing:compileDebugJavaWithJavac' as it has no source files and no previous output files.
+Resolve mutations for :core:testing:bundleLibCompileToJarDebug (Thread[#373,Execution worker,5,main]) started.
+:core:testing:bundleLibCompileToJarDebug (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:testing:bundleLibCompileToJarDebug UP-TO-DATE
+Caching disabled for task ':core:testing:bundleLibCompileToJarDebug' because:
+  Simple merging task
+Skipping task ':core:testing:bundleLibCompileToJarDebug' as it is up-to-date.
+Resolve mutations for :core:testing:compose:javaPreCompileDebug (Thread[#373,Execution worker,5,main]) started.
+:core:testing:compose:javaPreCompileDebug (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:testing:compose:javaPreCompileDebug UP-TO-DATE
+Build cache key for task ':core:testing:compose:javaPreCompileDebug' is b069c2aaa3f9fcc4d2880e96080479a0
+Skipping task ':core:testing:compose:javaPreCompileDebug' as it is up-to-date.
+work action resolve classes.jar (project ':core:testing') (Thread[#373,Execution worker,5,main]) started.
+Resolve mutations for :core:designsystem:javaPreCompileDebugUnitTest (Thread[#373,Execution worker,5,main]) started.
+:core:designsystem:javaPreCompileDebugUnitTest (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:designsystem:javaPreCompileDebugUnitTest UP-TO-DATE
+Build cache key for task ':core:designsystem:javaPreCompileDebugUnitTest' is b069c2aaa3f9fcc4d2880e96080479a0
+Skipping task ':core:designsystem:javaPreCompileDebugUnitTest' as it is up-to-date.
+Resolve mutations for :core:designsystem:generateDebugUnitTestAssets (Thread[#373,Execution worker,5,main]) started.
+:core:designsystem:generateDebugUnitTestAssets (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:designsystem:generateDebugUnitTestAssets UP-TO-DATE
+Skipping task ':core:designsystem:generateDebugUnitTestAssets' as it has no actions.
+Resolve mutations for :core:designsystem:generateDebugAssets (Thread[#373,Execution worker,5,main]) started.
+:core:designsystem:generateDebugAssets (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+Skipping task ':core:designsystem:generateDebugAssets' as it has no actions.
+Resolve mutations for :core:designsystem:mergeDebugAssets (Thread[#373,Execution worker,5,main]) started.
+:core:designsystem:mergeDebugAssets (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':core:designsystem:mergeDebugAssets' because:
+  Simple merging task
+Skipping task ':core:designsystem:mergeDebugAssets' as it is up-to-date.
+
+> Task :core:testing:compose:compileDebugKotlin UP-TO-DATE
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\compose\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\compose\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\compose\src\debug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\compose\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\compose\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\compose\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\compose\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\compose\src\debug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\compose\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\compose\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\compose\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\compose\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\compose\src\debug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\compose\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\compose\src\debug\java', not found
+Build cache key for task ':core:testing:compose:compileDebugKotlin' is c5ae37aa505e1cf63660c603014f376f
+Skipping task ':core:testing:compose:compileDebugKotlin' as it is up-to-date.
+Resolve mutations for :core:testing:generateDebugAssets (Thread[#373,Execution worker,5,main]) started.
+Resolve mutations for :core:testing:compose:compileDebugJavaWithJavac (Thread[#372,included builds,5,main]) started.
+:core:testing:generateDebugAssets (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+Skipping task ':core:testing:generateDebugAssets' as it has no actions.
+Resolve mutations for :core:testing:mergeDebugAssets (Thread[#373,Execution worker,5,main]) started.
+:core:testing:mergeDebugAssets (Thread[#373,Execution worker,5,main]) started.
+:core:testing:compose:compileDebugJavaWithJavac (Thread[#372,included builds,5,main]) started.
+
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+Skipping task ':core:testing:compose:compileDebugJavaWithJavac' as it has no source files and no previous output files.
+Resolve mutations for :core:testing:compose:bundleLibCompileToJarDebug (Thread[#372,included builds,5,main]) started.
+:core:testing:compose:bundleLibCompileToJarDebug (Thread[#372,included builds,5,main]) started.
+
+> Task :core:testing:compose:bundleLibCompileToJarDebug UP-TO-DATE
+Caching disabled for task ':core:testing:compose:bundleLibCompileToJarDebug' because:
+  Simple merging task
+Skipping task ':core:testing:compose:bundleLibCompileToJarDebug' as it is up-to-date.
+
+> Task :core:testing:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':core:testing:mergeDebugAssets' because:
+  Simple merging task
+Skipping task ':core:testing:mergeDebugAssets' as it is up-to-date.
+work action resolve classes.jar (project ':core:testing:compose') (Thread[#372,included builds,5,main]) started.
+Resolve mutations for :core:testing:compose:generateDebugAssets (Thread[#372,included builds,5,main]) started.
+work action resolve mergeDebugAssets (project ':core:designsystem') (Thread[#373,Execution worker,5,main]) started.
+:core:testing:compose:generateDebugAssets (Thread[#372,included builds,5,main]) started.
+work action resolve mergeDebugAssets (project ':core:testing') (Thread[#373,Execution worker,5,main]) started.
+Resolve mutations for :core:designsystem:koverFindJar (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:testing:compose:generateDebugAssets UP-TO-DATE
+Skipping task ':core:testing:compose:generateDebugAssets' as it has no actions.
+Resolve mutations for :core:testing:compose:mergeDebugAssets (Thread[#372,included builds,5,main]) started.
+:core:designsystem:koverFindJar (Thread[#373,Execution worker,5,main]) started.
+:core:testing:compose:mergeDebugAssets (Thread[#372,included builds,5,main]) started.
+
+> Task :core:designsystem:koverFindJar UP-TO-DATE
+Caching disabled for task ':core:designsystem:koverFindJar' because:
+  Local file operations are faster then using build cache
+Skipping task ':core:designsystem:koverFindJar' as it is up-to-date.
+Resolve mutations for :core:testing:bundleLibRuntimeToJarDebug (Thread[#373,Execution worker,5,main]) started.
+:core:testing:bundleLibRuntimeToJarDebug (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:testing:compose:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':core:testing:compose:mergeDebugAssets' because:
+  Simple merging task
+Skipping task ':core:testing:compose:mergeDebugAssets' as it is up-to-date.
+
+> Task :core:testing:bundleLibRuntimeToJarDebug UP-TO-DATE
+Caching disabled for task ':core:testing:bundleLibRuntimeToJarDebug' because:
+  Simple merging task
+Skipping task ':core:testing:bundleLibRuntimeToJarDebug' as it is up-to-date.
+work action resolve mergeDebugAssets (project ':core:testing:compose') (Thread[#372,included builds,5,main]) started.
+Resolve mutations for :core:testing:processDebugJavaRes (Thread[#373,Execution worker,5,main]) started.
+Resolve mutations for :core:designsystem:mergeDebugUnitTestAssets (Thread[#372,included builds,5,main]) started.
+:core:testing:processDebugJavaRes (Thread[#373,Execution worker,5,main]) started.
+:core:designsystem:mergeDebugUnitTestAssets (Thread[#372,included builds,5,main]) started.
+
+> Task :core:testing:processDebugJavaRes UP-TO-DATE
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\src\main\resources', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\src\debug\resources', not found
+Caching disabled for task ':core:testing:processDebugJavaRes' because:
+  Caching has been disabled for the task
+Skipping task ':core:testing:processDebugJavaRes' as it is up-to-date.
+Resolve mutations for :core:testing:compose:bundleLibRuntimeToJarDebug (Thread[#373,Execution worker,5,main]) started.
+:core:testing:compose:bundleLibRuntimeToJarDebug (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:testing:compose:bundleLibRuntimeToJarDebug UP-TO-DATE
+Caching disabled for task ':core:testing:compose:bundleLibRuntimeToJarDebug' because:
+  Simple merging task
+Skipping task ':core:testing:compose:bundleLibRuntimeToJarDebug' as it is up-to-date.
+Resolve mutations for :core:testing:compose:processDebugJavaRes (Thread[#373,Execution worker,5,main]) started.
+:core:testing:compose:processDebugJavaRes (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:testing:compose:processDebugJavaRes UP-TO-DATE
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\compose\src\main\resources', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\testing\compose\src\debug\resources', not found
+Caching disabled for task ':core:testing:compose:processDebugJavaRes' because:
+  Caching has been disabled for the task
+Skipping task ':core:testing:compose:processDebugJavaRes' as it is up-to-date.
+work action resolve classes.jar (project ':core:testing') (Thread[#373,Execution worker,5,main]) started.
+work action resolve out (project ':core:testing:compose') (Thread[#373,Execution worker,5,main]) started.
+work action resolve classes.jar (project ':core:testing:compose') (Thread[#373,Execution worker,5,main]) started.
+work action resolve out (project ':core:testing') (Thread[#373,Execution worker,5,main]) started.
+
+> Task :core:designsystem:mergeDebugUnitTestAssets UP-TO-DATE
+Caching disabled for task ':core:designsystem:mergeDebugUnitTestAssets' because:
+  Simple merging task
+Skipping task ':core:designsystem:mergeDebugUnitTestAssets' as it is up-to-date.
+
+> Task :core:designsystem:processDebugUnitTestResources UP-TO-DATE
+Build cache key for task ':core:designsystem:processDebugUnitTestResources' is e1b958367fa554e8734aa19e6e1c3b9a
+Skipping task ':core:designsystem:processDebugUnitTestResources' as it is up-to-date.
+Resolve mutations for :core:designsystem:packageDebugUnitTestForUnitTest (Thread[#374,Execution worker Thread 2,5,main]) started.
+:core:designsystem:packageDebugUnitTestForUnitTest (Thread[#374,Execution worker Thread 2,5,main]) started.
+
+> Task :core:designsystem:packageDebugUnitTestForUnitTest UP-TO-DATE
+Caching disabled for task ':core:designsystem:packageDebugUnitTestForUnitTest' because:
+  Simple merging task
+Skipping task ':core:designsystem:packageDebugUnitTestForUnitTest' as it is up-to-date.
+Resolve mutations for :core:designsystem:generateDebugUnitTestConfig (Thread[#372,included builds,5,main]) started.
+:core:designsystem:generateDebugUnitTestConfig (Thread[#372,included builds,5,main]) started.
+
+> Task :core:designsystem:generateDebugUnitTestConfig UP-TO-DATE
+Caching disabled for task ':core:designsystem:generateDebugUnitTestConfig' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:generateDebugUnitTestConfig' as it is up-to-date.
+
+> Task :core:designsystem:compileDebugKotlin
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+Caching disabled for task ':core:designsystem:compileDebugKotlin' because:
+  Gradle does not know how file 'build\compose_reports\designsystem-composables.txt' was created (output property 'composeStabilityReports'). Task output caching requires exclusive access to output paths to guarantee correctness (i.e. multiple tasks are not allowed to produce output in the same location).
+Task ':core:designsystem:compileDebugKotlin' is not up-to-date because:
+  Output property 'composeStabilityReports' file D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\compose_reports\designsystem-classes.txt has changed.
+  Output property 'composeStabilityReports' file D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\compose_reports\designsystem-composables.csv has changed.
+  Output property 'composeStabilityReports' file D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\compose_reports\designsystem-composables.txt has changed.
+The input changes require a full rebuild for incremental task ':core:designsystem:compileDebugKotlin'.
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\java', not found
+Kotlin source files: D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\animation\AppTransitions.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\animation\Emphasis.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\animation\SymbolEffects.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\button\AppButton.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\collections\AppCarousel.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\collections\AppImageViewer.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\collections\AppReorderableList.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\container\AppBottomActionBar.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\container\AppCard.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\container\AppDivider.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\container\AppScaffold.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\datadisplay\AppAnimatedCounter.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\datadisplay\AppBarChart.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\datadisplay\AppDataTable.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\datadisplay\AppKeyValueGrid.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\datadisplay\AppRating.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\datadisplay\AppSparkline.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\datadisplay\AppStatTile.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\datadisplay\AppTimeline.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\feedback\AppAvatar.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\feedback\AppBadge.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\feedback\AppBanner.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\feedback\AppLoadingOverlay.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\feedback\AppProgress.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\feedback\AppRedacted.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\feedback\AppSkeleton.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\feedback\AppStateView.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\feedback\AppTone.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\formfields\AppDecimalFields.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\formfields\AppOtpField.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\formfields\AppRangeSlider.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\formfields\AppSelectField.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\formfields\AppStepIndicator.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\formfields\AppStepper.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\formfields\AppTagField.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\input\AppSearchField.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\input\AppSecureField.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\input\AppTextField.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\list\AppDisclosure.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\list\AppRow.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\list\AppSection.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\list\AppSwipeActions.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\navigation\AppPageControl.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\navigation\AppSidebar.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\navigation\AppTabBar.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\navigation\AppTabBarState.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\navigation\AppTabRow.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\navigation\AppTopBar.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\navigation\TabCells.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\navigation\TabRail.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\overlay\AppActionSheet.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\overlay\AppAlert.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\overlay\AppBottomSheet.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\overlay\AppContextMenu.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\overlay\AppMenu.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\overlay\AppOverlayHost.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\overlay\AppToast.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\overlay\OverlayBackHandler.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\overlay\OverlayHostNodes.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\pickers\AppDatePicker.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\pickers\AppTimePicker.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\pickers\AppWheelPicker.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\refresh\AppPullToRefresh.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\selection\AppCheckbox.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\selection\AppChip.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\selection\AppRadio.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\selection\AppSegmentedControl.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\selection\AppSlider.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\selection\AppSwitch.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\action\ActionCard.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\action\AppActionSheet.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\action\SheetAction.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\action\SheetAnchor.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\AppSheet.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\AppSheetDefaults.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\AppSheetProperties.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\AppSheetScope.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\AppSheetState.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\AppSheetStyle.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\back\SheetBack.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\back\SheetFocus.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\choice\AppChoiceSheet.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\choice\ChoiceSearch.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\chrome\AppSheetCloseButton.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\chrome\AppSheetGrabber.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\chrome\AppSheetHeader.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\chrome\SheetGrabberNode.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\content\SheetBackHandler.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\content\SheetColumn.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\content\SheetDismissConfirmation.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\content\SheetDismissGuard.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\content\SheetDragExclusion.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\content\SheetHosts.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\content\SheetSlots.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\gesture\SheetCatch.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\gesture\SheetFlingBehavior.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\gesture\SheetNestedScroll.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\gesture\SheetReleaseRule.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\gesture\SheetStretch.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\layout\AppSheetLayout.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\layout\DetentResolution.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\layout\SheetBodyPolicy.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\layout\SheetBringIntoView.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\layout\SheetEffects.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\layout\SheetFrameInfo.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\layout\SheetFrameUpdates.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\layout\SheetGeometry.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\layout\SheetImeSource.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\layout\SheetLayers.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\layout\SheetLayout.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\layout\SheetMeasureEnvironment.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\layout\SheetPlacementPolicy.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\layout\SheetPrepare.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\layout\SheetSession.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\SheetAnchors.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\SheetController.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\SheetDetent.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\SheetHost.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\SheetModality.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\SheetStateKey.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\SheetTrigger.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\stack\CardStackMath.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\stack\CardStackPresenter.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\stack\SheetStack.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\stack\StackedSheet.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\surface\SheetBackdrop.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\surface\SheetFooterBacking.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\surface\SheetScrim.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\surface\SheetSemantics.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\surface\SheetShadow.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\sheet\surface\SheetSurfaceNode.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\text\AppExpandableText.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\text\AppIcon.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\text\AppText.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\component\text\TextScale.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\adaptive\AdaptiveLayout.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\adaptive\AppLayout.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\adaptive\InputTraits.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\adaptive\SizeClass.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\adaptive\WindowClass.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\adaptive\WindowMetrics.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\adaptive\WindowPosture.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\content\AppSurface.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\content\ContentColor.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\content\CurrentLocale.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\draw\Bones.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\draw\DisabledAlpha.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\draw\GroupItemShape.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\draw\Hairline.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\draw\ShimmerClock.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\draw\Skeleton.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\draw\StyleShadow.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\draw\Sweep.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\glass\DeviceGlassSignals.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\glass\GlassChrome.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\glass\GlassColors.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\glass\GlassDefaults.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\glass\GlassPolicy.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\glass\GlassQuality.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\glass\GlassStage.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\glass\GlassSurface.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\glass\GlassVerdictStore.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\glass\GpuVerdict.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\glass\LiquidLens.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\glass\LiquidLensState.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\glass\SceneBackdrop.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\interaction\AppHaptics.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\interaction\ContainerActions.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\interaction\Held.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\interaction\MinimumTouchTarget.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\interaction\Pressable.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\interaction\PressableNode.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\interaction\PressFeedback.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\interaction\RowHighlight.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\layout\BarFrame.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\layout\Bleed.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\layout\Chrome.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\layout\EntryVisibility.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\layout\HostMotion.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\layout\PaneBounds.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\layout\PresentationLevel.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\layout\ShellSeamApi.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\scroll\AppOverscroll.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\scroll\AppScrollDefaults.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\scroll\ScrollEdge.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\scroll\ScrollIndicator.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\foundation\scroll\ScrollToTop.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\icon\AppIcons.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\icon\glyph\ActionsGlyphs.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\icon\glyph\ContentGlyphs.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\icon\glyph\FilledGlyphs.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\icon\glyph\GlyphBuilder.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\icon\glyph\NavigationGlyphs.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\icon\glyph\StatusGlyphs.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\preview\AppPreviewTheme.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\preview\AppScreenPreviews.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\theme\AppColors.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\theme\AppDesignStyle.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\theme\AppFonts.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\theme\AppMetrics.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\theme\AppMotion.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\theme\AppTheme.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\theme\AppTypography.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\theme\ReduceMotion.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\kotlin\com\base\app\core\designsystem\theme\tokens\DesignTokens.kt
+Java source files: 
+Script source files: 
+Script file extensions: 
+Using Kotlin/JVM incremental compilation
+[KOTLIN] Kotlin compilation 'jdkHome' argument: C:\Users\crazyhusir\AppData\Local\Programs\Android Studio\jbr
+i: Options for KOTLIN DAEMON: IncrementalCompilationOptions(super=CompilationOptions(compilerMode=INCREMENTAL_COMPILER, targetPlatform=JVM, reportCategories=[0], reportSeverity=2, requestedCompilationResults=[0], kotlinScriptExtensions=[], generateCompilerRefIndex=false), sourceChanges=org.jetbrains.kotlin.buildtools.api.SourcesChanges$Unknown@2dfcc52f, classpathChanges=NotAvailableDueToMissingClasspathSnapshot, workingDir=D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\kotlin\compileDebugKotlin\cacheable, multiModuleICSettings=null, icFeatures=IncrementalCompilationFeatures(usePreciseJavaTracking=true, withAbiSnapshot=false, preciseCompilationResultsBackup=true, keepIncrementalCompilationCachesInMemory=true, enableUnsafeIncrementalCompilationForMultiplatform=false, enableMonotonousIncrementalCompileSetExpansion=true), outputFiles=[D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\compose_reports, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\intermediates\built_in_kotlinc\debug\compileDebugKotlin\classes, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\kotlin\compileDebugKotlin\cacheable, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\kotlin\compileDebugKotlin\local-state])
+i: Finished executing kotlin compiler using DAEMON strategy
+Resolve mutations for :core:designsystem:compileDebugJavaWithJavac (Thread[#375,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:designsystem:processDebugJavaRes (Thread[#372,included builds,5,main]) started.
+:core:designsystem:processDebugJavaRes (Thread[#372,included builds,5,main]) started.
+:core:designsystem:compileDebugJavaWithJavac (Thread[#375,Execution worker Thread 3,5,main]) started.
+
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+Skipping task ':core:designsystem:compileDebugJavaWithJavac' as it has no source files and no previous output files.
+Resolve mutations for :core:designsystem:bundleLibRuntimeToJarDebug (Thread[#375,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:designsystem:bundleLibCompileToJarDebug (Thread[#374,Execution worker Thread 2,5,main]) started.
+:core:designsystem:bundleLibCompileToJarDebug (Thread[#374,Execution worker Thread 2,5,main]) started.
+:core:designsystem:bundleLibRuntimeToJarDebug (Thread[#375,Execution worker Thread 3,5,main]) started.
+
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+Caching disabled for task ':core:designsystem:bundleLibCompileToJarDebug' because:
+  Simple merging task
+Skipping task ':core:designsystem:bundleLibCompileToJarDebug' as it is up-to-date.
+
+> Task :core:designsystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+Caching disabled for task ':core:designsystem:bundleLibRuntimeToJarDebug' because:
+  Simple merging task
+Skipping task ':core:designsystem:bundleLibRuntimeToJarDebug' as it is up-to-date.
+work action resolve classes.jar (project ':core:designsystem') (Thread[#375,Execution worker Thread 3,5,main]) started.
+work action resolve classes.jar (project ':core:designsystem') (Thread[#374,Execution worker Thread 2,5,main]) started.
+Resolve mutations for :core:designsystem:compileDebugUnitTestKotlin (Thread[#374,Execution worker Thread 2,5,main]) started.
+:core:designsystem:compileDebugUnitTestKotlin (Thread[#374,Execution worker Thread 2,5,main]) started.
+
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\main\resources', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\debug\resources', not found
+Caching disabled for task ':core:designsystem:processDebugJavaRes' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:processDebugJavaRes' as it is up-to-date.
+work action resolve out (project ':core:designsystem') (Thread[#372,included builds,5,main]) started.
+
+> Task :core:designsystem:compileDebugUnitTestKotlin
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+Build cache key for task ':core:designsystem:compileDebugUnitTestKotlin' is c9178e9d9afafd096951b7fd2057a751
+Task ':core:designsystem:compileDebugUnitTestKotlin' is not up-to-date because:
+  Input property 'sources' file D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\PrepDebugTest.kt has been added.
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\kotlin', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\java', not found
+Kotlin source files: D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\animation\BusyOverlayTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\button\AppButtonTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\ChromeInsetsTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\collections\AppCarouselTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\collections\AppImageViewerTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\datadisplay\DataTableWidthsTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\feedback\LoadingSwapTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\feedback\RedactedBoneCountTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\feedback\RedactedGeometryTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\feedback\RedactedInputTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\feedback\SkeletonScreenshotTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\feedback\StateViewTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\formfields\DecimalInputTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\formfields\PhoneFieldTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\formfields\StepperTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\input\FieldAccessoryTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\input\TextFieldSemanticsTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\list\SwipeActionsTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\navigation\LargeTitleTopBarTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\navigation\TopBarTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\overlay\ContextMenuTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\overlay\OverlayBackTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\overlay\OverlayHostTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\pickers\WheelPickerRecompositionTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\pickers\WheelPickerTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\refresh\PullToRefreshTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\selection\SegmentedControlTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\selection\SelectionTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\action\ActionCardTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\choice\AppChoiceSheetTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\choice\ChoiceSearchTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\gesture\SheetNestedScrollTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\gesture\SheetReleaseRuleTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\gesture\SheetStretchTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\layout\DetentResolutionTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\layout\PrepareRampTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\layout\SheetGeometryTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\layout\SheetPlacementPolicyTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\PrepDebugTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\shape\SheetApiShapeTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\SheetAdaptiveTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\SheetBackTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\SheetDismissTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\SheetGestureTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\SheetGuardTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\SheetModalityTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\SheetPrepareTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\SheetPresentTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\SheetReduceMotionTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\SheetSaverTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\SheetScreenshotTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\SheetShots.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\SheetStackTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\SheetTestScreen.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\SheetWindowScreenshotTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\stack\CardStackMathTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\surface\SheetFooterBackingTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\sheet\surface\SheetShadowTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\component\text\TextScaleTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\adaptive\PostureTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\adaptive\WindowClassTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\draw\ShimmerClockTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\draw\SkeletonCoherenceTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\draw\SkeletonDrawAllocationTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\draw\SkeletonStillnessTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\draw\SweepGeometryTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\glass\GlassPolicyTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\glass\GlassQualityTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\glass\GlassStageTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\glass\GlassSurfaceTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\glass\GlassVerdictStoreTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\glass\GpuBudgetWindowTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\glass\LiquidLensStateTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\glass\LiquidLensTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\glass\RobolectricSdk.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\interaction\InputTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\interaction\PressableTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\interaction\RowHighlightTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\scroll\AppFlingCurveTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\scroll\AppFlingTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\scroll\AppOverscrollTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\scroll\ScrollDirectionTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\foundation\scroll\ScrollToTopTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\RecompositionCounter.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\RecompositionJourneysTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\theme\AppSpringsTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\theme\FontPreloadTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\theme\PaletteContrastTest.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\kotlin\com\base\app\core\designsystem\Themed.kt, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\generated\roborazzi\preview-screenshot\debug\com\github\takahirom\roborazzi\RoborazziPreviewParameterizedTests.kt
+Java source files: 
+Script source files: 
+Script file extensions: 
+Using Kotlin/JVM incremental compilation
+[KOTLIN] Kotlin compilation 'jdkHome' argument: C:\Users\crazyhusir\AppData\Local\Programs\Android Studio\jbr
+i: Options for KOTLIN DAEMON: IncrementalCompilationOptions(super=CompilationOptions(compilerMode=INCREMENTAL_COMPILER, targetPlatform=JVM, reportCategories=[0], reportSeverity=2, requestedCompilationResults=[0], kotlinScriptExtensions=[], generateCompilerRefIndex=false), sourceChanges=org.jetbrains.kotlin.buildtools.api.SourcesChanges$Known@8f97306, classpathChanges=NoChanges, workingDir=D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\kotlin\compileDebugUnitTestKotlin\cacheable, multiModuleICSettings=null, icFeatures=IncrementalCompilationFeatures(usePreciseJavaTracking=true, withAbiSnapshot=false, preciseCompilationResultsBackup=true, keepIncrementalCompilationCachesInMemory=true, enableUnsafeIncrementalCompilationForMultiplatform=false, enableMonotonousIncrementalCompileSetExpansion=true), outputFiles=[D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\intermediates\built_in_kotlinc\debugUnitTest\compileDebugUnitTestKotlin\classes, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\kotlin\compileDebugUnitTestKotlin\cacheable, D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\kotlin\compileDebugUnitTestKotlin\local-state])
+i: Finished executing kotlin compiler using DAEMON strategy
+Stored cache entry for task ':core:designsystem:compileDebugUnitTestKotlin' with cache key c9178e9d9afafd096951b7fd2057a751
+Resolve mutations for :core:designsystem:compileDebugUnitTestJavaWithJavac (Thread[#374,Execution worker Thread 2,5,main]) started.
+Resolve mutations for :core:designsystem:processDebugUnitTestJavaRes (Thread[#372,included builds,5,main]) started.
+:core:designsystem:processDebugUnitTestJavaRes (Thread[#372,included builds,5,main]) started.
+:core:designsystem:compileDebugUnitTestJavaWithJavac (Thread[#374,Execution worker Thread 2,5,main]) started.
+
+> Task :core:designsystem:compileDebugUnitTestJavaWithJavac NO-SOURCE
+Skipping task ':core:designsystem:compileDebugUnitTestJavaWithJavac' as it has no source files and no previous output files.
+
+> Task :core:designsystem:processDebugUnitTestJavaRes UP-TO-DATE
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\resources', not found
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\resources', not found
+Caching disabled for task ':core:designsystem:processDebugUnitTestJavaRes' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:processDebugUnitTestJavaRes' as it is up-to-date.
+Resolve mutations for :core:designsystem:testDebugUnitTest (Thread[#372,included builds,5,main]) started.
+:core:designsystem:testDebugUnitTest (Thread[#372,included builds,5,main]) started.
+
+> Task :core:designsystem:testDebugUnitTest
+Build cache key for task ':core:designsystem:testDebugUnitTest' is 5967673c28c4d24c1b1600f630f886e9
+Task ':core:designsystem:testDebugUnitTest' is not up-to-date because:
+  Task has failed previously.
+file or directory 'D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\intermediates\javac\debugUnitTest\compileDebugUnitTestJavaWithJavac\classes', not found
+Starting process 'Gradle Test Executor 5'. Working directory: D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem Command: C:\Users\crazyhusir\AppData\Local\Programs\Android Studio\jbr\bin\java.exe -Djava.awt.headless=true -Djava.library.path=C:\Users\crazyhusir\AppData\Local\Programs\Android Studio\jbr\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Users\crazyhusir\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\crazyhusir\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Git\cmd;C:\Program Files\dotnet;C:\Program Files\Go\bin;C:\Program Files\nodejs;C:\Program Files\GitHub CLI;C:\Program Files\WSL;C:\Users\crazyhusir\AppData\Local\Microsoft\WindowsApps;C:\Users\crazyhusir\AppData\Local\JetBrains\Toolbox\scripts;C:\Users\crazyhusir\AppData\Local\Programs\Android Studio\jbr\bin;C:\Users\crazyhusir\AppData\Local\Android\Sdk\platform-tools;C:\Users\crazyhusir\AppData\Local\GitHubDesktop\bin;C:\Users\crazyhusir\AppData\Local\Python\bin;C:\Users\crazyhusir\go\bin;C:\Users\crazyhusir\AppData\Roaming\npm;C:\Users\crazyhusir\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg.Essentials_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.1-essentials_build\bin;C:\Program Files\nodejs;C:\Program Files\Git\mingw64\bin;C:\Program Files\GitHub CLI;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl;C:\Users\crazyhusir\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg.Essentials_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.1-essentials_build\bin;.;D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\testDebug\jniLibs;D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\src\test\jniLibs -Dorg.gradle.internal.worker.tmpdir=D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\tmp\testDebugUnitTest\work -Drobolectric.graphicsMode=NATIVE -Drobolectric.pixelCopyRenderMode=hardware --add-opens=java.base/java.io=ALL-UNNAMED -javaagent:D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\kover\kover-jvm-agent-0.9.11.jar=file:D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\tmp\testDebugUnitTest\kover-agent.args @D:\.caches\gradle\.tmp\gradle-worker-classpath1039190953063007792txt -Xmx512m -Dfile.encoding=UTF-8 -Duser.country=IN -Duser.language=en -Duser.variant -ea worker.org.gradle.process.internal.worker.GradleWorkerMain 'Gradle Test Executor 5'
+Successfully started process 'Gradle Test Executor 5'
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+Gradle Test Executor 5 started executing tests.
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:designsystem:testDebugUnitTest
+
+PrepDebugTest > debug STANDARD_OUT
+    DBG after down preparing=true
+    DBG f=0 preparing=true host=false room=null steps=null rows=0
+    DBG f=1 preparing=true host=true room=NaN steps=0 rows=8
+    DBG f=2 preparing=true host=true room=480.0 steps=1 rows=8
+    DBG f=3 preparing=true host=true room=544.0 steps=2 rows=24
+    DBG f=4 preparing=true host=true room=608.0 steps=3 rows=28
+    DBG f=5 preparing=true host=true room=672.0 steps=4 rows=31
+    DBG f=6 preparing=true host=true room=736.0 steps=5 rows=34
+    DBG f=7 preparing=true host=true room=800.0 steps=6 rows=37
+    DBG f=8 preparing=true host=true room=864.0 steps=7 rows=40
+    DBG f=9 preparing=true host=true room=881.0 steps=8 rows=44
+
+Gradle Test Executor 5 finished executing tests.
+
+> Task :core:designsystem:testDebugUnitTest
+Generating HTML test report...
+Finished generating test html results (0.009 secs) into: D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\reports\tests\testDebugUnitTest
+Finished generating test XML results (0.002 secs) into: D:\projects\tools\.overhaul\wt\MEDIA\templates\android\core\designsystem\build\test-results\testDebugUnitTest
+Stored cache entry for task ':core:designsystem:testDebugUnitTest' with cache key 5967673c28c4d24c1b1600f630f886e9
+Resolve mutations for :core:designsystem:finalizeTestRoborazziDebug (Thread[#372,included builds,5,main]) started.
+:core:designsystem:finalizeTestRoborazziDebug (Thread[#372,included builds,5,main]) started.
+
+> Task :core:designsystem:finalizeTestRoborazziDebug SKIPPED
+Roborazzi: roborazziTestFinalizer.onlyIf doesRoborazziRun false
+Skipping task ':core:designsystem:finalizeTestRoborazziDebug' as task onlyIf 'Task satisfies onlyIf spec' is false.
+Build ee1aaa75-1671-46b0-b38e-db287a36ef24 is closed
+Build dfc3ca0c-e2f0-4992-af53-d6fd6dbaa308 is closed
+
+See the complete report at file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/build/reports/configuration-cache/5wyon4is21d2zpeou8kw3789a/aod145lqaxxcnh9hkc7dyvnx1/configuration-cache-report.html
+
+BUILD SUCCESSFUL in 1m 1s
+64 actionable tasks: 3 executed, 61 up-to-date
+Some of the file system contents retained in the virtual file system are on file systems that Gradle doesn't support watching. The relevant state was discarded to ensure changes to these locations are properly detected. You can override this by explicitly enabling file system watching.
+Watched directory hierarchies: []
+Configuration cache entry stored.
+Configuration Cache (D:\projects\tools\.overhaul\wt\MEDIA\templates\android\.gradle\configuration-cache) [subdir: D:\projects\tools\.overhaul\wt\MEDIA\templates\android\.gradle\configuration-cache\b3f4287f-1748-4bbb-a258-6d8becd558d4] cleanup deleted 11 files/directories.

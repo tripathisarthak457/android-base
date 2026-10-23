@@ -1,5 +1,8 @@
 # AGENTS.md rules: smoothness and weight (draft for `templates/android/AGENTS.md`)
 
+> **Merged (WP12-DOCS, Oct 24 2026).** This draft is history. The live text is `templates/android/AGENTS.md` section 6 `Smooth and light` on
+> `staging-wp/WP12-DOCS` (then staging): edit that file, never this one. `PENDING.md` says how to paste into it.
+
 The block between the two rules below is the text to merge into the template's `AGENTS.md`, as a new
 section after "5. The base components are a starting point". One line per rule; the part after the
 dash is what enforces it (a `verifyCodeRules` rule id, a lint id, a build task, a test or a gate row);
