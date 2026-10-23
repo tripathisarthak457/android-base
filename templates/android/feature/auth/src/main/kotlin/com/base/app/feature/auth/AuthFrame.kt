@@ -32,6 +32,7 @@ import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
 import com.base.app.core.designsystem.foundation.adaptive.shouldUseTwoPanes
+import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 
@@ -69,26 +70,26 @@ internal fun AuthFrame(
                 contentAlignment = Alignment.TopCenter,
             ) {
                 val viewport = maxHeight
+                // The chrome pads inside the scroll, so the form scrolls under the top bar and comes
+                // to rest clear of it and of the navigation bar. The minimum height is the scroll's
+                // own, so a short form is centred in the room between them instead of scrolling by
+                // their height.
                 Column(
                     modifier = Modifier
                         .widthIn(max = AppTheme.layout.formMaxWidth)
                         .fillMaxWidth()
-                        .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior()),
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .heightIn(min = if (centred) viewport else 0.dp)
-                            // Without a top bar the form carries the status-bar inset itself.
-                            .then(if (topBar == null) Modifier.statusBarsPadding() else Modifier)
-                            .navigationBarsPadding()
-                            .padding(AppTheme.spacing.gutter),
-                        verticalArrangement = Arrangement.spacedBy(
-                            AppTheme.spacing.lg,
-                            if (centred) Alignment.CenterVertically else Alignment.Top,
-                        ),
-                        content = content,
-                    )
-                }
+                        .heightIn(min = if (centred) viewport else 0.dp)
+                        .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
+                        .padding(chromeContentPadding())
+                        // Without a top bar the form carries the status-bar inset itself.
+                        .then(if (topBar == null) Modifier.statusBarsPadding() else Modifier)
+                        .padding(AppTheme.spacing.gutter),
+                    verticalArrangement = Arrangement.spacedBy(
+                        AppTheme.spacing.lg,
+                        if (centred) Alignment.CenterVertically else Alignment.Top,
+                    ),
+                    content = content,
+                )
             }
         }
     }

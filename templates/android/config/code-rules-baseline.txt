@@ -5,7 +5,6 @@
 
 # Screens
 feature/auth/src/main/kotlin/com/base/app/feature/auth/AuthFrame.kt adaptive-box-constraints 1
-feature/auth/src/main/kotlin/com/base/app/feature/auth/AuthFrame.kt scroll-chrome 1
 feature/auth/src/main/kotlin/com/base/app/feature/auth/PasswordReset.kt adaptive-preview 1
 feature/auth/src/main/kotlin/com/base/app/feature/auth/SignIn.kt adaptive-preview 1
 feature/auth/src/main/kotlin/com/base/app/feature/auth/SignUp.kt adaptive-preview 1
