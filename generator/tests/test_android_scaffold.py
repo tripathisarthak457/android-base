@@ -126,7 +126,8 @@ class GeneratedModuleTest(unittest.TestCase):
         list_screen = (screens / "list/OrdersListScreen.kt").read_text()
         detail_screen = (screens / "detail/OrdersDetailScreen.kt").read_text()
         # The content list and the loading list both, so the rows land where the placeholders were.
-        self.assertEqual(2, list_screen.count("contentPadding = chromeContentPadding("))
+        self.assertEqual(1, list_screen.count("contentPadding = chromeContentPadding("))
+        self.assertEqual(1, list_screen.count(".padding(chromeContentPadding("))
         self.assertIn(".padding(chromeContentPadding(", detail_screen)
         # Each bone is sized by a transparent line in the style of the text that replaces it.
         self.assertEqual(2, list_screen.count("style = AppTheme.typography.headline"))
@@ -137,6 +138,24 @@ class GeneratedModuleTest(unittest.TestCase):
                 "AppSkeleton(modifier = Modifier.matchParentSize(), shape = AppTheme.shapes.xs)", screen
             )
         self.assertNotIn("AppSkeletonListItem", list_screen)
+
+    def test_the_screens_follow_the_compose_performance_audit(self):
+        screens = self.online / f"feature/orders/src/main/kotlin/{PKG}/feature/orders"
+        list_screen = (screens / "list/OrdersListScreen.kt").read_text()
+        loading = list_screen[list_screen.index("private fun LoadingList()"):]
+        loading = loading[:loading.index("\n}\n")]
+        # Six fixed rows that never scroll: no lazy list, one node for TalkBack.
+        self.assertNotIn("LazyColumn", loading)
+        self.assertIn("repeat(SKELETON_ROWS)", loading)
+        self.assertIn("clearAndSetSemantics { contentDescription = loading }", loading)
+        # Every lazy list names its items' content type, as well as their key.
+        self.assertIn("contentType = { ROW }", list_screen)
+        for route in ("list/OrdersListRoute.kt", "detail/OrdersDetailRoute.kt"):
+            with self.subTest(route=route):
+                text = (screens / route).read_text()
+                # Sending an event suspends nothing, so it takes no coroutine.
+                self.assertIn("SideEffect(Unit) { viewModel.onEvent(", text)
+                self.assertNotIn("LaunchedEffect", text)
 
     def test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length(self):
         letters = "abcdefghijklmnopqrstuvwxyzabcd"

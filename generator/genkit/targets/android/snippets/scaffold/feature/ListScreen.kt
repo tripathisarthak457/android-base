@@ -2,21 +2,28 @@ package __PKG__.feature.__NAME__.list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import __PKG__.core.common.LoadState
 import __PKG__.core.common.isRefreshing
 import __PKG__.core.common.result.AppError
+import __PKG__.core.designsystem.R as DesignSystemR
 import __PKG__.core.designsystem.component.container.AppCard
 import __PKG__.core.designsystem.component.container.AppScaffold
 import __PKG__.core.designsystem.component.feedback.AppSkeleton
@@ -91,11 +98,12 @@ internal fun __P__ListScreen(
                     flingBehavior = AppScrollDefaults.flingBehavior(),
                 ) {
 __FIT__
-                    items(items = state.items, key = __P__Item::id) { item ->
+                    items(items = state.items, key = __P__Item::id, contentType = { ROW }) { item ->
 __ELSE__
                     items(
                         items = state.items,
                         key = __P__Item::id,
+                        contentType = { ROW },
                     ) { item ->
 __END_FIT__
                         __P__Row(
@@ -139,16 +147,24 @@ __END_FIT__
     }
 }
 
-/** Laid out like the content list, so the rows replace the placeholders in place. */
+/**
+ * Padded and spaced like the content list, so the rows replace the placeholders in place. A few
+ * fixed rows that never scroll need none of a lazy list's machinery: they are measured at their
+ * own height and cut at the screen's edge, as the list's rows are, and read as one node.
+ */
 @Composable
 private fun LoadingList() {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
+    val loading = stringResource(DesignSystemR.string.designsystem_loading)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .clipToBounds()
+            .wrapContentHeight(align = Alignment.Top, unbounded = true)
+            .padding(chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)))
+            .clearAndSetSemantics { contentDescription = loading },
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
-        userScrollEnabled = false,
     ) {
-        items(SKELETON_ROWS) { __P__RowPlaceholder() }
+        repeat(SKELETON_ROWS) { __P__RowPlaceholder() }
     }
 }
 
@@ -159,11 +175,7 @@ private fun LoadingList() {
 @Composable
 private fun __P__RowPlaceholder() {
     AppCard(modifier = Modifier.fillMaxWidth()) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(0.6f)
-                .clearAndSetSemantics {},
-        ) {
+        Box(modifier = Modifier.fillMaxWidth(0.6f)) {
             AppText(text = " ", style = AppTheme.typography.headline, color = Color.Transparent)
             AppSkeleton(modifier = Modifier.matchParentSize(), shape = AppTheme.shapes.xs)
         }
@@ -171,6 +183,12 @@ private fun __P__RowPlaceholder() {
 }
 
 private const val SKELETON_ROWS = 6
+
+/**
+ * The list's one kind of row. Typed now, a header or a footer added later is not handed a row's
+ * composition to reuse.
+ */
+private const val ROW = "row"
 
 __PREVIEW__
 private fun __P__ListScreenPreview() {

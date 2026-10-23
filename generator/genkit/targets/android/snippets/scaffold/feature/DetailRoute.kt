@@ -1,7 +1,7 @@
 package __PKG__.feature.__NAME__.detail
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import __PKG__.core.navigation.AppNavigator
 import __PKG__.core.ui.MviScreen
@@ -24,7 +24,9 @@ __ELSE__
         ),
 __END_FIT__
 ) {
-    LaunchedEffect(Unit) { viewModel.onEvent(__P__DetailEvent.Appeared) }
+    // Once, when the screen enters composition. Sending an event suspends nothing, so it needs no
+    // coroutine of its own.
+    SideEffect(Unit) { viewModel.onEvent(__P__DetailEvent.Appeared) }
 
     MviScreen(
         viewModel = viewModel,
