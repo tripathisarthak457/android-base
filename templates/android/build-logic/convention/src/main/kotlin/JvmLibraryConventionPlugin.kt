@@ -4,6 +4,7 @@ import com.base.app.buildlogic.guard.verifyCodeRules
 import com.base.app.buildlogic.guard.verifyModuleDependencies
 import com.base.app.buildlogic.library
 import com.base.app.buildlogic.libs
+import com.base.app.buildlogic.limitTestTime
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
@@ -37,6 +38,7 @@ class JvmLibraryConventionPlugin : Plugin<Project> {
                 add("testImplementation", libs.library("junit"))
             }
         }
+        limitTestTime()
 
         verifyCodeRules()
         verifyModuleDependencies()

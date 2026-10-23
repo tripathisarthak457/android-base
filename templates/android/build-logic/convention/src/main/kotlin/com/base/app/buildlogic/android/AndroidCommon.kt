@@ -4,6 +4,7 @@ import com.android.build.api.dsl.CommonExtension
 import com.base.app.buildlogic.config.AppConfig
 import com.base.app.buildlogic.library
 import com.base.app.buildlogic.libs
+import com.base.app.buildlogic.limitTestTime
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.kotlin.dsl.configure
@@ -59,6 +60,7 @@ internal fun Project.configureAndroidCommon(extension: CommonExtension) {
     )
 
     configureKotlinCompiler()
+    limitTestTime()
 
     if (AppConfig.NEEDS_CORE_LIBRARY_DESUGARING) {
         dependencies {

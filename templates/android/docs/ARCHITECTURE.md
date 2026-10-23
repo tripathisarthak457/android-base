@@ -680,6 +680,9 @@ reviewed.
 - `MainDispatcherRule` replaces `Dispatchers.Main`. Without it every ViewModel test hangs, because
   `viewModelScope` has no main looper off-device.
 - `FakeNetworkMonitor` lets a test switch between online and offline.
+- A module's unit tests fail after 15 minutes (`build-logic/…/TestTimeLimit.kt`). A test that
+  waits on a dispatcher nothing advances, or a latch nothing counts down, would otherwise hold the
+  build and the CI runner until someone kills it; the failed task names the module instead.
 
 <!-- <opt:sample> -->
 `feature/sample` is the worked example of all of these.
