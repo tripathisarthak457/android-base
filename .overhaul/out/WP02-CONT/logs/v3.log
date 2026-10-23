@@ -11,3 +11,17 @@ rc=0
 BUILD SUCCESSFUL in 4m 13s
 
 == 02:37:31 c-net: build
+rc=0
+BUILD SUCCESSFUL in 3m 28s
+
+== 02:41:01 c-local: build
+rc=1
+BUILD FAILED in 1m 25s
+
+== 02:42:27 generator suite
+rc=0
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+
+V3 DONE 02:45:45
