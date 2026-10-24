@@ -227,7 +227,10 @@ class ProjectTest(unittest.TestCase):
             ANDROID,
         )
         plan = pipeline.plan(parsed, ANDROID, warnings)
-        self.assertEqual({"enabled", "disabled", "removed_paths", "modules", "tabs", "notes", "warnings"}, set(plan))
+        self.assertEqual(
+            {"enabled", "disabled", "options", "removed_paths", "modules", "tabs", "notes", "warnings"}, set(plan)
+        )
+        self.assertEqual({"ui_components": True}, plan["options"])
         self.assertIn("firebase", plan["enabled"])
         self.assertIn("core/ui/src/main/kotlin/com/acme/field/core/ui/AppNetworkImage.kt", plan["removed_paths"])
         self.assertEqual([":data:orders", ":feature:orders"], plan["modules"])

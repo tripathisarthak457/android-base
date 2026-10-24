@@ -175,7 +175,10 @@ class CliTest(unittest.TestCase):
         )
         self.assertEqual(0, result.returncode, result.stderr)
         plan = json.loads(result.stdout)
-        self.assertEqual({"project_name", "enabled", "disabled", "removed_paths", "modules", "tabs", "notes", "warnings"}, set(plan))
+        self.assertEqual(
+            {"project_name", "enabled", "disabled", "options", "removed_paths", "modules", "tabs", "notes", "warnings"},
+            set(plan),
+        )
         self.assertTrue(any("com/example/wp01/std" in path for path in plan["removed_paths"]))
 
     def test_a_preset_replaces_a_specs_features(self):

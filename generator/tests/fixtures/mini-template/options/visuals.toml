@@ -1,0 +1,16 @@
+key = "visuals"
+title = "Visuals"
+label = "No visuals"
+headline = "Leave the drawing out"
+description = """
+Everything but what is drawn: the assets go,
+and a variant takes the place of the resources."""
+default = true
+variant = "bare"
+owns = ["assets"]
+
+[disables]
+extra = "Extra draws, and this project draws nothing."
+
+[hides]
+design_style = "Nothing is drawn, so there is no style to choose."

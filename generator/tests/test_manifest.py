@@ -228,5 +228,164 @@ class BrokenManifestTest(unittest.TestCase):
         self.assertEqual((LegacyKey("screens", 1),), manifest.features["ui"].legacy)
 
 
+class OptionTest(unittest.TestCase):
+    """An option: a spec-level switch the marker engine, `owns` and the variants treat as a key."""
+
+    def setUp(self):
+        self.manifest = TemplateManifest.load(MINI)
+
+    def test_an_option_loads_with_its_reasons_in_file_order(self):
+        option = self.manifest.options["visuals"]
+        self.assertTrue(option.default)
+        self.assertEqual("bare", option.variant)
+        self.assertEqual(("assets",), option.owns)
+        self.assertEqual({"extra": "Extra draws, and this project draws nothing."}, option.disables)
+        self.assertEqual(["design_style"], list(option.hides))
+        self.assertIsNone(option.locked)
+        self.assertEqual(
+            "Everything but what is drawn: the assets go, and a variant takes the place of the resources.",
+            option.description,
+        )
+
+    def test_options_are_marker_keys_beside_the_features(self):
+        self.assertEqual(frozenset({"net", "ui", "extra", "visuals"}), self.manifest.marker_keys)
+
+    def test_an_option_that_is_off_gives_up_its_paths_and_its_features(self):
+        values = self.manifest.option_values({"visuals": False})
+        self.assertEqual({"visuals": False}, values)
+        self.assertEqual({"extra": "Extra draws, and this project draws nothing."}, self.manifest.disabled_features(values))
+        self.assertIn("assets", self.manifest.owned_paths(frozenset({"net", "ui", "extra"})))
+        self.assertNotIn("assets", self.manifest.owned_paths(frozenset({"net", "visuals"})))
+
+    def test_an_option_left_out_of_a_spec_takes_its_default(self):
+        self.assertEqual({"visuals": True}, self.manifest.option_values({}))
+        self.assertEqual({}, self.manifest.disabled_features({"visuals": True}))
+
+    def test_the_android_template_declares_ui_components(self):
+        target = REGISTRY["android"]
+        option = target.manifest.options["ui_components"]
+        self.assertTrue(option.default)
+        self.assertEqual("No UI components", option.label)
+        self.assertEqual(
+            ["catalog", "collections", "datadisplay", "formfields", "pickers", "liquidglass"], list(option.disables)
+        )
+        self.assertEqual(["design_style", "motion_style"], list(option.hides))
+        for owned in option.owns:
+            with self.subTest(path=owned):
+                self.assertTrue((target.template_dir / owned.format(pkg_path=target.manifest.package_path_token)).exists())
+
+    def test_no_branch_but_the_setup_only_release_locks_an_option(self):
+        # The lock is the release branch's own commit; merged back, it would lock every deployment.
+        for target in REGISTRY.values():
+            for option in target.manifest.options.values():
+                with self.subTest(target=target.key, option=option.key):
+                    self.assertIsNone(option.locked)
+
+    def test_the_other_targets_declare_no_options_yet(self):
+        for key, target in REGISTRY.items():
+            if key != "android":
+                self.assertEqual({}, target.manifest.options, key)
+
+
+class BrokenOptionTest(unittest.TestCase):
+    """Each mistake an option file can make fails when the manifest loads."""
+
+    def setUp(self):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        self.root = Path(temp.name) / "template"
+        shutil.copytree(MINI, self.root)
+        self.path = self.root / "options" / "visuals.toml"
+        self.original = self.path.read_text(encoding="utf-8")
+
+    def edit(self, old: str, new: str) -> None:
+        self.assertIn(old, self.original)
+        self.path.write_text(self.original.replace(old, new), encoding="utf-8")
+
+    def rekey(self, key: str) -> None:
+        self.path.unlink()
+        (self.root / "options" / f"{key}.toml").write_text(
+            self.original.replace('key = "visuals"', f'key = "{key}"'), encoding="utf-8"
+        )
+
+    def assertBroken(self, message: str) -> None:
+        with self.assertRaises(TemplateError) as caught:
+            TemplateManifest.load(self.root)
+        self.assertIn(message, str(caught.exception))
+
+    def test_a_key_that_does_not_match_its_file(self):
+        self.edit('key = "visuals"', 'key = "visual"')
+        self.assertBroken("does not match the file name")
+
+    def test_a_key_no_marker_can_name(self):
+        self.rekey("Visuals")
+        self.assertBroken("cannot be named in a marker")
+
+    def test_a_key_that_is_also_a_feature(self):
+        self.rekey("net")
+        self.assertBroken("is also a feature")
+
+    def test_a_key_that_is_already_a_spec_field(self):
+        self.rekey("languages")
+        self.assertBroken("is already a spec field")
+
+    def test_a_default_that_is_not_a_boolean(self):
+        self.edit("default = true", 'default = "yes"')
+        self.assertBroken("default must be true or false")
+
+    def test_an_unknown_key(self):
+        self.edit("default = true", "default = true\ncolour = 1")
+        self.assertBroken("unknown key(s): colour")
+
+    def test_a_missing_label(self):
+        self.edit('label = "No visuals"\n', "")
+        self.assertBroken("missing label")
+
+    def test_disabling_a_feature_that_does_not_exist(self):
+        self.edit("extra = ", "ghost = ")
+        self.assertBroken("[disables] names 'ghost', which is not a selectable feature")
+
+    def test_disabling_a_feature_another_feature_requires(self):
+        # `ui` requires `net`: with only `net` disabled, `ui` would bring it straight back.
+        self.edit("extra = ", "net = ")
+        self.assertBroken("'ui' requires net, so it belongs in [disables] too")
+
+    def test_a_reason_that_is_blank(self):
+        self.edit('extra = "Extra draws, and this project draws nothing."', 'extra = " "')
+        self.assertBroken("[disables] must give each name a one-line reason")
+
+    def test_hiding_a_field_the_spec_does_not_have(self):
+        self.edit("design_style = ", "colour_scheme = ")
+        self.assertBroken("[hides] names 'colour_scheme', which is not a spec field")
+
+    def test_an_owned_path_that_is_not_there(self):
+        self.edit('owns = ["assets"]', 'owns = ["missing"]')
+        self.assertBroken("owns 'missing', which is not in the template")
+
+    def test_a_variant_that_is_not_a_directory_name(self):
+        self.edit('variant = "bare"', 'variant = "../bare"')
+        self.assertBroken("is not a directory name")
+
+    def test_a_lock_needs_a_boolean_and_a_note(self):
+        for lock, message in (
+            ('[locked]\nvalue = "false"\nnote = "Soon."\n', "[locked] value must be true or false"),
+            ('[locked]\nvalue = false\nnote = ""\n', "[locked] needs a note saying why"),
+            ("[locked]\nvalue = false\n", "[locked] is missing note"),
+            ('[locked]\nvalue = false\nnote = "Soon."\nuntil = 2\n', "[locked] has unknown key(s): until"),
+        ):
+            with self.subTest(lock=lock):
+                self.path.write_text(self.original + "\n" + lock, encoding="utf-8")
+                self.assertBroken(message)
+
+    def test_a_lock_loads(self):
+        self.path.write_text(
+            self.original + '\n[locked]\nvalue = false\nnote = """\nOnly plain\nprojects for now."""\n', encoding="utf-8"
+        )
+        lock = TemplateManifest.load(self.root).options["visuals"].locked
+        self.assertIsNotNone(lock)
+        self.assertFalse(lock.value)
+        self.assertEqual("Only plain projects for now.", lock.note)
+
+
 if __name__ == "__main__":
     unittest.main()
