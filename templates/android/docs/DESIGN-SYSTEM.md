@@ -179,6 +179,13 @@ Each rule's message names the reference page in `.agents/skills/` where one appl
 | `sheet-conditional`, `sheet-root`, `sheet-ime-padding`, `sheet-modifier` | sheets that move only layers | keep `AppSheet` composed; one root taking `contentPadding` |
 | `sheet-window`, `sheet-shadow`, `sheet-raw-delta`, `sheet-when-else`, `shell-seam` | the sheet system's geometry | no `Dialog` or shadows inside; an `else` branch; no `ShellSeamApi` in features |
 <!-- </opt:ui_components> -->
+<!-- <opt:!ui_components> -->
+| `designsystem-imports` | a design system that cannot reach data | import only Compose and the theme |
+| `stateless-params` | stateless components | take values and callbacks, never a ViewModel, repository or `Flow` |
+| `raw-type` | one type scale | `AppTheme.typography.x`, `.copy()` for a one-off |
+| `feature-primitive` | features arrange, the design system draws | draw it once in `:core:designsystem` |
+| `component-preview` | every component rendered and tested | `@AppComponentPreviews` on the component's preview |
+<!-- </opt:!ui_components> -->
 
 A `@Composable` in a module without the Compose compiler fails as `compose-compiler`: apply the Compose convention.
 
@@ -246,11 +253,16 @@ fun AppTag(
     }
 }
 
+<!-- <opt:ui_components> -->
 @Preview(name = "Light")
 @Preview(name = "Dark", uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
 @Preview(name = "Font 2x", fontScale = 2f)
 @Preview(name = "Right to left", locale = "ar")
 @PreviewWrapper(AppPreviewTheme::class)
+<!-- </opt:ui_components> -->
+<!-- <opt:!ui_components> -->
+@AppComponentPreviews
+<!-- </opt:!ui_components> -->
 @Composable
 private fun AppTagPreview() {
     var selected by remember { mutableStateOf(true) }
@@ -338,7 +350,8 @@ sideways, a foldable, a tablet and a desktop window, at twice the font size and 
 previews with `@PreviewWrapper(AppPreviewTheme::class)` so they draw in the theme.
 <!-- <opt:!ui_components> -->
 `preview/ThemePreview.kt` previews the token slots (the colour roles and the type scale) in light and dark, so the
-skeleton is rendered from the first build. Give each component's preview the configurations of the template above
-(light, dark, twice the font size, right to left), so its render test covers each.
+skeleton is rendered from the first build. `@AppComponentPreviews` gives a component's preview every condition it
+has to survive: light, dark, twice the font size, right to left and a 320 dp window, each inside `AppPreviewTheme`.
+Put it on each component's preview, as the template above does; a component without one fails `component-preview`.
 <!-- </opt:!ui_components> -->
 Record and compare goldens with Roborazzi's Gradle tasks, and never re-record a golden to make a test pass.

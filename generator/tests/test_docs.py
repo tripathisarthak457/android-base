@@ -141,9 +141,13 @@ def rule_ids(root: Path) -> set[str]:
 def active_rule_ids(root: Path) -> set[str]:
     """The ids of the rules `CodeRules.ALL` runs: those of each rule object it adds up."""
     guard = next(root.glob("build-logic/convention/src/main/kotlin/**/guard"))
-    line = re.search(r"val ALL: List<Rule> = (.+)", (guard / "CodeRules.kt").read_text(encoding="utf-8")).group(1)
+    # The sum may wrap: a line that ends in `=` or `+` continues on the next.
+    declaration = re.search(
+        r"val ALL: List<Rule> =\s*((?:[^\n]*[=+][ \t]*\n)*[^\n]*)", (guard / "CodeRules.kt").read_text(encoding="utf-8"),
+    )
+    assert declaration is not None, "CodeRules.kt declares no ALL"
     ids: set[str] = set()
-    for owner in re.findall(r"(\w+)\.ALL", line):
+    for owner in re.findall(r"(\w+)\.ALL", declaration.group(1)):
         ids.update(re.findall(r'\bid = "([a-z0-9-]+)"', (guard / f"{owner}.kt").read_text(encoding="utf-8")))
     return ids
 
