@@ -5,6 +5,9 @@ Order (QA-09): Home, then the scaffolded modules in the order given, then Feed, 
 Settings. The shell's bar shows at most five; past that it shows the first four and a More tab
 holding the rest, so the order is also what stays one tap away. Settings is last because it is the
 least visited, and the first to move under More.
+
+A project without UI components has no shell, so it has no tabs: its start screen comes from the
+app's own `AppDestinations`, and every module is reached by its keys and deep links.
 """
 
 from __future__ import annotations
@@ -94,6 +97,8 @@ def shell_tab_imports(package_name: str, name: str) -> list[str]:
 
 
 def regions(spec: Spec) -> dict[str, list[str] | None]:
+    if not spec.option(scaffold.UI_COMPONENTS):
+        return {"shell-tabs": [], "start-destination-import": [], "start-destination": []}
     names = scaffold.modules(spec)
     template_glyphs = {glyph for key, _, glyph in _LEADING + _TRAILING if spec.has(key)}
     chosen = icons(names, template_glyphs, available_glyphs())
@@ -121,6 +126,8 @@ def _first_template_key(spec: Spec) -> str:
 
 def labels(spec: Spec) -> list[str]:
     """The tabs, in the order the app has them."""
+    if not spec.option(scaffold.UI_COMPONENTS):
+        return []
     return (
         [label for key, label, _ in _LEADING if spec.has(key)]
         + [module_title(name) for name in scaffold.modules(spec)]

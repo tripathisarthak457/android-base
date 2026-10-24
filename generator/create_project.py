@@ -4,6 +4,7 @@ Generate a new project from a template.
 
     python3 create_project.py                                     # the wizard
     python3 create_project.py --preset standard                   # the wizard, features chosen
+    python3 create_project.py --preset lean --no-ui-components    # the same, without UI components
     python3 create_project.py --spec app.json --out ../MyApp --no-zip
     python3 create_project.py --spec app.json --set package_name=com.example.demo --out demo.zip
 
@@ -28,6 +29,7 @@ from genkit.core.markers import TemplateError
 from genkit.core.spec import SpecError, to_json
 from genkit.core.target import RenderError
 from genkit.core.translations import TranslationError
+from genkit.targets.android.scaffold import UI_COMPONENTS
 
 HERE = Path(__file__).resolve().parent
 
@@ -45,6 +47,10 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--all", action="store_true", help="Every optional feature on.")
     parser.add_argument("--preset", help="Use a named feature preset: lean, standard or everything.")
+    parser.add_argument(
+        "--no-ui-components", action="store_true",
+        help="Generate the architecture, a theme skeleton and every build guard, without UI components (Android).",
+    )
     parser.add_argument("--icon", type=Path, help="A square image (1024 px or larger) for the launcher icons.")
     parser.add_argument("--git", action="store_true", help="git init the project and commit it as generated.")
     parser.add_argument("--spec", type=Path, help="Read the answers from a JSON spec instead of asking.")
@@ -76,6 +82,10 @@ def main(argv: list[str] | None = None) -> int:
             # Asking where to write would put a prompt on stdout, or wait on a script that cannot answer.
             raise SpecError("--json needs --out: the project's directory, or the .zip to write.", "out")
         overrides = [parse_override(item) for item in args.set]
+        if args.no_ui_components:
+            if UI_COMPONENTS not in target.manifest.options:
+                raise SpecError("No UI components is Android-only for now.", UI_COMPONENTS)
+            overrides.append((UI_COMPONENTS, False))
         raw = load_raw(args, target)
         parsed, warnings = pipeline.read_spec(raw, target, overrides)
     except SpecError as error:
@@ -195,8 +205,9 @@ def spec_platform(path: Path | None) -> str | None:
 def load_raw(args: argparse.Namespace, target) -> object:
     if args.spec is None:
         # With --json, stdout carries the result alone, so the questions go to stderr.
+        given = {UI_COMPONENTS: False} if args.no_ui_components else {}
         with redirect_stdout(sys.stderr if args.json else sys.stdout):
-            return prompts.run_wizard(target, select_all=args.all, preset=args.preset)
+            return prompts.run_wizard(target, select_all=args.all, preset=args.preset, options=given)
     try:
         raw = json.loads(args.spec.read_text(encoding="utf-8"))
     except FileNotFoundError:
@@ -236,6 +247,15 @@ def list_features(target, as_json: bool) -> None:
             print(f"  {mark} {prompts.bold(feature['key'].ljust(28))} {feature['headline']}")
             if feature["implies"]:
                 print(prompts.dim(f"      brings in {', '.join(feature['implies'])}"))
+    for option in entry["options"]:
+        prompts.heading(f"Option: {option['checkbox']['label']}")
+        print(f"  {prompts.bold(option['key'].ljust(28))} {option['headline']}")
+        default = "on" if option["default"] else "off"
+        print(prompts.dim(f"      {default} by default; --set {option['key']}={str(option['checkbox']['ticked_value']).lower()} to tick it"))
+        for disabled in option["disables"]:
+            print(prompts.dim(f"      leaves out {disabled['feature']}: {disabled['reason']}"))
+        if option["locked"]:
+            print(prompts.yellow(f"      {option['locked']['note']}"))
     print()
     presets = ", ".join(preset["key"] for preset in entry["presets"])
     print(prompts.dim(f"  {len(entry['features'])} features. Presets: {presets}."))
@@ -259,7 +279,14 @@ def describe_plan(parsed, target, warnings: list[str], as_json: bool) -> None:
         print(f"  Modules:  {', '.join(plan['modules'])}")
     if plan["tabs"]:
         print(f"  Tabs:     {', '.join(plan['tabs'])}")
-    print(f"  Omitted:  {len(plan['removed_paths'])} paths a disabled feature owns")
+    changed = [
+        f"{key} {'on' if value else 'off'}"
+        for key, value in plan["options"].items()
+        if value != target.manifest.options[key].default
+    ]
+    if changed:
+        print(f"  Options:  {', '.join(changed)}")
+    print(f"  Omitted:  {len(plan['removed_paths'])} paths a disabled feature or option owns")
     for line in plan["notes"] + plan["warnings"]:
         print(prompts.yellow(f"  ! {line}"))
     print()

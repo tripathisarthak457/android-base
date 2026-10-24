@@ -37,6 +37,68 @@ class RegionsTest(unittest.TestCase):
         self.assertEqual(("orders",), scaffold.modules(spec(feature_modules=["orders"])))
         self.assertEqual([], scaffold.notes(spec(feature_modules=["orders"])))
 
+    def test_without_ui_components_no_home_is_scaffolded(self):
+        # Home exists to give the shell a tab; a project without UI components has no shell.
+        self.assertEqual((), scaffold.modules(spec(features=["network"], ui_components=False)))
+        self.assertEqual([], scaffold.notes(spec(features=["network"], ui_components=False)))
+        self.assertEqual(("orders",), scaffold.modules(spec(feature_modules=["orders"], ui_components=False)))
+
+
+class PlaceholderModuleTest(unittest.TestCase):
+    """Without UI components a module keeps its logic, and its routes draw a placeholder."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.temp = tempfile.TemporaryDirectory()
+        cls.project = Path(cls.temp.name) / "noui"
+        scaffold.write_feature_modules(
+            cls.project, spec(features=["network"], feature_modules=["order_history"], ui_components=False)
+        )
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.temp.cleanup()
+
+    def test_the_module_has_its_keys_navigation_contracts_view_models_and_their_test_and_no_screen(self):
+        feature = self.project / "feature/order_history/src"
+        base = f"{PKG}/feature/order_history"
+        expected = [
+            f"main/kotlin/{base}/api/OrderHistoryKeys.kt",
+            f"main/kotlin/{base}/detail/OrderHistoryDetailContract.kt",
+            f"main/kotlin/{base}/detail/OrderHistoryDetailRoute.kt",
+            f"main/kotlin/{base}/detail/OrderHistoryDetailViewModel.kt",
+            f"main/kotlin/{base}/list/OrderHistoryListContract.kt",
+            f"main/kotlin/{base}/list/OrderHistoryListRoute.kt",
+            f"main/kotlin/{base}/list/OrderHistoryListViewModel.kt",
+            f"main/kotlin/{base}/navigation/OrderHistoryNavigation.kt",
+            "main/res/values/strings.xml",
+            f"test/kotlin/{base}/list/OrderHistoryListViewModelTest.kt",
+        ]
+        self.assertEqual(expected, sorted(path.relative_to(feature).as_posix() for path in feature.rglob("*") if path.is_file()))
+        self.assertTrue((self.project / "data/order_history/build.gradle.kts").is_file())
+
+    def test_each_route_draws_the_placeholder_titled_with_the_modules_own_string(self):
+        for half in ("list/OrderHistoryListRoute.kt", "detail/OrderHistoryDetailRoute.kt"):
+            with self.subTest(route=half):
+                text = (self.project / f"feature/order_history/src/main/kotlin/{PKG}/feature/order_history/{half}").read_text(encoding="utf-8")
+                self.assertIn("PlaceholderScreen(title = R.string.order_history_title)", text)
+                self.assertIn("import com.acme.field.core.ui.PlaceholderScreen", text)
+                self.assertIn("import com.acme.field.feature.order_history.R", text)
+                self.assertIn("MviScreen(", text)
+                self.assertNotIn("Screen(state = state", text)
+                self.assertNotIn("designsystem", text)
+        strings = (self.project / "feature/order_history/src/main/res/values/strings.xml").read_text(encoding="utf-8")
+        self.assertIn('<string name="order_history_title">Order history</string>', strings)
+
+    def test_the_routes_fit_the_line_length_at_every_module_name_length(self):
+        for name in ("x", "order_history", "a_very_long_module_name_here"):
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                scaffold.write_feature_modules(Path(directory), spec(feature_modules=[name], ui_components=False))
+                for path in Path(directory).rglob("*Route.kt"):
+                    for line in path.read_text(encoding="utf-8").splitlines():
+                        self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, f"{path.name}: {line}")
+
+
 
 class GeneratedModuleTest(unittest.TestCase):
 
