@@ -596,6 +596,16 @@ What adapts, and how:
   that off (`clearDisplayCutout = false`) and pads the panel's content itself, so the colour reaches
   the edge of the glass.
 
+`AdaptiveAuditTest` (`app/src/test`) holds every screen to this. It finds each preview that carries
+`@AppScreenPreviews`, renders it at the six windows a pull request is checked at (a phone either
+way, a foldable, two tablets, a desktop window) and at font scales 1 and 2, and fails on what a
+person would see as broken: text cut off, a control outside the window or under the tab bar (where
+the shell shows one), a control whose 48dp touch area runs into another, two controls on top of
+each other, and lines wider than `readableMaxWidth` plus the gutter from Large width up. It needs no
+goldens and runs with the unit tests. A screen joins by carrying `@AppScreenPreviews` on its
+stateless preview, which the `adaptive-preview` rule asks of every screen; a failure is fixed in the
+layout, never in the audit.
+
 To check a screen on other sizes without other devices, run the emulator and change its display:
 `adb shell wm size 1600x2560` and `adb shell wm density 320` make a tablet, rotating makes it a
 landscape tablet, and `adb shell wm size reset` undoes it.

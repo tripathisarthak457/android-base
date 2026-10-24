@@ -187,6 +187,10 @@ held upright is not finished.
   your own two-pane layout for it.
 - Two halves of one screen use `AppTwoPane`; a set of cards uses `AppResponsiveGrid` or
   `LazyVerticalGrid(GridCells.Adaptive(AppTheme.layout.gridMinCellWidth))`.
+- Put `@AppScreenPreviews` on the screen's stateless preview. `AdaptiveAuditTest` then renders it at
+  six windows and font scales 1 and 2 with the unit tests, and fails on text cut off, a control
+  outside the window or under the tab bar, touch areas that run into each other, overlapping
+  controls and lines too long to read. Fix the layout, never the audit.
 - Check the screen at Compact, Medium and Expanded width, and in landscape. On the emulator,
   `adb shell wm size 1600x2560` plus `adb shell wm density 320` is a tablet; `wm size reset` undoes it.
 
