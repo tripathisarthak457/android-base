@@ -63,9 +63,11 @@ export function Faq() {
     {
       q: "Does it work with AI coding agents?",
       a:
-        "Every project ships an AGENTS.md, and a CLAUDE.md that points at it, describing the layout, the rules the build " +
-        "enforces, how a feature is shaped and how to keep the app smooth. The repository has its own, explaining how an agent " +
-        "can generate a project from a JSON spec without the wizard.",
+        "Every Android project ships a CLAUDE.md and an AGENTS.md with the same rules: the layout, what the build enforces, " +
+        "how a feature is shaped and how to keep the app smooth. Beside them are the detailed guides CLAUDE.md imports " +
+        "(docs/ARCHITECTURE.md, docs/PERFORMANCE.md and docs/DESIGN-SYSTEM.md) and Google's official Android skills, pinned " +
+        "to a release, in .agents/skills. The repository has its own, explaining how an agent can generate a project from a " +
+        "JSON spec without the wizard.",
     },
     {
       q: "Which JDK do I need?",

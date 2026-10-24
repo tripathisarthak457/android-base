@@ -97,9 +97,10 @@ export function includedItems(catalogue: Catalogue): IncludedItem[] {
     {
       title: "Instructions for your AI agent",
       body:
-        "AGENTS.md, with CLAUDE.md pointing at it, tells an agent how the project is laid out, what the build refuses, how a " +
-        "feature is shaped, and the motion and performance rules to keep it smooth.",
-      detail: "AGENTS.md",
+        "CLAUDE.md and AGENTS.md hold the same rules: how the project is laid out, what the build refuses, how a feature is " +
+        "shaped, and the motion and performance rules to keep it smooth. Detailed guides to the architecture, performance " +
+        "and the design system come with them, and Google's official Android skills, pinned to a release.",
+      detail: "CLAUDE.md",
       components: false,
     },
     {
