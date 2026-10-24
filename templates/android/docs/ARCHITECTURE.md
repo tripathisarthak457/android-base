@@ -167,9 +167,12 @@ grace period so a rotation does not restart them.
 
 ### The first load
 
-The reference screens load from an `Appeared` event that the route sends from `LaunchedEffect(Unit)`, and the
-ViewModel loads only while `loadState` is `LoadState.Idle`, so a return to the screen does not load again. A screen
-whose data may already be in memory starts its state from it instead, so its first frame shows content
+A screen loads from an event the route sends when it first appears, from `LaunchedEffect(Unit)`, and the ViewModel
+loads only while the state is still `LoadState.Idle`, so a return to the screen does not load again.
+<!-- <opt:sample> -->
+The reference screens do this with their `Appeared` events.
+<!-- </opt:sample> -->
+A screen whose data may already be in memory starts its state from it instead, so its first frame shows content
 ([PERFORMANCE.md](PERFORMANCE.md#navigation-and-back)).
 
 ### Effects are delivered once, on purpose not as state
@@ -301,7 +304,8 @@ system Back to the stack as `NavCommand.Up`, and decorates every entry with save
 (`rememberSaveableStateHolderNavEntryDecorator`, `rememberViewModelStoreNavEntryDecorator`), so each screen keeps its
 state and its ViewModel while it is in the stack. The back stack is saved through `NavKeySerialization`, so process
 death restores it; `NavDisplayHostTest` covers push, Up, system Back, a deep link and restore. `:core:navigation` does
-not depend on `:core:designsystem`: navigation draws nothing of its own.
+not depend on `:core:designsystem`: navigation draws nothing of its own. Until you give it transitions, `NavDisplay`
+uses Navigation 3's defaults, which fade whole screens; replace them when you build the shell (below).
 
 ### The start screen
 
@@ -314,7 +318,7 @@ like any destination. `AppDestinations.start` names it; change it to your first 
 with a session generation), and `AppRoot` keys the host on it, so a sign-out or a new account starts a fresh back
 stack and no screen outlives its session. Every identity opens on the start screen: onboarding and sign-in are routes
 reachable by navigation and deep links, and their placeholders have no way forward yet. When your onboarding and
-sign-in screens exist, pick each identity's start inside `AppRoot`, where the host is keyed:
+sign-in screens exist, pass the identity to the stack `AppRoot` keys on it and pick its start key there:
 
 ```kotlin
 val start = when (identity) {
@@ -338,7 +342,8 @@ ready for a shell. To build one:
 - **List and detail, sheets, dialogs:** a `SceneStrategy` passed to `NavDisplay` that reads each entry's pane or
   presentation metadata; the `navigation-3` skill has list-detail, dialog and bottom-sheet recipes.
 - **Transitions:** `NavDisplay`'s `transitionSpec`, `popTransitionSpec` and `predictivePopTransitionSpec`, set in
-  `:core:navigation` only (a feature never sets them: `nav-fade`). Slide whole screens; never fade them
+  `:core:navigation` only (a feature never sets them: `nav-fade`). Navigation 3's defaults fade whole screens, which
+  renders both offscreen on every frame of the fade; slide them instead
   ([PERFORMANCE.md](PERFORMANCE.md#layers-and-alpha)).
 <!-- </opt:!ui_components> -->
 

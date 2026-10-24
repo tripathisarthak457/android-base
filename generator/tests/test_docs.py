@@ -269,7 +269,8 @@ class GeneratedDocsTest(unittest.TestCase):
             for page, text in self.pages(project).items():
                 for token in backticked(prose(text)):
                     path = token.split()[0].rstrip(".,:;")
-                    if path.split("/")[0] not in PROJECT_DIRS or "/" not in path:
+                    # A top-level folder alone (`feature/`) names a tier, which a project may not have a module in yet.
+                    if path.split("/")[0] not in PROJECT_DIRS or "/" not in path.rstrip("/"):
                         continue
                     pattern = re.sub(r"<[^>]+>", "*", path.replace("…", "**").replace("...", "**"))
                     with self.subTest(case=name, page=page, path=path):
