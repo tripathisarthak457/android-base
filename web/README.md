@@ -165,10 +165,14 @@ curl -X POST https://android-base.vercel.app/api/generate \
 
 ## What is recorded, and what is not
 
-Recorded: the app name, package, feature set, SDK levels and timings of each generation; which
-funnel step each visitor reached, once per day; the duration and status of every request; any
-error the generator produced, grouped so one bug is one row; and any bug report somebody sends,
-along with the configuration they had on screen and their browser.
+Every column, browser storage key and retention period is listed in
+[`docs/telemetry-and-privacy.md`](../docs/telemetry-and-privacy.md), the page the site links as its
+privacy notice; `web/frontend/features/privacy/privacy.test.ts` keeps it in step with the code.
+
+Recorded: what each project was generated with and how long it took (its app and package names
+for 90 days); one visit per browser tab and the configurator steps it reached; the duration and
+status of every request; any error the generator produced, grouped so one bug is one row; and any
+bug report somebody sends, along with the configuration they had on screen and their browser.
 
 A report attaches that configuration only when the reporter leaves the switch on — the form shows
 exactly what is going, field by field, before it is sent. Nothing in it identifies them, and the

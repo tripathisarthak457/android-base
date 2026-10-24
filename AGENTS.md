@@ -128,6 +128,24 @@ Gradle runs on Android Studio's bundled JBR or any JDK 17+. Do not pin or downlo
 own words (previews, copy, captions) must describe what the template actually does today. When
 you remove or rename something in the template, search `web/frontend` for it too.
 
+The site's tests (`cd web/frontend && npm test`) read the template to hold it to that, so a template
+change can fail them:
+
+- **Glyphs.** The preview draws `AppIcons` from `features/preview/glyphs.ts`. After adding or
+  redrawing a glyph in `core/designsystem/.../icon/glyph/`, run `npm run glyphs` and commit the file.
+- **The tab bar, the chip and the tabs.** `features/preview/bar.ts`, `chip.ts` and `tabs.ts` copy the
+  sizes, enums and springs of `AppTabBar.kt`, `TabCells.kt`, `TabReveal.kt`, `AppDesignStyle.kt` and
+  `AppChip.kt`, the glyph tables of `generator/genkit/targets/android/tabs.py` and the tabs of
+  `AppDestinations.kt`. Change the copy in the same commit; the failing test names the value.
+- **Claims.** `features/catalogue/claims.test.ts` pairs each sentence the hero, the included cards
+  and the FAQ say about the template with the code that makes it true. Reword the sentence, and its
+  row, when a change makes it false.
+- **CI.** The hero and the FAQ name what `.github/workflows/ci.yml` builds through `CI_PROJECTS`
+  (`features/catalogue/ci.ts`); change both together.
+- **Privacy.** `docs/telemetry-and-privacy.md` must name every browser storage key, every outside
+  origin in the site's content security policy, every column under `web/api/internal/store/migrations`
+  and every retention default; `features/privacy/privacy.test.ts` fails otherwise.
+
 ## Code quality
 
 The same standard as the generated projects: comment why, not what; no comments narrating the
