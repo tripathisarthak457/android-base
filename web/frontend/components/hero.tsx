@@ -1,3 +1,4 @@
+import { ciPresets } from "../features/catalogue/ci.ts";
 import { selectableFeatures } from "../features/catalogue/features.ts";
 import { CATALOGUE, PLATFORMS, PRIVACY, REPO, android } from "../lib/catalogue.ts";
 import { listed } from "../lib/text.ts";
@@ -10,10 +11,12 @@ import { Badge, LinkButton } from "./ui.tsx";
 export function Hero() {
   const target = android();
   const flavours = CATALOGUE.rules.flavours;
+  const ci = ciPresets(target);
+  const ciBuilt = ci.phrase.charAt(0).toUpperCase() + ci.phrase.slice(1);
   const stats = [
     { value: String(selectableFeatures(target).length), label: "features you can switch off", detail: "Each one removes its modules, not just its code" },
     { value: String(target.design_styles.length), label: "design styles", detail: target.design_styles.map((style) => style.title).join(", ") },
-    { value: String(target.motion_styles.length), label: "motion styles", detail: "Spring presets for every press, push and tab" },
+    { value: String(target.motion_styles.length), label: "motion styles", detail: "Spring presets for presses, sheets and dialogs" },
     {
       value: String(flavours.length),
       label: "build environments",
@@ -85,10 +88,10 @@ export function Hero() {
               ⚠
             </span>
             <p className="text-sm leading-relaxed text-ink-300">
-              <span className="font-medium text-ink-100">This is beta.</span> Every preset, plus every feature on at once and none at
-              all, is generated and built in CI before a change ships, but not many people have used it yet. If something breaks,
-              "Report a problem" (the flag at the top of the page) sends it straight to whoever can fix it, with what you configured
-              attached.
+              <span className="font-medium text-ink-100">This is beta.</span> {ciBuilt}, plus every feature on at
+              once and none at all, {ci.plural ? "are" : "is"} generated and built in CI before a change
+              ships, but not many people have used it yet. If something breaks, "Report a problem" (the flag at the top of the page)
+              sends it straight to whoever can fix it, with what you configured attached.
             </p>
           </div>
         </div>

@@ -1,5 +1,6 @@
+import { ciPresets } from "../features/catalogue/ci.ts";
 import { licensedFeatures } from "../features/catalogue/features.ts";
-import { CATALOGUE, PLATFORMS, PRIVACY } from "../lib/catalogue.ts";
+import { CATALOGUE, PLATFORMS, PRIVACY, android } from "../lib/catalogue.ts";
 import { listed } from "../lib/text.ts";
 
 function licenceAnswer(): string {
@@ -29,12 +30,13 @@ function platformsAnswer(): string | null {
 
 export function Faq() {
   const platforms = platformsAnswer();
+  const ci = ciPresets(android());
   const questions = [
     {
       q: "Is the project it gives me actually going to build?",
       a:
         "Yes, and that is checked rather than asserted. The template in the repository is a real Gradle project, and CI " +
-        "generates every preset, plus a project with every feature and one with none, and builds each of them; between them " +
+        `generates ${ci.phrase}, plus a project with every feature and one with none, and builds each of them; between them ` +
         "they run debug and shrunk release builds, unit tests, Android lint and the build's own rules. A change that breaks " +
         "one does not ship.",
     },
@@ -44,7 +46,8 @@ export function Faq() {
       a:
         "Material is a brand as much as a toolkit, and a design system built on it inherits both. Owning the components means " +
         "the theme is the only thing that decides how anything looks, and the press feedback can be iOS-like rather than a " +
-        "ripple. Only Material's adaptive layout libraries are used, which depend on no Material component.",
+        "ripple. No Material component library is a dependency and the build refuses their imports; window size classes " +
+        "come from androidx.window.",
     },
     {
       q: "What if I want a feature I turned off?",

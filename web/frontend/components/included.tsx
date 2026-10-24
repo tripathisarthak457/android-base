@@ -24,9 +24,9 @@ function items() {
     {
       title: "Tabs that feel like tabs",
       body:
-        "Each tab keeps its own back stack, scroll position and ViewModels, and only the visible one is laid out. The bar " +
-        "floats over the content at every depth while the content scrolls under it. Re-tapping a tab pops it to its root, " +
-        "and a burst of Back presses settles into one animated pop.",
+        "Each tab keeps its own back stack, scroll position and ViewModels, so a switch shows it again instead of building it, " +
+        "and the tabs out of sight pause. The bar floats over the content at every depth while the content scrolls under " +
+        "it. Re-tapping a tab pops it to its root, and a burst of Back presses settles into one animated pop.",
       detail: "KeptTabs",
     },
     {
@@ -39,16 +39,18 @@ function items() {
     {
       title: "Designed for every screen, not just phones",
       body:
-        "Layout follows the window size class, never orientation or device. The tab bar becomes a rail on wide windows, a list " +
-        "and its detail share one, and forms stop at a readable width. Locking an activity to one orientation fails the build.",
+        "Layout follows the window size class, never orientation or device. The tab bar becomes a rail on wider windows and a " +
+        "sidebar on large ones, a list and its detail share one, and forms stop at a readable width. Locking an activity to " +
+        "one orientation fails the build.",
       detail: "window size classes",
     },
     {
       title: "A look you pick, then own",
       body:
         `${target.design_styles.length} design styles change corners, borders, fields, the tab bar, surface tone and type ` +
-        `voice together, each checked against WCAG AA in both themes, and ${target.motion_styles.length} motion styles change ` +
-        "every spring. Both come from one set of design tokens; the components are plain Compose in your own module.",
+        `voice together, each checked against WCAG AA in both themes, and ${target.motion_styles.length} motion styles set ` +
+        "how presses spring back and how sheets, dialogs and layout changes move. Both come from one set of design tokens; " +
+        "the components are plain Compose in your own module.",
       detail: "AppTheme",
     },
     {
