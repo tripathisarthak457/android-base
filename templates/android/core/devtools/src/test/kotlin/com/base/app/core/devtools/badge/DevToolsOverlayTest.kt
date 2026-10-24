@@ -33,9 +33,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 import kotlin.math.abs
-// <opt:flags>
-import com.base.app.core.flags.FlagOverrides
-import com.base.app.core.flags.LocalFeatureFlags
 // <opt:ui_components>
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
@@ -44,6 +41,9 @@ import com.base.app.core.designsystem.foundation.interaction.pressable
 //~ import com.base.app.core.devtools.kit.PressFeedback
 //~ import com.base.app.core.devtools.kit.pressable
 // </opt-else:ui_components>
+// <opt:flags>
+import com.base.app.core.flags.FlagOverrides
+import com.base.app.core.flags.LocalFeatureFlags
 // </opt:flags>
 
 @RunWith(AndroidJUnit4::class)

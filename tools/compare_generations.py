@@ -12,8 +12,8 @@ EXCEPTIONS may differ, each for a reason the change names; `generator-spec.json`
 its provenance stamp (commit and date) taken out. A file present in one tree only is a difference.
 
 `--spec-set DIR` reads the specs from DIR/*.json instead of the default set: every preset in both
-architectures, no features and every feature, every feature with every language and with modules,
-and the consistency matrix's hostile names.
+architectures, no features and every feature, each feature alone and every feature but one, every
+feature with every language and with modules, and the consistency matrix's hostile names.
 """
 
 from __future__ import annotations
@@ -81,6 +81,11 @@ def default_specs() -> dict[str, dict]:
     }
     specs["none"] = spec([])
     specs["all"] = spec(every)
+    # A marker seam shows only when the features around it differ: a block nested in another
+    # feature's block, say, is right with both on and with both off.
+    for key in every:
+        specs[f"only-{key}"] = spec([key])
+        specs[f"allbut-{key}"] = spec([other for other in every if other != key])
     specs["everything-languages"] = spec(every, languages=languages)
     specs["everything-modules"] = spec(every, feature_modules=["orders", "order_history"])
     for index, (app, package, modules) in enumerate(HOSTILE):
