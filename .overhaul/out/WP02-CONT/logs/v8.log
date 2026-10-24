@@ -103,3 +103,18 @@ BUILD SUCCESSFUL in 2m 23s
   ui: report read 60 lines; the shared file now 60 lines
 
 == 09:38:05 6. everything: the stability check after a forced unit-test compile, one worker
+rc=0
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugUnitTestKotlin
+> Task :core:designsystem:checkComposeStability
+> Task :core:navigation:compileDebugKotlin
+> Task :core:navigation:compileDebugUnitTestKotlin
+> Task :core:navigation:checkComposeStability
+> Task :core:ui:compileDebugKotlin
+> Task :core:ui:checkComposeStability
+BUILD SUCCESSFUL in 2m 52s
+  designsystem: report read 1576 lines; the shared file now 126 lines
+  navigation: report read 231 lines; the shared file now 16 lines
+  ui: report read 60 lines; the shared file now 60 lines
+
+V8 DONE 09:49:15
