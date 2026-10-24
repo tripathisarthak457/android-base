@@ -155,7 +155,9 @@ internal object CodeRules {
     val ALL: List<Rule> = ComposeRules.ALL + KotlinRules.ALL + StructureRules.ALL + AdaptiveRules.ALL + SheetRules.ALL + ScrollRules.ALL
     // </opt:ui_components>
     // <opt-else:ui_components>
-    //~ val ALL: List<Rule> = ComposeRules.ALL + KotlinRules.ALL + StructureRules.ALL + AdaptiveRules.ALL + ScrollRules.ALL
+    //~ val ALL: List<Rule> =
+    //~     ComposeRules.ALL + KotlinRules.ALL + StructureRules.ALL + AdaptiveRules.ALL + ScrollRules.ALL +
+    //~         ComponentRules.ALL
     // </opt-else:ui_components>
 
     /** Not a source pattern: a `@Composable` built without the Compose compiler crashes when first called. */

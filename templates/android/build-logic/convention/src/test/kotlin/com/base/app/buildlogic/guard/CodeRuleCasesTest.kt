@@ -263,7 +263,12 @@ class CodeRuleCasesTest {
             fun Modifier.veil(a: Float) = fillMaxSize().alpha(a)
         """.trimIndent()
 
+        // <opt:ui_components>
         assertEquals(listOf("6 layer-alpha-fill"), rules(DESIGN_SYSTEM, source))
+        // </opt:ui_components>
+        // <opt-else:ui_components>
+        //~ assertEquals(listOf("1 raw-dp", "6 layer-alpha-fill"), rules(DESIGN_SYSTEM, source))
+        // </opt-else:ui_components>
     }
 
     @Test
