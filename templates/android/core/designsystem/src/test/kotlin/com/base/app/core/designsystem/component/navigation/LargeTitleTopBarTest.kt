@@ -10,12 +10,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ExperimentalComposeRuntimeApi
+import androidx.compose.runtime.RecomposeScope
+import androidx.compose.runtime.Recomposer
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.tooling.CompositionObserver
+import androidx.compose.runtime.tooling.CompositionObserverHandle
+import androidx.compose.runtime.tooling.CompositionRegistrationObserver
+import androidx.compose.runtime.tooling.ObservableComposition
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -113,6 +120,49 @@ class LargeTitleTopBarTest {
         }
         assertEquals(accessoryBefore, accessoryCompositions)
         assertEquals(contentBefore, contentCompositions)
+    }
+
+    // A scope that reads the position through derivedStateOf runs no composable when the derived
+    // value holds, so the counts above miss it, but its composition still goes through a recompose
+    // pass on every scroll frame. Counted here at the compositions themselves.
+    @OptIn(ExperimentalComposeRuntimeApi::class)
+    @Test
+    fun `scrolling short of the collapse sends no composition through a recompose pass`() {
+        setBar()
+        var passes = 0
+        val counting = object : CompositionObserver {
+            override fun onBeginComposition(composition: ObservableComposition) {
+                passes++
+            }
+
+            override fun onScopeEnter(scope: RecomposeScope) = Unit
+            override fun onReadInScope(scope: RecomposeScope, value: Any) = Unit
+            override fun onScopeExit(scope: RecomposeScope) = Unit
+            override fun onEndComposition(composition: ObservableComposition) = Unit
+            override fun onScopeInvalidated(scope: RecomposeScope, value: Any?) = Unit
+            override fun onScopeDisposed(scope: RecomposeScope) = Unit
+        }
+        val observed = mutableListOf<CompositionObserverHandle>()
+        val registrations = Recomposer.runningRecomposers.value.single().observe(
+            object : CompositionRegistrationObserver {
+                override fun onCompositionRegistered(composition: ObservableComposition) {
+                    observed += composition.setObserver(counting)
+                }
+
+                override fun onCompositionUnregistered(composition: ObservableComposition) = Unit
+            },
+        )
+        try {
+            for (offset in 1..20) {
+                scrolled = offset
+                rule.waitForIdle()
+            }
+        } finally {
+            registrations?.dispose()
+            observed.forEach { it.dispose() }
+        }
+        assertTrue("no composition was observed", observed.isNotEmpty())
+        assertEquals("recompose passes while the title only moved", 0, passes)
     }
 
     @Test

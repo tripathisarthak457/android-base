@@ -129,6 +129,31 @@ def missed_deadline(row):
     return max(row["FrameCompleted"], row.get("GpuCompleted", 0)) > deadline
 
 
+def first_frame_missed(rows, rendered, janky):
+    """Whether a transition's first frame missed its deadline, from its framestats [rows] and the
+    gfxinfo counts of the same segment: [rendered] frames, [janky] of them janky.
+
+    gfxinfo can count a first frame that framestats holds no row for. The first row is then a later
+    frame of the same motion: its deadline is further out than the one a frame starting from idle
+    gets, and a janky frame gfxinfo counts beyond the rows' own is that unlisted first frame.
+    """
+    if not rows:
+        return False
+    first = rows[0]
+    if len(rows) >= rendered or not _queued_behind_earlier_frame(first):
+        return missed_deadline(first)
+    return janky > sum(1 for row in rows if missed_deadline(row))
+
+
+def _queued_behind_earlier_frame(row):
+    # A frame that starts from idle is given the workload target as its deadline; one queued behind
+    # a frame still on its way to the display is given a later one.
+    deadline, target = row.get("FrameDeadline"), row.get("WorkloadTarget")
+    if not deadline or not target:
+        return False
+    return deadline - row["IntendedVsync"] > target + _interval(row) // 2
+
+
 def late_first_frames(dumps):
     """How many transitions missed the deadline on their first frame, of how many had one."""
     firsts = [rows[0] for rows in dumps if rows]
