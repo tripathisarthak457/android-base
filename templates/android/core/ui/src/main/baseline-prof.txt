@@ -1,3 +1,4 @@
+Lcom/base/app/core/ui/MessageHostKt$$ExternalSyntheticLambda1;
 Lcom/base/app/core/ui/MessageHostKt$MessageHost$1$1$1$1;
 Lcom/base/app/core/ui/MessageHostKt$MessageHost$1$1$1;
 Lcom/base/app/core/ui/MessageHostKt$MessageHost$1$1;
@@ -30,6 +31,8 @@ PLcom/base/app/core/ui/MviScreenKt$MviScreen$3$1$1;->invoke(Lcom/base/app/core/m
 PLcom/base/app/core/ui/MviScreenKt$MviScreen$3$1$1;->invoke(Ljava/lang/Object;)Ljava/lang/Object;
 PLcom/base/app/core/ui/MviScreenKt;->MviScreen$lambda$2(Landroidx/compose/runtime/State;)Lkotlin/jvm/functions/Function1;
 PLcom/base/app/core/ui/MviScreenKt;->access$MviScreen$lambda$2(Landroidx/compose/runtime/State;)Lkotlin/jvm/functions/Function1;
+SPLcom/base/app/core/ui/MessageHostKt$$ExternalSyntheticLambda1;-><init>(Lkotlinx/coroutines/flow/Flow;I)V
+SPLcom/base/app/core/ui/MessageHostKt$$ExternalSyntheticLambda1;->invoke(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 SPLcom/base/app/core/ui/MessageHostKt$MessageHost$1$1$1$1;-><init>(Lcom/base/app/core/designsystem/component/overlay/ToastQueue;Landroid/content/Context;)V
 SPLcom/base/app/core/ui/MessageHostKt$MessageHost$1$1$1;-><init>(Lkotlinx/coroutines/flow/Flow;Lcom/base/app/core/designsystem/component/overlay/ToastQueue;Landroid/content/Context;Lkotlin/coroutines/Continuation;)V
 SPLcom/base/app/core/ui/MessageHostKt$MessageHost$1$1$1;->create(Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Lkotlin/coroutines/Continuation;
@@ -39,6 +42,7 @@ SPLcom/base/app/core/ui/MessageHostKt$MessageHost$1$1$1;->invokeSuspend(Ljava/la
 SPLcom/base/app/core/ui/MessageHostKt$MessageHost$1$1;-><init>(Landroidx/lifecycle/LifecycleOwner;Lkotlinx/coroutines/flow/Flow;Lcom/base/app/core/designsystem/component/overlay/ToastQueue;Landroid/content/Context;Lkotlin/coroutines/Continuation;)V
 SPLcom/base/app/core/ui/MessageHostKt$MessageHost$1$1;->create(Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Lkotlin/coroutines/Continuation;
 SPLcom/base/app/core/ui/MessageHostKt$MessageHost$1$1;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+SPLcom/base/app/core/ui/MessageHostKt;->MessageHost$lambda$2(Lkotlinx/coroutines/flow/Flow;ILandroidx/compose/runtime/Composer;I)Lkotlin/Unit;
 SPLcom/base/app/core/ui/MessageHostKt;->MessageHost(Lkotlinx/coroutines/flow/Flow;Landroidx/compose/runtime/Composer;I)V
 SPLcom/base/app/core/ui/MviScreenKt$$ExternalSyntheticLambda0;-><init>()V
 SPLcom/base/app/core/ui/MviScreenKt$$ExternalSyntheticLambda1;-><init>(Lcom/base/app/core/mvi/MviViewModel;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function4;II)V
