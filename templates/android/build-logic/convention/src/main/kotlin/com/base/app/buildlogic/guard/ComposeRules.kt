@@ -138,9 +138,10 @@ internal object ComposeRules {
                 ".verticalScroll(…).padding(chromeContentPadding(…)) on a column",
             // </opt:ui_components>
             // <opt-else:ui_components>
-            //~ advice = "pad scrolling content inside the scroll, so it runs under the bars and rests clear of them: pass " +
-            //~     "the screen's contentPadding through, as contentPadding on a lazy list and as " +
-            //~     ".verticalScroll(…).padding(…) on a column",
+            //~ advice = "pad scrolling content inside the scroll, so it runs under the system bars and " +
+            //~     "rests clear of them: contentPadding = WindowInsets.safeDrawing.asPaddingValues() on " +
+            //~     "a lazy list, .verticalScroll(…).windowInsetsPadding(WindowInsets.safeDrawing) on a " +
+            //~     "column, or the contentPadding a shell of yours hands the screen",
             // </opt-else:ui_components>
             applies = { it.inFeature && it.isProduction },
             lines = { source, _ -> unpaddedScrolls(source) },
@@ -217,9 +218,26 @@ internal object ComposeRules {
     )
 
     private val SCREEN_LIST = Regex("""(?<![\w.])(?:LazyColumn|LazyVerticalGrid|LazyVerticalStaggeredGrid)\s*[({]""")
+    // <opt:ui_components>
     private val CHROME_CONTENT_PADDING = Regex("""\bcontentPadding\s*=\s*(?:chromeContentPadding\s*\(|contentPadding\b)""")
+    // </opt:ui_components>
+    // <opt-else:ui_components>
+    //~ // Until the app has a shell, the chrome is the system bars: padding from their insets, or the
+    //~ // contentPadding a shell hands the screen once there is one.
+    //~ private const val INSETS =
+    //~     """WindowInsets\s*\.\s*\w+(?:\s*\.\s*\w+\s*\([^()]*\))*\s*\.\s*asPaddingValues\s*\("""
+    //~ private val CHROME_CONTENT_PADDING = Regex("""\bcontentPadding\s*=\s*(?:contentPadding\b|$INSETS)""")
+    // </opt-else:ui_components>
     private val VERTICAL_SCROLL = Regex("""\.\s*verticalScroll\s*\(""")
+    // <opt:ui_components>
     private val CHROME_PADDING = Regex("""\.\s*padding\s*\(\s*(?:chromeContentPadding\s*\(|contentPadding\s*\))""")
+    // </opt:ui_components>
+    // <opt-else:ui_components>
+    //~ private val CHROME_PADDING = Regex(
+    //~     """\.\s*(?:padding\s*\(\s*(?:contentPadding\s*\)|$INSETS)|windowInsetsPadding\s*\(|""" +
+    //~         """safe(?:Drawing|Content)Padding\s*\(|systemBarsPadding\s*\()""",
+    //~ )
+    // </opt-else:ui_components>
     private val RAW_DP = Regex("""(?<![\w.])(\d+(?:\.\d+)?)[fF]?\s*\.\s*dp\b""")
     private val STATE_TYPE = Regex("""^(?:@\w+\s+)*(?:androidx\.compose\.runtime\.)?(?:Mutable)?State<""")
     private val VIEW_MODEL_TYPE = Regex("""^\w*ViewModel\b""")

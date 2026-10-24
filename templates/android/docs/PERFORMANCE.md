@@ -335,9 +335,22 @@ LazyColumn(
 ```
 <!-- </opt:ui_components> -->
 <!-- <opt:!ui_components> -->
-A screen passes the `contentPadding` it is given straight through (`contentPadding = contentPadding`), which the
-rule accepts; read inset sizes in measure, never in composition, so the keyboard rising lays the list out again and
-composes nothing.
+Until the app has a shell, the bars are the system's, and the padding comes from their insets, as the `edge-to-edge`
+skill shows: `contentPadding = WindowInsets.safeDrawing.asPaddingValues()` on a lazy list,
+`.verticalScroll(…).windowInsetsPadding(WindowInsets.safeDrawing)` on a column. Once a shell of yours hands each screen
+a `contentPadding` that adds its own bars, the screen passes it straight through (`contentPadding = contentPadding`).
+The rule accepts both. Both read the inset sizes when the list measures, never in composition, so the keyboard rising
+lays the list out again and composes nothing.
+
+```kotlin
+LazyColumn(
+    state = listState,
+    contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
+    flingBehavior = flingBehavior,
+) {
+    items(orders, key = { it.id }, contentType = { it.kind }) { order -> OrderRow(order, onOpen = onOpen) }
+}
+```
 <!-- </opt:!ui_components> -->
 — `scroll-chrome` (vertical lazy lists, grids and `verticalScroll` in features)
 

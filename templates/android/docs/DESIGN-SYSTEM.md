@@ -156,7 +156,7 @@ Each rule's message names the reference page in `.agents/skills/` where one appl
 | `scroll-fling` | one deceleration everywhere | `flingBehavior = AppScrollDefaults.flingBehavior()` |
 <!-- </opt:ui_components> -->
 <!-- <opt:!ui_components> -->
-| `scroll-chrome` | content runs under the bars and rests clear of them | pass the screen's `contentPadding` through, inside the scroll |
+| `scroll-chrome` | content runs under the bars and rests clear of them | the system bars' insets inside the scroll (`WindowInsets.safeDrawing.asPaddingValues()` as `contentPadding`), or the `contentPadding` your shell hands down |
 | `scroll-fling` | one deceleration everywhere | name your design system's fling ([First things to build](#first-things-to-build)) |
 <!-- </opt:!ui_components> -->
 | `subcompose-image` | no composition inside measure in lists | `AsyncImage` with painters |

@@ -59,6 +59,7 @@ ADVICE_LIBRARY_NAMES = frozenset({
     "BoxWithConstraints", "CompositingStrategy", "ModulateAlpha", "FlexBox", "LazyVerticalGrid", "MediaQuery",
     "ModifierNodeElement", "collectAsState", "contentPadding", "contentType", "drawLine", "drawRect", "fillMax",
     "flingBehavior", "horizontalScroll", "stringResource", "verticalScroll", "widthIn",
+    "WindowInsets", "asPaddingValues", "safeDrawing", "windowInsetsPadding",
     # Lifecycle, Navigation 3, navigationevent, Material 3 adaptive, Coil
     "collectAsStateWithLifecycle", "ViewModel", "ViewModels", "NavDisplay", "SceneStrategy", "NavigationBackHandler",
     "NavigationSuiteScaffold", "AsyncImage", "SubcomposeAsyncImage",

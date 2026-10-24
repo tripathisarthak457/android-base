@@ -66,7 +66,12 @@ class CodeRuleCasesTest {
         val source = """
             private fun List() = LazyColumn(flingBehavior = AppScrollDefaults.flingBehavior(), 
                 modifier = Modifier.fillMaxSize(),
+                // <opt:ui_components>
                 contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
+                // </opt:ui_components>
+                // <opt-else:ui_components>
+                //~ contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
+                // </opt-else:ui_components>
             ) {
                 item(key = "photos") { LazyRow(flingBehavior = AppScrollDefaults.flingBehavior()) { items(photos, key = { it.url }) { Photo(it) } } }
             }
@@ -75,7 +80,12 @@ class CodeRuleCasesTest {
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
                     .testTag("detail")
+                    // <opt:ui_components>
                     .padding(chromeContentPadding(PaddingValues(AppTheme.spacing.gutter))),
+                    // </opt:ui_components>
+                    // <opt-else:ui_components>
+                    //~ .windowInsetsPadding(WindowInsets.safeDrawing),
+                    // </opt-else:ui_components>
             ) { }
             private fun Section(contentPadding: PaddingValues) = LazyVerticalGrid(flingBehavior = AppScrollDefaults.flingBehavior(), 
                 columns = GridCells.Adaptive(AppTheme.layout.tileMinWidth),
