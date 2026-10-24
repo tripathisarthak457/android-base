@@ -27,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.util.VelocityTracker
@@ -184,7 +185,14 @@ private fun EdgeBadge(
                         },
                     )
                 }
-                .graphicsLayer { alpha = if (position.held) 1f else RestAlpha }
+                .graphicsLayer {
+                    alpha = if (position.held) 1f else RestAlpha
+                    // The badge floats over every screen, so it is drawn in every frame of every
+                    // motion: an offscreen buffer for its alpha would switch render targets in each
+                    // of them. Applied to each draw instead, the text shows its fill through itself
+                    // a little, which at this alpha reads the same.
+                    compositingStrategy = CompositingStrategy.ModulateAlpha
+                }
                 .pressable(onClick = onClick, feedback = PressFeedback.Scale)
                 .semantics { contentDescription = "$label build. Opens the developer inspector." },
         ) {
