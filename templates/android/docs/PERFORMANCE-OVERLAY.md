@@ -45,8 +45,14 @@ The overlay is built so that watching does not change what is watched:
 
 - **No listener while off.** With Live stats off, no frame listener is on the window and nothing
   is sampled; the recording buffers are allocated when recording first starts, or when the Perf
+<!-- <opt:performance&ui_components> -->
   tab first reads them. Off is the default in `devRelease` and
   `devBenchmarkRelease`, the builds the perf gates measure. The recorder itself is built at launch
+<!-- </opt:performance&ui_components> -->
+<!-- <opt:!performance|!ui_components> -->
+  tab first reads them. Off is the default in every release build of the dev flavour, the builds
+  worth measuring. The recorder itself is built at launch
+<!-- </opt:!performance|!ui_components> -->
   with the inspector, so that a launch extra or a stored choice can turn it on from the first
   screen; measured, a hidden `devRelease` cold start was within noise of the same app without the
   overlay (517 against 507 ms median over 30 launches each).
@@ -85,11 +91,20 @@ thread spent 0.06 ms more per frame shown. With `analytics`, whose JankStats it 
 hidden and 14,686 shown were 1.62 % and 1.63 % janky, and 0.02 ms more per frame. The budget the
 overlay is held to is 0.3 percentage points of janky frames and 0.5 ms per frame.
 
+<!-- <opt:performance&ui_components> -->
 **Measure the app with the overlay off.** The perf gates, `tools/perf/perf.sh` and any number you
 quote are taken hidden. Your choice of Live stats is kept across launches, and across reinstalls
 that keep the app's data, so a run after you once turned it on would measure the overlay too.
 `perf.sh` launches with `--es perf.hud off` unless you pass `--extra perf.hud=on`; launch other
 gate runs the same way, or `adb shell pm clear` the app first.
+<!-- </opt:performance&ui_components> -->
+<!-- <opt:!performance|!ui_components> -->
+**Measure the app with the overlay off.** Any number you quote is taken hidden. Your choice of
+Live stats is kept across launches, and across reinstalls that keep the app's data, so a run after
+you once turned it on would measure the overlay too. Launch a measured run with
+`--es perf.hud off` (`adb shell am start -W --es perf.hud off -n <applicationId>/<activity>`), or
+`adb shell pm clear` the app first.
+<!-- </opt:!performance|!ui_components> -->
 
 ## Debug builds
 
@@ -112,23 +127,45 @@ app nobody has used.
 
 | Metric | Points | A, the target | Source |
 |---|---|---|---|
+<!-- <opt:performance&ui_components> -->
 | Janky frames | 25 | at most 0.5 % | half the 1.0 % ceiling of `tools/perf/gates.toml`'s scroll and motion rows; the target is about 0 % |
 | Main-thread time p90 | 10 | at most 0.6 of the budget | each frame's own refresh interval; `gates.toml` frame times are UI-thread time too |
+<!-- </opt:performance&ui_components> -->
+<!-- <opt:!performance|!ui_components> -->
+| Janky frames | 25 | at most 0.5 % | half the 1.0 % ceiling the template's own scrolls and motions are held to; the target is about 0 % |
+| Main-thread time p90 | 10 | at most 0.6 of the budget | each frame's own refresh interval |
+<!-- </opt:!performance|!ui_components> -->
 | Main-thread time p99 | 10 | at most the budget | |
 | Slow frames (over 16 ms) | 5 | at most 0.5 % | Android vitals |
 | Frozen frames (over 700 ms) | 10 | none | Android vitals |
 | Long main-thread work (over 50 ms) | 5 | none | |
+<!-- <opt:performance&ui_components> -->
 | Cold start | 10 | at most 380 ms | `gates.toml` `coldstart` |
+<!-- </opt:performance&ui_components> -->
+<!-- <opt:!performance|!ui_components> -->
+| Cold start | 10 | at most 380 ms | the template's cold-start ceiling on the reference phone, compiled with its profile |
+<!-- </opt:!performance|!ui_components> -->
 | Warm start | 5 | at most 190 ms | half the cold-start gate |
+<!-- <opt:performance&ui_components> -->
 | App memory, PSS less graphics | 10 | at most 58.4 MB | `gates.toml` `meminfo.pss_app_mb` |
+<!-- </opt:performance&ui_components> -->
+<!-- <opt:!performance|!ui_components> -->
+| App memory, PSS less graphics | 10 | at most 58.4 MB | the template's memory ceiling on the reference phone |
+<!-- </opt:!performance|!ui_components> -->
 | Blocking garbage collections | 5 | none | |
 | StrictMode violations | 5 | none | |
 | R8, baseline profile, not debuggable | 5 each | pass | |
 
 ### Janky frames
 
+<!-- <opt:performance&ui_components> -->
 A frame is janky when it missed its deadline: the platform's FrameTimeline count on Android 12 and
 later, the same one `perf.sh` and `dumpsys gfxinfo` report. Start with the worst screen in
+<!-- </opt:performance&ui_components> -->
+<!-- <opt:!performance|!ui_components> -->
+A frame is janky when it missed its deadline: the platform's FrameTimeline count on Android 12 and
+later, the same one `dumpsys gfxinfo` reports. Start with the worst screen in
+<!-- </opt:!performance|!ui_components> -->
 **Janky frames by screen**, then look for, in this order: recomposition on every frame of an
 animation (read animated values in `graphicsLayer`, `offset { }` or `drawBehind` lambdas), alpha on
 a full-screen layer, main-thread work started by the navigation itself, and a first frame that
@@ -165,7 +202,13 @@ names the rest. Defer what the first frame does not need.
 Read from Android 15's `ApplicationStartInfo`, which the system fills: launch to first frame (time
 to initial display) and launch to `reportFullyDrawn` (time to full display, when the app reports
 it). Earlier releases have no such record. Keep `Application.onCreate` and the first screen free of
+<!-- <opt:performance&ui_components> -->
 I/O and eager singletons, and measure with `tools/perf/perf.sh coldstart` on `devRelease`.
+<!-- </opt:performance&ui_components> -->
+<!-- <opt:!performance|!ui_components> -->
+I/O and eager singletons, and measure on `devRelease` with Macrobenchmark's `StartupTimingMetric`,
+or as the median `TotalTime` of several `adb shell am start -W` cold starts.
+<!-- </opt:!performance|!ui_components> -->
 
 ### Memory
 
@@ -238,8 +281,14 @@ app's own user (on a phone with several users, the one it runs as): `run-as` can
 default, "current", which needs a cross-user permission. A release-like dev build exports from the
 tab.
 
+<!-- <opt:performance&ui_components> -->
 A launch with `--es perf.hud on` (or `off`) switches recording for that process, whatever the
 build, which is how `tools/perf/perf.sh` measures the overlay's own cost (`--extra perf.hud=on`).
+<!-- </opt:performance&ui_components> -->
+<!-- <opt:!performance|!ui_components> -->
+A launch with `--es perf.hud on` (or `off`) switches recording for that process, whatever the
+build, so a scripted run can measure the app with the overlay and without it.
+<!-- </opt:!performance|!ui_components> -->
 It does nothing else, and nothing in a shippable release reads it.
 
 Frame numbers are reported for each screen as well as overall: frames, janky, slow and frozen

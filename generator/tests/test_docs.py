@@ -27,6 +27,8 @@ ANDROID = get("android")
 TEMPLATE = ANDROID.template_dir
 VARIANTS = Path(__file__).resolve().parents[1] / "variants"
 DOCS = ("CLAUDE.md", "AGENTS.md", "README.md", "docs/ARCHITECTURE.md", "docs/PERFORMANCE.md", "docs/DESIGN-SYSTEM.md")
+#: Pages a feature owns, held to the same checks in every project that has them.
+FEATURE_DOCS = ("docs/PERFORMANCE-OVERLAY.md",)
 IMPORTED = ("docs/ARCHITECTURE.md", "docs/PERFORMANCE.md", "docs/DESIGN-SYSTEM.md")
 #: The most lines each doc may have in a generated project. CLAUDE.md and its three imports load into every agent
 #: session, so they are kept detailed but bounded.
@@ -58,7 +60,7 @@ EXAMPLE_NAMES = frozenset({
 #: Names a page still cites that the code does not have. Each leaves when its paragraph is rewritten; empty now.
 STALE_NAMES: dict[str, set[str]] = {}
 #: Backticked hyphenated tokens that are neither rule ids, skills nor folders: Android tools' own words.
-OTHER_HYPHENATED = frozenset({"speed-profile"})
+OTHER_HYPHENATED = frozenset({"run-as", "speed-profile"})
 #: Projects generated for the per-project checks: the presets at both ends, both architectures, every language, and
 #: the same without UI components.
 LANGUAGES = ["de", "es", "fr", "hi", "pt-BR"]
@@ -189,7 +191,7 @@ class TemplateDocsTest(unittest.TestCase):
     def test_every_name_the_docs_cite_exists_somewhere(self):
         known = words(TEMPLATE) | (words(VARIANTS) if VARIANTS.is_dir() else set()) | LIBRARY_NAMES | EXAMPLE_NAMES
         cited_total = 0
-        for page in DOCS:
+        for page in (*DOCS, *FEATURE_DOCS):
             names = cited_names(prose((TEMPLATE / page).read_text(encoding="utf-8")))
             cited_total += len(names)
             unknown = {name for name in names if name not in known and not variant_task(name)}
@@ -234,7 +236,8 @@ class GeneratedDocsTest(unittest.TestCase):
         cls.temp.cleanup()
 
     def pages(self, project: Path) -> dict[str, str]:
-        return {page: (project / page).read_text(encoding="utf-8") for page in DOCS}
+        present = (*DOCS, *(page for page in FEATURE_DOCS if (project / page).is_file()))
+        return {page: (project / page).read_text(encoding="utf-8") for page in present}
 
     def test_claude_md_imports_the_three_docs_and_each_exists(self):
         for name, project in self.projects.items():
@@ -338,7 +341,7 @@ class GeneratedDocsTest(unittest.TestCase):
 
     def test_the_docs_speak_to_the_project_not_the_workshop(self):
         for name, project in self.projects.items():
-            for page in [*DOCS, ".agents/skills/README.md"]:
+            for page in [*self.pages(project), ".agents/skills/README.md"]:
                 with self.subTest(case=name, page=page):
                     self.assertEqual([], WORKSHOP_WORDS.findall((project / page).read_text(encoding="utf-8")))
 
