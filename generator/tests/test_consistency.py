@@ -118,25 +118,40 @@ class IssuePathTest(unittest.TestCase):
         ], [issue.split(":", 1)[0] for issue in issues])
 
 
-class ProjectTest(unittest.TestCase):
+class VendoredFilesTest(unittest.TestCase):
+    """Google's skills ship Kotlin, Gradle and resource samples of their own: none of it is the project's."""
 
-    def test_vendored_files_are_not_read_as_the_projects_sources(self):
-        files = {
-            "app/src/main/kotlin/x/Screen.kt": "package x\nfun title() = 1\n",
-            "app/build.gradle.kts": "plugins { }\n",
-            ".agents/skills/glance/references/Widget.kt": "package com.upstream\nimport nowhere.Missing\nfun widget() = 1\n",
-            ".agents/skills/glance/references/build.gradle.kts": "plugins { }\n",
-        }
-        with tempfile.TemporaryDirectory() as temp:
-            root = Path(temp)
-            for relative, text in files.items():
-                path = root / relative
-                path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_text(text, encoding="utf-8")
-            project = Project(root)
-            self.assertEqual(["app/src/main/kotlin/x/Screen.kt"], [project.relative(path) for path in project.kotlin])
-            self.assertEqual(["app/build.gradle.kts"], [project.relative(path) for path in project.gradle])
-            self.assertNotIn("com.upstream", project.declared)
+    FILES = {
+        "app/src/main/kotlin/x/Screen.kt": "package x\nfun title() = R.string.used\n",
+        "app/build.gradle.kts": "plugins { }\n",
+        "app/src/main/res/values/strings.xml": '<resources><string name="used">Used</string></resources>\n',
+        ".agents/skills/glance/references/Widget.kt": "package com.upstream\nimport nowhere.Missing\nfun widget() = 1\n",
+        ".agents/skills/glance/references/build.gradle.kts": "plugins { }\n",
+        ".agents/skills/glance/references/res/xml/widget_info.xml": '<appwidget-provider previewImage="@drawable/sample_preview" />\n',
+        ".agents/skills/glance/references/src/main/res/values/strings.xml": '<resources><string name="sample">S</string></resources>\n',
+        ".agents/skills/glance/references/src/main/res/values-fr/strings.xml": "<resources />\n",
+        ".agents/skills/glance/references/empty.md": "",
+    }
+
+    def setUp(self):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        self.root = Path(temp.name)
+        for relative, text in self.FILES.items():
+            path = self.root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(text, encoding="utf-8")
+
+    def test_they_are_not_read_as_the_projects_sources(self):
+        project = Project(self.root)
+        self.assertEqual(["app/src/main/kotlin/x/Screen.kt"], [project.relative(path) for path in project.kotlin])
+        self.assertEqual(["app/build.gradle.kts"], [project.relative(path) for path in project.gradle])
+        self.assertNotIn("com.upstream", project.declared)
+
+    def test_no_check_reports_them(self):
+        project = Project(self.root)
+        issues = _resources(self.root, project) + _translations(self.root) + _hollow(self.root, project)
+        self.assertEqual([], [issue for issue in issues if ".agents" in issue])
 
 
 class RunnerTest(unittest.TestCase):

@@ -9,8 +9,8 @@ from pathlib import Path
 from genkit.core.copy import is_verbatim
 from genkit.targets import get
 
-#: Upstream files the template vendors byte for byte, such as the Kotlin samples in Google's skills: not the project's
-#: code, so never read as its sources.
+#: Upstream files the template vendors byte for byte, such as the Kotlin and XML samples in Google's skills: not the
+#: project's code or resources, so no check reads them.
 VERBATIM = get("android").manifest.verbatim
 
 DECLARATION = re.compile(
@@ -22,6 +22,11 @@ DECLARATION = re.compile(
 )
 PACKAGE = re.compile(r"^package[ \t]+([\w.]+)", re.M)
 IMPORT = re.compile(r"^import[ \t]+([\w.`]+)(?:[ \t]+as[ \t]+(\w+))?[ \t]*$", re.M)
+
+
+def project_files(root: Path, pattern: str) -> list[Path]:
+    """`root.rglob(pattern)` without the vendored files: what every check walks."""
+    return [path for path in root.rglob(pattern) if not is_verbatim(path.relative_to(root).as_posix(), VERBATIM)]
 
 
 def strip_code(text: str) -> str:
@@ -64,8 +69,8 @@ def _templates(body: str) -> str:
 class Project:
     def __init__(self, root: Path):
         self.root = root
-        self.kotlin = sorted(path for path in root.rglob("*.kt") if not self._verbatim(path))
-        self.gradle = sorted(path for path in root.rglob("*.kts") if not self._verbatim(path))
+        self.kotlin = sorted(project_files(root, "*.kt"))
+        self.gradle = sorted(project_files(root, "*.kts"))
         self.text = {path: path.read_text(encoding="utf-8") for path in self.kotlin + self.gradle}
         self.code = {path: strip_code(text) for path, text in self.text.items()}
         #: package → names declared in it.
@@ -96,6 +101,3 @@ class Project:
 
     def relative(self, path: Path) -> str:
         return path.relative_to(self.root).as_posix()
-
-    def _verbatim(self, path: Path) -> bool:
-        return is_verbatim(self.relative(path), VERBATIM)

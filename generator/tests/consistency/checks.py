@@ -12,11 +12,10 @@ import xml.etree.ElementTree as ET
 from collections import defaultdict
 from pathlib import Path
 
-from genkit.core.copy import is_verbatim
 from genkit.core.record import RECORD_NAME
 from genkit.targets import get
 
-from .project import IMPORT, VERBATIM, Project
+from .project import IMPORT, Project, project_files
 
 MARKER = re.compile(r"</?(?:opt|opt-else|generated):")
 IDENTITY = re.compile(r"(?<![\w.])com\.base\.app(?!\w)|com/base/app(?!\w)|(?<!\w)BaseApp|(?<![A-Za-z0-9])base_?app(?![A-Za-z0-9])")
@@ -87,12 +86,10 @@ def _without_ui_components(root: Path, project: Project, package: str) -> list[s
 
 def _leftovers(root: Path, identity: bool) -> list[str]:
     issues = []
-    for path in sorted(root.rglob("*")):
+    for path in sorted(project_files(root, "*")):
         if path.is_dir() or path.suffix in BINARY:
             continue
         relative = path.relative_to(root).as_posix()
-        if is_verbatim(relative, VERBATIM):
-            continue
         if identity and IDENTITY.search(relative):
             issues.append(f"IDENTITY-PATH {relative}")
         try:
@@ -113,7 +110,7 @@ def _settings(root: Path, issues: list[str]) -> set[str]:
     for path in sorted(included):
         if not (root / path.strip(":").replace(":", "/") / "build.gradle.kts").is_file():
             issues.append(f"SETTINGS include {path} has no build.gradle.kts")
-    for build in sorted(root.rglob("build.gradle.kts")):
+    for build in sorted(project_files(root, "build.gradle.kts")):
         if "build-logic" in build.parts or build.parent == root:
             continue
         path = ":" + build.parent.relative_to(root).as_posix().replace("/", ":")
@@ -264,7 +261,7 @@ def _conventions(root: Path, project: Project, package: str) -> list[str]:
 
 def _manifests(root: Path, project: Project, package: str) -> list[str]:
     issues = []
-    for manifest in sorted(root.rglob("AndroidManifest.xml")):
+    for manifest in sorted(project_files(root, "AndroidManifest.xml")):
         module = manifest.parents[2]
         build = module / "build.gradle.kts"
         namespace = None
@@ -293,7 +290,7 @@ def _manifests(root: Path, project: Project, package: str) -> list[str]:
 def _resources(root: Path, project: Project) -> list[str]:
     names: dict[str, set[str]] = defaultdict(set)
     issues = []
-    for res in root.rglob("src/*/res"):
+    for res in project_files(root, "src/*/res"):
         for directory in res.iterdir():
             if not directory.is_dir():
                 continue
@@ -327,7 +324,7 @@ def _resources(root: Path, project: Project) -> list[str]:
         for match in re.finditer(rf"(?<![\w.])(?:\w+R|R)\.({kinds}|id)\.(\w+)", project.code[path]):
             if match.group(2) not in names.get(match.group(1), set()):
                 issues.append(f"RES {project.relative(path)}: R.{match.group(1)}.{match.group(2)}")
-    for path in root.rglob("*.xml"):
+    for path in project_files(root, "*.xml"):
         text = re.sub(r"<!--.*?-->", "", path.read_text(encoding="utf-8"), flags=re.S)
         for match in re.finditer(rf'"@(?!android:)\+?({kinds})/([\w.]+)"', text):
             name = match.group(2).replace(".", "_")
@@ -375,10 +372,10 @@ def _unused_resources(root: Path, project: Project, copy_kept: bool = False) -> 
     roots = [project.code[path] for path in project.kotlin] + [project.text[path] for path in project.gradle]
     roots += [
         re.sub(r"<!--.*?-->", "", path.read_text(encoding="utf-8"), flags=re.S)
-        for path in sorted(root.rglob("*.xml"))
+        for path in sorted(project_files(root, "*.xml"))
         if not (path.parent.parent.name == "res" and path.parent.name.split("-")[0] == "values")
     ]
-    for res in sorted(root.rglob("src/*/res")):
+    for res in sorted(project_files(root, "src/*/res")):
         main = res.parent.name == "main"
         for directory in sorted(d for d in res.iterdir() if d.is_dir()):
             kind = directory.name.split("-")[0]
@@ -420,7 +417,7 @@ def _unused_resources(root: Path, project: Project, copy_kept: bool = False) -> 
 
 def _translations(root: Path) -> list[str]:
     issues = []
-    for source in root.rglob("src/main/res/values/strings.xml"):
+    for source in project_files(root, "src/main/res/values/strings.xml"):
         wanted = sorted(e.get("name") for e in ET.parse(source).getroot() if e.get("translatable") != "false")
         for translated in source.parent.parent.glob("values-*/strings.xml"):
             got = sorted(e.get("name") for e in ET.parse(translated).getroot())
@@ -433,7 +430,7 @@ def _translations(root: Path) -> list[str]:
 
 
 def _hollow(root: Path, project: Project) -> list[str]:
-    empty = (path for path in root.rglob("*") if path.is_file() and path.stat().st_size == 0)
+    empty = (path for path in project_files(root, "*") if path.is_file() and path.stat().st_size == 0)
     issues = [f"EMPTY-FILE {project.relative(path)}" for path in empty]
     for path in project.gradle:
         for match in re.finditer(r"\b(dependencies|plugins|android)\s*\{\s*\}", project.code[path]):
