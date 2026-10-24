@@ -139,8 +139,11 @@ own costs. HLS or DASH need `media3-exoplayer-hls` or `media3-exoplayer-dash` in
 
 ## Sample clips
 
-The catalog's twelve clips are public domain (CC0), each its uploader's own work: ten on Wikimedia Commons, by
+The catalog's eleven clips are public domain (CC0), each its uploader's own work: ten from Wikimedia Commons, by
 Roesalow, Derrellwilliams, Gustamons, Cesaremanfredi, Pohled 111, Bautsch, Netha Hussain, Roman Ryabenko, Benoit Prieur
-and Pastelitodepapa, played from Commons with Commons' stills as posters; and two from MDN's CC0 examples, which have
-no poster and show the skeleton colour until their first frame. Their URLs are in one file,
-`catalog/…/media/video/SampleClips.kt`.
+and Pastelitodepapa, and one from MDN's CC0 examples. Each was transcoded once to what reels apps serve (H.264 MP4,
+portrait 720 x 1280, about 1.5 Mbit/s, a keyframe every second, at most ten seconds), with a JPEG of its first frame
+as its poster, and is served as an asset of the template repository's `sample-media-v1` release, which lists the
+credits in its `CREDITS.md`. Measured runs therefore load no third-party video host, whose automated-traffic limits
+would otherwise decide the cold numbers. Every clip was looked at before it was listed: no person in focus, no brand
+and no readable text. Their URLs are in one file, `catalog/…/media/video/SampleClips.kt`.

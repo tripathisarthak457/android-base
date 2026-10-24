@@ -16,7 +16,8 @@ a first frame, a hand-over or an image load between the marks is taken again onc
 import re
 import time
 
-SWIPES_UP = 12
+#: One short of the catalog's eleven clips, so every swipe up of a run lands on a clip it has not played yet.
+SWIPES_UP = 10
 SWIPES_DOWN = 4
 SWIPE_MS = 220
 DWELL_S = 1.8
@@ -34,8 +35,9 @@ WINDOW_QUIET_S = 1.0
 WINDOW_SILENT_S = 3.0
 WINDOW_GIVE_UP_S = 15.0
 PLAYING_S = 5.0
-#: Where the clips come from: a scene that cannot reach them measures nothing.
-VIDEO_HOSTS = ("upload.wikimedia.org", "interactive-examples.mdn.mozilla.net")
+#: Where the clips come from, a release of the template's repository and the host its downloads redirect to:
+#: a scene that cannot reach them measures nothing.
+VIDEO_HOSTS = ("github.com", "release-assets.githubusercontent.com")
 
 _LINE = re.compile(r"perf\.media[^:]*:\s*(?P<text>.*)$")
 _FIELD = re.compile(r"(\w+)=(\S+)")
