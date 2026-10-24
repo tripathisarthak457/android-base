@@ -305,7 +305,12 @@ a class.
   recomposition.
 - Use `derivedStateOf` only when its input changes more often than its output
   (`listState.firstVisibleItemIndex > 0`), remember it, and key the `remember` on every parameter it
-  captures, or it keeps the first value it saw. For a plain combination use `remember(a, b)`.
+  captures, or it keeps the first value it saw. For a plain combination use `remember(a, b)`. Read in
+  composition, it still costs a recompose pass in every frame its input changes, even while its value
+  holds: no composable runs, so a recomposition test counts nothing, but the pass is in the frame. When
+  the result only starts an effect or an animation, read the input in a `snapshotFlow` inside that
+  effect instead (a large title bar that read its collapse in composition went through 622 empty
+  recompose passes in one traced scroll).
 - Drive side effects from state with `snapshotFlow { … }.distinctUntilChanged()` collected in a
   `LaunchedEffect`: haptics at a threshold, persisting a scroll position, analytics.
 - `Column`, `Row` and `Box` are inline: state read in their content lambda invalidates the nearest
@@ -623,11 +628,11 @@ nothing, so it checks the shell, not whether a feature seeds its first compositi
 
 #### Paint the screen once
 
-**Rule.** A screen's background is painted once per frame. Every
-navigation entry paints `colors.background` and says so through `LocalPaintedBackground`; `AppScaffold`
-paints no background on such a screen. Never add a full-screen background under a screen that already
-paints one, and keep every surface opaque or over an opaque one: the window's own background turns
-transparent after the app's first frame.
+**Rule.** A screen's background is painted once per frame. Every navigation entry paints
+`colors.background` and says so through `LocalPaintedBackground`; `AppScaffold` paints no background on
+such a screen. Never add a full-screen background under a screen that already paints one, and keep every
+surface opaque or over an opaque one: the window's own background turns transparent after the app's
+first frame.
 
 **Why.** HWUI does no occlusion culling: a fill that is covered is still drawn, on every frame the
 screen draws. A full-window fill is 2.6 Mpx. Measured on the reference phone with the scaffold's second
@@ -711,9 +716,9 @@ changes in that screen while the card is up (a spinner, a skeleton's sweep, a li
 renders the whole texture again for that frame; the decision that adopted the texture accepted that
 cost. No signal tells a screen that it is in the card (`LocalNavigationSettled` turns false only while
 the card commits), and the template's own skeleton shimmer and activity indicator keep animating in it.
-The gesture's release rows are not within their limits yet; see
+The gesture's release rows are within their limits and its first three frames are not yet; see
 [Where the template stands](#where-the-template-stands). Anything a screen redraws on its own while it
-is in the card adds to them.
+is in the card adds to every one of them.
 
 **Don't.** Navigation 3's built-in predictive pop (it gets no touch position, recomposes per event, and
 its default fades a whole screen offscreen every frame); reading a navigation event's transition state
@@ -733,23 +738,25 @@ beneath.
 ### Where the template stands
 
 The Everything preset's release build, compiled with its profile, on the reference phone, as last
-measured (block medians over several sessions; the hitch in ms per second of motion):
+measured: the release gate's run (the median of three runs), and where a range is given, the spread of
+single-run blocks over several sessions of the same build. The hitch is in ms per second of motion.
 
 | Scenario | Measured | Against the limits |
 |---|---|---|
-| Tab switch | hitch 0.78-1.19 ms/s, janky after the first 0 % | within |
-| Push and pop with the Back key | hitch 6.6-8.2 ms/s, janky after the first 0.2-0.49 % | hitch over 5.0 |
-| Back gesture | hitch 5.7-10.6 ms/s, janky after the first 1.09-1.5 % | both over |
-| Rapid Back | hitch 2.3-4.6 ms/s, janky after the first 0.92-1.07 % | hitch within; janky at its 1.0 limit, over it in one session |
-| Scroll a root list; with the bar minimizing | janky 0.66-0.78 %; 0.85-1.06 %; GPU p90 7-8 ms | over 0.5 % and 7.0 ms |
-| Navigation stress | janky 6.5-7.1 % | over 4.0 % |
-| Idle, recomposition, memory, cold start | 0 frames; tab, push, pop, back card 1, 5, 2, 0; app PSS 55.1 MB; cold start 366-381 ms as installed | within |
+| Tab switch | hitch 0 ms/s (plain taps 0.79), janky after the first 0 %; plain taps' first frame median 4.87-4.95 ms, max 11.8 ms | release rows within; plain taps' first frame over 4.5 and 11.7 |
+| Push and pop with the Back key | hitch 0-1.02 ms/s, janky after the first 0 %; the frame that composes the screen max 20.99-21.94 ms; the pop's first frame max 5.87-6.29 ms | release rows within; the composing frame over 18.3, the pop's first frame over 5.9 |
+| Back gesture | hitch 1.42-4.28 ms/s in 10 of 11 blocks (8.54 in one), janky after the first 0-0.41 %; slowest of the first three frames median 2.95-4.44 ms | release rows within; the first three frames over 2.7 |
+| Rapid Back | hitch 1.57 ms/s, janky after the first 0.46 % | within |
+| Scroll a root list; with the bar minimizing | janky 0.59-1.61 % (median about 0.74); 0.74-1.76 %; GPU p90 7 ms in both | janky over 0.5 % in both; GPU p90 at its 7.0 limit |
+| Navigation stress | janky 5.21-6.82 % | over 4.0 % |
+| Idle, recomposition, memory, cold start | 0 frames; tab, push, pop, back card 1, 5, 2, 0; app PSS 54.4 MB; cold start 362 ms compiled with the profile, 389 ms as installed | within |
 
 The rows over their limits are open work in the template, not targets it meets: build nothing that makes
 them worse, and measure a change to the shell, a list or the bar against them.
 <!-- <opt:performance> -->
 
-While a row here is over, `--gate solid` fails on every build, whatever the change. So being done (item 8
+While a row here is over, `--gate solid` fails on every build, whatever the change; a non-regression
+limit fails it like a release limit, so the table lists those it fails too. So being done (item 8
 of [Before you merge UI work](#before-you-merge-ui-work), and "Smooth and light" and "Before you say it
 is done" in `AGENTS.md`) excuses exactly the limits this table lists as over, at no worse than the values
 it gives. A change that brings a row within its limits updates this table in the same change; when every
@@ -955,7 +962,11 @@ rectangle; fade single-draw content and short entrances with `CompositingStrateg
 **Why.** With the default compositing, a layer with alpha below 1 and overlapping content is rendered
 into an offscreen buffer and then composited, on every frame of the fade. Full-screen, that is a second
 full-screen pass per frame. `ModulateAlpha` applies the alpha to each draw instead, with no buffer (an
-offscreen fade would also clip an item's shadow square).
+offscreen fade would also clip an item's shadow square). A small layer that rests below 1, rather than
+fading, is rendered offscreen in every frame the app draws: a 132 × 132 badge resting at 0.85 did so
+through every measured motion and caused most of a traced journey's waits for a free buffer (106 for
+332 ms, against 34 for 115 ms with `ModulateAlpha`). Give a resting alpha `ModulateAlpha` too: its
+overlapping draws then show through each other a little, which at an alpha that high reads the same.
 
 ```kotlin
 // A scrim is one rectangle; its alpha is read while drawing.
@@ -1092,6 +1103,22 @@ moves.
 - A shadow never follows a size that animates, and nothing fades through a shadow.
 
 **Enforced by.** *review*.
+
+### Draw one-pixel separators as filled rects
+
+**Rule.** A separator one physical pixel thick is `Modifier.hairline(edge, startInset)` on the element
+it separates or, inside the design system's own draw blocks, `drawHairline(color, start, end, top)`:
+both fill that row of pixels as a rect. Never draw it with `drawLine` and `strokeWidth = 1f`.
+
+**Why.** The GPU renderer draws a stroked line at far greater cost than a fill of the same pixels, and a
+separator is drawn again in every frame its screen moves or scrolls. On the reference phone the line
+under a pushed screen's top bar alone kept a push's opening frames (the third to the seventh) at about
+10 ms of GPU each, over the 8.33 ms a frame has; filled, they took about 7.8 ms.
+
+**Protects.** `pushpop.hitch_ms_per_s` at most 5.0 ms/s: every separator drawn as a fill took push and
+pop with the Back key from 8.1 ms/s of hitches to 0, and the back gesture's from 8.5-11.5 to 1.4-4.3.
+
+**Enforced by.** `pixel-line` (features, `:core:ui`, the design system, `:core:navigation` and `:app`).
 <!-- <opt:liquidglass> -->
 
 ---

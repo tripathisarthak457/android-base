@@ -310,6 +310,7 @@ lint id, a build task, a test or a measured limit; *review* means nothing checks
 <!-- </opt-else:performance> -->
 - Motion that changes only layer properties sets `preferredFrameRate(FrameRateCategory.High)` while it moves and drops it after; never a fixed rate. — *review*
 - A shape clipped or filled every frame of a motion is a rounded rectangle, never a path of cubics; nothing allocates in a draw, layer or placement block. — *review*
+- A separator one pixel thick is `Modifier.hairline(…)` (`drawHairline` inside the design system), a filled rect; never a one-pixel `drawLine`. — `pixel-line`
 <!-- <opt:liquidglass> -->
 
 **Glass**
