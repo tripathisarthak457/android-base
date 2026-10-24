@@ -80,14 +80,17 @@ A new user-facing string in the template also needs a translation in every file 
 
 ## Google's Android skills
 
-The Android and Compose Multiplatform templates ship Google's Android skills in `templates/*/.agents/skills/`
-(unmodified, Apache-2.0, `README.md` there gives the version). When you change those templates, read the skill for the
-area first (`.agents/skills/<name>/SKILL.md` and `.claude/skills/<name>/SKILL.md` here point at the Android copy) and
-the differences table in `templates/android/AGENTS.md`. A change to a template's Compose UI is not done until it has
-been through the `jetpack-compose-performance` audit, with the category's reference read before each fix. Never edit
-a vendored file: refresh all of them with `python3 tools/update_android_skills.py <checkout>` and review the diff. A
-skill added to a template needs its row in that template's AGENTS.md table, and a skill that ships with a feature is
-owned by that feature's TOML; `generator/tests/test_vendored_skills.py` fails otherwise.
+The Android template ships Google's Android skills in `templates/android/.agents/skills/` (unmodified, Apache-2.0,
+`README.md` there gives the version). The Compose Multiplatform template has none yet: its `template.toml` does not
+copy `.agents/skills/**` verbatim, so the generator would rename and marker-parse upstream's text, and the refresh
+tool skips it. When you change a template, read the skill for the area first (`.agents/skills/<name>/SKILL.md` and
+`.claude/skills/<name>/SKILL.md` here point at the Android copy) and the differences table in
+`templates/android/AGENTS.md`. A change to a template's Compose UI is not done until it has been through the
+`jetpack-compose-performance` audit, with the category's reference read before each fix. Never edit a vendored file:
+refresh all of them with `python3 tools/update_android_skills.py <checkout> --tag <tag>` and review the diff. Every
+project ships the whole set except the skills `LEFT_OUT` names in `templates/android/tools/android_skills.py`; a skill
+added to the set needs its row in that template's CLAUDE.md and AGENTS.md table, and
+`generator/tests/test_vendored_skills.py` fails otherwise.
 
 ## Keeping dependencies current
 
