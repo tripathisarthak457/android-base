@@ -1,7 +1,7 @@
 """
 What keeps a generated project adaptive (ADAPTIVE-PLAN 11.8): for the smallest, the default and the
-largest preset, the build still carries the manifest lines, the code rules, the lint errors and the
-screenshot tests that fail it when a screen stops adapting.
+largest preset, the build still carries the manifest lines, the code rules, the lint errors, the
+screenshot tests and the adaptive audit that fail it when a screen stops adapting.
 """
 
 from __future__ import annotations
@@ -81,6 +81,18 @@ class PresetTest(unittest.TestCase):
             self.assertIn('pluginManager.apply("com.example.adaptive.android.screenshots")', feature)
             for build in project.glob("feature/*/build.gradle.kts"):
                 self.assertIn('id("com.example.adaptive.android.feature")', build.read_text())
+
+    def test_the_adaptive_audit_renders_every_screen_preview_from_the_app(self):
+        for project in self.each():
+            audit = project / "app/src/test/kotlin/com/example/adaptive/adaptive/AdaptiveAuditTest.kt"
+            text = audit.read_text(encoding="utf-8")
+            self.assertIn('APP_PACKAGE = "com.example.adaptive"', text)
+            self.assertIn("includeIfAnnotatedWithAnyOf(AppScreenPreviews::class.java)", text)
+            build = (project / "app/build.gradle.kts").read_text(encoding="utf-8")
+            self.assertIn("testImplementation(libs.composable.preview.scanner)", build)
+            # Something to audit in every preset: the reference feature or a scaffolded module.
+            screens = [path for path in project.glob("feature/**/*Screen.kt") if "@AppScreenPreviews" in path.read_text(encoding="utf-8")]
+            self.assertTrue(screens)
 
     def test_the_ci_verifies_screenshots_once_there_are_goldens(self):
         for project in self.each():

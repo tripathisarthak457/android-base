@@ -144,6 +144,11 @@ dependencies {
     // <opt:leakcanary>
     debugImplementation(libs.leakcanary)
     // </opt:leakcanary>
+
+    // AdaptiveAuditTest: every feature's screen previews, found by scanning and rendered here,
+    // where the app sees them all.
+    testImplementation(project(":core:testing:compose"))
+    testImplementation(libs.composable.preview.scanner)
 }
 
 // <opt:licenses>
