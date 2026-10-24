@@ -1,5 +1,5 @@
 {
-  "generator_commit": "8fdcba741743",
+  "generator_commit": "7c1129a1c645",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
