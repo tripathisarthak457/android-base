@@ -3,38 +3,51 @@
 Refreshes the Google Android skills the templates vendor, from a checkout of
 https://github.com/android/skills:
 
-    python3 tools/update_android_skills.py ~/src/android-skills --tag v1.0.15
+    git clone --depth 1 --branch v1.0.17 https://github.com/android/skills <checkout>
+    python3 tools/update_android_skills.py <checkout> --tag v1.0.17
 
-Each skill folder is copied unmodified into `templates/<template>/.agents/skills/<name>/`, with
-upstream's LICENSE.txt beside its SKILL.md, because the skill's front matter points there and
-upstream keeps the file only at its root. README.md, MANIFEST.sha256 and the `.claude/skills/`
-pointers are rewritten, and so are this repository's own pointers into the Android copy. A
-template that does not exist yet is skipped, and so is a feature's skill in a template without
-that feature. The copies are the checkout's working files, so a checkout whose git converted
-line endings on the way out (`core.autocrlf` on Windows) is refused.
+Every project gets the whole official set except the skills in LEFT_OUT, so the templates ship
+exactly SKILLS, and the tool stops when upstream has a skill that is in neither: add it to SKILLS,
+or to LEFT_OUT in templates/android/tools/android_skills.py with its reason. The copying, the
+README, the manifest and the pointers come from that file, which every generated project carries
+as its own refresh command, so a project refreshed later writes the same files this tool wrote.
+The files are read from git's objects, never from the checkout's working tree, so line endings
+stay as upstream committed them whatever `core.autocrlf` says.
+
+A template whose template.toml does not copy `.agents/skills/**` verbatim is skipped: the
+generator would otherwise rename and marker-parse upstream's text. This repository's own pointers
+into the Android copy are rewritten too.
 
 The generator never runs this: run it by hand, read the summary and the diff, and update the
-"Google's Android skills" table in each template's AGENTS.md when a skill is added or dropped.
+"Google's Android skills" table in each template's CLAUDE.md and AGENTS.md when a skill is added
+or dropped.
 """
 
 from __future__ import annotations
 
 import argparse
-import hashlib
+import importlib.util
 import shutil
-import subprocess
 import sys
+import tomllib
 from dataclasses import dataclass
 from pathlib import Path
 
 REPOSITORY = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(REPOSITORY / "generator"))
+PROJECT_TOOL = REPOSITORY / "templates/android/tools/android_skills.py"
 
-from genkit.core.copy import write_text  # noqa: E402
 
-UPSTREAM = "https://github.com/android/skills"
-SKILLS_DIR = ".agents/skills"
-POINTERS_DIR = ".claude/skills"
+def load_project_tool():
+    spec = importlib.util.spec_from_file_location("android_skills", PROJECT_TOOL)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+skills = load_project_tool()
+SKILLS_DIR = skills.SKILLS_DIR
+POINTERS_DIR = skills.POINTERS_DIR
 
 
 @dataclass(frozen=True)
@@ -44,40 +57,45 @@ class Skill:
     upstream: str
     #: The Compose Multiplatform template ships it too.
     multiplatform: bool = True
-    #: The feature whose projects get it; None for every project.
-    feature: str | None = None
 
 
-#: What the templates ship. `styles` is left out because it builds on an experimental API,
-#: `play-policy-insights` because it is an audit to install before a Play submission rather than a
-#: reference, and the rest because no template feature uses them (`glance-canonical-layouts` waits
-#: for a widget feature, `play-billing-library-version-upgrade` for a billing one).
+#: The official set at v1.0.17 minus `skills.LEFT_OUT`. Every project ships all of them: a project
+#: built from this base can grow into any of these areas, and a skill nobody reads costs only disk.
 SKILLS = (
-    Skill("navigation-3", "navigation/navigation-3"),
-    Skill("navigation-event", "navigation/navigation-event"),
     Skill("adaptive", "jetpack-compose/adaptive"),
-    Skill("edge-to-edge", "system/edge-to-edge"),
-    Skill("testing-setup", "testing/testing-setup"),
-    Skill("android-profiler", "profilers/android-profiler"),
-    Skill("r8-analyzer", "performance/r8-analyzer"),
-    Skill("android-intent-security", "security/android-intent-security"),
-    Skill("android-permissions-security", "security/android-permissions-security"),
     # The skill itself says it does not apply to Kotlin Multiplatform projects.
     Skill("agp-9-upgrade", "build-system/agp/agp-9-upgrade", multiplatform=False),
-    Skill("jetpack-compose-performance", "jetpack-compose/jetpack-compose-performance"),
     Skill("android-cli", "devtools/android-cli"),
-    Skill("restore-credentials", "identity/restore-credentials", feature="auth"),
-    Skill("verified-email", "identity/verified-email", feature="auth"),
-    Skill("camerax", "camera/camerax", feature="media"),
+    Skill("android-for-cars-parked-apps", "cars/android-for-cars-parked-apps"),
+    Skill("android-intent-security", "security/android-intent-security"),
+    Skill("android-permissions-security", "security/android-permissions-security"),
+    Skill("android-profiler", "profilers/android-profiler"),
+    Skill("anr-audit-and-fix", "performance/anr-audit-and-fix"),
+    Skill("appfunctions", "device-ai/appfunctions"),
+    Skill("camerax", "camera/camerax"),
+    Skill("display-glasses-with-jetpack-compose-glimmer", "xr/display-glasses-with-jetpack-compose-glimmer"),
+    Skill("edge-to-edge", "system/edge-to-edge"),
+    Skill("engage-sdk-integration", "play/engage-sdk-integration"),
+    Skill("glance-canonical-layouts", "system/glance-canonical-layouts"),
+    Skill("jetpack-compose-performance", "jetpack-compose/jetpack-compose-performance"),
+    Skill("litert-lm", "device-ai/litert/litert-lm"),
+    Skill("litert-runtime", "device-ai/litert/litert-runtime"),
+    Skill("media3-cast-integration", "media/media3-cast-integration"),
+    Skill("ml-kit-genai-prompt-api", "device-ai/ml-kit-genai-prompt-api"),
+    Skill("navigation-3", "navigation/navigation-3"),
+    Skill("navigation-event", "navigation/navigation-event"),
+    Skill("play-billing-library-version-upgrade", "play/play-billing-library-version-upgrade"),
+    Skill("play-policy-insights", "play/play-policy-insights"),
+    Skill("projected-hardware", "xr/projected-hardware"),
+    Skill("r8-analyzer", "performance/r8-analyzer"),
+    Skill("restore-credentials", "identity/restore-credentials"),
+    Skill("testing-setup", "testing/testing-setup"),
+    Skill("verified-email", "identity/verified-email"),
+    Skill("wear-compose-m3", "wear/wear-compose-m3"),
+    Skill("wear-widgets", "wear/wear-widgets"),
 )
 
 TEMPLATES = {"android": False, "multiplatform": True}
-
-
-@dataclass(frozen=True)
-class Release:
-    tag: str
-    commit: str
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -88,18 +106,10 @@ def main(argv: list[str] | None = None) -> int:
 
     checkout = args.checkout.expanduser().resolve()
     try:
-        release = read_release(checkout, args.tag)
-        missing = [skill.upstream for skill in SKILLS if not (checkout / skill.upstream / "SKILL.md").is_file()]
-        if missing:
-            raise SystemExit(f"{checkout} has no SKILL.md under: {', '.join(missing)}")
-        listing = git(checkout, "ls-files", "--eol", "--", "LICENSE.txt", *(skill.upstream for skill in SKILLS))
-        converted = converted_line_endings(listing)
-        if converted:
-            raise SystemExit(
-                f"{checkout} has {len(converted)} files whose line endings git converted on checkout "
-                f"({converted[0]} first); clone it again with -c core.autocrlf=false"
-            )
-    except SystemExit as error:
+        release = skills.read_release(checkout, args.tag)
+        check_planned(skills.upstream_skills(checkout))
+        files = skills.export(checkout, [skill.upstream for skill in SKILLS])
+    except skills.SkillsError as error:
         print(error, file=sys.stderr)
         return 1
 
@@ -108,185 +118,63 @@ def main(argv: list[str] | None = None) -> int:
         if not root.is_dir():
             print(f"templates/{template}: not present, skipped")
             continue
-        skills = [
-            skill for skill in SKILLS
-            if (skill.multiplatform or not multiplatform)
-            and (skill.feature is None or (root / "features" / f"{skill.feature}.toml").is_file())
-        ]
-        before = snapshot(root)
-        vendor(checkout, root, skills, release)
-        report(f"templates/{template}", before, snapshot(root))
+        if not copies_skills_verbatim(root):
+            print(f"templates/{template}: skipped, because its template.toml does not copy {SKILLS_DIR}/** verbatim")
+            continue
+        chosen = {skill.name: skill.upstream for skill in SKILLS if skill.multiplatform or not multiplatform}
+        before = skills.snapshot(root)
+        skills.vendor(root, chosen, files, release)
+        skills.report(f"templates/{template}", before, skills.snapshot(root))
 
-    before = snapshot(REPOSITORY, (SKILLS_DIR, POINTERS_DIR))
+    before = skills.snapshot(REPOSITORY)
     write_repository_pointers(release)
-    report("repository pointers", before, snapshot(REPOSITORY, (SKILLS_DIR, POINTERS_DIR)))
+    skills.report("repository pointers", before, skills.snapshot(REPOSITORY))
     return 0
 
 
-def git(checkout: Path, *command: str) -> str:
-    result = subprocess.run(["git", "-C", str(checkout), *command], capture_output=True, text=True)
-    if result.returncode != 0:
-        raise SystemExit(f"{checkout} is not a git checkout of {UPSTREAM}: {result.stderr.strip()}")
-    return result.stdout.strip()
+def check_planned(upstream: dict[str, str]) -> None:
+    """Upstream's skills are exactly SKILLS plus LEFT_OUT, each SKILLS entry in its planned folder."""
+    problems = []
+    for skill in SKILLS:
+        if upstream.get(skill.name) != skill.upstream:
+            found = upstream.get(skill.name)
+            problems.append(f"{skill.name} is {'at ' + found if found else 'gone'}, not at {skill.upstream}")
+    unplanned = sorted(set(upstream) - {skill.name for skill in SKILLS} - set(skills.LEFT_OUT))
+    if unplanned:
+        problems.append(f"new upstream, in neither SKILLS nor LEFT_OUT: {', '.join(unplanned)}")
+    if problems:
+        raise skills.SkillsError("; ".join(problems))
 
 
-def read_release(checkout: Path, expected_tag: str | None) -> Release:
-    commit = git(checkout, "rev-parse", "HEAD")
-    tag = git(checkout, "tag", "--points-at", "HEAD").splitlines()
-    if expected_tag is not None and expected_tag not in tag:
-        raise SystemExit(f"{checkout} is at {commit[:12]}, not at {expected_tag}")
-    if not tag:
-        raise SystemExit(f"{checkout} is at {commit[:12]}, which no release tag names; check out a tag")
-    return Release(tag=expected_tag or sorted(tag)[-1], commit=commit)
+def copies_skills_verbatim(root: Path) -> bool:
+    with (root / "template.toml").open("rb") as handle:
+        manifest = tomllib.load(handle)
+    return f"{SKILLS_DIR}/**" in manifest.get("files", {}).get("verbatim", [])
 
 
-def converted_line_endings(eol_listing: str) -> list[str]:
-    """The paths `git ls-files --eol` shows stored with LF and checked out with CRLF."""
-    paths = []
-    for line in eol_listing.splitlines():
-        info, _, path = line.partition("\t")
-        index, working = info.split()[:2]
-        if index == "i/lf" and working == "w/crlf":
-            paths.append(path)
-    return paths
-
-
-def vendor(checkout: Path, root: Path, skills: list[Skill], release: Release) -> None:
-    target = root / SKILLS_DIR
-    pointers = root / POINTERS_DIR
-    for directory in (target, pointers):
-        if directory.exists():
-            shutil.rmtree(directory)
-    licence = checkout / "LICENSE.txt"
-
-    for skill in skills:
-        destination = target / skill.name
-        shutil.copytree(checkout / skill.upstream, destination, copy_function=shutil.copyfile)
-        shutil.copyfile(licence, destination / "LICENSE.txt")
-        write(pointers / skill.name / "SKILL.md", template_pointer(skill, destination / "SKILL.md", release))
-    shutil.copyfile(licence, target / "LICENSE.txt")
-    write(target / "README.md", readme(skills, release))
-    write(target / "MANIFEST.sha256", manifest(target))
-
-
-def front_matter(skill_file: Path) -> dict[str, str]:
-    """The `name` and `description` lines of a SKILL.md, exactly as upstream wrote them."""
-    lines = skill_file.read_text(encoding="utf-8").splitlines()
-    if not lines or lines[0] != "---":
-        raise SystemExit(f"{skill_file} has no front matter")
-    fields: dict[str, str] = {}
-    current = None
-    for line in lines[1:]:
-        if line == "---":
-            break
-        if line.startswith((" ", "\t")) and current is not None:
-            fields[current] += "\n" + line
-            continue
-        key = line.split(":", 1)[0]
-        current = key if key in ("name", "description") else None
-        if current is not None:
-            fields[current] = line
-    if set(fields) != {"name", "description"}:
-        raise SystemExit(f"{skill_file} lacks a name or a description")
-    return fields
-
-
-def template_pointer(skill: Skill, skill_file: Path, release: Release) -> str:
-    fields = front_matter(skill_file)
+def repository_pointer(name: str, skill_file: Path, release) -> str:
+    fields = skills.front_matter(skill_file.read_text(encoding="utf-8"), str(skill_file))
+    folder = f"templates/android/{SKILLS_DIR}/{name}"
     return (
         f"---\n{fields['name']}\n{fields['description']}\n---\n\n"
-        f"Google's `{skill.name}` skill is vendored at `{SKILLS_DIR}/{skill.name}/` (Android skills "
-        f"{release.tag}, Apache-2.0).\n"
-        f"First read the `{skill.name}` row of the \"Google's Android skills\" table in `AGENTS.md`: it "
-        "lists where this project\n"
-        "differs, and `AGENTS.md` wins wherever the two disagree. Then read "
-        f"`{SKILLS_DIR}/{skill.name}/SKILL.md` and resolve every\n"
-        "relative path in it from that folder.\n"
-    )
-
-
-def repository_pointer(skill: Skill, skill_file: Path, release: Release) -> str:
-    fields = front_matter(skill_file)
-    folder = f"templates/android/{SKILLS_DIR}/{skill.name}"
-    return (
-        f"---\n{fields['name']}\n{fields['description']}\n---\n\n"
-        f"Google's `{skill.name}` skill (Android skills {release.tag}, Apache-2.0) is vendored for the "
+        f"Google's `{name}` skill (Android skills {release.tag}, Apache-2.0) is vendored for the "
         f"generated projects at `{folder}/`.\n"
         f"Read `{folder}/SKILL.md` and resolve every relative path in it from that folder.\n"
-        f"When you change a template, also read the `{skill.name}` row of the \"Google's Android "
-        "skills\" table in that template's `AGENTS.md`:\n"
+        f"When you change a template, also read the `{name}` row of the \"Google's Android "
+        "skills\" table in that template's `CLAUDE.md`:\n"
         "it lists where the generated projects differ, and it wins wherever the two disagree.\n"
     )
 
 
-def write_repository_pointers(release: Release) -> None:
+def write_repository_pointers(release) -> None:
     android = REPOSITORY / "templates/android" / SKILLS_DIR
     for directory in (SKILLS_DIR, POINTERS_DIR):
         if (REPOSITORY / directory).exists():
             shutil.rmtree(REPOSITORY / directory)
     for skill in SKILLS:
-        text = repository_pointer(skill, android / skill.name / "SKILL.md", release)
+        text = repository_pointer(skill.name, android / skill.name / "SKILL.md", release).encode("utf-8")
         for directory in (SKILLS_DIR, POINTERS_DIR):
-            write(REPOSITORY / directory / skill.name / "SKILL.md", text)
-
-
-def readme(skills: list[Skill], release: Release) -> str:
-    rows = "".join(
-        f"| `{skill.name}` | `{skill.upstream}` | "
-        f"{f'with the `{skill.feature}` feature' if skill.feature else 'always'} |\n"
-        for skill in skills
-    )
-    return (
-        "# Google's Android skills\n\n"
-        "Google's official Android skills for AI agents, from "
-        f"{UPSTREAM} at tag {release.tag}\n(commit {release.commit}), under the Apache License 2.0 "
-        "in `LICENSE.txt`.\n\n"
-        f"| Skill | Upstream folder | Shipped |\n|---|---|---|\n{rows}\n"
-        "Each skill folder is an unmodified upstream copy. The only addition is `LICENSE.txt` beside "
-        "each `SKILL.md`,\nwhich the skill's front matter points at. `MANIFEST.sha256` holds the "
-        "SHA-256 of every file below the skill\nfolders, so a test can prove they are unchanged.\n\n"
-        "Where a skill disagrees with `AGENTS.md`, `AGENTS.md` wins. Its \"Google's Android skills\" "
-        "table says when to\nread each skill and how this project differs.\n\n"
-        "Codex, Gemini CLI and Android Studio read this folder. Claude Code reads the pointers in "
-        "`.claude/skills/`,\nwhich name these files, so this folder stays the only copy.\n\n"
-        "To refresh a skill, replace its folder with a newer upstream copy (`android skills add <name> "
-        "--project=.` with\nthe Android CLI, or a checkout of the repository), put `LICENSE.txt` back "
-        "beside its `SKILL.md`, and\nregenerate `MANIFEST.sha256` (`sha256sum` over every file below "
-        "the skill folders, paths relative to this\nfolder).\n"
-    )
-
-
-def manifest(target: Path) -> str:
-    entries = []
-    for path in sorted(target.rglob("*")):
-        relative = path.relative_to(target).as_posix()
-        if path.is_file() and relative not in ("README.md", "MANIFEST.sha256"):
-            entries.append(f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {relative}\n")
-    return "".join(entries)
-
-
-def write(path: Path, text: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    write_text(path, text)
-
-
-def snapshot(root: Path, directories: tuple[str, ...] = (SKILLS_DIR, POINTERS_DIR)) -> dict[str, str]:
-    files: dict[str, str] = {}
-    for directory in directories:
-        for path in (root / directory).rglob("*"):
-            if path.is_file():
-                files[path.relative_to(root).as_posix()] = hashlib.sha256(path.read_bytes()).hexdigest()
-    return files
-
-
-def report(label: str, before: dict[str, str], after: dict[str, str]) -> None:
-    added = sorted(set(after) - set(before))
-    removed = sorted(set(before) - set(after))
-    changed = sorted(path for path in set(before) & set(after) if before[path] != after[path])
-    print(f"{label}: {len(added)} added, {len(changed)} changed, {len(removed)} removed")
-    for sign, paths in (("+", added), ("~", changed), ("-", removed)):
-        for path in paths:
-            print(f"  {sign} {path}")
+            skills.write(REPOSITORY / directory / skill.name / "SKILL.md", text)
 
 
 if __name__ == "__main__":

@@ -9,8 +9,10 @@ Generated from the [Android base template](https://github.com/tripathisarthak457
 > [the issue tracker](https://github.com/tripathisarthak457/android-base/issues) is genuinely
 > useful.
 
-> **Working with an AI coding agent?** Point it at [`AGENTS.md`](AGENTS.md) first. It explains
-> how this project is laid out, what the base components are for, and how code here is written.
+> **Working with an AI coding agent?** Claude Code reads [`CLAUDE.md`](CLAUDE.md), and Codex, Gemini CLI and
+> Android Studio read [`AGENTS.md`](AGENTS.md), the same text. Both give the rules this project is built to, which of
+> Google's Android skills to use when, and the detailed docs: [architecture](docs/ARCHITECTURE.md),
+> [performance](docs/PERFORMANCE.md) and the [design system](docs/DESIGN-SYSTEM.md).
 
 ## Run it
 
@@ -24,6 +26,15 @@ Gradle runs on whichever JDK Android Studio ships (its bundled JetBrains Runtime
 or newer on your `PATH`. Nothing downloads a second JDK. The code is compiled for Java 17.
 
 ## The look
+<!-- <opt:!ui_components> -->
+
+This project was generated without UI components. `:core:designsystem` is a theme skeleton: `AppTheme` with every
+token slot (colour, type, spacing, shape, motion, reduce motion, window size classes) holding your colours, your font
+and neutral values for the rest. Every screen is a placeholder route over its ViewModel, and the app opens on a blank
+start screen. [docs/DESIGN-SYSTEM.md](docs/DESIGN-SYSTEM.md) says how to build components on it, and
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#what-this-project-leaves-to-you) what is left to you.
+<!-- </opt:!ui_components> -->
+<!-- <opt:ui_components> -->
 
 <!-- <generated:readme-styles> -->
 This project was generated with the **Utility** design style and the **Standard**
@@ -42,6 +53,7 @@ AppTheme(
 Change either and every screen follows. The components in `:core:designsystem` are a starting
 point, not a finished brand. Change their shapes, spacing and colours until the app looks like
 yours rather than like the template.
+<!-- </opt:ui_components> -->
 <!-- <opt:catalog> -->
 
 ```bash
@@ -134,14 +146,16 @@ Two calls rather than one, because AGP refuses to build ABI splits and an app bu
 invocation — and they are different jobs anyway: per-ABI APKs are for handing to testers, while
 Play splits the bundle itself.
 
-ABI splitting is on only when the requested tasks are actually assembling a release, so it never
-slows down the debug builds that make up almost every build anyone runs.
+Per-ABI APKs are built only with `-PabiSplits=true`; without it `dist` copies the universal APK.
+Play already delivers one ABI per device from the bundle, so most builds never need the split.
 
 ## Structure
 
 ```
 app/          composition root — wires everything, owns no logic
+<!-- <opt:catalog> -->
 catalog/      the design system, installable on its own
+<!-- </opt:catalog> -->
 core/         infrastructure. Never depends on data or feature.
 data/         one business domain each. Never depends on another data module.
 feature/      presentation only. Never depends on another feature.
@@ -155,10 +169,11 @@ Feature modules generated: none yet
 <!-- </generated:readme-modules> -->
 
 ## Where the app starts
+<!-- <opt:ui_components> -->
 
 `app/.../ui/AppDestinations.kt` holds the bottom-bar tabs and the start destination, and nothing
-else names a destination directly. `MainActivity.entryPoint()` reads it, together with the two
-gates in front of it:
+else names a destination directly. `StartupViewModel` turns the settings and the session into an
+`EntryIdentity`, and `AppRoot` shows the host for it:
 
 ```
 onboarding not finished  ->  the walkthrough, no tab bar
@@ -166,12 +181,21 @@ not signed in            ->  sign in, no tab bar
 otherwise                ->  the tabs, starting at the first
 ```
 
-Each gate is a function of state the Activity already collects, so finishing onboarding or
+Each gate is a function of state the app already observes, so finishing onboarding or
 signing in is a write to a store — the composition follows. There is no path where the flag says
 one thing and the back stack says another.
 
 Each tab keeps its own back stack: switching away and back returns the user where they were, and
 re-tapping the active tab pops it to its root.
+<!-- </opt:ui_components> -->
+<!-- <opt:!ui_components> -->
+
+The app opens on a blank start screen (`StartKey`, named by `AppDestinations.start`) hosted by
+Navigation 3's own `NavDisplay`. Onboarding, sign-in and every other screen are placeholder
+routes reachable by navigation and deep links. The session still keys the host, so signing out
+starts a fresh back stack; [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#the-entry-identity-is-wired-the-gates-are-yours)
+shows how to send each identity to its own start once those screens exist.
+<!-- </opt:!ui_components> -->
 
 ## Adding a feature
 
@@ -191,8 +215,18 @@ The generator will scaffold all of that for you, including a matching `:data:` m
 tests:
 
 ```bash
+<!-- <opt:ui_components> -->
 py add_feature.py orders --project . --tab
+<!-- </opt:ui_components> -->
+<!-- <opt:!ui_components> -->
+py add_feature.py orders --project .
+<!-- </opt:!ui_components> -->
 ```
+<!-- <opt:!ui_components> -->
+
+In this project a new feature brings its data module, ViewModel, tests and a placeholder route,
+never UI components, and `--tab` is refused: there is no tab bar until you build one.
+<!-- </opt:!ui_components> -->
 
 And to take one back out again, including the three registrations it added:
 
@@ -247,14 +281,17 @@ file per flavour under `app/src/<flavour>/`.
 ## Conventions worth knowing
 
 - **No Material.** `:core:designsystem` is built on `foundation` + `ui` and supplies its own
-  indication, typography, components and icons. An `androidx.compose.material` import fails the
-  build — see the `verifyCodeRules` task, which also catches `@Composable` in a module that
-  forgot the Compose compiler plugin.
+  theme and indication. An `androidx.compose.material` import fails the build — see the
+  `verifyCodeRules` task, which also catches `@Composable` in a module that forgot the Compose
+  compiler plugin.
 - **Library modules have no `BuildConfig`.** Anything that varies per environment is injected
   from `:app`, so a library cannot behave differently depending on which variant compiled it.
 - **Dispatchers are injected**, never `Dispatchers.IO` inside a class, so tests get a virtual
   clock instead of real seconds.
-- **Events are queued, not launched.** `MviViewModel` drains them in order on one coroutine, so
-  two events cannot interleave between a read and a write of the state.
+- **Events never suspend.** `MviViewModel.onEvent` handles each event on the main thread, so two
+  events cannot interleave between a read and a write of the state; slow work goes through
+  `launchLatest` or `launchExclusive`, and nothing an event starts can make Back or a keystroke wait.
 - **`LoadState` is sealed.** There is no `isLoading` + `error` pair, and therefore no way to
   represent "loading and errored at the same time".
+- **Smoothness has rules and numbers.** [docs/PERFORMANCE.md](docs/PERFORMANCE.md) says what keeps
+  the app at 120 Hz on a budget phone, why, and how to measure it.

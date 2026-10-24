@@ -7,7 +7,7 @@ description: Learn how to install and migrate to Jetpack Navigation 3, and how t
   with Hilt, ViewModel, Kotlin, and view interoperability.
 ---
 
-Google's `navigation-3` skill (Android skills v1.0.15, Apache-2.0) is vendored for the generated projects at `templates/android/.agents/skills/navigation-3/`.
+Google's `navigation-3` skill (Android skills v1.0.17, Apache-2.0) is vendored for the generated projects at `templates/android/.agents/skills/navigation-3/`.
 Read `templates/android/.agents/skills/navigation-3/SKILL.md` and resolve every relative path in it from that folder.
-When you change a template, also read the `navigation-3` row of the "Google's Android skills" table in that template's `AGENTS.md`:
+When you change a template, also read the `navigation-3` row of the "Google's Android skills" table in that template's `CLAUDE.md`:
 it lists where the generated projects differ, and it wins wherever the two disagree.
