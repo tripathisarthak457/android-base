@@ -9,9 +9,10 @@ import { type PreviewInput, usePreviewTheme } from "../../preview/usePreviewThem
 import type { ConfiguratorModel } from "../useConfigurator.ts";
 import { usePreviewInput } from "../usePreviewInput.ts";
 
+/** A spring as its response and bounce; a narrow card never parts a number from its unit. */
 function describe(spring: Spring | undefined): string {
   if (!spring) return "";
-  return `${spring.response.toFixed(2)} s${spring.bounce > 0 ? ` · bounce ${spring.bounce.toFixed(2)}` : ""}`;
+  return `${spring.response.toFixed(2)}\u00a0s${spring.bounce > 0 ? `, bounce ${spring.bounce.toFixed(2)}` : ""}`;
 }
 
 function MotionCard({ input, model, styleKey, title, description, name, dark, paused }: {
@@ -34,6 +35,9 @@ function MotionCard({ input, model, styleKey, title, description, name, dark, pa
     ["sheet", describe(springs?.sheet)],
     ["dialog", describe(springs?.dialog)],
   ];
+  // As wide as the longest label, in the monospace face's own unit, so a card on a 320 px screen
+  // leaves the values room to wrap between words rather than inside them.
+  const labelWidth = `${Math.max(...rows.map(([label]) => label.length))}ch`;
   return (
     <ChoiceCard
       type="radio"
@@ -49,8 +53,10 @@ function MotionCard({ input, model, styleKey, title, description, name, dark, pa
         <span className="mt-3 block space-y-0.5 font-mono text-[10.5px]">
           {rows.map(([label, value]) => (
             <span key={label} className="flex gap-2">
-              <span className="w-[86px] shrink-0 text-ink-400">{label}</span>
-              <span className="text-ink-300">{value}</span>
+              <span className="shrink-0 text-ink-400" style={{ width: labelWidth }}>
+                {label}
+              </span>
+              <span className="min-w-0 text-ink-300">{value}</span>
             </span>
           ))}
         </span>
