@@ -76,8 +76,12 @@ class NavDisplayHostTest {
         rule.mainClock.autoAdvance = false
 
         rule.runOnUiThread { stack!!.applyNow(NavCommand.Navigate(Post(1))) }
-        // Navigation 3's default fade would still draw both screens here, 0.1 s into its 0.7 s.
-        rule.mainClock.advanceTimeBy(100)
+        // Six frames, 0.1 s: Navigation 3's default fade would still draw both screens, 0.7 s long.
+        // The clock is paused, so each frame waits for the looper to hand the change to Compose.
+        repeat(6) {
+            rule.waitForIdle()
+            rule.mainClock.advanceTimeByFrame()
+        }
 
         rule.onNodeWithTagExists(Post(1))
         rule.onNodeWithTag(FeedTab.toString(), useUnmergedTree = true).assertDoesNotExist()
