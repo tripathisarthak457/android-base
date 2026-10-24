@@ -3,7 +3,7 @@
 import { useAnimate, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
 import type { Tokens } from "../catalogue/types.ts";
-import { SHELL_SPRINGS, barLook } from "./bar.ts";
+import { SHELL_SPRINGS, TAB_REVEAL_SHIFT, barLook } from "./bar.ts";
 import { loop } from "./loop.ts";
 import { type PreviewTheme, framerSpring } from "./theme.ts";
 
@@ -14,16 +14,19 @@ const REST: [part: string, values: Record<string, string | number>][] = [
   ["scrim", { opacity: 0 }],
   ["detail", { x: "100%" }],
   ["page", { opacity: 1 }],
-  ["other", { opacity: 0 }],
+  ["other", { opacity: 0, x: "0%" }],
   ["indicator", { x: "0%" }],
 ];
+
+/** The tab reveal's offset as a share of the screen, which the template draws 360 dp wide. */
+const REVEAL_SHIFT = `${(TAB_REVEAL_SHIFT / 360) * 100}%`;
 
 /**
  * A few seconds of the app moving in one motion style: a press and release on the style's own
  * springs, then a push and pop (slide only, the covered screen darkened by a drawn scrim and
- * moving at the parallax fraction) and a tab switch (instant content, the indicator on its
- * leading-edge spring), on the springs the template's shell uses in every style. It loops while in
- * view and not `paused`; the button answers a press either way.
+ * moving at the parallax fraction) and a tab switch (the arriving tab nudged in from the side it
+ * comes from, the indicator on its leading-edge spring), on the springs the template's shell uses
+ * in every style. It loops while in view and not `paused`; the button answers a press either way.
  */
 export function MotionPreview({ theme, tokens, font, paused }: { theme: PreviewTheme; tokens: Tokens; font: string; paused: boolean }) {
   const [scope, animate] = useAnimate<HTMLDivElement>();
@@ -42,6 +45,7 @@ export function MotionPreview({ theme, tokens, font, paused }: { theme: PreviewT
     if (!inView || paused) return;
     const screen = framerSpring(SHELL_SPRINGS.screen);
     const selection = framerSpring(SHELL_SPRINGS.indicatorLead);
+    const reveal = framerSpring(SHELL_SPRINGS.tabReveal);
 
     return loop(async ({ settle, wait }) => {
       await wait(700);
@@ -64,10 +68,13 @@ export function MotionPreview({ theme, tokens, font, paused }: { theme: PreviewT
       await wait(600);
       animate("[data-part=page]", { opacity: 0 }, { duration: 0 });
       animate("[data-part=other]", { opacity: 1 }, { duration: 0 });
+      animate("[data-part=other]", { x: [REVEAL_SHIFT, "0%"] }, reveal);
       await settle(animate("[data-part=indicator]", { x: "100%" }, selection));
       await wait(900);
       animate("[data-part=other]", { opacity: 0 }, { duration: 0 });
       animate("[data-part=page]", { opacity: 1 }, { duration: 0 });
+      // The list tab arrives whole, its button with it; the other tab inside it is hidden by now.
+      animate("[data-part=list]", { x: [`-${REVEAL_SHIFT}`, "0%"] }, reveal);
       await settle(animate("[data-part=indicator]", { x: "0%" }, selection));
       await wait(500);
     });

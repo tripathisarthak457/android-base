@@ -6,11 +6,13 @@ import {
   DRAWN_INDICATORS,
   DRAWN_TREATMENTS,
   SHELL_SPRINGS,
+  TAB_REVEAL_SHIFT,
   barLook,
   isFloating,
   pillSpan,
   pillWidth,
   pillCross,
+  revealFrom,
 } from "./bar.ts";
 
 // The bar preview draws what `AppTabBar.kt` and `TabCells.kt` draw. Their enums, sizes and springs
@@ -95,6 +97,19 @@ test("the push and the tab bar move on the shell's own springs, whatever the mot
   const response = Number(/const val DEFAULT_RESPONSE = ([\d.]+)f/.exec(transitions)?.[1]);
   assert.equal(SHELL_SPRINGS.screen.dampingRatio, 1);
   assert.ok(Math.abs(SHELL_SPRINGS.screen.stiffness - ((2 * Math.PI) / response) ** 2) < 1e-6);
+});
+
+test("a tab arriving after a tap is nudged in from the side it comes from, on the shell's reveal spring", () => {
+  const reveal = readText(...shellPath, "shell", "tabs", "TabReveal.kt");
+  assert.deepEqual(SHELL_SPRINGS.tabReveal, spring(reveal, "RevealSpring"));
+  assert.equal(TAB_REVEAL_SHIFT, dpConstant(reveal, "SHIFT"));
+  assert.match(reveal, /direction = sign\(\(position\(selected\) - position\(shown\)\)\.toFloat\(\)\)/);
+  // Only a switch the person makes is revealed, and not under reduced motion; any other is instant.
+  const kept = readText(...shellPath, "shell", "tabs", "KeptTabs.kt");
+  assert.match(kept, /animate = revealSwitch\(\) && !reduceMotion/);
+  assert.equal(revealFrom(0, 2), 12);
+  assert.equal(revealFrom(3, 1), -12);
+  assert.equal(revealFrom(1, 1), 0);
 });
 
 test("Floating and Translucent are capsules, Docked sits on the edge, and an unknown treatment floats", () => {

@@ -40,17 +40,32 @@ type Spring = { stiffness: number; dampingRatio: number };
 
 /**
  * The springs the template's shell moves with whatever the motion style: the push and pop
- * (`ScreenMotion`, a 0.344 s critically damped spring) and the bar's selection and glyph bounce
- * (`TabCells.kt`). The tokens give every motion style its own, but the shell does not read them
- * yet, so the preview shows what the app does.
+ * (`ScreenMotion`, a 0.344 s critically damped spring), the bar's selection and glyph bounce
+ * (`TabCells.kt`) and the tab arriving after a tap (`TabReveal.kt`). The tokens give every motion
+ * style its own, but the shell does not read them yet, so the preview shows what the app does.
  */
-export const SHELL_SPRINGS: Record<"screen" | "indicatorLead" | "indicatorTrail" | "iconBounceDown" | "iconBounceUp", Spring> = {
+export const SHELL_SPRINGS: Record<
+  "screen" | "indicatorLead" | "indicatorTrail" | "iconBounceDown" | "iconBounceUp" | "tabReveal",
+  Spring
+> = {
   screen: { stiffness: ((2 * Math.PI) / 0.344) ** 2, dampingRatio: 1 },
   indicatorLead: { stiffness: 815.6, dampingRatio: 0.85 },
   indicatorTrail: { stiffness: 385.5, dampingRatio: 1 },
   iconBounceDown: { stiffness: 1500, dampingRatio: 1 },
   iconBounceUp: { stiffness: 500, dampingRatio: 0.45 },
+  tabReveal: { stiffness: 503.5, dampingRatio: 1 },
 };
+
+/**
+ * How far, in dp, the tab arriving after a tap starts toward the side it comes from. Only it is
+ * drawn, so the nudge is the whole switch: no crossfade, no second screen behind it.
+ */
+export const TAB_REVEAL_SHIFT = 12;
+
+/** Where the tab at `to` starts when the person taps it from `from`, in dp along the bar. */
+export function revealFrom(from: number, to: number): number {
+  return Math.sign(to - from) * TAB_REVEAL_SHIFT;
+}
 
 export function isFloating(treatment: string): boolean {
   return treatment !== "Docked";

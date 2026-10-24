@@ -1,14 +1,18 @@
 "use client";
 
-import { memo } from "react";
+import { animate } from "framer-motion";
+import { memo, useLayoutEffect, useMemo, useRef } from "react";
+import { SHELL_SPRINGS, revealFrom } from "./bar.ts";
 import { ThemeContext } from "./parts.tsx";
 import { type ScreenOptions, ScreenBody } from "./screens.tsx";
 import { NAV_INSET, TabBar, barReach, isFloating } from "./TabBar.tsx";
 import type { PreviewTab } from "./tabs.ts";
-import { type PreviewTheme, dp } from "./theme.ts";
+import { type PreviewTheme, dp, framerSpring } from "./theme.ts";
 
 export const PHONE_WIDTH = 280;
 export const PHONE_ASPECT = 2.05;
+
+const REVEAL = framerSpring(SHELL_SPRINGS.tabReveal);
 
 type AppPreviewProps = {
   theme: PreviewTheme;
@@ -32,6 +36,34 @@ export const AppPreview = memo(function AppPreview({ theme, font, tabs, screen, 
   const showBar = screen.screen !== "signin" && tabs.length > 0;
   const bar = theme.style.bar;
   const background = theme.colour("background");
+  const content = useRef<HTMLDivElement>(null);
+  const shown = useRef(selected);
+  // The key of the tab last tapped on the bar. Only those switches are revealed, as in the shell;
+  // a screen picked beside the phone stands in for a link or a programmatic switch, which is not.
+  const tapped = useRef<string | null>(null);
+  const onTab = useMemo(
+    () =>
+      onSelectTab &&
+      ((key: string) => {
+        tapped.current = key;
+        onSelectTab(key);
+      }),
+    [onSelectTab],
+  );
+
+  useLayoutEffect(() => {
+    const from = shown.current;
+    shown.current = selected;
+    const byTap = tapped.current === screen.key;
+    tapped.current = null;
+    const element = content.current;
+    const offset = revealFrom(from, selected);
+    if (!byTap || !element || from < 0 || offset === 0 || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const reveal = animate(element, { x: [dp(offset), 0] }, REVEAL);
+    // A second tap before this reveal lands starts again from its own offset, as the shell's does;
+    // whatever else ends it leaves the screen in place.
+    return () => reveal.complete();
+  }, [selected, screen.key]);
 
   return (
     <ThemeContext.Provider value={theme}>
@@ -50,6 +82,7 @@ export const AppPreview = memo(function AppPreview({ theme, font, tabs, screen, 
         }}
       >
         <div
+          ref={content}
           tabIndex={live ? -1 : undefined}
           className={`no-scrollbar absolute inset-0 ${live ? "overflow-y-auto overscroll-contain" : "overflow-hidden"}`}
           style={{ paddingTop: dp(28), paddingBottom: showBar ? dp(barReach(bar) + 12) : dp(NAV_INSET + 12) }}
@@ -68,7 +101,7 @@ export const AppPreview = memo(function AppPreview({ theme, font, tabs, screen, 
             }}
           />
         )}
-        {showBar && <TabBar tabs={tabs} selected={Math.max(selected, 0)} onSelect={onSelectTab} live={live} />}
+        {showBar && <TabBar tabs={tabs} selected={Math.max(selected, 0)} onSelect={onTab} live={live} />}
         <span
           className="absolute left-1/2 -translate-x-1/2 rounded-full"
           style={{ bottom: dp(6), width: dp(108), height: dp(4), background: theme.colour("contentPrimary"), opacity: 0.85 }}
