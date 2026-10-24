@@ -192,11 +192,18 @@ class ToolTest(unittest.TestCase):
         with self.assertRaisesRegex(PROJECT.SkillsError, "beta/escape is not a regular file"):
             PROJECT.export(self.checkout, ["beta"])
 
+    def refresh(self, project: Path, tag: str, *extra: str) -> tuple[int, str]:
+        with contextlib.redirect_stdout(io.StringIO()) as output, contextlib.redirect_stderr(output):
+            code = PROJECT.main(["--tag", tag, "--checkout", str(self.checkout), "--project", str(project), *extra])
+        return code, output.getvalue()
+
     def test_the_project_tool_refreshes_what_the_project_ships_and_names_what_is_new(self):
         project = Path(self.temp.name) / "project"
-        (project / SKILLS / "beta").mkdir(parents=True)
+        project.mkdir()
         with contextlib.redirect_stdout(io.StringIO()) as output:
-            self.assertEqual(0, PROJECT.main(["--tag", "v1.0.0", "--checkout", str(self.checkout), "--project", str(project)]))
+            self.assertEqual(0, PROJECT.main(
+                ["--tag", "v1.0.0", "--checkout", str(self.checkout), "--project", str(project), "--add", "beta"]
+            ))
         self.assertEqual({"beta"}, skill_folders(project))
         self.assertIn("Not shipped yet (add with --add <name>): alpha", output.getvalue())
         self.assertEqual(b"line one\nline two\n", (project / SKILLS / "beta/references/notes.md").read_bytes())
@@ -215,6 +222,47 @@ class ToolTest(unittest.TestCase):
         self.assertEqual({"alpha"}, skill_folders(project))
         self.assertEqual({"alpha"}, {path.name for path in (project / POINTERS).iterdir()})
         self.assertIn("no longer has them: beta", output.getvalue())
+
+    def test_the_project_tool_leaves_the_projects_own_skills_alone(self):
+        project = Path(self.temp.name) / "project"
+        project.mkdir()
+        self.assertEqual(0, self.refresh(project, "v1.0.0", "--add", "beta")[0])
+        own = {
+            f"{POINTERS}/my-own-skill/SKILL.md": b"---\nname: my-own-skill\ndescription: Ours.\n---\n",
+            f"{SKILLS}/my-team-skill/SKILL.md": b"---\nname: my-team-skill\ndescription: The team's.\n---\n",
+            f"{SKILLS}/my-team-skill/references/notes.md": b"kept\n",
+        }
+        for relative, content in own.items():
+            (project / relative).parent.mkdir(parents=True, exist_ok=True)
+            (project / relative).write_bytes(content)
+
+        self.assertEqual(0, self.refresh(project, "v1.0.0")[0])
+        self.commit_skills({"alpha": "group/alpha"}, "v1.0.1")
+        code, output = self.refresh(project, "v1.0.1")
+
+        self.assertEqual(0, code)
+        self.assertIn("no longer has them: beta\n", output)
+        self.assertNotIn("my-team-skill", output)
+        self.assertEqual({"my-team-skill"}, skill_folders(project))
+        self.assertEqual({"my-own-skill"}, {path.name for path in (project / POINTERS).iterdir()})
+        for relative, content in own.items():
+            self.assertEqual(content, (project / relative).read_bytes(), relative)
+        self.assertNotIn("my-team-skill", (project / SKILLS / "MANIFEST.sha256").read_text(encoding="utf-8"))
+
+    def test_the_project_tool_refuses_to_write_over_a_skill_it_did_not_vendor(self):
+        project = Path(self.temp.name) / "project"
+        project.mkdir()
+        self.assertEqual(0, self.refresh(project, "v1.0.0", "--add", "beta")[0])
+        theirs = project / SKILLS / "alpha" / "SKILL.md"
+        theirs.parent.mkdir(parents=True)
+        theirs.write_bytes(b"their own alpha\n")
+        before = {path: path.read_bytes() for path in project.rglob("*") if path.is_file()}
+
+        code, output = self.refresh(project, "v1.0.0", "--add", "alpha")
+
+        self.assertEqual(1, code)
+        self.assertIn("alpha would replace a folder this tool did not vendor", output)
+        self.assertEqual(before, {path: path.read_bytes() for path in project.rglob("*") if path.is_file()})
 
     def test_the_project_tool_refuses_a_checkout_at_another_tag(self):
         with contextlib.redirect_stderr(io.StringIO()) as errors:

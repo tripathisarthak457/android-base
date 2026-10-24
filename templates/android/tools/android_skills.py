@@ -13,8 +13,10 @@ pointers in `.claude/skills/` are rewritten, and the summary lists every file th
 Nothing from the download is run.
 
 A skill upstream added since the last refresh is named in the summary and left out until you
-pass `--add <name>`; a skill upstream dropped is removed. Read the summary and the diff, then keep
-the "Google's Android skills" table in CLAUDE.md and AGENTS.md to one row per shipped skill.
+pass `--add <name>`; a skill upstream dropped is removed. Only the skills MANIFEST.sha256 lists
+are this tool's: any other folder in `.agents/skills/` or `.claude/skills/`, such as a skill of
+your own, is left as it is. Read the summary and the diff, then keep the "Google's Android skills"
+table in CLAUDE.md and AGENTS.md to one row per shipped skill.
 """
 
 from __future__ import annotations
@@ -25,6 +27,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 
@@ -152,13 +155,41 @@ def front_matter(text: str, source: str) -> dict[str, str]:
     return fields
 
 
+def vendored(root: Path) -> set[str]:
+    """The skills this tool copied into the project, as its manifest lists them."""
+    listing = root / SKILLS_DIR / "MANIFEST.sha256"
+    if not listing.is_file():
+        return set()
+    names = set()
+    for line in listing.read_text(encoding="utf-8").splitlines():
+        relative = line.partition("  ")[2]
+        if "/" in relative:
+            names.add(relative.split("/", 1)[0])
+    return names
+
+
 def vendor(root: Path, skills: dict[str, str], files: dict[str, bytes], release: Release) -> None:
-    """Replaces the project's skills with `skills` (name to upstream folder) from `files`."""
+    """
+    Replaces the skills this tool vendored with `skills` (name to upstream folder) from `files`.
+    Every other folder in the two skill directories is the project's own and stays as it is; a skill
+    whose folder or pointer would land on one of them is refused before anything is changed.
+    """
     target = root / SKILLS_DIR
     pointers = root / POINTERS_DIR
-    for directory in (target, pointers):
-        if directory.exists():
-            shutil.rmtree(directory)
+    previous = vendored(root)
+    taken = sorted(
+        name for name in set(skills) - previous
+        if (target / name).exists() or ((pointers / name).exists() and not is_pointer(pointers / name, name))
+    )
+    if taken:
+        raise SkillsError(
+            f"{', '.join(taken)} would replace a folder this tool did not vendor in {SKILLS_DIR} or "
+            f"{POINTERS_DIR}; rename or move it first"
+        )
+    for name in previous | set(skills):
+        for directory in (target / name, pointers / name):
+            if directory.exists():
+                shutil.rmtree(directory)
     for name, folder in sorted(skills.items()):
         prefix = folder + "/"
         for path, content in files.items():
@@ -169,13 +200,23 @@ def vendor(root: Path, skills: dict[str, str], files: dict[str, bytes], release:
         write(pointers / name / "SKILL.md", pointer(name, front_matter(skill_text, prefix + "SKILL.md"), release))
     write(target / LICENCE, files[LICENCE])
     write(target / "README.md", readme(skills, release))
-    write(target / "MANIFEST.sha256", manifest(target))
+    write(target / "MANIFEST.sha256", manifest(target, skills))
+
+
+def pointer_text(name: str) -> str:
+    """What every pointer this tool writes says, and a pointer of the project's own does not."""
+    return f"Google's `{name}` skill is vendored at `{SKILLS_DIR}/{name}/`"
+
+
+def is_pointer(folder: Path, name: str) -> bool:
+    skill = folder / "SKILL.md"
+    return skill.is_file() and pointer_text(name) in skill.read_text(encoding="utf-8", errors="replace")
 
 
 def pointer(name: str, fields: dict[str, str], release: Release) -> bytes:
     return (
         f"---\n{fields['name']}\n{fields['description']}\n---\n\n"
-        f"Google's `{name}` skill is vendored at `{SKILLS_DIR}/{name}/` (Android skills {release.tag}, "
+        f"{pointer_text(name)} (Android skills {release.tag}, "
         "Apache-2.0).\n"
         f"First read the `{name}` row of the \"Google's Android skills\" table in `CLAUDE.md`: it lists where "
         "this project\n"
@@ -206,13 +247,13 @@ def readme(skills: dict[str, str], release: Release) -> bytes:
     ).encode("utf-8")
 
 
-def manifest(target: Path) -> bytes:
-    entries = []
-    for path in sorted(target.rglob("*")):
-        relative = path.relative_to(target).as_posix()
-        if path.is_file() and relative not in OWN_FILES:
-            entries.append(f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {relative}\n")
-    return "".join(entries).encode("utf-8")
+def manifest(target: Path, skills: Iterable[str]) -> bytes:
+    """The SHA-256 of the root licence and of every file in the vendored skills' folders."""
+    paths = [target / LICENCE, *(path for name in skills for path in (target / name).rglob("*") if path.is_file())]
+    return "".join(
+        f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {path.relative_to(target).as_posix()}\n"
+        for path in sorted(paths)
+    ).encode("utf-8")
 
 
 def write(path: Path, content: bytes) -> None:
@@ -239,18 +280,13 @@ def report(label: str, before: dict[str, str], after: dict[str, str]) -> None:
             print(f"  {sign} {path}")
 
 
-def shipped(root: Path) -> set[str]:
-    target = root / SKILLS_DIR
-    return {path.name for path in target.iterdir() if path.is_dir()} if target.is_dir() else set()
-
-
 def refresh(root: Path, checkout: Path, tag: str, add: list[str]) -> int:
     release = read_release(checkout, tag)
     upstream = upstream_skills(checkout)
     unknown = sorted(set(add) - set(upstream))
     if unknown:
         raise SkillsError(f"{release.tag} has no skill named {', '.join(unknown)}")
-    current = shipped(root)
+    current = vendored(root)
     names = (current | set(add)) & set(upstream)
     files = export(checkout, [upstream[name] for name in sorted(names)])
     before = snapshot(root)
