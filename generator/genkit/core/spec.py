@@ -91,8 +91,9 @@ _MODULE = re.compile(MODULE_NAME_PATTERN)
 _HEX = re.compile(HEX_PATTERN)
 _FONT = re.compile(FONT_PATTERN)
 
-#: The fields every schema-2 spec may carry at the top level, besides `android` and `ios`.
-_COMMON_FIELDS = (
+#: The fields every schema-2 spec may carry at the top level, besides `android`, `ios` and the
+#: options its target's template declares.
+COMMON_FIELDS = (
     "schema", "platform", "app_name", "display_name", "package_name", "architecture", "features",
     "feature_modules", "design_style", "motion_style", "accent_colour", "secondary_colour",
     "tertiary_colour", "font_name", "mono_font_name", "haptics_enabled", "languages",
@@ -193,6 +194,11 @@ class Spec:
     languages: tuple[str, ...] = ()
     android: AndroidSettings | None = None
     ios: IosSettings | None = None
+    #: Every option the target's template declares, resolved: the spec's value, else the default.
+    options: dict[str, bool] = field(default_factory=dict)
+    #: Each option's default. The record leaves out an option at its default, so a project
+    #: generated before the option existed keeps the record it had.
+    option_defaults: dict[str, bool] = field(default_factory=dict)
 
     @property
     def pascal_name(self) -> str:
@@ -226,6 +232,10 @@ class Spec:
     def has(self, feature: str) -> bool:
         return feature in self.features
 
+    def option(self, key: str) -> bool:
+        """An option's value. A key the template does not declare is a KeyError, not a silent default."""
+        return self.options[key]
+
     def with_features(self, features: frozenset[str]) -> "Spec":
         return replace(self, features=features)
 
@@ -239,6 +249,10 @@ class Vocabulary:
     motion_styles: tuple[str, ...]
     #: Module names the template already uses.
     reserved_module_names: frozenset[str]
+    #: Options other targets' templates declare and this one does not, each with the kind of
+    #: project it would ask for ("projects without UI components"), so a spec naming one is told
+    #: why it is refused rather than only that the field is unknown.
+    foreign_options: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -254,10 +268,13 @@ class Parsed:
     requested: frozenset[str]
 
 
-def upgrade(raw: object, platform: str) -> tuple[dict[str, Any], list[str], list[str], int]:
+def upgrade(
+    raw: object, platform: str, options: frozenset[str] = frozenset()
+) -> tuple[dict[str, Any], list[str], list[str], int]:
     """
     Any accepted spec shape → a schema-2 dict. Returns (data, notes, ignored fields, the schema the
-    spec was written in). Feature keys are upgraded later, against the target's manifest.
+    spec was written in). Feature keys are upgraded later, against the target's manifest. `options`
+    are the target's option keys, which a spec without a `schema` keeps like any field it reads.
     """
     if not isinstance(raw, dict):
         raise SpecError("The spec must be a JSON object.")
@@ -278,7 +295,7 @@ def upgrade(raw: object, platform: str) -> tuple[dict[str, Any], list[str], list
     ignored: list[str] = []
     if schema == 1:
         # Schema 1 had no `platform`; every spec was Android, and the API dropped unknown fields.
-        known = set(_COMMON_FIELDS) | set(ANDROID_FIELDS)
+        known = set(COMMON_FIELDS) | set(ANDROID_FIELDS) | options
         ignored = sorted(key for key in data if key not in known)
         for key in ignored:
             data.pop(key)
@@ -357,11 +374,15 @@ def parse(
     Raw JSON → a validated `Spec` for `manifest`'s target, with features upgraded and resolved.
     `overrides` are applied after the upgrade. Target rules are applied separately.
     """
-    data, notes, ignored, schema = upgrade(raw, manifest.key)
+    data, notes, ignored, schema = upgrade(raw, manifest.key, frozenset(manifest.options))
     if overrides:
         apply_overrides(data, overrides)
-    allowed = set(_COMMON_FIELDS) | {"android", "ios"}
+    allowed = set(COMMON_FIELDS) | {"android", "ios"} | set(manifest.options)
     for key in data:
+        if key in vocabulary.foreign_options and key not in allowed:
+            raise SpecError(
+                f"Unknown field '{key}': the {manifest.key} target has no {vocabulary.foreign_options[key]} yet.", key
+            )
         if key not in allowed:
             raise SpecError(f"Unknown field '{key}'.", key)
     platform = _text(data, "platform", "platform")
@@ -380,6 +401,14 @@ def parse(
     notes.extend(feature_notes)
     if unknown:
         raise SpecError(f"Unknown feature(s): {', '.join(sorted(unknown))}.", "features")
+
+    options = manifest.option_values({key: _flag(data, key, key, True) for key in manifest.options if key in data})
+    # Left out before `requires` closes over the rest, and with a note rather than an error, so
+    # every preset still combines with an option that switches some of its features off.
+    for feature, reason in manifest.disabled_features(options).items():
+        if feature in upgraded:
+            upgraded.remove(feature)
+            notes.append(f"'{feature}' was left out: {reason}")
 
     spec = Spec(
         app_name=_text(data, "app_name", "app_name"),
@@ -400,6 +429,8 @@ def parse(
         languages=_text_list(data, "languages", "languages"),
         android=_android(data.get("android")) if "android" in _SETTINGS_BLOCKS[platform] else None,
         ios=_ios(data.get("ios")) if "ios" in _SETTINGS_BLOCKS[platform] else None,
+        options=options,
+        option_defaults={key: option.default for key, option in manifest.options.items()},
     )
     for block in ("android", "ios"):
         if block in data and block not in _SETTINGS_BLOCKS[platform]:
@@ -698,7 +729,10 @@ def module_title(name: str) -> str:
 
 
 def to_json(spec: Spec, *, keystores: bool) -> dict[str, Any]:
-    """The schema-2 JSON for `spec`. Keystores carry passwords, so callers choose."""
+    """
+    The schema-2 JSON for `spec`. Keystores carry passwords, so callers choose. An option at its
+    default is left out, which is what a spec without it means.
+    """
     data: dict[str, Any] = {
         "schema": SCHEMA,
         "platform": spec.platform,
@@ -717,6 +751,7 @@ def to_json(spec: Spec, *, keystores: bool) -> dict[str, Any]:
         "mono_font_name": spec.mono_font_name,
         "haptics_enabled": spec.haptics_enabled,
         "languages": list(spec.languages),
+        **{key: value for key, value in spec.options.items() if value != spec.option_defaults.get(key)},
     }
     if spec.android is not None:
         android = spec.android

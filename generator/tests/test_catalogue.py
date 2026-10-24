@@ -49,6 +49,44 @@ class ShapeTest(unittest.TestCase):
                     self.assertTrue(set(feature["requires"]) <= keys)
                     self.assertTrue(set(feature["implies"]) <= keys)
 
+    def test_options_follow_the_contract_the_website_and_the_api_read(self):
+        by_target = {target["key"]: target["options"] for target in self.data["targets"]}
+        self.assertEqual([], by_target.get("multiplatform", []))
+        self.assertEqual([], by_target.get("ios", []))
+        [option] = by_target["android"]
+        self.assertEqual(
+            ["key", "title", "checkbox", "headline", "description", "default", "disables", "hides", "locked"],
+            list(option),
+        )
+        self.assertEqual("ui_components", option["key"])
+        self.assertEqual({"label": "No UI components", "ticked_value": False}, option["checkbox"])
+        self.assertIs(True, option["default"])
+        self.assertIsNone(option["locked"])
+        self.assertEqual(
+            ["catalog", "collections", "datadisplay", "formfields", "pickers", "liquidglass"],
+            [entry["feature"] for entry in option["disables"]],
+        )
+        self.assertEqual(["design_style", "motion_style"], [entry["field"] for entry in option["hides"]])
+        for entry in option["disables"] + option["hides"]:
+            self.assertEqual(" ".join(entry["reason"].split()), entry["reason"])
+            self.assertTrue(entry["reason"].endswith("."), entry)
+
+    def test_an_option_disables_only_features_the_target_offers(self):
+        for target in self.data["targets"]:
+            selectable = {feature["key"] for feature in target["features"] if not feature["implied_only"]}
+            fields = {field["key"] for field in target["fields"]}
+            for option in target["options"]:
+                with self.subTest(target=target["key"], option=option["key"]):
+                    self.assertTrue({entry["feature"] for entry in option["disables"]} <= selectable)
+                    self.assertTrue({entry["field"] for entry in option["hides"]} <= fields)
+
+    def test_a_lock_reaches_the_catalogue_with_its_note(self):
+        option = mock.Mock(
+            key="ui_components", title="UI components", label="No UI components", headline="h", description="d",
+            default=True, disables={}, hides={}, locked=mock.Mock(value=False, note="Coming soon."),
+        )
+        self.assertEqual({"value": False, "note": "Coming soon."}, catalogue._option(option)["locked"])
+
     def test_presets_are_resolved_and_one_is_the_default(self):
         for target in self.data["targets"]:
             features = {feature["key"]: feature for feature in target["features"]}

@@ -5,7 +5,12 @@ import com.base.app.core.Logger
 import com.base.app.core.network.Client
 // </opt:net>
 
+// <opt:visuals>
 /** Not renamed: com.base.apple, database_app, MyBaseApp, xbaseapp. Renamed: base_app_default. */
+// </opt:visuals>
+// <opt-else:visuals>
+//~ /** Draws nothing. Not renamed: com.base.apple. Renamed: base_app_default. */
+// </opt-else:visuals>
 class BaseAppApplication {
 
     // <opt:net&ui>

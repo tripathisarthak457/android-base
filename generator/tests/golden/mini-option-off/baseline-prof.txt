@@ -1,0 +1,3 @@
+HSPLcom/example/plain/PlainNotesApplication;-><init>()V
+Lcom/example/plain/core/Logger;
+PLandroidx/compose/Foo;

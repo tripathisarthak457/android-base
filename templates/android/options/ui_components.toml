@@ -1,0 +1,23 @@
+key = "ui_components"
+title = "UI components"
+label = "No UI components"
+headline = "Setup only: the architecture, every build guard and a theme skeleton, without UI components"
+description = """
+Every non-UI part of the project: the modules, MVI, Navigation 3 with deep links and process-death restore, data, DI,
+tests and every build guard. core:designsystem is a theme skeleton (AppTheme with colour, type, spacing, shape and
+motion slots, filled with neutral values and your colours and font) with no components; each screen is a one-line
+placeholder route over its ViewModel, and the app opens on a blank start screen. The developer panel, the performance
+overlay and LeakCanary stay."""
+default = true
+
+[disables]
+catalog = "The catalog app shows the design system's components, and this project has none."
+collections = "Carousels, reorderable lists and the image viewer are components; build yours on the theme skeleton."
+datadisplay = "Stat tiles, charts and tables are components; build yours on the theme skeleton."
+formfields = "Code, money and phone fields are components; form state and validation (forms) stay."
+pickers = "Calendars and wheel pickers are components; build yours on the theme skeleton."
+liquidglass = "Glass is drawn by components and the shell, which this project leaves to your design system."
+
+[hides]
+design_style = "Your design system decides corners, surfaces and type voice; the theme starts from neutral values."
+motion_style = "Your components decide their motion; the theme keeps neutral springs and reduce-motion."

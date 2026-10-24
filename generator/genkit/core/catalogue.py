@@ -6,8 +6,8 @@ Catalogue v2: everything a client needs to render the configurator, for every ta
     python3 -m genkit.core.catalogue --check    # fail when that copy is stale
 
 The website builds from the checked-in copy (a Vercel preview has no Python), so any change to a
-feature, a preset, a token or a rule is followed by `--write` and the file is committed. `--check`
-ignores `generator_commit`, which changes with every commit.
+feature, an option, a preset, a token or a rule is followed by `--write` and the file is committed.
+`--check` ignores `generator_commit`, which changes with every commit.
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ from .. import targets, tokens
 from ..tokens import web
 from . import record, translations
 from .copy import write_text
-from .manifest import Feature, TemplateManifest
+from .manifest import Feature, Option, TemplateManifest
 from .spec import (
     APP_NAME_PATTERN,
     DEFAULT_DESIGN_STYLE,
@@ -109,6 +109,7 @@ def _target(target: Target, own: dict[str, Any]) -> dict[str, Any]:
         "summary": manifest.summary,
         "groups": [{"key": group_key(title), "title": title} for title in manifest.groups],
         "features": [_feature(manifest, feature) for feature in manifest.features.values()],
+        "options": [_option(option) for option in manifest.options.values()],
         "presets": [
             {
                 "key": preset.key,
@@ -161,6 +162,25 @@ def _feature(manifest: TemplateManifest, feature: Feature) -> dict[str, Any]:
             if feature.licence else None
         ),
         "platforms": list(feature.platforms),
+    }
+
+
+def _option(option: Option) -> dict[str, Any]:
+    """
+    One option. Presets keep their feature lists: a client takes `disables` off whatever is ticked
+    while the option is off, and sends the option's field only when it is not the default.
+    """
+    return {
+        "key": option.key,
+        "title": option.title,
+        "checkbox": {"label": option.label, "ticked_value": not option.default},
+        "headline": option.headline,
+        "description": option.description,
+        "default": option.default,
+        "disables": [{"feature": feature, "reason": reason} for feature, reason in option.disables.items()],
+        "hides": [{"field": field, "reason": reason} for field, reason in option.hides.items()],
+        # The one value this deployment generates, when it serves only one; the API refuses the other.
+        "locked": {"value": option.locked.value, "note": option.locked.note} if option.locked else None,
     }
 
 

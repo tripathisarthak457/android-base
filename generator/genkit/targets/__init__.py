@@ -11,6 +11,23 @@ from ..core.spec import PLATFORMS, SpecError
 from ..core.target import Target
 
 
+def foreign_options(key: str) -> dict[str, str]:
+    """
+    Each option another target's template declares and `key`'s does not, with the projects it asks
+    for: "projects without UI components". Defined before the registry loads, because the targets
+    import it while it does; it reads the registry only when called.
+    """
+    own = set(REGISTRY[key].manifest.options) if key in REGISTRY else set()
+    found: dict[str, str] = {}
+    for other, target in REGISTRY.items():
+        if other == key:
+            continue
+        for option in target.manifest.options.values():
+            if option.key not in own:
+                found[option.key] = f"projects {'without' if option.default else 'with'} {option.title}"
+    return found
+
+
 def _load() -> dict[str, Target]:
     registry: dict[str, Target] = {}
     for key in PLATFORMS:
