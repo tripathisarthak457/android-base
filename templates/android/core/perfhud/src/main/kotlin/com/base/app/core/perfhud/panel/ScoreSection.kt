@@ -11,10 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import com.base.app.core.designsystem.component.container.AppCard
-import com.base.app.core.designsystem.component.container.AppDivider
-import com.base.app.core.designsystem.component.feedback.AppStatusPill
-import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.StatusColors
 import com.base.app.core.perfhud.R
@@ -28,6 +24,18 @@ import com.base.app.core.perfhud.score.fix
 import com.base.app.core.perfhud.score.formatTarget
 import com.base.app.core.perfhud.score.formatValue
 import com.base.app.core.perfhud.score.title
+// <opt:ui_components>
+import com.base.app.core.designsystem.component.container.AppCard
+import com.base.app.core.designsystem.component.container.AppDivider
+import com.base.app.core.designsystem.component.feedback.AppStatusPill
+import com.base.app.core.designsystem.component.text.AppText
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ import com.base.app.core.devtools.kit.AppCard
+//~ import com.base.app.core.devtools.kit.AppDivider
+//~ import com.base.app.core.devtools.kit.AppStatusPill
+//~ import com.base.app.core.devtools.kit.AppText
+// </opt-else:ui_components>
 
 /** The score, then each lost point with what to do about it, then every metric's grade. */
 @Composable

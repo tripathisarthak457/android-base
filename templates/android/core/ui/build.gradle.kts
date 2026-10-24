@@ -23,6 +23,10 @@ dependencies {
 
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    // <opt:!ui_components>
+    // MessageHostTest renders the host under Robolectric.
+    testImplementation(project(":core:testing:compose"))
+    // </opt:!ui_components>
     // <opt:coil>
     implementation(libs.coil.compose)
     // Coil finds its network fetcher at runtime, through a service loader.

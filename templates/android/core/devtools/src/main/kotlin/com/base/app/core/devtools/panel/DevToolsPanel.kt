@@ -37,6 +37,17 @@ import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
 import com.base.app.core.common.environment.AppEnvironment
+import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
+import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.devtools.DevTools
+import com.base.app.core.devtools.log.NetworkExchange
+import com.base.app.core.devtools.log.NetworkStats
+import com.base.app.core.devtools.screen.CurrentScreen
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+// <opt:ui_components>
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
@@ -48,17 +59,22 @@ import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.selection.AppSegmentedControl
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
-import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.devtools.DevTools
-import com.base.app.core.devtools.log.NetworkExchange
-import com.base.app.core.devtools.log.NetworkStats
-import com.base.app.core.devtools.screen.CurrentScreen
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.util.Locale
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ import com.base.app.core.devtools.kit.AppButton
+//~ import com.base.app.core.devtools.kit.AppCard
+//~ import com.base.app.core.devtools.kit.AppDivider
+//~ import com.base.app.core.devtools.kit.AppMonoText
+//~ import com.base.app.core.devtools.kit.AppRow
+//~ import com.base.app.core.devtools.kit.AppScrollDefaults
+//~ import com.base.app.core.devtools.kit.AppSegmentedControl
+//~ import com.base.app.core.devtools.kit.AppStateView
+//~ import com.base.app.core.devtools.kit.AppStatusPill
+//~ import com.base.app.core.devtools.kit.AppText
+//~ import com.base.app.core.devtools.kit.ButtonSize
+//~ import com.base.app.core.devtools.kit.ButtonVariant
+// </opt-else:ui_components>
 
 /**
  * Everything the badge opens onto: the requests, what they cost, the feature flags, what this

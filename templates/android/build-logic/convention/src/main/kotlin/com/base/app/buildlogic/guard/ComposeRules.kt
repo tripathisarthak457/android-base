@@ -16,7 +16,13 @@ internal object ComposeRules {
     val ALL: List<Rule> = listOf(
         Rule(
             id = "ripple",
+            // <opt:ui_components>
             advice = "no ripple or grey overlay; use Modifier.pressable(onClick, feedback = PressFeedback.…)",
+            // </opt:ui_components>
+            // <opt-else:ui_components>
+            //~ advice = "no ripple or grey overlay; give the control the press feedback its component in core:designsystem " +
+            //~     "defines (docs/DESIGN-SYSTEM.md)",
+            // </opt-else:ui_components>
             applies = { true },
             lines = pattern(Regex("""^\s*import\s+androidx\.compose\.material\w*\.ripple\b"""), imports = true),
         ),
@@ -77,7 +83,13 @@ internal object ComposeRules {
         ),
         Rule(
             id = "bare-clickable",
+            // <opt:ui_components>
             advice = "say which press feedback a control uses: Modifier.pressable(onClick, feedback = PressFeedback.…)",
+            // </opt:ui_components>
+            // <opt-else:ui_components>
+            //~ advice = "say which press feedback a control uses: build it as a component, or a press modifier, in " +
+            //~     "core:designsystem (docs/DESIGN-SYSTEM.md)",
+            // </opt-else:ui_components>
             applies = uiCode,
             lines = pattern(Regex("""\.\s*(clickable|combinedClickable)\s*[({]""")),
         ),
@@ -97,9 +109,16 @@ internal object ComposeRules {
         ),
         Rule(
             id = "scroll-chrome",
+            // <opt:ui_components>
             advice = "pad scrolling content inside the scroll, so it runs under the bars and rests clear of them: " +
                 "contentPadding = chromeContentPadding(…) on a lazy list, " +
                 ".verticalScroll(…).padding(chromeContentPadding(…)) on a column",
+            // </opt:ui_components>
+            // <opt-else:ui_components>
+            //~ advice = "pad scrolling content inside the scroll, so it runs under the bars and rests clear of them: pass " +
+            //~     "the screen's contentPadding through, as contentPadding on a lazy list and as " +
+            //~     ".verticalScroll(…).padding(…) on a column",
+            // </opt-else:ui_components>
             applies = { it.inFeature && it.isProduction },
             lines = { source, _ -> unpaddedScrolls(source) },
         ),
@@ -141,8 +160,14 @@ internal object ComposeRules {
         ),
         Rule(
             id = "pixel-line",
+            // <opt:ui_components>
             advice = "draw a separator one pixel thick as a filled rect, with Modifier.hairline (drawHairline inside " +
                 "the design system); a one-pixel drawLine costs the GPU far more in every frame its screen moves",
+            // </opt:ui_components>
+            // <opt-else:ui_components>
+            //~ advice = "draw a separator one pixel thick as a filled rect, drawRect over a one-pixel height; a " +
+            //~     "one-pixel drawLine costs the GPU far more in every frame its screen moves",
+            // </opt-else:ui_components>
             applies = { (it.inFeature || it.inCoreUi || it.inDesignSystem || it.inNavigation || it.inApp) && it.isProduction },
             lines = { source, _ -> onePixelLines(source) },
         ),

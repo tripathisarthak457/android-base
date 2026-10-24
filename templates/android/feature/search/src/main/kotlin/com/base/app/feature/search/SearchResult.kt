@@ -1,5 +1,24 @@
 package com.base.app.feature.search
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.base.app.core.common.LoadState
+import com.base.app.core.common.result.AppResult
+import com.base.app.core.mvi.MviViewModel
+import com.base.app.core.mvi.UiEffect
+import com.base.app.core.mvi.UiEvent
+import com.base.app.core.mvi.UiState
+import com.base.app.core.navigation.AppNavigator
+import com.base.app.core.ui.MviScreen
+import com.base.app.data.search.api.SearchRepository
+import com.base.app.data.search.api.model.SearchResult
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
+// <opt:ui_components>
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -7,15 +26,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.base.app.core.common.LoadState
 import com.base.app.core.common.result.AppError
-import com.base.app.core.common.result.AppResult
 import com.base.app.core.designsystem.R as DesignSystemR
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.feedback.AppRedacted
@@ -27,19 +40,11 @@ import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.mvi.MviViewModel
-import com.base.app.core.mvi.UiEffect
-import com.base.app.core.mvi.UiEvent
-import com.base.app.core.mvi.UiState
-import com.base.app.core.navigation.AppNavigator
-import com.base.app.core.ui.MviScreen
 import com.base.app.core.ui.text
-import com.base.app.data.search.api.SearchRepository
-import com.base.app.data.search.api.model.SearchResult
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ import com.base.app.core.ui.PlaceholderScreen
+// </opt-else:ui_components>
 
 @Immutable
 internal data class SearchResultState(
@@ -97,6 +102,7 @@ internal fun SearchResultRoute(
 ) {
     LaunchedEffect(Unit) { viewModel.onEvent(SearchResultEvent.Appeared) }
 
+    // <opt:ui_components>
     MviScreen(viewModel = viewModel) { state, onEvent ->
         AppScaffold(
             contentMaxWidth = AppTheme.layout.readableMaxWidth,
@@ -146,7 +152,14 @@ internal fun SearchResultRoute(
             }
         }
     }
+    // </opt:ui_components>
+    // <opt-else:ui_components>
+    //~ MviScreen(viewModel = viewModel) { _, _ ->
+    //~     PlaceholderScreen(title = R.string.search_title)
+    //~ }
+    // </opt-else:ui_components>
 }
+// <opt:ui_components>
 
 // Never shown (see AppRedacted). A one-line title and a snippet of about three lines, as results have.
 private val ResultPlaceholder = SearchResult(
@@ -155,3 +168,4 @@ private val ResultPlaceholder = SearchResult(
     "A result's snippet runs to about three lines on a phone, and this placeholder is about as long, " +
         "so its bones take close to the room the real snippet will.",
 )
+// </opt:ui_components>

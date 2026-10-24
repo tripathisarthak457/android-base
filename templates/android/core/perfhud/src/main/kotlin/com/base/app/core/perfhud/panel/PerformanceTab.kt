@@ -22,13 +22,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import com.base.app.core.designsystem.component.button.AppButton
-import com.base.app.core.designsystem.component.button.ButtonSize
-import com.base.app.core.designsystem.component.button.ButtonVariant
-import com.base.app.core.designsystem.component.container.AppCard
-import com.base.app.core.designsystem.component.list.AppToggleRow
-import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.perfhud.R
 import com.base.app.core.perfhud.recording.PerformanceRecorder
@@ -37,6 +30,24 @@ import com.base.app.core.perfhud.report.ReportExporter
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+// <opt:ui_components>
+import com.base.app.core.designsystem.component.button.AppButton
+import com.base.app.core.designsystem.component.button.ButtonSize
+import com.base.app.core.designsystem.component.button.ButtonVariant
+import com.base.app.core.designsystem.component.container.AppCard
+import com.base.app.core.designsystem.component.list.AppToggleRow
+import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ import com.base.app.core.devtools.kit.AppButton
+//~ import com.base.app.core.devtools.kit.AppCard
+//~ import com.base.app.core.devtools.kit.AppScrollDefaults
+//~ import com.base.app.core.devtools.kit.AppText
+//~ import com.base.app.core.devtools.kit.AppToggleRow
+//~ import com.base.app.core.devtools.kit.ButtonSize
+//~ import com.base.app.core.devtools.kit.ButtonVariant
+// </opt-else:ui_components>
 
 /**
  * The Performance tab of the inspector: the score, the graphs and every number behind them.

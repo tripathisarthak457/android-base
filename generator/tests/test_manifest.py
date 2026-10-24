@@ -104,9 +104,15 @@ class OrphanedTestTest(unittest.TestCase):
                         tests.append((Path(*parts).as_posix(), main))
             self.assertTrue(tests, f"no test sources found under {template}")
 
-            for key in manifest.features:
-                # Switching one feature off also switches off everything that requires it.
-                enabled = frozenset(other for other in manifest.features if key not in manifest.resolve({other}))
+            for key in [*manifest.features, *manifest.options]:
+                if key in manifest.options:
+                    # An option switched off takes the features it disables with it.
+                    disabled = manifest.options[key].disables
+                    enabled = frozenset(set(manifest.marker_keys) - {key} - set(disabled))
+                else:
+                    # Switching one feature off also switches off everything that requires it.
+                    enabled = frozenset(other for other in manifest.features if key not in manifest.resolve({other}))
+                    enabled |= frozenset(manifest.options)
                 owned = manifest.owned_paths(enabled)
                 for test, main in tests:
                     if is_under(test, owned):

@@ -1,29 +1,32 @@
 package com.base.app.feature.auth
 
 import android.content.Context
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.credentials.exceptions.GetCredentialException
-import com.base.app.core.common.log.Log
-import com.base.app.core.designsystem.component.button.AppButton
-import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
+// <opt:ui_components>
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.base.app.core.common.log.Log
+import com.base.app.core.designsystem.component.button.AppButton
+import com.base.app.core.designsystem.component.button.ButtonVariant
 import kotlinx.coroutines.launch
+// </opt:ui_components>
 
+// <opt:ui_components>
 /** "Continue with Google", through Credential Manager. */
 @Composable
 internal fun GoogleSignInButton(
@@ -62,14 +65,31 @@ internal fun GoogleSignInButton(
         loading = busy,
     )
 }
+// </opt:ui_components>
 
+// <opt:ui_components>
 private sealed interface GoogleOutcome {
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ /** What asking Credential Manager for a Google ID token came to. */
+//~ internal sealed interface GoogleOutcome {
+// </opt-else:ui_components>
     data class Token(val idToken: String) : GoogleOutcome
     data object Cancelled : GoogleOutcome
     data object Failed : GoogleOutcome
 }
 
+// <opt:ui_components>
 private suspend fun requestGoogleIdToken(context: Context, serverClientId: String): GoogleOutcome {
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ /**
+//~  * A Google ID token through Credential Manager's sheet, for the sign-in screen's "Continue with
+//~  * Google" control to send as [SignInEvent.GoogleIdTokenReceived]. [serverClientId] is
+//~  * `R.string.auth_google_server_client_id`, the OAuth web client id; blank until it is set up.
+//~  */
+//~ internal suspend fun requestGoogleIdToken(context: Context, serverClientId: String): GoogleOutcome {
+// </opt-else:ui_components>
     val request = GetCredentialRequest.Builder()
         .addCredentialOption(GetSignInWithGoogleOption.Builder(serverClientId).build())
         .build()

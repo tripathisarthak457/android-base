@@ -11,6 +11,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.flags.FeatureFlags
+import com.base.app.core.flags.Flag
+import com.base.app.core.flags.FlagOverrides
+// <opt:ui_components>
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
@@ -18,10 +23,16 @@ import com.base.app.core.designsystem.component.selection.AppSwitch
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
-import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.flags.FeatureFlags
-import com.base.app.core.flags.Flag
-import com.base.app.core.flags.FlagOverrides
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ import com.base.app.core.devtools.kit.AppButton
+//~ import com.base.app.core.devtools.kit.AppMonoText
+//~ import com.base.app.core.devtools.kit.AppScrollDefaults
+//~ import com.base.app.core.devtools.kit.AppSwitch
+//~ import com.base.app.core.devtools.kit.AppText
+//~ import com.base.app.core.devtools.kit.ButtonSize
+//~ import com.base.app.core.devtools.kit.ButtonVariant
+// </opt-else:ui_components>
 
 /**
  * Every declared flag with the value the app reads now. A switch overrides a yes/no flag for this

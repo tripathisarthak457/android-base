@@ -1,5 +1,31 @@
 package com.base.app.feature.settings
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.base.app.core.common.session.SessionController
+import com.base.app.core.datastore.settings.AppSettings
+import com.base.app.core.datastore.settings.AppSettingsStore
+import com.base.app.core.mvi.MviViewModel
+import com.base.app.core.mvi.UiEffect
+import com.base.app.core.mvi.UiEvent
+import com.base.app.core.mvi.UiState
+import com.base.app.core.navigation.AppNavigator
+import com.base.app.core.ui.MviScreen
+// <opt:licenses>
+import com.base.app.feature.settings.api.LicensesKey
+// </opt:licenses>
+import com.base.app.feature.settings.api.SettingsAppInfo
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+// <opt:language>
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import com.base.app.core.ui.locale.AppLocales
+// </opt:language>
+// <opt:ui_components>
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -7,20 +33,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.base.app.core.common.session.SessionController
-import com.base.app.core.datastore.settings.AppSettings
-import com.base.app.core.datastore.settings.AppSettingsStore
 import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.container.AppDivider
 import com.base.app.core.designsystem.component.container.AppScaffold
@@ -38,28 +56,17 @@ import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.mvi.MviViewModel
-import com.base.app.core.mvi.UiEffect
-import com.base.app.core.mvi.UiEvent
-import com.base.app.core.mvi.UiState
-import com.base.app.core.navigation.AppNavigator
-import com.base.app.core.ui.MviScreen
-// <opt:licenses>
-import com.base.app.feature.settings.api.LicensesKey
-// </opt:licenses>
-import com.base.app.feature.settings.api.SettingsAppInfo
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
-// <opt:language>
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.platform.LocalContext
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ import com.base.app.core.ui.PlaceholderScreen
+// </opt-else:ui_components>
+// <opt:language&ui_components>
 import com.base.app.core.designsystem.component.sheet.action.AppActionSheet
 import com.base.app.core.designsystem.component.sheet.action.SheetAction
-import com.base.app.core.ui.locale.AppLocales
-// </opt:language>
-// <opt:browser>
+// </opt:language&ui_components>
+// <opt:browser&ui_components>
 import com.base.app.core.ui.browser.rememberInAppBrowser
-// </opt:browser>
+// </opt:browser&ui_components>
 
 @Immutable
 internal data class SettingsState(
@@ -180,10 +187,18 @@ internal fun SettingsRoute(
             }
         },
         // </opt:language|licenses>
+    // <opt:ui_components>
     ) { state, onEvent ->
         SettingsScreen(state = state, onEvent = onEvent)
     }
+    // </opt:ui_components>
+    // <opt-else:ui_components>
+    //~ ) { _, _ ->
+    //~     PlaceholderScreen(title = R.string.settings_title)
+    //~ }
+    // </opt-else:ui_components>
 }
+// <opt:ui_components>
 
 @Composable
 internal fun SettingsScreen(
@@ -445,3 +460,4 @@ private fun SettingsPreview() {
         )
     }
 }
+// </opt:ui_components>

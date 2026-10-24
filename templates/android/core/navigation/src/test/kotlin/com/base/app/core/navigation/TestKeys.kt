@@ -1,9 +1,11 @@
 package com.base.app.core.navigation
 
-import androidx.compose.runtime.mutableStateListOf
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.common.navigation.FullScreenKey
 import kotlinx.serialization.Serializable
+// <opt:ui_components>
+import androidx.compose.runtime.mutableStateListOf
+// </opt:ui_components>
 
 @Serializable
 internal data object FeedTab : AppNavKey
@@ -20,6 +22,7 @@ internal data object Compose : AppNavKey
 @Serializable
 internal data object Player : FullScreenKey
 
+// <opt:ui_components>
 /** A two-tab shell: Feed (whose graph owns the posts) and Profile, with Compose presented. */
 internal fun shell(
     selected: Int = 0,
@@ -34,3 +37,4 @@ internal fun shell(
     isPresented = { it in presentedKeys },
     sameGraph = { a, b -> setOf(a, b).all { it == FeedTab || it is Post } },
 )
+// </opt:ui_components>

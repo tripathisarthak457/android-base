@@ -7,6 +7,9 @@ A module's name sets the length of most lines, and ktlint (the `formatting` feat
 signature or call on one line exactly when it fits in 100 columns. So where the layout depends on
 the name, a snippet lists ktlint's layouts from the most compact, between `__FIT__`, `__ELSE__` and
 `__END_FIT__` lines, and the first one whose lines all fit is kept.
+
+Without UI components a module keeps its keys, navigation, contracts, ViewModels and their test, and
+each route draws `PlaceholderScreen` with the module's title in place of a screen.
 """
 
 from __future__ import annotations
@@ -21,7 +24,11 @@ from . import imports
 SNIPPETS = Path(__file__).parent / "snippets" / "scaffold"
 TEMPLATE_DIR = Path(__file__).resolve().parents[4] / "templates" / "android"
 
-#: The module scaffolded when nothing else gives the shell a tab: the shell needs at least one.
+#: The option that leaves UI components out (`templates/android/options/ui_components.toml`).
+UI_COMPONENTS = "ui_components"
+
+#: The module scaffolded when nothing else gives the shell a tab: the shell needs at least one. A
+#: project without UI components has no shell, and opens on its own start screen.
 HOME = "home"
 
 #: The tab sources the template has of its own.
@@ -53,11 +60,14 @@ _FEATURE_TESTS = {
     "RecompositionTest.kt": "{P}RecompositionTest.kt",
 }
 _SCREENS = ("list/{P}ListScreen.kt", "detail/{P}DetailScreen.kt")
+#: Without UI components: the snippet each route comes from, and the tests that measure a screen.
+_PLACEHOLDER_ROUTES = {"ListRoute.kt": "ListRoute.placeholder.kt", "DetailRoute.kt": "DetailRoute.placeholder.kt"}
+_SCREEN_TESTS = ("RecompositionTest.kt",)
 
 
 def modules(spec: Spec) -> tuple[str, ...]:
     """The modules to scaffold: the spec's, plus `home` when no feature or module would give a tab."""
-    if spec.feature_modules or any(spec.has(feature) for feature in TEMPLATE_TABS):
+    if spec.feature_modules or any(spec.has(feature) for feature in TEMPLATE_TABS) or not spec.option(UI_COMPONENTS):
         return spec.feature_modules
     return (HOME,)
 
@@ -139,15 +149,25 @@ def _write_feature_module(project: Path, spec: Spec, name: str, tokens: dict[str
         "__PREVIEW__": f"{'@AppScreenPreviews' if annotated else '@Preview(showBackground = true)'}\n@Composable",
     }
 
+    components = spec.option(UI_COMPONENTS)
+    sources = _FEATURE_SOURCES if components else {
+        _PLACEHOLDER_ROUTES.get(snippet, snippet): relative
+        for snippet, relative in _FEATURE_SOURCES.items()
+        if relative not in _SCREENS
+    }
+    feature_tests = {
+        snippet: relative for snippet, relative in _FEATURE_TESTS.items() if components or snippet not in _SCREEN_TESTS
+    }
+
     _render("feature/build.gradle.kts", root / "build.gradle.kts", tokens)
     _render("feature/strings.xml", root / "src/main/res/values/strings.xml", tokens)
-    for snippet, relative in _FEATURE_SOURCES.items():
+    for snippet, relative in sources.items():
         # `@AppScreenPreviews` applies the theme itself; a plain `@Preview` needs it written out.
         _render(f"feature/{snippet}", source / relative.format(P=tokens["__P__"]), {**tokens, **previews}, themed=not annotated)
-    for snippet, relative in _FEATURE_TESTS.items():
+    for snippet, relative in feature_tests.items():
         _render(f"feature/{snippet}", tests / relative.format(P=tokens["__P__"]), tokens)
 
-    if not annotated:
+    if components and not annotated:
         _accept_unpreviewed_screens(project, spec, name, tokens["__P__"])
 
 

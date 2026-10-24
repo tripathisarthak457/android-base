@@ -21,8 +21,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.base.app.core.common.environment.AppEnvironment
-import com.base.app.core.designsystem.foundation.interaction.PressFeedback
-import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.devtools.DevTools
 import com.base.app.core.devtools.log.DevToolsLog
@@ -38,6 +36,14 @@ import kotlin.math.abs
 // <opt:flags>
 import com.base.app.core.flags.FlagOverrides
 import com.base.app.core.flags.LocalFeatureFlags
+// <opt:ui_components>
+import com.base.app.core.designsystem.foundation.interaction.PressFeedback
+import com.base.app.core.designsystem.foundation.interaction.pressable
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ import com.base.app.core.devtools.kit.PressFeedback
+//~ import com.base.app.core.devtools.kit.pressable
+// </opt-else:ui_components>
 // </opt:flags>
 
 @RunWith(AndroidJUnit4::class)

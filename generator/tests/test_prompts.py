@@ -62,15 +62,21 @@ class AskAndroidTest(unittest.TestCase):
 
 class AskFeaturesTest(unittest.TestCase):
 
-    def choose_individually(self, answers: dict[str, str]) -> set[str]:
-        """Answers the one-by-one feature questions: `answers` by feature key, Enter for the rest."""
+    def choose_individually(self, answers: dict[str, str], no_ui: str = "") -> set[str]:
+        """
+        Answers the one-by-one feature questions: `answers` by feature key, Enter for the rest, and
+        `no_ui` to the "No UI components?" question asked before them.
+        """
         target = targets.get("android")
         manifest = target.manifest
         menu = str(len(manifest.presets) + 1)
-        replies = iter([menu] + [answers.get(feature.key, "") for feature in manifest.selectable])
+        left_out = set(manifest.options["ui_components"].disables) if no_ui == "y" else set()
+        asked = [feature.key for feature in manifest.selectable if feature.key not in left_out]
+        replies = iter([menu, no_ui] + [answers.get(key, "") for key in asked])
         with mock.patch("builtins.input", lambda _prompt: next(replies)), redirect_stdout(io.StringIO()):
-            selected = prompts.ask_features(target, select_all=False, preset=None)
+            selected, values = prompts.ask_features(target, select_all=False, preset=None, options={})
         self.assertIsNone(next(replies, None), "the wizard asked fewer questions than expected")
+        self.assertEqual({"ui_components": no_ui != "y"}, values)
         return selected
 
     def test_a_feature_on_by_default_does_not_bring_back_a_requirement_left_out(self):
@@ -81,6 +87,37 @@ class AskFeaturesTest(unittest.TestCase):
     def test_a_yes_still_includes_a_feature_whose_requirement_was_left_out(self):
         selected = self.choose_individually({"devtools": "n", "perfhud": "y"})
         self.assertIn("perfhud", selected)
+
+    def test_without_ui_components_the_features_that_need_them_are_not_offered(self):
+        selected = self.choose_individually({"devtools": "y"}, no_ui="y")
+        self.assertIn("devtools", selected)
+        self.assertFalse(selected & set(targets.get("android").manifest.options["ui_components"].disables))
+
+    def test_a_preset_without_ui_components_loses_only_what_they_disable(self):
+        target = targets.get("android")
+        replies = iter(["y"])
+        with mock.patch("builtins.input", lambda _prompt: next(replies)), redirect_stdout(io.StringIO()):
+            selected, values = prompts.ask_features(target, select_all=False, preset="standard", options={})
+        self.assertEqual(set(target.manifest.preset_features("standard")) - {"catalog"}, selected)
+        self.assertEqual({"ui_components": False}, values)
+
+    def test_the_command_line_answers_the_option_and_it_is_not_asked(self):
+        target = targets.get("android")
+        with mock.patch("builtins.input", side_effect=AssertionError("asked")), redirect_stdout(io.StringIO()):
+            selected, values = prompts.ask_features(target, select_all=True, preset=None, options={"ui_components": False})
+        self.assertEqual({"ui_components": False}, values)
+        self.assertNotIn("catalog", selected)
+
+
+class AskLookTest(unittest.TestCase):
+
+    def test_a_hidden_field_is_not_asked_and_keeps_its_default(self):
+        # Primary, secondary and tertiary colours, then haptics: no motion or design style question.
+        replies = iter(["", "", "", ""])
+        with mock.patch("builtins.input", lambda _prompt: next(replies)), redirect_stdout(io.StringIO()):
+            look = prompts.ask_look(frozenset(), frozenset({"design_style", "motion_style"}))
+        self.assertIsNone(next(replies, None))
+        self.assertEqual(("Utility", "Standard"), (look["design_style"], look["motion_style"]))
 
 
 if __name__ == "__main__":

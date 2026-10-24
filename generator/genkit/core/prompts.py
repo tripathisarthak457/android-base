@@ -27,7 +27,9 @@ from .catalogue import FONT_SUGGESTIONS
 from .spec import (
     ARCHITECTURES,
     DEFAULT_COMPILE_SDK,
+    DEFAULT_DESIGN_STYLE,
     DEFAULT_MIN_SDK,
+    DEFAULT_MOTION_STYLE,
     DEFAULT_TARGET_SDK,
     FONT_PATTERN,
     HEX_PATTERN,
@@ -211,30 +213,39 @@ def ask_identity() -> dict[str, str]:
     return {"app_name": app_name, "display_name": display_name, "package_name": package_name}
 
 
-def ask_features(target: Target, select_all: bool, preset: str | None) -> set[str]:
+def ask_features(
+    target: Target, select_all: bool, preset: str | None, options: dict[str, bool]
+) -> tuple[set[str], dict[str, bool]]:
+    """
+    The features asked for, and every option's value. The options are asked once the preset is
+    chosen, so an option that leaves features out is never followed by questions about them.
+    """
     manifest = target.manifest
     heading("Features")
-    if select_all:
-        print(dim("  Everything on, per --all."))
-        return {feature.key for feature in manifest.selectable}
-    if preset is not None:
-        print(dim(f"  Using the {preset} preset."))
-        return set(manifest.preset_features(preset))
+    if select_all or preset is not None:
+        print(dim("  Everything on, per --all." if select_all else f"  Using the {preset} preset."))
+        values = ask_options(target, options)
+        chosen = {feature.key for feature in manifest.selectable} if select_all else manifest.preset_features(preset)
+        return set(chosen) - set(manifest.disabled_features(values)), values
 
     print(dim("  Start from a preset, or answer for each feature."))
     print()
     presets = list(manifest.presets.values())
-    options = [(preset.title, preset.description) for preset in presets]
-    options.append(("Choose individually", "One question per feature."))
+    choices = [(preset.title, preset.description) for preset in presets]
+    choices.append(("Choose individually", "One question per feature."))
     default = next(index for index, preset in enumerate(presets, start=1) if preset.key == manifest.default_preset)
-    choice = ask_choice("  Which", options, default)
+    choice = ask_choice("  Which", choices, default)
+    values = ask_options(target, options)
+    left_out = manifest.disabled_features(values)
     if choice < len(presets):
-        return set(manifest.preset_features(presets[choice].key))
+        return set(manifest.preset_features(presets[choice].key)) - set(left_out), values
 
     print(dim("  Anything you skip can be added later; each is one module or one file."))
     selected: set[str] = set()
     asked: set[str] = set()
     for feature in manifest.selectable:
+        if feature.key in left_out:
+            continue
         print()
         print(f"  {bold(feature.title)}")
         for line in wrap(feature.description, 74):
@@ -248,7 +259,29 @@ def ask_features(target: Target, select_all: bool, preset: str | None) -> set[st
         if ask_yes_no("  Include?", feature.default and not declined):
             selected.add(feature.key)
         asked.add(feature.key)
-    return selected
+    return selected, values
+
+
+def ask_options(target: Target, given: dict[str, bool]) -> dict[str, bool]:
+    """
+    Every option's value: the ones the command line gave, and a yes or no on each other option's
+    checkbox, which is unticked unless the answer is yes.
+    """
+    manifest = target.manifest
+    values = manifest.option_values(given)
+    for option in manifest.options.values():
+        if option.key in given:
+            print(dim(f"  {option.label}, per the command line."))
+            continue
+        print()
+        print(f"  {bold(option.label)}")
+        for line in wrap(option.headline, 74):
+            print(dim(f"    {line}"))
+        if option.disables:
+            print(dim(f"    Leaves out {', '.join(option.disables)}."))
+        if ask_yes_no(f"  {option.label}?", False):
+            values[option.key] = not option.default
+    return values
 
 
 def ask_architecture(target: Target) -> str:
@@ -260,8 +293,11 @@ def ask_architecture(target: Target) -> str:
     return available[choice]["key"]
 
 
-def ask_look(features: frozenset[str]) -> dict[str, Any]:
-    """The decisions that change how the app looks and feels everywhere."""
+def ask_look(features: frozenset[str], hidden: frozenset[str] = frozenset()) -> dict[str, Any]:
+    """
+    The decisions that change how the app looks and feels everywhere. A field in `hidden` is not
+    asked, because an option took away what it decides, and keeps its default.
+    """
     heading("Look and feel")
     print(dim("  The brand colours. Every shade of each, pressed, subtle and the dark-theme"))
     print(dim("  versions, is derived from these, with the launcher icon's background and"))
@@ -277,22 +313,26 @@ def ask_look(features: frozenset[str]) -> dict[str, Any]:
     secondary = ask_valid("Secondary hex", hex_check, "", allow_empty=True)
     tertiary = ask_valid("Tertiary hex", hex_check, "", allow_empty=True)
 
-    motions = tokens.load()["motion"]["styles"]
-    print()
-    print(dim("  How controls respond to a finger."))
-    print()
-    motion = list(motions)[ask_choice("  Which", [(name, style["description"]) for name, style in motions.items()])]
+    motion = DEFAULT_MOTION_STYLE
+    if "motion_style" not in hidden:
+        motions = tokens.load()["motion"]["styles"]
+        print()
+        print(dim("  How controls respond to a finger."))
+        print()
+        motion = list(motions)[ask_choice("  Which", [(name, style["description"]) for name, style in motions.items()])]
 
-    styles = tokens.load()["styles"]
-    print()
-    print(dim("  What the components look like: corners, borders, fields and the tab bar together."))
-    print()
-    while True:
-        design = list(styles)[ask_choice("  Which", [(name, style["description"]) for name, style in styles.items()])]
-        missing = [key for key in styles[design]["requires"] if key not in features]
-        if not missing:
-            break
-        print(red(f"  {design} needs {', '.join(missing)}, which is not in this project."))
+    design = DEFAULT_DESIGN_STYLE
+    if "design_style" not in hidden:
+        styles = tokens.load()["styles"]
+        print()
+        print(dim("  What the components look like: corners, borders, fields and the tab bar together."))
+        print()
+        while True:
+            design = list(styles)[ask_choice("  Which", [(name, style["description"]) for name, style in styles.items()])]
+            missing = [key for key in styles[design]["requires"] if key not in features]
+            if not missing:
+                break
+            print(red(f"  {design} needs {', '.join(missing)}, which is not in this project."))
 
     print()
     print(dim("  Haptics are a light vibration when a control responds. The device's own setting"))
@@ -538,12 +578,20 @@ def ask_keystores(app_name: str) -> list[dict[str, Any]]:
     return entries
 
 
-def run_wizard(target: Target, select_all: bool = False, preset: str | None = None) -> dict[str, Any]:
-    """Every answer, as a schema-2 spec ready for `pipeline.read_spec`."""
+def run_wizard(
+    target: Target, select_all: bool = False, preset: str | None = None, options: dict[str, bool] | None = None
+) -> dict[str, Any]:
+    """
+    Every answer, as a schema-2 spec ready for `pipeline.read_spec`. `options` are the ones the
+    command line already answered.
+    """
+    manifest = target.manifest
     raw: dict[str, Any] = {"schema": SCHEMA, "platform": target.key, **ask_identity()}
-    requested = ask_features(target, select_all, preset)
-    features = target.manifest.resolve(requested)
+    requested, values = ask_features(target, select_all, preset, options or {})
+    features = manifest.resolve(requested)
     raw["features"] = sorted(requested)
+    raw.update({key: value for key, value in values.items() if value != manifest.options[key].default})
+    hidden = frozenset(field for key, option in manifest.options.items() if not values[key] for field in option.hides)
     raw["architecture"] = ask_architecture(target)
     if target.key == "android":
         raw["android"] = ask_android(features, raw["app_name"])
@@ -551,7 +599,7 @@ def run_wizard(target: Target, select_all: bool = False, preset: str | None = No
         raw["android"] = ask_android(features, raw["app_name"], flavours=multiplatform.FLAVOURS, signing=False)
         raw["ios"] = ask_ios(raw["package_name"])
     raw.update(ask_fonts(features))
-    raw.update(ask_look(features))
+    raw.update(ask_look(features, hidden))
     raw["feature_modules"] = ask_feature_modules(target)
     raw["languages"] = ask_languages(target)
     return raw
@@ -574,8 +622,11 @@ def summarise(spec: Spec, stream: TextIO | None = None) -> None:
             ("Version", f"{android.version_name} ({android.version_code})"),
             ("Desugaring", f"on: java.time below API {DESUGARING_THRESHOLD}" if android.min_sdk < DESUGARING_THRESHOLD else "off"),
         ]
+    rows.append(("Features", ", ".join(sorted(spec.features)) or "none"))
+    changed = [f"{key} {'on' if on else 'off'}" for key, on in spec.options.items() if on != spec.option_defaults[key]]
+    if changed:
+        rows.append(("Options", ", ".join(changed)))
     rows += [
-        ("Features", ", ".join(sorted(spec.features)) or "none"),
         ("Modules", ", ".join(spec.feature_modules) or "none"),
         ("Languages", ", ".join((translations.SOURCE_LANGUAGE, *spec.languages))),
         ("Typeface", f"{spec.font_name}  ·  {spec.mono_font_name}"),

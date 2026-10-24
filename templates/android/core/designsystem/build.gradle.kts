@@ -8,12 +8,14 @@ android {
     namespace = "com.base.app.core.designsystem"
 }
 
+// <opt:ui_components>
 kotlin {
     compilerOptions {
         // The shell seams are this module's own API; only other modules have to opt in to them.
         optIn.add("com.base.app.core.designsystem.foundation.layout.ShellSeamApi")
     }
 }
+// </opt:ui_components>
 
 dependencies {
 
@@ -27,10 +29,12 @@ dependencies {
     // Android's own window size classes, so breakpoints match every other app on the device.
     implementation(libs.androidx.window.core)
 
+    // <opt:ui_components>
     // Back and predictive back for sheets, alerts and the image viewer, and the lifecycle a toast's
     // time is counted against. Both are already in every app this module ships in.
     implementation(libs.androidx.navigationevent.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
+    // </opt:ui_components>
 
     // <opt:googlefonts>
     implementation(libs.androidx.compose.ui.text.googlefonts)
