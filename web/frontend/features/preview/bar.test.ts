@@ -3,17 +3,22 @@ import { test } from "node:test";
 import { loadCatalogue, readJson, readText } from "../catalogue/testing.ts";
 import {
   BAR,
+  DARK_OUTLINE_ALPHA,
   DRAWN_INDICATORS,
   DRAWN_TREATMENTS,
   SHELL_SPRINGS,
   TAB_REVEAL_SHIFT,
+  TRANSLUCENT_ALPHA,
   barLook,
   isFloating,
+  pillBox,
   pillSpan,
   pillWidth,
   pillCross,
+  restingPills,
   revealFrom,
 } from "./bar.ts";
+import { dp } from "./theme.ts";
 
 // The bar preview draws what `AppTabBar.kt` and `TabCells.kt` draw. Their enums, sizes and springs
 // are read from the template here, so a treatment WP03 retires or a size it changes fails a test
@@ -148,14 +153,16 @@ test("barIndicator, which a Pill is filled with, is the accent in every palette"
 });
 
 test("a capsule is the surface with a hairline and a soft shadow in light theme, raised and unshadowed in dark", () => {
+  assert.equal(TRANSLUCENT_ALPHA, Number(/\bTranslucentAlpha = ([\d.]+)f/.exec(barSource)?.[1]));
+  assert.equal(DARK_OUTLINE_ALPHA, Number(/\bDarkOutline = Color\.White\.copy\(alpha = ([\d.]+)f\)/.exec(barSource)?.[1]));
   const light = barLook({ bar: "Floating", indicator: "Subtle", borderWidth: 2 }, colour, false);
   assert.deepEqual([light.floating, light.surface, light.border, light.borderWidth, light.shadow], [true, "<surface>", "<separator>", 2, true]);
   const dark = barLook({ bar: "Floating", indicator: "Subtle", borderWidth: 2 }, colour, true);
   assert.equal(dark.surface, "<surfaceElevated>");
-  assert.equal(dark.border, "rgba(255, 255, 255, 0.07)");
+  assert.equal(dark.border, `rgba(255, 255, 255, ${DARK_OUTLINE_ALPHA})`);
   assert.equal(dark.shadow, false);
   const translucent = barLook({ bar: "Translucent", indicator: "Subtle", borderWidth: 1 }, colour, false);
-  assert.equal(translucent.surface, "color-mix(in srgb, <surface> 88%, transparent)");
+  assert.equal(translucent.surface, `color-mix(in srgb, <surface> ${Math.round(TRANSLUCENT_ALPHA * 100)}%, transparent)`);
   const docked = barLook({ bar: "Docked", indicator: "Pill", borderWidth: 2 }, colour, true);
   assert.deepEqual([docked.floating, docked.surface, docked.border, docked.borderWidth, docked.shadow], [false, "<surface>", "<separator>", 1, false]);
 });
@@ -179,4 +186,35 @@ test("the pill stretches toward its target by at most half a slot, and thins as 
   const [top, bottom] = pillCross(10, 54, 1.5);
   assert.ok(top > 10 && bottom < 54);
   assert.ok(Math.abs(bottom - top - 44 * (1 - BAR.squash * 0.5)) < 1e-9);
+});
+
+test("the pill is centred across the row the cells centre their content in, whatever its height", () => {
+  // A capsule's hairline drawn as a CSS border takes its width from the row on each side, and the
+  // cells centre their glyph and label in what is left. The template's border takes nothing
+  // (TabRow keeps BarHeight), but the pill must follow the row either way, as PillSlots does.
+  for (const height of [dp(BAR.height), dp(BAR.height) - 2 * 2, dp(BAR.height) - 2 * 0.75, dp(56)]) {
+    const row = { width: dp(320), height, contents: [dp(24), dp(40), dp(31), dp(24)] };
+    const resting = restingPills(row);
+    const still = pillBox(row, resting, 1, 1, true);
+    const inset = (height - dp(BAR.pillHeight)) / 2;
+    assert.ok(Math.abs(still.top - inset) < 1e-9, `at ${height} px the pill's top is ${still.top}, not ${inset}`);
+    assert.ok(Math.abs(height - still.bottom - inset) < 1e-9, `at ${height} px the pill's bottom inset is ${height - still.bottom}, not ${inset}`);
+    for (const [start, end, forward] of [[1, 2.2, true], [2.6, 0.4, false], [0, 3, true]] as const) {
+      const moving = pillBox(row, resting, start, end, forward);
+      assert.ok(Math.abs((moving.top + moving.bottom) / 2 - height / 2) < 1e-9, `a stretched pill leaves the row's middle at ${height} px`);
+    }
+  }
+});
+
+test("each pill rests in the middle of its slot, as wide as pillWidth gives", () => {
+  const row = { width: dp(320), height: dp(BAR.height), contents: [dp(24), dp(40), dp(31), dp(24)] };
+  const { starts, ends } = restingPills(row);
+  const slot = row.width / 4;
+  row.contents.forEach((content, index) => {
+    assert.ok(Math.abs((starts[index]! + ends[index]!) / 2 - (index + 0.5) * slot) < 1e-9);
+    assert.ok(Math.abs(ends[index]! - starts[index]! - dp(pillWidth(slot / dp(1), content / dp(1)))) < 1e-9);
+  });
+  const halfway = pillBox(row, { starts, ends }, 1, 1.4, true);
+  assert.ok(Math.abs(halfway.left - starts[1]!) < 1e-9);
+  assert.ok(Math.abs(halfway.right - (ends[1]! + (ends[2]! - ends[1]!) * 0.4)) < 1e-9);
 });

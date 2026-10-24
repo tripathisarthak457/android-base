@@ -12,7 +12,7 @@ export const dp = (value: number) => value * DP;
 
 type TextStyle = { fontSize: number; lineHeight: string; fontWeight: number; letterSpacing: string };
 
-export type FramerSpring = { type: "spring"; stiffness: number; damping: number; mass: 1; restDelta?: number };
+type FramerSpring = { type: "spring"; stiffness: number; damping: number; mass: 1 };
 
 /** A token's spring as framer takes it: the damping ratio becomes a damping coefficient at mass 1. */
 export function framerSpring({ stiffness, dampingRatio }: { stiffness: number; dampingRatio: number }): FramerSpring {

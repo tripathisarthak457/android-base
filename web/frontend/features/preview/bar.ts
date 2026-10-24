@@ -1,4 +1,5 @@
 import type { StyleTokens } from "../catalogue/types.ts";
+import { dp } from "./theme.ts";
 
 // The tab bar as the template draws it (`AppTabBar.kt`, `TabCells.kt`), in dp: what each
 // treatment and indicator look like, where the selection pill rests, and the springs it moves on.
@@ -71,11 +72,20 @@ export function isFloating(treatment: string): boolean {
   return treatment !== "Docked";
 }
 
+/** The Translucent capsule's surface opacity (`AppTabBar.kt`'s `TranslucentAlpha`). */
+export const TRANSLUCENT_ALPHA = 0.88;
+
+/** The opacity of the white outline a capsule takes in dark theme (`AppTabBar.kt`'s `DarkOutline`). */
+export const DARK_OUTLINE_ALPHA = 0.07;
+
 export type BarLook = {
   floating: boolean;
   surface: string;
   border: string;
-  /** In dp. A docked bar's rule is a hairline whatever the style's border width. */
+  /**
+   * In CSS px, as the preview's other parts draw border widths, so a hairline stays a whole pixel
+   * in a scaled-down phone. A docked bar's rule is a hairline whatever the style's border width.
+   */
   borderWidth: number;
   shadow: boolean;
   indicator: string;
@@ -97,8 +107,8 @@ export function barLook(style: Pick<StyleTokens, "bar" | "indicator" | "borderWi
   const surface = colour(raised ? "surfaceElevated" : "surface");
   return {
     floating,
-    surface: style.bar === "Translucent" ? `color-mix(in srgb, ${surface} 88%, transparent)` : surface,
-    border: raised ? "rgba(255, 255, 255, 0.07)" : colour("separator"),
+    surface: style.bar === "Translucent" ? `color-mix(in srgb, ${surface} ${Math.round(TRANSLUCENT_ALPHA * 100)}%, transparent)` : surface,
+    border: raised ? `rgba(255, 255, 255, ${DARK_OUTLINE_ALPHA})` : colour("separator"),
     borderWidth: floating ? style.borderWidth : 1,
     shadow: floating && !dark,
     indicator: colour(pill ? "accent" : "accentSubtle"),
@@ -128,4 +138,52 @@ export function pillSpan(start: number, end: number, forward: boolean): [from: n
 export function pillCross(top: number, bottom: number, stretch: number): [top: number, bottom: number] {
   const thin = ((bottom - top) * BAR.squash * Math.max(stretch - 1, 0)) / 2;
   return [top + thin, bottom - thin];
+}
+
+/** The tab row as the browser laid it out, in preview px: its size, and each tab's content width (its label, or its glyph without one). */
+export type RowMeasure = { width: number; height: number; contents: number[] };
+
+/** Where the pill rests in each slot, as its start and end along the row, in preview px. */
+export type RestingPills = { starts: number[]; ends: number[] };
+
+/** The pill's box in the row, in preview px. */
+export type PillBox = { left: number; right: number; top: number; bottom: number };
+
+/** Each slot's resting pill, centred in the slot, as `TabCells.kt`'s `PillSlots` places it. */
+export function restingPills({ width, contents }: RowMeasure): RestingPills {
+  const unit = dp(1);
+  const slot = width / Math.max(contents.length, 1);
+  const starts: number[] = [];
+  const ends: number[] = [];
+  contents.forEach((content, index) => {
+    const pill = pillWidth(slot / unit, content / unit) * unit;
+    starts.push(index * slot + (slot - pill) / 2);
+    ends.push(index * slot + (slot + pill) / 2);
+  });
+  return { starts, ends };
+}
+
+/** `values` read at a fractional slot `position`, between the two slots around it. */
+function along(values: number[], position: number): number {
+  if (values.length === 0) return 0;
+  const p = Math.min(Math.max(position, 0), values.length - 1);
+  const low = Math.floor(p);
+  const high = Math.ceil(p);
+  return (values[low] ?? 0) + ((values[high] ?? 0) - (values[low] ?? 0)) * (p - low);
+}
+
+/**
+ * The pill while its edges are at `start` and `end`, in slots. It is centred across the row's own
+ * height, because that is where the cells centre their glyph and label: a pill placed by the bar's
+ * nominal height would sit off them by whatever the row lost to its container.
+ */
+export function pillBox(row: RowMeasure, resting: RestingPills, start: number, end: number, forward: boolean): PillBox {
+  const [from, to] = pillSpan(start, end, forward);
+  const left = along(resting.starts, from);
+  const right = along(resting.ends, to);
+  const middle = (from + to) / 2;
+  const rest = along(resting.ends, middle) - along(resting.starts, middle);
+  const inset = (row.height - dp(BAR.pillHeight)) / 2;
+  const [top, bottom] = pillCross(inset, row.height - inset, rest > 0 ? (right - left) / rest : 1);
+  return { left, right, top, bottom };
 }

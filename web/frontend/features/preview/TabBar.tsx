@@ -2,7 +2,18 @@
 
 import { type MotionValue, animate, motion, motionValue, useMotionValue, useTransform } from "framer-motion";
 import { type CSSProperties, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { BAR, type BarLook, SHELL_SPRINGS, barLook, isFloating, pillCross, pillSpan, pillWidth } from "./bar.ts";
+import {
+  BAR,
+  type BarLook,
+  type PillBox,
+  type RestingPills,
+  type RowMeasure,
+  SHELL_SPRINGS,
+  barLook,
+  isFloating,
+  pillBox,
+  restingPills,
+} from "./bar.ts";
 import { Icon } from "./icons.tsx";
 import { useTheme } from "./parts.tsx";
 import type { PreviewTab } from "./tabs.ts";
@@ -24,44 +35,8 @@ const TRAIL = { ...framerSpring(SHELL_SPRINGS.indicatorTrail), restDelta: 0.001 
 const DIP = { ...framerSpring(SHELL_SPRINGS.iconBounceDown), restDelta: 0.001 };
 const RISE = { ...framerSpring(SHELL_SPRINGS.iconBounceUp), restDelta: 0.001 };
 
-/** The row's width and each tab's content width (its label, or its glyph without one), in preview px. */
-type Measure = { width: number; contents: number[] };
-
-/** Where the pill rests in each slot, along the row, in preview px. */
-function restingPills({ width, contents }: Measure): { starts: number[]; ends: number[] } {
-  const unit = dp(1);
-  const slot = width / Math.max(contents.length, 1);
-  const starts: number[] = [];
-  const ends: number[] = [];
-  contents.forEach((content, index) => {
-    const pill = pillWidth(slot / unit, content / unit) * unit;
-    starts.push(index * slot + (slot - pill) / 2);
-    ends.push(index * slot + (slot + pill) / 2);
-  });
-  return { starts, ends };
-}
-
-function at(values: number[], position: number): number {
-  if (values.length === 0) return 0;
-  const p = Math.min(Math.max(position, 0), values.length - 1);
-  const low = Math.floor(p);
-  const high = Math.ceil(p);
-  return (values[low] ?? 0) + ((values[high] ?? 0) - (values[low] ?? 0)) * (p - low);
-}
-
-type Capsule = { left: number; right: number; top: number; bottom: number; width: number; height: number };
-
-function capsuleAt(measure: Measure, start: number, end: number, forward: boolean): Capsule {
-  const height = dp(BAR.height);
-  const pills = restingPills(measure);
-  const [from, to] = pillSpan(start, end, forward);
-  const left = at(pills.starts, from);
-  const right = at(pills.ends, to);
-  const rest = at(pills.ends, (from + to) / 2) - at(pills.starts, (from + to) / 2);
-  const inset = (height - dp(BAR.pillHeight)) / 2;
-  const [top, bottom] = pillCross(inset, height - inset, rest > 0 ? (right - left) / rest : 1);
-  return { left, right, top, bottom, width: measure.width, height };
-}
+/** The pill, and the row it sits in, in preview px. */
+type Capsule = PillBox & { width: number; height: number };
 
 /** The pill as a path the browser fills and clips by, with the row around it when `outside`. */
 function capsulePath({ left, right, top, bottom, width, height }: Capsule, outside: boolean): string {
@@ -71,36 +46,52 @@ function capsulePath({ left, right, top, bottom, width, height }: Capsule, outsi
   return outside ? `path(evenodd, "M0 0H${width}V${height}H0Z${pill}")` : `path("${pill}")`;
 }
 
+/** A capsule's body with its shadow, and its edge: the hairline, and anything drawn just inside it. */
+type CapsuleSurface = { fill: CSSProperties; edge: CSSProperties };
+
+const CAPSULE_SHADOW = `0 ${dp(4)}px ${dp(16)}px rgba(0, 0, 0, 0.10)`;
+
 /**
  * A thumbnail draws the Glass capsule (tinted body, rim and sheen, nothing sampled), as the
  * template draws content glass: a backdrop filter in every scaled phone on the page would drop its
  * frames. Only the one live preview blurs.
  */
-function glass(colour: (role: string) => string, dark: boolean, live: boolean): CSSProperties {
-  const shadow = dark ? "none" : `0 ${dp(4)}px ${dp(16)}px rgba(0, 0, 0, 0.10)`;
-  const rim = `0.75px solid color-mix(in srgb, white ${dark ? 18 : 60}%, transparent)`;
-  const sheen = `inset 0 1px 0 rgba(255,255,255,${dark ? 0.12 : 0.5})`;
+function glass(colour: (role: string) => string, dark: boolean, live: boolean): CapsuleSurface {
+  const edge = {
+    border: `0.75px solid color-mix(in srgb, white ${dark ? 18 : 60}%, transparent)`,
+    boxShadow: `inset 0 1px 0 rgba(255,255,255,${dark ? 0.12 : 0.5})`,
+  };
+  const boxShadow = dark ? undefined : CAPSULE_SHADOW;
   return live
     ? {
-        background: `color-mix(in srgb, ${colour("surface")} ${dark ? 38 : 55}%, transparent)`,
-        backdropFilter: `blur(${dp(10)}px) saturate(1.6)`,
-        WebkitBackdropFilter: `blur(${dp(10)}px) saturate(1.6)`,
-        border: rim,
-        boxShadow: shadow === "none" ? sheen : `${sheen}, ${shadow}`,
+        fill: {
+          background: `color-mix(in srgb, ${colour("surface")} ${dark ? 38 : 55}%, transparent)`,
+          backdropFilter: `blur(${dp(10)}px) saturate(1.6)`,
+          WebkitBackdropFilter: `blur(${dp(10)}px) saturate(1.6)`,
+          boxShadow,
+        },
+        edge,
       }
     : {
-        background: `linear-gradient(180deg, color-mix(in srgb, ${colour("surface")} ${dark ? 70 : 86}%, ${colour("accent")}) 0%, ${colour("surface")} 100%)`,
-        border: rim,
-        boxShadow: shadow === "none" ? sheen : `${sheen}, ${shadow}`,
+        fill: {
+          background: `linear-gradient(180deg, color-mix(in srgb, ${colour("surface")} ${dark ? 70 : 86}%, ${colour("accent")}) 0%, ${colour("surface")} 100%)`,
+          boxShadow,
+        },
+        edge,
       };
 }
 
-function capsuleStyle(look: BarLook): CSSProperties {
+function capsuleSurface(look: BarLook): CapsuleSurface {
   return {
-    background: look.surface,
-    border: `${look.borderWidth}px solid ${look.border}`,
-    boxShadow: look.shadow ? `0 ${dp(4)}px ${dp(16)}px rgba(0, 0, 0, 0.10)` : undefined,
+    fill: { background: look.surface, boxShadow: look.shadow ? CAPSULE_SHADOW : undefined },
+    edge: { border: `${look.borderWidth}px solid ${look.border}` },
   };
+}
+
+/** The row's laid-out size, unrounded (clientWidth rounds) and before any scale the phone is drawn at. */
+function laidOut(element: HTMLElement): { width: number; height: number } {
+  const box = getComputedStyle(element);
+  return { width: Number.parseFloat(box.width) || element.clientWidth, height: Number.parseFloat(box.height) || element.clientHeight };
 }
 
 /**
@@ -129,12 +120,13 @@ export function TabBar({
   const labels = useRef<(HTMLSpanElement | null)[]>([]);
 
   // Until the row is measured (and in the prerendered page) the pills are sized to their glyphs
-  // on the row's width at the template's margins; the labels' widths replace that on mount.
-  const estimate = (): Measure => ({
+  // on the row's size at the template's margins; the labels' widths replace that on mount.
+  const estimate = (): RowMeasure => ({
     width: dp(360 - 2 * (look.floating ? BAR.margin : BAR.dockedInset)),
+    height: dp(BAR.height),
     contents: tabs.map(() => dp(ICON)),
   });
-  const measure = useMotionValue<Measure>(estimate());
+  const measure = useMotionValue<RowMeasure>(estimate());
   const start = useMotionValue(selected);
   const end = useMotionValue(selected);
   const forward = useRef(true);
@@ -143,12 +135,16 @@ export function TabBar({
   const [shrink, setShrink] = useState<number[]>([]);
   const shrinkRef = useRef<number[]>([]);
 
-  const inside = useTransform([start, end, measure] as MotionValue[], ([from, to, m]) =>
-    capsulePath(capsuleAt(m as Measure, from as number, to as number, forward.current), false),
-  );
-  const outside = useTransform([start, end, measure] as MotionValue[], ([from, to, m]) =>
-    capsulePath(capsuleAt(m as Measure, from as number, to as number, forward.current), true),
-  );
+  // The resting pills change only when the row is measured; the pill is worked out once a frame
+  // and both clip paths are drawn from it.
+  const resting = useTransform(measure, restingPills);
+  const capsule = useTransform([start, end, measure, resting] as MotionValue[], ([from, to, m, pills]): Capsule => {
+    const rowSize = m as RowMeasure;
+    const box = pillBox(rowSize, pills as RestingPills, from as number, to as number, forward.current);
+    return { ...box, width: rowSize.width, height: rowSize.height };
+  });
+  const inside = useTransform(capsule, (shape) => capsulePath(shape, false));
+  const outside = useTransform(capsule, (shape) => capsulePath(shape, true));
 
   useLayoutEffect(() => {
     const element = row.current;
@@ -167,7 +163,7 @@ export function TabBar({
         setShrink(next);
       }
       measure.set({
-        width: element.clientWidth,
+        ...laidOut(element),
         contents: tabs.map((_, index) => Math.max(labels.current[index]?.offsetWidth ?? 0, dp(ICON))),
       });
     };
@@ -258,15 +254,22 @@ export function TabBar({
   );
 
   if (look.floating) {
+    const surface = bar === "Glass" ? glass(t.colour, t.dark, live) : capsuleSurface(look);
+    // The hairline is drawn over the row rather than as the capsule's border, as Compose's border
+    // modifier draws it, so the row keeps the bar's whole height and width and the cells and the
+    // pill sit where TabRow puts them.
     return (
       <div className="absolute" style={{ left: dp(BAR.margin), right: dp(BAR.margin), bottom: dp(NAV_INSET + BAR.lift), height: dp(BAR.height) }}>
-        <div className="h-full overflow-hidden" style={{ borderRadius: 999, ...(bar === "Glass" ? glass(t.colour, t.dark, live) : capsuleStyle(look)) }}>
+        <div className="relative h-full overflow-hidden" style={{ borderRadius: 999, ...surface.fill }}>
           {tabRow}
+          <div aria-hidden className="pointer-events-none absolute inset-0" style={{ borderRadius: "inherit", ...surface.edge }} />
         </div>
       </div>
     );
   }
 
+  // No built-in style docks its bar, so the surface and its rule are drawn whole rather than in
+  // step with how far content runs under the bar, as AppTabBar's scrolledUnder draws them.
   return (
     <div
       className="absolute inset-x-0 bottom-0"
@@ -274,7 +277,8 @@ export function TabBar({
         height: dp(BAR.height + NAV_INSET),
         padding: `0 ${dp(BAR.dockedInset)}px ${dp(NAV_INSET)}px`,
         background: look.surface,
-        borderTop: `${look.borderWidth}px solid ${look.border}`,
+        // A shadow, not a border, so the rule takes nothing from the row, as drawBehind does.
+        boxShadow: `inset 0 ${look.borderWidth}px 0 ${look.border}`,
       }}
     >
       {tabRow}
