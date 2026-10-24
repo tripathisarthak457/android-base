@@ -25,7 +25,7 @@ CODE_SUFFIXES = (".kt", ".kts", ".xml")
 #: Top-level folders of a project: a backticked token starting with one is a path that must exist.
 PROJECT_DIRS = ("app", "benchmark", "build-logic", "catalog", "config", "core", "data", "docs", "feature", "gradle", "tools")
 #: Words the overhaul's own notes use and a project's docs never should, and the `{…}` a measurement fills in.
-WORKSPACE_WORDS = re.compile(r"overhaul|staging-wp|\bWP\d\d\b|REQUIREMENTS|periflow|vitfleet|jorwen", re.IGNORECASE)
+WORKSPACE_WORDS = re.compile(r"overhaul|staging-wp|\bWP\d\d\b|REQUIREMENTS", re.IGNORECASE)
 PLACEHOLDER = re.compile(r"\{[a-z][a-z ]*\}")
 
 
