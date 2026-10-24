@@ -7,6 +7,7 @@ import {
   effectiveUiComponents,
   hiddenFields,
   isSetupOnly,
+  setupOnlyNote,
   uiComponentsOption,
 } from "./options.ts";
 import { SETUP_ONLY, androidTarget, loadCatalogue, lockedCatalogue, threePlatformCatalogue } from "./testing.ts";
@@ -60,9 +61,11 @@ test("a target without the option always has UI components, and the lock overrid
   assert.equal(effectiveUiComponents(locked, false), false);
 });
 
-test("only a locked catalogue is setup-only", () => {
+test("only a locked catalogue is setup-only, and it says why in the lock's words", () => {
   assert.equal(isSetupOnly(catalogue), false);
+  assert.equal(setupOnlyNote(catalogue), null);
   assert.equal(isSetupOnly(lockedCatalogue()), true);
+  assert.equal(setupOnlyNote(lockedCatalogue()), SETUP_ONLY.note);
   assert.equal(isSetupOnly(lockedCatalogue({ ...SETUP_ONLY, value: true })), false, "a lock to UI components is not setup-only");
   assert.equal(COMING_WITH_RELEASE, "Coming with the Android release");
 });

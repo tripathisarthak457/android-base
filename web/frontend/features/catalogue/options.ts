@@ -32,9 +32,20 @@ export function hiddenFields(target: Target, uiComponents: boolean): Map<string,
   return new Map(option.hides.map((entry) => [entry.field, entry.reason]));
 }
 
-/** Whether this deployment generates projects without UI components only, until a release brings them. */
+/**
+ * Why this deployment generates only projects without UI components, in the lock's own words, or
+ * null when it generates both.
+ */
+export function setupOnlyNote(catalogue: Catalogue): string | null {
+  for (const target of catalogue.targets) {
+    const locked = uiComponentsOption(target)?.locked;
+    if (locked?.value === false) return locked.note;
+  }
+  return null;
+}
+
 export function isSetupOnly(catalogue: Catalogue): boolean {
-  return catalogue.targets.some((target) => uiComponentsOption(target)?.locked?.value === false);
+  return setupOnlyNote(catalogue) !== null;
 }
 
 /** What the locked site says beside everything it cannot make yet. */
