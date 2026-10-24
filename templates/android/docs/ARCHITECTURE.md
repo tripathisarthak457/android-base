@@ -322,8 +322,8 @@ sign-in screens exist, pass the identity to the stack `AppRoot` keys on it and p
 
 ```kotlin
 val start = when (identity) {
-    EntryIdentity.Onboarding -> AppDestinations.onboarding
-    EntryIdentity.SignedOut -> AppDestinations.signIn
+    EntryIdentity.Onboarding -> OnboardingKey      // your walkthrough's key
+    EntryIdentity.SignedOut -> SignInKey           // your sign-in screen's key
     is EntryIdentity.SignedIn -> AppDestinations.start
 }
 ```
