@@ -9,6 +9,10 @@ tokens = [
   { from = "com.base.app", to = "{package}",      boundary = "dotted" },
   { from = "com/base/app", to = "{package_path}", boundary = "path" },
   { from = "BaseApp",      to = "{pascal}",       boundary = "prefix" },   # BaseAppApplication → TrailNotesApplication
+  # The classes and the member Hilt and Dagger generate from the application's name, which a baseline profile lists.
+  { from = "Hilt_BaseApp",  to = "Hilt_{pascal}",  boundary = "prefix" },
+  { from = "DaggerBaseApp", to = "Dagger{pascal}", boundary = "prefix" },
+  { from = "injectBaseApp", to = "inject{pascal}", boundary = "prefix" },
   { from = "base_app",     to = "{snake}",        boundary = "snake" },    # base_app_default → trail_notes_default
   { from = "baseapp",      to = "{lower}",        boundary = "snake" },
 ]

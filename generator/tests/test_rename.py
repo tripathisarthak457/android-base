@@ -59,6 +59,22 @@ class BoundaryTest(unittest.TestCase):
             renamer().rename(rules),
         )
 
+    def test_the_names_hilt_and_dagger_make_from_the_application_rename(self):
+        rules = (
+            "Lcom/base/app/Hilt_BaseAppApplication;\n"
+            "HSPLcom/base/app/DaggerBaseAppApplication_HiltComponents_SingletonC$SingletonCImpl;"
+            "->injectBaseAppApplication(Lcom/base/app/BaseAppApplication;)V\n"
+        )
+        self.assertEqual(
+            "Lcom/acme/field/Hilt_AcmeFieldApplication;\n"
+            "HSPLcom/acme/field/DaggerAcmeFieldApplication_HiltComponents_SingletonC$SingletonCImpl;"
+            "->injectAcmeFieldApplication(Lcom/acme/field/AcmeFieldApplication;)V\n",
+            renamer().rename(rules),
+        )
+        for text in ("MyHilt_BaseApp", "xDaggerBaseApp", "reinjectBaseApp"):
+            with self.subTest(text=text):
+                self.assertEqual(text, renamer().rename(text))
+
     def test_a_class_after_primitive_parameters_renames(self):
         rule = "HSPLcom/base/app/X;-><init>(ZLcom/base/app/Y;IJLcom/base/app/Z;[ZLcom/base/app/W;)V"
         self.assertEqual(

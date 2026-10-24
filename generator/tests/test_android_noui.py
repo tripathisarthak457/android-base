@@ -209,14 +209,12 @@ class ProjectShapeTest(unittest.TestCase):
     def test_the_profiles_name_only_classes_the_project_has(self):
         from tests.android_profile import classes_of, kept
 
-        # The names the profile was recorded under, so its application and component classes match.
+        # A name other than the template's own, so every class the profile names has to have been renamed.
         with tempfile.TemporaryDirectory() as directory:
-            raw = {
-                "schema": 2, "platform": "android", "app_name": "Everything", "package_name": "com.base.app",
-                "features": sorted(ANDROID.manifest.preset_features("everything")), "ui_components": False,
-            }
-            project = Path(directory) / "everything"
-            pipeline.build(pipeline.read_spec(raw, ANDROID)[0].spec, ANDROID, project, zip_output=False, commit="test")
+            project = generate(
+                Path(directory), "everything",
+                features=sorted(ANDROID.manifest.preset_features("everything")), ui_components=False,
+            )
             known = classes_of(project)
             profiles = {
                 module: (project / module / "src/main/baseline-prof.txt").read_text(encoding="utf-8").splitlines()
@@ -225,7 +223,11 @@ class ProjectShapeTest(unittest.TestCase):
         for module, profile in profiles.items():
             with self.subTest(module=module):
                 self.assertTrue(profile)
-                self.assertEqual([], [line for line in profile if not kept(line, known)][:10])
+                self.assertEqual([], [line for line in profile if not kept(line, known, PKG)][:10])
+        # The cold start runs through the application class and the Hilt graph built for it.
+        for name in ("AcmeNoUiApplication", "Hilt_AcmeNoUiApplication", "DaggerAcmeNoUiApplication_HiltComponents_SingletonC"):
+            with self.subTest(name=name):
+                self.assertTrue(any(f"L{PKG}/{name};" in line for line in profiles["app"]))
 
 
 class UiProjectTest(unittest.TestCase):
