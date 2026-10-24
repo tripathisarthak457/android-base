@@ -236,6 +236,32 @@ class ProjectScriptsTest(unittest.TestCase):
             self.assertEqual(0, remove(["orders", "--yes", "--project", str(project)]))
         self.assertEqual(before, snapshot(project))
 
+    def test_without_a_record_the_project_is_read_from_what_it_holds(self):
+        project = self.copy()
+        (project / RECORD_NAME).unlink()
+        code, out = self.add("orders", "--project", str(project))
+        self.assertEqual(0, code, out)
+        route = project / f"feature/orders/src/main/kotlin/{PKG}/feature/orders/list/OrdersListRoute.kt"
+        self.assertIn("PlaceholderScreen(", route.read_text(encoding="utf-8"))
+        self.assertEqual(1, self.add("billing", "--tab", "--project", str(project))[0])
+
+    def test_a_domain_module_joins_a_modular_project(self):
+        temp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, temp)
+        project = generate(temp, "modular", features=["network"], architecture="modular", ui_components=False)
+        code, out = self.add("--domain", "pricing", "--project", str(project))
+        self.assertEqual(0, code, out)
+        self.assertTrue((project / "domain/pricing/build.gradle.kts").is_file())
+        self.assertIn('include(":domain:pricing")', (project / "settings.gradle.kts").read_text(encoding="utf-8"))
+
+    def test_a_compact_project_has_no_place_for_a_domain_module(self):
+        project = self.copy()
+        before = snapshot(project)
+        code, out = self.add("--domain", "pricing", "--project", str(project))
+        self.assertEqual(1, code)
+        self.assertIn("Domain modules belong to modular projects", out)
+        self.assertEqual(before, snapshot(project))
+
     def test_a_record_that_does_not_say_true_or_false_is_refused(self):
         project = self.copy()
         record = project / RECORD_NAME

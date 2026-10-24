@@ -25,7 +25,7 @@ from genkit import targets
 from genkit.core import prompts, translations
 from genkit.core.copy import write_text
 from genkit.core.record import RECORD_NAME
-from genkit.core.spec import Spec, SpecError, validate_module_name
+from genkit.core.spec import ARCHITECTURES, Spec, SpecError, validate_module_name
 from genkit.targets.android import scaffold, strings, tabs
 
 
@@ -100,7 +100,7 @@ def add_domain(project: Path, raw_name: str) -> int:
     except SpecError as error:
         print(prompts.red(str(error)))
         return 1
-    if not any(project.glob("feature/*/impl/build.gradle.kts")) and not any(project.glob("data/*/impl/build.gradle.kts")):
+    if not is_modular(project):
         print(prompts.red(
             "Domain modules belong to modular projects, where features see data only through :api modules. "
             "In a compact project, put shared rules in the data module that owns them."
@@ -127,6 +127,17 @@ def add_domain(project: Path, raw_name: str) -> int:
     print(prompts.dim("    Add the data :api modules it reads to its build file, and depend on it from the features that use it."))
     print()
     return 0
+
+
+def is_modular(project: Path) -> bool:
+    """
+    The architecture the project's record names; without one, whether a module is split into :api
+    and :impl. A modular project without UI components may have no module to split yet.
+    """
+    record = read_record(project)
+    if record is not None and record.get("architecture") in ARCHITECTURES:
+        return record["architecture"] == "modular"
+    return any(project.glob("feature/*/impl/build.gradle.kts")) or any(project.glob("data/*/impl/build.gradle.kts"))
 
 
 def inspect_project(project: Path, names: tuple[str, ...]) -> Spec:
