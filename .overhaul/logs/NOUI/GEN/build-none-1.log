@@ -1,0 +1,830 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Starting a Gradle Daemon, 2 stopped Daemons could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: check assembleDevDebug assembleProdRelease
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin FROM-CACHE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :build-logic:convention:processTestResources NO-SOURCE
+> Task :build-logic:convention:pluginUnderTestMetadata
+> Task :build-logic:convention:validatePlugins FROM-CACHE
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies FROM-CACHE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDevDebugBuild UP-TO-DATE
+> Task :core:common:verifyApiPurity FROM-CACHE
+> Task :app:generateDevDebugBuildConfig FROM-CACHE
+> Task :core:datastore:verifyApiPurity FROM-CACHE
+> Task :core:datastore:verifyModuleDependencies FROM-CACHE
+> Task :core:datastore:preBuild UP-TO-DATE
+> Task :core:datastore:preDebugBuild UP-TO-DATE
+> Task :core:datastore:generateDebugEmptyResourceFiles
+> Task :core:common:compileKotlin FROM-CACHE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar
+> Task :app:generateDevDebugResources
+> Task :build-logic:convention:compileTestKotlin FROM-CACHE
+> Task :build-logic:convention:compileTestJava NO-SOURCE
+> Task :build-logic:convention:testClasses UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:verifyModuleDependencies FROM-CACHE
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:generateDebugEmptyResourceFiles
+> Task :core:mvi:verifyModuleDependencies FROM-CACHE
+> Task :core:mvi:verifyApiPurity FROM-CACHE
+> Task :core:mvi:preBuild UP-TO-DATE
+> Task :core:mvi:preDebugBuild UP-TO-DATE
+> Task :core:navigation:verifyApiPurity FROM-CACHE
+> Task :core:navigation:verifyModuleDependencies FROM-CACHE
+> Task :core:navigation:preBuild UP-TO-DATE
+> Task :core:navigation:preDebugBuild UP-TO-DATE
+> Task :core:navigation:generateDebugEmptyResourceFiles
+> Task :core:ui:verifyApiPurity FROM-CACHE
+> Task :core:ui:verifyModuleDependencies FROM-CACHE
+> Task :core:ui:preBuild UP-TO-DATE
+> Task :core:ui:preDebugBuild UP-TO-DATE
+> Task :core:ui:processDebugNavigationResources FROM-CACHE
+> Task :core:mvi:generateDebugEmptyResourceFiles
+> Task :app:packageDevDebugResources
+> Task :core:datastore:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :app:processDevDebugNavigationResources
+> Task :core:mvi:compileDebugKotlin FROM-CACHE
+> Task :core:mvi:javaPreCompileDebug FROM-CACHE
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:datastore:kspDebugKotlin FROM-CACHE
+
+> Task :build-logic:convention:test
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :core:mvi:bundleLibCompileToJarDebug
+> Task :core:navigation:kspDebugKotlin FROM-CACHE
+> Task :core:navigation:compileDebugKotlin FROM-CACHE
+> Task :app:parseDevDebugLocalResources
+> Task :core:datastore:compileDebugKotlin FROM-CACHE
+> Task :core:navigation:javaPreCompileDebug FROM-CACHE
+> Task :core:navigation:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:navigation:transformDebugClassesWithAsm FROM-CACHE
+> Task :app:generateDevDebugRFile
+> Task :core:navigation:bundleLibCompileToJarDebug
+> Task :core:ui:generateDebugResources FROM-CACHE
+> Task :core:ui:javaPreCompileDebug FROM-CACHE
+> Task :app:javaPreCompileDevDebug FROM-CACHE
+> Task :app:extractProguardFiles
+> Task :app:extractDeepLinksDevDebug FROM-CACHE
+> Task :core:datastore:processDebugManifest FROM-CACHE
+> Task :core:ui:packageDebugResources FROM-CACHE
+> Task :core:designsystem:processDebugManifest FROM-CACHE
+> Task :core:datastore:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:ui:parseDebugLocalResources FROM-CACHE
+> Task :core:mvi:processDebugManifest FROM-CACHE
+> Task :core:navigation:processDebugManifest FROM-CACHE
+> Task :core:ui:extractDeepLinksDebug FROM-CACHE
+> Task :core:ui:generateDebugRFile FROM-CACHE
+> Task :core:ui:processDebugManifest FROM-CACHE
+> Task :core:datastore:bundleLibCompileToJarDebug
+> Task :core:datastore:processDebugJavaRes
+> Task :core:datastore:bundleLibRuntimeToJarDebug
+> Task :core:datastore:extractProguardFiles
+> Task :core:datastore:createFullJarDebug
+> Task :app:processDevDebugMainManifest
+> Task :core:designsystem:extractProguardFiles
+> Task :core:datastore:prepareLintJarForPublish
+> Task :core:designsystem:prepareLintJarForPublish
+> Task :core:mvi:processDebugJavaRes
+> Task :core:mvi:extractProguardFiles
+> Task :core:mvi:generateDebugLintModel
+> Task :core:mvi:prepareLintJarForPublish
+> Task :core:mvi:bundleLibRuntimeToJarDebug
+> Task :core:mvi:createFullJarDebug
+> Task :core:navigation:processDebugJavaRes
+> Task :core:navigation:extractProguardFiles
+> Task :core:datastore:generateDebugLintModel
+> Task :core:navigation:bundleLibRuntimeToJarDebug
+> Task :core:navigation:createFullJarDebug
+> Task :core:ui:extractProguardFiles
+> Task :core:navigation:prepareLintJarForPublish
+> Task :core:ui:prepareLintJarForPublish
+> Task :core:testing:verifyModuleDependencies FROM-CACHE
+> Task :core:testing:verifyApiPurity FROM-CACHE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:preBuild UP-TO-DATE
+> Task :core:testing:preDebugBuild UP-TO-DATE
+> Task :core:testing:prepareLintJarForPublish
+> Task :core:testing:checkDebugAarMetadata
+> Task :core:testing:generateDebugEmptyResourceFiles
+> Task :core:testing:extractDebugAnnotations FROM-CACHE
+> Task :core:testing:compileDebugKotlin FROM-CACHE
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:mergeDebugGeneratedProguardFiles
+> Task :core:testing:mergeDebugConsumerProguardFiles
+> Task :core:testing:prepareDebugArtProfile
+> Task :core:testing:processDebugManifest FROM-CACHE
+> Task :core:testing:processDebugJavaRes
+> Task :core:testing:mergeDebugAssets
+> Task :core:testing:mergeDebugJavaResource
+> Task :core:testing:syncDebugLibJars FROM-CACHE
+> Task :core:navigation:generateDebugLintModel
+> Task :core:datastore:extractDebugAnnotations FROM-CACHE
+> Task :core:datastore:generateDebugAssets UP-TO-DATE
+> Task :core:testing:writeDebugAarMetadata
+> Task :core:datastore:checkDebugAarMetadata
+> Task :core:datastore:mergeDebugGeneratedProguardFiles
+> Task :core:datastore:mergeDebugAssets
+> Task :core:testing:bundleDebugLocalLintAar
+> Task :core:datastore:mergeDebugConsumerProguardFiles
+> Task :core:datastore:prepareDebugArtProfile
+> Task :core:datastore:mergeDebugJavaResource
+> Task :core:datastore:syncDebugLibJars FROM-CACHE
+> Task :core:mvi:writeDebugAarMetadata
+> Task :core:datastore:writeDebugAarMetadata
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:ui:extractDeepLinksForAarDebug FROM-CACHE
+> Task :core:ui:generateDebugAssets UP-TO-DATE
+> Task :core:datastore:bundleDebugLocalLintAar
+> Task :core:navigation:writeDebugAarMetadata
+> Task :core:ui:prepareDebugArtProfile
+> Task :core:ui:mergeDebugAssets
+> Task :core:ui:writeDebugAarMetadata
+> Task :core:ui:checkDebugAarMetadata
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:checkDebugAarMetadata
+> Task :core:navigation:mergeDebugGeneratedProguardFiles
+> Task :core:navigation:extractDebugAnnotations FROM-CACHE
+> Task :core:navigation:mergeDebugConsumerProguardFiles
+> Task :core:navigation:prepareDebugArtProfile
+> Task :core:mvi:checkDebugAarMetadata
+> Task :core:navigation:mergeDebugJavaResource
+> Task :core:mvi:extractDebugAnnotations FROM-CACHE
+> Task :core:navigation:syncDebugLibJars FROM-CACHE
+> Task :core:mvi:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:mergeDebugAssets
+> Task :core:mvi:mergeDebugGeneratedProguardFiles
+> Task :core:mvi:mergeDebugConsumerProguardFiles
+> Task :core:mvi:prepareDebugArtProfile
+> Task :core:navigation:bundleDebugLocalLintAar
+> Task :core:mvi:mergeDebugAssets
+> Task :core:designsystem:extractDebugAnnotations
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets
+> Task :core:mvi:mergeDebugJavaResource
+> Task :core:designsystem:prepareDebugArtProfile
+> Task :core:mvi:syncDebugLibJars FROM-CACHE
+> Task :core:mvi:bundleDebugLocalLintAar
+> Task :app:mapDevDebugSourceSetPaths
+> Task :app:compileDevDebugNavigationResources FROM-CACHE
+> Task :app:checkDevDebugAarMetadata
+> Task :core:designsystem:checkDebugAarMetadata
+> Task :core:ui:mapDebugSourceSetPaths
+> Task :app:createDevDebugCompatibleScreenManifests
+> Task :core:ui:compileDebugLibraryResources FROM-CACHE
+> Task :app:preDevDebugUnitTestBuild UP-TO-DATE
+> Task :core:datastore:writeDebugLintModelMetadata
+> Task :core:designsystem:writeDebugLintModelMetadata
+> Task :core:mvi:writeDebugLintModelMetadata
+> Task :core:navigation:writeDebugLintModelMetadata
+> Task :app:processDevDebugManifest
+> Task :core:testing:bundleLibRuntimeToJarDebug
+> Task :core:testing:createFullJarDebug
+> Task :core:testing:writeDebugLintModelMetadata
+> Task :core:ui:writeDebugLintModelMetadata
+> Task :core:datastore:lintAnalyzeDebug FROM-CACHE
+> Task :core:mvi:lintAnalyzeDebug FROM-CACHE
+> Task :core:navigation:lintAnalyzeDebug FROM-CACHE
+> Task :core:datastore:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:datastore:generateDebugUnitTestLintModel
+> Task :core:datastore:lintAnalyzeDebugUnitTest FROM-CACHE
+> Task :core:testing:compose:verifyApiPurity FROM-CACHE
+> Task :core:testing:compose:verifyModuleDependencies FROM-CACHE
+> Task :core:testing:compose:preBuild UP-TO-DATE
+> Task :core:testing:compose:preDebugBuild UP-TO-DATE
+> Task :app:processDevDebugManifestForPackage
+> Task :core:testing:compose:checkDebugAarMetadata
+> Task :core:testing:compose:generateDebugEmptyResourceFiles
+> Task :core:testing:compose:generateDebugAssets UP-TO-DATE
+> Task :core:testing:compose:extractDebugAnnotations FROM-CACHE
+> Task :core:testing:compose:compileDebugKotlin FROM-CACHE
+> Task :core:testing:compose:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:mergeDebugGeneratedProguardFiles
+> Task :core:testing:compose:mergeDebugConsumerProguardFiles
+> Task :core:testing:compose:prepareDebugArtProfile
+> Task :core:testing:compose:mergeDebugAssets
+> Task :core:testing:compose:processDebugManifest FROM-CACHE
+> Task :core:testing:compose:processDebugJavaRes
+> Task :core:testing:compose:mergeDebugJavaResource
+> Task :core:testing:compose:syncDebugLibJars FROM-CACHE
+> Task :core:testing:compose:writeDebugAarMetadata
+> Task :core:testing:compose:prepareLintJarForPublish
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:testing:compose:bundleDebugLocalLintAar
+> Task :core:testing:compose:writeDebugLintModelMetadata
+> Task :core:mvi:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:mvi:generateDebugUnitTestLintModel
+> Task :core:mvi:lintAnalyzeDebugUnitTest FROM-CACHE
+> Task :core:navigation:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:navigation:generateDebugUnitTestLintModel
+> Task :core:navigation:lintAnalyzeDebugUnitTest FROM-CACHE
+> Task :core:ui:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:testing:compose:bundleLibRuntimeToJarDebug
+> Task :core:testing:compose:createFullJarDebug
+> Task :app:javaPreCompileDevDebugUnitTest FROM-CACHE
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :app:verifyDevDebugManifestRules
+> Task :app:preDevReleaseBuild UP-TO-DATE
+> Task :app:extractDeepLinksDevRelease FROM-CACHE
+> Task :core:datastore:preReleaseBuild UP-TO-DATE
+> Task :core:datastore:processReleaseManifest FROM-CACHE
+> Task :core:designsystem:preReleaseBuild
+> Task :app:verifyCodeRules
+> Task :core:mvi:preReleaseBuild UP-TO-DATE
+> Task :core:mvi:processReleaseManifest FROM-CACHE
+> Task :core:navigation:preReleaseBuild UP-TO-DATE
+> Task :core:navigation:processReleaseManifest FROM-CACHE
+> Task :core:designsystem:processReleaseManifest FROM-CACHE
+> Task :core:ui:preReleaseBuild UP-TO-DATE
+> Task :app:prePlaystoreReleaseBuild UP-TO-DATE
+> Task :core:ui:extractDeepLinksRelease FROM-CACHE
+> Task :core:ui:processReleaseManifest FROM-CACHE
+> Task :app:extractDeepLinksPlaystoreRelease FROM-CACHE
+> Task :app:processDevReleaseMainManifest
+> Task :app:verifyDevReleaseManifestRules
+> Task :app:preProdDebugBuild UP-TO-DATE
+> Task :app:extractDeepLinksProdDebug FROM-CACHE
+> Task :app:processProdDebugMainManifest
+> Task :app:verifyProdDebugManifestRules
+> Task :app:preProdReleaseBuild UP-TO-DATE
+> Task :app:extractDeepLinksProdRelease FROM-CACHE
+> Task :app:processPlaystoreReleaseMainManifest
+> Task :app:processProdReleaseMainManifest
+> Task :app:verifyPlaystoreReleaseManifestRules
+> Task :app:preStagingDebugBuild UP-TO-DATE
+> Task :app:verifyProdReleaseManifestRules FROM-CACHE
+> Task :app:preStagingReleaseBuild UP-TO-DATE
+> Task :app:extractDeepLinksStagingRelease FROM-CACHE
+> Task :app:extractDeepLinksStagingDebug FROM-CACHE
+> Task :app:processStagingReleaseMainManifest
+> Task :app:verifyStagingReleaseManifestRules
+> Task :core:common:compileTestKotlin FROM-CACHE
+> Task :app:processStagingDebugMainManifest
+> Task :core:common:compileTestJava NO-SOURCE
+> Task :core:common:processTestResources NO-SOURCE
+> Task :core:common:testClasses UP-TO-DATE
+> Task :app:verifyStagingDebugManifestRules
+> Task :app:verifyManifestRules
+> Task :core:common:test FROM-CACHE
+> Task :core:datastore:generateDebugLintReportModel
+> Task :core:common:verifyCodeRules FROM-CACHE
+> Task :core:common:check UP-TO-DATE
+> Task :core:datastore:kspDebugUnitTestKotlin FROM-CACHE
+> Task :core:datastore:compileDebugUnitTestKotlin FROM-CACHE
+> Task :core:datastore:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:datastore:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:datastore:processDebugUnitTestJavaRes
+> Task :core:datastore:testDebugUnitTest FROM-CACHE
+> Task :core:datastore:test UP-TO-DATE
+> Task :core:datastore:verifyCodeRules FROM-CACHE
+> Task :core:designsystem:generateDebugComposePreviewRobolectricTests FROM-CACHE
+> Task :core:designsystem:checkDebugUnitTestAarMetadata
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths
+> Task :core:designsystem:generateDebugUnitTestResources FROM-CACHE
+> Task :app:mergeDevDebugResources
+> Task :app:processDevDebugResources
+
+> Task :build-logic:convention:test
+
+CodeRulesTest > every rule fires on its fixture, on the right line FAILED
+    java.lang.AssertionError at CodeRulesTest.kt:156
+
+CodeRulesTest > an allow marker with a reason on the line above silences each rule FAILED
+    java.lang.AssertionError at CodeRulesTest.kt:164
+
+> Task :core:designsystem:mergeDebugUnitTestManifest
+> Task :core:designsystem:processDebugUnitTestManifest
+> Task :core:datastore:lintReportDebug
+> Task :core:datastore:lintDebug
+> Task :core:datastore:lint
+> Task :core:datastore:check
+> Task :core:designsystem:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:designsystem:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:testing:compose:bundleLibCompileToJarDebug
+> Task :core:designsystem:verifyCodeRules
+> Task :core:mvi:generateDebugLintReportModel
+> Task :core:designsystem:mergeDebugUnitTestAssets
+> Task :core:mvi:compileDebugUnitTestKotlin FROM-CACHE
+> Task :core:designsystem:mergeDebugUnitTestResources
+> Task :core:mvi:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:mvi:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:mvi:processDebugUnitTestJavaRes
+> Task :core:mvi:testDebugUnitTest FROM-CACHE
+> Task :core:mvi:test UP-TO-DATE
+> Task :core:mvi:verifyCodeRules FROM-CACHE
+> Task :core:navigation:checkComposeStability FROM-CACHE
+> Task :core:navigation:generateDebugLintReportModel
+> Task :core:mvi:lintReportDebug
+> Task :core:mvi:lintDebug
+> Task :core:mvi:lint
+> Task :core:mvi:check
+> Task :core:navigation:generateDebugUnitTestAssets UP-TO-DATE
+
+> Task :core:navigation:lintReportDebug
+Wrote HTML report to file:///D:/projects/tools/.overhaul/out/NOUI/none-compact/core/navigation/build/reports/lint-results-debug.html
+Wrote SARIF report to file:///D:/projects/tools/.overhaul/out/NOUI/none-compact/core/navigation/build/reports/lint-results-debug.sarif
+
+> Task :core:navigation:mergeDebugUnitTestAssets
+> Task :core:navigation:lintDebug
+> Task :core:navigation:lint
+> Task :core:navigation:mapDebugUnitTestSourceSetPaths
+> Task :core:navigation:generateDebugUnitTestResources FROM-CACHE
+> Task :core:navigation:checkDebugUnitTestAarMetadata
+
+> Task :build-logic:convention:test
+
+75 tests completed, 2 failed
+
+> Task :core:navigation:mergeDebugUnitTestManifest
+> Task :core:navigation:processDebugUnitTestManifest
+> Task :build-logic:convention:test FAILED
+> Task :core:navigation:mergeDebugUnitTestResources FROM-CACHE
+> Task :core:designsystem:processDebugUnitTestResources
+> Task :core:navigation:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:navigation:verifyCodeRules FROM-CACHE
+> Task :core:testing:extractProguardFiles
+> Task :core:designsystem:packageDebugUnitTestForUnitTest
+> Task :core:testing:generateDebugLintReportModel
+> Task :core:navigation:processDebugUnitTestResources FROM-CACHE
+> Task :core:designsystem:generateDebugUnitTestConfig
+> Task :core:navigation:packageDebugUnitTestForUnitTest
+> Task :core:navigation:generateDebugUnitTestConfig
+> Task :core:testing:test UP-TO-DATE
+> Task :core:testing:verifyCodeRules FROM-CACHE
+> Task :core:testing:lintAnalyzeDebug FROM-CACHE
+> Task :core:ui:checkDebugUnitTestAarMetadata
+> Task :core:ui:mapDebugUnitTestSourceSetPaths
+> Task :core:ui:generateDebugUnitTestResources FROM-CACHE
+> Task :core:testing:lintReportDebug
+> Task :core:testing:lintDebug
+> Task :core:testing:lint
+> Task :core:testing:check
+> Task :core:ui:mergeDebugUnitTestManifest
+> Task :core:ui:processDebugUnitTestManifest
+> Task :core:navigation:kspDebugUnitTestKotlin FROM-CACHE
+> Task :core:ui:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:ui:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:ui:mergeDebugUnitTestAssets
+> Task :core:ui:verifyCodeRules FROM-CACHE
+> Task :core:testing:compose:extractProguardFiles
+> Task :core:testing:compose:generateDebugLintReportModel
+> Task :core:testing:compose:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:testing:compose:generateDebugUnitTestLintModel
+> Task :core:testing:compose:lintAnalyzeDebug FROM-CACHE
+> Task :core:testing:compose:lintAnalyzeDebugUnitTest FROM-CACHE
+
+> Task :core:testing:compose:lintReportDebug
+Wrote HTML report to file:///D:/projects/tools/.overhaul/out/NOUI/none-compact/core/testing/compose/build/reports/lint-results-debug.html
+Wrote SARIF report to file:///D:/projects/tools/.overhaul/out/NOUI/none-compact/core/testing/compose/build/reports/lint-results-debug.sarif
+
+> Task :core:testing:compose:lintDebug
+> Task :core:testing:compose:lint
+> Task :core:testing:compose:checkDebugUnitTestAarMetadata
+> Task :core:testing:compose:mapDebugUnitTestSourceSetPaths
+> Task :core:testing:compose:generateDebugUnitTestResources FROM-CACHE
+> Task :core:navigation:compileDebugUnitTestKotlin FROM-CACHE
+> Task :core:navigation:processDebugUnitTestJavaRes
+> Task :core:ui:mergeDebugUnitTestResources
+> Task :core:testing:compose:mergeDebugUnitTestResources FROM-CACHE
+> Task :core:navigation:compileDebugUnitTestJavaWithJavac FROM-CACHE
+> Task :core:navigation:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :core:testing:compose:mergeDebugUnitTestManifest
+> Task :core:testing:compose:processDebugUnitTestManifest
+> Task :core:testing:compose:processDebugUnitTestResources FROM-CACHE
+> Task :core:ui:processDebugUnitTestResources
+> Task :core:testing:compose:compileDebugUnitTestKotlin FROM-CACHE
+> Task :core:testing:compose:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:testing:compose:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:ui:packageDebugUnitTestForUnitTest
+> Task :core:testing:compose:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:ui:generateDebugUnitTestConfig
+> Task :core:testing:compose:processDebugUnitTestJavaRes
+> Task :core:testing:compose:mergeDebugUnitTestAssets
+> Task :core:testing:compose:verifyCodeRules FROM-CACHE
+> Task :app:mergeDevDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateDevDebugAssets UP-TO-DATE
+> Task :core:testing:compose:packageDebugUnitTestForUnitTest
+> Task :core:testing:compose:generateDebugUnitTestConfig
+> Task :app:mergeDevDebugAssets
+> Task :app:compressDevDebugAssets FROM-CACHE
+> Task :app:generateDevDebugGlobalSynthetics FROM-CACHE
+> Task :core:testing:compose:testDebugUnitTest FROM-CACHE
+> Task :core:testing:compose:test UP-TO-DATE
+> Task :core:testing:compose:check
+> Task :app:desugarDevDebugFileDependencies FROM-CACHE
+> Task :app:checkDevDebugDuplicateClasses
+> Task :core:navigation:hiltAggregateDepsDebugUnitTest FROM-CACHE
+> Task :core:datastore:bundleLibRuntimeToDirDebug
+> Task :core:navigation:hiltJavaCompileDebugUnitTest FROM-CACHE
+> Task :core:navigation:transformDebugUnitTestClassesWithAsm FROM-CACHE
+> Task :core:navigation:bundleLibRuntimeToDirDebug
+> Task :core:navigation:testDebugUnitTest FROM-CACHE
+> Task :core:navigation:test UP-TO-DATE
+> Task :core:navigation:check
+> Task :app:mergeExtDexDevDebug FROM-CACHE
+> Task :core:mvi:bundleLibRuntimeToDirDebug
+> Task :app:mergeDevDebugJniLibFolders
+> Task :core:datastore:mergeDebugJniLibFolders
+> Task :core:datastore:mergeDebugNativeLibs NO-SOURCE
+> Task :core:designsystem:mergeDebugJniLibFolders
+> Task :core:designsystem:mergeDebugNativeLibs NO-SOURCE
+> Task :core:designsystem:copyDebugJniLibsProjectOnly
+> Task :core:datastore:copyDebugJniLibsProjectOnly
+> Task :core:navigation:mergeDebugJniLibFolders
+> Task :core:navigation:mergeDebugNativeLibs NO-SOURCE
+> Task :core:mvi:mergeDebugJniLibFolders
+> Task :core:mvi:mergeDebugNativeLibs NO-SOURCE
+> Task :core:navigation:copyDebugJniLibsProjectOnly
+> Task :core:mvi:copyDebugJniLibsProjectOnly
+> Task :app:writeDevDebugAppMetadata
+> Task :core:ui:mergeDebugJniLibFolders
+> Task :core:ui:mergeDebugNativeLibs NO-SOURCE
+> Task :core:ui:copyDebugJniLibsProjectOnly
+> Task :app:validateSigningDevDebug
+> Task :app:mergeProdReleaseJniLibFolders
+> Task :core:datastore:mergeReleaseJniLibFolders
+> Task :core:datastore:mergeReleaseNativeLibs NO-SOURCE
+> Task :app:writeDevDebugSigningConfigVersions
+> Task :core:designsystem:mergeReleaseJniLibFolders
+> Task :core:designsystem:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:datastore:copyReleaseJniLibsProjectOnly
+> Task :core:designsystem:copyReleaseJniLibsProjectOnly
+> Task :core:mvi:mergeReleaseJniLibFolders
+> Task :core:mvi:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:navigation:mergeReleaseJniLibFolders
+> Task :core:mvi:copyReleaseJniLibsProjectOnly
+> Task :core:navigation:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:ui:mergeReleaseJniLibFolders
+> Task :core:ui:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:navigation:copyReleaseJniLibsProjectOnly
+> Task :core:ui:copyReleaseJniLibsProjectOnly
+> Task :core:datastore:kspReleaseKotlin FROM-CACHE
+> Task :app:mergeDevDebugNativeLibs
+> Task :app:mergeProdReleaseNativeLibs
+> Task :core:designsystem:compileDebugKotlin
+
+> Task :app:stripProdReleaseDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so. Run with --info option to learn more.
+
+> Task :app:stripDevDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so. Run with --info option to learn more.
+
+> Task :app:extractProdReleaseNativeSymbolTables FROM-CACHE
+> Task :app:mergeProdReleaseNativeDebugMetadata NO-SOURCE
+> Task :core:datastore:javaPreCompileRelease FROM-CACHE
+> Task :core:designsystem:javaPreCompileRelease FROM-CACHE
+> Task :core:mvi:javaPreCompileRelease FROM-CACHE
+> Task :core:navigation:kspReleaseKotlin FROM-CACHE
+> Task :core:datastore:compileReleaseKotlin FROM-CACHE
+> Task :core:datastore:compileReleaseJavaWithJavac FROM-CACHE
+> Task :core:datastore:mergeReleaseGeneratedProguardFiles
+> Task :core:datastore:exportReleaseConsumerProguardFiles
+> Task :core:navigation:javaPreCompileRelease FROM-CACHE
+> Task :core:ui:generateReleaseResources FROM-CACHE
+> Task :core:navigation:compileReleaseKotlin FROM-CACHE
+> Task :core:navigation:compileReleaseJavaWithJavac FROM-CACHE
+> Task :core:ui:packageReleaseResources FROM-CACHE
+> Task :core:ui:processReleaseNavigationResources FROM-CACHE
+> Task :core:ui:parseReleaseLocalResources FROM-CACHE
+> Task :core:mvi:compileReleaseKotlin FROM-CACHE
+> Task :core:mvi:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:ui:generateReleaseRFile FROM-CACHE
+> Task :core:ui:javaPreCompileRelease FROM-CACHE
+> Task :core:mvi:bundleLibCompileToJarRelease
+> Task :core:mvi:mergeReleaseGeneratedProguardFiles
+> Task :app:checkProdReleaseDuplicateClasses
+> Task :core:datastore:prepareReleaseArtProfile
+> Task :core:designsystem:prepareReleaseArtProfile
+> Task :core:mvi:prepareReleaseArtProfile
+> Task :core:mvi:exportReleaseConsumerProguardFiles
+> Task :core:ui:prepareReleaseArtProfile
+> Task :core:navigation:prepareReleaseArtProfile
+> Task :core:navigation:transformReleaseClassesWithAsm FROM-CACHE
+> Task :app:generateProdReleaseBuildConfig FROM-CACHE
+> Task :core:navigation:mergeReleaseGeneratedProguardFiles
+> Task :core:navigation:exportReleaseConsumerProguardFiles
+> Task :core:navigation:bundleLibCompileToJarRelease
+> Task :core:datastore:generateReleaseEmptyResourceFiles
+> Task :core:designsystem:generateReleaseEmptyResourceFiles
+> Task :core:mvi:generateReleaseEmptyResourceFiles
+> Task :core:navigation:generateReleaseEmptyResourceFiles
+> Task :app:processProdReleaseNavigationResources
+> Task :core:datastore:bundleLibCompileToJarRelease
+> Task :app:javaPreCompileProdRelease FROM-CACHE
+> Task :app:generateProdReleaseResources
+> Task :core:datastore:bundleLibRuntimeToJarRelease
+> Task :app:mergeProdReleaseArtProfile
+> Task :core:navigation:bundleLibRuntimeToJarRelease
+> Task :core:datastore:writeReleaseAarMetadata
+> Task :core:designsystem:writeReleaseAarMetadata
+> Task :core:mvi:writeReleaseAarMetadata
+> Task :core:navigation:writeReleaseAarMetadata
+> Task :core:ui:writeReleaseAarMetadata
+> Task :core:mvi:bundleLibRuntimeToJarRelease
+> Task :app:checkProdReleaseAarMetadata
+> Task :app:mapProdReleaseSourceSetPaths
+> Task :app:compileProdReleaseNavigationResources FROM-CACHE
+> Task :app:createProdReleaseCompatibleScreenManifests
+> Task :app:processProdReleaseManifest
+> Task :app:packageProdReleaseResources
+> Task :app:processProdReleaseManifestForPackage
+> Task :core:ui:mapReleaseSourceSetPaths
+> Task :core:ui:compileReleaseLibraryResources FROM-CACHE
+> Task :app:parseProdReleaseLocalResources
+> Task :core:datastore:processReleaseJavaRes
+> Task :core:mvi:processReleaseJavaRes
+> Task :app:generateProdReleaseRFile FROM-CACHE
+> Task :app:mergeProdReleaseStartupProfile
+> Task :app:generateProdReleaseAssets UP-TO-DATE
+> Task :core:datastore:generateReleaseAssets UP-TO-DATE
+> Task :core:datastore:mergeReleaseAssets
+> Task :core:designsystem:generateReleaseAssets UP-TO-DATE
+> Task :core:navigation:processReleaseJavaRes
+> Task :core:mvi:generateReleaseAssets UP-TO-DATE
+> Task :core:mvi:mergeReleaseAssets
+> Task :core:designsystem:mergeReleaseAssets
+> Task :core:navigation:generateReleaseAssets UP-TO-DATE
+> Task :core:ui:generateReleaseAssets UP-TO-DATE
+> Task :core:ui:mergeReleaseAssets
+> Task :core:navigation:mergeReleaseAssets
+> Task :app:mergeProdReleaseAssets
+> Task :app:compressProdReleaseAssets FROM-CACHE
+> Task :core:datastore:createFullJarRelease
+> Task :core:datastore:generateReleaseLintModel
+> Task :core:mvi:createFullJarRelease
+> Task :core:mvi:generateReleaseLintModel
+> Task :core:navigation:createFullJarRelease
+> Task :core:navigation:generateReleaseLintModel
+> Task :core:datastore:checkReleaseAarMetadata
+> Task :core:datastore:extractReleaseAnnotations FROM-CACHE
+> Task :core:datastore:mergeReleaseConsumerProguardFiles
+> Task :core:datastore:mergeReleaseJavaResource
+> Task :core:datastore:syncReleaseLibJars FROM-CACHE
+> Task :app:extractProdReleaseVersionControlInfo
+> Task :core:datastore:bundleReleaseLocalLintAar
+> Task :core:ui:extractDeepLinksForAarRelease FROM-CACHE
+> Task :core:ui:checkReleaseAarMetadata
+> Task :core:navigation:checkReleaseAarMetadata
+> Task :core:navigation:mergeReleaseConsumerProguardFiles
+> Task :core:navigation:extractReleaseAnnotations FROM-CACHE
+> Task :core:navigation:mergeReleaseJavaResource
+> Task :core:mvi:checkReleaseAarMetadata
+> Task :core:mvi:extractReleaseAnnotations FROM-CACHE
+> Task :core:mvi:mergeReleaseConsumerProguardFiles
+> Task :core:navigation:syncReleaseLibJars FROM-CACHE
+> Task :core:mvi:mergeReleaseJavaResource
+> Task :core:mvi:syncReleaseLibJars FROM-CACHE
+> Task :core:navigation:bundleReleaseLocalLintAar
+> Task :core:mvi:bundleReleaseLocalLintAar
+> Task :core:designsystem:extractReleaseAnnotations
+> Task :core:designsystem:checkReleaseAarMetadata
+> Task :core:datastore:writeReleaseLintModelMetadata
+> Task :core:datastore:lintVitalAnalyzeRelease FROM-CACHE
+> Task :core:designsystem:writeReleaseLintModelMetadata
+> Task :core:mvi:lintVitalAnalyzeRelease FROM-CACHE
+> Task :core:mvi:writeReleaseLintModelMetadata
+> Task :core:navigation:writeReleaseLintModelMetadata
+> Task :core:ui:writeReleaseLintModelMetadata
+> Task :core:datastore:generateReleaseLintVitalModel
+> Task :core:navigation:lintVitalAnalyzeRelease FROM-CACHE
+> Task :core:mvi:generateReleaseLintVitalModel
+> Task :app:mergeProdReleaseResources
+> Task :core:navigation:generateReleaseLintVitalModel
+> Task :app:validateSigningProdRelease
+> Task :app:writeProdReleaseAppMetadata
+> Task :app:writeProdReleaseSigningConfigVersions
+> Task :app:collectProdReleaseDependencies
+> Task :app:processProdReleaseResources
+> Task :app:sdkProdReleaseDependencyData
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:checkComposeStability FROM-CACHE
+> Task :core:designsystem:processDebugJavaRes
+> Task :core:designsystem:mergeDebugGeneratedProguardFiles
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:mergeDebugConsumerProguardFiles
+> Task :core:designsystem:createFullJarDebug
+> Task :core:designsystem:mergeDebugJavaResource
+> Task :core:ui:extractDebugAnnotations
+> Task :core:designsystem:syncDebugLibJars
+> Task :core:designsystem:bundleDebugLocalLintAar
+> Task :core:designsystem:generateDebugLintModel
+> Task :core:designsystem:generateDebugUnitTestLintModel
+> Task :core:designsystem:generateDebugLintReportModel
+> Task :core:ui:compileDebugKotlin
+> Task :core:ui:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:ui:bundleLibCompileToJarDebug
+> Task :core:designsystem:compileDebugUnitTestKotlin
+> Task :core:ui:bundleLibRuntimeToJarDebug
+> Task :core:ui:processDebugJavaRes
+> Task :core:ui:createFullJarDebug
+> Task :core:ui:generateDebugLintModel
+> Task :core:ui:mergeDebugGeneratedProguardFiles
+> Task :core:ui:mergeDebugConsumerProguardFiles
+> Task :core:ui:mergeDebugJavaResource
+> Task :core:ui:syncDebugLibJars FROM-CACHE
+> Task :core:ui:bundleDebugLocalLintAar
+> Task :core:ui:generateDebugUnitTestLintModel
+> Task :core:ui:lintAnalyzeDebugUnitTest
+> Task :core:designsystem:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugUnitTestJavaRes
+
+> Task :core:designsystem:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :core:designsystem:lintAnalyzeDebugUnitTest
+> Task :core:ui:checkComposeStability FROM-CACHE
+> Task :core:ui:generateDebugLintReportModel
+
+> Task :core:ui:compileDebugUnitTestKotlin
+w: file:///D:/projects/tools/.overhaul/out/NOUI/none-compact/core/ui/src/test/kotlin/com/example/nouilean/core/ui/MessageHostTest.kt:27:16 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:ui:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:ui:processDebugUnitTestJavaRes
+
+> Task :core:ui:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :core:designsystem:lintAnalyzeDebug
+> Task :app:kspDevDebugKotlin
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:designsystem:finalizeTestRoborazziDebug SKIPPED
+> Task :core:designsystem:test
+> Task :core:ui:bundleLibRuntimeToDirDebug
+> Task :core:designsystem:bundleLibRuntimeToDirDebug
+> Task :app:compileDevDebugKotlin
+> Task :app:mergeLibDexDevDebug
+> Task :app:processDevDebugJavaRes
+> Task :app:mergeDevDebugJavaResource
+
+> Task :core:designsystem:lintReportDebug
+Wrote HTML report to file:///D:/projects/tools/.overhaul/out/NOUI/none-compact/core/designsystem/build/reports/lint-results-debug.html
+Wrote SARIF report to file:///D:/projects/tools/.overhaul/out/NOUI/none-compact/core/designsystem/build/reports/lint-results-debug.sarif
+
+> Task :core:designsystem:lintDebug
+> Task :core:designsystem:lint
+> Task :core:designsystem:check
+> Task :app:compileDevDebugJavaWithJavac
+> Task :core:designsystem:compileReleaseKotlin
+> Task :app:hiltCollectClassesDevDebug
+
+> Task :app:generateDevDebugLintReportModel
+Warning: Lint will treat :core:common as an external dependency and not analyze it.
+ * Recommended Action: Apply the 'com.android.lint' plugin to java library project :core:common. to enable lint to analyze those sources.
+
+
+> Task :core:designsystem:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibCompileToJarRelease
+> Task :app:hiltAggregateDepsDevDebug
+> Task :core:ui:test
+> Task :core:designsystem:mergeReleaseGeneratedProguardFiles
+> Task :core:designsystem:exportReleaseConsumerProguardFiles
+> Task :core:designsystem:bundleLibRuntimeToJarRelease
+> Task :core:designsystem:processReleaseJavaRes
+> Task :core:designsystem:createFullJarRelease
+> Task :core:designsystem:generateReleaseLintModel
+> Task :core:ui:extractReleaseAnnotations
+> Task :core:designsystem:mergeReleaseConsumerProguardFiles
+> Task :core:designsystem:mergeReleaseJavaResource
+> Task :core:designsystem:syncReleaseLibJars
+> Task :core:ui:lintAnalyzeDebug
+> Task :core:designsystem:bundleReleaseLocalLintAar
+
+> Task :core:ui:lintReportDebug
+Wrote HTML report to file:///D:/projects/tools/.overhaul/out/NOUI/none-compact/core/ui/build/reports/lint-results-debug.html
+Wrote SARIF report to file:///D:/projects/tools/.overhaul/out/NOUI/none-compact/core/ui/build/reports/lint-results-debug.sarif
+
+> Task :core:ui:lintDebug
+> Task :core:ui:lint
+> Task :core:ui:check
+> Task :app:hiltJavaCompileDevDebug
+> Task :app:bundleDevDebugClassesToCompileJar
+> Task :core:designsystem:lintVitalAnalyzeRelease
+> Task :app:generateDevDebugUnitTestLintModel
+> Task :core:ui:compileReleaseKotlin
+> Task :app:kspDevDebugUnitTestKotlin
+> Task :app:transformDevDebugClassesWithAsm
+> Task :app:bundleDevDebugClassesToRuntimeJar
+> Task :app:lintAnalyzeDevDebugUnitTest
+> Task :core:ui:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:ui:mergeReleaseGeneratedProguardFiles
+> Task :core:ui:exportReleaseConsumerProguardFiles
+> Task :core:ui:bundleLibCompileToJarRelease
+> Task :app:dexBuilderDevDebug
+> Task :app:mergeProjectDexDevDebug
+> Task :app:packageDevDebug
+> Task :app:createDevDebugApkListingFileRedirect
+> Task :app:assembleDevDebug
+> Task :core:ui:bundleLibRuntimeToJarRelease
+> Task :core:ui:processReleaseJavaRes
+> Task :core:ui:createFullJarRelease
+> Task :core:ui:generateReleaseLintModel
+> Task :core:ui:mergeReleaseConsumerProguardFiles
+> Task :core:ui:mergeReleaseJavaResource
+> Task :core:ui:syncReleaseLibJars FROM-CACHE
+> Task :core:ui:bundleReleaseLocalLintAar
+> Task :core:ui:lintVitalAnalyzeRelease
+> Task :core:designsystem:generateReleaseLintVitalModel
+> Task :core:ui:generateReleaseLintVitalModel
+
+> Task :app:compileDevDebugUnitTestKotlin
+w: file:///D:/projects/tools/.overhaul/out/NOUI/none-compact/app/src/test/kotlin/com/example/nouilean/navigation/NavKeyRegistrationTest.kt:141:30 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'ProtectionDomain?'.
+w: file:///D:/projects/tools/.overhaul/out/NOUI/none-compact/app/src/test/kotlin/com/example/nouilean/navigation/NavKeyRegistrationTest.kt:143:16 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'String?'.
+
+> Task :app:compileDevDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:hiltCollectClassesDevDebugUnitTest
+> Task :app:processDevDebugUnitTestJavaRes
+> Task :app:hiltAggregateDepsDevDebugUnitTest
+> Task :app:hiltJavaCompileDevDebugUnitTest NO-SOURCE
+> Task :app:transformDevDebugUnitTestClassesWithAsm
+
+> Task :app:testDevDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :app:kspProdReleaseKotlin
+> Task :app:test
+> Task :app:compileProdReleaseKotlin
+> Task :app:processProdReleaseJavaRes
+> Task :app:mergeProdReleaseJavaResource
+> Task :app:compileProdReleaseJavaWithJavac
+> Task :app:hiltCollectClassesProdRelease
+
+> Task :app:generateProdReleaseLintVitalReportModel
+Warning: Lint will treat :core:common as an external dependency and not analyze it.
+ * Recommended Action: Apply the 'com.android.lint' plugin to java library project :core:common. to enable lint to analyze those sources.
+
+
+> Task :app:hiltAggregateDepsProdRelease FROM-CACHE
+> Task :app:hiltJavaCompileProdRelease
+> Task :app:transformProdReleaseClassesWithAsm
+> Task :app:mergeProdReleaseGeneratedProguardFiles
+> Task :app:expandProdReleaseArtProfileWildcards
+> Task :app:produceProdReleaseComposeMapping
+> Task :app:reportProdReleaseComposeMappingErrors
+> Task :app:lintAnalyzeDevDebug
+
+> Task :app:lintReportDevDebug
+Wrote HTML report to file:///D:/projects/tools/.overhaul/out/NOUI/none-compact/app/build/reports/lint-results-devDebug.html
+Wrote SARIF report to file:///D:/projects/tools/.overhaul/out/NOUI/none-compact/app/build/reports/lint-results-devDebug.sarif
+
+> Task :app:lintDevDebug
+> Task :app:lint
+> Task :app:check
+> Task :app:lintVitalAnalyzeProdRelease
+> Task :app:lintVitalReportProdRelease SKIPPED
+> Task :app:lintVitalProdRelease SKIPPED
+> Task :app:minifyProdReleaseWithR8
+> Task :app:convertShrunkResourcesToBinaryProdRelease
+> Task :app:optimizeProdReleaseResources
+> Task :app:mergeProdReleaseComposeMapping
+> Task :app:compileProdReleaseArtProfile
+> Task :app:packageProdRelease
+> Task :app:assembleProdRelease
+> Task :app:createProdReleaseApkListingFileRedirect
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/out/NOUI/none-compact/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':build-logic:convention:test'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/out/NOUI/none-compact/build-logic/convention/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 3m 48s
+597 actionable tasks: 426 executed, 171 from cache
+Configuration cache entry stored.
+EXIT 1

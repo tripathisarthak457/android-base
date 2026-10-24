@@ -1,0 +1,19 @@
+noui-everything-modules:
+  GENERATION TemplateError: config/code-rules-baseline.txt: has markers, but its comment syntax is not known
+noui-none-modules:
+  GENERATION TemplateError: config/code-rules-baseline.txt: has markers, but its comment syntax is not known
+noui-preset-everything-compact:
+  GENERATION TemplateError: config/code-rules-baseline.txt: has markers, but its comment syntax is not known
+noui-preset-everything-modular:
+  GENERATION TemplateError: config/code-rules-baseline.txt: has markers, but its comment syntax is not known
+noui-preset-lean-compact:
+  GENERATION TemplateError: config/code-rules-baseline.txt: has markers, but its comment syntax is not known
+noui-preset-lean-modular:
+  GENERATION TemplateError: config/code-rules-baseline.txt: has markers, but its comment syntax is not known
+noui-preset-standard-compact:
+  GENERATION TemplateError: config/code-rules-baseline.txt: has markers, but its comment syntax is not known
+noui-preset-standard-modular:
+  GENERATION TemplateError: config/code-rules-baseline.txt: has markers, but its comment syntax is not known
+
+81 projects in 531 s: 8 new issues, 188 known (2 of 2 known-issue lines seen).
+EXIT 1

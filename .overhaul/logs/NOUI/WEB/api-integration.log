@@ -1,0 +1,59 @@
+[locked:memwait] 838 MB available, 14327 MB commit left; waiting for 3500 MB
+[locked:memwait] 807 MB available, 14347 MB commit left; waiting for 3500 MB
+[locked:memwait] 837 MB available, 14557 MB commit left; waiting for 3500 MB
+[locked:memwait] 803 MB available, 14516 MB commit left; waiting for 3500 MB
+[locked:memwait] 764 MB available, 14536 MB commit left; waiting for 3500 MB
+[locked:memwait] 830 MB available plus 8225 MB of system cache Windows will trim; continuing
+=== RUN   TestIntegrationRealGenerator
+=== RUN   TestIntegrationRealGenerator/android
+=== RUN   TestIntegrationRealGenerator/multiplatform
+    integration_test.go:58: internal_error: The generator failed.
+        Traceback (most recent call last):
+          File "D:\projects\tools\.overhaul\wt\NOUI-WEB\generator\genkit\core\placement.py", line 72, in windows_path_limit_explained
+            yield
+          File "D:\projects\tools\.overhaul\wt\NOUI-WEB\generator\genkit\core\pipeline.py", line 81, in build
+            warnings = render_template(project, spec, target)
+          File "D:\projects\tools\.overhaul\wt\NOUI-WEB\generator\genkit\core\pipeline.py", line 131, in render_template
+            write_text(destination, rendered)
+            ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+          File "D:\projects\tools\.overhaul\wt\NOUI-WEB\generator\genkit\core\copy.py", line 69, in write_text
+            path.write_bytes(text.encode("utf-8"))
+            ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+          File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 995, in write_bytes
+            with self.open(mode='wb') as f:
+                 ~~~~~~~~~^^^^^^^^^^^
+          File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 970, in open
+            return io.open(self, mode, buffering, encoding, errors, newline)
+                   ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\TestIntegrationRealGenerator2125800926\\001\\multiplatform-9292882\\multiplatform-gen-rmxgu09n\\Integration\\core\\designsystem\\src\\commonMain\\kotlin\\com\\example\\integration\\core\\designsystem\\foundation\\adaptive\\AdaptiveLayout.kt'
+        
+        The above exception was the direct cause of the following exception:
+        
+        Traceback (most recent call last):
+          File "D:\projects\tools\.overhaul\wt\NOUI-WEB\generator\genkit\core\headless.py", line 50, in run
+            result = _generate(raw, target_key, output)
+          File "D:\projects\tools\.overhaul\wt\NOUI-WEB\generator\genkit\core\headless.py", line 99, in _generate
+            generated = pipeline.build(spec, target, output, zip_output=True, commit=commit)
+          File "D:\projects\tools\.overhaul\wt\NOUI-WEB\generator\genkit\core\pipeline.py", line 76, in build
+            placement.windows_path_limit_explained("app name or package name"),
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\contextlib.py", line 224, in __exit__
+            self.gen.throw(value)
+            ~~~~~~~~~~~~~~^^^^^^^
+          File "D:\projects\tools\.overhaul\wt\NOUI-WEB\generator\genkit\core\placement.py", line 77, in windows_path_limit_explained
+            raise _past_windows_limit(
+                f"Windows refused a path of {_windows_length(path)} characters: {path}.", shorter
+            ) from error
+        genkit.core.target.RenderError: Windows refused a path of 260 characters: C:\Users\CRAZYH~1\AppData\Local\Temp\TestIntegrationRealGenerator2125800926\001\multiplatform-9292882\multiplatform-gen-rmxgu09n\Integration\core\designsystem\src\commonMain\kotlin\com\example\integration\core\designsystem\foundation\adaptive\AdaptiveLayout.kt. With long paths off Windows takes 259 at most for a file and 247 for a folder. Turn long paths on (LongPathsEnabled), which building the project needs too, or choose a shorter app name or package name.
+=== RUN   TestIntegrationRealGenerator/resolution
+=== RUN   TestIntegrationRealGenerator/no_UI_components
+=== RUN   TestIntegrationRealGenerator/v1_spec
+--- FAIL: TestIntegrationRealGenerator (29.78s)
+    --- PASS: TestIntegrationRealGenerator/android (6.42s)
+    --- FAIL: TestIntegrationRealGenerator/multiplatform (1.08s)
+    --- PASS: TestIntegrationRealGenerator/resolution (8.36s)
+    --- PASS: TestIntegrationRealGenerator/no_UI_components (7.94s)
+    --- PASS: TestIntegrationRealGenerator/v1_spec (5.43s)
+FAIL
+FAIL	github.com/base-android/generator-api/internal/generate	30.210s
+FAIL

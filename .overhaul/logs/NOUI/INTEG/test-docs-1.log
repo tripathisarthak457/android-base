@@ -1,0 +1,74 @@
+test_agents_md_mirrors_claude_md (tests.test_docs.GeneratedDocsTest.test_agents_md_mirrors_claude_md) ... ok
+test_claude_md_imports_the_three_docs_and_each_exists (tests.test_docs.GeneratedDocsTest.test_claude_md_imports_the_three_docs_and_each_exists) ... ok
+test_each_doc_keeps_to_its_budget (tests.test_docs.GeneratedDocsTest.test_each_doc_keeps_to_its_budget) ... ok
+test_every_doc_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_doc_the_code_points_to_is_in_the_project) ... ok
+test_every_link_reaches_its_file_and_heading (tests.test_docs.GeneratedDocsTest.test_every_link_reaches_its_file_and_heading) ... ok
+test_every_module_the_docs_name_is_in_the_build (tests.test_docs.GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build) ... ok
+test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) ... ok
+test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) ... ok
+test_every_skill_the_docs_name_is_vendored (tests.test_docs.GeneratedDocsTest.test_every_skill_the_docs_name_is_vendored) ... ok
+test_no_name_the_docs_cite_was_left_out_of_the_project (tests.test_docs.GeneratedDocsTest.test_no_name_the_docs_cite_was_left_out_of_the_project) ... ok
+test_the_design_system_doc_carries_both_templates (tests.test_docs.GeneratedDocsTest.test_the_design_system_doc_carries_both_templates) ... ok
+test_the_docs_speak_to_the_project_not_the_workshop (tests.test_docs.GeneratedDocsTest.test_the_docs_speak_to_the_project_not_the_workshop) ... ok
+test_the_rule_index_lists_exactly_the_rules_the_project_runs (tests.test_docs.GeneratedDocsTest.test_the_rule_index_lists_exactly_the_rules_the_project_runs) ... 
+  test_the_rule_index_lists_exactly_the_rules_the_project_runs (tests.test_docs.GeneratedDocsTest.test_the_rule_index_lists_exactly_the_rules_the_project_runs) (case='noui-lean') ... ERROR
+  test_the_rule_index_lists_exactly_the_rules_the_project_runs (tests.test_docs.GeneratedDocsTest.test_the_rule_index_lists_exactly_the_rules_the_project_runs) (case='noui-standard') ... ERROR
+  test_the_rule_index_lists_exactly_the_rules_the_project_runs (tests.test_docs.GeneratedDocsTest.test_the_rule_index_lists_exactly_the_rules_the_project_runs) (case='noui-everything') ... ERROR
+  test_the_rule_index_lists_exactly_the_rules_the_project_runs (tests.test_docs.GeneratedDocsTest.test_the_rule_index_lists_exactly_the_rules_the_project_runs) (case='noui-everything-modular') ... ERROR
+test_agents_md_mirrors_claude_md (tests.test_docs.TemplateDocsTest.test_agents_md_mirrors_claude_md) ... ok
+test_every_name_the_docs_cite_exists_somewhere (tests.test_docs.TemplateDocsTest.test_every_name_the_docs_cite_exists_somewhere) ... ok
+test_the_design_system_doc_carries_both_templates (tests.test_docs.TemplateDocsTest.test_the_design_system_doc_carries_both_templates) ... ok
+
+======================================================================
+ERROR: test_the_rule_index_lists_exactly_the_rules_the_project_runs (tests.test_docs.GeneratedDocsTest.test_the_rule_index_lists_exactly_the_rules_the_project_runs) (case='noui-lean')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 294, in test_the_rule_index_lists_exactly_the_rules_the_project_runs
+    self.assertEqual(active_rule_ids(project), index)
+                     ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 144, in active_rule_ids
+    line = re.search(r"val ALL: List<Rule> = (.+)", (guard / "CodeRules.kt").read_text(encoding="utf-8")).group(1)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'group'
+
+======================================================================
+ERROR: test_the_rule_index_lists_exactly_the_rules_the_project_runs (tests.test_docs.GeneratedDocsTest.test_the_rule_index_lists_exactly_the_rules_the_project_runs) (case='noui-standard')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 294, in test_the_rule_index_lists_exactly_the_rules_the_project_runs
+    self.assertEqual(active_rule_ids(project), index)
+                     ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 144, in active_rule_ids
+    line = re.search(r"val ALL: List<Rule> = (.+)", (guard / "CodeRules.kt").read_text(encoding="utf-8")).group(1)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'group'
+
+======================================================================
+ERROR: test_the_rule_index_lists_exactly_the_rules_the_project_runs (tests.test_docs.GeneratedDocsTest.test_the_rule_index_lists_exactly_the_rules_the_project_runs) (case='noui-everything')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 294, in test_the_rule_index_lists_exactly_the_rules_the_project_runs
+    self.assertEqual(active_rule_ids(project), index)
+                     ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 144, in active_rule_ids
+    line = re.search(r"val ALL: List<Rule> = (.+)", (guard / "CodeRules.kt").read_text(encoding="utf-8")).group(1)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'group'
+
+======================================================================
+ERROR: test_the_rule_index_lists_exactly_the_rules_the_project_runs (tests.test_docs.GeneratedDocsTest.test_the_rule_index_lists_exactly_the_rules_the_project_runs) (case='noui-everything-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 294, in test_the_rule_index_lists_exactly_the_rules_the_project_runs
+    self.assertEqual(active_rule_ids(project), index)
+                     ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 144, in active_rule_ids
+    line = re.search(r"val ALL: List<Rule> = (.+)", (guard / "CodeRules.kt").read_text(encoding="utf-8")).group(1)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'group'
+
+----------------------------------------------------------------------
+Ran 16 tests in 28.718s
+
+FAILED (errors=4)
+EXIT 1

@@ -14,3 +14,4 @@
 - [Deadlines: flag slips early](deadline-flag-slips-early.md) — Oct 21: final work-project zip came 3 h after the 06:00 deadline; announce slips before the deadline
 - [VitFleet project](vitfleet-project.md) — Oct 24: cloned to D:\projects\tools\vitfleet for flow changes/bug fixes; no Docker or make here, prod signing key missing
 - [Log times from the clock](log-times-from-clock.md) — run date before writing any time; estimates ran up to 18 min ahead on Oct 19
+- [Python alias needs LOCALAPPDATA](python-alias-needs-localappdata.md) — a bare python in a stripped env made the install manager register a stray Python (Oct 24); keep LOCALAPPDATA or use the full path

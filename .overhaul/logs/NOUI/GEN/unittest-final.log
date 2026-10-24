@@ -1,0 +1,1820 @@
+....................................................................................................................................s....................................s...........................................ss.......................................................................................................EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE..........................................................................s...........s.........................s..........s........................................................................................s....................
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='app/src/main/kotlin/com/base/app/MainActivity.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: app/src/main/kotlin/com/base/app/MainActivity.kt:37: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='app/src/main/kotlin/com/base/app/startup/LaunchHook.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: app/src/main/kotlin/com/base/app/startup/LaunchHook.kt:8: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='app/src/test/kotlin/com/base/app/navigation/SharedDestinationsTest.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 275, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: app/src/test/kotlin/com/base/app/navigation/SharedDestinationsTest.kt:4: unknown feature 'ui_components' in <opt:!ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='benchmark/src/main/kotlin/com/base/app/benchmark/startup/StartupBenchmark.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: benchmark/src/main/kotlin/com/base/app/benchmark/startup/StartupBenchmark.kt:8: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='build-logic/convention/src/main/kotlin/AndroidFeatureConventionPlugin.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: build-logic/convention/src/main/kotlin/AndroidFeatureConventionPlugin.kt:17: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/AdaptiveRules.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/AdaptiveRules.kt:78: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/CodeRules.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/CodeRules.kt:154: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/ComposeRules.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/ComposeRules.kt:19: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/ScrollRules.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/ScrollRules.kt:19: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/CodeRuleCasesTest.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/CodeRuleCasesTest.kt:266: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/CodeRulesTest.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/CodeRulesTest.kt:135: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='config/code-rules-baseline.txt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: config/code-rules-baseline.txt:9: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/applock/build.gradle.kts', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/applock/build.gradle.kts:20: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/applock/src/main/kotlin/com/base/app/core/applock/AppLockGate.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/applock/src/main/kotlin/com/base/app/core/applock/AppLockGate.kt:29: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/applock/src/test/kotlin/com/base/app/core/applock/AppLockGateTest.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/applock/src/test/kotlin/com/base/app/core/applock/AppLockGateTest.kt:53: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/designsystem/build.gradle.kts', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/designsystem/build.gradle.kts:11: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppDesignStyle.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppDesignStyle.kt:8: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppMotion.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppMotion.kt:19: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/adaptive/PostureTest.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/adaptive/PostureTest.kt:21: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/devtools/src/main/kotlin/com/base/app/core/devtools/badge/DevToolsOverlay.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/devtools/src/main/kotlin/com/base/app/core/devtools/badge/DevToolsOverlay.kt:50: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/devtools/src/main/kotlin/com/base/app/core/devtools/panel/DevToolsPanel.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/devtools/src/main/kotlin/com/base/app/core/devtools/panel/DevToolsPanel.kt:50: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/devtools/src/main/kotlin/com/base/app/core/devtools/panel/FlagsTab.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/devtools/src/main/kotlin/com/base/app/core/devtools/panel/FlagsTab.kt:18: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/devtools/src/test/kotlin/com/base/app/core/devtools/badge/DevToolsOverlayTest.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/devtools/src/test/kotlin/com/base/app/core/devtools/badge/DevToolsOverlayTest.kt:39: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/navigation/build.gradle.kts', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/navigation/build.gradle.kts:18: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/navigation/src/main/kotlin/com/base/app/core/navigation/DeepLinks.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/navigation/src/main/kotlin/com/base/app/core/navigation/DeepLinks.kt:16: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/navigation/src/test/kotlin/com/base/app/core/navigation/TestKeys.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/navigation/src/test/kotlin/com/base/app/core/navigation/TestKeys.kt:6: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/navigation/src/test/kotlin/com/base/app/core/navigation/TestScreens.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/navigation/src/test/kotlin/com/base/app/core/navigation/TestScreens.kt:10: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/perfhud/src/main/kotlin/com/base/app/core/perfhud/overlay/PerformancePill.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/perfhud/src/main/kotlin/com/base/app/core/perfhud/overlay/PerformancePill.kt:27: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/DetailSections.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/DetailSections.kt:33: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/FrameSections.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/FrameSections.kt:26: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/PerformanceTab.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/PerformanceTab.kt:33: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/ScoreSection.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/ScoreSection.kt:27: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/playstore/build.gradle.kts', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/playstore/build.gradle.kts:20: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/playstore/src/main/kotlin/com/base/app/core/playstore/PlayStorePrompts.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/playstore/src/main/kotlin/com/base/app/core/playstore/PlayStorePrompts.kt:25: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/ui/build.gradle.kts', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/ui/build.gradle.kts:26: unknown feature 'ui_components' in <opt:!ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/ui/src/main/kotlin/com/base/app/core/ui/appstatus/AppStatusGate.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/ui/src/main/kotlin/com/base/app/core/ui/appstatus/AppStatusGate.kt:12: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/auth/src/main/kotlin/com/base/app/feature/auth/GoogleSignIn.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/auth/src/main/kotlin/com/base/app/feature/auth/GoogleSignIn.kt:14: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/auth/src/main/kotlin/com/base/app/feature/auth/PasswordReset.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/auth/src/main/kotlin/com/base/app/feature/auth/PasswordReset.kt:25: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/auth/src/main/kotlin/com/base/app/feature/auth/SignIn.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/auth/src/main/kotlin/com/base/app/feature/auth/SignIn.kt:16: unknown feature 'ui_components' in <opt:googlesignin&ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/auth/src/main/kotlin/com/base/app/feature/auth/SignUp.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/auth/src/main/kotlin/com/base/app/feature/auth/SignUp.kt:30: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/feed/src/main/kotlin/com/base/app/feature/feed/FeedScreen.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/feed/src/main/kotlin/com/base/app/feature/feed/FeedScreen.kt:7: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/onboarding/src/main/kotlin/com/base/app/feature/onboarding/Onboarding.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/onboarding/src/main/kotlin/com/base/app/feature/onboarding/Onboarding.kt:17: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/profile/src/main/kotlin/com/base/app/feature/profile/ProfileScreen.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/profile/src/main/kotlin/com/base/app/feature/profile/ProfileScreen.kt:7: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/search/src/main/kotlin/com/base/app/feature/search/SearchResult.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/search/src/main/kotlin/com/base/app/feature/search/SearchResult.kt:21: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/search/src/main/kotlin/com/base/app/feature/search/SearchScreen.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/search/src/main/kotlin/com/base/app/feature/search/SearchScreen.kt:7: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/settings/src/main/kotlin/com/base/app/feature/settings/Licenses.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/settings/src/main/kotlin/com/base/app/feature/settings/Licenses.kt:21: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/settings/src/main/kotlin/com/base/app/feature/settings/Settings.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/settings/src/main/kotlin/com/base/app/feature/settings/Settings.kt:28: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='app/src/main/kotlin/com/base/app/MainActivity.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: app/src/main/kotlin/com/base/app/MainActivity.kt:37: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='app/src/main/kotlin/com/base/app/startup/LaunchHook.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: app/src/main/kotlin/com/base/app/startup/LaunchHook.kt:8: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='app/src/test/kotlin/com/base/app/navigation/SharedDestinationsTest.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 275, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: app/src/test/kotlin/com/base/app/navigation/SharedDestinationsTest.kt:4: unknown feature 'ui_components' in <opt:!ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='benchmark/src/main/kotlin/com/base/app/benchmark/startup/StartupBenchmark.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: benchmark/src/main/kotlin/com/base/app/benchmark/startup/StartupBenchmark.kt:8: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='build-logic/convention/src/main/kotlin/AndroidFeatureConventionPlugin.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: build-logic/convention/src/main/kotlin/AndroidFeatureConventionPlugin.kt:17: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/AdaptiveRules.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/AdaptiveRules.kt:78: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/CodeRules.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/CodeRules.kt:154: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/ComposeRules.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/ComposeRules.kt:19: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/ScrollRules.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/ScrollRules.kt:19: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/CodeRuleCasesTest.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/CodeRuleCasesTest.kt:266: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/CodeRulesTest.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/CodeRulesTest.kt:135: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='config/code-rules-baseline.txt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: config/code-rules-baseline.txt:9: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/applock/build.gradle.kts', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/applock/build.gradle.kts:20: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/applock/src/main/kotlin/com/base/app/core/applock/AppLockGate.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/applock/src/main/kotlin/com/base/app/core/applock/AppLockGate.kt:29: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/applock/src/test/kotlin/com/base/app/core/applock/AppLockGateTest.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/applock/src/test/kotlin/com/base/app/core/applock/AppLockGateTest.kt:53: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/designsystem/build.gradle.kts', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/designsystem/build.gradle.kts:11: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppDesignStyle.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppDesignStyle.kt:8: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppMotion.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppMotion.kt:19: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/adaptive/PostureTest.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/adaptive/PostureTest.kt:21: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/devtools/src/main/kotlin/com/base/app/core/devtools/badge/DevToolsOverlay.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/devtools/src/main/kotlin/com/base/app/core/devtools/badge/DevToolsOverlay.kt:50: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/devtools/src/main/kotlin/com/base/app/core/devtools/panel/DevToolsPanel.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/devtools/src/main/kotlin/com/base/app/core/devtools/panel/DevToolsPanel.kt:50: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/devtools/src/main/kotlin/com/base/app/core/devtools/panel/FlagsTab.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/devtools/src/main/kotlin/com/base/app/core/devtools/panel/FlagsTab.kt:18: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/devtools/src/test/kotlin/com/base/app/core/devtools/badge/DevToolsOverlayTest.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/devtools/src/test/kotlin/com/base/app/core/devtools/badge/DevToolsOverlayTest.kt:39: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/navigation/build.gradle.kts', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/navigation/build.gradle.kts:18: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/navigation/src/main/kotlin/com/base/app/core/navigation/DeepLinks.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/navigation/src/main/kotlin/com/base/app/core/navigation/DeepLinks.kt:16: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/navigation/src/test/kotlin/com/base/app/core/navigation/TestKeys.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/navigation/src/test/kotlin/com/base/app/core/navigation/TestKeys.kt:6: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/navigation/src/test/kotlin/com/base/app/core/navigation/TestScreens.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/navigation/src/test/kotlin/com/base/app/core/navigation/TestScreens.kt:10: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/perfhud/src/main/kotlin/com/base/app/core/perfhud/overlay/PerformancePill.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/perfhud/src/main/kotlin/com/base/app/core/perfhud/overlay/PerformancePill.kt:27: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/DetailSections.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/DetailSections.kt:33: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/FrameSections.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/FrameSections.kt:26: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/PerformanceTab.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/PerformanceTab.kt:33: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/ScoreSection.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/ScoreSection.kt:27: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/playstore/build.gradle.kts', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/playstore/build.gradle.kts:20: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/playstore/src/main/kotlin/com/base/app/core/playstore/PlayStorePrompts.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/playstore/src/main/kotlin/com/base/app/core/playstore/PlayStorePrompts.kt:25: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/ui/build.gradle.kts', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/ui/build.gradle.kts:26: unknown feature 'ui_components' in <opt:!ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/ui/src/main/kotlin/com/base/app/core/ui/appstatus/AppStatusGate.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: core/ui/src/main/kotlin/com/base/app/core/ui/appstatus/AppStatusGate.kt:12: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/auth/src/main/kotlin/com/base/app/feature/auth/GoogleSignIn.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/auth/src/main/kotlin/com/base/app/feature/auth/GoogleSignIn.kt:14: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/auth/src/main/kotlin/com/base/app/feature/auth/PasswordReset.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/auth/src/main/kotlin/com/base/app/feature/auth/PasswordReset.kt:25: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/auth/src/main/kotlin/com/base/app/feature/auth/SignIn.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/auth/src/main/kotlin/com/base/app/feature/auth/SignIn.kt:16: unknown feature 'ui_components' in <opt:googlesignin&ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/auth/src/main/kotlin/com/base/app/feature/auth/SignUp.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/auth/src/main/kotlin/com/base/app/feature/auth/SignUp.kt:30: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/feed/src/main/kotlin/com/base/app/feature/feed/FeedScreen.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/feed/src/main/kotlin/com/base/app/feature/feed/FeedScreen.kt:7: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/onboarding/src/main/kotlin/com/base/app/feature/onboarding/Onboarding.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/onboarding/src/main/kotlin/com/base/app/feature/onboarding/Onboarding.kt:17: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/profile/src/main/kotlin/com/base/app/feature/profile/ProfileScreen.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/profile/src/main/kotlin/com/base/app/feature/profile/ProfileScreen.kt:7: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/search/src/main/kotlin/com/base/app/feature/search/SearchResult.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/search/src/main/kotlin/com/base/app/feature/search/SearchResult.kt:21: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/search/src/main/kotlin/com/base/app/feature/search/SearchScreen.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/search/src/main/kotlin/com/base/app/feature/search/SearchScreen.kt:7: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/settings/src/main/kotlin/com/base/app/feature/settings/Licenses.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/settings/src/main/kotlin/com/base/app/feature/settings/Licenses.kt:21: unknown feature 'ui_components' in <opt:ui_components>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='feature/settings/src/main/kotlin/com/base/app/feature/settings/Settings.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\tests\test_markers.py", line 241, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 242, in render
+    expression = Expression.parse(match.group("expr"), known, path, number)
+  File "D:\projects\tools\.overhaul\wt\NOUI-GEN\generator\genkit\core\markers.py", line 140, in parse
+    raise TemplateError(path, line, f"unknown feature '{key}' in <opt:{text}>")
+genkit.core.markers.TemplateError: feature/settings/src/main/kotlin/com/base/app/feature/settings/Settings.kt:28: unknown feature 'ui_components' in <opt:ui_components>
+
+----------------------------------------------------------------------
+Ran 552 tests in 528.959s
+
+FAILED (errors=94, skipped=9)
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+EXIT 1

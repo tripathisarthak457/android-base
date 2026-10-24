@@ -1,0 +1,397 @@
+......FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF.F..FFFF.F.
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='noui-lean', page='CLAUDE.md', path='data/')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 276, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : data/
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='noui-lean', page='CLAUDE.md', path='feature/')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 276, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : feature/
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='noui-lean', page='CLAUDE.md', path='data/')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 276, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : data/
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='noui-lean', page='CLAUDE.md', path='data/')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 276, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : data/
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='noui-lean', page='CLAUDE.md', path='data/')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 276, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : data/
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='noui-lean', page='CLAUDE.md', path='data/')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 276, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : data/
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='noui-lean', page='CLAUDE.md', path='data/')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 276, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : data/
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='noui-lean', page='AGENTS.md', path='data/')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 276, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : data/
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='noui-lean', page='AGENTS.md', path='feature/')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 276, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : feature/
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='noui-lean', page='AGENTS.md', path='data/')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 276, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : data/
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='noui-lean', page='AGENTS.md', path='data/')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 276, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : data/
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='noui-lean', page='AGENTS.md', path='data/')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 276, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : data/
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='noui-lean', page='AGENTS.md', path='data/')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 276, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : data/
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='noui-lean', page='AGENTS.md', path='data/')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 276, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : data/
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='noui-lean', page='docs/DESIGN-SYSTEM.md', path='data/')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 276, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : data/
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-lean', page='docs/DESIGN-SYSTEM.md', token='designsystem-imports')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'designsystem-imports' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-lean', page='docs/DESIGN-SYSTEM.md', token='stateless-params')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'stateless-params' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-lean', page='docs/DESIGN-SYSTEM.md', token='raw-type')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'raw-type' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-lean', page='docs/DESIGN-SYSTEM.md', token='feature-primitive')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'feature-primitive' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-lean', page='docs/DESIGN-SYSTEM.md', token='component-preview')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'component-preview' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-standard', page='docs/DESIGN-SYSTEM.md', token='designsystem-imports')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'designsystem-imports' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-standard', page='docs/DESIGN-SYSTEM.md', token='stateless-params')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'stateless-params' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-standard', page='docs/DESIGN-SYSTEM.md', token='raw-type')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'raw-type' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-standard', page='docs/DESIGN-SYSTEM.md', token='feature-primitive')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'feature-primitive' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-standard', page='docs/DESIGN-SYSTEM.md', token='component-preview')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'component-preview' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-everything', page='docs/DESIGN-SYSTEM.md', token='designsystem-imports')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'designsystem-imports' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-everything', page='docs/DESIGN-SYSTEM.md', token='stateless-params')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'stateless-params' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-everything', page='docs/DESIGN-SYSTEM.md', token='raw-type')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'raw-type' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-everything', page='docs/DESIGN-SYSTEM.md', token='feature-primitive')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'feature-primitive' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-everything', page='docs/DESIGN-SYSTEM.md', token='component-preview')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'component-preview' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-everything-modular', page='docs/DESIGN-SYSTEM.md', token='designsystem-imports')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'designsystem-imports' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-everything-modular', page='docs/DESIGN-SYSTEM.md', token='stateless-params')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'stateless-params' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-everything-modular', page='docs/DESIGN-SYSTEM.md', token='raw-type')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'raw-type' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-everything-modular', page='docs/DESIGN-SYSTEM.md', token='feature-primitive')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'feature-primitive' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-everything-modular', page='docs/DESIGN-SYSTEM.md', token='component-preview')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 287, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'component-preview' not found in {'adaptive-orientation', 'animated-delegate', 'experimental-api', 'layer-package', 'adaptive-fixed-size', 'layer-alpha-fill', 'raw-color', 'uistate-mutable', 'commented-code', 'scroll-fling', 'subcompose-image', 'raw-dp', 'legacy-back', 'lazy-key', 'run-catching', 'compose-compiler', 'pixel-line', 'bang-bang', 'nav-fade', 'file-length', 'slop-comment', 'dispatchers-io', 'scroll-chrome', 'adaptive-mediaquery', 'vm-forwarding', 'hardcoded-copy', 'adaptive-preview', 'material', 'collect-as-state', 'state-param', 'composed', 'bare-clickable', 'adaptive-material-scope', 'raw-tween', 'lazy-content-type', 'feature-public', 'api-immutable', 'adaptive-device-type', 'blocking', 'adaptive-box-constraints', 'spaced-test-name', 'ripple', 'adaptive-screen-metrics'}
+
+======================================================================
+FAIL: test_no_name_the_docs_cite_was_left_out_of_the_project (tests.test_docs.GeneratedDocsTest.test_no_name_the_docs_cite_was_left_out_of_the_project) (case='noui-lean', page='docs/ARCHITECTURE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 304, in test_no_name_the_docs_cite_was_left_out_of_the_project
+    self.assertEqual(set(), missing)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'loadState'
+'Appeared'
+
+======================================================================
+FAIL: test_the_rule_index_lists_exactly_the_rules_the_project_runs (tests.test_docs.GeneratedDocsTest.test_the_rule_index_lists_exactly_the_rules_the_project_runs) (case='noui-lean')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 293, in test_the_rule_index_lists_exactly_the_rules_the_project_runs
+    self.assertEqual(active_rule_ids(project), index)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'component-preview'
+'raw-type'
+'feature-primitive'
+'stateless-params'
+'designsystem-imports'
+
+======================================================================
+FAIL: test_the_rule_index_lists_exactly_the_rules_the_project_runs (tests.test_docs.GeneratedDocsTest.test_the_rule_index_lists_exactly_the_rules_the_project_runs) (case='noui-standard')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 293, in test_the_rule_index_lists_exactly_the_rules_the_project_runs
+    self.assertEqual(active_rule_ids(project), index)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'component-preview'
+'raw-type'
+'feature-primitive'
+'stateless-params'
+'designsystem-imports'
+
+======================================================================
+FAIL: test_the_rule_index_lists_exactly_the_rules_the_project_runs (tests.test_docs.GeneratedDocsTest.test_the_rule_index_lists_exactly_the_rules_the_project_runs) (case='noui-everything')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 293, in test_the_rule_index_lists_exactly_the_rules_the_project_runs
+    self.assertEqual(active_rule_ids(project), index)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'component-preview'
+'raw-type'
+'feature-primitive'
+'stateless-params'
+'designsystem-imports'
+
+======================================================================
+FAIL: test_the_rule_index_lists_exactly_the_rules_the_project_runs (tests.test_docs.GeneratedDocsTest.test_the_rule_index_lists_exactly_the_rules_the_project_runs) (case='noui-everything-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 293, in test_the_rule_index_lists_exactly_the_rules_the_project_runs
+    self.assertEqual(active_rule_ids(project), index)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'component-preview'
+'raw-type'
+'feature-primitive'
+'stateless-params'
+'designsystem-imports'
+
+======================================================================
+FAIL: test_every_name_the_docs_cite_exists_somewhere (tests.test_docs.TemplateDocsTest.test_every_name_the_docs_cite_exists_somewhere) (page='docs/DESIGN-SYSTEM.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 193, in test_every_name_the_docs_cite_exists_somewhere
+    self.assertEqual(STALE_NAMES.get(page, set()), unknown)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'AppComponentPreviews'
+
+----------------------------------------------------------------------
+Ran 16 tests in 125.653s
+
+FAILED (failures=41)

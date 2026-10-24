@@ -1,0 +1,188 @@
+[locked:memwait] 806 MB available, 14268 MB commit left; waiting for 3500 MB
+[locked:memwait] 793 MB available, 14050 MB commit left; waiting for 3500 MB
+[locked:memwait] 783 MB available, 14167 MB commit left; waiting for 3500 MB
+[locked:memwait] 824 MB available, 14375 MB commit left; waiting for 3500 MB
+[locked:memwait] 820 MB available, 14552 MB commit left; waiting for 3500 MB
+[locked:memwait] 802 MB available plus 8197 MB of system cache Windows will trim; continuing
+.FFFF....FFFF.FFFFFFFFF.F...
+======================================================================
+FAIL: test_every_name_the_docs_cite_exists_somewhere (tests.test_docs.TemplateDocsTest.test_every_name_the_docs_cite_exists_somewhere) (page='README.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 189, in test_every_name_the_docs_cite_exists_somewhere
+    self.assertEqual(STALE_NAMES.get(page, set()), unknown)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'StartKey'
+
+======================================================================
+FAIL: test_every_name_the_docs_cite_exists_somewhere (tests.test_docs.TemplateDocsTest.test_every_name_the_docs_cite_exists_somewhere) (page='docs/ARCHITECTURE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 189, in test_every_name_the_docs_cite_exists_somewhere
+    self.assertEqual(STALE_NAMES.get(page, set()), unknown)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'LocalMessagePresenter'
+'StartScreen'
+'MessagePresenter'
+'StartKey'
+'PlaceholderScreen'
+'NavDisplayHostTest'
+
+======================================================================
+FAIL: test_every_name_the_docs_cite_exists_somewhere (tests.test_docs.TemplateDocsTest.test_every_name_the_docs_cite_exists_somewhere) (page='docs/PERFORMANCE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 189, in test_every_name_the_docs_cite_exists_somewhere
+    self.assertEqual(STALE_NAMES.get(page, set()), unknown)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'TotalTime'
+
+======================================================================
+FAIL: test_every_name_the_docs_cite_exists_somewhere (tests.test_docs.TemplateDocsTest.test_every_name_the_docs_cite_exists_somewhere) (page='docs/DESIGN-SYSTEM.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 189, in test_every_name_the_docs_cite_exists_somewhere
+    self.assertEqual(STALE_NAMES.get(page, set()), unknown)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'LocalMessagePresenter'
+'ThemePreview'
+'MessagePresenter'
+'AppComponentPreviews'
+'PlaceholderScreen'
+
+======================================================================
+FAIL: test_every_doc_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_doc_the_code_points_to_is_in_the_project) (case='ui-lean', page='docs/ADAPTIVE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 325, in test_every_doc_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/ADAPTIVE.md, not in the project
+
+======================================================================
+FAIL: test_every_doc_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_doc_the_code_points_to_is_in_the_project) (case='ui-lean', page='docs/MOTION-AND-PERFORMANCE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 325, in test_every_doc_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/MOTION-AND-PERFORMANCE.md, not in the project
+
+======================================================================
+FAIL: test_every_link_reaches_its_file_and_heading (tests.test_docs.GeneratedDocsTest.test_every_link_reaches_its_file_and_heading) (case='ui-lean', page='docs/PERFORMANCE.md', link='DESIGN-SYSTEM.md#the-theme-skeleton')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 311, in test_every_link_reaches_its_file_and_heading
+    self.assertIn(anchor, anchors(linked.read_text(encoding="utf-8")))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'the-theme-skeleton' not found in {'the-theme-and-its-tokens', 'design-system', 'previews-are-render-tests', 'the-component-contract', 'where-the-values-live-and-how-to-change-one', 'interaction', 'the-rule-index', 'templates', 'first-things-to-build'}
+
+======================================================================
+FAIL: test_every_link_reaches_its_file_and_heading (tests.test_docs.GeneratedDocsTest.test_every_link_reaches_its_file_and_heading) (case='ui-lean', page='docs/PERFORMANCE.md', link='DESIGN-SYSTEM.md#the-theme-skeleton')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 311, in test_every_link_reaches_its_file_and_heading
+    self.assertIn(anchor, anchors(linked.read_text(encoding="utf-8")))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'the-theme-skeleton' not found in {'the-theme-and-its-tokens', 'design-system', 'previews-are-render-tests', 'the-component-contract', 'where-the-values-live-and-how-to-change-one', 'interaction', 'the-rule-index', 'templates', 'first-things-to-build'}
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='ui-lean', page='README.md', path='app/.../ui/AppRoot.kt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 272, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : app/.../ui/AppRoot.kt
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='ui-lean', page='README.md', path='app/.../ui/AppDestinations.kt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 272, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : app/.../ui/AppDestinations.kt
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='ui-lean', page='docs/ARCHITECTURE.md', path='feature/x')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 272, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : feature/x
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='ui-lean', page='docs/ARCHITECTURE.md', path='data/x')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 272, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : data/x
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='ui-lean', page='docs/ARCHITECTURE.md', path='core/x')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 272, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : core/x
+
+======================================================================
+FAIL: test_every_path_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_docs_name_is_in_the_project) (case='ui-lean', page='docs/DESIGN-SYSTEM.md', path='core/designsystem/src/main/kotlin/<package')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 272, in test_every_path_the_docs_name_is_in_the_project
+    self.assertTrue(any(project.glob(pattern)) if "*" in pattern else (project / path).exists(), path)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : core/designsystem/src/main/kotlin/<package
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='ui-lean', page='docs/ARCHITECTURE.md', token='build-logic')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 283, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'build-logic' not found in {'adaptive-fixed-size', 'dispatchers-io', 'scroll-chrome', 'adaptive-device-type', 'bang-bang', 'experimental-api', 'run-catching', 'raw-tween', 'ripple', 'legacy-back', 'adaptive-orientation', 'lazy-key', 'sheet-shadow', 'collect-as-state', 'raw-color', 'raw-dp', 'feature-public', 'pixel-line', 'bare-clickable', 'layer-alpha-fill', 'lazy-content-type', 'file-length', 'sheet-modifier', 'sheet-raw-delta', 'state-param', 'shell-seam', 'uistate-mutable', 'composed', 'slop-comment', 'layer-package', 'animated-delegate', 'adaptive-box-constraints', 'adaptive-material-scope', 'sheet-window', 'api-immutable', 'commented-code', 'adaptive-screen-metrics', 'sheet-root', 'hardcoded-copy', 'adaptive-mediaquery', 'subcompose-image', 'sheet-ime-padding', 'sheet-when-else', 'adaptive-preview', 'material', 'blocking', 'scroll-fling', 'nav-fade', 'vm-forwarding', 'spaced-test-name', 'sheet-conditional'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='ui-lean', page='docs/ARCHITECTURE.md', token='build-logic')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 283, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'build-logic' not found in {'adaptive-fixed-size', 'dispatchers-io', 'scroll-chrome', 'adaptive-device-type', 'bang-bang', 'experimental-api', 'run-catching', 'raw-tween', 'ripple', 'legacy-back', 'adaptive-orientation', 'lazy-key', 'sheet-shadow', 'collect-as-state', 'raw-color', 'raw-dp', 'feature-public', 'pixel-line', 'bare-clickable', 'layer-alpha-fill', 'lazy-content-type', 'file-length', 'sheet-modifier', 'sheet-raw-delta', 'state-param', 'shell-seam', 'uistate-mutable', 'composed', 'slop-comment', 'layer-package', 'animated-delegate', 'adaptive-box-constraints', 'adaptive-material-scope', 'sheet-window', 'api-immutable', 'commented-code', 'adaptive-screen-metrics', 'sheet-root', 'hardcoded-copy', 'adaptive-mediaquery', 'subcompose-image', 'sheet-ime-padding', 'sheet-when-else', 'adaptive-preview', 'material', 'blocking', 'scroll-fling', 'nav-fade', 'vm-forwarding', 'spaced-test-name', 'sheet-conditional'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='ui-lean', page='docs/DESIGN-SYSTEM.md', token='compose-compiler')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 283, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'compose-compiler' not found in {'adaptive-fixed-size', 'dispatchers-io', 'scroll-chrome', 'adaptive-device-type', 'bang-bang', 'experimental-api', 'run-catching', 'raw-tween', 'ripple', 'legacy-back', 'adaptive-orientation', 'lazy-key', 'sheet-shadow', 'collect-as-state', 'raw-color', 'raw-dp', 'feature-public', 'pixel-line', 'bare-clickable', 'layer-alpha-fill', 'lazy-content-type', 'file-length', 'sheet-modifier', 'sheet-raw-delta', 'state-param', 'shell-seam', 'uistate-mutable', 'composed', 'slop-comment', 'layer-package', 'animated-delegate', 'adaptive-box-constraints', 'adaptive-material-scope', 'sheet-window', 'api-immutable', 'commented-code', 'adaptive-screen-metrics', 'sheet-root', 'hardcoded-copy', 'adaptive-mediaquery', 'subcompose-image', 'sheet-ime-padding', 'sheet-when-else', 'adaptive-preview', 'material', 'blocking', 'scroll-fling', 'nav-fade', 'vm-forwarding', 'spaced-test-name', 'sheet-conditional'}
+
+======================================================================
+FAIL: test_no_name_the_docs_cite_was_left_out_of_the_project (tests.test_docs.GeneratedDocsTest.test_no_name_the_docs_cite_was_left_out_of_the_project) (case='ui-lean', page='docs/ARCHITECTURE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 297, in test_no_name_the_docs_cite_was_left_out_of_the_project
+    self.assertEqual(set(), missing)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'savedStateHandle'
+'AppLocales'
+
+----------------------------------------------------------------------
+Ran 16 tests in 59.422s
+
+FAILED (failures=18)

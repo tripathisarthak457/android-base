@@ -1,0 +1,29 @@
+
+Summary
+───────
+           App  Noui Lean (NouiLean)
+       Package  com.example.nouilean
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  none
+       Options  ui_components off
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI\none-compact-3
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI\none-compact-3 and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+

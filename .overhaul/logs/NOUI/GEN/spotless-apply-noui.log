@@ -1,0 +1,99 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: spotlessApply
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+> Task :spotlessKotlin UP-TO-DATE
+> Task :spotlessKotlinApply FAILED
+> Task :spotlessKotlinGradle UP-TO-DATE
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':spotlessKotlinApply' (registered in build file 'build.gradle.kts').
+> There were 65 lint error(s), they must be fixed or suppressed.
+  app/src/main/kotlin/com/example/nouigen/MyAppApplication.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  app/src/test/kotlin/com/example/nouigen/navigation/NavKeyRegistrationTest.kt:L128 ktlint(standard:max-line-length) Exceeded max line length (100)
+  app/src/test/kotlin/com/example/nouigen/startup/StartupViewModelTest.kt:L78 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/AndroidComposeConventionPlugin.kt:L15 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/AndroidLicensesConventionPlugin.kt:L14 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/AndroidScreenshotsConventionPlugin.kt:L58 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/example/nouigen/buildlogic/android/ComposeStability.kt:L108 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/example/nouigen/buildlogic/guard/AdaptiveRules.kt:L21 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/example/nouigen/buildlogic/guard/CodeRules.kt:L102 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/example/nouigen/buildlogic/guard/ComposeRules.kt:L20 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/example/nouigen/buildlogic/guard/Declarations.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/example/nouigen/buildlogic/guard/DevToolingGuard.kt:L66 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/example/nouigen/buildlogic/guard/KotlinRules.kt:L23 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/example/nouigen/buildlogic/guard/ManifestRules.kt:L77 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/example/nouigen/buildlogic/guard/ModuleGraph.kt:L148 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/example/nouigen/buildlogic/guard/ScrollRules.kt:L20 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/example/nouigen/buildlogic/guard/StructureRules.kt:L15 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/example/nouigen/buildlogic/android/ComposeStabilityTest.kt:L63 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/example/nouigen/buildlogic/guard/CodeRuleCasesTest.kt:L199 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/example/nouigen/buildlogic/guard/CodeRulesBaselineTest.kt:L26 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/example/nouigen/buildlogic/guard/ManifestRulesTest.kt:L19 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/applock/src/main/kotlin/com/example/nouigen/core/applock/AppLockGate.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/applock/src/test/kotlin/com/example/nouigen/core/applock/AppLockGateTest.kt:L196 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/database/src/main/kotlin/com/example/nouigen/core/database/queue/QueuedRequestDao.kt:L36 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/datastore/src/test/kotlin/com/example/nouigen/core/datastore/session/AuthTokenStoreTest.kt:L58 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/example/nouigen/core/designsystem/theme/AppColors.kt:L117 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/example/nouigen/core/designsystem/theme/AppMotion.kt:L238 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/example/nouigen/core/designsystem/theme/AppTypography.kt:L31 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/example/nouigen/core/designsystem/theme/tokens/DesignTokens.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/example/nouigen/core/designsystem/Themed.kt:L9 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/example/nouigen/core/designsystem/theme/FontPreloadTest.kt:L75 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/example/nouigen/core/designsystem/theme/PaletteContrastTest.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/devtools/src/main/kotlin/com/example/nouigen/core/devtools/badge/BadgePosition.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/devtools/src/main/kotlin/com/example/nouigen/core/devtools/badge/DevToolsOverlay.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/devtools/src/main/kotlin/com/example/nouigen/core/devtools/panel/DevToolsPanel.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/devtools/src/main/kotlin/com/example/nouigen/core/devtools/panel/FlagsTab.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/navigation/src/test/kotlin/com/example/nouigen/core/navigation/AppNavigatorTest.kt:L61 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/network/src/main/kotlin/com/example/nouigen/core/network/appstatus/ApiSignals.kt:L60 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/network/src/main/kotlin/com/example/nouigen/core/network/client/KtorNetworkClient.kt:L105 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/network/src/main/kotlin/com/example/nouigen/core/network/di/HttpClientModule.kt:L74 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/network/src/test/kotlin/com/example/nouigen/core/network/client/KtorNetworkClientTest.kt:L182 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/perfhud/src/main/kotlin/com/example/nouigen/core/perfhud/checks/StrictModeWatch.kt:L107 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/perfhud/src/main/kotlin/com/example/nouigen/core/perfhud/overlay/LineFormat.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/example/nouigen/core/perfhud/overlay/PerformancePill.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/example/nouigen/core/perfhud/overlay/PillText.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/example/nouigen/core/perfhud/overlay/RedrawDuringFrames.kt:L77 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/example/nouigen/core/perfhud/panel/DetailSections.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/example/nouigen/core/perfhud/panel/FrameSections.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/example/nouigen/core/perfhud/panel/PerformanceTab.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/example/nouigen/core/perfhud/panel/graph/FpsGraph.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/example/nouigen/core/perfhud/panel/graph/FrameTimeGraph.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/example/nouigen/core/perfhud/panel/graph/HistogramGraph.kt:L107 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/example/nouigen/core/perfhud/panel/graph/MemoryGraph.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/example/nouigen/core/perfhud/score/OptimisationScore.kt:L92 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/playstore/src/test/kotlin/com/example/nouigen/core/playstore/review/ReviewPolicyTest.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/ui/src/main/kotlin/com/example/nouigen/core/ui/browser/AppBrowser.kt:L49 ktlint(standard:max-line-length) Exceeded max line length (100)
+  data/sample/src/test/kotlin/com/example/nouigen/data/sample/OfflineFirstSampleRepositoryTest.kt:L37 ktlint(standard:max-line-length) Exceeded max line length (100)
+  feature/auth/src/main/kotlin/com/example/nouigen/feature/auth/AuthNav.kt:L1 ktlint(standard:filename) File 'AuthNav.kt' contains a single top level declaration and should be named 'AuthNavModule.kt'
+  feature/auth/src/main/kotlin/com/example/nouigen/feature/auth/GoogleSignIn.kt:L1 ktlint(standard:filename) File 'GoogleSignIn.kt' contains a single class, and possibly related top level declarations for that class. The file should be named after the class, 'GoogleOutcome.kt'
+  feature/feed/src/main/kotlin/com/example/nouigen/feature/feed/api/FeedKeys.kt:L1 ktlint(standard:filename) File 'FeedKeys.kt' contains a single top level declaration and should be named 'FeedKey.kt'
+  feature/onboarding/src/main/kotlin/com/example/nouigen/feature/onboarding/OnboardingNav.kt:L1 ktlint(standard:filename) File 'OnboardingNav.kt' contains a single top level declaration and should be named 'OnboardingNavModule.kt'
+  feature/onboarding/src/main/kotlin/com/example/nouigen/feature/onboarding/api/OnboardingKeys.kt:L1 ktlint(standard:filename) File 'OnboardingKeys.kt' contains a single top level declaration and should be named 'OnboardingKey.kt'
+  feature/profile/src/main/kotlin/com/example/nouigen/feature/profile/api/ProfileKeys.kt:L1 ktlint(standard:filename) File 'ProfileKeys.kt' contains a single top level declaration and should be named 'ProfileKey.kt'
+  feature/search/src/main/kotlin/com/example/nouigen/feature/search/SearchViewModel.kt:L122 ktlint(standard:max-line-length) Exceeded max line length (100)
+  feature/settings/src/main/kotlin/com/example/nouigen/feature/settings/SettingsNav.kt:L1 ktlint(standard:filename) File 'SettingsNav.kt' contains a single top level declaration and should be named 'SettingsNavModule.kt'
+  Resolve these lints or suppress with `suppressLintsFor`
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 51s
+7 actionable tasks: 1 executed, 6 up-to-date
+Configuration cache entry stored.

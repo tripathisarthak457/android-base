@@ -1,0 +1,7 @@
+ok  	github.com/base-android/generator-api/cmd/server	(cached)
+ok  	github.com/base-android/generator-api/internal/clip	1.569s
+ok  	github.com/base-android/generator-api/internal/config	1.199s
+ok  	github.com/base-android/generator-api/internal/generate	(cached)
+ok  	github.com/base-android/generator-api/internal/httpapi	0.993s
+ok  	github.com/base-android/generator-api/internal/store	4.970s
+ok  	github.com/base-android/generator-api/internal/telemetry	6.028s

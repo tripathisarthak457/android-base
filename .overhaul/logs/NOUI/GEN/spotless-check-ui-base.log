@@ -1,0 +1,53 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: spotlessCheck
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :spotlessKotlinGradle
+> Task :spotlessKotlinGradleCheck FAILED
+> Task :spotlessKotlin
+Format was not able to resolve all violations which (theoretically) can be autocorrected in file D:\projects\tools\.overhaul\out\NOUI\ui-base-everything\core\navigation\src\test\kotlin\com\example\baseui\core\navigation\shell\tabs\KeptTabsTest.kt in 3 consecutive runs of format.
+Format was not able to resolve all violations which (theoretically) can be autocorrected in file D:\projects\tools\.overhaul\out\NOUI\ui-base-everything\core\network\src\main\kotlin\com\example\baseui\core\network\di\HttpClientModule.kt in 3 consecutive runs of format.
+Format was not able to resolve all violations which (theoretically) can be autocorrected in file D:\projects\tools\.overhaul\out\NOUI\ui-base-everything\core\network\src\main\kotlin\com\example\baseui\core\network\di\HttpClientModule.kt in 3 consecutive runs of format.
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':spotlessKotlinGradleCheck' (registered in build file 'build.gradle.kts').
+> The following files had format violations:
+      benchmark\build.gradle.kts
+          @@ -56,7 +56,9 @@
+           ········variant.instrumentationRunnerArguments.put(
+           ············"targetAppId",
+           ············variant.testedApks.map·{·apks·->
+          -················checkNotNull(loader.load(apks)?.applicationId)·{·"The·tested·APK·has·no·application·id."·}
+          +················checkNotNull(loader.load(apks)?.applicationId)·{
+          +····················"The·tested·APK·has·no·application·id."
+          +················}
+           ············},
+           ········)
+           ····}
+  Run 'gradlew.bat spotlessApply' to fix all violations.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1m 50s
+7 actionable tasks: 7 executed
+Configuration cache entry stored.

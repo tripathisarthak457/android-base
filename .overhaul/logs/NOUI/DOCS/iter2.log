@@ -1,0 +1,168 @@
+[locked:memwait] 834 MB available, 14686 MB commit left; waiting for 3500 MB
+[locked:memwait] 862 MB available, 14742 MB commit left; waiting for 3500 MB
+[locked:memwait] 831 MB available, 14750 MB commit left; waiting for 3500 MB
+[locked:memwait] 824 MB available, 14721 MB commit left; waiting for 3500 MB
+[locked:memwait] 824 MB available, 14724 MB commit left; waiting for 3500 MB
+[locked:memwait] 798 MB available plus 8210 MB of system cache Windows will trim; continuing
+.FFF....FFFFFFFFFFFF.....F...
+======================================================================
+FAIL: test_every_name_the_docs_cite_exists_somewhere (tests.test_docs.TemplateDocsTest.test_every_name_the_docs_cite_exists_somewhere) (page='README.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 194, in test_every_name_the_docs_cite_exists_somewhere
+    self.assertEqual(STALE_NAMES.get(page, set()), unknown)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'StartKey'
+
+======================================================================
+FAIL: test_every_name_the_docs_cite_exists_somewhere (tests.test_docs.TemplateDocsTest.test_every_name_the_docs_cite_exists_somewhere) (page='docs/ARCHITECTURE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 194, in test_every_name_the_docs_cite_exists_somewhere
+    self.assertEqual(STALE_NAMES.get(page, set()), unknown)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'StartScreen'
+'NavDisplayHostTest'
+'StartKey'
+'LocalMessagePresenter'
+'PlaceholderScreen'
+'MessagePresenter'
+
+======================================================================
+FAIL: test_every_name_the_docs_cite_exists_somewhere (tests.test_docs.TemplateDocsTest.test_every_name_the_docs_cite_exists_somewhere) (page='docs/DESIGN-SYSTEM.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 194, in test_every_name_the_docs_cite_exists_somewhere
+    self.assertEqual(STALE_NAMES.get(page, set()), unknown)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'AppComponentPreviews'
+'ThemePreview'
+'LocalMessagePresenter'
+'PlaceholderScreen'
+'MessagePresenter'
+
+======================================================================
+FAIL: test_every_doc_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_doc_the_code_points_to_is_in_the_project) (case='ui-none', page='docs/ADAPTIVE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 333, in test_every_doc_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/ADAPTIVE.md, not in the project
+
+======================================================================
+FAIL: test_every_doc_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_doc_the_code_points_to_is_in_the_project) (case='ui-none', page='docs/MOTION-AND-PERFORMANCE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 333, in test_every_doc_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/MOTION-AND-PERFORMANCE.md, not in the project
+
+======================================================================
+FAIL: test_every_doc_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_doc_the_code_points_to_is_in_the_project) (case='ui-lean', page='docs/ADAPTIVE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 333, in test_every_doc_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/ADAPTIVE.md, not in the project
+
+======================================================================
+FAIL: test_every_doc_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_doc_the_code_points_to_is_in_the_project) (case='ui-lean', page='docs/MOTION-AND-PERFORMANCE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 333, in test_every_doc_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/MOTION-AND-PERFORMANCE.md, not in the project
+
+======================================================================
+FAIL: test_every_doc_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_doc_the_code_points_to_is_in_the_project) (case='ui-standard', page='docs/ADAPTIVE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 333, in test_every_doc_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/ADAPTIVE.md, not in the project
+
+======================================================================
+FAIL: test_every_doc_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_doc_the_code_points_to_is_in_the_project) (case='ui-standard', page='docs/MOTION-AND-PERFORMANCE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 333, in test_every_doc_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/MOTION-AND-PERFORMANCE.md, not in the project
+
+======================================================================
+FAIL: test_every_doc_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_doc_the_code_points_to_is_in_the_project) (case='ui-everything', page='docs/ADAPTIVE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 333, in test_every_doc_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/ADAPTIVE.md, not in the project
+
+======================================================================
+FAIL: test_every_doc_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_doc_the_code_points_to_is_in_the_project) (case='ui-everything', page='docs/MOTION-AND-PERFORMANCE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 333, in test_every_doc_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/MOTION-AND-PERFORMANCE.md, not in the project
+
+======================================================================
+FAIL: test_every_doc_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_doc_the_code_points_to_is_in_the_project) (case='ui-everything-modular', page='docs/ADAPTIVE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 333, in test_every_doc_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/ADAPTIVE.md, not in the project
+
+======================================================================
+FAIL: test_every_doc_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_doc_the_code_points_to_is_in_the_project) (case='ui-everything-modular', page='docs/MOTION-AND-PERFORMANCE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 333, in test_every_doc_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/MOTION-AND-PERFORMANCE.md, not in the project
+
+======================================================================
+FAIL: test_every_doc_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_doc_the_code_points_to_is_in_the_project) (case='ui-everything-languages', page='docs/ADAPTIVE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 333, in test_every_doc_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/ADAPTIVE.md, not in the project
+
+======================================================================
+FAIL: test_every_doc_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_doc_the_code_points_to_is_in_the_project) (case='ui-everything-languages', page='docs/MOTION-AND-PERFORMANCE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 333, in test_every_doc_the_code_points_to_is_in_the_project
+    self.assertTrue((project / page).is_file(), f"the code sends readers to {page}, not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : the code sends readers to docs/MOTION-AND-PERFORMANCE.md, not in the project
+
+======================================================================
+FAIL: test_no_name_the_docs_cite_was_left_out_of_the_project (tests.test_docs.GeneratedDocsTest.test_no_name_the_docs_cite_was_left_out_of_the_project) (case='ui-none', page='docs/ARCHITECTURE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-DOCS\generator\tests\test_docs.py", line 305, in test_no_name_the_docs_cite_was_left_out_of_the_project
+    self.assertEqual(set(), missing)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'NetworkConfig'
+
+----------------------------------------------------------------------
+Ran 16 tests in 173.261s
+
+FAILED (failures=16)

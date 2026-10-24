@@ -1,0 +1,194 @@
+[locked:memwait] 1443 MB available, 15397 MB commit left; waiting for 3500 MB
+[locked:memwait] 1488 MB available, 15520 MB commit left; waiting for 3500 MB
+[locked:memwait] 1459 MB available, 15377 MB commit left; waiting for 3500 MB
+
+all: allowed, for review:
+--- before/build-logic/convention/src/main/kotlin/com/example/compare/buildlogic/guard/CodeRules.kt
++++ after/build-logic/convention/src/main/kotlin/com/example/compare/buildlogic/guard/CodeRules.kt
+@@ -98,9 +98,9 @@
+                     reports.forEach { appendLine("  $it") }
+                     appendLine()
+                     append(
+-                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; see " +
+-                            "docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes " +
+-                            "on the line above: // allow(<rule-id>): <reason>",
++                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; AGENTS.md " +
++                            "and docs/PERFORMANCE.md say why. A justified exception goes on the line above: " +
++                            "// allow(<rule-id>): <reason>",
+                     )
+                 },
+             )
+
+
+hostile-0: allowed, for review:
+--- before/build-logic/convention/src/main/kotlin/com/example/databaseapp/buildlogic/guard/CodeRules.kt
++++ after/build-logic/convention/src/main/kotlin/com/example/databaseapp/buildlogic/guard/CodeRules.kt
+@@ -98,9 +98,9 @@
+                     reports.forEach { appendLine("  $it") }
+                     appendLine()
+                     append(
+-                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; see " +
+-                            "docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes " +
+-                            "on the line above: // allow(<rule-id>): <reason>",
++                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; AGENTS.md " +
++                            "and docs/PERFORMANCE.md say why. A justified exception goes on the line above: " +
++                            "// allow(<rule-id>): <reason>",
+                     )
+                 },
+             )
+
+
+hostile-1: allowed, for review:
+--- before/build-logic/convention/src/main/kotlin/com/firebaseapp/notes/buildlogic/guard/CodeRules.kt
++++ after/build-logic/convention/src/main/kotlin/com/firebaseapp/notes/buildlogic/guard/CodeRules.kt
+@@ -98,9 +98,9 @@
+                     reports.forEach { appendLine("  $it") }
+                     appendLine()
+                     append(
+-                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; see " +
+-                            "docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes " +
+-                            "on the line above: // allow(<rule-id>): <reason>",
++                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; AGENTS.md " +
++                            "and docs/PERFORMANCE.md say why. A justified exception goes on the line above: " +
++                            "// allow(<rule-id>): <reason>",
+                     )
+                 },
+             )
+
+
+hostile-2: allowed, for review:
+--- before/build-logic/convention/src/main/kotlin/com/base/apple/buildlogic/guard/CodeRules.kt
++++ after/build-logic/convention/src/main/kotlin/com/base/apple/buildlogic/guard/CodeRules.kt
+@@ -98,9 +98,9 @@
+                     reports.forEach { appendLine("  $it") }
+                     appendLine()
+                     append(
+-                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; see " +
+-                            "docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes " +
+-                            "on the line above: // allow(<rule-id>): <reason>",
++                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; AGENTS.md " +
++                            "and docs/PERFORMANCE.md say why. A justified exception goes on the line above: " +
++                            "// allow(<rule-id>): <reason>",
+                     )
+                 },
+             )
+
+
+hostile-3: allowed, for review:
+--- before/build-logic/convention/src/main/kotlin/com/base/app/demo/buildlogic/guard/CodeRules.kt
++++ after/build-logic/convention/src/main/kotlin/com/base/app/demo/buildlogic/guard/CodeRules.kt
+@@ -98,9 +98,9 @@
+                     reports.forEach { appendLine("  $it") }
+                     appendLine()
+                     append(
+-                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; see " +
+-                            "docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes " +
+-                            "on the line above: // allow(<rule-id>): <reason>",
++                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; AGENTS.md " +
++                            "and docs/PERFORMANCE.md say why. A justified exception goes on the line above: " +
++                            "// allow(<rule-id>): <reason>",
+                     )
+                 },
+             )
+
+
+hostile-4: allowed, for review:
+--- before/build-logic/convention/src/main/kotlin/com/base_app/demo/buildlogic/guard/CodeRules.kt
++++ after/build-logic/convention/src/main/kotlin/com/base_app/demo/buildlogic/guard/CodeRules.kt
+@@ -98,9 +98,9 @@
+                     reports.forEach { appendLine("  $it") }
+                     appendLine()
+                     append(
+-                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; see " +
+-                            "docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes " +
+-                            "on the line above: // allow(<rule-id>): <reason>",
++                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; AGENTS.md " +
++                            "and docs/PERFORMANCE.md say why. A justified exception goes on the line above: " +
++                            "// allow(<rule-id>): <reason>",
+                     )
+                 },
+             )
+
+
+hostile-5: allowed, for review:
+--- before/build-logic/convention/src/main/kotlin/com/example/store/buildlogic/guard/CodeRules.kt
++++ after/build-logic/convention/src/main/kotlin/com/example/store/buildlogic/guard/CodeRules.kt
+@@ -98,9 +98,9 @@
+                     reports.forEach { appendLine("  $it") }
+                     appendLine()
+                     append(
+-                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; see " +
+-                            "docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes " +
+-                            "on the line above: // allow(<rule-id>): <reason>",
++                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; AGENTS.md " +
++                            "and docs/PERFORMANCE.md say why. A justified exception goes on the line above: " +
++                            "// allow(<rule-id>): <reason>",
+                     )
+                 },
+             )
+
+
+hostile-6: allowed, for review:
+--- before/build-logic/convention/src/main/kotlin/com/example/x/buildlogic/guard/CodeRules.kt
++++ after/build-logic/convention/src/main/kotlin/com/example/x/buildlogic/guard/CodeRules.kt
+@@ -98,9 +98,9 @@
+                     reports.forEach { appendLine("  $it") }
+                     appendLine()
+                     append(
+-                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; see " +
+-                            "docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes " +
+-                            "on the line above: // allow(<rule-id>): <reason>",
++                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; AGENTS.md " +
++                            "and docs/PERFORMANCE.md say why. A justified exception goes on the line above: " +
++                            "// allow(<rule-id>): <reason>",
+                     )
+                 },
+             )
+
+
+hostile-7: allowed, for review:
+--- before/build-logic/convention/src/main/kotlin/com/example/bx/buildlogic/guard/CodeRules.kt
++++ after/build-logic/convention/src/main/kotlin/com/example/bx/buildlogic/guard/CodeRules.kt
+@@ -98,9 +98,9 @@
+                     reports.forEach { appendLine("  $it") }
+                     appendLine()
+                     append(
+-                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; see " +
+-                            "docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes " +
+-                            "on the line above: // allow(<rule-id>): <reason>",
++                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; AGENTS.md " +
++                            "and docs/PERFORMANCE.md say why. A justified exception goes on the line above: " +
++                            "// allow(<rule-id>): <reason>",
+                     )
+                 },
+             )
+
+
+hostile-8: allowed, for review:
+--- before/build-logic/convention/src/main/kotlin/com/global/pass/buildlogic/guard/CodeRules.kt
++++ after/build-logic/convention/src/main/kotlin/com/global/pass/buildlogic/guard/CodeRules.kt
+@@ -98,9 +98,9 @@
+                     reports.forEach { appendLine("  $it") }
+                     appendLine()
+                     append(
+-                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; see " +
+-                            "docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes " +
+-                            "on the line above: // allow(<rule-id>): <reason>",
++                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; AGENTS.md " +
++                            "and docs/PERFORMANCE.md say why. A justified exception goes on the line above: " +
++                            "// allow(<rule-id>): <reason>",
+                     )
+                 },
+             )
+
+
+19 specs, each generated by both checkouts: identical outside the exceptions.
+  allowed to differ: CLAUDE.md (the agent instructions and their index of the docs)
+  allowed to differ: AGENTS.md (the same instructions for agents that do not read CLAUDE.md)
+  allowed to differ: README.md (the README's line on effects and its pointer to the docs)
+  allowed to differ: docs/* (the architecture, performance and design-system guides)
+  allowed to differ: .agents/skills/* (the vendored Android skills)
+  allowed to differ: .claude/skills/* (the pointers to the vendored Android skills)
+  allowed to differ: tools/android_skills.py (the command that refreshes the vendored skills)
+  allowed to differ: build-logic/convention/src/main/kotlin/*/buildlogic/guard/CodeRules.kt (the code rules' failure message, which names the docs that say why (only the message may change))
+EXIT 0

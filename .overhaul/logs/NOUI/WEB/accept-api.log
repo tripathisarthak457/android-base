@@ -1,0 +1,16 @@
+gofmt -l:
+gofmt clean
+vet ok
+vet (linux, unix-only tests) ok
+build ok
+fork/exec C:\Users\CRAZYH~1\AppData\Local\Temp\go-build2981968796\b001\server.test.exe: An Application Control policy has blocked this file.
+FAIL	github.com/base-android/generator-api/cmd/server	2.548s
+ok  	github.com/base-android/generator-api/internal/clip	1.708s
+ok  	github.com/base-android/generator-api/internal/config	1.284s
+fork/exec C:\Users\CRAZYH~1\AppData\Local\Temp\go-build2981968796\b275\generate.test.exe: An Application Control policy has blocked this file.
+FAIL	github.com/base-android/generator-api/internal/generate	1.777s
+fork/exec C:\Users\CRAZYH~1\AppData\Local\Temp\go-build2981968796\b281\httpapi.test.exe: An Application Control policy has blocked this file.
+FAIL	github.com/base-android/generator-api/internal/httpapi	3.567s
+ok  	github.com/base-android/generator-api/internal/store	1.991s
+ok  	github.com/base-android/generator-api/internal/telemetry	1.592s
+FAIL
