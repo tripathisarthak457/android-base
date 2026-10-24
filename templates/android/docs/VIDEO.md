@@ -114,7 +114,8 @@ tools/perf/perf.sh --package <app id>.catalog --apk catalog/build/outputs/apk/re
     --gate video media_reels media_reels_warm media_background
 ```
 
-- Each swipe is measured like a scroll: janky frames after its first at most 0.5 %, hitches at most 5 ms per second.
+- Each swipe is measured like a scroll and held to the same ceilings: janky frames after its first at most 1.0 %,
+  hitches at most 5 ms per second (`docs/IMAGES.md`, "How the image scenes are measured", says why not tighter).
 - The scene logs each settle, hand-over and first frame on the phone's clock, so the time from a swipe landing to its
   clip's first frame is read from the app. Warm, no swipe may land on a poster.
 - While a clip plays, the app draws no frame at all: counted in a quiet window that opens only once every page

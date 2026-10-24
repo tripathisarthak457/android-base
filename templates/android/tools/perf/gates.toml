@@ -445,30 +445,32 @@ large = 0.5
 # `images`: the catalog's photo feed and shop grid (scenes_images.py), measured on the catalog's release
 # APK: perf.sh --package <app id>.catalog --apk catalog/build/outputs/apk/release/catalog-release.apk
 # --gate images media_feed media_feed_warm media_grid media_grid_warm media_feed_memory media_trace.
-# Scrolling holds REQUIREMENTS 42's limits (0.5 % after each fling's first frame, 5 ms/s of hitches) and
-# 41's GPU p90; no photo is decoded on a frame thread (hardware bitmaps, Coil's own threads). Memory is
-# read after the catalog collects garbage; its growth rows are ratchets until the acceptance runs, then
-# their worst growth plus their worst spread between collections, never above 8 MB.
+# Scrolling holds the release ceilings: at most 1.0 % janky after each fling's first frame (REQUIREMENTS
+# 58: at 120 Hz every frame over 8.33 ms counts, and a tighter limit sits inside the run-to-run noise of
+# one build), 5 ms/s of hitches (42) and 41's GPU p90; no photo is decoded on a frame thread (hardware
+# bitmaps, Coil's own threads). Memory is read after the catalog collects garbage; its growth rows are
+# ratchets until the acceptance runs, then their worst growth plus their worst spread between
+# collections, never above 8 MB.
 
 [[row]]
 metric = "media_feed.janky_after_first_pct"
 label = "Photo feed, cold: janky frames after each fling's first (%)"
-images = 0.5
+images = 1.0
 
 [[row]]
 metric = "media_feed_warm.janky_after_first_pct"
 label = "Photo feed, warm: janky frames after each fling's first (%)"
-images = 0.5
+images = 1.0
 
 [[row]]
 metric = "media_grid.janky_after_first_pct"
 label = "Shop grid, cold: janky frames after each fling's first (%)"
-images = 0.5
+images = 1.0
 
 [[row]]
 metric = "media_grid_warm.janky_after_first_pct"
 label = "Shop grid, warm: janky frames after each fling's first (%)"
-images = 0.5
+images = 1.0
 
 [[row]]
 metric = "media_feed.hitch_ms_per_s"
@@ -572,19 +574,20 @@ images = "ratchet"
 # </opt:coil&catalog>
 # <opt:video&catalog>
 # `video`: the catalog's short-video feed (scenes_video.py), on the catalog's release APK:
-# --gate video media_reels media_reels_warm media_background. Swipes hold the scrolling limits; the zeros
-# are design claims (the next clip ready before a swipe lands, a SurfaceView that costs the app no frames
-# while a clip plays, everything released in the background) and the decoders never exceed the pool.
+# --gate video media_reels media_reels_warm media_background. Swipes hold the scrolling ceilings above;
+# the zeros are design claims (the next clip ready before a swipe lands, a SurfaceView that costs the app
+# no frames while a clip plays, everything released in the background) and the decoders never exceed the
+# pool.
 
 [[row]]
 metric = "media_reels.janky_after_first_pct"
 label = "Short videos, cold: janky frames after each swipe's first (%)"
-video = 0.5
+video = 1.0
 
 [[row]]
 metric = "media_reels_warm.janky_after_first_pct"
 label = "Short videos, warm: janky frames after each swipe's first (%)"
-video = 0.5
+video = 1.0
 
 [[row]]
 metric = "media_reels.hitch_ms_per_s"

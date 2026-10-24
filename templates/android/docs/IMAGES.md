@@ -139,8 +139,11 @@ tools/perf/perf.sh --package <app id>.catalog --apk catalog/build/outputs/apk/re
 
 - **Cold** runs start from `pm clear`: every photo comes over the network. **Warm** runs start a fresh process after a
   cold pass: every photo comes from the disk cache. Scrolling back within a run is the memory cache.
-- Each fling is measured on its own and held to the release limits: janky frames after each fling's first at most
-  0.5 %, hitches at most 5 ms per second of motion, GPU p90 at most 7 ms.
+- Each fling is measured on its own and held to the release ceilings: janky frames after each fling's first at most
+  1.0 %, hitches at most 5 ms per second of motion, GPU p90 at most 7 ms. At 120 Hz every frame over 8.33 ms counts as
+  janky, and on the reference phone one build's scroll runs spread by about half a percent, so a tighter limit fails on
+  noise. A change that makes a row worse than the build before it by more than that spread, in a same-session A/B, is
+  a regression even under the ceiling.
 - `media_trace` counts photos decoded or uploaded on the main thread or RenderThread: none, because bitmaps are
   hardware bitmaps decoded on Coil's own threads. An upload counts as a photo only when a photo of that size was
   decoded in the run: icons are uploaded too, the first time a row draws them, and are not image decoding.
