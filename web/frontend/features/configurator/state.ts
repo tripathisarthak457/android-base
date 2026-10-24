@@ -184,6 +184,15 @@ export function featuresFor(keys: Iterable<string>, target: Target, designStyle:
   return [...resolveChoices([...keys, ...requires], target)].sort();
 }
 
+/**
+ * Whether the project draws a glass bar, so the Build step says where glass blurs: only a design
+ * style whose bar is Glass draws one. The liquidglass feature alone is a foundation nothing draws
+ * with, so a project with it looks the same as one without.
+ */
+export function drawsGlassBar(state: ConfigState, catalogue: Catalogue): boolean {
+  return catalogue.tokens.styles[state.designStyle]?.bar === "Glass";
+}
+
 export function initialState(catalogue: Catalogue, targetKey?: string): ConfigState {
   const target = findTarget(catalogue, targetKey ?? "android");
   const defaults = target.defaults;
