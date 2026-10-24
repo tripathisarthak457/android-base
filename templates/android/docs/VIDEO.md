@@ -110,7 +110,8 @@ bytes through instead of waiting. `VideoCacheTest` fails if either layer is take
 `tools/perf/perf.sh` measures the catalog's short-video scene on its release APK:
 
 ```bash
-tools/perf/perf.sh --package <app id>.catalog --apk catalog/build/outputs/apk/release/catalog-release.apk     --gate video media_reels media_reels_warm media_background
+tools/perf/perf.sh --package <app id>.catalog --apk catalog/build/outputs/apk/release/catalog-release.apk \
+    --gate video media_reels media_reels_warm media_background
 ```
 
 - Each swipe is measured like a scroll: janky frames after its first at most 0.5 %, hitches at most 5 ms per second.

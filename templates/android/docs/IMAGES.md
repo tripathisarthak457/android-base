@@ -110,7 +110,7 @@ Coil's service loader is off, so nothing joins the pipeline unseen. To decode an
 ```kotlin
 // In appImageLoader(), beside the network fetcher; coil-svg goes in the version catalog.
 .components {
-    add(networkFetcher)
+    add(OkHttpNetworkFetcherFactory(callFactory = callFactory))
     add(SvgDecoder.Factory())
 }
 ```
@@ -133,7 +133,8 @@ User-Agent, and are where the image measurements run.
 `tools/perf/perf.sh` measures the two scenes on the catalog's release APK, beside the app's own gates:
 
 ```bash
-tools/perf/perf.sh --package <app id>.catalog --apk catalog/build/outputs/apk/release/catalog-release.apk     --gate images media_feed media_feed_warm media_grid media_grid_warm media_feed_memory media_trace
+tools/perf/perf.sh --package <app id>.catalog --apk catalog/build/outputs/apk/release/catalog-release.apk \
+    --gate images media_feed media_feed_warm media_grid media_grid_warm media_feed_memory media_trace
 ```
 
 - **Cold** runs start from `pm clear`: every photo comes over the network. **Warm** runs start a fresh process after a
