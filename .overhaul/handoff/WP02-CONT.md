@@ -5,6 +5,8 @@ Lane `WP02`: worktree `D:/projects/tools/.overhaul/wt/sw-WP02`, branch `staging-
 
 ## Progress
 
+- Orchestrator note (Oct 24, 18:05): the usage pacing paused the fast-track run at 18:02 (staging runs alone until the 21:40 reset). `out/WP02-CONT/v9.sh` (started 16:43) was stopped mid step 3 (lean devRelease with ABI splits), with its waiter and two queued gw.win.sh builds; re-run v9 from step 3 on resume (log `out/WP02-CONT/logs/v9.log`).
+
 Run 5 (started 2026-10-24 16:37 IST): branch clean at `32b86b70`; staging still `4760b407` (`git merge staging`:
 already up to date). Run 4's backgrounds finished: `v8.sh` step 6 green on lean, standard, all and everything (each
 check read the whole report: designsystem 1264/1576 lines, navigation 231, ui 27-60), `none` exited 66 behind the

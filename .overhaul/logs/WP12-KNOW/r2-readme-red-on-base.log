@@ -1,0 +1,87 @@
+FFFF
+======================================================================
+FAIL: test_the_feature_tables_are_the_catalogue (tests.test_docs.RepositoryReadmeTest.test_the_feature_tables_are_the_catalogue)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP12-KNOW\base\generator\tests\test_docs.py", line 321, in test_the_feature_tables_are_the_catalogue
+    self.assertEqual({feature.key for feature in self.manifest.selectable}, set(listed))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the first set but not the second:
+'coverage'
+'deeplink'
+'analytics'
+'language'
+'paging'
+'network'
+'performance'
+'onboarding'
+'leakcanary'
+'crashlytics'
+'googlesignin'
+'formatting'
+'depsanalysis'
+'offlinequeue'
+'appstatus'
+'search'
+'collections'
+'licenses'
+'settings'
+'forms'
+'firebaseanalytics'
+'websocket'
+'flags'
+'media'
+'browser'
+'playstore'
+'auth'
+'coil'
+'pickers'
+'applock'
+'database'
+'sample'
+'devtools'
+'push'
+'ci'
+'perfhud'
+'remoteconfig'
+'catalog'
+'profile'
+'googlefonts'
+'formfields'
+'datadisplay'
+'liquidglass'
+
+======================================================================
+FAIL: test_the_preset_table_counts_what_each_preset_resolves_to (tests.test_docs.RepositoryReadmeTest.test_the_preset_table_counts_what_each_preset_resolves_to) (preset='lean')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP12-KNOW\base\generator\tests\test_docs.py", line 340, in test_the_preset_table_counts_what_each_preset_resolves_to
+    self.assertEqual(len(self.manifest.preset_features(key)), int(count))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 6 != 4
+
+======================================================================
+FAIL: test_the_preset_table_counts_what_each_preset_resolves_to (tests.test_docs.RepositoryReadmeTest.test_the_preset_table_counts_what_each_preset_resolves_to) (preset='standard')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP12-KNOW\base\generator\tests\test_docs.py", line 341, in test_the_preset_table_counts_what_each_preset_resolves_to
+    self.assertEqual(" ".join(self.manifest.presets[key].description.split()), description)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'The lean set plus sign-in, onboarding, settings with a lang[193 chars]one.' != 'The lean set plus Room caching, Coil, forms, auth, settings[119 chars]ags.'
+- The lean set plus sign-in, onboarding, settings with a language picker, the in-app browser, feature flags, the developer panel with its performance overlay, a local database and the reference list-detail feature to copy. What most products want on day one.
++ The lean set plus Room caching, Coil, forms, auth, settings with a language picker, onboarding, a profile tab, media, deep links, the in-app browser, the inspector and feature flags.
+
+
+======================================================================
+FAIL: test_the_preset_table_counts_what_each_preset_resolves_to (tests.test_docs.RepositoryReadmeTest.test_the_preset_table_counts_what_each_preset_resolves_to) (preset='everything')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP12-KNOW\base\generator\tests\test_docs.py", line 340, in test_the_preset_table_counts_what_each_preset_resolves_to
+    self.assertEqual(len(self.manifest.preset_features(key)), int(count))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 44 != 28
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.198s
+
+FAILED (failures=4)

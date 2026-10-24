@@ -1,0 +1,13 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Trail Notes",
+  "package_name": "com.example.trailnotes",
+  "features": ["network", "auth", "settings", "profile", "search", "coil"],
+  "feature_modules": ["trips"],
+  "design_style": "Social",
+  "motion_style": "Calm",
+  "accent_colour": "#1F7A5C",
+  "font_name": "Plus Jakarta Sans",
+  "languages": ["es", "hi"]
+}

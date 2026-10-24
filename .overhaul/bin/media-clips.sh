@@ -55,7 +55,7 @@ transcode_one() {
   ffmpeg -nostdin -y -loglevel error -i "$file" -t 10 -an \
     -vf "scale=720:1280:force_original_aspect_ratio=increase,crop=720:1280,fps=30" \
     -c:v libx264 -profile:v high -preset slow -b:v 1500k -maxrate 1800k -bufsize 3000k -g 30 -keyint_min 30 \
-    -sc_threshold 0 -pix_fmt yuv420p -movflags +faststart "$OUT/$key.mp4" || return 1
+    -sc_threshold 0 -pix_fmt yuv420p -map_metadata -1 -map_metadata:s:v -1 -movflags +faststart "$OUT/$key.mp4" || return 1
   ffmpeg -nostdin -y -loglevel error -i "$OUT/$key.mp4" -frames:v 1 -q:v 4 "$OUT/$key.jpg"
   # Start, middle and end of the clip: several clips run under 8 s, so fixed 1/4/8 s seeks would miss them.
   local d i=0 t

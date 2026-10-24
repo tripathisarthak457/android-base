@@ -23,12 +23,19 @@ stage table: phone "no").
   spring values kept inside the card (found by the browser check); `337f64c72` merge of staging `4760b4071` (the Build
   step's glass notice in `state.ts`/`BuildStep.tsx`, no overlap).
 - Run 2 ended **ready for review** at `337f64c72` (257/257 site tests, `tsc`, `next build`, `npm audit` 0).
-- **Fix run 1** (Oct 24, from 17:01; reviewer's two blocking findings and 15 non-blocking ones). Staging `4760b4071`
-  was already merged. In progress: both blocking findings fixed at their root in the working tree (section "Fix run 1"
-  below), tests written and seen failing on the old logic, checks running; commits and the browser check next.
-- Left running, not started by this run so not stopped: run 1's `next start -p 3110` (node pid 9988 with its npx, bash
-  and cmd parents, since 02:26) and its Browser pane tab "seed" on that port. It serves the `.next` this run rebuilt.
-  The orchestrator may stop it.
+- **Fix run 1** (Oct 24, 17:01 to 17:42; reviewer's two blocking findings and 15 non-blocking ones; section "Fix run
+  1" below). Staging `4760b4071` was already merged (staging has not moved since). Commits: `fd92cb33d` the pill
+  centred on the row (`bar.ts`, `bar.test.ts`, `TabBar.tsx`, `theme.ts`); `6a25f99af` the privacy page (rate limits,
+  crash logs, a report's platform, request timings) and the migration reader; `78f33704e` the claims (ripple, comments,
+  the hero's "Material component imports"); `72c36cf15` AGENTS.md.
+- **State: ready for review** at `72c36cf15`, worktree clean. Checks there: 260/260 site tests, `tsc --noEmit` clean,
+  `next build` passes, `npm audit` 0 vulnerabilities, browser check of the pill (Measurements). Nothing waits on the
+  phone, CP2 or another stage. Not merged into staging (fast track: stop at ready). The fix run's `next start` (port
+  3114) and its Browser pane tab were stopped and closed; the draft it saved in that pane's storage was removed.
+- **Sync** (Oct 24, 17:42): `git merge staging` reports already up to date (staging is still `4760b4071`, merged in
+  `337f64c72`); nothing to regenerate, compile or commit. Head stays `72c36cf15`, worktree clean.
+- Run 2 noted run 1's `next start -p 3110` (node pid 9988) left running; at fix run 1 nothing listens on 3110 any
+  more, so nothing of this stage is left running.
 
 ## Fix run 1 (the reviewer's findings)
 
@@ -82,7 +89,7 @@ Non-blocking, each addressed or answered:
 | Privacy page | `docs/telemetry-and-privacy.md`, `lib/links.ts`, `features/privacy/privacy.test.ts` | The page the hero, the FAQ and the footer link (`PRIVACY`), written from the code: every browser storage key, the two Google Fonts origins and Vercel, every column of every table the API stores, retention, the daily hash, generated projects, self-hosting settings. The test fails when a storage key, a CSP origin, a column or a retention default is missing from the page, or the page is not where `PRIVACY` points. `REPO`/`PRIVACY` moved to `lib/links.ts` (re-exported by `lib/catalogue.ts`) because tests cannot import the catalogue's JSON |
 | Glyphs | `features/preview/glyphSource.ts`, `glyphs.ts` (written by `npm run glyphs`, `scripts/glyphs.ts`), `glyphs.test.ts`, `icons.tsx` | The preview draws the template's own 87 `AppIcons` glyphs (strokes at 1.8/2.6/2.4, filled forms, even-odd fills) read from `icon/glyph/*.kt`, instead of hand-drawn look-alikes at 2 px. The test fails when `glyphs.ts` differs from the template or AppIcons gains a glyph it lacks |
 | Tab glyphs | `features/preview/tabs.ts`, `tabs.test.ts` | A scaffolded module's glyph is picked from its name as `tabs.py`'s `icons()` picks it (`orders` is Package, `wallet` CreditCard, then the fallbacks, then the outlines), with its filled form inside the pill; the template's own tabs keep the outlined glyph when selected, as `AppDestinations.kt` declares them today; More is MoreHorizontal; the scaffolded `home` module is Grid. The tables are checked against `tabs.py` and `AppDestinations.kt` |
-| Tab bar | `features/preview/bar.ts`, `bar.test.ts`, `TabBar.tsx` | Treatments Floating, Translucent, Docked (and WP05's Glass); WP03's retired Chunky and Minimal are gone. Pill (accent pill, onAccent content) and Subtle (accentSubtle, accentContent) indicators. The 44 dp pill sized to its label (52 to 72 dp, slot less 8 dp), two layers clipped to the pill so a half-covered tab is half selected, the leading edge on the lead spring and the trailing one on the trail spring with the 0.5-slot stretch limit and the squash, the tapped glyph's dip to 0.84 and spring back (skipped under reduced motion). Capsule: surface, hairline at the style's border width and the soft shadow in light theme; surfaceElevated, a 7 % white outline and no shadow in dark; Translucent at 88 %; Docked on the surface with a 1 px rule. No inner padding (the old preview had 6 dp). Sizes, enums and springs are read from `AppTabBar.kt`, `TabCells.kt` and `AppDesignStyle.kt` in the test |
+| Tab bar | `features/preview/bar.ts`, `bar.test.ts`, `TabBar.tsx` | Treatments Floating, Translucent, Docked (and WP05's Glass); WP03's retired Chunky and Minimal are gone. Pill (accent pill, onAccent content) and Subtle (accentSubtle, accentContent) indicators. The 44 dp pill sized to its label (52 to 72 dp, slot less 8 dp), two layers clipped to the pill so a half-covered tab is half selected, the leading edge on the lead spring and the trailing one on the trail spring with the 0.5-slot stretch limit and the squash, the tapped glyph's dip to 0.84 and spring back (skipped under reduced motion). Capsule: surface, hairline at the style's border width and the soft shadow in light theme; surfaceElevated, a 7 % white outline and no shadow in dark; Translucent at 88 %; Docked on the surface with a 1 px rule. No inner padding (the old preview had 6 dp). Sizes, enums and springs are read from `AppTabBar.kt`, `TabCells.kt` and `AppDesignStyle.kt` in the test. Fix run 1: the hairline is an overlay over the row (the docked rule an inset shadow) so the row keeps 64 dp, and the pill is placed from the row's measured height (`pillBox`) |
 | Chip | `features/preview/chip.ts`, `chip.test.ts`, `parts.tsx`, `screens.tsx` | AppChip's look: the `fill` role, no outline, subheadline in contentPrimary, a 16 dp glyph in the content colour, and the Search screen's chips with their remove cross (10 dp end padding). "Recent" is footnote, as SearchScreen sets it |
 | Screens | `screens.tsx`, `parts.tsx` | The scaffolded module's empty state as `AppStateView` draws it (no glyph, title3, callout message, a Tinted "Reload" button); the More list under an inline top bar with accent glyphs, as `MoreList.kt` draws it |
 | Motion | `MotionPreview.tsx`, `MotionStep.tsx`, `bar.ts` (`SHELL_SPRINGS`), `theme.ts` (`framerSpring`) | The push and the tab switch run on the springs the template's shell uses in every style (`ScreenMotion` 0.344 s, `TabCells`' lead, trail and bounce springs, `TabReveal`'s reveal spring), not on the motion style's tokens, which the shell does not read yet. The Motion step's rows are press, release, sheet and dialog, which a style does change, and its intro says the push and the tab switch move alike in every style |
@@ -187,6 +194,24 @@ the footer links Privacy. Found and fixed: the Motion cards' values broke inside
 320 px and on the 274 px desktop cards (`e3754904d`). The pane was hidden, so animations ran on throttled frames:
 the reveal's start, direction and landing were read from the computed transform, not watched.
 
+**Fix run 1** (logs `logs/WP10-WEB/fix1-*`; checks on the committed head `72c36cf15`):
+
+| Check | Run 2 `337f64c72` | Fix run 1 `72c36cf15` |
+|---|---|---|
+| Site tests | 257/257 | 260/260 (3 new: the pill centred on the row, resting pills; the migration reader) |
+| `tsc --noEmit` | clean | clean |
+| `next build`, `/` (gzip) / first load | 68.5 kB / 216 kB | 68.6 kB / 216 kB |
+| `npm audit` | 0 | 0 |
+
+**Pill check in the built site** (`next start` on 127.0.0.1:3114, the built-in Browser pane, 1024 px; read from the
+computed clip path and the cells' boxes, in the preview's unscaled px): every bar on the page (the four showcase
+thumbnails at 0.86, the Look step's four at 0.4, the live phone at 1) has its row as tall as its capsule, 49.773 px
+(64 dp at 280/360), with no CSS border on the capsule; the hairline overlay is 1 px, or 2 px for Playful. The pill runs
+from 7.776 to 41.998 px, 7.776 px (10 dp) above and below, as `PillSlots` places it, and its middle is 0.004 px from
+the middle of the glyph and label it encloses. The live phone in Playful: the row starts at the capsule's top and is
+its full width (238.89 px); tapping Settings through the overlay moved the pill there, still 7.776 px from top and
+bottom. Before the fix the reviewer measured 9.8 px above and 5.8 px below for Playful.
+
 ## Rules and gotchas the docs must state
 
 - **The privacy page is checked against the code** (`features/privacy/privacy.test.ts`). A new browser storage key, a
@@ -211,6 +236,15 @@ the reveal's start, direction and landing were read from the computed transform,
 - **Reports and errors are kept with no time limit** and the admin has no delete for them; app and package names in a
   report are not removed after 90 days as a generation's are. Whether to offer deletion on request is the user's call
   (not promised on the page).
+- **The privacy page's prose on the API's logs and the rate limiter is not tested** (fix run 1): it says the limits
+  live only in memory and are cleared by the first request after each hour or a restart, and that a request which
+  makes a handler panic gets its connection's address logged by Go's HTTP server. AGENTS.md says to re-read it when
+  `cmd/server/main.go`'s logging or `middleware.go`'s limiter changes; when finding 6's fix merges, drop the crash
+  exception from "In short" and "On the server".
+- **The bar preview's hairline takes nothing from the row** (fix run 1): a capsule's hairline is an overlay over the
+  row and the docked rule an inset shadow, as Compose's border and `drawBehind` take nothing from `TabRow`, and the pill
+  is placed from the row's measured height. A CSS border on the capsule would shrink the row and move the cells off
+  the template's 64 dp.
 - **`TRUSTED_PROXY` defaults to `none`**; the location columns stay empty unless it is `vercel` (set it in the Vercel
   project, with `IP_SALT`, `ADMIN_TOKEN` and `DATABASE_URL`).
 

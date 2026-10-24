@@ -1,3 +1,34 @@
 [locked:memwait] 942 MB available, 9175 MB commit left; waiting for 1500 MB
 [locked:memwait] 603 MB available, 8841 MB commit left; waiting for 1500 MB
 [locked:memwait] 522 MB available, 8762 MB commit left; waiting for 1500 MB
+[locked:memwait] 543 MB available, 8664 MB commit left; waiting for 1500 MB
+[locked:memwait] 563 MB available, 8682 MB commit left; waiting for 1500 MB
+[locked:memwait] 585 MB available plus 5390 MB of system cache Windows will trim; continuing
+   ▲ Next.js 15.5.28
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 65s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/6) ...
+   Generating static pages (1/6) 
+   Generating static pages (2/6) 
+   Generating static pages (4/6) 
+ ✓ Generating static pages (6/6)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                    68.6 kB         216 kB
+├ ○ /_not-found                            990 B         105 kB
+├ ○ /admin                               14.4 kB         162 kB
+└ ○ /icon.svg                                0 B            0 B
++ First Load JS shared by all             104 kB
+  ├ chunks/255-00fce0fafcdc4582.js       46.6 kB
+  ├ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB
+  └ other shared chunks (total)           3.6 kB
+
+
+○  (Static)  prerendered as static content
+
+build exit 0

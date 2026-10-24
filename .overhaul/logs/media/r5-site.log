@@ -1,0 +1,12 @@
+✔ viewport buckets match the API's (0.3079ms)
+✔ a long queue is split into batches the API accepts (1.0252ms)
+✔ the size limit is counted in bytes, so text outside ASCII still fits (1.2342ms)
+✔ session ids are random UUID v4s, the form the generate headers pass on (13.5076ms)
+ℹ tests 225
+ℹ suites 0
+ℹ pass 225
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2374.4709

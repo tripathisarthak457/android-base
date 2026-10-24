@@ -348,6 +348,7 @@
 - /out/WP02-CONT/red-staging/*
 - /out/WP02-CONT/std-after/*
 - /out/WP02-CONT/std-before/*
+- /out/WP12-KNOW/base/*
 - /verify-gen/out/authonly/*
 - /verify-gen/out/bare/A/*
 - /verify-gen/out/com.base.app.demo/*

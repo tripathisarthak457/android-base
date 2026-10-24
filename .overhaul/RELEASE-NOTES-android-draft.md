@@ -1,8 +1,41 @@
 # android-base: Android-first release (DRAFT release notes)
 
 Status: DRAFT for user review before deploying. Not published. Requirement: REQUIREMENTS 36.
-Drafted 2026-10-14 from .overhaul/ sources. Every claim cites its evidence; anything not verified is marked "unverified".
+Drafted 2026-10-14 from .overhaul/ sources; revision 2 (2026-10-24, WP12-KNOW's draft pass) adds the status block
+below and fills sections 5 and 6. Every claim cites its evidence; anything not verified is marked "unverified".
 Legend: [MERGED] = on android-base `overhaul/multiplatform-v2`. [BRANCH] = only on a work-package branch/worktree. [PLANNED] = not started.
+[STAGING] = in the `staging` branch (REQUIREMENTS 44), which every package with work was merged into on Oct 19-20.
+
+## 0. Where this draft stands (revision 2, 2026-10-24 18:00 IST)
+
+**Read this first: sections 2-4 still describe Oct 14.** Since then every package with work was merged into one
+branch, `staging` (REQUIREMENTS 44; `staging/MERGE-NOTES.md`, head `4760b4071` on Oct 24), so every **[BRANCH]**
+tag below now reads **[STAGING]**, except `wp/WP05-glass` (not merged, MERGE-NOTES §10) and PeriFlow (never). The
+final pass of WP12-KNOW (after QA2-ADDON merges, release-pipeline.md §4.1) rewrites sections 1-6 against staging's
+final head and WP13's `report/FINAL.md`, which owns the release's numbers.
+
+| Package | Where it is | Evidence |
+|---|---|---|
+| WP04 shell and back gesture, with T + C1 (the back card's texture) | [STAGING] `fb082216`, `13dda0d4`, `a556346a` | MERGE-NOTES §1-2 |
+| WP04-perf | [STAGING] `a6332dc4` | MERGE-NOTES §3 |
+| WP06 data, network, security | [STAGING] `cf5ac425` | MERGE-NOTES §4 |
+| WP03 design system (with the shimmer fix and iOS scrolling) | [STAGING] `e3dfd908`, `d5a1c898` | MERGE-NOTES §5 |
+| HUD, the performance overlay | [STAGING] `c9e71640`, `19aee799` | MERGE-NOTES §6 |
+| WIN, Windows support | [STAGING] `87f8572f` | MERGE-NOTES §7 |
+| WP02 (M2) architecture, build guards, Google's skills; M3's reference features are stage WP02-M3 | [STAGING] `76cd66cd` | MERGE-NOTES §8 |
+| WP05 glass tiers and lens | [STAGING] `d5c27615` | MERGE-NOTES §9 |
+| WP05-glass, the full glass set (REQUIREMENTS 37) | not merged; rebuilt by stages WP05-BAR and WP05-SET | MERGE-NOTES §10; release-pipeline.md §1.2 rows 22-23 |
+| WP07 (Compose Multiplatform), WP08 (SwiftUI) | [STAGING], `coming_soon` on the site and in the API | MERGE-NOTES §11-12; REQUIREMENTS 36 |
+| MIT licence | [STAGING] `cfb765cc` | MERGE-NOTES §13 |
+| Staging's fix loop (desktop, security, privacy; then the phone) | [STAGING] `b21f0a98..7230b666`, `4760b4071` | MERGE-NOTES §15-16; TEST-REPORT "Fix loop" |
+| The docs base (performance guide, `AGENTS.md` section 6) and this knowledge pass | ready, not merged: `staging-wp/WP12-DOCS`, `staging-wp/WP12-KNOW` | `handoff/WP12-DOCS.md`, `handoff/WP12-KNOW.md` |
+| Images and video (Coil and Media3 opt-in, REQUIREMENTS 53), Cronet and Brotli (39), the approved Telegram and District proposals (51), the sheet's shell half (33), the overlay metrics (49), the catalog (43) | [PLANNED] or in progress on `staging-wp/*` | release-pipeline.md §1.2 |
+
+**The numbers in section 3.1 are superseded.** The newest release-gate run is staging's `7230b666`
+(`staging/TEST-REPORT.md` "Fix loop, sittings 3 and 4"): every motion release row passes (tab switches, push and pop,
+the back gesture's release rows, Rapid Back), cold start 362 / 389 ms, memory 54.4 MB; root-list scroll, scroll with
+the bar minimizing, navigation stress and five first-frame non-regression rows fail. REQUIREMENTS 58 (Oct 24 09:49)
+set the release's visible ceilings for those rows.
 
 ## 1. Highlights
 
@@ -375,11 +408,34 @@ is complete.**
 
 ## 5. Known gaps before release
 
-(pending)
+As of staging `4760b4071` (revision 2); the gate checks each with proof (REQUIREMENTS 46, 52).
+
+- **Smoothness rows still red** (`staging/TEST-REPORT.md` "Still open", item 1): root-list scroll, scroll with the bar
+  minimizing, navigation stress, and the composing first frames of push, pop, plain-tap tabs and the gesture's first
+  three. The traces point at WP03's rows and screens composing inside frames instead of by prefetch
+  (`AppScaffold`'s `SubcomposeLayout` is the first candidate). Ceilings: REQUIREMENTS 58.
+- **The full liquid glass set** (REQUIREMENTS 35, 37) and CP2, the glass look decision: stages WP05-BAR and WP05-SET.
+- **The approved smoothness proposals** (REQUIREMENTS 51: Telegram P1-P11, District P3), each with its docs and its
+  phone check; images and video (53); Cronet and Brotli (39); the overlay's recomposition score (49).
+- **The sheet system's shell half** (SHEET-SPEC §19.2: sheet destinations, the card stack, zoom transitions):
+  WP04-SHEET.
+- **Docs written but not merged:** the performance guide and `AGENTS.md` section 6 (WP12-DOCS); the adaptive guide,
+  the architecture page rewrite, the repository README and `AGENTS.md` (WP12-KNOW draft). Still to write:
+  `docs/upgrading-v1-apps.md` (after WP14's project tools merge) and the measured before/after table (from
+  WP13's `report/FINAL.md`).
+- **Found while documenting** (`handoff/WP12-KNOW.md` "Findings for routing"): the app's root does not feed the
+  foldable posture or the input devices to the theme, so hinge-aware layouts stay flat on a device; the catalog's
+  description says it depends on the design system alone.
+- **The user's settings before the deploy** (REQUIREMENTS 57): `ENABLE_TARGETS=android`, `ADMIN_TOKEN`,
+  `DATABASE_URL`, `TRUSTED_PROXY` on Vercel.
 
 ## 6. Coming later
 
-(pending)
+- **Phase B** (REQUIREMENTS 36): the Compose Multiplatform and SwiftUI templates go live after their verification
+  (WP07-B/C, WP08's review, WP12-B docs, WP13-B), with a second gate and deploy.
+- **District proposals from the re-run**, asked one by one and built after the release (REQUIREMENTS 57).
+- **The scroll difference against T + C1** (about 2x on root-list scroll) becomes a post-release optimisation item
+  (REQUIREMENTS 58).
 
 ## Sources
 

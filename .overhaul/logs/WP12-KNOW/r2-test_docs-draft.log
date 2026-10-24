@@ -1,0 +1,26 @@
+[locked:memwait] 469 MB available, 8252 MB commit left; waiting for 1500 MB
+[locked:memwait] 664 MB available, 8566 MB commit left; waiting for 1500 MB
+[locked:memwait] 597 MB available, 8118 MB commit left; waiting for 1500 MB
+[locked:memwait] 387 MB available, 7653 MB commit left; waiting for 1500 MB
+[locked:memwait] 378 MB available, 7960 MB commit left; waiting for 1500 MB
+[locked:memwait] 347 MB available plus 3407 MB of system cache Windows will trim; continuing
+test_every_agent_reads_the_same_instructions (tests.test_docs.GeneratedDocsTest.test_every_agent_reads_the_same_instructions) ... ok
+test_every_guide_the_code_points_to_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_code_points_to_is_in_the_project) ... ok
+test_every_guide_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_docs_name_is_in_the_project) ... ok
+test_every_link_reaches_its_file_and_heading (tests.test_docs.GeneratedDocsTest.test_every_link_reaches_its_file_and_heading) ... ok
+test_every_path_the_rules_cite_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_path_the_rules_cite_is_in_the_project) ... ok
+test_no_name_the_rules_cite_was_left_out_of_the_project (tests.test_docs.GeneratedDocsTest.test_no_name_the_rules_cite_was_left_out_of_the_project) ... ok
+test_the_docs_speak_to_the_project_not_the_workshop (tests.test_docs.GeneratedDocsTest.test_the_docs_speak_to_the_project_not_the_workshop) ... ok
+test_agents_md_carries_the_rules_and_links_the_guide (tests.test_docs.TemplateDocsTest.test_agents_md_carries_the_rules_and_links_the_guide) ... ok
+test_being_done_excuses_only_the_rows_the_guide_lists_as_over (tests.test_docs.TemplateDocsTest.test_being_done_excuses_only_the_rows_the_guide_lists_as_over) ... ok
+test_every_check_the_docs_name_exists (tests.test_docs.TemplateDocsTest.test_every_check_the_docs_name_exists) ... ok
+test_every_gate_row_the_docs_name_exists (tests.test_docs.TemplateDocsTest.test_every_gate_row_the_docs_name_exists) ... ok
+test_every_name_the_docs_cite_exists (tests.test_docs.TemplateDocsTest.test_every_name_the_docs_cite_exists) ... ok
+test_every_scenario_the_docs_run_exists (tests.test_docs.TemplateDocsTest.test_every_scenario_the_docs_run_exists) ... ok
+test_the_spring_table_is_the_standard_style (tests.test_docs.TemplateDocsTest.test_the_spring_table_is_the_standard_style) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 69.071s
+
+OK
+exit 0

@@ -57,3 +57,19 @@ BUILD SUCCESSFUL in 7m 5s
 
 == 17:06:49 modules-modular: generated at 32b86b7099a2
 trips build file: CHECK
+rc=0
+[locked:gradle] waiting for the lock (pid 8292 since 2026-10-24 17:06:46: bash D:/projects/tools/.overhaul/out/WP02/gw.win.sh --offline :core:designsystem:compileDebugUnitTestKotlin --rerun :cor)
+[locked:gradle] yielding to normal-priority waiters for the lock (pid 8292 since 2026-10-24 17:06:46: bash D:/projects/tools/.overhaul/out/WP02/gw.win.sh --offline :core:designsystem:compileDebugUnitTestKotlin --rerun :cor)
+[locked:gradle] waiting for the lock (pid 2600 since 2026-10-24 17:14:13: bash staging/scripts/r2/r2-s21-build.sh)
+[locked:gradle] waiting for the lock (pid 2600 since 2026-10-24 17:14:13: bash staging/scripts/r2/r2-s21-build.sh)
+[locked:gradle] waiting for the lock (pid 1488 since 2026-10-24 17:22:36: ./gradlew :core:video:testDebugUnitTest --tests com.base.app.core.video.VideoBadgeTest --tests com.base.app.core.video.A)
+[locked:gradle] 564 MB available, 8924 MB commit left; waiting for 1500 MB
+[locked:gradle] 533 MB available, 8613 MB commit left; waiting for 1500 MB
+[locked:gradle] 527 MB available, 8685 MB commit left; waiting for 1500 MB
+[locked:gradle] 501 MB available, 8530 MB commit left; waiting for 1500 MB
+[locked:gradle] 487 MB available, 8267 MB commit left; waiting for 1500 MB
+[locked:gradle] 675 MB available plus 6055 MB of system cache Windows will trim; continuing
+BUILD SUCCESSFUL in 5m 55s
+799 actionable tasks: 334 executed, 31 from cache, 434 up-to-date
+
+V10 DONE 17:41:04
