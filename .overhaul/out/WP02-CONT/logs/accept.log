@@ -28,3 +28,34 @@ HEAD 32b86b7099a2d79e2c60e5b372112dca0b23affe; changes: 0
 09:26:40 start build-lean
 09:46:21 build-lean exit=0
 09:46:21 start build-standard
+09:59:31 build-standard exit=0
+09:59:31 start build-standard-modular
+10:07:16 build-standard-modular exit=0
+10:07:16 start build-everything (formatting excepted)
+10:18:28 build-everything-raw exit=0
+10:18:28 start build-everything
+10:18:29 build-everything exit=0
+10:18:29 start build-none
+10:21:39 build-none exit=0
+10:21:39 start build-modules-compact
+10:27:04 build-modules-compact exit=0
+10:27:04 start build-modules-modular
+10:30:50 build-modules-modular exit=0
+10:31:04 start crossnav-base
+10:31:07 crossnav-base exit=0
+10:31:07 start crossnav-patch
+10:31:07 crossnav-patch exit=0
+10:31:07 start crossnav-build
+10:32:33 crossnav-build exit=0
+10:32:33 start crossnav-commit
+10:32:33 crossnav-commit exit=0
+10:32:33 start crossnav-split
+10:32:34 crossnav-split exit=0
+10:32:34 start crossnav-moves
+10:32:35 crossnav-moves exit=0
+10:32:35 start crossnav-split-build
+10:33:39 crossnav-split-build exit=0
+guard fires: ok
+code rules fire: ok
+git status after: 0 changed paths
+ACCEPT FAILED: template-build

@@ -1,0 +1,179 @@
+Sat Oct 24 16:55:14 IST 2026
+[locked:gradle] waiting for the lock (pid 524 since 2026-10-24 16:54:34: bash D:/projects/tools/.overhaul/out/WP02/gw.win.sh --offline check --continue --console=plain)
+[locked:gradle] waiting for the lock (pid 524 since 2026-10-24 16:54:34: bash D:/projects/tools/.overhaul/out/WP02/gw.win.sh --offline check --continue --console=plain)
+[locked:gradle] waiting for the lock (pid 524 since 2026-10-24 16:54:34: bash D:/projects/tools/.overhaul/out/WP02/gw.win.sh --offline check --continue --console=plain)
+[locked:gradle] yielding to normal-priority waiters for the lock (pid 8292 since 2026-10-24 17:06:46: bash D:/projects/tools/.overhaul/out/WP02/gw.win.sh --offline :core:designsystem:compileDebugUnitTestKotlin --rerun :cor)
+[locked:gradle] waiting for the lock (pid 2600 since 2026-10-24 17:14:13: bash staging/scripts/r2/r2-s21-build.sh)
+[locked:gradle] waiting for the lock (pid 2600 since 2026-10-24 17:14:13: bash staging/scripts/r2/r2-s21-build.sh)
+[locked:gradle] 691 MB available, 9594 MB commit left; waiting for 1500 MB
+[locked:gradle] 685 MB available, 9337 MB commit left; waiting for 1500 MB
+[locked:gradle] 654 MB available, 9334 MB commit left; waiting for 1500 MB
+[locked:gradle] 616 MB available, 9113 MB commit left; waiting for 1500 MB
+[locked:gradle] 632 MB available, 9186 MB commit left; waiting for 1500 MB
+[locked:gradle] 635 MB available plus 5859 MB of system cache Windows will trim; continuing
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:video:testDebugUnitTest --tests com.base.app.core.video.VideoBadgeTest --tests com.base.app.core.video.AppVideoTest
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyApiPurity UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:image:verifyModuleDependencies UP-TO-DATE
+> Task :core:image:verifyApiPurity UP-TO-DATE
+> Task :core:image:preBuild UP-TO-DATE
+> Task :core:image:preDebugBuild UP-TO-DATE
+> Task :core:testing:verifyApiPurity UP-TO-DATE
+> Task :core:image:javaPreCompileDebug UP-TO-DATE
+> Task :core:testing:verifyModuleDependencies UP-TO-DATE
+> Task :core:testing:preBuild UP-TO-DATE
+> Task :core:testing:preDebugBuild UP-TO-DATE
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+> Task :core:video:verifyModuleDependencies UP-TO-DATE
+> Task :core:video:verifyApiPurity UP-TO-DATE
+> Task :core:video:preBuild UP-TO-DATE
+> Task :core:video:preDebugBuild UP-TO-DATE
+> Task :core:image:writeDebugAarMetadata UP-TO-DATE
+> Task :core:video:generateDebugResources UP-TO-DATE
+> Task :core:video:processDebugNavigationResources UP-TO-DATE
+> Task :core:video:javaPreCompileDebug UP-TO-DATE
+> Task :core:video:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:testing:writeDebugAarMetadata UP-TO-DATE
+> Task :core:video:writeDebugAarMetadata UP-TO-DATE
+> Task :core:testing:compose:verifyApiPurity UP-TO-DATE
+> Task :core:testing:compose:verifyModuleDependencies UP-TO-DATE
+> Task :core:testing:compose:preBuild UP-TO-DATE
+> Task :core:testing:compose:preDebugBuild UP-TO-DATE
+> Task :core:testing:compose:writeDebugAarMetadata UP-TO-DATE
+> Task :core:video:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:video:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:image:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:testing:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:video:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:testing:compose:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity UP-TO-DATE
+> Task :core:designsystem:preBuild UP-TO-DATE
+> Task :core:designsystem:preDebugBuild UP-TO-DATE
+> Task :core:image:processDebugManifest UP-TO-DATE
+> Task :core:video:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:video:parseDebugLocalResources UP-TO-DATE
+> Task :core:video:generateDebugRFile UP-TO-DATE
+> Task :core:video:compileDebugLibraryResources UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:testing:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:testing:processDebugJavaRes UP-TO-DATE
+> Task :core:testing:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:testing:processDebugManifest UP-TO-DATE
+> Task :core:video:extractDeepLinksDebug UP-TO-DATE
+> Task :core:video:processDebugManifest UP-TO-DATE
+> Task :core:testing:compose:processDebugManifest UP-TO-DATE
+> Task :core:video:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:video:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:testing:compose:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:video:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:image:generateDebugAssets UP-TO-DATE
+> Task :core:image:mergeDebugAssets UP-TO-DATE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:mergeDebugAssets UP-TO-DATE
+> Task :core:video:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:video:generateDebugAssets UP-TO-DATE
+> Task :core:video:mergeDebugAssets UP-TO-DATE
+> Task :core:testing:compose:generateDebugAssets UP-TO-DATE
+> Task :core:testing:compose:mergeDebugAssets UP-TO-DATE
+> Task :core:video:mergeDebugUnitTestManifest
+> Task :core:video:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:video:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:video:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:video:koverFindJar UP-TO-DATE
+> Task :core:testing:compose:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:testing:compose:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:testing:compose:processDebugJavaRes UP-TO-DATE
+> Task :core:video:processDebugUnitTestResources UP-TO-DATE
+> Task :core:video:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:video:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:image:compileDebugKotlin UP-TO-DATE
+> Task :core:image:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:image:processDebugJavaRes UP-TO-DATE
+> Task :core:image:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:image:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:video:compileDebugKotlin UP-TO-DATE
+> Task :core:video:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:video:processDebugJavaRes UP-TO-DATE
+> Task :core:video:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:video:bundleLibCompileToJarDebug UP-TO-DATE
+
+> Task :core:video:compileDebugUnitTestKotlin
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/video/src/test/kotlin/com/base/app/core/video/AppVideoTest.kt:90:32 Unresolved reference 'BadgeTag'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/video/src/test/kotlin/com/base/app/core/video/AppVideoTest.kt:97:32 Unresolved reference 'BadgeTag'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/video/src/test/kotlin/com/base/app/core/video/AppVideoTest.kt:109:32 Unresolved reference 'BadgeTag'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/video/src/test/kotlin/com/base/app/core/video/VideoBadgeTest.kt:44:114 Unresolved reference 'PlayBadge'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/video/src/test/kotlin/com/base/app/core/video/VideoBadgeTest.kt:47:112 Unresolved reference 'PlayBadge'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/video/src/test/kotlin/com/base/app/core/video/VideoBadgeTest.kt:51:49 Unresolved reference 'FailedBadge'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/video/src/test/kotlin/com/base/app/core/video/VideoBadgeTest.kt:55:48 Unresolved reference 'FailedBadge'.
+e: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/video/src/test/kotlin/com/base/app/core/video/VideoBadgeTest.kt:71:41 Unresolved reference 'BadgeTag'.
+
+> Task :core:video:compileDebugUnitTestKotlin FAILED
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/wt/MEDIA/templates/android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:video:compileDebugUnitTestKotlin' (registered by plugin 'com.android.internal.library').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: UNRESOLVED_REFERENCE
+       Kotlin compiler error
+         Unresolved reference 'BadgeTag'.
+         Location: D:/projects/tools/.overhaul/wt/MEDIA/templates/android/core/video/src/test/kotlin/com/base/app/core/video/AppVideoTest.kt line 90
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 2m 14s
+90 actionable tasks: 2 executed, 88 up-to-date
+Configuration cache entry stored.
+exit 1
+Sat Oct 24 17:30:01 IST 2026

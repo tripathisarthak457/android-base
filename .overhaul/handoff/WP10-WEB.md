@@ -22,12 +22,58 @@ stage table: phone "no").
   `web/README.md`); `7be629354` `next` 15.5.28 (a new critical advisory, Decisions); `e3754904d` the Motion cards'
   spring values kept inside the card (found by the browser check); `337f64c72` merge of staging `4760b4071` (the Build
   step's glass notice in `state.ts`/`BuildStep.tsx`, no overlap).
-- **State: ready for review** at `337f64c72`, worktree clean. Checks there: 257/257 site tests, `tsc --noEmit` clean,
-  `next build` passes, `npm audit` 0 vulnerabilities, `genkit.core.catalogue --check` current, browser check done
-  (Measurements). Nothing waits on the phone, CP2 or another stage. Not merged into staging (fast track: stop at ready).
+- Run 2 ended **ready for review** at `337f64c72` (257/257 site tests, `tsc`, `next build`, `npm audit` 0).
+- **Fix run 1** (Oct 24, from 17:01; reviewer's two blocking findings and 15 non-blocking ones). Staging `4760b4071`
+  was already merged. In progress: both blocking findings fixed at their root in the working tree (section "Fix run 1"
+  below), tests written and seen failing on the old logic, checks running; commits and the browser check next.
 - Left running, not started by this run so not stopped: run 1's `next start -p 3110` (node pid 9988 with its npx, bash
   and cmd parents, since 02:26) and its Browser pane tab "seed" on that port. It serves the `.next` this run rebuilt.
   The orchestrator may stop it.
+
+## Fix run 1 (the reviewer's findings)
+
+Blocking, both fixed at the root:
+
+1. **The bar preview's pill sat below the content it encloses, by the style's border width** (`TabBar.tsx:55`). Two
+   sources disagreed on the row's height: the capsule drew its hairline as a CSS `border` under border-box, so the
+   row inside was `dp(64) - 2 * borderWidth` tall and the cells centred their glyph and label in that, while the pill
+   was placed from the nominal `dp(BAR.height)`. Both halves fixed, so the preview now has the template's geometry and
+   cannot drift again: (a) the hairline is drawn by an overlay over the row (`pointer-events-none`, `border-radius:
+   inherit`), as Compose's `Modifier.border` draws over the content, so the row keeps the bar's full 64 dp height and
+   full width as `TabRow` does (the Glass sheen moved onto the overlay with the rim, so it stays just inside it); the
+   docked rule is an inset `box-shadow`, painted behind the row as `drawBehind` paints it; (b) the pill is placed from
+   the row's own measured height (`getComputedStyle`, unrounded and unscaled; `clientWidth` rounded the width too),
+   as `PillSlots` insets it from the row the cells are measured in. The geometry moved from `TabBar.tsx` into
+   `bar.ts` (`restingPills`, `pillBox`), so `bar.test.ts` tests it: "the pill is centred across the row the cells
+   centre their content in, whatever its height" (64 dp, Playful's 2 px border, Glass's 0.75 px rim, 56 dp; resting
+   and stretched) fails on the old nominal-height logic (`logs/WP10-WEB/fix1-bar-test-nominal-height.log`: "at
+   45.78 px the pill's top is 7.78, not 5.78") and passes now. The resting pills are derived once per measure and the
+   pill once a frame (the reviewer's per-frame note).
+2. **The privacy page overstated how long an address stays in memory** (`docs/telemetry-and-privacy.md:46`). The
+   limiter clears its map lazily at the first request after its hour (`middleware.go` `allow`), with no sweep. The page
+   now says so: the limits live only in memory, each is cleared by the first request it counts after its hour is up
+   or by a restart, so on a route nobody calls an address stays until someone does. The API is outside this stage;
+   bounding the map's age stays the API owner's call.
+
+Non-blocking, each addressed or answered:
+
+| Finding | Done |
+|---|---|
+| Panic logs can carry the address (`:14`, `:46`) | The page's "In short" and "On the server" now state the exception (the connection's address, the proxy's behind one); routed to the API's owner (finding 6) |
+| `requests` "per call" (`:159`) | "except health checks and the admin portal's own calls" (`recordsTimings`) |
+| feedback `target` always kept (`:134`) | Moved into the "only if **Attach what you configured** stays ticked (a script may send them too)" row; `Feedback.tsx` sends it only in the attached context |
+| CI does not run `node --test` | Routed to WP13-PREP (finding 7) |
+| AGENTS.md misses files `bar.test.ts` reads | Now names `NavTransitions.kt`, `AppShell.kt`'s line and `KeptTabs.kt`'s condition; and says the privacy page's prose on logs and the limiter is untested, to re-read with `main.go` or `middleware.go` |
+| `claims.test.ts` ripple and comments | The included card's row also asserts `id = "ripple"`; every Kotlin read drops comments first (`withoutComments`), so a KDoc naming `springs.sheet` no longer holds a claim up. Guard tightening: passes on the current template |
+| hero "refuses Material imports" | Now "refuses Material component imports", its claims row with it (the `material` rule exempts the adaptive imports) |
+| `BarLook.borderWidth` "In dp" | KDoc says CSS px and why (a hairline stays a whole pixel in a scaled phone, as the other parts draw borders) |
+| `FramerSpring` export and `restDelta?` | Back to staging's private type |
+| Per-frame `restingPills` | Done with blocking 1 |
+| Docked surface always drawn | A comment in `TabBar.tsx` says why |
+| `TranslucentAlpha`, `DarkOutline` hard-coded | `TRANSLUCENT_ALPHA`, `DARK_OUTLINE_ALPHA` in `bar.ts`, read from `AppTabBar.kt` by `bar.test.ts` |
+| `storedColumns` and RENAME | The reader (`columnsOf`) follows `RENAME COLUMN`, `RENAME TO`, `ADD COLUMN IF NOT EXISTS`, `ALTER TABLE IF EXISTS/ONLY`; a new test runs it on SQL that does each (the old reader would keep `ip_hash`, add a column named `IF` and miss the renamed table) |
+| glyphs.ts size | Corrected in Decisions: 21.3 kB, 4.2 kB gzipped |
+| Template KDocs (Subtle "No pill", Floating "elevated surface") | Routed to WP03 / WP12-KNOW (finding 8) |
 
 ## What changed, and why
 
@@ -56,7 +102,7 @@ stage table: phone "no").
 - **Drift is a failing test, not a note.** The bar's enums, sizes and springs, the chip, the glyphs, the tab glyph
   tables, the CI matrix and the privacy page are each read from the code they describe. Brittle by design: a format
   change in those files fails the site's tests with a message naming what to update.
-- **All 87 glyphs ship in `glyphs.ts`** (20 KB source, about 6 KB gzipped) rather than the ones the preview uses
+- **All 87 glyphs ship in `glyphs.ts`** (21.3 kB source, 4.2 kB gzipped, measured with Python on the file) rather than the ones the preview uses
   today: the generator's glyph choice falls through to every outline past eight unmatched modules (12 are allowed), and
   a selection list would be one more thing to keep in step.
 - **`next` 15.5.27 to 15.5.28 (run 2).** `npm audit` on Oct 24 reported a new critical advisory against 15.5.27
@@ -96,6 +142,26 @@ stage table: phone "no").
    ellipsis ("PROFI…", "SETTIN…"), in Fraunces caption2. The preview follows `TabCells.kt`'s rule, so the app probably
    does the same (REQUIREMENTS 18 names truncated tab labels); only a phone capture of the Editorial style with five
    tabs can confirm it.
+6. **The API can log a visitor's address when a handler panics** (fix run 1; the API's owner, `web/api`; no stage of
+   this release changes it, so the integrator or a fix stage). `cmd/server/main.go` sets no `http.Server.ErrorLog` and
+   no middleware recovers a panic, and `slog.SetDefault` routes the standard logger into the JSON logs, so Go's
+   `net/http` writes `http: panic serving <RemoteAddr>: ...` there. Behind Vercel that address is the proxy's; with
+   `TRUSTED_PROXY=none` (a server exposed directly) it is the visitor's. The fix is an `ErrorLog` that drops the
+   address, or a recover middleware that answers 500 and logs the route only. The privacy page now states the
+   exception; once the fix merges, the sentence ("The exception is a request that crashes the server ...") and the
+   "short of a request that crashes the server" in "In short" can go.
+7. **The site's tests do not run in CI** (fix run 1; WP13-PREP, `design/wp/WP13.md` line 69): `.github/workflows/ci.yml`'s
+   frontend job runs `npm ci`, `tsc` and `next build` but not `npm test` (`node --test`), so a template-only change that
+   makes the site untrue (a glyph, a bar size, a claim, the CI matrix, a new stored column) goes green until someone
+   runs the site's tests locally. WP13's design already lists `node --test` for the job (Node 24); the rewrite must
+   keep it, and on Node 24 or 22.18+, since the tests are `.ts` files run with Node's type stripping (today's job pins
+   Node 22 with no minor). Every job runs on every push and pull request (no path filters), so nothing else is needed
+   for a template-only change to run them. AGENTS.md's sentence ("The site's tests (`cd web/frontend && npm test`)
+   read the template") stays accurate either way.
+8. **Two `AppDesignStyle.kt` KDocs disagree with `barLookFor`** (fix run 1; WP03 / WP12-KNOW): `BarIndicator.Subtle`
+   says "No pill: the selected glyph turns filled", while `barLookFor` gives Subtle an `accentSubtle` pill; and
+   `BarTreatment.Floating` says "on the elevated surface", while `barLookFor` uses `surface` in light theme and
+   `surfaceElevated` only in dark. The preview follows the code (`bar.test.ts` pins both), so only the KDocs change.
 
 ## Measurements
 

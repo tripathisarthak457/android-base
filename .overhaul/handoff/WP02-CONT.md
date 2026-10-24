@@ -5,6 +5,18 @@ Lane `WP02`: worktree `D:/projects/tools/.overhaul/wt/sw-WP02`, branch `staging-
 
 ## Progress
 
+Run 5 (started 2026-10-24 16:37 IST): branch clean at `32b86b70`; staging still `4760b407` (`git merge staging`:
+already up to date). Run 4's backgrounds finished: `v8.sh` step 6 green on lean, standard, all and everything (each
+check read the whole report: designsystem 1264/1576 lines, navigation 231, ui 27-60), `none` exited 66 behind the
+lock; `accept.cont.sh` passed every step (generator suite, consistency `--quick`, catalogue and tokens, seven fixtures
+generated, lean/standard/standard-modular `check assembleDevDebug`, everything's with only formatting excepted and in
+fact clean, none/modules-* builds and tests, the cross-feature split, both guards firing) except `template-build`,
+which also exited 66 behind the lock, at the same second (09:05:18) as v8's `none`.
+
+- [ ] `v9.sh` (16:5x-, `logs/v9.log`): presets regenerated at this head; the stability order on all five presets;
+      devRelease sizes of lean, standard, everything at this head; the template's `build --continue`.
+- [ ] `tools/size_budgets.toml` from v9's sizes; Measurements.
+
 Run 4 (started 2026-10-24 08:28 IST): run 3 committed step 4 (`09613c5a`, 08:14) and stopped with `v6.sh` still running
 (it finished its size step in this run) and 23.8 uncommitted. Merged staging `4760b407` (web only) as `89fc915d`.
 

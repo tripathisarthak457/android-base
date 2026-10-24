@@ -1,0 +1,7 @@
+[locked:memwait] 689 MB available, 9634 MB commit left; waiting for 1500 MB
+[locked:memwait] 1433 MB available, 10956 MB commit left; waiting for 1500 MB
+[locked:memwait] 646 MB available, 9430 MB commit left; waiting for 1500 MB
+[locked:memwait] 635 MB available, 9197 MB commit left; waiting for 1500 MB
+[locked:memwait] 636 MB available, 9181 MB commit left; waiting for 1500 MB
+[locked:memwait] 633 MB available plus 5723 MB of system cache Windows will trim; continuing
+tsc exit 0

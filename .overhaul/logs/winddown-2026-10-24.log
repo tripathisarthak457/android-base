@@ -1,0 +1,6 @@
+10:34:53 commands under the lock finished
+10:34:55 cd D:/projects/tools/.overhaul/wt/STAGING/templates/android && D:/projects/tools/.overhaul/bin/locked gradle ./gradlew --stop: exit 0 Stopping Daemon(s)
+1 Daemon stopped
+10:34:55 D:/projects/tools/.overhaul/bin/locked adb adb kill-server: exit 0 
+10:34:56 thermlog stopped: ['15604', '6380']
+10:34:56 done

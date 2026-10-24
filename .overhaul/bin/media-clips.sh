@@ -31,10 +31,10 @@ bumblebee|$COMMONS/0/04/Bumblebee_on_flowers.webm|Roman Ryabenko, CC0, Wikimedia
 jellyfish|$COMMONS/a/aa/M%C3%A9duse_%C3%A0_l%27aquarium_de_Monaco_en_novembre_2021.webm|Benoit Prieur, CC0, Wikimedia Commons
 mt-hood|$COMMONS/9/99/Mt_Hood_Aerial_View.webm|Pastelitodepapa, CC0, Wikimedia Commons
 flower|$MDN/flower.mp4|MDN, CC0
-friday|$MDN/friday.mp4|MDN, CC0
 "
+# friday.mp4 (MDN) was rejected in the content review (L6, MEDIA run 5): people in focus, from a 1940 film.
 
-each() { echo "$CLIPS" | while IFS='|' read -r key url credit; do [ -n "$key" ] && "$@" "$key" "$url" "$credit"; done; }
+each() { echo "$CLIPS" | while IFS='|' read -r key url credit; do [ -z "$key" ] || "$@" "$key" "$url" "$credit"; done; }
 
 fetch_one() {
   local key=$1 url=$2 file=$SRC/$1.${2##*.}
@@ -57,7 +57,13 @@ transcode_one() {
     -c:v libx264 -profile:v high -preset slow -b:v 1500k -maxrate 1800k -bufsize 3000k -g 30 -keyint_min 30 \
     -sc_threshold 0 -pix_fmt yuv420p -movflags +faststart "$OUT/$key.mp4" || return 1
   ffmpeg -nostdin -y -loglevel error -i "$OUT/$key.mp4" -frames:v 1 -q:v 4 "$OUT/$key.jpg"
-  for t in 1 4 8; do ffmpeg -nostdin -y -loglevel error -ss $t -i "$OUT/$key.mp4" -frames:v 1 -q:v 5 "$OUT/frames/$key-$t.jpg"; done
+  # Start, middle and end of the clip: several clips run under 8 s, so fixed 1/4/8 s seeks would miss them.
+  local d i=0 t
+  d=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$OUT/$key.mp4" | tr -d '\r')
+  for t in 0.5 $(awk "BEGIN{print $d/2}") $(awk "BEGIN{print $d-0.5}"); do
+    i=$((i + 1))
+    ffmpeg -nostdin -y -loglevel error -ss "$t" -i "$OUT/$key.mp4" -frames:v 1 -q:v 5 "$OUT/frames/$key-$i.jpg"
+  done
   echo "| $key.mp4 | $credit |" >> "$OUT/CREDITS.md"
   echo "$key: $(stat -c %s "$OUT/$key.mp4") bytes"
 }
@@ -65,7 +71,8 @@ transcode_one() {
 OV=D:/projects/tools/.overhaul
 PKG=com.example.everything.catalog
 export LOCKED_PRIORITY=low
-adbq() { "$OV/bin/locked" adb adb "$@"; }
+# adb reads stdin: without </dev/null the first `adb shell` inside the clip loop eats the rest of the list.
+adbq() { "$OV/bin/locked" adb adb "$@" < /dev/null; }
 
 frames_one() { # <key>: three screenshots of the settled clip, about 1, 4 and 8 s after the swipe that brought it
   local key=$1 t

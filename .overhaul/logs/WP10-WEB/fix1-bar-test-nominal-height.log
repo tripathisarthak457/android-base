@@ -1,0 +1,41 @@
+✔ the preview draws every bar treatment and indicator the template has, and no retired one (2.264ms)
+✔ every design style in the catalogue uses a treatment and an indicator the preview draws (1.8057ms)
+✔ the bar's sizes are the template's (0.8064ms)
+✔ the push and the tab bar move on the shell's own springs, whatever the motion style (1.0222ms)
+✔ a tab arriving after a tap is nudged in from the side it comes from, on the shell's reveal spring (0.886ms)
+✔ Floating and Translucent are capsules, Docked sits on the edge, and an unknown treatment floats (0.1397ms)
+✔ a Pill indicator is a solid accent pill with onAccent content; Subtle tints it (0.2623ms)
+✔ barIndicator, which a Pill is filled with, is the accent in every palette (0.7382ms)
+✔ a capsule is the surface with a hairline and a soft shadow in light theme, raised and unshadowed in dark (0.3777ms)
+✔ the pill fits its label with room to spare, between 52 and 72 dp, never past its slot (0.2187ms)
+✔ the pill stretches toward its target by at most half a slot, and thins as it does (0.2577ms)
+✖ the pill is centred across the row the cells centre their content in, whatever its height (0.9492ms)
+✔ each pill rests in the middle of its slot, as wide as pillWidth gives (0.202ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 12
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 217.3538
+
+✖ failing tests:
+
+test at features\preview\bar.test.ts:191:1
+✖ the pill is centred across the row the cells centre their content in, whatever its height (0.9492ms)
+  AssertionError [ERR_ASSERTION]: at 45.77777777777778 px the pill's top is 7.777777777777779, not 5.777777777777779
+      at TestContext.<anonymous> (file:///D:/projects/tools/.overhaul/wt/sw-WP10/web/frontend/features/preview/bar.test.ts:200:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

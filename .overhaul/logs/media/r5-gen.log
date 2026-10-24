@@ -1,0 +1,45 @@
+Sat Oct 24 16:58:11 IST 2026
+[locked:memwait] 566 MB available, 12808 MB commit left; waiting for 1500 MB
+[locked:memwait] 565 MB available, 12801 MB commit left; waiting for 1500 MB
+[locked:memwait] 579 MB available, 12552 MB commit left; waiting for 1500 MB
+[locked:memwait] 447 MB available, 11616 MB commit left; waiting for 1500 MB
+[locked:memwait] 407 MB available, 10989 MB commit left; waiting for 1500 MB
+[locked:memwait] 278 MB available plus 3916 MB of system cache Windows will trim; continuing
+...............................................................................................................s..........................s...........................................ss.................................................................................................................................................s...........s.........................s..........s........................................................................................s....................
+----------------------------------------------------------------------
+Ran 488 tests in 1220.843s
+
+OK (skipped=9)
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+exit 0
+[locked:memwait] 623 MB available, 9039 MB commit left; waiting for 1500 MB
+[locked:memwait] 463 MB available plus 5520 MB of system cache Windows will trim; continuing
+web/frontend/lib/catalogue.json is current.
+Sat Oct 24 17:29:03 IST 2026

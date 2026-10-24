@@ -1,0 +1,759 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Starting a Gradle Daemon, 3 stopped Daemons could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: assembleDevDebug testDebugUnitTest :app:testDevDebugUnitTest
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :app:preBuild UP-TO-DATE
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preDevDebugBuild UP-TO-DATE
+> Task :app:mergeDevDebugNativeDebugMetadata NO-SOURCE
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies
+> Task :core:common:verifyApiPurity
+> Task :core:database:verifyApiPurity
+> Task :core:database:verifyModuleDependencies
+> Task :core:database:preBuild
+> Task :core:database:preDebugBuild
+> Task :core:database:generateDebugEmptyResourceFiles
+> Task :app:generateDevDebugBuildConfig
+> Task :app:generateDevDebugResources
+> Task :core:datastore:verifyModuleDependencies
+> Task :core:datastore:verifyApiPurity
+> Task :core:datastore:preBuild
+> Task :core:datastore:preDebugBuild
+> Task :core:datastore:generateDebugEmptyResourceFiles
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:mvi:verifyApiPurity
+> Task :core:mvi:verifyModuleDependencies
+> Task :core:mvi:preBuild
+> Task :core:mvi:preDebugBuild
+> Task :core:mvi:generateDebugEmptyResourceFiles
+> Task :core:navigation:verifyApiPurity
+> Task :core:navigation:verifyModuleDependencies
+> Task :core:navigation:preBuild
+> Task :core:navigation:preDebugBuild
+> Task :core:navigation:processDebugNavigationResources
+> Task :core:network:verifyApiPurity
+> Task :core:network:verifyModuleDependencies
+> Task :core:network:preBuild
+> Task :core:network:preDebugBuild
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:network:generateDebugEmptyResourceFiles
+> Task :core:designsystem:processDebugNavigationResources
+> Task :core:ui:verifyModuleDependencies
+> Task :core:ui:verifyApiPurity
+> Task :core:ui:preBuild
+> Task :core:ui:preDebugBuild
+> Task :core:ui:processDebugNavigationResources
+> Task :data:orders:verifyApiPurity
+> Task :app:packageDevDebugResources
+> Task :data:orders:verifyModuleDependencies
+> Task :data:orders:preBuild
+> Task :data:orders:preDebugBuild
+> Task :data:trips:verifyModuleDependencies
+> Task :data:orders:generateDebugEmptyResourceFiles
+> Task :data:trips:verifyApiPurity
+> Task :data:wallet:verifyApiPurity
+> Task :data:trips:preBuild
+> Task :data:trips:preDebugBuild
+> Task :data:wallet:verifyModuleDependencies
+> Task :data:wallet:preBuild
+> Task :data:wallet:preDebugBuild
+> Task :data:trips:generateDebugEmptyResourceFiles
+> Task :feature:orders:verifyModuleDependencies
+> Task :data:wallet:generateDebugEmptyResourceFiles
+> Task :feature:trips:verifyModuleDependencies
+> Task :feature:orders:verifyApiPurity
+> Task :feature:orders:preBuild
+> Task :feature:orders:preDebugBuild
+> Task :feature:orders:processDebugNavigationResources
+> Task :feature:trips:verifyApiPurity
+> Task :feature:trips:preBuild
+> Task :feature:trips:preDebugBuild
+> Task :feature:wallet:verifyModuleDependencies
+> Task :feature:trips:processDebugNavigationResources
+> Task :feature:wallet:verifyApiPurity
+> Task :feature:wallet:preBuild
+> Task :feature:wallet:preDebugBuild
+> Task :feature:wallet:processDebugNavigationResources
+> Task :core:database:javaPreCompileDebug FROM-CACHE
+> Task :core:datastore:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:mvi:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:generateDebugResources
+> Task :core:navigation:generateDebugResources
+> Task :core:navigation:packageDebugResources
+> Task :core:designsystem:packageDebugResources
+> Task :core:designsystem:parseDebugLocalResources
+> Task :core:navigation:parseDebugLocalResources
+> Task :core:navigation:generateDebugRFile
+> Task :core:designsystem:generateDebugRFile
+> Task :core:navigation:javaPreCompileDebug FROM-CACHE
+> Task :core:network:javaPreCompileDebug FROM-CACHE
+> Task :core:ui:generateDebugResources
+> Task :core:ui:packageDebugResources
+> Task :core:ui:parseDebugLocalResources
+> Task :core:ui:generateDebugRFile
+> Task :core:ui:javaPreCompileDebug FROM-CACHE
+> Task :data:orders:javaPreCompileDebug FROM-CACHE
+> Task :feature:orders:generateDebugResources
+> Task :feature:orders:packageDebugResources
+> Task :feature:orders:parseDebugLocalResources
+> Task :feature:orders:generateDebugRFile
+> Task :feature:orders:javaPreCompileDebug FROM-CACHE
+> Task :data:trips:javaPreCompileDebug FROM-CACHE
+> Task :feature:trips:generateDebugResources
+> Task :feature:trips:packageDebugResources
+> Task :feature:trips:parseDebugLocalResources
+> Task :feature:trips:generateDebugRFile
+> Task :feature:trips:javaPreCompileDebug FROM-CACHE
+> Task :data:wallet:javaPreCompileDebug FROM-CACHE
+> Task :feature:wallet:generateDebugResources
+> Task :feature:wallet:packageDebugResources
+> Task :feature:wallet:parseDebugLocalResources
+> Task :feature:wallet:generateDebugRFile
+> Task :feature:wallet:javaPreCompileDebug FROM-CACHE
+> Task :app:javaPreCompileDevDebug FROM-CACHE
+> Task :app:generateDevDebugAssets UP-TO-DATE
+> Task :core:database:generateDebugAssets UP-TO-DATE
+> Task :core:database:mergeDebugAssets
+> Task :core:datastore:generateDebugAssets UP-TO-DATE
+> Task :core:datastore:mergeDebugAssets
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets
+> Task :core:mvi:generateDebugAssets UP-TO-DATE
+> Task :core:mvi:mergeDebugAssets
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:mergeDebugAssets
+> Task :core:network:generateDebugAssets UP-TO-DATE
+> Task :core:network:mergeDebugAssets
+> Task :core:ui:generateDebugAssets UP-TO-DATE
+> Task :core:ui:mergeDebugAssets
+> Task :data:orders:generateDebugAssets UP-TO-DATE
+> Task :data:orders:mergeDebugAssets
+> Task :data:trips:generateDebugAssets UP-TO-DATE
+> Task :data:trips:mergeDebugAssets
+> Task :data:wallet:generateDebugAssets UP-TO-DATE
+> Task :data:wallet:mergeDebugAssets
+> Task :feature:orders:generateDebugAssets UP-TO-DATE
+> Task :feature:orders:mergeDebugAssets
+> Task :feature:trips:generateDebugAssets UP-TO-DATE
+> Task :feature:trips:mergeDebugAssets
+> Task :feature:wallet:generateDebugAssets UP-TO-DATE
+> Task :feature:wallet:mergeDebugAssets
+> Task :app:processDevDebugNavigationResources
+> Task :app:parseDevDebugLocalResources
+> Task :app:generateDevDebugRFile
+> Task :app:generateDevDebugGlobalSynthetics FROM-CACHE
+> Task :app:mergeDevDebugAssets
+> Task :app:compressDevDebugAssets FROM-CACHE
+> Task :app:desugarDevDebugFileDependencies FROM-CACHE
+> Task :core:database:writeDebugAarMetadata
+> Task :core:datastore:writeDebugAarMetadata
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:mvi:writeDebugAarMetadata
+> Task :core:navigation:writeDebugAarMetadata
+> Task :core:network:writeDebugAarMetadata
+> Task :core:ui:writeDebugAarMetadata
+> Task :data:orders:writeDebugAarMetadata
+> Task :data:trips:writeDebugAarMetadata
+> Task :data:wallet:writeDebugAarMetadata
+> Task :feature:orders:writeDebugAarMetadata
+> Task :feature:trips:writeDebugAarMetadata
+> Task :feature:wallet:writeDebugAarMetadata
+> Task :app:checkDevDebugAarMetadata
+> Task :app:mapDevDebugSourceSetPaths
+> Task :app:compileDevDebugNavigationResources FROM-CACHE
+> Task :app:checkDevDebugDuplicateClasses
+> Task :app:mergeDevDebugResources
+> Task :app:createDevDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDevDebug
+> Task :core:database:processDebugManifest
+> Task :core:datastore:processDebugManifest
+> Task :core:designsystem:extractDeepLinksDebug FROM-CACHE
+> Task :core:designsystem:processDebugManifest
+> Task :core:mvi:processDebugManifest
+> Task :core:navigation:extractDeepLinksDebug FROM-CACHE
+> Task :core:navigation:processDebugManifest
+> Task :core:network:processDebugManifest
+> Task :core:ui:extractDeepLinksDebug FROM-CACHE
+> Task :core:ui:processDebugManifest
+> Task :data:orders:processDebugManifest
+> Task :data:trips:processDebugManifest
+> Task :data:wallet:processDebugManifest
+> Task :feature:orders:extractDeepLinksDebug FROM-CACHE
+> Task :feature:orders:processDebugManifest
+> Task :feature:trips:extractDeepLinksDebug FROM-CACHE
+> Task :feature:trips:processDebugManifest
+> Task :feature:wallet:extractDeepLinksDebug FROM-CACHE
+> Task :feature:wallet:processDebugManifest
+> Task :app:processDevDebugMainManifest
+> Task :app:processDevDebugManifest
+> Task :app:processDevDebugManifestForPackage
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:designsystem:compileDebugLibraryResources
+> Task :core:navigation:mapDebugSourceSetPaths
+> Task :core:navigation:compileDebugLibraryResources
+> Task :core:ui:mapDebugSourceSetPaths
+> Task :core:ui:compileDebugLibraryResources
+> Task :feature:orders:mapDebugSourceSetPaths
+> Task :feature:orders:compileDebugLibraryResources
+> Task :feature:trips:mapDebugSourceSetPaths
+> Task :feature:trips:compileDebugLibraryResources
+> Task :feature:wallet:mapDebugSourceSetPaths
+> Task :feature:wallet:compileDebugLibraryResources
+> Task :core:common:compileKotlin
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar
+> Task :app:processDevDebugResources
+> Task :app:mergeExtDexDevDebug
+> Task :core:mvi:compileDebugKotlin
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibCompileToJarDebug
+> Task :core:mvi:processDebugJavaRes
+> Task :core:mvi:bundleLibRuntimeToDirDebug
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:datastore:kspDebugKotlin
+> Task :core:mvi:bundleLibRuntimeToJarDebug
+> Task :app:mergeDevDebugJniLibFolders
+> Task :core:database:mergeDebugJniLibFolders
+> Task :core:database:mergeDebugNativeLibs NO-SOURCE
+> Task :core:database:copyDebugJniLibsProjectOnly
+> Task :core:datastore:mergeDebugJniLibFolders
+> Task :core:datastore:mergeDebugNativeLibs NO-SOURCE
+> Task :core:datastore:copyDebugJniLibsProjectOnly
+> Task :core:designsystem:mergeDebugJniLibFolders
+> Task :core:designsystem:mergeDebugNativeLibs NO-SOURCE
+> Task :core:designsystem:copyDebugJniLibsProjectOnly
+> Task :core:mvi:mergeDebugJniLibFolders
+> Task :core:mvi:mergeDebugNativeLibs NO-SOURCE
+> Task :core:mvi:copyDebugJniLibsProjectOnly
+> Task :core:navigation:mergeDebugJniLibFolders
+> Task :core:navigation:mergeDebugNativeLibs NO-SOURCE
+> Task :core:navigation:copyDebugJniLibsProjectOnly
+> Task :core:network:mergeDebugJniLibFolders
+> Task :core:network:mergeDebugNativeLibs NO-SOURCE
+> Task :core:network:copyDebugJniLibsProjectOnly
+> Task :core:ui:mergeDebugJniLibFolders
+> Task :core:ui:mergeDebugNativeLibs NO-SOURCE
+> Task :core:ui:copyDebugJniLibsProjectOnly
+> Task :data:orders:mergeDebugJniLibFolders
+> Task :data:orders:mergeDebugNativeLibs NO-SOURCE
+> Task :data:orders:copyDebugJniLibsProjectOnly
+> Task :data:trips:mergeDebugJniLibFolders
+> Task :data:trips:mergeDebugNativeLibs NO-SOURCE
+> Task :data:trips:copyDebugJniLibsProjectOnly
+> Task :data:wallet:mergeDebugJniLibFolders
+> Task :data:wallet:mergeDebugNativeLibs NO-SOURCE
+> Task :data:wallet:copyDebugJniLibsProjectOnly
+> Task :feature:orders:mergeDebugJniLibFolders
+> Task :feature:orders:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:orders:copyDebugJniLibsProjectOnly
+> Task :feature:trips:mergeDebugJniLibFolders
+> Task :feature:trips:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:trips:copyDebugJniLibsProjectOnly
+> Task :feature:wallet:mergeDebugJniLibFolders
+> Task :feature:wallet:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:wallet:copyDebugJniLibsProjectOnly
+> Task :core:database:kspDebugKotlin
+> Task :app:mergeDevDebugNativeLibs
+
+> Task :app:stripDevDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so. Run with --info option to learn more.
+
+> Task :core:datastore:compileDebugKotlin
+> Task :app:validateSigningDevDebug
+> Task :core:datastore:processDebugJavaRes
+> Task :app:writeDevDebugAppMetadata
+> Task :app:writeDevDebugSigningConfigVersions
+> Task :core:testing:verifyApiPurity
+> Task :core:testing:verifyModuleDependencies
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :core:testing:compileDebugKotlin
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :core:datastore:preDebugUnitTestBuild
+> Task :core:datastore:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:testing:bundleLibRuntimeToJarDebug
+> Task :core:testing:processDebugJavaRes
+> Task :core:designsystem:generateDebugComposePreviewRobolectricTests
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:testing:writeDebugAarMetadata
+> Task :core:testing:compose:verifyApiPurity
+> Task :core:testing:compose:verifyModuleDependencies
+> Task :core:testing:compose:preBuild
+> Task :core:testing:compose:preDebugBuild
+> Task :core:testing:compose:writeDebugAarMetadata
+> Task :core:database:compileDebugKotlin
+> Task :core:designsystem:checkDebugUnitTestAarMetadata
+> Task :core:database:processDebugJavaRes
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths
+> Task :core:designsystem:generateDebugUnitTestResources FROM-CACHE
+> Task :core:testing:generateDebugEmptyResourceFiles
+> Task :core:testing:compose:generateDebugEmptyResourceFiles
+> Task :core:datastore:compileDebugJavaWithJavac
+> Task :core:datastore:bundleLibCompileToJarDebug
+> Task :core:database:compileDebugJavaWithJavac
+> Task :core:database:copyRoomSchemas
+> Task :core:database:bundleLibCompileToJarDebug
+> Task :core:datastore:bundleLibRuntimeToDirDebug
+> Task :core:database:bundleLibRuntimeToDirDebug
+> Task :core:designsystem:mergeDebugUnitTestResources
+> Task :core:database:bundleLibRuntimeToJarDebug
+> Task :core:datastore:bundleLibRuntimeToJarDebug
+> Task :core:testing:processDebugManifest
+> Task :core:testing:compose:processDebugManifest
+> Task :core:datastore:kspDebugUnitTestKotlin
+> Task :core:designsystem:mergeDebugUnitTestManifest
+> Task :core:designsystem:processDebugUnitTestManifest
+
+> Task :core:datastore:compileDebugUnitTestKotlin
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/datastore/src/test/kotlin/com/example/modulescompact/core/datastore/session/AuthTokenStoreTest.kt:139:40 Java type mismatch: inferred type is 'Boolean?', but 'Boolean' was expected.
+
+> Task :core:datastore:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:datastore:processDebugUnitTestJavaRes
+> Task :core:designsystem:processDebugUnitTestResources
+> Task :core:network:kspDebugKotlin
+
+> Task :core:datastore:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by androidx.datastore.preferences.protobuf.UnsafeUtil$MemoryAccessor (file:/D:/.caches/gradle/caches/modules-2/files-2.1/androidx.datastore/datastore-preferences-external-protobuf/1.2.1/200a891fd29602b4bcff8e197d243a372fb026d5/datastore-preferences-external-protobuf-1.2.1.jar)
+WARNING: Please consider reporting this to the maintainers of class androidx.datastore.preferences.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+> Task :core:testing:compose:compileDebugKotlin
+> Task :core:testing:compose:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:bundleLibCompileToJarDebug
+> Task :core:designsystem:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:designsystem:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:mergeDebugAssets
+> Task :core:testing:compose:generateDebugAssets UP-TO-DATE
+> Task :core:testing:compose:mergeDebugAssets
+> Task :core:designsystem:mergeDebugUnitTestAssets
+> Task :core:designsystem:packageDebugUnitTestForUnitTest
+> Task :core:designsystem:generateDebugUnitTestConfig
+> Task :core:testing:compose:bundleLibRuntimeToJarDebug
+> Task :core:testing:compose:processDebugJavaRes
+> Task :core:mvi:preDebugUnitTestBuild
+> Task :core:mvi:compileDebugUnitTestKotlin
+> Task :core:mvi:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:mvi:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:mvi:processDebugUnitTestJavaRes
+> Task :core:navigation:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:navigation:preDebugUnitTestBuild
+> Task :core:navigation:mergeDebugUnitTestAssets
+> Task :core:navigation:checkDebugUnitTestAarMetadata
+> Task :core:navigation:mapDebugUnitTestSourceSetPaths
+> Task :core:navigation:generateDebugUnitTestResources FROM-CACHE
+> Task :core:network:compileDebugKotlin
+
+> Task :core:mvi:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :core:network:compileDebugJavaWithJavac
+> Task :core:network:bundleLibCompileToJarDebug
+> Task :core:navigation:mergeDebugUnitTestResources
+> Task :data:wallet:kspDebugKotlin
+> Task :data:orders:kspDebugKotlin
+> Task :data:trips:kspDebugKotlin
+> Task :data:wallet:compileDebugKotlin
+> Task :data:orders:compileDebugKotlin
+> Task :data:orders:compileDebugJavaWithJavac
+> Task :data:orders:bundleLibCompileToJarDebug
+> Task :core:network:processDebugJavaRes
+> Task :data:orders:processDebugJavaRes
+> Task :data:wallet:compileDebugJavaWithJavac
+> Task :data:wallet:bundleLibCompileToJarDebug
+> Task :data:wallet:processDebugJavaRes
+> Task :data:trips:compileDebugKotlin
+> Task :data:orders:bundleLibRuntimeToDirDebug
+> Task :data:wallet:bundleLibRuntimeToDirDebug
+> Task :data:trips:processDebugJavaRes
+> Task :data:orders:bundleLibRuntimeToJarDebug
+> Task :data:wallet:bundleLibRuntimeToJarDebug
+> Task :core:network:bundleLibRuntimeToJarDebug
+> Task :data:trips:compileDebugJavaWithJavac
+> Task :data:trips:bundleLibCompileToJarDebug
+> Task :data:trips:bundleLibRuntimeToDirDebug
+> Task :core:network:bundleLibRuntimeToDirDebug
+> Task :core:navigation:mergeDebugUnitTestManifest
+> Task :data:trips:bundleLibRuntimeToJarDebug
+> Task :core:navigation:processDebugUnitTestManifest
+> Task :core:navigation:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:network:preDebugUnitTestBuild
+> Task :core:navigation:processDebugUnitTestResources
+> Task :core:network:checkDebugUnitTestAarMetadata
+> Task :core:network:mapDebugUnitTestSourceSetPaths
+> Task :core:network:generateDebugUnitTestResources FROM-CACHE
+> Task :core:navigation:packageDebugUnitTestForUnitTest
+> Task :core:navigation:generateDebugUnitTestConfig
+> Task :core:network:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:network:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:network:mergeDebugUnitTestManifest
+> Task :core:network:processDebugUnitTestManifest
+> Task :data:orders:kspDebugTestFixturesKotlin
+> Task :data:orders:preDebugTestFixturesBuild
+> Task :core:network:mergeDebugUnitTestAssets
+> Task :data:orders:javaPreCompileDebugTestFixtures FROM-CACHE
+> Task :data:orders:preDebugUnitTestBuild
+> Task :data:orders:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :data:trips:kspDebugTestFixturesKotlin
+> Task :data:trips:preDebugTestFixturesBuild
+> Task :data:trips:compileDebugTestFixturesKotlin
+> Task :data:trips:javaPreCompileDebugTestFixtures FROM-CACHE
+> Task :data:trips:compileDebugTestFixturesJavaWithJavac NO-SOURCE
+> Task :data:trips:bundleLibRuntimeToJarDebugTestFixtures
+> Task :data:trips:bundleLibCompileToJarDebugTestFixtures
+> Task :core:network:mergeDebugUnitTestResources
+> Task :data:trips:kspDebugUnitTestKotlin
+> Task :data:trips:preDebugUnitTestBuild
+> Task :data:orders:compileDebugTestFixturesKotlin
+> Task :data:orders:compileDebugTestFixturesJavaWithJavac NO-SOURCE
+> Task :data:orders:bundleLibRuntimeToJarDebugTestFixtures
+> Task :data:orders:bundleLibCompileToJarDebugTestFixtures
+> Task :data:orders:kspDebugUnitTestKotlin
+> Task :core:network:processDebugUnitTestResources
+> Task :data:trips:compileDebugUnitTestKotlin
+> Task :core:network:packageDebugUnitTestForUnitTest
+> Task :core:network:generateDebugUnitTestConfig
+> Task :data:orders:processDebugTestFixturesJavaRes
+> Task :data:trips:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :data:trips:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:network:kspDebugUnitTestKotlin
+> Task :data:trips:processDebugTestFixturesJavaRes
+> Task :data:orders:compileDebugUnitTestKotlin
+> Task :data:orders:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:trips:processDebugUnitTestJavaRes
+> Task :data:orders:processDebugUnitTestJavaRes
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+
+> Task :data:trips:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :data:orders:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :core:designsystem:processDebugJavaRes
+> Task :core:network:compileDebugUnitTestKotlin
+> Task :core:network:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:network:processDebugUnitTestJavaRes
+> Task :core:navigation:kspDebugKotlin
+
+> Task :core:network:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :core:designsystem:bundleLibRuntimeToDirDebug
+> Task :core:navigation:compileDebugKotlin
+> Task :core:navigation:compileDebugJavaWithJavac
+> Task :core:navigation:transformDebugClassesWithAsm
+> Task :core:navigation:bundleLibCompileToJarDebug
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+> Task :core:navigation:processDebugJavaRes
+> Task :core:designsystem:compileDebugUnitTestKotlin
+> Task :core:navigation:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugUnitTestJavaRes
+> Task :core:ui:compileDebugKotlin
+> Task :core:ui:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:ui:bundleLibCompileToJarDebug
+> Task :core:navigation:bundleLibRuntimeToDirDebug
+
+> Task :core:designsystem:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :feature:orders:kspDebugKotlin
+> Task :feature:trips:kspDebugKotlin
+> Task :feature:trips:compileDebugKotlin
+> Task :feature:orders:compileDebugKotlin
+> Task :feature:orders:compileDebugJavaWithJavac
+> Task :feature:orders:bundleLibCompileToJarDebug
+> Task :core:ui:processDebugJavaRes
+> Task :feature:trips:compileDebugJavaWithJavac
+> Task :feature:orders:processDebugJavaRes
+> Task :feature:trips:bundleLibCompileToJarDebug
+> Task :feature:trips:processDebugJavaRes
+> Task :feature:orders:bundleLibRuntimeToDirDebug
+> Task :feature:trips:bundleLibRuntimeToDirDebug
+> Task :core:ui:bundleLibRuntimeToDirDebug
+> Task :feature:orders:bundleLibRuntimeToJarDebug
+> Task :feature:trips:bundleLibRuntimeToJarDebug
+> Task :core:ui:bundleLibRuntimeToJarDebug
+> Task :feature:wallet:kspDebugKotlin
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+> Task :data:wallet:kspDebugTestFixturesKotlin
+> Task :data:wallet:preDebugTestFixturesBuild
+> Task :data:wallet:compileDebugTestFixturesKotlin
+> Task :data:wallet:javaPreCompileDebugTestFixtures FROM-CACHE
+> Task :data:wallet:compileDebugTestFixturesJavaWithJavac NO-SOURCE
+> Task :data:wallet:bundleLibRuntimeToJarDebugTestFixtures
+> Task :data:wallet:bundleLibCompileToJarDebugTestFixtures
+> Task :core:navigation:kspDebugUnitTestKotlin
+> Task :data:wallet:kspDebugUnitTestKotlin
+> Task :data:wallet:preDebugUnitTestBuild
+> Task :feature:wallet:compileDebugKotlin
+> Task :data:wallet:compileDebugUnitTestKotlin
+> Task :feature:wallet:processDebugJavaRes
+> Task :data:wallet:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :data:wallet:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:wallet:processDebugTestFixturesJavaRes
+> Task :data:wallet:processDebugUnitTestJavaRes
+
+> Task :data:wallet:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :feature:orders:generateDebugComposePreviewRobolectricTests
+> Task :data:orders:writeDebugTestFixturesAarMetadata
+> Task :feature:orders:preDebugUnitTestBuild
+> Task :feature:orders:checkDebugUnitTestAarMetadata
+> Task :feature:orders:mapDebugUnitTestSourceSetPaths
+> Task :data:orders:generateDebugTestFixturesEmptyResourceFiles
+> Task :feature:orders:generateDebugUnitTestResources FROM-CACHE
+> Task :feature:wallet:compileDebugJavaWithJavac
+> Task :feature:wallet:bundleLibCompileToJarDebug
+> Task :feature:orders:mergeDebugUnitTestResources
+> Task :feature:wallet:bundleLibRuntimeToDirDebug
+
+> Task :core:navigation:compileDebugUnitTestKotlin
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/HostCrossfadeTest.kt:25:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/RestoreTest.kt:23:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/RestoreTest.kt:39:18 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ShellState'.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/RestoreTest.kt:40:18 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ShellState'.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/ShortcutsTest.kt:25:16 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/back/BackCardDrawingTest.kt:54:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/back/BackCardDuringPushDrawingTest.kt:56:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/back/BackCardTest.kt:42:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/back/RapidBackTest.kt:34:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/presentation/PresentationCardTest.kt:39:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/recomposition/ShellRecompositionTest.kt:58:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/shell/ChromeLayeringTest.kt:80:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/shell/ChromePaddingTest.kt:42:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/shell/MoreTabTest.kt:47:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/shell/MoreTabTest.kt:116:18 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ShellState'.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/shell/MoreTabTest.kt:117:18 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ShellState'.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/shell/MoreTabTest.kt:124:34 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ShellState'.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/shell/MoreTabTest.kt:125:38 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ShellState'.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/shell/ResizeContinuityTest.kt:46:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/shell/ShellShortcutsTest.kt:45:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/shell/TabBarTest.kt:51:16 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/shell/TabSwitchDuringMotionTest.kt:39:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/shell/tabs/KeptTabsTest.kt:40:16 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/stack/PaneTest.kt:65:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/stack/RepeatedKeyTest.kt:46:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/stack/SlideRecordingTest.kt:49:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/core/navigation/src/test/kotlin/com/example/modulescompact/core/navigation/stack/StackSceneTest.kt:54:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+
+> Task :app:mergeLibDexDevDebug
+> Task :app:kspDevDebugKotlin
+> Task :feature:wallet:bundleLibRuntimeToJarDebug
+> Task :data:orders:processDebugTestFixturesManifest
+> Task :core:navigation:processDebugUnitTestJavaRes
+> Task :feature:orders:mergeDebugUnitTestManifest
+> Task :feature:orders:processDebugUnitTestManifest
+> Task :feature:orders:processDebugUnitTestResources
+> Task :feature:orders:kspDebugUnitTestKotlin
+> Task :core:navigation:compileDebugUnitTestJavaWithJavac
+> Task :core:navigation:hiltCollectClassesDebugUnitTest
+> Task :core:navigation:hiltAggregateDepsDebugUnitTest
+> Task :feature:orders:compileDebugUnitTestKotlin
+> Task :feature:orders:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :feature:orders:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:orders:generateDebugTestFixturesAssets UP-TO-DATE
+> Task :data:orders:mergeDebugTestFixturesAssets
+> Task :feature:orders:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:orders:mergeDebugUnitTestAssets
+> Task :feature:orders:packageDebugUnitTestForUnitTest
+> Task :feature:orders:generateDebugUnitTestConfig
+> Task :feature:orders:processDebugUnitTestJavaRes
+> Task :app:compileDevDebugKotlin
+
+> Task :feature:orders:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :app:compileDevDebugJavaWithJavac
+> Task :app:processDevDebugJavaRes
+> Task :core:navigation:hiltJavaCompileDebugUnitTest
+> Task :app:hiltCollectClassesDevDebug
+> Task :app:hiltAggregateDepsDevDebug
+> Task :app:mergeDevDebugJavaResource
+> Task :core:navigation:transformDebugUnitTestClassesWithAsm
+> Task :app:hiltJavaCompileDevDebug
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+> Task :app:transformDevDebugClassesWithAsm
+
+> Task :core:navigation:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :app:dexBuilderDevDebug
+> Task :app:mergeProjectDexDevDebug
+> Task :app:packageDevDebug
+> Task :app:createDevDebugApkListingFileRedirect
+> Task :app:assembleDevDebug
+> Task :feature:trips:generateDebugComposePreviewRobolectricTests
+> Task :data:trips:writeDebugTestFixturesAarMetadata
+> Task :feature:trips:preDebugUnitTestBuild
+> Task :feature:trips:checkDebugUnitTestAarMetadata
+> Task :feature:trips:mapDebugUnitTestSourceSetPaths
+> Task :data:trips:generateDebugTestFixturesEmptyResourceFiles
+> Task :feature:trips:generateDebugUnitTestResources FROM-CACHE
+> Task :feature:trips:mergeDebugUnitTestResources
+> Task :data:trips:processDebugTestFixturesManifest
+> Task :feature:trips:mergeDebugUnitTestManifest
+> Task :feature:trips:processDebugUnitTestManifest
+> Task :feature:trips:processDebugUnitTestResources
+> Task :feature:trips:kspDebugUnitTestKotlin
+> Task :feature:trips:compileDebugUnitTestKotlin
+> Task :feature:trips:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :feature:trips:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:trips:generateDebugTestFixturesAssets UP-TO-DATE
+> Task :data:trips:mergeDebugTestFixturesAssets
+> Task :feature:trips:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:trips:mergeDebugUnitTestAssets
+> Task :feature:trips:packageDebugUnitTestForUnitTest
+> Task :feature:trips:generateDebugUnitTestConfig
+> Task :feature:trips:processDebugUnitTestJavaRes
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :feature:trips:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :feature:orders:finalizeTestRoborazziDebug SKIPPED
+> Task :feature:wallet:generateDebugComposePreviewRobolectricTests
+> Task :data:wallet:writeDebugTestFixturesAarMetadata
+> Task :feature:wallet:preDebugUnitTestBuild
+> Task :feature:wallet:checkDebugUnitTestAarMetadata
+> Task :feature:wallet:mapDebugUnitTestSourceSetPaths
+> Task :data:wallet:generateDebugTestFixturesEmptyResourceFiles
+> Task :feature:wallet:generateDebugUnitTestResources FROM-CACHE
+> Task :feature:wallet:mergeDebugUnitTestResources
+> Task :data:wallet:processDebugTestFixturesManifest
+> Task :feature:wallet:mergeDebugUnitTestManifest
+> Task :feature:wallet:processDebugUnitTestManifest
+> Task :feature:wallet:processDebugUnitTestResources
+> Task :feature:wallet:kspDebugUnitTestKotlin
+> Task :feature:wallet:compileDebugUnitTestKotlin
+> Task :feature:wallet:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :feature:wallet:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:wallet:generateDebugTestFixturesAssets UP-TO-DATE
+> Task :data:wallet:mergeDebugTestFixturesAssets
+> Task :feature:wallet:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:wallet:mergeDebugUnitTestAssets
+> Task :feature:wallet:packageDebugUnitTestForUnitTest
+> Task :feature:wallet:generateDebugUnitTestConfig
+> Task :feature:wallet:processDebugUnitTestJavaRes
+
+> Task :feature:wallet:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :feature:trips:finalizeTestRoborazziDebug SKIPPED
+> Task :core:testing:compose:preDebugUnitTestBuild
+> Task :core:testing:compose:checkDebugUnitTestAarMetadata
+> Task :core:testing:compose:mapDebugUnitTestSourceSetPaths
+> Task :core:testing:compose:generateDebugUnitTestResources FROM-CACHE
+> Task :core:testing:compose:mergeDebugUnitTestResources
+> Task :core:testing:compose:mergeDebugUnitTestManifest
+> Task :core:testing:compose:processDebugUnitTestManifest
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+> Task :core:testing:compose:processDebugUnitTestResources
+> Task :core:testing:compose:compileDebugUnitTestKotlin
+> Task :core:testing:compose:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:testing:compose:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:testing:compose:mergeDebugUnitTestAssets
+> Task :core:testing:compose:packageDebugUnitTestForUnitTest
+> Task :core:testing:compose:generateDebugUnitTestConfig
+> Task :core:testing:compose:processDebugUnitTestJavaRes
+
+> Task :core:testing:compose:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :feature:wallet:finalizeTestRoborazziDebug SKIPPED
+> Task :app:bundleDevDebugClassesToRuntimeJar
+> Task :app:preDevDebugUnitTestBuild UP-TO-DATE
+> Task :app:packageDevDebugUnitTestForUnitTest
+> Task :app:mergeDevDebugUnitTestManifest
+> Task :app:processDevDebugUnitTestManifest
+> Task :app:generateDevDebugUnitTestConfig
+> Task :app:bundleDevDebugClassesToCompileJar
+> Task :app:kspDevDebugUnitTestKotlin
+
+> Task :app:compileDevDebugUnitTestKotlin
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/app/src/test/kotlin/com/example/modulescompact/navigation/NavKeyRegistrationTest.kt:141:30 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'ProtectionDomain?'.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/app/src/test/kotlin/com/example/modulescompact/navigation/NavKeyRegistrationTest.kt:143:16 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'String?'.
+
+> Task :app:javaPreCompileDevDebugUnitTest FROM-CACHE
+> Task :app:processDevDebugUnitTestJavaRes
+> Task :app:compileDevDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:hiltCollectClassesDevDebugUnitTest
+> Task :app:hiltAggregateDepsDevDebugUnitTest
+> Task :app:hiltJavaCompileDevDebugUnitTest NO-SOURCE
+> Task :app:transformDevDebugUnitTestClassesWithAsm
+
+> Task :app:testDevDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:designsystem:finalizeTestRoborazziDebug SKIPPED
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/modules-compact/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 5m 23s
+496 actionable tasks: 447 executed, 49 from cache
+Configuration cache entry stored.

@@ -1,0 +1,59 @@
+
+== 16:43:13 branch 32b86b709 with 0 changed paths
+
+== 16:43:13 1. presets: generate
+generated none
+generated lean
+generated standard
+generated all
+generated everything
+
+== 16:44:50 2. none: the stability check after a forced unit-test compile, one worker
+tasks: :core:designsystem:compileDebugUnitTestKotlin --rerun :core:designsystem:checkComposeStability --rerun :core:navigation:compileDebugUnitTestKotlin --rerun :core:navigation:checkComposeStability --rerun :core:ui:checkComposeStability --rerun
+rc=0
+[locked:gradle] 1028 MB available, 15192 MB commit left; waiting for 3500 MB
+[locked:gradle] 899 MB available, 15845 MB commit left; waiting for 3500 MB
+[locked:gradle] 875 MB available, 15834 MB commit left; waiting for 3500 MB
+[locked:gradle] 845 MB available, 15844 MB commit left; waiting for 3500 MB
+[locked:gradle] 823 MB available, 15483 MB commit left; waiting for 3500 MB
+[locked:gradle] 836 MB available plus 8079 MB of system cache Windows will trim; continuing
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugUnitTestKotlin
+> Task :core:designsystem:checkComposeStability
+> Task :core:navigation:compileDebugKotlin
+> Task :core:navigation:compileDebugUnitTestKotlin
+> Task :core:navigation:checkComposeStability
+> Task :core:ui:compileDebugKotlin
+> Task :core:ui:checkComposeStability
+BUILD SUCCESSFUL in 4m 39s
+  designsystem: report read 1264 lines; the shared file now 87 lines
+  navigation: report read 231 lines; the shared file now 16 lines
+  ui: report read 16 lines; the shared file now 16 lines
+
+== 16:54:34 2. lean: the stability check after a forced unit-test compile, one worker
+tasks: :core:designsystem:compileDebugUnitTestKotlin --rerun :core:designsystem:checkComposeStability --rerun :core:navigation:compileDebugUnitTestKotlin --rerun :core:navigation:checkComposeStability --rerun :core:ui:checkComposeStability --rerun
+rc=0
+[locked:gradle] waiting for the lock (pid 524 since 2026-10-24 16:54:34: bash D:/projects/tools/.overhaul/out/WP02/gw.win.sh --offline check --continue --console=plain)
+[locked:gradle] waiting for the lock (pid 524 since 2026-10-24 16:54:34: bash D:/projects/tools/.overhaul/out/WP02/gw.win.sh --offline check --continue --console=plain)
+[locked:gradle] waiting for the lock (pid 524 since 2026-10-24 16:54:34: bash D:/projects/tools/.overhaul/out/WP02/gw.win.sh --offline check --continue --console=plain)
+[locked:gradle] 420 MB available, 10242 MB commit left; waiting for 1500 MB
+[locked:gradle] 377 MB available, 10248 MB commit left; waiting for 1500 MB
+[locked:gradle] 458 MB available, 9723 MB commit left; waiting for 1500 MB
+[locked:gradle] 550 MB available, 10161 MB commit left; waiting for 1500 MB
+[locked:gradle] 485 MB available, 10197 MB commit left; waiting for 1500 MB
+[locked:gradle] 553 MB available plus 5751 MB of system cache Windows will trim; continuing
+> Task :core:designsystem:compileDebugKotlin FROM-CACHE
+> Task :core:designsystem:compileDebugUnitTestKotlin
+> Task :core:designsystem:checkComposeStability
+> Task :core:navigation:compileDebugKotlin FROM-CACHE
+> Task :core:navigation:compileDebugUnitTestKotlin
+> Task :core:navigation:checkComposeStability
+> Task :core:ui:compileDebugKotlin FROM-CACHE
+> Task :core:ui:checkComposeStability
+BUILD SUCCESSFUL in 2m 22s
+  designsystem: report read 1264 lines; the shared file now 87 lines
+  navigation: report read 231 lines; the shared file now 16 lines
+  ui: report read 27 lines; the shared file now 0 lines
+
+== 17:14:12 2. standard: the stability check after a forced unit-test compile, one worker
+tasks: :core:designsystem:compileDebugUnitTestKotlin --rerun :core:designsystem:checkComposeStability --rerun :core:navigation:compileDebugUnitTestKotlin --rerun :core:navigation:checkComposeStability --rerun :core:ui:checkComposeStability --rerun

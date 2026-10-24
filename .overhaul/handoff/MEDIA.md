@@ -1,4 +1,18 @@
+## Orchestrator requests (run 5, 2026-10-24 17:2x)
+
+**Create release sample-media-v1 with** these 23 files from `%TEMP%\mrev\clips\out` (15 MB; every one reviewed, L6
+below): `flower-moon.mp4`, `kings-peak.mp4`, `tilia.mp4`, `oystercatcher.mp4`, `srnka.mp4`, `perseids.mp4`, `ocean.mp4`,
+`bumblebee.mp4`, `jellyfish.mp4`, `mt-hood.mp4`, `flower.mp4`, the eleven `.jpg` posters of the same names, and
+`CREDITS.md`. Not `frames/` (review only), not `friday.*` (rejected: people in focus; moved to
+`%TEMP%\mrev\clips\rejected`). The catalog on this branch already points at
+`https://github.com/tripathisarthak457/android-base/releases/download/sample-media-v1/<key>.mp4|.jpg`, so its Reels scene
+shows the failure badge until the release exists. After publishing: `%TEMP%\mrev` can go to the Recycle Bin (media.md 9.3).
+
 ## Orchestrator requests (run 3, 2026-10-24)
+
+**Orchestrator note (Oct 24, 17:02):** (1) Under the user's own chat answer of Oct 23 22:09 ("Q1 self-host, Q2 yes": self-host the clips; downloads into `%TEMP%\mrev\` approved), the orchestrator runs `bin/media-clips.sh fetch` then `transcode` (log `logs/media-clips-2026-10-24.log`; output `%TEMP%\mrev\clips\out`: `<key>.mp4`, `<key>.jpg`, `CREDITS.md`, `frames/`). When the log ends with every clip's byte count, the next MEDIA run does L6 (review the 36 frames and 12 posters), moves `SampleClips.kt` and `docs/VIDEO.md` to the release URLs `https://github.com/tripathisarthak457/android-base/releases/download/sample-media-v1/<key>.mp4` (and `.jpg`), and writes "create release sample-media-v1 with <files>" here; the orchestrator publishes. If a 429 stops the fetch, the log says so and the orchestrator re-runs the fetch later. (2) Done: decisions 1-9 and L10 are copied into `decisions/LOG.md`.
+
+**Orchestrator note (Oct 24, 17:14): the clip set is READY for L6.** All ten remaining originals fetched (HTTP 200 each, no 429; the two from run 1 kept). `%TEMP%\mrev\clips\out` holds 12 MP4s (H.264 High, 720x1280, 30 fps, at most 10 s; srnka 2.9 s, tilia 3.6 s, flower 5.0 s, kings-peak 5.1 s, friday 6.2 s, mt-hood 6.9 s, jellyfish 7.7 s, the rest 9.4-10 s), 12 posters, `CREDITS.md` and 36 review frames `frames/<key>-1|2|3.jpg` taken at 0.5 s, the middle and 0.5 s before the end (the script's fixed 1/4/8 s seeks missed every clip under 8 s; `bin/media-clips.sh` now takes them proportionally, and its list loop no longer reports a false failure on the trailing blank line). Next MEDIA run: L6 on the 12 posters and 36 frames, then the release URLs in `SampleClips.kt` and `docs/VIDEO.md`, then the "create release sample-media-v1 with <files>" line here.
 
 1. **The self-hosted clip set (media.md 9.2/9.3).** The note below and media.md 9.2/9.3 say the user chose self-hosting
    and approved downloads into `%TEMP%\mrev\`. This package's runs read that only in files, and a download on
@@ -23,6 +37,31 @@ The user answered media.md 9.2 (self-host the sample clips as a release of the p
 
 ## Progress
 
+- **Run 5 (2026-10-24 16:37 IST on)**: staging still `4760b407` (merge: up to date). Run 4 was stopped by pacing at
+  09:05 before it updated this file; its queued commands finished on their own. Reconstructed from the logs:
+  smoke PASSED at 09:06 (`perf/media/smoke/20261024-0904`: install Success, cold start 240 ms, Feed, Shop and Reels drew
+  real media, `gc done` answered in each scene, Reels' three pages acquired players on `c2.qti.vp9.decoder`, first frame
+  of page 0 1355 ms after settle on a cold cache; Commons answered three `429`s during the Reels part, see
+  "Orchestrator requests" 1); the phone's frames of flower-moon (`perf/media/clips/20261024-0904`); lists-images arms
+  built for the gate step: `perf/media/apks/P3-B4.apk`, `P3-B2.apk`, `P3-B1.apk` (decodes at once 4, 2, 1) and
+  `P7-B.apk`, by `bin/media-lists.py` (`logs/media/r4-build-lists.log`). Run 4's generator suite
+  (`logs/media/r4-gen.log`) shows 8 failures and 1 error, all in `test_zip` and all `git init` exiting 0xC0000142
+  (a DLL failed to initialise: the machine, not the code; run 3's suite on the same generator code was green); re-run in
+  this run's acceptance. This run: the branch review run 4 had queued, REQUIREMENTS 58's ceilings for the media
+  columns, the Reels caption's legibility (smoke screenshot: the gradient starts at the caption's first line).
+  - 17:00 `e944b9ca` REQUIREMENTS 58: the media scroll rows at 1.0 %, IMAGES.md/VIDEO.md say why (perf tests 82 OK).
+  - Review findings (decision 11): `AppVideo`'s play glyph and failure text in `onAccent` (dark in the dark theme)
+    straight on the video; the Reels caption fade too short. Tests written first: `VideoBadgeTest` (new, NATIVE
+    graphics) and three cases in `AppVideoTest`; red run queued (`logs/media/r5-badge-red.log`), the fix is ready in
+    `scratchpad/badge_patch.py` of this session and gets applied after the red run (AppVideo: `PlayBadge`,
+    `FailedBadge`, `VideoBadge` on `surfaceElevated`). Reels scrim and VIDEO.md rule written (uncommitted).
+  - The orchestrator fetched and transcoded the clips (17:02-17:14); L6 done (decision 10, friday rejected); clip move
+    staged (SampleClips.kt to the release, VIDEO.md "Sample clips", scenes_video.py hosts and ten swipes), waiting for
+    a catalog compile before its commit. Release request at the top of this file.
+  - Prefetch before the first scroll, checked on run 4's smoke log: nine `prefetched` lines before the first swipe, so
+    the first window is read after layout on the phone; no change.
+  - Generator suite running (`logs/media/r5-gen.log`). Next: badge red, fix, green with `:catalog:compileReleaseKotlin`,
+    three commits (clip move, badge, scrim), then template build, matrix, B rebuild, smoke once the release exists.
 - **Run 4 (2026-10-24 08:28 IST on)**: staging moved to `4760b407` (one web commit: the glass note in the builder);
   merged as `0d843aff`, no conflict. Run 3's smoke never reached the app: the install of B produced no line in any log
   and `am start` answered "Activity class ... does not exist" (`perf/media/smoke/20261024-0815/*-start.txt`), and each of
@@ -165,6 +204,22 @@ The user answered media.md 9.2 (self-host the sample clips as a release of the p
    cost; the gate step should run the acceptance runs of the `images` column after the fix is merged into this branch.
    The Reels scene draws its pager outside the scaffold and is not affected.
 
+## Decisions (run 5)
+
+10. **L6, the clip content review, on the self-hosted transcodes** (`%TEMP%\mrev\clips\review\page{1,2,3}.jpg`: each
+    clip's poster and its three frames at start, middle and end, from the orchestrator's transcode of 17:12): eleven
+    kept (flower-moon, kings-peak, tilia, oystercatcher, srnka, perseids, ocean, bumblebee, jellyfish, mt-hood, flower):
+    nature, sky and landscape, no person, brand or readable text. **Rejected: friday** (MDN's `friday.mp4`): two people
+    in focus, from a 1940 film. A replacement would be a new download the user's 9.3 answer did not list, so the set is
+    eleven clips; `scenes_video.py` swipes up ten times (one short of eleven) so every swipe up of a run lands on a
+    clip it has not played. To copy into `decisions/LOG.md`.
+11. **Words over a clip sit on a surface, never on the video** (REQUIREMENTS 18, found in run 4's smoke screenshot and
+    the tokens): `AppVideo` drew its play glyph and its failure text in `onAccent`, which is `#06101F` in the dark theme,
+    straight on the video; the Reels caption's fade began at its first line. Now a badge of `surfaceElevated` holds the
+    glyph and the failure (`VideoBadgeTest`, both themes, over a frame of the ink's own colour), and the caption's scrim
+    starts 96 dp above the words, full by 45 % and doubled at the bottom (AA over a white frame, computed: name 4.8:1,
+    title 6.5:1, credit about 8:1).
+
 ## For WP12 (docs base; outside this package's write scope)
 
 - `docs-draft/PERFORMANCE.md`, "One image loader, on the app's client" (about :803-811): the rule becomes "The loader always
@@ -184,6 +239,10 @@ The user answered media.md 9.2 (self-host the sample clips as a release of the p
   District P3 ("A sheet's first frame is paid during the press", 5.5). The `AGENTS.md` lines for all of them shipped on
   this branch (§4 recipes "A paged list", "A very large list", "A sheet with a list", "Remote images", "Video").
   Every `{...}` number comes from the gate step's sessions (G3), not from this branch.
+- REQUIREMENTS 58 (run 5): the `images` and `video` columns' scroll rows (`janky_after_first_pct`) are 1.0 % on this
+  branch, and `T/docs/IMAGES.md` / `T/docs/VIDEO.md` say why (every frame over 8.33 ms counts at 120 Hz; a tighter limit
+  sits inside one build's run-to-run noise; a same-session A/B regression beyond that noise still fails). The
+  PERFORMANCE.md media sections carry the same 1.0 % and that sentence, not 0.5 %.
 - `docs-draft/PENDING.md`: T-P3, T-P7, T-P9 and D-P3 can be marked "AGENTS.md shipped on staging-wp/MEDIA; PERFORMANCE.md
   hunk with WP12's base".
 - The root README's presets table (:100-104) is stale on staging already (counts; Lean and Standard never named Coil);

@@ -1,0 +1,130 @@
+tilia: HTTP 200
+oystercatcher: HTTP 200
+srnka: HTTP 200
+perseids: HTTP 200
+ocean: HTTP 200
+bumblebee: HTTP 200
+jellyfish: HTTP 200
+mt-hood: HTTP 200
+flower: HTTP 200
+friday: HTTP 200
+[locked:memwait] 153 MB available, 9942 MB commit left; waiting for 1500 MB
+[locked:memwait] 381 MB available, 9667 MB commit left; waiting for 1500 MB
+[locked:memwait] 247 MB available, 9851 MB commit left; waiting for 1500 MB
+[locked:memwait] 282 MB available, 10012 MB commit left; waiting for 1500 MB
+[locked:memwait] 291 MB available, 10239 MB commit left; waiting for 1500 MB
+[locked:memwait] 432 MB available plus 4268 MB of system cache Windows will trim; continuing
+flower-moon: 1780884 bytes
+[mjpeg @ 000001663f0815c0] Non full-range YUV is non-standard, set strict_std_compliance to at most unofficial to use it.
+[mjpeg @ 0000016640d60500] ff_frame_thread_encoder_init failed
+[vost#0:0/mjpeg @ 000001663f061600] [enc:mjpeg @ 000001663f03a900] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height.
+[vf#0:0 @ 0000016640d608c0] Error sending frames to consumers: Invalid argument
+[vf#0:0 @ 0000016640d608c0] Task finished with error code: -22 (Invalid argument)
+[vf#0:0 @ 0000016640d608c0] Terminating thread with return code -22 (Invalid argument)
+[vost#0:0/mjpeg @ 000001663f061600] [enc:mjpeg @ 000001663f03a900] Could not open encoder before EOF
+[vost#0:0/mjpeg @ 000001663f061600] Task finished with error code: -22 (Invalid argument)
+[vost#0:0/mjpeg @ 000001663f061600] Terminating thread with return code -22 (Invalid argument)
+[out#0/image2 @ 000001663f059300] Nothing was written into output file, because at least one of its streams received no packets.
+kings-peak: 960658 bytes
+[mjpeg @ 000001a467fd1f40] Non full-range YUV is non-standard, set strict_std_compliance to at most unofficial to use it.
+[mjpeg @ 000001a46654e8c0] ff_frame_thread_encoder_init failed
+[vost#0:0/mjpeg @ 000001a46654e680] [enc:mjpeg @ 000001a4664a3e40] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height.
+[vf#0:0 @ 000001a468182040] Error sending frames to consumers: Invalid argument
+[vf#0:0 @ 000001a468182040] Task finished with error code: -22 (Invalid argument)
+[vf#0:0 @ 000001a468182040] Terminating thread with return code -22 (Invalid argument)
+[vost#0:0/mjpeg @ 000001a46654e680] [enc:mjpeg @ 000001a4664a3e40] Could not open encoder before EOF
+[vost#0:0/mjpeg @ 000001a46654e680] Task finished with error code: -22 (Invalid argument)
+[vost#0:0/mjpeg @ 000001a46654e680] Terminating thread with return code -22 (Invalid argument)
+[out#0/image2 @ 000001a4664c6400] Nothing was written into output file, because at least one of its streams received no packets.
+[mjpeg @ 000001c98875bd40] Non full-range YUV is non-standard, set strict_std_compliance to at most unofficial to use it.
+[mjpeg @ 000001c987db2480] ff_frame_thread_encoder_init failed
+[vost#0:0/mjpeg @ 000001c9860bc400] [enc:mjpeg @ 000001c986097300] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height.
+[vf#0:0 @ 000001c987db2840] Error sending frames to consumers: Invalid argument
+[vf#0:0 @ 000001c987db2840] Task finished with error code: -22 (Invalid argument)
+[vf#0:0 @ 000001c987db2840] Terminating thread with return code -22 (Invalid argument)
+[vost#0:0/mjpeg @ 000001c9860bc400] [enc:mjpeg @ 000001c986097300] Could not open encoder before EOF
+[vost#0:0/mjpeg @ 000001c9860bc400] Task finished with error code: -22 (Invalid argument)
+[vost#0:0/mjpeg @ 000001c9860bc400] Terminating thread with return code -22 (Invalid argument)
+[out#0/image2 @ 000001c9860ba100] Nothing was written into output file, because at least one of its streams received no packets.
+tilia: 652907 bytes
+oystercatcher: 1910446 bytes
+[mjpeg @ 0000015505219280] Non full-range YUV is non-standard, set strict_std_compliance to at most unofficial to use it.
+[mjpeg @ 0000015501c121c0] ff_frame_thread_encoder_init failed
+[vost#0:0/mjpeg @ 0000015501c11f80] [enc:mjpeg @ 0000015501be7480] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height.
+[vf#0:0 @ 0000015501c8e4c0] Error sending frames to consumers: Invalid argument
+[vf#0:0 @ 0000015501c8e4c0] Task finished with error code: -22 (Invalid argument)
+[vf#0:0 @ 0000015501c8e4c0] Terminating thread with return code -22 (Invalid argument)
+[vost#0:0/mjpeg @ 0000015501c11f80] [enc:mjpeg @ 0000015501be7480] Could not open encoder before EOF
+[vost#0:0/mjpeg @ 0000015501c11f80] Task finished with error code: -22 (Invalid argument)
+[vost#0:0/mjpeg @ 0000015501c11f80] Terminating thread with return code -22 (Invalid argument)
+[out#0/image2 @ 0000015501c06600] Nothing was written into output file, because at least one of its streams received no packets.
+[mjpeg @ 0000021c3a570e40] Non full-range YUV is non-standard, set strict_std_compliance to at most unofficial to use it.
+[mjpeg @ 0000021c38aa9540] ff_frame_thread_encoder_init failed
+[vost#0:0/mjpeg @ 0000021c38aa9300] [enc:mjpeg @ 0000021c38a89b80] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height.
+[vf#0:0 @ 0000021c3a6000c0] Error sending frames to consumers: Invalid argument
+[vf#0:0 @ 0000021c3a6000c0] Task finished with error code: -22 (Invalid argument)
+[vf#0:0 @ 0000021c3a6000c0] Terminating thread with return code -22 (Invalid argument)
+[vost#0:0/mjpeg @ 0000021c38aa9300] [enc:mjpeg @ 0000021c38a89b80] Could not open encoder before EOF
+[vost#0:0/mjpeg @ 0000021c38aa9300] Task finished with error code: -22 (Invalid argument)
+[vost#0:0/mjpeg @ 0000021c38aa9300] Terminating thread with return code -22 (Invalid argument)
+[out#0/image2 @ 0000021c38a60380] Nothing was written into output file, because at least one of its streams received no packets.
+srnka: 523389 bytes
+perseids: 1010012 bytes
+ocean: 1838716 bytes
+bumblebee: 1745214 bytes
+[mjpeg @ 0000029d3d70e080] Non full-range YUV is non-standard, set strict_std_compliance to at most unofficial to use it.
+[mjpeg @ 0000029d3d68a8c0] ff_frame_thread_encoder_init failed
+[vost#0:0/mjpeg @ 0000029d3d691180] [enc:mjpeg @ 0000029d3d666280] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height.
+[vf#0:0 @ 0000029d3f411040] Error sending frames to consumers: Invalid argument
+[vf#0:0 @ 0000029d3f411040] Task finished with error code: -22 (Invalid argument)
+[vf#0:0 @ 0000029d3f411040] Terminating thread with return code -22 (Invalid argument)
+[vost#0:0/mjpeg @ 0000029d3d691180] [enc:mjpeg @ 0000029d3d666280] Could not open encoder before EOF
+[vost#0:0/mjpeg @ 0000029d3d691180] Task finished with error code: -22 (Invalid argument)
+[vost#0:0/mjpeg @ 0000029d3d691180] Terminating thread with return code -22 (Invalid argument)
+[out#0/image2 @ 0000029d3d684100] Nothing was written into output file, because at least one of its streams received no packets.
+jellyfish: 1454981 bytes
+[mjpeg @ 000001b59d368000] Non full-range YUV is non-standard, set strict_std_compliance to at most unofficial to use it.
+[mjpeg @ 000001b59b26a400] ff_frame_thread_encoder_init failed
+[vost#0:0/mjpeg @ 000001b59950be80] [enc:mjpeg @ 000001b5994ea880] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height.
+[vf#0:0 @ 000001b59951a940] Error sending frames to consumers: Invalid argument
+[vf#0:0 @ 000001b59951a940] Task finished with error code: -22 (Invalid argument)
+[vf#0:0 @ 000001b59951a940] Terminating thread with return code -22 (Invalid argument)
+[vost#0:0/mjpeg @ 000001b59950be80] [enc:mjpeg @ 000001b5994ea880] Could not open encoder before EOF
+[vost#0:0/mjpeg @ 000001b59950be80] Task finished with error code: -22 (Invalid argument)
+[vost#0:0/mjpeg @ 000001b59950be80] Terminating thread with return code -22 (Invalid argument)
+[out#0/image2 @ 000001b599507340] Nothing was written into output file, because at least one of its streams received no packets.
+mt-hood: 1276466 bytes
+[mjpeg @ 00000167b0bf7a00] Non full-range YUV is non-standard, set strict_std_compliance to at most unofficial to use it.
+[mjpeg @ 00000167af6e1040] ff_frame_thread_encoder_init failed
+[vost#0:0/mjpeg @ 00000167ad90fd00] [enc:mjpeg @ 00000167ad8e7cc0] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height.
+[vf#0:0 @ 00000167af6e1400] Error sending frames to consumers: Invalid argument
+[vf#0:0 @ 00000167af6e1400] Task finished with error code: -22 (Invalid argument)
+[vf#0:0 @ 00000167af6e1400] Terminating thread with return code -22 (Invalid argument)
+[vost#0:0/mjpeg @ 00000167ad90fd00] [enc:mjpeg @ 00000167ad8e7cc0] Could not open encoder before EOF
+[vost#0:0/mjpeg @ 00000167ad90fd00] Task finished with error code: -22 (Invalid argument)
+[vost#0:0/mjpeg @ 00000167ad90fd00] Terminating thread with return code -22 (Invalid argument)
+[out#0/image2 @ 00000167ad907280] Nothing was written into output file, because at least one of its streams received no packets.
+flower: 954196 bytes
+[mjpeg @ 00000245eda605c0] Non full-range YUV is non-standard, set strict_std_compliance to at most unofficial to use it.
+[mjpeg @ 00000245edc11280] ff_frame_thread_encoder_init failed
+[vost#0:0/mjpeg @ 00000245edc11040] [enc:mjpeg @ 00000245ebd6a0c0] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height.
+[vf#0:0 @ 00000245edc11640] Error sending frames to consumers: Invalid argument
+[vf#0:0 @ 00000245edc11640] Task finished with error code: -22 (Invalid argument)
+[vf#0:0 @ 00000245edc11640] Terminating thread with return code -22 (Invalid argument)
+[vost#0:0/mjpeg @ 00000245edc11040] [enc:mjpeg @ 00000245ebd6a0c0] Could not open encoder before EOF
+[vost#0:0/mjpeg @ 00000245edc11040] Task finished with error code: -22 (Invalid argument)
+[vost#0:0/mjpeg @ 00000245edc11040] Terminating thread with return code -22 (Invalid argument)
+[out#0/image2 @ 00000245ebd88a00] Nothing was written into output file, because at least one of its streams received no packets.
+friday: 1114189 bytes
+flower-moon: 1774526 bytes
+kings-peak: 953497 bytes
+tilia: 654702 bytes
+oystercatcher: 1909428 bytes
+srnka: 521626 bytes
+perseids: 1007708 bytes
+ocean: 1836318 bytes
+bumblebee: 1750298 bytes
+jellyfish: 1456747 bytes
+mt-hood: 1274462 bytes
+flower: 955807 bytes
+friday: 1117203 bytes

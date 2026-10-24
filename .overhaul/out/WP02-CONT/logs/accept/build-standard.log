@@ -1468,3 +1468,9 @@ Unable to strip the following libraries, packaging them as they are: libandroidx
 > Task :app:packageDevDebug
 > Task :app:assembleDevDebug
 > Task :app:createDevDebugApkListingFileRedirect
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/out/WP02-CONT/accept/standard/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 6m 57s
+1009 actionable tasks: 801 executed, 208 from cache
+Configuration cache entry stored.

@@ -2,6 +2,16 @@
 
 ## Progress
 
+Run 7 (sync), 2026-10-24 16:53-16:59 IST: staging is still `4760b4071` (07:07), already an ancestor of the branch
+head `337f9bd4a` (merged at `2931d770a` in run 6), so `git merge staging` has nothing to bring in and no merge commit
+was made. Against staging the branch changes no emitted file and no `genkit` input (`git diff --name-only staging
+staging-wp/WP12-DOCS`: only the two `AGENTS.md`, `test_docs.py`, the template README, `ARCHITECTURE.md`,
+`PERFORMANCE.md`, `CodeRules.kt`, `ComposeRules.kt`, `gates.toml`), so nothing to regenerate, compile or test; the
+`--check` runs were stopped while waiting for memory (another lane's Gradle check held the machine at ~560 MB free).
+The worktree `wt/sw-WP12` is on `staging-wp/WP12-KNOW` (same commit), dirty with WP12-KNOW run 1's uncommitted
+draft (08:33-09:04: `test_docs.py`, the template `AGENTS.md`, README, `ARCHITECTURE.md`, `PERFORMANCE.md`, new
+`docs/ADAPTIVE.md`). This sync left it as found: it is KNOW's work in progress, for KNOW's next run to review and commit.
+
 Run 6 (fix #2: the second review's one blocking finding and its non-blocking list), 2026-10-24 07:25 IST on.
 
 - **Synced:** staging `4760b4071` (07:07, `web/frontend` only: the configurator's glass wording) merged as
