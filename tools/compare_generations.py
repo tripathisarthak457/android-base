@@ -205,8 +205,10 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"{name}: {problem}")
             failed = failed or bool(problems)
             for diff in reviewed:
-                if diff not in shown:
-                    shown.add(diff)
+                # The same change under another package path is the same change: shown once.
+                body = "".join(line for line in diff.splitlines(keepends=True) if not line.startswith(("---", "+++")))
+                if body not in shown:
+                    shown.add(body)
                     print(f"\n{name}: allowed, for review:\n{diff}")
         if args.time:
             timing(before, after, work, args.time)

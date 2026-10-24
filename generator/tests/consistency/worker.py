@@ -43,7 +43,7 @@ def run_one(name: str, raw: dict, directory: str, keep: bool) -> tuple[str, list
         pipeline.build(parsed.spec, target, project, zip_output=False, commit="consistency")
     except Exception as error:  # noqa: BLE001 - a crash is itself the finding
         return name, [f"GENERATION {type(error).__name__}: {error}"]
-    hostile = name.startswith("hostile-")
+    hostile = name.startswith(("hostile-", "noui-hostile-"))
     issues = check(project, raw["package_name"], None if hostile else reference(directory), identity=not hostile)
     issues += missing_bindings(project)
     if not keep:
