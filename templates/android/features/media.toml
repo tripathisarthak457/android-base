@@ -10,7 +10,5 @@ requires = []
 implied_only = false
 owns = [
   "core/media",
-  ".agents/skills/camerax",
-  ".claude/skills/camerax",
 ]
 legacy = []
