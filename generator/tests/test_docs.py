@@ -254,7 +254,9 @@ class TemplateDocsTest(unittest.TestCase):
 
     def test_being_done_excuses_only_the_rows_the_guide_lists_as_over(self):
         # `--gate solid` fails the run on any row over its limit, so while the guide lists one, a done
-        # condition without that exception could never be met by any change.
+        # condition without that exception could never be met by any change. A row's max moves by up to
+        # about a millisecond between runs of one build, so the exception holds to the listed values only
+        # up to that spread, or an unchanged build could fail it.
         over = rows_over_limit(self.guide)
         agents = (TEMPLATE / "AGENTS.md").read_text(encoding="utf-8")
         conditions = [
@@ -265,7 +267,11 @@ class TemplateDocsTest(unittest.TestCase):
         clauses = set()
         for item in conditions:
             plain = re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", item)
-            clause = re.search(r"--gate solid` fails on no limit but those Where the template stands .*? lists there", plain)
+            clause = re.search(
+                r"--gate solid` fails on no limit but those Where the template stands .*? lists there"
+                r" beyond the spread of one build's repeated runs, .*? passes and no other row",
+                plain,
+            )
             with self.subTest(condition=item[:60]):
                 if over:
                     self.assertIsNotNone(clause, f"{over} are over their limits today")

@@ -739,7 +739,8 @@ beneath.
 
 The Everything preset's release build, compiled with its profile, on the reference phone, as last
 measured: the release gate's run (the median of three runs), and where a range is given, the spread of
-single-run blocks over several sessions of the same build. The hitch is in ms per second of motion.
+single-run blocks over several sessions of that build (for the hitch, jank, scroll and stress rows also
+of the builds just before it, which measured alike there). The hitch is in ms per second of motion.
 
 | Scenario | Measured | Against the limits |
 |---|---|---|
@@ -759,8 +760,9 @@ While a row here is over, `--gate solid` fails on every build, whatever the chan
 limit fails it like a release limit, so the table lists those it fails too. So being done (item 8
 of [Before you merge UI work](#before-you-merge-ui-work), and "Smooth and light" and "Before you say it
 is done" in `AGENTS.md`) excuses exactly the limits this table lists as over, at no worse than the values
-it gives. A change that brings a row within its limits updates this table in the same change; when every
-row reads "within", that exception goes from all three places.
+it gives beyond the spread of one build's repeated runs (a row's max moves by up to about a millisecond
+between blocks of one build). A change that brings a row within its limits updates this table in the
+same change; when every row reads "within", that exception goes from all three places.
 <!-- </opt:performance> -->
 
 ---
@@ -1590,9 +1592,9 @@ of the three lost the time.
 <!-- <opt:performance> -->
 8. On a release build, `perf.sh --gate solid` fails on no limit but those
    [Where the template stands](#where-the-template-stands) lists as over, none of those is worse than it
-   lists there, and against the previous build measured the same day,
-   `--baseline <previous run>/summary.json --gate smoke` passes and no other row of the two `summary.md`
-   files got worse.
+   lists there beyond the spread of one build's repeated runs, and against the previous build measured
+   the same day `--baseline <previous run>/summary.json --gate smoke` passes and no other row of the two
+   `summary.md` files got worse.
 9. Any new motion has a recording from `record.sh`.
 <!-- </opt:performance> -->
 <!-- <opt-else:performance> -->

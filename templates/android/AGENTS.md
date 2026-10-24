@@ -139,8 +139,9 @@ screen to read an id from.
   scroll position and ViewModels; a switch nudges the incoming tab in and cross-fades nothing.
 - **Keep typed input across process death:** inject `SavedStateHandle` into the ViewModel and hold
   each field the user types as
-  `savedStateHandle.saveable(KEY, saver = TextFieldState.Saver) { TextFieldState() }` — not
-  loaded data, which is fetched again, and never a password.
+  `savedStateHandle.saveable(KEY, saver = TextFieldState.Saver) { TextFieldState() }`, under
+  `@OptIn(SavedStateHandleSaveableApi::class)` — not loaded data, which is fetched again, and never a
+  password.
 - **Search as you type:** `launchLatest(key, debounce)` cancels the previous request, so a
   slow answer for an old query can never overwrite a newer one.
 <!-- <opt:search> -->
@@ -235,7 +236,7 @@ lint id, a build task, a test or a measured limit; *review* means nothing checks
 
 <!-- <opt:performance> -->
 - Judge smoothness only on `devRelease` or `devBenchmarkRelease`, compiled with its profile, on a real phone; never quote a debug build's numbers. — *review*
-- A change to motion, a list or start-up is done when, on a release build, `tools/perf/perf.sh --gate solid` fails on no limit but those [Where the template stands](docs/PERFORMANCE.md#where-the-template-stands) lists as over, none of those is worse than it lists there, and against the previous build measured the same day `--baseline <previous run>/summary.json --gate smoke` passes and no other row got worse. — `perf.sh --gate` and its table (`--gate solid` checks the limits only; it never compares builds)
+- A change to motion, a list or start-up is done when, on a release build, `tools/perf/perf.sh --gate solid` fails on no limit but those [Where the template stands](docs/PERFORMANCE.md#where-the-template-stands) lists as over, none of those is worse than it lists there beyond the spread of one build's repeated runs, and against the previous build measured the same day `--baseline <previous run>/summary.json --gate smoke` passes and no other row got worse. — `perf.sh --gate` and its table (`--gate solid` checks the limits only; it never compares builds)
 <!-- </opt:performance> -->
 <!-- <opt-else:performance> -->
 <!--~ - Judge smoothness only on `devRelease`, compiled with its profile, on a real phone; never quote a debug build's numbers. — *review* -->
@@ -433,9 +434,9 @@ submission, add Google's `play-policy-insights` audit with `android skills` and 
 <!-- <opt:performance> -->
 7. A change to motion, a list or start-up, on a release build: `tools/perf/perf.sh --gate solid` fails on
    no limit but those [Where the template stands](docs/PERFORMANCE.md#where-the-template-stands) lists as
-   over, none of those is worse than it lists there, and
-   `--baseline <previous run>/summary.json --gate smoke` passes against the previous build measured the
-   same day (§6).
+   over, none of those is worse than it lists there beyond the spread of one build's repeated runs, and
+   against the previous build measured the same day `--baseline <previous run>/summary.json --gate smoke`
+   passes and no other row got worse (§6).
 8. Any new motion has a recording from `tools/perf/record.sh`.
 <!-- </opt:performance> -->
 <!-- <opt-else:performance> -->

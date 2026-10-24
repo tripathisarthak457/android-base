@@ -155,9 +155,9 @@ arrives, so a lifecycle stop in between cannot lose it.
 
 ### Messages and errors
 
-`showMessage(text, kind = MessageKind.Error)` sends a transient note such as "Saved" or "Could not
-refresh". Notes have a channel of their own, `messages`, beside the effects, and `MviScreen` shows them
-as toasts above the tab bar and any sheet.
+`showMessage(text)` sends a transient note such as "Saved"; its `kind` is `MessageKind.Info` unless you
+pass another (`MessageKind.Error` for "Could not refresh"). Notes have a channel of their own,
+`messages`, beside the effects, and `MviScreen` shows them as toasts above the tab bar and any sheet.
 
 An exception that escapes work started with `launchLatest`, `launchExclusive` or `observe` is logged
 and passed to `onUnexpected`, which does nothing unless the ViewModel overrides it. A handler that
@@ -179,8 +179,9 @@ it. Treating them as the same state is why pull-to-refresh often blanks the list
 Loaded data is fetched again after process death and is not saved. What the user typed is saved:
 the ViewModel holds each typed field as
 `savedStateHandle.saveable(KEY, saver = TextFieldState.Saver) { TextFieldState() }`, which writes it
-to the `SavedStateHandle` and restores it on the next start. A password is never saved: the system
-writes that bundle to disk.
+to the `SavedStateHandle` and restores it on the next start. The API asks for an opt-in: mark the
+property `@OptIn(SavedStateHandleSaveableApi::class)`, or the compiler warns at every use. A password
+is never saved: the system writes that bundle to disk.
 
 ## Navigation
 
