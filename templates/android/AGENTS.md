@@ -113,7 +113,12 @@ Before work in an area, read that skill's `SKILL.md`; where it disagrees with th
 | `edge-to-edge` | touch insets, the keyboard or the system bars | pad scrolling content inside the scroll, never on the list's parent (`scroll-chrome`) |
 | `jetpack-compose-performance` | change a composable, a modifier chain or a lazy list, and again before you call it done: run its audit | read the category's `references/*.md` before a fix; `derivedStateOf`, not `computedStateOf` (Compose 1.12); state stays on `collectAsStateWithLifecycle()`; `List`, `Set` and `Map` are stable through `config/compose-stability.conf`, so never `ImmutableList` |
 | `android-profiler`, `anr-audit-and-fix` | chase jank, an ANR, slow start-up or memory | release builds only (docs/PERFORMANCE.md, "Measuring"); the profiler's `trace_processor` script downloads Google's binary on its first run |
+<!-- <opt:ui_components> -->
 | `testing-setup` | add tests or test infrastructure | JVM tests with fakes and `MainDispatcherRule`, Robolectric for Compose; screenshots with Roborazzi, rendered from previews; never re-record a golden to make a test pass |
+<!-- </opt:ui_components> -->
+<!-- <opt:!ui_components> -->
+| `testing-setup` | add tests or test infrastructure | JVM tests with fakes and `MainDispatcherRule`, Robolectric for Compose; screenshots with Roborazzi, rendered from previews in `:core:designsystem` and in each feature that applies the screenshots convention with its first screen (docs/ARCHITECTURE.md, "Testing"); never re-record a golden to make a test pass |
+<!-- </opt:!ui_components> -->
 | `r8-analyzer` | change keep rules or chase app size | upstream ships no `scripts/`: run `./gradlew :app:analyzeProdReleaseR8Config` (one task per variant), then follow its manual path |
 | `android-intent-security`, `android-permissions-security` | touch the manifest, deep links, notifications or permissions | external links become typed keys through a `DeepLinkRoute`; no exported component without a reason |
 | `agp-9-upgrade` | bump AGP or Gradle | the project is already on AGP 9 with built-in Kotlin |

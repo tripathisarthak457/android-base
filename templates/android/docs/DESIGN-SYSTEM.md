@@ -360,7 +360,9 @@ In this order, each under the contract above:
 3. **Text, buttons, rows and fields** you need for the first screen, each with its `XDefaults` and preview.
 4. **Screens** in place of each `PlaceholderScreen`: a stateless `XScreen(state, onEvent)` that the route already
    connects through `MviScreen`, drawing every `LoadState`, with `@AppScreenPreviews` on its preview
-   (`adaptive-preview`). Delete the placeholder when the last route stops calling it.
+   (`adaptive-preview`) and the screenshots convention in its module
+   ([Previews are render tests](#previews-are-render-tests)). Delete the placeholder when the last route stops
+   calling it.
 5. **A shell**, if the app has sections: tab stacks, a bar or rail switched by `AppTheme.windowClass`, and a
    `SceneStrategy` for list-detail and sheets ([ARCHITECTURE.md](ARCHITECTURE.md#adding-a-shell-tabs-panes-and-sheets)).
 <!-- </opt:!ui_components> -->
@@ -379,6 +381,10 @@ at twice the font size, in dark theme or right to left. `@AppScreenPreviews` ren
 sideways, a foldable, a tablet and a desktop window, at twice the font size and in dark theme; wrap a component's own
 previews with `@PreviewWrapper(AppPreviewTheme::class)` so they draw in the theme.
 <!-- <opt:!ui_components> -->
+The convention runs in `:core:designsystem` from the start. Feature modules start without it, since a placeholder has
+nothing to render, so a screen's previews are rendered only once its module applies it: with the first screen and its
+`@AppScreenPreviews`, add `id("com.base.app.android.screenshots")` to the `plugins { }` of that feature's
+`build.gradle.kts`, and once every feature has screens, apply it in `AndroidFeatureConventionPlugin` instead.
 `preview/ThemePreview.kt` previews the token slots (the colour roles and the type scale) in light and dark, so the
 skeleton is rendered from the first build. `@AppComponentPreviews` gives a component's preview every condition it
 has to survive: light, dark, twice the font size, right to left and a 320 dp window, each inside `AppPreviewTheme`.
