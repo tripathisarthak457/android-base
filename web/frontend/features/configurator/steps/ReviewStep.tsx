@@ -9,6 +9,7 @@ import type { Catalogue } from "../../catalogue/types.ts";
 import { ScaledPreview } from "../../preview/AppPreview.tsx";
 import { useFamily } from "../../preview/fonts.ts";
 import { planTabs } from "../../preview/tabs.ts";
+import { StartScreenPreview } from "../../preview/ThemeSlots.tsx";
 import { weightsFor } from "../../preview/theme.ts";
 import { usePreviewTheme } from "../../preview/usePreviewTheme.ts";
 import type { Spec } from "../request.ts";
@@ -41,7 +42,7 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
     ["Package", state.packageName],
     ["Architecture", target.architectures.find((option) => option.key === state.architecture)?.title ?? state.architecture],
     ...(sdk ? ([["Min / target SDK", sdk]] as [string, string][]) : []),
-    ...(uiOption ? ([[uiOption.title, state.uiComponents ? "Included" : "None: a theme skeleton and placeholder screens"]] as [string, string][]) : []),
+    ...(uiOption ? ([[uiOption.title, state.uiComponents ? "Included" : "None (setup only)"]] as [string, string][]) : []),
     ...(hidden.has("design_style")
       ? []
       : ([["Design style", target.design_styles.find((style) => style.key === state.designStyle)?.title ?? state.designStyle]] as [string, string][])),
@@ -107,10 +108,16 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
       </div>
 
       <div className="min-w-0 md:col-span-2">
-        {screen && (
+        {!state.uiComponents ? (
           <div className="mb-4 flex justify-center">
-            <ScaledPreview theme={theme} font={input.font} tabs={tabs} screen={screen} options={options} scale={0.62} />
+            <StartScreenPreview theme={theme} scale={0.62} />
           </div>
+        ) : (
+          screen && (
+            <div className="mb-4 flex justify-center">
+              <ScaledPreview theme={theme} font={input.font} tabs={tabs} screen={screen} options={options} scale={0.62} />
+            </div>
+          )
         )}
 
         {errors.size > 0 && (

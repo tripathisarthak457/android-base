@@ -2,6 +2,7 @@
 
 import { useInView } from "framer-motion";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { COMING_WITH_RELEASE, isSetupOnly } from "../features/catalogue/options.ts";
 import { ScaledPreview } from "../features/preview/AppPreview.tsx";
 import { loadFamily } from "../features/preview/fonts.ts";
 import { planTabs } from "../features/preview/tabs.ts";
@@ -10,6 +11,7 @@ import { traits } from "../features/preview/traits.ts";
 import { usePreviewTheme } from "../features/preview/usePreviewTheme.ts";
 import { CATALOGUE, android } from "../lib/catalogue.ts";
 import { PauseButton, Segmented, usePaused } from "./primitives.tsx";
+import { Badge } from "./ui.tsx";
 
 /** A brand colour and typeface that suit each style; a style without one shows the template's. */
 const PAIRINGS: Record<string, { accent: string; font: string; blurb: string }> = {
@@ -84,7 +86,10 @@ export function StylesShowcase() {
       <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6" ref={ref}>
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">Design styles</p>
+            <p className="flex flex-wrap items-center gap-3">
+              <span className="font-mono text-xs uppercase tracking-[0.18em] text-accent">Design styles</span>
+              {isSetupOnly(CATALOGUE) && <Badge tone="amber">{COMING_WITH_RELEASE}</Badge>}
+            </p>
             <h2 className="font-display mt-3 text-4xl font-bold text-ink-100 md:text-5xl">
               {styles.length} looks. One codebase.
             </h2>

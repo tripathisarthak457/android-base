@@ -78,7 +78,7 @@ export const AppPreview = memo(function AppPreview({ theme, font, tabs, screen, 
   );
 });
 
-function StatusBar({ colour, background }: { colour: string; background: string }) {
+export function StatusBar({ colour, background }: { colour: string; background: string }) {
   return (
     <div
       className="absolute inset-x-0 top-0 flex items-center justify-between font-mono"

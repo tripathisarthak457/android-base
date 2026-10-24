@@ -9,6 +9,7 @@ import { brandColours, parseHex, toHex } from "../../preview/brand.ts";
 import { type FontStatus, useFamily, useSuggestionFonts } from "../../preview/fonts.ts";
 import { LivePreview, type PreviewView } from "../../preview/LivePreview.tsx";
 import { type PreviewTab, planTabs } from "../../preview/tabs.ts";
+import { ThemeSlotsPreview } from "../../preview/ThemeSlots.tsx";
 import { weightsFor } from "../../preview/theme.ts";
 import { traits } from "../../preview/traits.ts";
 import { type PreviewInput, usePreviewTheme } from "../../preview/usePreviewTheme.ts";
@@ -146,7 +147,11 @@ export function LookStep({
         />
       </div>
 
-      <LivePreview input={input} view={view} onView={onView} />
+      {state.uiComponents ? (
+        <LivePreview input={input} view={view} onView={onView} />
+      ) : (
+        <ThemeSlotsPreview input={input} view={view} onView={onView} />
+      )}
     </div>
   );
 }

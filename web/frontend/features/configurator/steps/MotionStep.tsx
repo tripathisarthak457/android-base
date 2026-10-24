@@ -6,6 +6,7 @@ import { hiddenFields } from "../../catalogue/options.ts";
 import type { Catalogue, Spring } from "../../catalogue/types.ts";
 import { LivePreview, type PreviewView } from "../../preview/LivePreview.tsx";
 import { MotionPreview } from "../../preview/MotionPreview.tsx";
+import { ThemeSlotsPreview } from "../../preview/ThemeSlots.tsx";
 import { type PreviewInput, usePreviewTheme } from "../../preview/usePreviewTheme.ts";
 import { HiddenChoice } from "../HiddenChoice.tsx";
 import type { ConfiguratorModel } from "../useConfigurator.ts";
@@ -124,7 +125,11 @@ export function MotionStep({
         </div>
       </div>
 
-      <LivePreview input={input} view={view} onView={onView} />
+      {state.uiComponents ? (
+        <LivePreview input={input} view={view} onView={onView} />
+      ) : (
+        <ThemeSlotsPreview input={input} view={view} onView={onView} />
+      )}
     </div>
   );
 }
