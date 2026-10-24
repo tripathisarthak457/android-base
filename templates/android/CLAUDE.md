@@ -1,8 +1,15 @@
 # Working on BaseApp
 
+<!-- <opt:ui_components> -->
 BaseApp is a multi-module Jetpack Compose app generated from a template: MVI on `MviViewModel`, Hilt, Ktor, Room,
 Navigation 3, and a design system of its own in `:core:designsystem` with no Material underneath. It builds, tests and
 lints clean as generated, and the build enforces most rules below. A change that turns the build red is not finished.
+<!-- </opt:ui_components> -->
+<!-- <opt:!ui_components> -->
+BaseApp is a multi-module Jetpack Compose app generated from a template without UI components: MVI, Hilt, Navigation 3
+and every build guard, with a theme skeleton in `:core:designsystem` (no Material) for your own components. Each screen
+is a placeholder route over its ViewModel. It builds, tests and lints clean; a change that turns it red is not finished.
+<!-- </opt:!ui_components> -->
 `CLAUDE.md` and `AGENTS.md` hold the same text; the three docs at the end hold the reasons, the numbers and the recipes.
 
 ## Rules
@@ -13,8 +20,14 @@ fails `verifyModuleDependencies`: shared code goes to `core/`, or to a `data/` m
 `api` package is public (`feature-public`), and the feature's navigation keys live there.
 
 **Screens.**
+<!-- <opt:ui_components> -->
 - A screen is a route that takes the ViewModel and connects it through `MviScreen` to a stateless
   `Screen(state, onEvent)`; only the route takes a ViewModel (`vm-forwarding`), and previews call the screen.
+<!-- </opt:ui_components> -->
+<!-- <opt:!ui_components> -->
+- A route takes the ViewModel and connects it through `MviScreen`; today it draws `PlaceholderScreen`. Build each screen
+  as a stateless `Screen(state, onEvent)` the route calls; only the route takes a ViewModel (`vm-forwarding`).
+<!-- </opt:!ui_components> -->
 - The ViewModel extends `MviViewModel`: `setState { copy(…) }` for what the screen renders, `emit(effect)` for one-off
   things (navigate, share), `showMessage(UiText)` for a transient note. `handleEvent` never suspends: slow work goes
   through `launchLatest(key, debounce)` (the newest request wins) or `launchExclusive(key)` (a repeat is ignored), and
@@ -29,6 +42,10 @@ fails `verifyModuleDependencies`: shared code goes to `core/`, or to a `data/` m
 - No Material (`material`, `ripple`). Every colour, type style, spacing, shape and motion comes from `AppTheme`
   (`colors`, `typography`, `spacing`, `shapes`, `springs`): no raw colour, `tween`, or `dp` other than `0.dp` and `1.dp`
   in a feature (`raw-color`, `raw-tween`, `raw-dp`).
+<!-- <opt:!ui_components> -->
+- Components live in `:core:designsystem`, built to the contract in `docs/DESIGN-SYSTEM.md` (stateless, values from
+  `XDefaults` and the theme, a preview each); a feature arranges components and draws nothing of its own.
+<!-- </opt:!ui_components> -->
 - Copy lives in `strings.xml` (`hardcoded-copy`): `stringResource(R.string.x)` in UI, `UiText.of(R.string.x)` in a
   ViewModel. A new string is translated into every `values-*` folder the project has, or lint fails the build.
 - Every screen works on every window: lay out from `AppTheme.windowClass` and `AppTheme.containerClass`, never from
@@ -85,7 +102,12 @@ Before work in an area, read that skill's `SKILL.md`; where it disagrees with th
 
 | Skill | Read it before you… | This project differs |
 |---|---|---|
+<!-- <opt:ui_components> -->
 | `navigation-3` | add a destination, a scene, a deep link or a result | register with `navGraph { entry<Key>(…) }` and navigate through `AppNavigator`; a feature never builds a `NavDisplay` or sets its transitions (`nav-fade`) |
+<!-- </opt:ui_components> -->
+<!-- <opt:!ui_components> -->
+| `navigation-3` | add a destination, a scene, a deep link or a result | register with `navGraph { entry<Key>(…) }` and navigate through `AppNavigator`; the one `NavDisplay` is in `:core:navigation`, and list-detail and sheets go there as a `SceneStrategy`, never in a feature (`nav-fade`) |
+<!-- </opt:!ui_components> -->
 | `navigation-event` | handle Back anywhere but a screen pop | `NavigationBackHandler` only, never `BackHandler` or the Activity's dispatcher (`legacy-back`) |
 | `adaptive` | build or change any screen | no `NavigationSuiteScaffold` or other Material (`adaptive-material-scope`); `LazyVerticalGrid`, not `Grid` or `FlexBox`, and `AppTheme.containerClass`, `posture` and `input`, not `MediaQuery`, all experimental in Compose 1.12 (`experimental-api`, `adaptive-mediaquery`); screenshots with Roborazzi |
 | `edge-to-edge` | touch insets, the keyboard or the system bars | pad scrolling content inside the scroll, never on the list's parent (`scroll-chrome`) |
