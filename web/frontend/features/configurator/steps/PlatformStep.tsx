@@ -3,6 +3,7 @@
 import { useId } from "react";
 import { ChoiceCard } from "../../../components/primitives.tsx";
 import { Badge } from "../../../components/ui.tsx";
+import { androidOnlyNote } from "../../catalogue/options.ts";
 import type { Platform } from "../../catalogue/platforms.ts";
 import type { Catalogue, Target } from "../../catalogue/types.ts";
 import type { ConfiguratorModel } from "../useConfigurator.ts";
@@ -42,6 +43,7 @@ export function PlatformStep({ catalogue, platforms, model }: { catalogue: Catal
           const soon = isSoon(platform);
           const target = soon ? undefined : catalogue.targets.find((candidate) => candidate.key === platform.key);
           const missing = target ? notYet(target, android) : [];
+          const note = androidOnlyNote(catalogue, platform.key);
           return (
             <div key={platform.key} className="flex flex-col gap-2">
               <ChoiceCard
@@ -61,6 +63,7 @@ export function PlatformStep({ catalogue, platforms, model }: { catalogue: Catal
                   <span className="mt-3 block text-xs text-amber">{platform.status_note}</span>
                 )}
               </ChoiceCard>
+              {note && <p className="px-1 text-xs leading-relaxed text-ink-400">{note}</p>}
               {missing.length > 0 && (
                 <details className="px-1 text-xs text-ink-400">
                   <summary className="cursor-pointer select-none text-ink-300">Not in this version ({missing.length})</summary>

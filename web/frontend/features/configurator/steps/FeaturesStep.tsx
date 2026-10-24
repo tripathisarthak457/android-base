@@ -5,9 +5,11 @@ import { useId, useRef } from "react";
 import { ChoiceCard } from "../../../components/primitives.tsx";
 import { Badge } from "../../../components/ui.tsx";
 import { selectableFeatures } from "../../catalogue/features.ts";
-import type { Target } from "../../catalogue/types.ts";
+import { disabledFeatures } from "../../catalogue/options.ts";
+import type { Catalogue, Target } from "../../catalogue/types.ts";
 import { dependentsOf } from "../resolve.ts";
 import type { ToggleHint } from "../state.ts";
+import { type UiComponentsBox, featureCard, uiComponentsBox } from "../uiComponents.ts";
 import type { ConfiguratorModel } from "../useConfigurator.ts";
 
 function titles(keys: string[], byKey: Map<string, string>): string {
@@ -27,9 +29,54 @@ function hintText(hint: ToggleHint, designStyle: string, target: Target, visible
   return sentences.join(" ");
 }
 
-export function FeaturesStep({ model }: { model: ConfiguratorModel }) {
+function Tick({ on }: { on: boolean }) {
+  return (
+    <span
+      aria-hidden
+      className={`mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded border text-[10px] ${
+        on ? "border-accent bg-accent text-on-accent" : "border-ink-500"
+      }`}
+    >
+      {on ? "✓" : ""}
+    </span>
+  );
+}
+
+/** The box drawn like a feature card, since it is one more choice about what the project holds. */
+function UiComponentsChoice({ box, onToggle }: { box: UiComponentsBox; onToggle: () => void }) {
+  const noteId = useId();
+  if (box.kind === "none") return null;
+  if (box.kind === "note") return <p className="mb-6 max-w-2xl text-sm text-ink-400">{box.text}</p>;
+  return (
+    <ChoiceCard
+      type="checkbox"
+      checked={box.ticked}
+      unavailable={box.lockedNote !== null}
+      describedBy={box.lockedNote !== null ? noteId : undefined}
+      onChange={onToggle}
+      className="mb-7 p-4"
+    >
+      <span className="flex items-start gap-3">
+        <Tick on={box.ticked} />
+        <span className="min-w-0">
+          <span className="block text-sm font-semibold text-ink-100">{box.label}</span>
+          <span className="mt-1 block text-sm text-ink-300">{box.headline}</span>
+          <span className="mt-1.5 block text-xs leading-relaxed text-ink-400">{box.description}</span>
+          {box.lockedNote !== null && (
+            <span id={noteId} className="mt-2 block text-xs leading-relaxed text-amber">
+              {box.lockedNote}
+            </span>
+          )}
+        </span>
+      </span>
+    </ChoiceCard>
+  );
+}
+
+export function FeaturesStep({ catalogue, model }: { catalogue: Catalogue; model: ConfiguratorModel }) {
   const { state, dispatch, target, preset, errors } = model;
   const presetName = useId();
+  const reasonId = useId();
   const featuresError = errors.get("features");
   const featuresErrorId = useId();
   const selected = new Set(state.features);
@@ -48,9 +95,16 @@ export function FeaturesStep({ model }: { model: ConfiguratorModel }) {
       : null;
   const style = target.design_styles.find((option) => option.key === state.designStyle);
   const toggled = useRef<HTMLInputElement>(null);
+  // A preset keeps its list, so its count leaves out what this project cannot have, as the selection does.
+  const disabled = disabledFeatures(target, state.uiComponents);
+  const counted = (keys: string[]) => visible(keys.filter((key) => !disabled.has(key)));
 
   return (
     <div>
+      <UiComponentsChoice
+        box={uiComponentsBox(catalogue, target, state.uiComponents)}
+        onToggle={() => dispatch({ type: "uiComponents", value: !state.uiComponents })}
+      />
       {/* A fieldset rather than role=radiogroup, which may hold only radios: the group also shows
           its lead-in and the "Your own" badge. */}
       <fieldset className="flex flex-wrap items-center gap-2">
@@ -70,7 +124,7 @@ export function FeaturesStep({ model }: { model: ConfiguratorModel }) {
             >
               <input type="radio" name={presetName} checked={on} onChange={() => dispatch({ type: "preset", key: option.key })} className="sr-only" />
               {option.title}
-              <span className="ml-1.5 font-mono text-xs">{visible(option.features).length}</span>
+              <span className="ml-1.5 font-mono text-xs">{counted(option.features).length}</span>
             </label>
           );
         })}
@@ -120,24 +174,21 @@ export function FeaturesStep({ model }: { model: ConfiguratorModel }) {
                   const on = selected.has(feature.key);
                   const needed = on ? visible(dependentsOf(selected, feature.key, target)).map((key) => titleOf.get(key) ?? key) : [];
                   if (on && style?.requires.includes(feature.key)) needed.push(`the ${style.title} look`);
+                  const card = featureCard(catalogue, target, state.uiComponents, feature.key);
+                  const why = `${reasonId}-${feature.key}`;
                   return (
                     <ChoiceCard
                       key={feature.key}
                       type="checkbox"
                       checked={on}
+                      unavailable={card.disabled}
+                      describedBy={card.disabled ? why : undefined}
                       onChange={() => dispatch({ type: "feature", key: feature.key })}
                       inputRef={feature.key === hint?.key ? toggled : undefined}
                       className="p-4"
                     >
                       <span className="flex items-start gap-3">
-                        <span
-                          aria-hidden
-                          className={`mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded border text-[10px] ${
-                            on ? "border-accent bg-accent text-on-accent" : "border-ink-500"
-                          }`}
-                        >
-                          {on ? "✓" : ""}
-                        </span>
+                        <Tick on={on} />
                         <span className="min-w-0">
                           <span className="block text-sm font-semibold text-ink-100">{feature.headline}</span>
                           <span className="mt-1 block text-xs leading-relaxed text-ink-400">{feature.description}</span>
@@ -146,6 +197,12 @@ export function FeaturesStep({ model }: { model: ConfiguratorModel }) {
                           )}
                           {needed.length > 0 && <span className="mt-1 block font-mono text-[11px] text-amber">needed by {needed.join(", ")}</span>}
                           {feature.licence && <span className="mt-1 block font-mono text-[11px] text-ink-400">{feature.licence.name}</span>}
+                          {card.disabled && (
+                            <span id={why} className="mt-2 block text-xs leading-relaxed text-ink-300">
+                              {card.reason}
+                              {card.release && <span className="mt-1 block font-mono text-[11px] text-amber">{card.release}</span>}
+                            </span>
+                          )}
                         </span>
                       </span>
                     </ChoiceCard>

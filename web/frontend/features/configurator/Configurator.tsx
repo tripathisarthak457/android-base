@@ -139,7 +139,7 @@ export function Configurator({ catalogue, platforms, model }: { catalogue: Catal
           </h3>
           {step === "platform" && <PlatformStep catalogue={catalogue} platforms={platforms} model={model} />}
           {step === "identity" && <IdentityStep catalogue={catalogue} model={model} />}
-          {step === "features" && <FeaturesStep model={model} />}
+          {step === "features" && <FeaturesStep catalogue={catalogue} model={model} />}
           {step === "look" && <LookStep catalogue={catalogue} model={model} view={preview} onView={setPreview} />}
           {step === "motion" && <MotionStep catalogue={catalogue} model={model} view={preview} onView={setPreview} />}
           {step === "build" && <BuildStep catalogue={catalogue} model={model} />}

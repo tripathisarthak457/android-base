@@ -222,13 +222,18 @@ export function Segmented<T extends string>({
 /**
  * A selectable card: a native radio or checkbox under a styled label. A disabled card is never
  * faded, since its text is often the only place saying why it cannot be picked; the dashed edge,
- * the missing fill and the cursor mark it instead.
+ * the missing fill and the cursor mark it instead. `disabled` takes the card out of the tab order;
+ * `unavailable` looks the same but stays focusable and is announced as unavailable, with
+ * `describedBy` naming the text that says why, so a keyboard or screen-reader visitor meets the
+ * reason too.
  */
 export function ChoiceCard({
   type,
   name,
   checked,
   disabled,
+  unavailable,
+  describedBy,
   onChange,
   inputRef,
   className = "",
@@ -238,6 +243,8 @@ export function ChoiceCard({
   name?: string;
   checked: boolean;
   disabled?: boolean;
+  unavailable?: boolean;
+  describedBy?: string;
   onChange: () => void;
   inputRef?: Ref<HTMLInputElement>;
   className?: string;
@@ -246,14 +253,26 @@ export function ChoiceCard({
   return (
     <label
       className={`block rounded-xl border text-left transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent ${
-        disabled
+        disabled || unavailable
           ? "cursor-not-allowed border-dashed border-ink-600"
           : checked
             ? "cursor-pointer border-accent bg-accent-dim/50 ring-1 ring-accent"
             : "cursor-pointer border-ink-700 bg-ink-900 hover:border-ink-600"
       } ${className}`}
     >
-      <input ref={inputRef} type={type} name={name} checked={checked} disabled={disabled} onChange={onChange} className="sr-only" />
+      <input
+        ref={inputRef}
+        type={type}
+        name={name}
+        checked={checked}
+        disabled={disabled}
+        aria-disabled={unavailable || undefined}
+        aria-describedby={describedBy}
+        onChange={() => {
+          if (!unavailable) onChange();
+        }}
+        className="sr-only"
+      />
       {children}
     </label>
   );
