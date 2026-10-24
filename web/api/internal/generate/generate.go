@@ -257,9 +257,14 @@ func childEnv(dir string) []string {
 	if javaHome := os.Getenv("JAVA_HOME"); javaHome != "" {
 		env = append(env, "JAVA_HOME="+javaHome)
 	}
-	// Python on Windows cannot initialise without SYSTEMROOT.
+	// Python on Windows cannot initialise without SYSTEMROOT. The Python install manager's
+	// `python` finds its interpreters under LOCALAPPDATA; without it, it downloads a fresh one into
+	// the working directory and registers that one for the whole user account.
 	if runtime.GOOS == "windows" {
 		env = append(env, "SYSTEMROOT="+os.Getenv("SYSTEMROOT"))
+		if localAppData := os.Getenv("LOCALAPPDATA"); localAppData != "" {
+			env = append(env, "LOCALAPPDATA="+localAppData)
+		}
 	}
 	return env
 }
