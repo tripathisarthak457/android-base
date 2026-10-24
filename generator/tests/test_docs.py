@@ -2,8 +2,9 @@
 The performance guide and the agent rules every generated Android project carries
 (`docs/PERFORMANCE.md` and the "Smooth and light" section of `AGENTS.md`): each rule id, lint id,
 gate row, perf scenario, spring, path, name and link they cite exists in the project they ship in,
-whatever features it was generated with. The other way round too: a guide the project's code sends a
-reader to, such as the build's message when a code rule fails, is in the project.
+whatever features it was generated with. Every code name the template's other pages cite exists too.
+The other way round: a guide the project's code sends a reader to, such as the build's message when a
+code rule fails, is in the project.
 """
 
 from __future__ import annotations
@@ -27,6 +28,25 @@ PROJECT_DIRS = ("app", "benchmark", "build-logic", "catalog", "config", "core", 
 #: Words the overhaul's own notes use and a project's docs never should, and the `{…}` a measurement fills in.
 WORKSPACE_WORDS = re.compile(r"overhaul|staging-wp|\bWP\d\d\b|REQUIREMENTS", re.IGNORECASE)
 PLACEHOLDER = re.compile(r"\{[a-z][a-z ]*\}")
+#: Platform and library names the docs cite that the template's code never spells out.
+LIBRARY_NAMES = frozenset({
+    # Compose, and the collections the stability config makes unnecessary.
+    "Crossfade", "Hyphens", "LineBreak", "Simple", "LazyLayoutCacheWindow", "fitInside", "toImageBitmap",
+    "computedStateOf", "ImmutableList",
+    # The framework, and the slices its traces show.
+    "PixelCopy", "RenderEffect", "OnBackPressedDispatcher", "onTrimMemory", "bindApplication", "performResume",
+    "doFrame", "DrawFrame", "CircularRRectOp",
+    # Coroutines, CameraX and the activity result contracts.
+    "SharedFlow", "ImageCapture", "VideoCapture", "CaptureVideo",
+})
+#: Names the docs make up to show the shape of something.
+EXAMPLE_NAMES = frozenset({"ListKey", "YourKey", "YourRoute", "isLoading"})
+#: Names a page still cites that the code does not have. Each leaves when its paragraph is rewritten, so
+#: the sets only shrink; a name misspelt or removed anywhere else fails.
+STALE_NAMES = {
+    "README.md": {"entryPoint"},
+    "docs/ARCHITECTURE.md": {"AppIndication", "AppNavHost", "DeepLinkResolver", "Paged", "debugEnabled", "surfaceRaised"},
+}
 
 
 def prose(text: str) -> str:
@@ -110,10 +130,48 @@ def cited_names(text: str) -> set[str]:
     """Identifiers in backticks that read as code: CamelCase or camelCase, four letters or more."""
     names: set[str] = set()
     for token in backticked(text):
+        # A JVM flag (`-Dorg.gradle…`) and a placeholder inside a name (`<Feature>Navigation.kt`) are not names.
+        token = re.sub(r"<[A-Z]\w*>(?=\w)", " ", re.sub(r"(?<![\w-])-D[\w.]+", "", token))
         for word in re.findall(r"[A-Za-z_][A-Za-z0-9_]*", token):
             if len(word) >= 4 and re.search(r"[a-z]", word) and re.search(r"[A-Z]", word[1:] if word[0].islower() else word):
                 names.add(word)
     return names
+
+
+def unknown_names(cited: set[str]) -> set[str]:
+    """The names in `cited` that are none of the template's identifiers, code files, variants' tasks or listed names."""
+    config = (BUILD_LOGIC / "com/base/app/buildlogic/config/AppConfig.kt").read_text(encoding="utf-8")
+    flavors = "|".join(f"[{name[0]}{name[0].upper()}]{name[1:]}" for name in re.findall(r'flavorName = "(\w+)"', config))
+    # A variant's name, or a task named after one: devBenchmarkRelease, assembleDevDebug.
+    variant = re.compile(rf"(?:{flavors})(?:Debug|Release|Benchmark)")
+    files = {
+        path.stem for path in TEMPLATE.rglob("*") if path.suffix in CODE_SUFFIXES and "build" not in path.relative_to(TEMPLATE).parts
+    }
+    known = words(TEMPLATE) | files | LIBRARY_NAMES | EXAMPLE_NAMES
+    return {name for name in cited if name not in known and not variant.search(name)}
+
+
+def list_items(markdown: str) -> list[str]:
+    """Each list item of `markdown`'s prose, its lines joined."""
+    items: list[list[str]] = []
+    current: list[str] | None = None
+    for line in prose(markdown).splitlines():
+        stripped = line.strip()
+        if re.match(r"(?:- |\d+\. )", stripped):
+            current = [stripped]
+            items.append(current)
+        elif current is not None and stripped and not stripped.startswith(("<!--", "#", "|")):
+            current.append(stripped)
+        else:
+            current = None
+    return [" ".join(item) for item in items]
+
+
+def rows_over_limit(guide: str) -> list[str]:
+    """The rows of the guide's "Where the template stands" whose last column is not "within"."""
+    section = re.search(r"^### Where the template stands\n(.*?)(?=^#|^---)", guide, re.MULTILINE | re.DOTALL).group(1)
+    rows = [row.strip("|").split("|") for row in re.findall(r"^\|.*\|$", section, re.MULTILINE)[2:]]
+    return [cells[0].strip() for cells in rows if cells[-1].strip() != "within"]
 
 
 def anchors(markdown: str) -> set[str]:
@@ -181,6 +239,40 @@ class TemplateDocsTest(unittest.TestCase):
         named |= {word for word in re.findall(r"(?<![-\w/.:])[a-z][a-z0-9_]+(?![\w/.])", command) if word != "solid"}
         self.assertGreater(len(named), 10)
         self.assertEqual(set(), named - known)
+
+    def test_every_name_the_docs_cite_exists(self):
+        pages = {
+            page.relative_to(TEMPLATE).as_posix(): cited_names(prose(page.read_text(encoding="utf-8")))
+            for page in [TEMPLATE / "AGENTS.md", TEMPLATE / "README.md", *sorted((TEMPLATE / "docs").glob("*.md"))]
+        }
+        cited = set().union(*pages.values())
+        self.assertGreater(len(cited), 200)
+        unknown = unknown_names(cited)
+        for page, names in pages.items():
+            with self.subTest(page=page):
+                self.assertEqual(STALE_NAMES.get(page, set()), names & unknown)
+
+    def test_being_done_excuses_only_the_rows_the_guide_lists_as_over(self):
+        # `--gate solid` fails the run on any row over its limit, so while the guide lists one, a done
+        # condition without that exception could never be met by any change.
+        over = rows_over_limit(self.guide)
+        agents = (TEMPLATE / "AGENTS.md").read_text(encoding="utf-8")
+        conditions = [
+            item for text in (agents, self.guide) for item in list_items(text)
+            if "--gate solid`" in item and "--gate smoke" in item
+        ]
+        self.assertEqual(3, len(conditions), conditions)
+        clauses = set()
+        for item in conditions:
+            plain = re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", item)
+            clause = re.search(r"--gate solid` fails on no limit but those Where the template stands .*? lists there", plain)
+            with self.subTest(condition=item[:60]):
+                if over:
+                    self.assertIsNotNone(clause, f"{over} are over their limits today")
+                    clauses.add(clause.group(0))
+                else:
+                    self.assertIsNone(clause, "every row is within its limits: drop the exception")
+        self.assertLessEqual(len(clauses), 1, clauses)
 
     def test_the_spring_table_is_the_standard_style(self):
         springs = standard_springs()

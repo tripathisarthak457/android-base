@@ -67,7 +67,7 @@ with `tools/perf/perf.sh`, unless a rule says otherwise. A limit quoted as "gate
    message). Gate: 5 s idle on every tab renders 0 frames. [More](#nothing-animates-while-idle)
 9. **One opaque fill per screen.** The navigation entry paints the background; `AppScaffold` paints none
    on top of it. Removing a second full-screen fill cut the steady GPU time per frame of a push's slide
-   from 8.0 to 4.9 ms. [More](#one-opaque-fill-per-screen)
+   from 8.0 to 4.9 ms. [More](#paint-the-screen-once)
 10. **Keep the start-up path and the first frame free of work they do not need.** No I/O and no eager
     singletons in `Application.onCreate` or the first screen. Gate: cold start median 380 ms.
     [More](#start-up)
@@ -104,7 +104,7 @@ a scroll, an animation or a transition. Kotlin 2.4 turns strong skipping and lam
 not identical, state read too high or too early, and composing a whole screen in the first frame of a
 navigation.
 
-#### Read moving values where they are used
+### Read moving values where they are used
 
 **Rule.** Animated, dragged and scrolled values are read only inside `Modifier.offset { }`,
 `Modifier.layout { }`, `Modifier.graphicsLayer { }`, a draw block or a `Modifier.Node`. Hold an
@@ -162,7 +162,7 @@ follows the finger), `recompose.tab_switch.max = 2`, `recompose.pop.max = 2`; sc
 **Enforced by.** `animated-delegate`; lint `FrequentlyChangingValue` and `UseOfNonLambdaOffsetOverload`;
 the recomposition tests ([below](#prove-it-with-a-recomposition-test)).
 
-#### Take a provider for a value that changes often
+### Take a provider for a value that changes often
 
 **Rule.** A composable that receives a fast-changing value takes `() -> T`, not `T` and not `State<T>`,
 and reads it where it is needed.
@@ -192,7 +192,7 @@ A draw block with no layer of its own records into the nearest layer above it, s
 
 **Enforced by.** `state-param` (a `State<T>` parameter in features, `:core:ui` and the design system).
 
-#### Write custom modifiers as `Modifier.Node`
+### Write custom modifiers as `Modifier.Node`
 
 **Rule.** A custom modifier is a `ModifierNodeElement` with its `Modifier.Node`, never `Modifier.composed`
 and never a `@Composable` modifier factory.
@@ -208,7 +208,7 @@ visits for it: draw everything from that node.
 
 **Enforced by.** `composed`; lint `UnnecessaryComposedModifier`, `ModifierFactoryReturnType`.
 
-#### UI state is read-only and holds no per-frame values
+### UI state is read-only and holds no per-frame values
 
 **Rule.** `UiState` holds read-only collections (`List`, `Set`, `Map`) and `val` properties, built by
 the ViewModel. Scroll offsets, drag positions, animation progress and anything that changes faster than
@@ -223,7 +223,7 @@ immutable here; a mutable collection in state would make that promise false and 
 **Enforced by.** `uistate-mutable` (`*State.kt` and `*Contract.kt` in features), `api-immutable` (models
 in a data module's `api` package).
 
-#### Collect with the lifecycle
+### Collect with the lifecycle
 
 **Rule.** ViewModel state is collected with `collectAsStateWithLifecycle()`, never `collectAsState()`.
 `MviScreen` already does it; a screen that collects anything else does the same.
@@ -238,7 +238,7 @@ its flows running in the background and recompose out of sight.
 **Enforced by.** `collect-as-state`; lint `StateFlowValueCalledInComposition`,
 `LifecycleCurrentStateInComposition`.
 
-#### Keep parameters stable
+### Keep parameters stable
 
 **Rule.** `./gradlew check` runs `checkComposeStability` on `:core:designsystem`, `:core:ui` and
 `:core:navigation`, the modules every screen calls. It fails on a parameter the compiler compares by
@@ -256,7 +256,7 @@ whenever its caller passes a new instance, even an equal one, in every screen th
 **Enforced by.** `checkComposeStability`. `./gradlew <task> -PcomposeReports` writes the compiler's
 reports and metrics for any other module.
 
-#### Write state before it is read, never after
+### Write state before it is read, never after
 
 **Rule.** State a parent computes for its children is written in composition before the children read
 it. Never write it from a `SideEffect` and read it back in the same composition, and never write state
@@ -268,7 +268,7 @@ composition on the first frame and on every window-class change.
 
 **Enforced by.** *review*.
 
-#### Static composition locals do not change on a transition frame
+### Static composition locals do not change on a transition frame
 
 **Rule.** A `staticCompositionLocalOf` holds a value that never changes at run time, or a stable holder
 whose fields are snapshot state (`LocalBottomChrome` and `LocalTopChrome` hold a `ChromeInset`,
@@ -282,7 +282,7 @@ has slid off.
 
 **Enforced by.** *review*; the shell's recomposition tests.
 
-#### Window size changes recompose only at a breakpoint
+### Window size changes recompose only at a breakpoint
 
 **Rule.** Lay out from `AppTheme.windowClass` and `AppTheme.containerClass`, which change only when a
 breakpoint is crossed. Read the window's exact size from `LocalWindowMetrics` (`sizeDp`) inside a layout
@@ -298,7 +298,7 @@ a class.
 **Enforced by.** `adaptive-screen-metrics`, `adaptive-orientation`, `adaptive-device-type`; lint
 `ConfigurationScreenWidthHeight`, `LocalContextConfigurationRead`.
 
-#### Callbacks, `derivedStateOf` and `snapshotFlow`
+### Callbacks, `derivedStateOf` and `snapshotFlow`
 
 - Do not wrap callbacks in `remember`: the compiler already memoises lambdas and bound references such as
   `viewModel::onEvent`. What still breaks memoisation is capturing something rebuilt on every
@@ -315,7 +315,7 @@ a class.
 **Enforced by.** lint `UnrememberedMutableState`, `UnrememberedAnimatable`, `AutoboxingStateCreation`,
 `RememberReturnType`, `FlowOperatorInvokedInComposition`; *review* for the rest.
 
-#### Text costs
+### Text costs
 
 **Rule.** Leave line breaking and hyphenation unset: `AppTypography` sets neither, and Compose resolves
 an unspecified value to `LineBreak.Simple` and `Hyphens.None`, the cheapest settings. Set
@@ -326,7 +326,7 @@ text in rows with `maxLines` and `overflow`. Build an `AnnotatedString` in the V
 
 **Enforced by.** *review*.
 
-#### Prove it with a recomposition test
+### Prove it with a recomposition test
 
 **Rule.** A new screen or component that animates adds a recomposition test for its journey. The JVM
 harness in `:core:testing:compose` counts every composable that executes, frame by frame:
@@ -376,7 +376,7 @@ judging.
 
 ## Lists and very large data
 
-#### Key every row; type rows that differ
+### Key every row; type rows that differ
 
 **Rule.** Every `items(…)` call in a lazy layout passes a stable `key`. A scope with more than one kind
 of item gives each kind a `contentType`.
@@ -387,7 +387,7 @@ so a mixed list without types composes rows from scratch as they scroll in.
 
 **Enforced by.** `lazy-key`, `lazy-content-type`.
 
-#### Pad scrolling content inside the scroll
+### Pad scrolling content inside the scroll
 
 **Rule.** A lazy list takes `contentPadding = chromeContentPadding(base)`; a `verticalScroll` chain goes
 on to `.padding(chromeContentPadding(base))` after the scroll. Never pad the list's container or parent,
@@ -423,7 +423,7 @@ internal fun OrdersList(orders: List<OrderRow>, onOpen: (Long) -> Unit) {
 **Enforced by.** `scroll-chrome` (vertical lazy lists and grids and `verticalScroll` in features; it
 accepts `chromeContentPadding(…)` or a `contentPadding` passed through).
 
-#### Name the fling on every scrolling container
+### Name the fling on every scrolling container
 
 **Rule.** Every `LazyColumn`, `LazyRow`, lazy grid, `verticalScroll` and `horizontalScroll` passes
 `flingBehavior = AppScrollDefaults.flingBehavior()`; a pager passes
@@ -441,7 +441,7 @@ below it.
 
 **Enforced by.** `scroll-fling` (features, `:core:ui`, `:app`).
 
-#### Animate rows with `appAnimateItem()` only
+### Animate rows with `appAnimateItem()` only
 
 **Rule.** A row that moves, appears or leaves uses `appAnimateItem()`, an extension on the row's
 `LazyItemScope`, on a keyed row: `modifier = appAnimateItem()`, or `appAnimateItem(Modifier.fillMaxWidth())`
@@ -453,7 +453,7 @@ items re-measures the list every frame of the change.
 
 **Enforced by.** *review*.
 
-#### No subcomposition in rows
+### No subcomposition in rows
 
 **Rule.** No `SubcomposeAsyncImage`, `BoxWithConstraints` or other `SubcomposeLayout` inside a row. Size
 from `AppTheme.containerClass`, from the constraints in a custom `Layout`, or from a fixed slot.
@@ -466,7 +466,7 @@ recomposes reaches them a frame late.
 
 **Enforced by.** `subcompose-image` (features, `:core:ui`), `adaptive-box-constraints` (features).
 
-#### Loading states: the real row, redacted
+### Loading states: the real row, redacted
 
 **Rule.** A loading list is the real rows with placeholder data inside `AppRedacted(active = true)`,
 with the loaded list's `contentPadding`, in a `LazyListState` of its own, and it is replaced by the
@@ -482,7 +482,7 @@ bone is on screen.
 **Enforced by.** *review*. A bone sized by the text style's `lineHeight` instead of the text line made
 every row jump by 4 dp when the data arrived.
 
-#### Scroll to the top cheaply
+### Scroll to the top cheaply
 
 **Rule.** Go to the top with `LazyListState.animateScrollToTop()` or `ScrollState.animateScrollToTop()`.
 A tab's root screen calls `ScrollToTopOnReselect(listState)`: Android delivers no status-bar tap, so
@@ -492,7 +492,7 @@ tapping the selected tab again is the way to the top.
 composing each. `animateScrollToTop()` jumps to two screens from the top first, so only those rows
 compose.
 
-#### The first fling after an install or `pm clear`
+### The first fling after an install or `pm clear`
 
 Skia compiles a GPU program the first time it draws a new combination, on the RenderThread. On the
 first fling after `pm clear`, the one first-use program was a `CircularRRectOp` (11-31 ms) for a card
@@ -505,7 +505,7 @@ never pulls the indicator out (it used to compile more programs on the first fli
 
 **Protects.** No hitch on the first fling after a cold start or `pm clear`.
 
-#### A cache window only behind a trace
+### A cache window only behind a trace
 
 Lazy prefetch is pausable and on by default. Add a `LazyLayoutCacheWindow` to a list only when a scroll
 trace shows `compose:lazy:prefetch` running out of time, and check PSS after. No list in the template
@@ -623,7 +623,7 @@ nothing, so it checks the shell, not whether a feature seeds its first compositi
 
 #### Paint the screen once
 
-**Rule.** <a id="one-opaque-fill-per-screen"></a>A screen's background is painted once per frame. Every
+**Rule.** A screen's background is painted once per frame. Every
 navigation entry paints `colors.background` and says so through `LocalPaintedBackground`; `AppScaffold`
 paints no background on such a screen. Never add a full-screen background under a screen that already
 paints one, and keep every surface opaque or over an opaque one: the window's own background turns
@@ -747,6 +747,14 @@ measured (block medians over several sessions; the hitch in ms per second of mot
 
 The rows over their limits are open work in the template, not targets it meets: build nothing that makes
 them worse, and measure a change to the shell, a list or the bar against them.
+<!-- <opt:performance> -->
+
+While a row here is over, `--gate solid` fails on every build, whatever the change. So being done (item 8
+of [Before you merge UI work](#before-you-merge-ui-work), and "Smooth and light" and "Before you say it
+is done" in `AGENTS.md`) excuses exactly the limits this table lists as over, at no worse than the values
+it gives. A change that brings a row within its limits updates this table in the same change; when every
+row reads "within", that exception goes from all three places.
+<!-- </opt:performance> -->
 
 ---
 
@@ -756,7 +764,7 @@ them worse, and measure a change to the shell, a list or the bar against them.
 and never during a drag, and moves only layers and placement while it moves. A screen keeps it that way
 by using it as designed.
 
-#### Keep `AppSheet` composed and drive `visible`
+### Keep `AppSheet` composed and drive `visible`
 
 **Rule.** Call `AppSheet` unconditionally and drive `visible` (or `item`); set `visible` to false in
 `onDismissRequest`. A sheet called in a loop needs `key(…)`.
@@ -775,7 +783,7 @@ AppSheet(visible = editing, onDismissRequest = { editing = false }) {
 
 **Enforced by.** `sheet-conditional`.
 
-#### One root that takes `contentPadding`; no keyboard padding; no extra scroller
+### One root that takes `contentPadding`; no keyboard padding; no extra scroller
 
 **Rule.** A sheet's content is one root, a lazy list or `SheetColumn`, given
 `AppSheetScope.contentPadding`. Never add `imePadding()`, `windowInsetsPadding(WindowInsets.ime)` or
@@ -789,7 +797,7 @@ lazy lists.
 
 **Enforced by.** `sheet-root`, `sheet-ime-padding`.
 
-#### Let the sheet own its geometry
+### Let the sheet own its geometry
 
 **Rule.** `AppSheet(modifier = …)` is for test tags, semantics and focus. The sheet owns its size,
 position, padding, clip, shadow and layers. Inside the sheet system: no `Dialog` or `Popup` window, no
@@ -809,7 +817,7 @@ types gain values as the sheet system grows, and a `when` without an `else` woul
 **Enforced by.** `sheet-modifier`, `sheet-window`, `sheet-shadow`, `sheet-raw-delta`,
 `sheet-when-else`, `shell-seam`.
 
-#### A custom detent reads no state
+### A custom detent reads no state
 
 **Rule.** A `SheetDetent.Custom` resolver runs during measure and reads no snapshot state: capture the
 values it needs and remember the detent keyed by what it captured.
@@ -818,7 +826,7 @@ values it needs and remember the detent keyed by what it captured.
 
 **Enforced by.** *review*.
 
-#### How a sheet moves, and what it costs
+### How a sheet moves, and what it costs
 
 - **Release rule.** A flick of at least 400 dp/s moves exactly one detent. A dismissal needs at least
   2 sheet heights per second, or a release at least 48 % of the way from the lowest detent to hidden;
@@ -841,7 +849,7 @@ values it needs and remember the detent keyed by what it captured.
 
 ## Images
 
-#### Draw remote images as painters
+### Draw remote images as painters
 
 **Rule.** Show a remote image with `AppNetworkImage` (or Coil's `AsyncImage` with `placeholder` and
 `error` painters), never `SubcomposeAsyncImage`. Inside an active `AppRedacted` it draws a skeleton and
@@ -854,8 +862,8 @@ at one composition per row.
 
 **Enforced by.** `subcompose-image`.
 
-#### One image loader, on the app's client
 <!-- <opt:network> -->
+### One image loader, on the app's client
 
 **Rule.** Coil's singleton loader is set once, in `BaseAppApplication.onCreate`, on the app's own
 `OkHttpClient` (`newBuilder().cache(null)`: Coil keeps images in a disk cache of its own). Never build a
@@ -866,6 +874,7 @@ images; a default loader builds a client of its own with neither, and a second l
 memory cache.
 <!-- </opt:network> -->
 <!-- <opt-else:network> -->
+<!--~ ### One image loader -->
 <!--~ -->
 <!--~ **Rule.** Never build a second image loader. This project has no network module, so Coil's own -->
 <!--~ singleton loader fetches images with an `OkHttpClient` it builds itself. Once the app has a client of -->
@@ -882,7 +891,7 @@ memory cache.
 
 ## Motion and springs
 
-#### Springs from tokens, never `tween(300)`
+### Springs from tokens, never `tween(300)`
 
 **Rule.** Every spring and decay comes from `AppTheme.springs`; fades of colour and opacity use
 `springs.fadeIn()` (200 ms) and `springs.fadeOut()` (120 ms). No raw colour and no raw `dp` other than
@@ -912,7 +921,7 @@ Full-screen moves never bounce in any style. Calm and Snappy change the travel t
 
 **Enforced by.** `raw-tween`, `raw-color`, `raw-dp`.
 
-#### A motion a finger started ends on a spring with the finger's speed
+### A motion a finger started ends on a spring with the finger's speed
 
 **Rule.** When a finger lets go, animate to the target with a spring from `AppTheme.springs` seeded with
 the release velocity (`Animatable.animateTo(target, spec, initialVelocity)`); interrupting retargets with
@@ -924,7 +933,7 @@ that `gfxinfo` does not count as jank but people see.
 
 **Enforced by.** `raw-tween`; *review*.
 
-#### Say which press feedback a control uses
+### Say which press feedback a control uses
 
 **Rule.** A tappable control uses `Modifier.pressable(onClick, feedback = PressFeedback.…)`: `Scale` for
 filled buttons, chips and cards (0.96, 0.98 for wide controls, 0.90 for icon-sized ones), `Dim` for text
@@ -937,7 +946,7 @@ recompositions). A bare `clickable` under the app's `NoIndication` gives no feed
 
 **Enforced by.** `bare-clickable`, `ripple`, `material`.
 
-#### No alpha on a full-screen layer
+### No alpha on a full-screen layer
 
 **Rule.** Never fade a whole screen or a full-screen layer with `alpha` below 1. Draw a scrim as a
 rectangle; fade single-draw content and short entrances with `CompositingStrategy.ModulateAlpha`; use
@@ -969,7 +978,7 @@ the session changes ([How the shell moves screens](#how-the-shell-moves-screens)
 
 **Enforced by.** `layer-alpha-fill` (features and the design system; `:core:navigation` is outside it).
 
-#### Nothing animates while idle
+### Nothing animates while idle
 
 **Rule.** No animation runs forever on its own. Something that loops (a spinner, a shimmer, a caret,
 ambient decoration):
@@ -1053,7 +1062,7 @@ LaunchedEffect(visibility, reduceMotion) {
 
 **Enforced by.** the idle gate; *review*.
 
-#### Ask for 120 Hz only while layer-only motion moves
+### Ask for 120 Hz only while layer-only motion moves
 
 **Rule.** Motion that changes only `graphicsLayer` properties sets
 `Modifier.preferredFrameRate(FrameRateCategory.High)` while it moves and back to `Default` when it stops.
@@ -1070,7 +1079,7 @@ moves.
 
 **Enforced by.** *review*.
 
-#### Per-frame shapes and allocation
+### Per-frame shapes and allocation
 
 - A shape clipped or filled on every frame of a motion is a rounded rectangle, never a path of cubics:
   Skia clips a rounded rectangle analytically and masks a general path on every frame. On Android, add it
@@ -1324,7 +1333,7 @@ reports first uses as rows of their own (`first_push`, `first_gesture`, and thei
 
 ## Memory
 
-#### What the PSS row measures
+### What the PSS row measures
 
 **Rule.** Judge memory by the app's own PSS: the total less Graphics. On the reference phone Graphics is
 the window's buffers (EGL mtrack, 51-55 MB on every build of every app at 1080 × 2400 and 120 Hz), so a
@@ -1334,7 +1343,7 @@ same tools on the same day.
 **Protects.** Gate `meminfo.pss_app_mb` at most 58.4 MB (everything preset) and 53.3 MB (standard),
 non-regression.
 
-#### Never read PSS while animating
+### Never read PSS while animating
 
 **Rule.** Never call `Debug.getMemoryInfo` (or run `dumpsys meminfo`) inside a measured journey or while
 the app animates; sample PSS only in a pause.
@@ -1345,7 +1354,7 @@ the app animates; sample PSS only in a pause.
 **Why.** A PSS read walks every memory mapping of the process under the kernel's lock on its address
 space; during a scroll it costs about one janky frame.
 
-#### Where native memory goes
+### Where native memory goes
 
 After a journey, the native heap (about 19 MB sampled) is mostly text: Skia's glyph strike cache (a
 variable font gives every weight its own strike), FreeType's glyph loaders, glyph atlas uploads, then the
@@ -1434,7 +1443,9 @@ below 37 °C before a run. It launches with `--es perf.hud off` unless you pass 
 build. To compare a change with the build before it, measure both on the same day, then either pass the
 earlier run's `summary.json` as `--baseline` with `--gate smoke` (it checks the rows the `smoke` column
 gives a tolerance: tab-switch and push/pop janky and first frames, scroll janky and GPU p90, idle
-frames), or read the two `summary.md` files side by side for the rest.
+frames), or read the two `summary.md` files side by side for the rest. Two runs already on disk are
+compared without measuring again:
+`python3 tools/perf/check_gates.py --gate smoke --baseline <earlier>/summary.json <later>/summary.json`.
 
 `tools/perf/record.sh <applicationId> <journey> <out dir>` screen-records one journey at 720 × 1600 and
 writes every frame and a strip of the moving frames: attach it to any change to motion.
@@ -1443,8 +1454,8 @@ writes every frame and a strip of the moving frames: attach it to any change to 
 
 `tools/perf/gates.toml` has one column per preset (`solid`: the everything preset with solid chrome,
 `standard`, `lean`), a `smoke` column (a tolerance against a reference run), and a `large` column for the
-large-window scenarios: a tablet, or the phone with its display overridden, which only the phone's owner
-may agree to.
+large-window scenarios: a tablet, or the phone with its display overridden for the run and restored
+after.
 
 - A limit is a number (the median must be at or under it), `true` (a check that must pass in every run)
   or `"ratchet"` (reported, not gated; when a row is first measured, its value plus 10 % goes there).
@@ -1550,9 +1561,11 @@ of the three lost the time.
    sections wait for `LocalNavigationSettled`.
 7. Nothing new animates while idle or while its screen is hidden.
 <!-- <opt:performance> -->
-8. `perf.sh --gate solid` passes on a release build, and against the previous build measured the same
-   day, `--baseline <previous run>/summary.json --gate smoke` passes and no other row of the two
-   `summary.md` files got worse.
+8. On a release build, `perf.sh --gate solid` fails on no limit but those
+   [Where the template stands](#where-the-template-stands) lists as over, none of those is worse than it
+   lists there, and against the previous build measured the same day,
+   `--baseline <previous run>/summary.json --gate smoke` passes and no other row of the two `summary.md`
+   files got worse.
 9. Any new motion has a recording from `record.sh`.
 <!-- </opt:performance> -->
 <!-- <opt-else:performance> -->

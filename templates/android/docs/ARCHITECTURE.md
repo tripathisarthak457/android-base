@@ -155,7 +155,10 @@ arrives, so a lifecycle stop in between cannot lose it.
 
 ### Messages and errors
 
-`showMessage(text, kind)` is the effect for transient notes such as "Saved" or "Could not refresh".
+`showMessage(text, kind = MessageKind.Error)` sends a transient note such as "Saved" or "Could not
+refresh". Notes have a channel of their own, `messages`, beside the effects, and `MviScreen` shows them
+as toasts above the tab bar and any sheet.
+
 An exception that escapes work started with `launchLatest`, `launchExclusive` or `observe` is logged
 and passed to `onUnexpected`, which does nothing unless the ViewModel overrides it. A handler that
 expects a failure should turn it into state (usually `LoadState.Error`) and not rely on
@@ -313,21 +316,21 @@ queue behaviour.
 
 ### Failures are classified, not thrown
 
-`KtorNetworkClient` catches failures and returns them as `AppResult.Failure`, keeping enough detail
-for the UI to choose its message:
+`KtorNetworkClient` catches failures and returns them as `AppResult.Failure` with an `AppError`,
+keeping enough detail for the UI to choose its message:
 
-- `isOffline = true` when the device has no validated network. The screen shows its offline state.
-- An I/O failure while online (wrong base URL, DNS, server down) is also a failure without a
-  status code, but with a different message, because telling the user to check their connection
-  would be wrong.
-- An HTTP error keeps its `code`, the raw body, the server's message and any per-field validation
-  errors.
+- `AppError.Offline` when no answer came and no network that claims internet access is up. The
+  screen shows its offline state.
+- `AppError.Timeout` when no answer came while online (wrong base URL, DNS, server down): also a
+  failure without a status, but with a different message, because telling the user to check their
+  connection would be wrong.
+- `AppError.Http` when the server refused: its `status`, the backend's own `code`, the server's
+  `message`, any per-field `fieldErrors`, and the wait a `Retry-After` header asked for.
 - `CancellationException` is always rethrown, so cancelling a screen cancels its request.
 
-`Failure.message` is only ever what the server said. The app's own wording lives in string
-resources, so it can be translated: `failure.userMessage(fallback)` returns the server's message
-when there is one, and otherwise a sentence for what went wrong — offline, unreachable, or queued
-to send later — or the fallback.
+`AppError.Http.message` is only ever what the server said. The app's own wording lives in string
+resources, so it can be translated: `AppError.toUiText(fallback)` in `:core:ui` returns the server's
+message when there is one, a sentence for offline or unreachable, and otherwise the fallback.
 
 ### Retries
 
@@ -583,7 +586,7 @@ is resized, split or unfolded:
 - `formMaxWidth`, `readableMaxWidth` and `contentMaxWidth` are the widths content stops growing at.
   `AppScaffold(contentMaxWidth = …)` centres the content at that width while the bars and the
   background still span the window.
-- `listPaneWidth` and `gridMinCellWidth` size list-detail panes and grid cells.
+- `listPaneWidth` sizes list-detail panes; `gridMinCardWidth` and `gridMinTileWidth` size grid cells.
 
 What adapts, and how:
 

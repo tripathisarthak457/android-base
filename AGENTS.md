@@ -92,7 +92,8 @@ Coil sits behind that feature's markers (in Markdown, `<!-- <opt:performance> --
 own), because a project without the feature has none of it. `generator/tests/test_docs.py` generates
 projects with no features and with the Lean, Standard and Everything presets, and fails on a rule id,
 gate row, scenario, spring, path, name or link that the guide or that section cites and the project
-lacks.
+lacks, and on a code name any of the template's docs cite that its code does not have (a platform or
+library name goes in the test's `LIBRARY_NAMES`).
 
 ## Google's Android skills
 

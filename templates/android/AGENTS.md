@@ -164,8 +164,9 @@ screen to read an id from.
   `OfflineFirstSampleRepository` is the example.
 <!-- </opt:sample> -->
 <!-- </opt:database> -->
-- **Show a failure:** `failure.userMessage(UiText.of(R.string.x))`. `Failure.message` is the server's
-  own text only; the app's wording comes from resources so it can be translated.
+- **Show a failure:** `error.toUiText(UiText.of(R.string.x))` (`AppError.toUiText` in `:core:ui`): the
+  server's own `message` when it sent one, the app's sentence for offline or unreachable, otherwise
+  your fallback. The app's wording comes from resources so it can be translated.
 <!-- </opt:network> -->
 - **A new string:** the feature's own `res/values/strings.xml`. Copy typed into Kotlin fails the
   build. If the project ships other languages (`values-es/` and the like beside `values/`), add
@@ -234,7 +235,7 @@ lint id, a build task, a test or a measured limit; *review* means nothing checks
 
 <!-- <opt:performance> -->
 - Judge smoothness only on `devRelease` or `devBenchmarkRelease`, compiled with its profile, on a real phone; never quote a debug build's numbers. — *review*
-- A change to motion, a list or start-up is done when `tools/perf/perf.sh --gate solid` passes on a release build and, against the previous build measured the same day, `--baseline <previous run>/summary.json --gate smoke` passes and no other row got worse. — `perf.sh --gate` (`--gate solid` checks the limits only; it never compares builds)
+- A change to motion, a list or start-up is done when, on a release build, `tools/perf/perf.sh --gate solid` fails on no limit but those [Where the template stands](docs/PERFORMANCE.md#where-the-template-stands) lists as over, none of those is worse than it lists there, and against the previous build measured the same day `--baseline <previous run>/summary.json --gate smoke` passes and no other row got worse. — `perf.sh --gate` and its table (`--gate solid` checks the limits only; it never compares builds)
 <!-- </opt:performance> -->
 <!-- <opt-else:performance> -->
 <!--~ - Judge smoothness only on `devRelease`, compiled with its profile, on a real phone; never quote a debug build's numbers. — *review* -->
@@ -261,7 +262,7 @@ lint id, a build task, a test or a measured limit; *review* means nothing checks
 **Lists**
 
 - Every lazy `items(…)` has a stable `key`; a scope that mixes kinds of item gives each a `contentType`. — `lazy-key`, `lazy-content-type`
-- Pad scrolling content inside the scroll: `contentPadding = chromeContentPadding(…)`, or `.verticalScroll(…).padding(chromeContentPadding(…))`; inside an `AppSheet`, the sheet's `contentPadding`; never pad the parent, never read `LocalBottomChrome` in composition. — `scroll-chrome` (vertical lists, grids and `verticalScroll` in features)
+- Pad scrolling content inside the scroll: `contentPadding = chromeContentPadding(…)`, or `.verticalScroll(…).padding(chromeContentPadding(…))`; inside an `AppSheet`, the sheet's `contentPadding`; never pad the parent, never read `LocalBottomChrome.current.value` in composition. — `scroll-chrome` (vertical lists, grids and `verticalScroll` in features)
 - Every lazy list, grid, `verticalScroll` and `horizontalScroll` passes `flingBehavior = AppScrollDefaults.flingBehavior()`, a pager `AppScrollDefaults.pagerFlingBehavior(state)`. — `scroll-fling`
 - Call `ReportScrollEdge(state)` beside a screen's primary list, and `ScrollToTopOnReselect(state)` on a tab's root screen. — *review*
 - No `SubcomposeAsyncImage`, `BoxWithConstraints` or other subcomposition in a feature's rows. — `subcompose-image`, `adaptive-box-constraints`
@@ -429,9 +430,11 @@ submission, add Google's `play-policy-insights` audit with `android skills` and 
 6. The diff contains only what the task needed, with comments that explain decisions, not the
    change.
 <!-- <opt:performance> -->
-7. A change to motion, a list or start-up has `tools/perf/perf.sh --gate solid` passing on a release
-   build, and `--baseline <previous run>/summary.json --gate smoke` passing against the previous build
-   measured the same day (§6).
+7. A change to motion, a list or start-up, on a release build: `tools/perf/perf.sh --gate solid` fails on
+   no limit but those [Where the template stands](docs/PERFORMANCE.md#where-the-template-stands) lists as
+   over, none of those is worse than it lists there, and
+   `--baseline <previous run>/summary.json --gate smoke` passes against the previous build measured the
+   same day (§6).
 8. Any new motion has a recording from `tools/perf/record.sh`.
 <!-- </opt:performance> -->
 <!-- <opt-else:performance> -->

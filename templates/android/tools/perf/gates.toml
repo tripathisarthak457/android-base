@@ -4,8 +4,8 @@
 # Columns: `solid` (the everything preset, solid chrome), `standard` and `lean` (their presets, only
 # the rows that apply to them), `smoke` (a tolerance against a reference run given with --baseline),
 # `large` (the large-window scenarios, on a window of Expanded width or more: a tablet, or the phone
-# with its display overridden, which only the phone's owner may agree to; an emulator's numbers are
-# relative evidence, never a gate).
+# with its display overridden for the run and restored after; an emulator's numbers are relative
+# evidence, never a gate).
 #
 # A limit is a number (the metric must be at or under it), `true` (a check that must pass in every
 # run) or "ratchet" (reported, not yet gated: the first measured value plus 10 % goes here). A smoke
