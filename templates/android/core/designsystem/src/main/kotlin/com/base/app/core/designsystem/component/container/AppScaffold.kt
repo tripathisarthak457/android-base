@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.graphics.takeOrElse
-import androidx.compose.ui.layout.SubcomposeLayout
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import com.base.app.core.designsystem.component.sheet.LocalSheetSurface
@@ -32,9 +32,13 @@ import com.base.app.core.designsystem.theme.AppTheme
  * ends above the bottom chrome by padding itself with `chromeContentPadding()`.
  *
  * Each scaffold has its own top inset: its top bar writes its height there while it is measured,
- * before the content is composed, so the content is laid out right on the first frame, and two
- * screens composed together during a push never share a value. A [bottomBar] (an
- * [AppBottomActionBar]) replaces the window's bottom chrome for this content.
+ * before the content is measured, so content that reads it as it lays out, as `chromeContentPadding()`
+ * does, is right on the first frame, and two screens composed together during a push never share a
+ * value. Read it in layout or draw, never in composition: the content is composed before the bar is
+ * measured. The bars and the content are composed with the screen, not inside the scaffold's measure
+ * pass: a composition of their own there would add to the frame that composes a pushed screen, the
+ * one that has to start the push. A [bottomBar] (an [AppBottomActionBar]) replaces the window's
+ * bottom chrome for this content.
  *
  * [contentMaxWidth] stops the content stretching on wide windows and centres it, while the bars
  * and the background still span the window: `formMaxWidth` for a single form, `readableMaxWidth`
@@ -69,7 +73,16 @@ fun AppScaffold(
     val behindBars = background.takeOrElse { sheet?.container ?: AppTheme.colors.background }
 
     CompositionLocalProvider(LocalTopChrome provides topChrome, LocalScaffoldBackground provides behindBars) {
-        SubcomposeLayout(
+        Layout(
+            contents = listOf(
+                topBar,
+                bottomBar ?: {},
+                {
+                    CompositionLocalProvider(LocalBottomChrome provides bottomChrome) {
+                        Box(width) { content() }
+                    }
+                },
+            ),
             modifier = modifier
                 .then(if (fill.isSpecified) Modifier.background(fill) else Modifier)
                 .then(
@@ -79,17 +92,13 @@ fun AppScaffold(
                         Modifier
                     },
                 ),
-        ) { constraints ->
+        ) { (barSlot, actionSlot, bodySlot), constraints ->
             val loose = constraints.copy(minWidth = 0, minHeight = 0)
-            val bars = subcompose(ScaffoldSlot.TopBar, topBar).map { it.measure(loose) }
-            val actions = bottomBar?.let { bar -> subcompose(ScaffoldSlot.BottomBar, bar).map { it.measure(loose) } }.orEmpty()
+            val bars = barSlot.map { it.measure(loose) }
+            val actions = actionSlot.map { it.measure(loose) }
             if (bottomBar != null) bottomChrome.value = actions.maxOfOrNull { it.height }?.toDp() ?: Dp(0f)
 
-            val body = subcompose(ScaffoldSlot.Content) {
-                CompositionLocalProvider(LocalBottomChrome provides bottomChrome) {
-                    Box(width) { content() }
-                }
-            }.map { it.measure(Constraints.fixed(constraints.maxWidth, constraints.maxHeight)) }
+            val body = bodySlot.map { it.measure(Constraints.fixed(constraints.maxWidth, constraints.maxHeight)) }
 
             layout(constraints.maxWidth, constraints.maxHeight) {
                 body.forEach { it.place(0, 0) }
@@ -99,8 +108,6 @@ fun AppScaffold(
         }
     }
 }
-
-private enum class ScaffoldSlot { TopBar, BottomBar, Content }
 
 /** The colour the current scaffold paints, for a bar that must cover content in the same colour. */
 internal val LocalScaffoldBackground = staticCompositionLocalOf { Color.Unspecified }
