@@ -11,7 +11,8 @@ import com.base.app.core.mvi.MessageKind
  * that shows them provides itself once, around the app's content:
  *
  * ```
- * CompositionLocalProvider(LocalMessagePresenter provides MessagePresenter { message -> toasts.show(message) }) {
+ * val toasts = MessagePresenter { message -> toastHost.show(message) }
+ * CompositionLocalProvider(LocalMessagePresenter provides toasts) {
  *     …
  * }
  * ```

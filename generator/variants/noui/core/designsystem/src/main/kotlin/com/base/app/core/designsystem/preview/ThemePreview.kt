@@ -18,12 +18,16 @@ import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.PlatformFonts
 
 /**
- * The theme's slots as they are filled now: the colour roles as swatches and the type scale, in both
- * themes. It is where a change to the tokens shows first, and the screenshot tests render it, so
- * they always have a case to run before the project has components of its own.
+ * The theme's slots as they are filled now: the colour roles as swatches and the type scale, in
+ * both themes. It is where a change to the tokens shows first, and the screenshot tests render it,
+ * so they always have a case to run before the project has components of its own.
  */
 @Preview(name = "Light", showBackground = true)
-@Preview(name = "Dark", uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
+@Preview(
+    name = "Dark",
+    uiMode =
+        Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
+)
 @Composable
 private fun ThemeSlotsPreview() {
     AppTheme(fonts = PlatformFonts) { ThemeSlotsPreviewContent() }

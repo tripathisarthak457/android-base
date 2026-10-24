@@ -34,6 +34,8 @@ binary_suffixes = [".jar", ".png", ".jpg", ".jpeg", ".webp", ".ttf", ".otf", ".j
 executable = ["gradlew", "tools/adaptive/*.sh", "tools/perf/*.sh"]
 # Upstream files the project vendors, copied byte for byte: never renamed, never marker-parsed.
 verbatim = [".agents/skills/**"]
+# The code-rule baseline's entries for screens are fenced: a project without UI components has none of them.
+syntax = { "code-rules-baseline.txt" = "#" }
 
 [groups]                                    # display order of catalogue groups
 order = ["Networking and data", "Sign-in and account", "Screens", "Platform", "Observability", "Design", "Build and quality"]

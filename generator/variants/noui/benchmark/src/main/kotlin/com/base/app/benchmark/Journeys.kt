@@ -22,5 +22,7 @@ private const val TIMEOUT_MS = 10_000L
 /** Starts the app and waits for the screen it opens on. */
 fun MacrobenchmarkScope.startToStart() {
     startActivityAndWait()
-    check(device.wait(Until.hasObject(By.res("start")), TIMEOUT_MS)) { "The start screen never appeared." }
+    check(device.wait(Until.hasObject(By.res("start")), TIMEOUT_MS)) {
+        "The start screen never appeared."
+    }
 }

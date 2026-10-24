@@ -112,7 +112,11 @@ fun AppRoot(
         }
     }
 
-    AppTheme(mode = themeMode, hapticsEnabled = AppTheme.defaults.hapticsEnabled && settings.hapticsEnabled) {
+    AppTheme(
+        mode = themeMode,
+        hapticsEnabled =
+            AppTheme.defaults.hapticsEnabled && settings.hapticsEnabled,
+    ) {
         SystemBarIcons(dark = !AppTheme.colors.isLight)
         // <opt:applock>
         // Over the inspector too: what the app sent is as private as what it shows.
@@ -134,12 +138,17 @@ private fun AppStack(
     devTooling: DevTooling?,
     // </opt:devtools>
 ) {
-    val backStack = rememberAppBackStack(startKey = AppDestinations.start, serialization = serialization)
+    val backStack =
+        rememberAppBackStack(startKey = AppDestinations.start, serialization = serialization)
     AppNavigationHost(backStack = backStack, registry = registry, navigator = navigator)
     OpenDeepLinks(stack = backStack, pending = pendingDeepLink)
     // <opt:devtools>
     if (devTooling != null) {
-        ReportCurrentScreen(top = { backStack.current }, serialization = serialization, tooling = devTooling)
+        ReportCurrentScreen(
+            top = { backStack.current },
+            serialization = serialization,
+            tooling = devTooling,
+        )
     }
     // </opt:devtools>
 }
@@ -170,7 +179,10 @@ fun AppSettings.themeMode(): ThemeMode = when (themeMode) {
 }
 
 // <opt:appstatus>
-/** Reads the status in a scope of its own: a change recomposes the gate alone, not the root's whole content. */
+/**
+ * Reads the status in a scope of its own: a change recomposes the gate alone, not the root's whole
+ * content.
+ */
 @Composable
 private fun ApiStatusGate(signals: ApiSignals) {
     val status by signals.status.collectAsStateWithLifecycle()

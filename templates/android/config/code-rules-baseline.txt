@@ -6,6 +6,7 @@
 # Screens
 feature/auth/src/main/kotlin/com/base/app/feature/auth/AuthFrame.kt adaptive-box-constraints 1
 feature/auth/src/main/kotlin/com/base/app/feature/auth/AuthFrame.kt scroll-chrome 1
+# <opt:ui_components>
 feature/auth/src/main/kotlin/com/base/app/feature/auth/PasswordReset.kt adaptive-preview 1
 feature/auth/src/main/kotlin/com/base/app/feature/auth/SignIn.kt adaptive-preview 1
 feature/auth/src/main/kotlin/com/base/app/feature/auth/SignUp.kt adaptive-preview 1
@@ -18,6 +19,7 @@ feature/sample/src/main/kotlin/com/base/app/feature/sample/detail/SampleDetailSc
 feature/search/src/main/kotlin/com/base/app/feature/search/SearchScreen.kt adaptive-preview 1
 feature/settings/src/main/kotlin/com/base/app/feature/settings/Licenses.kt adaptive-preview 1
 feature/settings/src/main/kotlin/com/base/app/feature/settings/Settings.kt adaptive-preview 1
+# </opt:ui_components>
 
 # Design system and catalog
 catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogAdaptive.kt adaptive-screen-metrics 1

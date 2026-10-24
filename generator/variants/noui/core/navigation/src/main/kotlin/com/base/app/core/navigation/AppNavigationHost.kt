@@ -41,7 +41,9 @@ fun AppNavigationHost(
         // The position makes a key that is on the stack twice two screens, each with its own state.
         entries = remember(keys, registry) {
             keys.mapIndexed { index, key ->
-                NavEntry(key = key, contentKey = "$index:$key") { shown -> registry.destinationFor(shown).content(shown) }
+                NavEntry(key = key, contentKey = "$index:$key") { shown ->
+                    registry.destinationFor(shown).content(shown)
+                }
             }
         },
         entryDecorators = remember(saveable, viewModels) { listOf(saveable, viewModels) },

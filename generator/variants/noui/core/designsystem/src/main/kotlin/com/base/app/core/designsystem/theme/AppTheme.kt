@@ -103,7 +103,8 @@ fun AppTheme(
     val outermost = !LocalThemeInstalled.current
     val windowClass = rememberWindowClass()
     val windowMetrics = rememberWindowMetrics()
-    // A theme nested inside a pane keeps the pane's class: its content is still laid out in the pane.
+    // A theme nested inside a pane keeps the pane's class: its content is still laid out in the
+    // pane.
     val containerClass = if (outermost) windowClass else LocalContainerClass.current
     val layout = remember(containerClass) { AppLayout.forClass(containerClass) }
     // The gutter follows the pane, so margins grow on large screens without any screen asking.
@@ -192,9 +193,9 @@ object AppTheme {
         get() = LocalHapticsEnabled.current
 
     /**
-     * The window's size classes, for whatever decides the navigation chrome and the number of panes.
-     * Screens and components read [containerClass] instead. Decide layout from these, never from
-     * orientation or device.
+     * The window's size classes, for whatever decides the navigation chrome and the number of
+     * panes. Screens and components read [containerClass] instead. Decide layout from these, never
+     * from orientation or device.
      */
     val windowClass: SizeClass
         @Composable
@@ -228,7 +229,8 @@ object AppTheme {
 
 /** The theme's policy on press feedback: none, unless a component draws its own. */
 private object NoIndication : IndicationNodeFactory {
-    override fun create(interactionSource: InteractionSource): DelegatableNode = object : Modifier.Node() {}
+    override fun create(interactionSource: InteractionSource): DelegatableNode =
+        object : Modifier.Node() {}
 
     override fun equals(other: Any?): Boolean = other === this
 

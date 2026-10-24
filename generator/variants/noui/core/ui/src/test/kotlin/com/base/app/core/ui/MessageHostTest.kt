@@ -41,7 +41,9 @@ class MessageHostTest {
     @Test
     fun `without a presenter every message is taken and logged, none dropped`() {
         val messages = Channel<UiMessage>(Channel.BUFFERED)
-        repeat(10) { messages.trySend(UiMessage(UiText.Dynamic("Message $it"), kind = MessageKind.Error)) }
+        repeat(10) {
+            messages.trySend(UiMessage(UiText.Dynamic("Message $it"), kind = MessageKind.Error))
+        }
 
         rule.setContent { MessageHost(messages.receiveAsFlow()) }
         rule.waitForIdle()
@@ -57,7 +59,8 @@ class MessageHostTest {
 
         rule.setContent {
             CompositionLocalProvider(
-                LocalMessagePresenter provides MessagePresenter { shown += "${it.title}: ${it.text}" },
+                LocalMessagePresenter provides
+                    MessagePresenter { shown += "${it.title}: ${it.text}" },
             ) {
                 MessageHost(messages.receiveAsFlow())
             }

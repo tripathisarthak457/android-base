@@ -78,6 +78,7 @@ fun interface DeepLinkRoute {
     fun keyFor(link: DeepLink): AppNavKey?
 }
 
+// <opt:ui_components>
 /**
  * A link waiting for the app to be able to open it. It is held, not navigated to, when it arrives:
  * pushed onto the sign-in or onboarding stack it would load with no session and be gone by the time
@@ -85,6 +86,15 @@ fun interface DeepLinkRoute {
  * One per window, kept across its configuration changes, so a rotation in between keeps it and a
  * link opens in the window it was sent to.
  */
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ /**
+//~  * A link waiting for the app to be able to open it. It is held, not navigated to, when it arrives,
+//~  * and the app's stack takes it once, after the gates (the app lock, the API status) are past. One
+//~  * per window, kept across its configuration changes, so a rotation in between keeps it and a link
+//~  * opens in the window it was sent to.
+//~  */
+// </opt-else:ui_components>
 @ActivityRetainedScoped
 class PendingDeepLink @Inject constructor(
     private val routes: Set<@JvmSuppressWildcards DeepLinkRoute>,

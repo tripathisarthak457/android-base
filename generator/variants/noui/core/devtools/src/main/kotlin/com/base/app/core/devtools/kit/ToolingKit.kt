@@ -91,7 +91,14 @@ fun AppMonoText(
     maxLines: Int = 1,
     overflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
-    AppText(text = text, modifier = modifier, color = color, style = style, maxLines = maxLines, overflow = overflow)
+    AppText(
+        text = text,
+        modifier = modifier,
+        color = color,
+        style = style,
+        maxLines = maxLines,
+        overflow = overflow,
+    )
 }
 
 enum class ButtonVariant { Filled, Tinted, Plain, Destructive }
@@ -166,9 +173,13 @@ fun AppDivider(modifier: Modifier = Modifier, color: Color = AppTheme.colors.sep
     Canvas(modifier = modifier.fillMaxWidth().height(pixel)) { drawRect(color) }
 }
 
-/** An on-off switch. Null [onCheckedChange] draws it without taking input, for a row that toggles. */
+/** An on-off switch. A null [onCheckedChange] draws it without input, for a row that toggles. */
 @Composable
-fun AppSwitch(checked: Boolean, onCheckedChange: ((Boolean) -> Unit)?, modifier: Modifier = Modifier) {
+fun AppSwitch(
+    checked: Boolean,
+    onCheckedChange: ((Boolean) -> Unit)?,
+    modifier: Modifier = Modifier,
+) {
     val colors = AppTheme.colors
     val input = if (onCheckedChange != null) {
         Modifier.toggleable(value = checked, role = Role.Switch, onValueChange = onCheckedChange)
@@ -184,13 +195,23 @@ fun AppSwitch(checked: Boolean, onCheckedChange: ((Boolean) -> Unit)?, modifier:
             .padding(ThumbInset),
         contentAlignment = if (checked) Alignment.CenterEnd else Alignment.CenterStart,
     ) {
-        Box(Modifier.size(TrackHeight - ThumbInset * 2).clip(AppTheme.shapes.pill).background(colors.segmentThumb))
+        Box(
+            Modifier
+                .size(TrackHeight - ThumbInset * 2)
+                .clip(AppTheme.shapes.pill)
+                .background(colors.segmentThumb),
+        )
     }
 }
 
 /** A row whose whole width toggles [checked]. */
 @Composable
-fun AppToggleRow(title: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit, modifier: Modifier = Modifier) {
+fun AppToggleRow(
+    title: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier = modifier
             .toggleable(value = checked, role = Role.Switch, onValueChange = onCheckedChange)
@@ -212,18 +233,30 @@ fun AppRow(
     onClick: (() -> Unit)? = null,
     trailing: (@Composable () -> Unit)? = null,
 ) {
+    val press = if (onClick != null) {
+        Modifier.pressable(onClick = onClick, role = Role.Button)
+    } else {
+        Modifier
+    }
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .then(if (onClick != null) Modifier.pressable(onClick = onClick, role = Role.Button) else Modifier)
+            .then(press)
             .padding(horizontal = AppTheme.spacing.lg, vertical = AppTheme.spacing.md),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
     ) {
-        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.xxs)) {
+        Column(
+            Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.xxs),
+        ) {
             AppText(text = title, maxLines = 1, overflow = TextOverflow.Ellipsis)
             if (subtitle != null) {
-                AppText(text = subtitle, style = AppTheme.typography.footnote, color = AppTheme.colors.contentSecondary)
+                AppText(
+                    text = subtitle,
+                    style = AppTheme.typography.footnote,
+                    color = AppTheme.colors.contentSecondary,
+                )
             }
         }
         trailing?.invoke()
@@ -252,7 +285,13 @@ fun AppStateView(modifier: Modifier = Modifier, title: String? = null, message: 
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
     ) {
-        if (title != null) AppText(text = title, style = AppTheme.typography.headline, textAlign = TextAlign.Center)
+        if (title != null) {
+            AppText(
+                text = title,
+                style = AppTheme.typography.headline,
+                textAlign = TextAlign.Center,
+            )
+        }
         if (message != null) {
             AppText(
                 text = message,
@@ -266,7 +305,12 @@ fun AppStateView(modifier: Modifier = Modifier, title: String? = null, message: 
 
 /** One choice of a few, all in view: the panel's tabs. */
 @Composable
-fun AppSegmentedControl(options: List<String>, selected: Int, onSelect: (Int) -> Unit, modifier: Modifier = Modifier) {
+fun AppSegmentedControl(
+    options: List<String>,
+    selected: Int,
+    onSelect: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val colors = AppTheme.colors
     Row(
         modifier = modifier
@@ -281,11 +325,20 @@ fun AppSegmentedControl(options: List<String>, selected: Int, onSelect: (Int) ->
                     .weight(1f)
                     .clip(AppTheme.shapes.sm)
                     .background(if (index == selected) colors.segmentThumb else Color.Transparent)
-                    .selectable(selected = index == selected, role = Role.Tab, onClick = { onSelect(index) })
+                    .selectable(
+                        selected = index == selected,
+                        role = Role.Tab,
+                        onClick = { onSelect(index) },
+                    )
                     .padding(vertical = AppTheme.spacing.sm),
                 contentAlignment = Alignment.Center,
             ) {
-                AppText(text = label, style = AppTheme.typography.subheadline, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                AppText(
+                    text = label,
+                    style = AppTheme.typography.subheadline,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
             }
         }
     }
@@ -300,7 +353,7 @@ object AppScrollDefaults {
 /** How a pressed control answers the finger. */
 enum class PressFeedback { None, Scale }
 
-/** A click target that answers a press as [feedback] says, never with a ripple or a grey overlay. */
+/** A click target that answers a press as [feedback] says, never with a ripple or a grey veil. */
 fun Modifier.pressable(
     onClick: () -> Unit,
     feedback: PressFeedback = PressFeedback.Scale,
@@ -318,20 +371,27 @@ fun Modifier.pressable(
  * How far content the app draws over sits from the bottom of the window. A project without UI
  * components has no bottom bar, so it is always nothing.
  */
-val LocalBottomChrome: ProvidableCompositionLocal<State<Dp>> = staticCompositionLocalOf { NoBottomChrome }
+val LocalBottomChrome: ProvidableCompositionLocal<State<Dp>> =
+    staticCompositionLocalOf { NoBottomChrome }
 
 private val NoBottomChrome: State<Dp> = mutableStateOf(0.dp)
 
-/** Shrinks what it decorates a little while it is pressed: a draw-time scale, so nothing is laid out again. */
+/**
+ * Shrinks what it decorates a little while it is pressed: a draw-time scale, so nothing is laid
+ * out again.
+ */
 private object PressScale : IndicationNodeFactory {
-    override fun create(interactionSource: InteractionSource): DelegatableNode = PressScaleNode(interactionSource)
+    override fun create(interactionSource: InteractionSource): DelegatableNode =
+        PressScaleNode(interactionSource)
 
     override fun equals(other: Any?): Boolean = other === this
 
     override fun hashCode(): Int = 0
 }
 
-private class PressScaleNode(private val source: InteractionSource) : Modifier.Node(), DrawModifierNode {
+private class PressScaleNode(private val source: InteractionSource) :
+    Modifier.Node(),
+    DrawModifierNode {
     private var pressed = false
 
     override fun onAttach() {

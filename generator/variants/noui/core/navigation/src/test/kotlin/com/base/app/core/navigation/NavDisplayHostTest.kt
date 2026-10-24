@@ -26,14 +26,19 @@ class NavDisplayHostTest {
     private val registry = testRegistry()
     private val navigator = AppNavigator()
     private val pending = PendingDeepLink(
-        routes = setOf(DeepLinkRoute { link -> link.segments.getOrNull(1)?.toIntOrNull()?.let(::Post) }),
+        routes = setOf(
+            DeepLinkRoute { link ->
+                link.segments.getOrNull(1)?.toIntOrNull()?.let(::Post)
+            },
+        ),
         origin = Optional.of(LinkOrigin(scheme = "app", host = "app.example.com")),
     )
     private var stack: AppBackStack? = null
 
     private fun host(restoration: StateRestorationTester? = null) {
         val content = @Composable {
-            val backStack = rememberAppBackStack(startKey = FeedTab, serialization = testSerialization)
+            val backStack =
+                rememberAppBackStack(startKey = FeedTab, serialization = testSerialization)
             stack = backStack
             AppNavigationHost(backStack = backStack, registry = registry, navigator = navigator)
             OpenDeepLinks(stack = backStack, pending = pending)
