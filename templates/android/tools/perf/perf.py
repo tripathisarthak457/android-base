@@ -1286,8 +1286,10 @@ def janky_after_first_pct(dumps, frames):
     This is the rest: the jank of the motion itself.
     """
     total = sum(dump["frames"] for dump in dumps)
-    janky = sum(max(0, dump["janky"] - (1 if rows and parse_framestats.missed_deadline(rows[0]) else 0))
-                for dump, rows in zip(dumps, frames))
+    janky = 0
+    for dump, rows in zip(dumps, frames):
+        late_first = parse_framestats.first_frame_missed(rows, dump["frames"], dump["janky"])
+        janky += max(0, dump["janky"] - (1 if late_first else 0))
     return round(100 * janky / total, 2) if total else 0.0
 
 

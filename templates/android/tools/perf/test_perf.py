@@ -2,7 +2,8 @@
 
 The dumps in testdata/ are real ones, cut to what the parsers read, from a Redmi Note 10 Pro running
 the template before its navigation rewrite: tab switches at 1.88 % janky, push/pop at 5.02 %, a pop
-whose first frame took 27 ms of UI time, and a list scroll at 0.07 %.
+whose first frame took 27 ms of UI time, and a list scroll at 0.07 %; and, from the merged template, a
+back swipe whose first frame framestats does not list.
 """
 
 import contextlib
@@ -159,6 +160,37 @@ class ParseFramestatsTest(unittest.TestCase):
         frames = [[late, later], [on_time, later], [late, later]]
         self.assertEqual(perf.janky_after_first_pct(dumps, frames), 1.5)
         self.assertEqual(perf.janky_after_first_pct([], []), 0.0)
+
+    def test_a_first_frame_without_a_framestats_row_is_still_the_first(self):
+        # A back swipe on the Redmi: gfxinfo counts 59 frames, one janky; framestats lists 58, none
+        # late, and the first listed frame was queued behind an earlier one.
+        text = fixture("framestats_gesture_unlisted_first.txt")
+        dump, rows = parse_gfx.parse(text), parse_framestats.load(text)
+        self.assertEqual((dump["frames"], dump["janky"], len(rows)), (59, 1, 58))
+        self.assertFalse(any(parse_framestats.missed_deadline(row) for row in rows))
+        self.assertTrue(parse_framestats.first_frame_missed(rows, dump["frames"], dump["janky"]))
+        self.assertEqual(perf.janky_after_first_pct([dump], [rows]), 0.0)
+
+    def test_an_unlisted_frame_is_the_first_only_when_the_first_row_followed_one(self):
+        target, interval = 13_666_666, 8_333_333
+
+        def row(index, deadline, late=False):
+            done = deadline + (1_000_000 if late else -1_000_000)
+            start = index * interval
+            return dict(frame(index, 2.0), FrameDeadline=start + deadline, WorkloadTarget=target,
+                        FrameCompleted=done + start, GpuCompleted=done + start)
+
+        from_idle = [row(0, target), row(1, target + 3 * interval)]
+        queued = [row(1, target + 3 * interval), row(2, target + 3 * interval)]
+        late_later = [row(0, target), row(1, target + 3 * interval, late=True)]
+        # Every row listed: the first row is the first frame, on time here.
+        self.assertFalse(parse_framestats.first_frame_missed(from_idle, 2, 1))
+        # A row missing, but the first row started from idle: the unlisted frame came later.
+        self.assertFalse(parse_framestats.first_frame_missed(from_idle, 3, 1))
+        # The first row followed an unlisted frame, and gfxinfo counts a janky frame no row shows.
+        self.assertTrue(parse_framestats.first_frame_missed(queued, 3, 1))
+        # The same, but the janky frame gfxinfo counts is a listed one.
+        self.assertFalse(parse_framestats.first_frame_missed(late_later[1:], 3, 1))
 
     def test_frames_the_display_did_not_report_are_left_out(self):
         rows = [dict(frame(i, 2.0), DisplayPresentTime=0) for i in range(5)]

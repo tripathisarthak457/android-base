@@ -185,6 +185,13 @@ internal object ComposeRules {
             reference = "jetpack-compose-performance/references/animation.md",
         ),
         Rule(
+            id = "pixel-line",
+            advice = "draw a separator one pixel thick as a filled rect, with Modifier.hairline (drawHairline inside " +
+                "the design system); a one-pixel drawLine costs the GPU far more in every frame its screen moves",
+            applies = { (it.inFeature || it.inCoreUi || it.inDesignSystem || it.inNavigation || it.inApp) && it.isProduction },
+            lines = { source, _ -> onePixelLines(source) },
+        ),
+        Rule(
             id = "legacy-back",
             advice = "handle Back with NavigationBackHandler (overlays at overlay priority), never the Activity's dispatcher",
             applies = { (it.inFeature || it.inCoreUi || it.inDesignSystem || it.inNavigation) && it.isProduction },
@@ -216,6 +223,37 @@ internal object ComposeRules {
     private val LAYER_ALPHA = Regex("""\.\s*(?:graphicsLayer|alpha)\s*[({]""")
     private val ALPHA = Regex("""\balpha\b""")
     private val FILL = Regex("""\bfillMaxSize\s*\(""")
+    private val DRAW_LINE = Regex("""(?<![\w.])drawLine\s*\(""")
+    private val ONE_PIXEL_STROKE = Regex("""^strokeWidth\s*=\s*1f$""")
+
+    /** `drawLine` calls one pixel thick: `strokeWidth = 1f` by name, or `1f` as the fourth argument. */
+    private fun onePixelLines(source: KotlinSource): List<Int> {
+        val code = source.code
+        return DRAW_LINE.findAll(code).filter { match ->
+            val open = match.range.last
+            val arguments = topLevelArguments(code.substring(open + 1, Declarations.closing(code, open)))
+            arguments.any { ONE_PIXEL_STROKE.matches(it) } || arguments.getOrNull(3) == "1f"
+        }.map { source.lineOf(it.range.first) }.toList()
+    }
+
+    /** The comma-separated arguments of a call, trimmed, not split inside nested brackets. */
+    private fun topLevelArguments(inside: String): List<String> {
+        val arguments = mutableListOf<String>()
+        var depth = 0
+        var start = 0
+        inside.forEachIndexed { index, char ->
+            when (char) {
+                '(', '[', '{' -> depth++
+                ')', ']', '}' -> depth--
+                ',' -> if (depth == 0) {
+                    arguments += inside.substring(start, index).trim()
+                    start = index + 1
+                }
+            }
+        }
+        inside.substring(start).trim().takeIf { it.isNotEmpty() }?.let { arguments += it }
+        return arguments
+    }
 
     private fun rawDpLines(source: KotlinSource): List<Int> =
         source.codeLines.mapIndexedNotNull { index, line ->

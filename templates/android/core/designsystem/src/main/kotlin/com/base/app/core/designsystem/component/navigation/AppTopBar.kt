@@ -16,11 +16,12 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -46,10 +47,12 @@ import com.base.app.core.designsystem.component.sheet.LocalSheetSurface
 import com.base.app.core.designsystem.component.sheet.chrome.AppSheetCloseButton
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.component.text.grownWithFontScale
+import com.base.app.core.designsystem.foundation.draw.drawHairline
 import com.base.app.core.designsystem.foundation.layout.ChromeInset
 import com.base.app.core.designsystem.foundation.layout.LocalTopChrome
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
+import kotlinx.coroutines.flow.collectLatest
 
 /**
  * How far a list has scrolled from its top, in pixels, for a top bar that changes as it does. Once
@@ -100,7 +103,7 @@ fun AppTopBar(
                 val shown = scrolled?.let { (it() / fadeDistance.toPx()).coerceIn(0f, 1f) } ?: 1f
                 if (shown > 0f) {
                     drawRect(fill, alpha = shown)
-                    drawLine(colors.separator, Offset(0f, size.height - 0.5f), Offset(size.width, size.height - 0.5f), 1f, alpha = shown)
+                    drawHairline(colors.separator, 0f, size.width, size.height - 1f, alpha = shown)
                 }
             }
             .windowInsetsPadding(windowInsets),
@@ -143,12 +146,16 @@ fun AppLargeTitleTopBar(
     val large = !AppTheme.containerClass.isShort
     // How far the content scrolls before the large title and the accessory have gone: their height.
     var collapseDistance by remember { mutableIntStateOf(0) }
-    val collapsed by remember(large) {
-        derivedStateOf { !large || (collapseDistance > 0 && scrolled() >= collapseDistance) }
-    }
-    val inlineTitle = remember { Animatable(if (collapsed) 1f else 0f) }
+    val inlineTitle = remember { Animatable(if (large) 0f else 1f) }
     val fade = AppTheme.springs.fadeQuick
-    LaunchedEffect(collapsed) { inlineTitle.animateTo(if (collapsed) 1f else 0f, tween(fade)) }
+    val currentScrolled by rememberUpdatedState(scrolled)
+    // The scroll position is read here, in the effect, and never in composition: a read there,
+    // even through derivedStateOf, sends this bar's composition through a recompose pass in every
+    // frame of a scroll.
+    LaunchedEffect(large, fade) {
+        snapshotFlow { !large || (collapseDistance > 0 && currentScrolled() >= collapseDistance) }
+            .collectLatest { collapsed -> inlineTitle.animateTo(if (collapsed) 1f else 0f, tween(fade)) }
+    }
     val surfaceFade = SurfaceFadeDistance
     val screen = LocalScaffoldBackground.current.takeOrElse { colors.background }
     val fill = LocalSheetSurface.current?.container ?: colors.surface
@@ -171,7 +178,7 @@ fun AppLargeTitleTopBar(
                 val shown = if (!large) 1f else ((scrolled() - fadeFrom) / surfaceFade.toPx()).coerceIn(0f, 1f)
                 if (shown > 0f) {
                     drawRect(fill, size = Size(size.width, inline), alpha = shown)
-                    drawLine(colors.separator, Offset(0f, inline - 0.5f), Offset(size.width, inline - 0.5f), 1f, alpha = shown)
+                    drawHairline(colors.separator, 0f, size.width, inline - 1f, alpha = shown)
                 }
             }
             .windowInsetsPadding(windowInsets),
