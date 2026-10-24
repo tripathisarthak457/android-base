@@ -103,9 +103,10 @@ internal class Limits(val a: Float, val b: Float, val c: Float, val d: Float) {
 
 /**
  * Each metric, its weight in the score and how it is graded. The limits come from
- * `tools/perf/gates.toml` where it has one (janky frames 0.5 % on a scroll, cold start 380 ms, the
- * app's own PSS 58.4 MB, the everything preset's row), from Android vitals for slow and frozen
- * frames, and otherwise from the nearest gate: a warm start in half the cold-start limit.
+ * `tools/perf/gates.toml` where it has one (cold start 380 ms, the app's own PSS 58.4 MB, the
+ * everything preset's row), from Android vitals for slow and frozen frames, and otherwise from the
+ * nearest gate: a warm start in half the cold-start limit. Janky frames are a B at the gates' 1.0 %
+ * ceiling for a scroll or a motion and an A at half of it, since the target is about none.
  *
  * The percentiles are of each frame's main-thread time against its own refresh interval, the time
  * the main thread has before the next frame starts, so a display that moves between 60 and

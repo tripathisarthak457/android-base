@@ -112,7 +112,7 @@ app nobody has used.
 
 | Metric | Points | A, the target | Source |
 |---|---|---|---|
-| Janky frames | 25 | at most 0.5 % | `tools/perf/gates.toml` scroll rows; the target is about 0 % |
+| Janky frames | 25 | at most 0.5 % | half the 1.0 % ceiling of `tools/perf/gates.toml`'s scroll and motion rows; the target is about 0 % |
 | Main-thread time p90 | 10 | at most 0.6 of the budget | each frame's own refresh interval; `gates.toml` frame times are UI-thread time too |
 | Main-thread time p99 | 10 | at most the budget | |
 | Slow frames (over 16 ms) | 5 | at most 0.5 % | Android vitals |

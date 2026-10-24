@@ -19,6 +19,18 @@
 # never more than the limit they replaced where the merge met it: they may only go down, and each
 # improvement is written back here.
 #
+# Janky frames have a visible ceiling, not a target, and changes are judged against noise
+# (REQUIREMENTS 58). At 120 Hz a frame is janky past 8.33 ms, and one build measured in one session
+# spreads 0.15-0.69 % on the root list's scroll, 0.22-0.77 % with the bar minimizing and 3.5-5.2 %
+# on navigation stress: a limit inside that spread passes or fails a build by chance. So every
+# scroll and motion is held to at most 1.0 % janky, navigation stress, which walks the screens at
+# random, to at most 6.0 %, and non-regression rows keep their recorded values; hitch time, first
+# frames, ratchets and checks are not noise-bound and keep their limits. Under the ceiling, a merge
+# fails a row it makes worse than the staging head before it by more than the noise: in a
+# same-session A-B of the two heads (arms rotated, one --seed for both, the same --runs), the row's
+# median on the merge may exceed the head's by at most the larger of the two arms' spreads, max less
+# min over the runs that perf.sh lists in each summary.
+#
 # Measured on a Redmi Note 10 Pro (120 Hz, 8.33 ms frame budget) with release builds compiled with
 # their baseline profile. Frame times are UI-thread milliseconds; janky is the FrameTimeline count.
 
@@ -93,11 +105,12 @@ standard = 5.0
 lean = 5.0
 
 [[row]]
+# REQUIREMENTS 58: the release's jank ceiling; under it, the noise rule in the header.
 metric = "tabs.janky_after_first_pct"
 label = "Tab switch, janky frames other than each motion's first (%)"
-solid = 0.5
-standard = 0.5
-lean = 0.5
+solid = 1.0
+standard = 1.0
+lean = 1.0
 
 [[row]]
 metric = "tabs.late_first_frames"
@@ -127,9 +140,10 @@ label = "Tab switch with plain taps, hitch time per second of motion (ms/s)"
 solid = 5.0
 
 [[row]]
+# REQUIREMENTS 58: the release's jank ceiling; under it, the noise rule in the header.
 metric = "tabs_tap.janky_after_first_pct"
 label = "Tab switch with plain taps, janky frames other than each motion's first (%)"
-solid = 0.5
+solid = 1.0
 
 [[row]]
 metric = "tabs_tap.late_first_frames"
@@ -183,11 +197,12 @@ standard = 5.0
 lean = 5.0
 
 [[row]]
+# REQUIREMENTS 58: the release's jank ceiling; under it, the noise rule in the header.
 metric = "pushpop.janky_after_first_pct"
 label = "Push/pop with the Back key, janky frames other than each motion's first (%)"
-solid = 0.5
-standard = 0.5
-lean = 0.5
+solid = 1.0
+standard = 1.0
+lean = 1.0
 
 [[row]]
 metric = "pushpop.late_first_frames"
@@ -287,9 +302,10 @@ label = "Navigation stress: stack invariants hold"
 solid = true
 
 [[row]]
+# REQUIREMENTS 58: the release's jank ceiling; under it, the noise rule in the header.
 metric = "nav_stress.janky_pct"
 label = "Navigation stress, janky frames (%)"
-solid = 4.0
+solid = 6.0
 
 [[row]]
 metric = "restore.restored"
@@ -302,10 +318,11 @@ label = "Process death: Back pops the restored stack"
 solid = true
 
 [[row]]
+# REQUIREMENTS 58: the release's jank ceiling; under it, the noise rule in the header.
 metric = "scroll_root.janky_pct"
 label = "Scroll a root list, janky frames (%)"
-solid = 0.5
-standard = 0.5
+solid = 1.0
+standard = 1.0
 smoke = { add = 0.5, scale = 0.2 }
 
 [[row]]
@@ -316,9 +333,10 @@ standard = 7.0
 smoke = { add = 1.0 }
 
 [[row]]
+# REQUIREMENTS 58: the release's jank ceiling; under it, the noise rule in the header.
 metric = "scroll_minimize.janky_pct"
 label = "Scroll with the bar minimizing, janky frames (%)"
-solid = 0.5
+solid = 1.0
 
 [[row]]
 metric = "scroll_minimize.gpu_p90_ms"
@@ -427,9 +445,10 @@ label = "Large window: close a detail with Back, first frame max (ms)"
 large = 16.0
 
 [[row]]
+# REQUIREMENTS 58: the release's jank ceiling; under it, the noise rule in the header.
 metric = "scroll_large.janky_pct"
 label = "Large window: scroll the list pane, janky frames (%)"
-large = 0.5
+large = 1.0
 
 [[row]]
 metric = "scroll_large.gpu_p90_ms"
@@ -437,6 +456,7 @@ label = "Large window: scroll the list pane, GPU p90 (ms)"
 large = 7.0
 
 [[row]]
+# REQUIREMENTS 58: the release's jank ceiling; under it, the noise rule in the header.
 metric = "sidebar_toggle.janky_pct"
 label = "Large window: fold and open the sidebar, janky frames (%)"
-large = 0.5
+large = 1.0
