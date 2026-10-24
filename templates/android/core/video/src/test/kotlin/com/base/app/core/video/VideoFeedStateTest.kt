@@ -112,6 +112,34 @@ class VideoFeedStateTest {
     }
 
     @Test
+    fun `a parent that recomposes with a new visibility holder keeps every player`() {
+        var pass by mutableIntStateOf(0)
+        rule.mainClock.autoAdvance = false
+        rule.setContent {
+            AppTheme {
+                // Read in composition, so each pass of this parent provides a new holder, as one written inline does.
+                val parentPass = pass
+                CompositionLocalProvider(LocalTabVisible provides TabVisibility { parentPass >= 0 && visible }) {
+                    state = rememberVideoFeedState(clips, { page }) { engine }
+                }
+            }
+        }
+        frames(10)
+        val before = engine.built.toList()
+
+        pass++
+        frames(4)
+
+        assertEquals(0, engine.releases)
+        assertEquals(before, engine.built)
+        assertTrue(playerOn(0).playing)
+
+        visible = false
+        frames(2)
+        assertFalse(playerOn(0).playing)
+    }
+
+    @Test
     fun `stopping releases everything, and starting again resumes where each clip was`() {
         show()
         page = 3

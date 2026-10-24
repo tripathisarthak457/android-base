@@ -250,10 +250,12 @@ internal fun rememberVideoFeedState(clips: List<VideoClip>, current: () -> Int, 
         state.clips = clips
         state.reduceMotion = reduceMotion
     }
-    val visibility = LocalTabVisible.current
+    // Read through updated state, not as effect keys: a new visibility object from a recomposing parent must
+    // not release and rebuild every player.
+    val visibility by rememberUpdatedState(LocalTabVisible.current)
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val settled by rememberUpdatedState(current)
-    LaunchedEffect(state, lifecycle, visibility) {
+    LaunchedEffect(state, lifecycle) {
         lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             // Never in the frame that composes the screen, nor the one after: the push lands first.
             withFrameNanos { }
