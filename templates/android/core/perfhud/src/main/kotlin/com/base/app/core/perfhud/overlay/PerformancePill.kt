@@ -18,14 +18,20 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontSynthesis
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.base.app.core.designsystem.foundation.interaction.PressFeedback
-import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.perfhud.R
 import com.base.app.core.perfhud.frame.FrameLog
 import com.base.app.core.perfhud.frame.LiveStats
 import com.base.app.core.perfhud.recording.PerformanceRecorder
 import kotlin.math.roundToInt
+// <opt:ui_components>
+import com.base.app.core.designsystem.foundation.interaction.PressFeedback
+import com.base.app.core.designsystem.foundation.interaction.pressable
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ import com.base.app.core.devtools.kit.PressFeedback
+//~ import com.base.app.core.devtools.kit.pressable
+// </opt-else:ui_components>
 
 /**
  * Two lines under the DEV badge while recording: frames per second over the last second of

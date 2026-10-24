@@ -1,27 +1,12 @@
 package com.base.app.feature.settings
 
 import android.content.Context
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.base.app.core.common.LoadState
 import com.base.app.core.common.coroutines.AppDispatchers
 import com.base.app.core.common.log.Log
-import com.base.app.core.designsystem.component.container.AppCard
-import com.base.app.core.designsystem.component.container.AppScaffold
-import com.base.app.core.designsystem.component.feedback.AppStateView
-import com.base.app.core.designsystem.component.list.AppRow
-import com.base.app.core.designsystem.component.navigation.AppTopBar
-import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
-import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
-import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
-import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.mvi.MviViewModel
 import com.base.app.core.mvi.UiEffect
 import com.base.app.core.mvi.UiEvent
@@ -33,6 +18,26 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import javax.inject.Inject
+// <opt:ui_components>
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.base.app.core.designsystem.component.container.AppCard
+import com.base.app.core.designsystem.component.container.AppScaffold
+import com.base.app.core.designsystem.component.feedback.AppStateView
+import com.base.app.core.designsystem.component.list.AppRow
+import com.base.app.core.designsystem.component.navigation.AppTopBar
+import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
+import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
+import com.base.app.core.designsystem.theme.AppTheme
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ import com.base.app.core.ui.PlaceholderScreen
+// </opt-else:ui_components>
 
 /**
  * One dependency, as the build recorded it. The licence is a list because a library can offer a
@@ -127,10 +132,18 @@ internal fun LicensesRoute(
                 LicensesEffect.NavigateBack -> navigator.navigateUp()
             }
         },
+    // <opt:ui_components>
     ) { state, onEvent ->
         LicensesScreen(state = state, onEvent = onEvent)
     }
+    // </opt:ui_components>
+    // <opt-else:ui_components>
+    //~ ) { _, _ ->
+    //~     PlaceholderScreen(title = R.string.settings_open_source_licences)
+    //~ }
+    // </opt-else:ui_components>
 }
+// <opt:ui_components>
 
 @Composable
 internal fun LicensesScreen(state: LicensesState, onEvent: (LicensesEvent) -> Unit) {
@@ -173,3 +186,4 @@ internal fun LicensesScreen(state: LicensesState, onEvent: (LicensesEvent) -> Un
         }
     }
 }
+// </opt:ui_components>

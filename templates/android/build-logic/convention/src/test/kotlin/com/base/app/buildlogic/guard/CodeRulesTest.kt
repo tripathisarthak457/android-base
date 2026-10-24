@@ -132,6 +132,7 @@ class CodeRulesTest {
             internal fun OrdersScreen() {} /*!*/
             """.trimIndent(),
         ),
+        // <opt:ui_components>
         Fixture(
             "sheet-ime-padding",
             FEATURE,
@@ -191,6 +192,7 @@ class CodeRulesTest {
             }
             """.trimIndent(),
         ),
+        // </opt:ui_components>
 
         Fixture("scroll-fling", CORE_UI, "private fun Photos() = LazyRow(state = photos) { } /*!*/"),
     )
@@ -319,6 +321,8 @@ class CodeRulesTest {
         const val CORE_UI = "core/ui/src/main/kotlin/A.kt"
         const val CORE_COMMON = "core/common/src/main/kotlin/A.kt"
         const val DESIGN_SYSTEM = "core/designsystem/src/main/kotlin/A.kt"
+        // <opt:ui_components>
         const val SHEET = "core/designsystem/src/main/kotlin/com/acme/core/designsystem/component/sheet/A.kt"
+        // </opt:ui_components>
     }
 }

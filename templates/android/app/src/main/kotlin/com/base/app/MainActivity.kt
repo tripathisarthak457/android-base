@@ -27,9 +27,6 @@ import com.base.app.core.navigation.AppShortcuts
 import com.base.app.core.navigation.NavKeySerialization
 import com.base.app.core.navigation.NavRegistry
 import com.base.app.core.navigation.PendingDeepLink
-import com.base.app.core.navigation.ShellConfig
-import com.base.app.startup.ShellConfigOverride
-import com.base.app.startup.ShellObserver
 import com.base.app.startup.StartupViewModel
 import com.base.app.ui.AppRoot
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,6 +34,11 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+// <opt:ui_components>
+import com.base.app.core.navigation.ShellConfig
+import com.base.app.startup.ShellConfigOverride
+import com.base.app.startup.ShellObserver
+// </opt:ui_components>
 // <opt:devtools>
 import com.base.app.core.ui.tooling.DevTooling
 import java.util.Optional
@@ -88,11 +90,13 @@ class MainActivity : FragmentActivity() {
     @Inject
     lateinit var pendingDeepLink: PendingDeepLink
 
+    // <opt:ui_components>
     @Inject
     lateinit var shellConfigOverrides: Set<@JvmSuppressWildcards ShellConfigOverride>
 
     @Inject
     lateinit var shellObservers: Set<@JvmSuppressWildcards ShellObserver>
+    // </opt:ui_components>
 
     // <opt:applock>
     @Inject
@@ -179,8 +183,10 @@ class MainActivity : FragmentActivity() {
                 registry = registry,
                 serialization = serialization,
                 pendingDeepLink = pendingDeepLink,
+                // <opt:ui_components>
                 shellConfig = shellConfigOverrides.fold(ShellConfig()) { config, override -> override.adjust(config) },
                 shellObservers = shellObservers,
+                // </opt:ui_components>
                 shortcuts = shortcuts,
                 // <opt:devtools>
                 devTooling = devTooling.getOrNull(),

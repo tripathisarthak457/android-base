@@ -75,8 +75,14 @@ internal object AdaptiveRules {
         ),
         Rule(
             id = "adaptive-material-scope",
+            // <opt:ui_components>
             advice = "Material's adaptive types stay behind NavPane and AppShell; NavigationSuiteScaffold needs Material " +
                 "components, so the shell's bar, rail and sidebar take its place",
+            // </opt:ui_components>
+            // <opt-else:ui_components>
+            //~ advice = "Material's adaptive types stay out of the app; NavigationSuiteScaffold needs Material components, " +
+            //~     "so the bar, rail and sidebar are built in core:designsystem, and panes as a Navigation 3 SceneStrategy",
+            // </opt-else:ui_components>
             applies = { true },
             lines = { source, location -> materialScope(source, location) },
         ),

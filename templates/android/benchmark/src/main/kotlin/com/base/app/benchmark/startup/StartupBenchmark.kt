@@ -5,16 +5,29 @@ import androidx.benchmark.macro.StartupMode
 import androidx.benchmark.macro.StartupTimingMetric
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import com.base.app.benchmark.TARGET_APP_ID
+// <opt:ui_components>
 import com.base.app.benchmark.startToShell
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ import com.base.app.benchmark.startToStart
+// </opt-else:ui_components>
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
+// <opt:ui_components>
 /**
  * Cold and warm start to the tab shell, without a profile (what a sideloaded build gets) and with the
  * baseline profile (what a Play install gets).
  */
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ /**
+//~  * Cold and warm start to the start screen, without a profile (what a sideloaded build gets) and with
+//~  * the baseline profile (what a Play install gets).
+//~  */
+// </opt-else:ui_components>
 @RunWith(Parameterized::class)
 class StartupBenchmark(
     private val startupMode: StartupMode,
@@ -33,7 +46,12 @@ class StartupBenchmark(
         compilationMode = compilationMode,
     ) {
         pressHome()
+        // <opt:ui_components>
         startToShell()
+        // </opt:ui_components>
+        // <opt-else:ui_components>
+        //~ startToStart()
+        // </opt-else:ui_components>
     }
 
     companion object {

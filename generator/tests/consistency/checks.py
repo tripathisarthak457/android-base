@@ -5,6 +5,7 @@ a second. Each issue is one line, `CATEGORY path: detail`.
 
 from __future__ import annotations
 
+import json
 import re
 import tomllib
 import xml.etree.ElementTree as ET
@@ -12,6 +13,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from genkit.core.copy import is_verbatim
+from genkit.core.record import RECORD_NAME
 from genkit.targets import get
 
 from .project import IMPORT, Project
@@ -29,8 +31,17 @@ _IMPLICIT = {
 }
 
 
+#: What a project without UI components must never reach: the design system's components and
+#: primitives, and the navigation shell.
+NO_UI_FORBIDDEN = re.compile(
+    r"\bcore\.designsystem\.(?:component|foundation\.(?:content|draw|glass|interaction|layout|scroll)|animation|icon)\b"
+    r"|\b(?:AppShell|ShellState|StackHost)\b"
+)
+
+
 def check(root: Path, package: str, reference: Project | None, identity: bool = True) -> list[str]:
     project = Project(root)
+    components = _has_ui_components(root)
     issues: list[str] = []
     issues += _leftovers(root, identity)
     included = _settings(root, issues)
@@ -43,9 +54,37 @@ def check(root: Path, package: str, reference: Project | None, identity: bool = 
     issues += _conventions(root, project, package)
     issues += _manifests(root, project, package)
     issues += _resources(root, project)
-    issues += _unused_resources(root, project)
+    issues += _unused_resources(root, project, copy_kept=not components)
     issues += _translations(root)
     issues += _hollow(root, project)
+    if not components:
+        issues += _without_ui_components(root, project, package)
+    return issues
+
+
+def _has_ui_components(root: Path) -> bool:
+    record = root / RECORD_NAME
+    data = json.loads(record.read_text(encoding="utf-8")) if record.is_file() else {}
+    return data.get("ui_components", True) is not False
+
+
+def _without_ui_components(root: Path, project: Project, package: str) -> list[str]:
+    """
+    A project without UI components holds none of what the option owns, and no source reaches the
+    components, the primitives or the shell. That each placeholder's title is a string of its own
+    module is `_resources`' check, as for any other `R.string`.
+    """
+    manifest = get("android").manifest
+    path = package.replace(".", "/")
+    issues = [
+        f"NOUI-OWNED {owned.format(pkg_path=path)} is still there"
+        for owned in manifest.options["ui_components"].owns
+        if (root / owned.format(pkg_path=path)).exists()
+    ]
+    for source in project.kotlin + project.gradle:
+        for number, line in enumerate(project.code[source].splitlines(), 1):
+            if NO_UI_FORBIDDEN.search(line):
+                issues.append(f"NOUI-REACH {project.relative(source)}:{number}: {line.strip()[:120]}")
     return issues
 
 
@@ -324,12 +363,14 @@ def _references(text: str) -> set[tuple[str, str]]:
     }
 
 
-def _unused_resources(root: Path, project: Project) -> list[str]:
+def _unused_resources(root: Path, project: Project, copy_kept: bool = False) -> list[str]:
     """
     Resources a module ships that nothing reaches: dead weight in the APK and, for strings, a line
     every language has to translate. A values resource that only another values resource names
     (the font-certificate arrays under their parent array, a colour aliased by another) counts as
-    used only when that one is.
+    used only when that one is. With `copy_kept`, a project without UI components, strings and
+    plurals are not counted: each screen's copy stays, translated, for the screen built over its
+    placeholder, and release builds shrink away what is still unused.
     """
     declared: dict[tuple[str, str], str] = {}
     # What each values resource names, for every qualifier it is defined under.
@@ -376,7 +417,7 @@ def _unused_resources(root: Path, project: Project) -> list[str]:
     return [
         f"UNUSED-RES {where}: {kind}/{name}"
         for (kind, name), where in sorted(declared.items(), key=lambda item: (item[1], item[0]))
-        if (kind, name) not in used
+        if (kind, name) not in used and not (copy_kept and kind in ("string", "plurals"))
     ]
 
 

@@ -1,27 +1,32 @@
 package com.base.app.core.ui.appstatus
 
+import androidx.activity.compose.LocalActivity
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.navigationevent.NavigationEventInfo
+import androidx.navigationevent.compose.NavigationBackHandler
+import androidx.navigationevent.compose.rememberNavigationEventState
+import com.base.app.core.network.appstatus.AppStatus
+import com.base.app.core.ui.R
+// <opt:ui_components>
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.navigationevent.NavigationEventInfo
-import androidx.navigationevent.compose.NavigationBackHandler
-import androidx.navigationevent.compose.rememberNavigationEventState
 import com.base.app.core.designsystem.component.feedback.AppStateView
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.network.appstatus.AppStatus
-import com.base.app.core.ui.R
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ import com.base.app.core.ui.PlaceholderScreen
+// </opt-else:ui_components>
 
 /**
  * Covers the app when the server says this version is no longer supported, or that it is down for
@@ -36,12 +41,15 @@ import com.base.app.core.ui.R
 fun AppStatusGate(status: AppStatus, onRetry: () -> Unit, modifier: Modifier = Modifier) {
     if (status == AppStatus.Available) return
 
+    // <opt:ui_components>
     val context = LocalContext.current
+    // </opt:ui_components>
     val activity = LocalActivity.current
     // Back leaves the app as it is: nothing underneath can be used until this is resolved.
     val back = rememberNavigationEventState(currentInfo = NavigationEventInfo.None)
     NavigationBackHandler(state = back, onBackCompleted = { activity?.moveTaskToBack(true) })
 
+    // <opt:ui_components>
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -69,7 +77,18 @@ fun AppStatusGate(status: AppStatus, onRetry: () -> Unit, modifier: Modifier = M
             AppStatus.Available -> Unit
         }
     }
+    // </opt:ui_components>
+    // <opt-else:ui_components>
+    //~ // Each screen's action (update, or onRetry) comes with the components that draw it.
+    //~ val title = if (status == AppStatus.UpdateRequired) {
+    //~     R.string.ui_appstatus_update_title
+    //~ } else {
+    //~     R.string.ui_appstatus_maintenance_title
+    //~ }
+    //~ PlaceholderScreen(title = title, modifier = modifier.pointerInput(Unit) {})
+    // </opt-else:ui_components>
 }
+// <opt:ui_components>
 
 /** The Play Store app when it is installed, its website otherwise. */
 private fun Context.openStoreListing() {
@@ -81,3 +100,4 @@ private fun Context.openStoreListing() {
         startActivity(web)
     }
 }
+// </opt:ui_components>

@@ -17,7 +17,13 @@ android {
 dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:datastore"))
+    // <opt:ui_components>
     implementation(project(":core:designsystem"))
+    // </opt:ui_components>
+    // <opt-else:ui_components>
+    //~ // The cover is a PlaceholderScreen until the design system has the components to draw it.
+    //~ implementation(project(":core:ui"))
+    // </opt-else:ui_components>
 
     implementation(libs.androidx.biometric)
     // `api`: BiometricPrompt runs in a FragmentActivity, so the app's activity has to be one. Pinned
