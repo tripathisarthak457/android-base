@@ -1,7 +1,7 @@
 "use client";
 
 import { Icon } from "./icons.tsx";
-import { Avatar, Button, Chip, Column, Group, InputField, LargeTitle, Row, SectionHeader, Surface, Switch, Text, useTheme } from "./parts.tsx";
+import { Avatar, Button, Chip, Column, Group, InputField, LargeTitle, Row, SectionHeader, Surface, Switch, Text, TopBar, useTheme } from "./parts.tsx";
 import type { PreviewTab } from "./tabs.ts";
 import { dp } from "./theme.ts";
 
@@ -71,7 +71,7 @@ function Home() {
     <>
       <LargeTitle title="Samples" subtitle="Pulled from a live API" />
       <div style={{ padding: `${dp(4)}px ${dp(16)}px ${dp(12)}px` }}>
-        <InputField placeholder="Search titles" icon="search" />
+        <InputField placeholder="Search titles" icon="Search" />
       </div>
       <Column>
         {POSTS.map((post) => (
@@ -114,18 +114,18 @@ function Search() {
     <>
       <LargeTitle title="Search" />
       <div style={{ padding: `${dp(4)}px ${dp(16)}px ${dp(8)}px` }}>
-        <InputField placeholder="Search posts" icon="search" />
+        <InputField placeholder="Search posts" icon="Search" />
       </div>
       <Column gap={8}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: dp(4) }}>
-          <Text role="subheadline" colour="contentSecondary">
+          <Text role="footnote" colour="contentSecondary">
             Recent
           </Text>
           <Button label="Clear" variant="plain" small />
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: dp(8) }}>
           {["weather", "sunt aut", "dolor", "qui est esse"].map((query) => (
-            <Chip key={query} label={query} icon="clock" />
+            <Chip key={query} label={query} icon="Clock" removable />
           ))}
         </div>
       </Column>
@@ -154,7 +154,7 @@ function Profile({ media }: { media: boolean }) {
 function Settings({ options }: { options: ScreenOptions }) {
   const t = useTheme();
   const { features, haptics } = options;
-  const external = <Icon name="external" size={dp(16)} colour={t.colour("contentTertiary")} />;
+  const external = <Icon name="ExternalLink" size={dp(16)} colour={t.colour("contentTertiary")} />;
   return (
     <>
       <LargeTitle title="Settings" />
@@ -188,17 +188,17 @@ function Settings({ options }: { options: ScreenOptions }) {
           </div>
         </Surface>
         <Group>
-          <Row icon="bell" title="Haptic feedback" supporting="A small vibration when a control responds." trailing={<Switch on={haptics} />} />
+          <Row icon="Bell" title="Haptic feedback" supporting="A small vibration when a control responds." trailing={<Switch on={haptics} />} />
         </Group>
         {features.has("language") && (
           <Group>
-            <Row icon="globe" title="Language" supporting="Same as your phone" />
+            <Row icon="Globe" title="Language" supporting="Same as your phone" />
           </Group>
         )}
         {features.has("applock") && (
           <Group>
             <Row
-              icon="lock"
+              icon="Lock"
               title="Require unlock"
               supporting="Ask for your fingerprint, face or screen lock when the app has been in the background."
               trailing={<Switch on={false} />}
@@ -208,7 +208,7 @@ function Settings({ options }: { options: ScreenOptions }) {
         <SectionHeader title="Privacy" />
         <Group>
           <Row
-            icon="info"
+            icon="Info"
             title="Share usage data"
             supporting="Helps us find crashes and slow screens. Never includes your content."
             trailing={<Switch on />}
@@ -216,13 +216,13 @@ function Settings({ options }: { options: ScreenOptions }) {
         </Group>
         <SectionHeader title="Account" />
         <Group>
-          <Row icon="logout" title="Sign out" danger />
+          <Row icon="Logout" title="Sign out" danger />
         </Group>
         {features.has("licenses") && (
           <>
             <SectionHeader title="About" />
             <Group>
-              <Row icon="doc" title="Open source licences" supporting="The libraries this app is built on, and their terms." />
+              <Row icon="File" title="Open source licences" supporting="The libraries this app is built on, and their terms." />
             </Group>
           </>
         )}
@@ -230,8 +230,8 @@ function Settings({ options }: { options: ScreenOptions }) {
           <>
             <SectionHeader title="Legal" />
             <Group>
-              <Row icon="lock" title="Privacy policy" trailing={external} />
-              <Row icon="doc" title="Terms of service" trailing={external} />
+              <Row icon="Lock" title="Privacy policy" trailing={external} />
+              <Row icon="File" title="Terms of service" trailing={external} />
             </Group>
           </>
         )}
@@ -240,18 +240,19 @@ function Settings({ options }: { options: ScreenOptions }) {
   );
 }
 
-/** A scaffolded module's screen: its title and the empty state its strings ship with. */
+/** A scaffolded module's screen: its title and the empty state its strings ship with, as AppStateView draws it. */
 function Module({ title }: { title: string }) {
-  const t = useTheme();
   return (
     <>
       <LargeTitle title={title} />
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: `${dp(96)}px ${dp(32)}px 0`, gap: dp(8) }}>
-        <Icon name="inbox" size={dp(36)} colour={t.colour("contentTertiary")} />
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: `${dp(96)}px ${dp(32)}px 0`, gap: dp(12) }}>
         <Text role="title3">Nothing here yet</Text>
-        <Text role="subheadline" colour="contentSecondary">
+        <Text role="callout" colour="contentSecondary">
           When there is something to show, it appears on this screen.
         </Text>
+        <div style={{ paddingTop: dp(8) }}>
+          <Button label="Reload" variant="tinted" />
+        </div>
       </div>
     </>
   );
@@ -261,14 +262,12 @@ function Module({ title }: { title: string }) {
 function More({ listed }: { listed: readonly PreviewTab[] }) {
   return (
     <>
-      <LargeTitle title="More" />
-      <Column>
-        <Group>
-          {listed.map((tab) => (
-            <Row key={tab.key} icon={tab.icon} title={tab.label} />
-          ))}
-        </Group>
-      </Column>
+      <TopBar title="More" />
+      <div style={{ paddingTop: dp(8) }}>
+        {listed.map((tab) => (
+          <Row key={tab.key} icon={tab.icon} iconColour="accent" title={tab.label} />
+        ))}
+      </div>
     </>
   );
 }

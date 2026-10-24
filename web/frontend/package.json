@@ -8,7 +8,8 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "node --test \"features/**/*.test.ts\"",
-    "catalogue": "cd ../../generator && python3 -m genkit.core.catalogue --write"
+    "catalogue": "cd ../../generator && python3 -m genkit.core.catalogue --write",
+    "glyphs": "node scripts/glyphs.ts"
   },
   "dependencies": {
     "framer-motion": "^13.2.0",

@@ -1,6 +1,7 @@
 "use client";
 
 import { type CSSProperties, type ReactNode, createContext, useContext } from "react";
+import { CHIP, chipRoles } from "./chip.ts";
 import { Icon, type IconName } from "./icons.tsx";
 import { type PreviewTheme, dp, radius } from "./theme.ts";
 
@@ -65,7 +66,7 @@ export function Button({
   full,
 }: {
   label: string;
-  variant?: "primary" | "secondary" | "plain";
+  variant?: "primary" | "secondary" | "tinted" | "plain";
   small?: boolean;
   full?: boolean;
 }) {
@@ -75,6 +76,7 @@ export function Button({
   const look: Record<string, CSSProperties> = {
     primary: { background: t.colour("accent"), color: t.colour("onAccent") },
     secondary: { background: t.colour("surface"), color: t.colour("contentPrimary"), border: `${borderWidth}px solid ${t.colour("outline")}` },
+    tinted: { background: t.colour("accentSubtle"), color: t.colour("accentContent") },
     plain: { background: "transparent", color: t.colour("accentContent") },
   };
   return (
@@ -149,25 +151,28 @@ export function InputField({
   );
 }
 
-export function Chip({ label, icon }: { label: string; icon?: IconName }) {
+export function Chip({ label, icon, removable }: { label: string; icon?: IconName; removable?: boolean }) {
   const t = useTheme();
+  const roles = chipRoles(false);
+  const content = t.colour(roles.content);
   return (
     <span
       style={{
-        ...t.type("footnote"),
+        ...t.type(CHIP.text),
         display: "inline-flex",
         alignItems: "center",
-        gap: dp(6),
-        height: dp(32),
-        padding: `0 ${dp(12)}px`,
+        gap: dp(CHIP.gap),
+        height: dp(CHIP.height),
+        padding: `0 ${dp(removable ? CHIP.paddingEndRemovable : CHIP.padding)}px 0 ${dp(CHIP.padding)}px`,
         borderRadius: radius(t.style.chipRadius),
-        border: `${t.style.borderWidth}px solid ${t.colour("separator")}`,
-        background: t.colour("surface"),
-        color: t.colour("contentSecondary"),
+        background: t.colour(roles.container),
+        color: content,
+        whiteSpace: "nowrap",
       }}
     >
-      {icon && <Icon name={icon} size={dp(14)} colour={t.colour("contentTertiary")} />}
+      {icon && <Icon name={icon} size={dp(CHIP.icon)} colour={content} />}
       {label}
+      {removable && <Icon name="Close" size={dp(CHIP.remove)} colour={content} />}
     </span>
   );
 }
@@ -207,12 +212,14 @@ export function Row({
   title,
   supporting,
   icon,
+  iconColour = "contentTertiary",
   trailing,
   danger,
 }: {
   title: string;
   supporting?: string;
   icon: IconName;
+  iconColour?: string;
   trailing?: ReactNode;
   danger?: boolean;
 }) {
@@ -220,12 +227,33 @@ export function Row({
   const tint = danger ? t.status("danger").content : t.colour("contentPrimary");
   return (
     <div style={{ display: "flex", alignItems: "center", gap: dp(12), padding: `${dp(12)}px ${dp(16)}px` }}>
-      <Icon name={icon} size={dp(20)} colour={danger ? tint : t.colour("contentTertiary")} />
+      <Icon name={icon} size={dp(20)} colour={danger ? tint : t.colour(iconColour)} />
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ ...t.type("body"), color: tint }}>{title}</div>
         {supporting && <div style={{ ...t.type("footnote"), color: t.colour("contentTertiary") }}>{supporting}</div>}
       </div>
-      {trailing ?? (!danger && <Icon name="chevron" size={dp(16)} colour={t.colour("contentTertiary")} />)}
+      {trailing ?? (!danger && <Icon name="ChevronRight" size={dp(16)} colour={t.colour("contentTertiary")} />)}
+    </div>
+  );
+}
+
+/** The template's inline AppTopBar: a centred headline on the surface, over a hairline. */
+export function TopBar({ title }: { title: string }) {
+  const t = useTheme();
+  return (
+    <div
+      style={{
+        ...t.type("headline"),
+        height: dp(52),
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: t.colour("surface"),
+        borderBottom: `1px solid ${t.colour("separator")}`,
+        color: t.colour("contentPrimary"),
+      }}
+    >
+      {title}
     </div>
   );
 }
