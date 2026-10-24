@@ -14,6 +14,7 @@ from ...core.manifest import TemplateManifest
 from ...core.spec import IosSettings, Spec, SpecError, Vocabulary, pascal_case
 from ...core.target import BuildContext
 from ...tokens import swift
+from .. import foreign_options
 from . import icons, project, scaffold, strings, tabs
 
 TEMPLATE_DIR = Path(__file__).resolve().parents[4] / "templates" / "ios"
@@ -93,6 +94,7 @@ class IosTarget:
             design_styles=tokens.design_style_requirements(),
             motion_styles=tokens.motion_style_names(),
             reserved_module_names=self.reserved_module_names,
+            foreign_options=foreign_options(self.key),
         )
 
     def validate(self, spec: Spec) -> list[str]:

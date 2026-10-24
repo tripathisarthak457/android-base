@@ -16,8 +16,14 @@ internal object ScrollRules {
     val ALL: List<Rule> = listOf(
         Rule(
             id = "scroll-fling",
+            // <opt:ui_components>
             advice = "name the design system's fling: flingBehavior = AppScrollDefaults.flingBehavior() on a lazy " +
                 "list, grid, verticalScroll or horizontalScroll, AppScrollDefaults.pagerFlingBehavior(state) on a pager",
+            // </opt:ui_components>
+            // <opt-else:ui_components>
+            //~ advice = "name a fling: flingBehavior = your design system's fling on a lazy list, grid, verticalScroll, " +
+            //~     "horizontalScroll or pager (docs/DESIGN-SYSTEM.md has the iOS-like curve)",
+            // </opt-else:ui_components>
             applies = uiCode,
             lines = { source, _ -> platformFlings(source) },
         ),

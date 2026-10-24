@@ -14,8 +14,10 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         pluginManager.apply("com.base.app.android.library")
         pluginManager.apply("com.base.app.android.hilt")
         pluginManager.apply("com.base.app.android.compose")
+        // <opt:ui_components>
         // Every screen's previews double as its screenshot tests, at every window size.
         pluginManager.apply("com.base.app.android.screenshots")
+        // </opt:ui_components>
         // Navigation keys are @Serializable, so the back stack survives process death.
         pluginManager.apply("org.jetbrains.kotlin.plugin.serialization")
 

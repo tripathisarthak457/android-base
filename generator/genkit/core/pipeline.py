@@ -2,8 +2,10 @@
 The one place that says what generating a project consists of, and in what order, for any target.
 
     1  raw spec → upgrade → --set overrides → validate (core rules, then the target's)
-    2  copy the template, leaving out what disabled features own and what is template-only
-    3  per text file, one pass: markers → rename template lines → insert generated lines
+    2  copy the template, leaving out what disabled features and options own and what is
+       template-only, with the target's variant files in place of the files they replace
+    3  per text file, one pass: markers (features and options) → rename template lines → insert
+       generated lines
     4  rename every path (com/base/app → the package path, BaseApp* → the project's names)
     5  target.transform: structural steps whose output is final text
     6  target.finish: translations, look, icons, keystores
@@ -102,8 +104,9 @@ def render_template(project: Path, spec: specs.Spec, target: Target) -> list[str
     check_regions(manifest, regions)
 
     renamer = IdentityRenamer(manifest.identity, target.identity(spec))
-    known = frozenset(manifest.features)
-    excluded = manifest.owned_paths(spec.features) + list(manifest.template_only)
+    known = manifest.marker_keys
+    enabled = manifest.enabled_keys(spec)
+    excluded = manifest.owned_paths(enabled) + list(manifest.template_only)
     warnings: list[str] = []
 
     for source in template_files(target.template_dir, excluded, target.overlays(spec), manifest.verbatim):
@@ -122,7 +125,7 @@ def render_template(project: Path, spec: specs.Spec, target: Target) -> list[str
                 warnings.append(f"{source.relative} is not UTF-8; copied without rewriting.")
                 destination.write_bytes(data)
             else:
-                rendered = render_text(text, source.relative, manifest, spec.features, known, regions, renamer)
+                rendered = render_text(text, source.relative, manifest, enabled, known, regions, renamer)
                 if rendered is None:
                     continue
                 write_text(destination, rendered)
@@ -217,7 +220,8 @@ def plan(parsed: specs.Parsed, target: Target, warnings: list[str]) -> dict[str,
     return {
         "enabled": sorted(spec.features),
         "disabled": sorted(set(manifest.features) - spec.features),
-        "removed_paths": [renamer.rename(path) for path in manifest.owned_paths(spec.features)],
+        "options": dict(spec.options),
+        "removed_paths": [renamer.rename(path) for path in manifest.owned_paths(manifest.enabled_keys(spec))],
         "modules": outline["modules"],
         "tabs": outline["tabs"],
         "notes": list(parsed.notes),

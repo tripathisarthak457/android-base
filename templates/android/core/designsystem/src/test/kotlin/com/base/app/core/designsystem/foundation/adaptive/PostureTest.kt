@@ -10,9 +10,6 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.TestSdk
-import com.base.app.core.designsystem.component.sheet.AppSheet
-import com.base.app.core.designsystem.component.sheet.SheetDetent
-import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.ThemeMode
 import org.junit.Assert.assertEquals
@@ -21,6 +18,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+// <opt:ui_components>
+import com.base.app.core.designsystem.component.sheet.AppSheet
+import com.base.app.core.designsystem.component.sheet.SheetDetent
+import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
+// </opt:ui_components>
 
 /** A half-open foldable: ADAPTIVE-PLAN 7. At mdpi a pixel is a dp, so the hinge reads in either. */
 @RunWith(RobolectricTestRunner::class)
@@ -66,6 +68,7 @@ class PostureTest {
         val first = rule.onNodeWithTag("first").getUnclippedBoundsInRoot()
         assertEquals(0.dp, first.top)
     }
+    // <opt:ui_components>
 
     @Test
     fun `R-12 in tabletop a sheet rises from the bottom and its medium detent rests on the fold`() {
@@ -82,4 +85,5 @@ class PostureTest {
         rule.waitForIdle()
         assertEquals(420.dp, rule.onNodeWithTag("sheet").getUnclippedBoundsInRoot().top)
     }
+    // </opt:ui_components>
 }

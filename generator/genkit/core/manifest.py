@@ -1,6 +1,7 @@
 """
 A template's description of itself: `template.toml`, one `features/<key>.toml` per optional feature,
-`presets.toml` and `removed.toml`, all beside the template's own files.
+one `options/<key>.toml` per spec-level option, `presets.toml` and `removed.toml`, all beside the
+template's own files.
 
 Everything here is checked when it is loaded, so a typo in a feature file fails the generator's
 tests rather than a user's generation.
@@ -8,12 +9,17 @@ tests rather than a user's generation.
 
 from __future__ import annotations
 
+import re
 import tomllib
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from .markers import TemplateError
+from .markers import KEY_PATTERN, TemplateError
+from .spec import COMMON_FIELDS
+
+if TYPE_CHECKING:
+    from .spec import Spec
 
 STATUSES: tuple[str, ...] = ("available", "beta", "coming_soon", "hidden")
 BOUNDARIES: tuple[str, ...] = ("dotted", "path", "prefix", "snake")
@@ -23,6 +29,10 @@ _FEATURE_FIELDS = {
     "owns", "legacy", "licence", "platforms",
 }
 _PRESET_FIELDS = {"title", "description", "features", "all"}
+_OPTION_FIELDS = {
+    "key", "title", "label", "headline", "description", "default", "variant", "owns", "disables", "hides", "locked",
+}
+_VARIANT_NAME = re.compile(r"[a-z][a-z0-9_-]*")
 
 
 @dataclass(frozen=True)
@@ -71,6 +81,39 @@ class Feature:
 
 
 @dataclass(frozen=True)
+class OptionLock:
+    """A deployment that serves only one value of an option, and what it tells whoever asks for the other."""
+
+    value: bool
+    note: str
+
+
+@dataclass(frozen=True)
+class Option:
+    """
+    A spec-level switch with a default, such as leaving the UI components out. The marker engine,
+    `owns` and the variants treat it as one more key, on unless the spec turns it off.
+    """
+
+    key: str
+    title: str
+    #: The checkbox the wizard and the website show for it, ticked for the value that is not the default.
+    label: str
+    headline: str
+    description: str
+    default: bool
+    #: `generator/variants/<variant>/` replaces and adds files when the option is off. None: no variant.
+    variant: str | None
+    #: Template paths removed when the option is off. `{pkg_path}` is the template's package path.
+    owns: tuple[str, ...]
+    #: Feature → why it cannot be had while the option is off, in catalogue order.
+    disables: dict[str, str]
+    #: Spec field → why the website does not ask for it while the option is off.
+    hides: dict[str, str]
+    locked: OptionLock | None
+
+
+@dataclass(frozen=True)
 class Preset:
     key: str
     title: str
@@ -100,6 +143,7 @@ class TemplateManifest:
         self.syntax: dict[str, str] = data["syntax"]
         self.groups: tuple[str, ...] = data["groups"]
         self.features: dict[str, Feature] = data["features"]
+        self.options: dict[str, Option] = data["options"]
         self.presets: dict[str, Preset] = data["presets"]
         self.default_preset: str = data["default_preset"]
         self.removed: dict[str, str] = data["removed"]
@@ -128,6 +172,7 @@ class TemplateManifest:
 
         path_token = next((token.source for token in identity if token.boundary == "path"), "")
         features = _load_features(root, groups, path_token)
+        options = _load_options(root, features, path_token)
         presets, default_preset = _load_presets(root / "presets.toml", features)
         removed = _load_removed(root / "removed.toml", features)
 
@@ -144,6 +189,7 @@ class TemplateManifest:
                 "syntax": dict(files.get("syntax", {})),
                 "groups": groups,
                 "features": features,
+                "options": options,
                 "presets": presets,
                 "default_preset": default_preset,
                 "removed": removed,
@@ -174,14 +220,37 @@ class TemplateManifest:
         chosen = {feature.key for feature in self.selectable} if preset.all else set(preset.features)
         return self.resolve(chosen)
 
+    @property
+    def marker_keys(self) -> frozenset[str]:
+        """Every key a marker may name: the features and the options."""
+        return frozenset(self.features) | frozenset(self.options)
+
+    def enabled_keys(self, spec: "Spec") -> frozenset[str]:
+        """The marker keys that hold for `spec`: its features, and every option it leaves on."""
+        return spec.features | {key for key in self.options if spec.option(key)}
+
+    def option_values(self, given: dict[str, bool]) -> dict[str, bool]:
+        """Every option's value: the one in `given`, else its default."""
+        return {key: given.get(key, option.default) for key, option in self.options.items()}
+
+    def disabled_features(self, values: dict[str, bool]) -> dict[str, str]:
+        """Feature → why it is left out, for every option `values` turns off, in catalogue order."""
+        return {
+            feature: reason
+            for key, option in self.options.items()
+            if not values[key]
+            for feature, reason in option.disables.items()
+        }
+
     def owned_paths(self, enabled: frozenset[str]) -> list[str]:
-        """Template-relative paths that belong to features which are off."""
+        """Template-relative paths that belong to features and options which are off."""
         token = self.package_path_token
+        owners: list[Feature | Option] = [*self.features.values(), *self.options.values()]
         return sorted(
             path.format(pkg_path=token)
-            for feature in self.features.values()
-            if feature.key not in enabled
-            for path in feature.owns
+            for owner in owners
+            if owner.key not in enabled
+            for path in owner.owns
         )
 
     def upgrade_keys(self, keys: tuple[str, ...], schema: int) -> tuple[list[str], list[str], list[str]]:
@@ -315,6 +384,100 @@ def _load_features(root: Path, groups: tuple[str, ...], path_token: str) -> dict
                 raise TemplateError(source, None, f"owns '{owned}', which is not in the template")
     _check_acyclic(root, features)
     return features
+
+
+def _load_options(root: Path, features: dict[str, Feature], path_token: str) -> dict[str, Option]:
+    options: dict[str, Option] = {}
+    for source in sorted((root / "options").glob("*.toml")):
+        data = _read_toml(source)
+        _expect_keys(
+            source, "an option", data, {"key", "title", "label", "headline", "description", "default"}, _OPTION_FIELDS
+        )
+        key = data["key"]
+        if key != source.stem:
+            raise TemplateError(source, None, f"key '{key}' does not match the file name")
+        # The key is the spec field and the marker atom at once, so it has to be a valid marker key.
+        if not isinstance(key, str) or not re.fullmatch(KEY_PATTERN, key):
+            raise TemplateError(source, None, f"key '{key}' cannot be named in a marker")
+        if key in features:
+            raise TemplateError(source, None, f"key '{key}' is also a feature")
+        if key in COMMON_FIELDS:
+            raise TemplateError(source, None, f"key '{key}' is already a spec field")
+        if not isinstance(data["default"], bool):
+            raise TemplateError(source, None, "default must be true or false")
+        variant = data.get("variant")
+        if variant is not None and not (isinstance(variant, str) and _VARIANT_NAME.fullmatch(variant)):
+            raise TemplateError(source, None, f"variant {variant!r} is not a directory name")
+
+        disables = _reasons(source, data, "disables")
+        for feature in disables:
+            if feature not in features or features[feature].implied_only:
+                raise TemplateError(source, None, f"[disables] names '{feature}', which is not a selectable feature")
+        for feature in features.values():
+            if feature.key in disables:
+                continue
+            # `resolve` would bring a disabled feature straight back through this one.
+            brought = sorted(_requirements(features, feature.key) & set(disables))
+            if brought:
+                raise TemplateError(
+                    source, None, f"'{feature.key}' requires {', '.join(brought)}, so it belongs in [disables] too"
+                )
+        hides = _reasons(source, data, "hides")
+        for field in hides:
+            if field not in COMMON_FIELDS:
+                raise TemplateError(source, None, f"[hides] names '{field}', which is not a spec field")
+
+        owns = tuple(data.get("owns", []))
+        for owned in owns:
+            if not (root / owned.format(pkg_path=path_token)).exists():
+                raise TemplateError(source, None, f"owns '{owned}', which is not in the template")
+
+        options[key] = Option(
+            key=key,
+            title=data["title"],
+            label=data["label"],
+            headline=data["headline"],
+            description=" ".join(data["description"].split()),
+            default=data["default"],
+            variant=variant,
+            owns=owns,
+            disables=disables,
+            hides=hides,
+            locked=_lock(source, data.get("locked")),
+        )
+    return options
+
+
+def _reasons(source: Path, data: dict[str, Any], table: str) -> dict[str, str]:
+    reasons = data.get(table, {})
+    if not isinstance(reasons, dict) or not all(isinstance(reason, str) and reason.strip() for reason in reasons.values()):
+        raise TemplateError(source, None, f"[{table}] must give each name a one-line reason")
+    return {name: " ".join(reason.split()) for name, reason in reasons.items()}
+
+
+def _lock(source: Path, raw: object) -> OptionLock | None:
+    if raw is None:
+        return None
+    if not isinstance(raw, dict):
+        raise TemplateError(source, None, "[locked] must be a table")
+    _expect_keys(source, "[locked]", raw, {"value", "note"}, set())
+    if not isinstance(raw["value"], bool):
+        raise TemplateError(source, None, "[locked] value must be true or false")
+    if not isinstance(raw["note"], str) or not raw["note"].strip():
+        raise TemplateError(source, None, "[locked] needs a note saying why")
+    return OptionLock(raw["value"], " ".join(raw["note"].split()))
+
+
+def _requirements(features: dict[str, Feature], key: str) -> set[str]:
+    """What `key` requires, transitively."""
+    found: set[str] = set()
+    pending = [key]
+    while pending:
+        for required in features[pending.pop()].requires:
+            if required not in found:
+                found.add(required)
+                pending.append(required)
+    return found
 
 
 def _legacy(source: Path, entry: object) -> LegacyKey:

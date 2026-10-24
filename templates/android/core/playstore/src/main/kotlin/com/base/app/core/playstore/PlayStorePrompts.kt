@@ -16,15 +16,22 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import com.base.app.core.designsystem.component.feedback.AppTone
-import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
-import com.base.app.core.designsystem.component.overlay.ToastMessage
 import com.base.app.core.playstore.review.ReviewPrompt
 import com.base.app.core.playstore.update.AppUpdates
 import com.base.app.core.playstore.update.UpdateState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.time.Duration.Companion.seconds
+// <opt:ui_components>
+import com.base.app.core.designsystem.component.feedback.AppTone
+import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
+import com.base.app.core.designsystem.component.overlay.ToastMessage
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ import com.base.app.core.mvi.MessageKind
+//~ import com.base.app.core.ui.LocalMessagePresenter
+//~ import com.base.app.core.ui.PresentedMessage
+// </opt-else:ui_components>
 
 /**
  * Play's update and review prompts, for the app's root. A newer build is offered once per process
@@ -77,11 +84,17 @@ fun PlayStorePrompts(
     }
 
     val ready = state as? UpdateState.Ready
+    // <opt:ui_components>
     val toasts = LocalOverlayHost.current?.toasts
+    // </opt:ui_components>
+    // <opt-else:ui_components>
+    //~ val presenter = LocalMessagePresenter.current
+    // </opt-else:ui_components>
     val readyText = stringResource(R.string.playstore_update_ready)
     val restartLabel = stringResource(R.string.playstore_update_restart)
     // Saved, so a configuration change does not offer the restart a second time.
     var readyShown by rememberSaveable { mutableStateOf(false) }
+    // <opt:ui_components>
     if (ready != null && toasts != null && !readyShown) {
         LaunchedEffect(ready, toasts) {
             readyShown = true
@@ -96,6 +109,24 @@ fun PlayStorePrompts(
             )
         }
     }
+    // </opt:ui_components>
+    // <opt-else:ui_components>
+    //~ if (ready != null && !readyShown) {
+    //~     LaunchedEffect(ready, presenter) {
+    //~         readyShown = true
+    //~         presenter.present(
+    //~             PresentedMessage(
+    //~                 text = readyText,
+    //~                 title = null,
+    //~                 kind = MessageKind.Info,
+    //~                 durationMillis = ReadyMessageDuration.inWholeMilliseconds,
+    //~                 actionLabel = restartLabel,
+    //~                 onAction = { updates.restart(ready.downloaded) },
+    //~             ),
+    //~         )
+    //~     }
+    //~ }
+    // </opt-else:ui_components>
 }
 
 /** Long enough to read and reach for; after it, Play installs the update when the app is next closed. */

@@ -17,8 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.base.app.core.designsystem.component.text.AppMonoText
-import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.perfhud.R
 import com.base.app.core.perfhud.checks.BuildFacts
@@ -32,6 +30,14 @@ import com.base.app.core.perfhud.report.profileText
 import com.base.app.core.perfhud.score.decimal
 import com.base.app.core.perfhud.startup.StartRecord
 import com.base.app.core.perfhud.startup.StartupSummary
+// <opt:ui_components>
+import com.base.app.core.designsystem.component.text.AppMonoText
+import com.base.app.core.designsystem.component.text.AppText
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ import com.base.app.core.devtools.kit.AppMonoText
+//~ import com.base.app.core.devtools.kit.AppText
+// </opt-else:ui_components>
 
 @Composable
 internal fun MemorySection(recorder: PerformanceRecorder, memory: MemorySummary?, version: () -> Int) {

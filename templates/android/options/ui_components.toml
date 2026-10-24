@@ -1,0 +1,89 @@
+key = "ui_components"
+title = "UI components"
+label = "No UI components"
+headline = "Setup only: the architecture, every build guard and a theme skeleton, without UI components"
+description = """
+Every non-UI part of the project: the modules, MVI, Navigation 3 with deep links and process-death restore, data, DI,
+tests and every build guard. core:designsystem is a theme skeleton (AppTheme with colour, type, spacing, shape and
+motion slots, filled with neutral values and your colours and font) with no components; each screen is a one-line
+placeholder route over its ViewModel, and the app opens on a blank start screen. The developer panel, the performance
+overlay and LeakCanary stay."""
+default = true
+variant = "noui"
+# What only a project with UI components has. In core:navigation a main file stays when it imports
+# nothing from core.designsystem and nothing from shell, stack, presentation or transition, directly
+# or through another navigation file; everything else is the shell, and is listed here.
+owns = [
+  "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/component",
+  "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/foundation/content",
+  "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/foundation/draw",
+  "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/foundation/interaction",
+  "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/foundation/layout",
+  "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/foundation/scroll",
+  "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/animation",
+  "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/icon",
+  "core/designsystem/src/main/res/values/strings.xml",
+  "core/designsystem/src/test/kotlin/{pkg_path}/core/designsystem/component",
+  "core/designsystem/src/test/kotlin/{pkg_path}/core/designsystem/animation",
+  "core/designsystem/src/test/kotlin/{pkg_path}/core/designsystem/foundation/draw",
+  "core/designsystem/src/test/kotlin/{pkg_path}/core/designsystem/foundation/interaction",
+  "core/designsystem/src/test/kotlin/{pkg_path}/core/designsystem/foundation/scroll",
+  "core/designsystem/src/test/kotlin/{pkg_path}/core/designsystem/RecompositionJourneysTest.kt",
+  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/AppShell.kt",
+  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/HostCrossfade.kt",
+  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/NavigationChrome.kt",
+  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/ScrollToTopOnReselect.kt",
+  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/ShellState.kt",
+  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/back/BackCard.kt",
+  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/back/BackHandlerEffect.kt",
+  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/back/GateSettle.kt",
+  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/back/ShellRootBack.kt",
+  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/back/StackBackHandler.kt",
+  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/presentation",
+  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/shell",
+  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/stack",
+  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/transition",
+  "core/navigation/src/main/res/values/strings.xml",
+  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/HostCrossfadeTest.kt",
+  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/LayerProbe.kt",
+  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/RestoreTest.kt",
+  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/ShellStateTest.kt",
+  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/back/BackCardDrawingTest.kt",
+  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/back/BackCardDuringPushDrawingTest.kt",
+  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/back/BackCardStateTest.kt",
+  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/back/BackCardTest.kt",
+  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/back/RapidBackTest.kt",
+  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/presentation",
+  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/recomposition",
+  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/shell",
+  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/stack",
+  "core/ui/src/main/kotlin/{pkg_path}/core/ui/AppNetworkImage.kt",
+  "core/ui/src/main/kotlin/{pkg_path}/core/ui/paging",
+  "app/src/dev/kotlin/{pkg_path}/perf",
+  "feature/sample/src/main/kotlin/{pkg_path}/feature/sample/list/SampleListScreen.kt",
+  "feature/sample/src/main/kotlin/{pkg_path}/feature/sample/detail/SampleDetailScreen.kt",
+  "feature/sample/src/main/kotlin/{pkg_path}/feature/sample/component",
+  "feature/auth/src/main/kotlin/{pkg_path}/feature/auth/AuthFrame.kt",
+  "feature/settings/src/main/kotlin/{pkg_path}/feature/settings/NotificationsRow.kt",
+  "build-logic/convention/src/main/kotlin/{pkg_path}/buildlogic/guard/SheetRules.kt",
+  "build-logic/convention/src/test/kotlin/{pkg_path}/buildlogic/guard/SheetRuleCasesTest.kt",
+  "benchmark/src/main/kotlin/{pkg_path}/benchmark/pushpop",
+  "benchmark/src/main/kotlin/{pkg_path}/benchmark/rapidback",
+  "benchmark/src/main/kotlin/{pkg_path}/benchmark/recomposition",
+  "benchmark/src/main/kotlin/{pkg_path}/benchmark/scroll",
+  "benchmark/src/main/kotlin/{pkg_path}/benchmark/tabs",
+  "tools/perf",
+  "tools/adaptive",
+]
+
+[disables]
+catalog = "The catalog app shows the design system's components, and this project has none."
+collections = "Carousels, reorderable lists and the image viewer are components; build yours on the theme skeleton."
+datadisplay = "Stat tiles, charts and tables are components; build yours on the theme skeleton."
+formfields = "Code, money and phone fields are components; form state and validation (forms) stay."
+pickers = "Calendars and wheel pickers are components; build yours on the theme skeleton."
+liquidglass = "Glass is drawn by components and the shell, which this project leaves to your design system."
+
+[hides]
+design_style = "Your design system decides corners, surfaces and type voice; the theme starts from neutral values."
+motion_style = "Your components decide their motion; the theme keeps neutral springs and reduce-motion."

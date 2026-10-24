@@ -112,5 +112,15 @@ class IconTest(unittest.TestCase):
         self.assertTrue({"Home", "Grid", "Package", "CreditCard"} <= tabs.available_glyphs())
 
 
+
+class NoUiComponentsTest(unittest.TestCase):
+    """A project without UI components has no shell: no tabs, no warning, nothing in the tab regions."""
+
+    def test_no_tabs_and_no_warning(self):
+        noui = spec(features=["sample", "settings", "search", "profile", "paging"], feature_modules=["a", "b", "c"], ui_components=False).spec
+        self.assertEqual([], tabs.labels(noui))
+        self.assertEqual([], tabs.warnings(noui))
+        self.assertEqual({"shell-tabs": [], "start-destination-import": [], "start-destination": []}, tabs.regions(noui))
+
 if __name__ == "__main__":
     unittest.main()

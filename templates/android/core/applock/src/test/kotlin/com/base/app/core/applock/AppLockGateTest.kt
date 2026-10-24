@@ -12,7 +12,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
@@ -21,15 +20,10 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.click
-import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
-import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -38,11 +32,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.datastore.settings.AppSettingsStore
-import com.base.app.core.designsystem.component.overlay.AppAlert
-import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
-import com.base.app.core.designsystem.component.overlay.ToastMessage
-import com.base.app.core.designsystem.component.sheet.AppSheet
-import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,6 +50,19 @@ import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.android.controller.ActivityController
 import org.robolectric.annotation.Config
+// <opt:ui_components>
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsFocused
+import androidx.compose.ui.test.getUnclippedBoundsInRoot
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import com.base.app.core.designsystem.component.overlay.AppAlert
+import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
+import com.base.app.core.designsystem.component.overlay.ToastMessage
+import com.base.app.core.designsystem.component.sheet.AppSheet
+import com.base.app.core.designsystem.component.text.AppText
+// </opt:ui_components>
 
 /**
  * The cover is the lock: whatever the app shows underneath must be out of reach of a finger, a
@@ -132,6 +134,7 @@ class AppLockGateTest {
         compose.onNodeWithTag(ContentTag).assertDoesNotExist()
         compose.runOnIdle { assertFalse("The field kept focus, and the keyboard with it.", contentFocused) }
     }
+// <opt:ui_components>
 
     // The content stays composed and may clear focus at any moment, as screens do when the keyboard
     // hides; someone on a hardware keyboard must not lose their place on Unlock to it.
@@ -146,6 +149,7 @@ class AppLockGateTest {
         compose.runOnIdle { focusManager.clearFocus() }
         unlock.assertIsFocused()
     }
+// </opt:ui_components>
 
     @Test
     fun `unlocking hands the content back`() {
@@ -162,6 +166,7 @@ class AppLockGateTest {
         }
         compose.runOnIdle { assertTrue(contentFocused) }
     }
+// <opt:ui_components>
 
     // What the person left up when the app locked: Settings' sign-out alert, a sheet and a toast
     // with an action. The window draws them above its content, so above the cover too, unless the
@@ -260,6 +265,7 @@ class AppLockGateTest {
             assertEquals("Back went to the sheet under the cover.", 0, dismissed)
         }
     }
+// </opt:ui_components>
 
     private fun lockAgain(lock: AppLock) {
         compose.runOnIdle {
@@ -317,10 +323,12 @@ private class MemoryPreferences : DataStore<Preferences> {
 }
 
 private const val ContentTag = "locked_content"
+// <opt:ui_components>
 private const val AlertTitle = "Sign out of this phone?"
 private const val SignOut = "Sign out"
 private const val SheetText = "Sheet with the account's details"
 private const val ToastText = "Draft deleted"
+// </opt:ui_components>
 
 // Robolectric refuses SDK 36 and above on a Java 17 toolchain, which is what this project builds with.
 private const val ROBOLECTRIC_SDK = 35

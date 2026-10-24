@@ -1,23 +1,10 @@
 package com.base.app.feature.auth
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
@@ -26,18 +13,9 @@ import com.base.app.core.common.result.AppError
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.common.validation.Validators
 import com.base.app.core.common.validation.and
-import com.base.app.core.designsystem.animation.busyOverlay
-import com.base.app.core.designsystem.component.button.AppButton
-import com.base.app.core.designsystem.component.button.ButtonVariant
-// <opt:googlesignin>
+// <opt:googlesignin&ui_components>
 import com.base.app.core.designsystem.component.container.AppDivider
-// </opt:googlesignin>
-import com.base.app.core.designsystem.component.feedback.AppBanner
-import com.base.app.core.designsystem.component.feedback.AppTone
-import com.base.app.core.designsystem.component.input.AppSecureField
-import com.base.app.core.designsystem.component.input.AppTextField
-import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.theme.AppTheme
+// </opt:googlesignin&ui_components>
 import com.base.app.core.mvi.MviViewModel
 import com.base.app.core.mvi.UiEffect
 import com.base.app.core.mvi.UiEvent
@@ -45,13 +23,40 @@ import com.base.app.core.mvi.UiState
 import com.base.app.core.mvi.UiText
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.ui.MviScreen
-import com.base.app.core.ui.asString
 import com.base.app.data.auth.api.AuthRepository
 import com.base.app.feature.auth.api.PasswordResetKey
 import com.base.app.feature.auth.api.SignUpKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.drop
 import javax.inject.Inject
+// <opt:ui_components>
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
+import com.base.app.core.designsystem.animation.busyOverlay
+import com.base.app.core.designsystem.component.button.AppButton
+import com.base.app.core.designsystem.component.button.ButtonVariant
+import com.base.app.core.designsystem.component.feedback.AppBanner
+import com.base.app.core.designsystem.component.feedback.AppTone
+import com.base.app.core.designsystem.component.input.AppSecureField
+import com.base.app.core.designsystem.component.input.AppTextField
+import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.ui.asString
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ import com.base.app.core.ui.PlaceholderScreen
+// </opt-else:ui_components>
 
 /** The fields' text is not here: it lives in the ViewModel's `TextFieldState`s. */
 @Immutable
@@ -192,10 +197,18 @@ internal fun SignInRoute(
                 SignInEffect.OpenPasswordReset -> navigator.navigate(PasswordResetKey)
             }
         },
+    // <opt:ui_components>
     ) { state, onEvent ->
         SignInScreen(state = state, email = viewModel.email, password = viewModel.password, onEvent = onEvent)
     }
+    // </opt:ui_components>
+    // <opt-else:ui_components>
+    //~ ) { _, _ ->
+    //~     PlaceholderScreen(title = R.string.auth_sign_in)
+    //~ }
+    // </opt-else:ui_components>
 }
+// <opt:ui_components>
 
 /**
  * The design-system fields take a String, so each field's text is read from the ViewModel's
@@ -310,3 +323,4 @@ private fun SignInPreview() {
         )
     }
 }
+// </opt:ui_components>

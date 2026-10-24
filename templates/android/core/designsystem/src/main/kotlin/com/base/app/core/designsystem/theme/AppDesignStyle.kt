@@ -2,11 +2,14 @@ package com.base.app.core.designsystem.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
+// <opt:ui_components>
+import androidx.compose.runtime.staticCompositionLocalOf
+// </opt:ui_components>
 
+// <opt:ui_components>
 /**
  * What the components look like, as one choice. These are starting points: the values are in
  * `DesignTokens.Styles`, so changing a style there moves every component with it, and each component
@@ -16,6 +19,14 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens
  * AppTheme(designStyle = AppDesignStyle.Social) { … }
  * ```
  */
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ /**
+//~  * The look the project was generated with, as one choice. The theme skeleton takes its surface
+//~  * tone and type voice; the rest of each style (corners, card and field treatments, the tab bar) is
+//~  * there for the components the design system will have. The values are in `DesignTokens.Styles`.
+//~  */
+// </opt-else:ui_components>
 enum class AppDesignStyle {
     /** Cool neutrals, hairline outlines, a floating tab bar. Dense and calm: tools, finance, admin. */
     Utility,
@@ -170,7 +181,12 @@ enum class TypeVoice {
     Rounded,
 }
 
+// <opt:ui_components>
 /** The tokens a design style decides. Read through `AppTheme.style`. */
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ /** The tokens a design style decides. */
+// </opt-else:ui_components>
 @Immutable
 data class AppStyle(
     val shapes: AppShapes,
@@ -193,5 +209,7 @@ data class AppStyle(
     val surfaces: SurfaceTone,
     val voice: TypeVoice,
 )
+// <opt:ui_components>
 
 internal val LocalAppStyle = staticCompositionLocalOf { AppDesignStyle.Utility.style() }
+// </opt:ui_components>

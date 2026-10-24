@@ -1,5 +1,5 @@
 {
-  "generator_commit": "ab27ac9e0bbb",
+  "generator_commit": "8fdcba741743",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -1470,6 +1470,56 @@
           "title": "Snappy"
         }
       ],
+      "options": [
+        {
+          "checkbox": {
+            "label": "No UI components",
+            "ticked_value": false
+          },
+          "default": true,
+          "description": "Every non-UI part of the project: the modules, MVI, Navigation 3 with deep links and process-death restore, data, DI, tests and every build guard. core:designsystem is a theme skeleton (AppTheme with colour, type, spacing, shape and motion slots, filled with neutral values and your colours and font) with no components; each screen is a one-line placeholder route over its ViewModel, and the app opens on a blank start screen. The developer panel, the performance overlay and LeakCanary stay.",
+          "disables": [
+            {
+              "feature": "catalog",
+              "reason": "The catalog app shows the design system's components, and this project has none."
+            },
+            {
+              "feature": "collections",
+              "reason": "Carousels, reorderable lists and the image viewer are components; build yours on the theme skeleton."
+            },
+            {
+              "feature": "datadisplay",
+              "reason": "Stat tiles, charts and tables are components; build yours on the theme skeleton."
+            },
+            {
+              "feature": "formfields",
+              "reason": "Code, money and phone fields are components; form state and validation (forms) stay."
+            },
+            {
+              "feature": "pickers",
+              "reason": "Calendars and wheel pickers are components; build yours on the theme skeleton."
+            },
+            {
+              "feature": "liquidglass",
+              "reason": "Glass is drawn by components and the shell, which this project leaves to your design system."
+            }
+          ],
+          "headline": "Setup only: the architecture, every build guard and a theme skeleton, without UI components",
+          "hides": [
+            {
+              "field": "design_style",
+              "reason": "Your design system decides corners, surfaces and type voice; the theme starts from neutral values."
+            },
+            {
+              "field": "motion_style",
+              "reason": "Your components decide their motion; the theme keeps neutral springs and reduce-motion."
+            }
+          ],
+          "key": "ui_components",
+          "locked": null,
+          "title": "UI components"
+        }
+      ],
       "presets": [
         {
           "default": false,
@@ -2178,6 +2228,7 @@
           "title": "Snappy"
         }
       ],
+      "options": [],
       "presets": [
         {
           "default": false,
@@ -2599,6 +2650,7 @@
           "title": "Snappy"
         }
       ],
+      "options": [],
       "presets": [
         {
           "default": false,

@@ -1,6 +1,7 @@
 package com.base.app.navigation
 
 import org.junit.Assert.assertTrue
+// <opt:!ui_components>import org.junit.Assume.assumeTrue
 import org.junit.Test
 import java.io.File
 
@@ -34,6 +35,9 @@ class SharedDestinationsTest {
 
     @Test
     fun `the scan sees the features' keys and graphs`() {
+        // <opt:!ui_components>        // Without UI components a project can start with no feature module;
+        // <opt:!ui_components>        // the first one brings its keys, and from then on the scan must see them.
+        // <opt:!ui_components>        assumeTrue("No feature module yet", File("../feature").isDirectory)
         // A source tree the scan cannot read would pass the next test with nothing checked.
         assertTrue("No keys found in any feature's api package", owners.isNotEmpty())
         assertTrue("No entry<…> registrations found", registrations.isNotEmpty())

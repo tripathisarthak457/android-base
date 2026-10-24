@@ -5,8 +5,10 @@ The static consistency matrix: many generated projects, each checked without Gra
     python3 -m tests.consistency             # also every feature left out, 40 seeded subsets, hostile names
     python3 -m tests.consistency --keep DIR  # keep the projects for a look
 
-Every project ships all the languages. An issue fails the run unless `known_issues.toml` lists it
-with the package that will fix it.
+Every project ships all the languages. Runs named noui-* are generated without UI components: the
+quick run has every preset in both architectures, everything with modules and none with one; the
+full run adds each feature alone, seeded subsets and hostile names. An issue fails the run unless
+`known_issues.toml` lists it with the package that will fix it.
 """
 
 from __future__ import annotations
@@ -55,12 +57,17 @@ def combinations(quick: bool) -> dict[str, dict]:
     keys = [feature.key for feature in manifest.selectable]
     languages = list(translations.available("android"))
 
-    def spec(features, modules=(), app="Consistency", package=PACKAGE, architecture="compact"):
+    def spec(features, modules=(), app="Consistency", package=PACKAGE, architecture="compact", components=True):
         return {
             "schema": 2, "platform": "android", "app_name": app, "package_name": package,
             "architecture": architecture, "features": sorted(features), "feature_modules": list(modules),
-            "languages": languages,
+            "languages": languages, **({} if components else {"ui_components": False}),
         }
+
+    # Without UI components the disabled features are dropped with a note, so the presets are given as
+    # they are; each run's own list leaves them out where it picks features one by one.
+    disabled = set(manifest.options["ui_components"].disables)
+    noui_keys = [key for key in keys if key not in disabled]
 
     architectures = ["compact", "modular"]
     runs = {
@@ -72,6 +79,15 @@ def combinations(quick: bool) -> dict[str, dict]:
     runs["none-modules"] = spec([], ["orders"])
     runs.update({f"only-{key}": spec([key]) for key in keys})
     runs.update({f"pair-{index}": spec(features, ["orders"]) for index, features in enumerate(pairwise())})
+    runs.update({
+        f"noui-preset-{preset}-{architecture}": spec(
+            manifest.preset_features(preset), architecture=architecture, components=False
+        )
+        for preset in manifest.presets
+        for architecture in architectures
+    })
+    runs["noui-everything-modules"] = spec(keys, ["orders", "order_history"], components=False)
+    runs["noui-none-modules"] = spec([], ["orders"], components=False)
     if quick:
         return runs
 
@@ -86,6 +102,18 @@ def combinations(quick: bool) -> dict[str, dict]:
         )
     for index, (app, package, modules) in enumerate(HOSTILE):
         runs[f"hostile-{index}"] = spec(keys, modules, app=app, package=package)
+
+    runs.update({f"noui-only-{key}": spec([key], components=False) for key in noui_keys})
+    noui_rng = random.Random(SEED + 1)
+    for index in range(10):
+        density = noui_rng.choice((0.15, 0.35, 0.5, 0.65, 0.85))
+        runs[f"noui-random-{index}"] = spec(
+            [key for key in noui_keys if noui_rng.random() < density],
+            ["orders"] if noui_rng.random() < 0.5 else [],
+            components=False,
+        )
+    for index, (app, package, modules) in enumerate(HOSTILE[:3]):
+        runs[f"noui-hostile-{index}"] = spec(noui_keys, modules, app=app, package=package, components=False)
     return runs
 
 

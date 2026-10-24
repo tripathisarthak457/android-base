@@ -132,6 +132,7 @@ class CodeRulesTest {
             internal fun OrdersScreen() {} /*!*/
             """.trimIndent(),
         ),
+        // <opt:ui_components>
         Fixture(
             "sheet-ime-padding",
             FEATURE,
@@ -191,6 +192,18 @@ class CodeRulesTest {
             }
             """.trimIndent(),
         ),
+        // </opt:ui_components>
+        // <opt-else:ui_components>
+        //~ Fixture("designsystem-imports", DESIGN_SYSTEM, "import androidx.room.Dao /*!*/"),
+        //~ Fixture("stateless-params", DESIGN_SYSTEM, "@Composable fun Tag(rows: Flow<List<Row>>) {} /*!*/"),
+        //~ Fixture("raw-type", FEATURE, "private val s = 14.sp /*!*/"),
+        //~ Fixture("feature-primitive", FEATURE, "private fun f(m: Modifier) = m.border(border) /*!*/"),
+        //~ Fixture(
+        //~     "component-preview",
+        //~     DESIGN_SYSTEM,
+        //~     "package com.acme.core.designsystem.component /*!*/\n@Composable fun Tag(modifier: Modifier) {}",
+        //~ ),
+        // </opt-else:ui_components>
 
         Fixture("scroll-fling", CORE_UI, "private fun Photos() = LazyRow(state = photos) { } /*!*/"),
     )
@@ -291,7 +304,14 @@ class CodeRulesTest {
     @Test
     fun `rules hold only in their scope`() {
         assertEquals(emptyList<Finding>(), CodeRules.check(CORE_UI, "val p = 16.dp"))
+        // <opt:ui_components>
         assertEquals(emptyList<Finding>(), CodeRules.check(DESIGN_SYSTEM, "val c = Color(0xFF000000)"))
+        // </opt:ui_components>
+        // <opt-else:ui_components>
+        //~ // The tokens are where the hues are written; components read them.
+        //~ val theme = "core/designsystem/src/main/kotlin/com/acme/core/designsystem/theme/A.kt"
+        //~ assertEquals(emptyList<Finding>(), CodeRules.check(theme, "val c = Color(0xFF000000)"))
+        // </opt-else:ui_components>
         assertEquals(emptyList<Finding>(), CodeRules.check("app/src/main/kotlin/com/acme/di/CoroutinesModule.kt", "val io = Dispatchers.IO"))
         assertEquals(emptyList<Finding>(), CodeRules.check("data/orders/src/test/kotlin/A.kt", "val v = runBlocking { 1 }"))
         assertEquals(emptyList<Finding>(), CodeRules.check("feature/orders/src/test/kotlin/A.kt", "val c = Color(0xFF000000)"))
@@ -319,6 +339,8 @@ class CodeRulesTest {
         const val CORE_UI = "core/ui/src/main/kotlin/A.kt"
         const val CORE_COMMON = "core/common/src/main/kotlin/A.kt"
         const val DESIGN_SYSTEM = "core/designsystem/src/main/kotlin/A.kt"
+        // <opt:ui_components>
         const val SHEET = "core/designsystem/src/main/kotlin/com/acme/core/designsystem/component/sheet/A.kt"
+        // </opt:ui_components>
     }
 }

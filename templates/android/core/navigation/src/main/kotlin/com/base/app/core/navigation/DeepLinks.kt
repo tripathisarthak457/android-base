@@ -3,18 +3,20 @@ package com.base.app.core.navigation
 import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.snapshotFlow
 import com.base.app.core.common.navigation.AppNavKey
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.getAndUpdate
 import java.util.Optional
 import javax.inject.Inject
 import kotlin.jvm.optionals.getOrNull
+// <opt:ui_components>
+import androidx.compose.runtime.snapshotFlow
+import kotlinx.coroutines.flow.first
+// </opt:ui_components>
 
 /**
  * A link, normalised: `baseapp://items/12` and `https://baseapp.example.com/items/12` both read as
@@ -76,6 +78,7 @@ fun interface DeepLinkRoute {
     fun keyFor(link: DeepLink): AppNavKey?
 }
 
+// <opt:ui_components>
 /**
  * A link waiting for the app to be able to open it. It is held, not navigated to, when it arrives:
  * pushed onto the sign-in or onboarding stack it would load with no session and be gone by the time
@@ -83,6 +86,15 @@ fun interface DeepLinkRoute {
  * One per window, kept across its configuration changes, so a rotation in between keeps it and a
  * link opens in the window it was sent to.
  */
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ /**
+//~  * A link waiting for the app to be able to open it. It is held, not navigated to, when it arrives,
+//~  * and the app's stack takes it once, after the gates (the app lock, the API status) are past. One
+//~  * per window, kept across its configuration changes, so a rotation in between keeps it and a link
+//~  * opens in the window it was sent to.
+//~  */
+// </opt-else:ui_components>
 @ActivityRetainedScoped
 class PendingDeepLink @Inject constructor(
     private val routes: Set<@JvmSuppressWildcards DeepLinkRoute>,
@@ -106,6 +118,7 @@ class PendingDeepLink @Inject constructor(
     fun take(): AppNavKey? = link.getAndUpdate { null }
 }
 
+// <opt:ui_components>
 /**
  * Opens waiting links in the signed-in shell: a tab's root selects that tab; another key selects the
  * tab whose feature registered it and is pushed there, or presented above it.
@@ -119,3 +132,18 @@ fun OpenDeepLinks(state: ShellState, pending: PendingDeepLink) {
         }
     }
 }
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ /**
+//~  * Opens waiting links on [stack]: the key a link names is pushed over the screen on display, so
+//~  * Back returns to it. A link to the screen already on top opens nothing new.
+//~  */
+//~ @Composable
+//~ fun OpenDeepLinks(stack: AppBackStack, pending: PendingDeepLink) {
+//~     LaunchedEffect(stack, pending) {
+//~         pending.waiting.filterNotNull().collect {
+//~             pending.take()?.let { key -> stack.applyNow(NavCommand.Navigate(key)) }
+//~         }
+//~     }
+//~ }
+// </opt-else:ui_components>

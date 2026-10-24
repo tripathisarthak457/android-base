@@ -17,7 +17,13 @@ android {
 dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:datastore"))
+    // <opt:ui_components>
     implementation(project(":core:designsystem"))
+    // </opt:ui_components>
+    // <opt-else:ui_components>
+    //~ // "Update ready" goes to whatever shows the app's messages: LocalMessagePresenter.
+    //~ implementation(project(":core:ui"))
+    // </opt-else:ui_components>
 
     implementation(libs.play.app.update)
     implementation(libs.play.app.review)

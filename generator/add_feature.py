@@ -6,6 +6,9 @@ Add a feature module to an Android project that already exists.
     py add_feature.py orders profile --tab         # two modules, both as bottom-nav tabs
     py add_feature.py orders --project ../MyApp
     py add_feature.py --domain pricing            # a pure-Kotlin :domain:pricing, modular projects only
+
+In a project generated without UI components, a module gets its logic and a placeholder route, never
+UI components, and there is no tab bar to add it to.
 """
 
 from __future__ import annotations
@@ -22,7 +25,7 @@ from genkit import targets
 from genkit.core import prompts, translations
 from genkit.core.copy import write_text
 from genkit.core.record import RECORD_NAME
-from genkit.core.spec import Spec, SpecError, validate_module_name
+from genkit.core.spec import ARCHITECTURES, Spec, SpecError, validate_module_name
 from genkit.targets.android import scaffold, strings, tabs
 
 
@@ -46,7 +49,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--tab",
         action="store_true",
-        help="Also add each module as a bottom-navigation tab.",
+        help="Also add each module as a bottom-navigation tab. Not in a project without UI components.",
     )
     args = parser.parse_args(argv)
 
@@ -69,6 +72,13 @@ def main(argv: list[str] | None = None) -> int:
     if existing:
         print(prompts.red(f"Already present: {', '.join(existing)}. Delete them first, or rename."))
         return 1
+    components = spec.option(scaffold.UI_COMPONENTS)
+    if args.tab and not components:
+        print(prompts.red(
+            "This project has no tab bar (it was generated without UI components). The module is reachable by "
+            "its keys and deep links; add it to your own navigation once you build one."
+        ))
+        return 1
 
     scaffold.write_feature_modules(project, spec)
     strings.write(project, spec, {f"feature/{name}" for name in names})
@@ -78,7 +88,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.tab:
         register_tabs(project, spec.package_name, names)
 
-    report(names, spec.languages, tabs_added=args.tab)
+    report(names, spec.languages, tabs_added=args.tab, components=components)
     return 0
 
 
@@ -90,7 +100,7 @@ def add_domain(project: Path, raw_name: str) -> int:
     except SpecError as error:
         print(prompts.red(str(error)))
         return 1
-    if not any(project.glob("feature/*/impl/build.gradle.kts")) and not any(project.glob("data/*/impl/build.gradle.kts")):
+    if not is_modular(project):
         print(prompts.red(
             "Domain modules belong to modular projects, where features see data only through :api modules. "
             "In a compact project, put shared rules in the data module that owns them."
@@ -119,6 +129,17 @@ def add_domain(project: Path, raw_name: str) -> int:
     return 0
 
 
+def is_modular(project: Path) -> bool:
+    """
+    The architecture the project's record names; without one, whether a module is split into :api
+    and :impl. A modular project without UI components may have no module to split yet.
+    """
+    record = read_record(project)
+    if record is not None and record.get("architecture") in ARCHITECTURES:
+        return record["architecture"] == "modular"
+    return any(project.glob("feature/*/impl/build.gradle.kts")) or any(project.glob("data/*/impl/build.gradle.kts"))
+
+
 def inspect_project(project: Path, names: tuple[str, ...]) -> Spec:
     """Just enough of the original spec to scaffold against, with `names` as its modules."""
     settings = project / "settings.gradle.kts"
@@ -130,13 +151,51 @@ def inspect_project(project: Path, names: tuple[str, ...]) -> Spec:
     if match is None:
         raise SpecError("Could not read rootProject.name from settings.gradle.kts.")
 
+    package_name = find_package_name(project)
+    manifest = targets.get("android").manifest
     return Spec(
         app_name=match.group(1),
-        package_name=find_package_name(project),
+        package_name=package_name,
         features=frozenset({"network"} if ":core:network" in text else set()),
         feature_modules=names,
         languages=shipped_languages(project),
+        options=project_options(project, package_name),
+        option_defaults={key: option.default for key, option in manifest.options.items()},
     )
+
+
+def read_record(project: Path) -> dict | None:
+    """The project's `generator-spec.json`, or None when it has none or it is not a JSON object."""
+    record = project / RECORD_NAME
+    if not record.is_file():
+        return None
+    try:
+        data = json.loads(record.read_text(encoding="utf-8"))
+    except ValueError:
+        return None
+    return data if isinstance(data, dict) else None
+
+
+def project_options(project: Path, package_name: str) -> dict[str, bool]:
+    """
+    Each of the template's options as the project was generated: from its record, which writes an
+    option only when it is not the default; or, without a record, on when anything the option owns
+    is there, since a project generated with it off has none of that.
+    """
+    record = read_record(project)
+    values: dict[str, bool] = {}
+    for key, option in targets.get("android").manifest.options.items():
+        if record is not None:
+            value = record.get(key, option.default)
+            if not isinstance(value, bool):
+                raise SpecError(f"{RECORD_NAME} gives '{key}' as {value!r}; it must be true or false.", key)
+        elif option.owns:
+            path = package_name.replace(".", "/")
+            value = any((project / owned.format(pkg_path=path)).exists() for owned in option.owns)
+        else:
+            value = option.default
+        values[key] = value
+    return values
 
 
 def find_package_name(project: Path) -> str:
@@ -162,9 +221,9 @@ def shipped_languages(project: Path) -> tuple[str, ...]:
     The languages the project ships besides English. Lint fails a module that lacks one, so a new
     module needs every one of them.
     """
-    record = project / RECORD_NAME
-    if record.is_file():
-        languages = json.loads(record.read_text(encoding="utf-8")).get("languages", [])
+    record = read_record(project)
+    if record is not None:
+        languages = record.get("languages", [])
         if isinstance(languages, list):
             return tuple(languages)
     by_qualifier = {strings.resource_qualifier(tag): tag for tag in translations.available("android")}
@@ -288,19 +347,26 @@ def insert_after_last(
     return "".join(lines)
 
 
-def report(names: tuple[str, ...], languages: tuple[str, ...], tabs_added: bool) -> None:
+def report(names: tuple[str, ...], languages: tuple[str, ...], tabs_added: bool, components: bool) -> None:
     print()
     print(prompts.green(prompts.bold("  Done.")))
     print()
     for name in names:
-        print(f"    :data:{name}")
-        print(f"    :feature:{name}")
+        if components:
+            print(f"    :data:{name}")
+            print(f"    :feature:{name}")
+        else:
+            print(f"    Added :data:{name} and :feature:{name} with its ViewModel and a placeholder route.")
     if languages:
         print(prompts.dim(f"    strings in {', '.join(languages)} as well as English"))
+    if not components:
+        print(prompts.dim("    No UI components: build the screen on your design system."))
     print()
     print(prompts.bold("  Next"))
     print("    1. Sync Gradle.")
-    if not tabs_added:
+    if not components:
+        print("    2. Open it from your own navigation by its keys, or by a deep link.")
+    elif not tabs_added:
         print("    2. Register the screen where it belongs, or re-run with --tab.")
     print()
 

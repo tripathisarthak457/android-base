@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PlainNotes</string>
+    <string name="endpoint">https://plainnotes.example.com/plain</string>
+</resources>

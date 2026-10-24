@@ -1,6 +1,20 @@
 package com.base.app.feature.onboarding
 
 import androidx.annotation.StringRes
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.base.app.core.common.coroutines.ApplicationScope
+import com.base.app.core.datastore.settings.AppSettingsStore
+import com.base.app.core.mvi.MviViewModel
+import com.base.app.core.mvi.UiEffect
+import com.base.app.core.mvi.UiEvent
+import com.base.app.core.mvi.UiState
+import com.base.app.core.ui.MviScreen
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+// <opt:ui_components>
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,8 +27,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,9 +35,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.base.app.core.common.coroutines.ApplicationScope
-import com.base.app.core.datastore.settings.AppSettingsStore
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.container.AppScaffold
@@ -38,18 +47,14 @@ import com.base.app.core.designsystem.foundation.adaptive.shouldUseTwoPanes
 import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.mvi.MviViewModel
-import com.base.app.core.mvi.UiEffect
-import com.base.app.core.mvi.UiEvent
-import com.base.app.core.mvi.UiState
-import com.base.app.core.ui.MviScreen
-import dagger.hilt.android.lifecycle.HiltViewModel
-// <opt:push>
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ import com.base.app.core.ui.PlaceholderScreen
+// </opt-else:ui_components>
+// <opt:push&ui_components>
 import com.base.app.core.notification.permission.NotificationAccess
 import com.base.app.core.notification.permission.rememberNotificationPermission
-// </opt:push>
-import kotlinx.coroutines.launch
-import javax.inject.Inject
+// </opt:push&ui_components>
 
 /**
  * One onboarding page. Replace the placeholder copy and icons with your own. Resource ids rather
@@ -60,7 +65,9 @@ import javax.inject.Inject
 internal data class OnboardingPage(
     @param:StringRes val title: Int,
     @param:StringRes val body: Int,
+    // <opt:ui_components>
     val icon: ImageVector,
+    // </opt:ui_components>
 )
 
 @Immutable
@@ -101,11 +108,11 @@ internal class OnboardingViewModel @Inject constructor(
 
 @Composable
 internal fun OnboardingRoute(viewModel: OnboardingViewModel = hiltViewModel()) {
-    // <opt:push>
+    // <opt:push&ui_components>
     // Asked once, at the end, when the person knows what the app is for; whatever they answer,
     // onboarding finishes. Skip does not ask.
     val notifications = rememberNotificationPermission { viewModel.onEvent(OnboardingEvent.Completed) }
-    // </opt:push>
+    // </opt:push&ui_components>
     MviScreen(
         viewModel = viewModel,
         onEffect = { effect ->
@@ -115,6 +122,7 @@ internal fun OnboardingRoute(viewModel: OnboardingViewModel = hiltViewModel()) {
                 OnboardingEffect.Finished -> Unit
             }
         },
+    // <opt:ui_components>
     ) { state, onEvent ->
         OnboardingScreen(
             state = state,
@@ -129,7 +137,14 @@ internal fun OnboardingRoute(viewModel: OnboardingViewModel = hiltViewModel()) {
             },
         )
     }
+    // </opt:ui_components>
+    // <opt-else:ui_components>
+    //~ ) { _, _ ->
+    //~     PlaceholderScreen(title = R.string.onboarding_welcome)
+    //~ }
+    // </opt-else:ui_components>
 }
+// <opt:ui_components>
 
 @Composable
 internal fun OnboardingScreen(
@@ -250,25 +265,33 @@ private fun OnboardingPageContent(page: OnboardingPage, sideBySide: Boolean, mod
         )
     }
 }
+// </opt:ui_components>
 
 /** Placeholder copy. Replace it; the structure is the part worth keeping. */
 private val DefaultPages = listOf(
     OnboardingPage(
         title = R.string.onboarding_welcome,
         body = R.string.onboarding_body_what_it_does,
+        // <opt:ui_components>
         icon = AppIcons.Home,
+        // </opt:ui_components>
     ),
     OnboardingPage(
         title = R.string.onboarding_stay_in_the_loop,
         body = R.string.onboarding_body_benefit,
+        // <opt:ui_components>
         icon = AppIcons.Bell,
+        // </opt:ui_components>
     ),
     OnboardingPage(
         title = R.string.onboarding_your_data_is_yours,
         body = R.string.onboarding_body_reassurance,
+        // <opt:ui_components>
         icon = AppIcons.Lock,
+        // </opt:ui_components>
     ),
 )
+// <opt:ui_components>
 
 @Preview(showBackground = true)
 @Composable
@@ -277,3 +300,4 @@ private fun OnboardingPreview() {
         OnboardingScreen(state = OnboardingState(), onEvent = {})
     }
 }
+// </opt:ui_components>

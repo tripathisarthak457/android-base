@@ -98,9 +98,9 @@ internal abstract class VerifyCodeRulesTask : DefaultTask() {
                     reports.forEach { appendLine("  $it") }
                     appendLine()
                     append(
-                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; see " +
-                            "docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes " +
-                            "on the line above: // allow(<rule-id>): <reason>",
+                        "Each rule keeps the app smooth, light, adaptive, translatable or readable; AGENTS.md " +
+                            "and docs/PERFORMANCE.md say why. A justified exception goes on the line above: " +
+                            "// allow(<rule-id>): <reason>",
                     )
                 },
             )
@@ -151,7 +151,14 @@ internal object CodeRules {
         val message: String = if (reference == null) advice else "$advice (read .agents/skills/$reference)"
     }
 
+    // <opt:ui_components>
     val ALL: List<Rule> = ComposeRules.ALL + KotlinRules.ALL + StructureRules.ALL + AdaptiveRules.ALL + SheetRules.ALL + ScrollRules.ALL
+    // </opt:ui_components>
+    // <opt-else:ui_components>
+    //~ val ALL: List<Rule> =
+    //~     ComposeRules.ALL + KotlinRules.ALL + StructureRules.ALL + AdaptiveRules.ALL + ScrollRules.ALL +
+    //~         ComponentRules.ALL
+    // </opt-else:ui_components>
 
     /** Not a source pattern: a `@Composable` built without the Compose compiler crashes when first called. */
     private const val COMPOSE_COMPILER = "compose-compiler"

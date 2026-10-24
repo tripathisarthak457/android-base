@@ -139,5 +139,51 @@ class RunnerTest(unittest.TestCase):
             self.assertFalse(directory.exists())
 
 
+class NoUiRunsTest(unittest.TestCase):
+    """The matrix covers projects without UI components in its quick run and its full one."""
+
+    def test_the_quick_run_has_every_preset_in_both_architectures_and_the_module_extremes(self):
+        runs = runner.combinations(quick=True)
+        noui = {name for name in runs if name.startswith("noui-")}
+        expected = {
+            f"noui-preset-{preset}-{architecture}"
+            for preset in ("lean", "standard", "everything")
+            for architecture in ("compact", "modular")
+        } | {"noui-everything-modules", "noui-none-modules"}
+        self.assertEqual(expected, noui)
+        self.assertTrue(all(runs[name]["ui_components"] is False for name in noui))
+        self.assertTrue(all("ui_components" not in raw for name, raw in runs.items() if name not in noui))
+
+    def test_the_full_run_adds_each_feature_alone_seeded_subsets_and_hostile_names(self):
+        runs = runner.combinations(quick=False)
+        disabled = set(runner.get("android").manifest.options["ui_components"].disables)
+        alone = {name.removeprefix("noui-only-") for name in runs if name.startswith("noui-only-")}
+        self.assertFalse(alone & disabled)
+        self.assertEqual({feature.key for feature in runner.get("android").manifest.selectable} - disabled, alone)
+        self.assertEqual(10, sum(name.startswith("noui-random-") for name in runs))
+        self.assertEqual(3, sum(name.startswith("noui-hostile-") for name in runs))
+
+
+class NoUiChecksTest(unittest.TestCase):
+    """What the matrix reports about a project without UI components."""
+
+    def test_reaching_the_components_or_the_shell_is_reported(self):
+        from tests.consistency.checks import NO_UI_FORBIDDEN
+
+        for line in (
+            "import com.acme.core.designsystem.component.button.AppButton",
+            "import com.acme.core.designsystem.foundation.interaction.pressable",
+            "val state: ShellState = rememberShellState()",
+            "StackHost(stack, registry)",
+        ):
+            self.assertTrue(NO_UI_FORBIDDEN.search(line), line)
+        for line in (
+            "import com.acme.core.designsystem.theme.AppTheme",
+            "import com.acme.core.designsystem.foundation.adaptive.SizeClass",
+            "import com.acme.core.devtools.kit.AppText",
+        ):
+            self.assertFalse(NO_UI_FORBIDDEN.search(line), line)
+
+
 if __name__ == "__main__":
     unittest.main()

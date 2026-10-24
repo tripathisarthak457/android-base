@@ -41,16 +41,24 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
-import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.interaction.PressFeedback
-import com.base.app.core.designsystem.foundation.interaction.pressable
-import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.devtools.DevTools
 import com.base.app.core.devtools.page.DevToolsPage
 import com.base.app.core.devtools.panel.DevToolsPanel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+// <opt:ui_components>
+import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.interaction.PressFeedback
+import com.base.app.core.designsystem.foundation.interaction.pressable
+import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ import com.base.app.core.devtools.kit.AppText
+//~ import com.base.app.core.devtools.kit.LocalBottomChrome
+//~ import com.base.app.core.devtools.kit.PressFeedback
+//~ import com.base.app.core.devtools.kit.pressable
+// </opt-else:ui_components>
 
 /** The environment badge, and the inspector it opens. Placed last in the root, over every screen. */
 @Composable

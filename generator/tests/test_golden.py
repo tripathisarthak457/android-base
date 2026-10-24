@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import contextlib
 import errno
+import json
 import os
 import re
 import shutil
@@ -30,11 +31,14 @@ from genkit import tokens
 from genkit.core import pipeline, placement
 from genkit.core.copy import write_text
 from genkit.core.manifest import TemplateManifest
+from genkit.core.markers import TemplateError
 from genkit.core.spec import Spec, Vocabulary
 from genkit.core.target import BuildContext, RenderError
+from genkit.targets.android import variants
 
 HERE = Path(__file__).resolve().parent
 MINI = HERE / "fixtures" / "mini-template"
+MINI_VARIANTS = HERE / "fixtures" / "mini-variants"
 GOLDEN = HERE / "golden"
 
 
@@ -76,7 +80,7 @@ class MiniTarget:
         }
 
     def overlays(self, spec: Spec) -> dict[str, Path]:
-        return {}
+        return variants.overlays(spec, self.manifest, MINI_VARIANTS)
 
     def transform(self, project: Path, spec: Spec) -> list[str]:
         write_text(project / "transformed.txt", f"{spec.package_name} BaseApp\n")
@@ -105,6 +109,12 @@ CASES: dict[str, dict[str, Any]] = {
     "hostile": {
         "app_name": "Xbaseapp", "package_name": "com.base.apple", "features": ["screens", "network-v0", "old"],
         "display_name": "Café & Co",
+    },
+    # The option off: what it owns goes, its variant replaces and adds files, its blocks flip, and
+    # the feature it disables is dropped although the spec asks for it.
+    "option-off": {
+        "schema": 2, "platform": "android", "app_name": "Plain Notes", "package_name": "com.example.plain",
+        "features": ["net", "ui", "extra"], "visuals": False,
     },
 }
 
@@ -268,6 +278,30 @@ class GoldenTest(unittest.TestCase):
         generate("none", project)
         self.assertFalse((project / "extra").exists())
         self.assertFalse((project / "src/main/kotlin/io/bare/min/ExtraHook.kt").exists())
+
+    def test_an_option_off_is_recorded_and_its_disabled_feature_is_not(self):
+        project = self.root / "option-off"
+        generate("option-off", project)
+        record = json.loads((project / "generator-spec.json").read_text(encoding="utf-8"))
+        self.assertIs(False, record["visuals"])
+        self.assertEqual(["net", "ui"], record["features"])
+        generate("all", self.root / "all")
+        self.assertNotIn("visuals", json.loads((self.root / "all" / "generator-spec.json").read_text(encoding="utf-8")))
+
+    def test_the_variants_pass_their_check(self):
+        variants.check(MiniTarget().manifest, MINI_VARIANTS)
+
+    def test_a_variant_file_under_a_path_its_option_owns_is_refused(self):
+        copied = self.root / "variants"
+        shutil.copytree(MINI_VARIANTS, copied)
+        (copied / "bare" / "assets").mkdir()
+        (copied / "bare" / "assets" / "icon.txt").write_text("lost\n", encoding="utf-8")
+        with self.assertRaisesRegex(TemplateError, "variant file assets/icon.txt sits under a path the option owns"):
+            variants.check(MiniTarget().manifest, copied)
+
+    def test_an_option_without_its_variant_directory_is_refused(self):
+        with self.assertRaisesRegex(TemplateError, "variant 'bare' has no directory"):
+            variants.check(MiniTarget().manifest, self.root / "nowhere")
 
 
 class PlacementTest(unittest.TestCase):

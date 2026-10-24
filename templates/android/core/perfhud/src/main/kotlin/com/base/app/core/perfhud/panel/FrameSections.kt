@@ -12,7 +12,6 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.perfhud.R
 import com.base.app.core.perfhud.frame.FrameStats
@@ -24,6 +23,12 @@ import com.base.app.core.perfhud.recording.PerformanceRecorder
 import com.base.app.core.perfhud.recording.PerformanceSnapshot
 import com.base.app.core.perfhud.score.decimal
 import com.base.app.core.perfhud.score.minutesAndSeconds
+// <opt:ui_components>
+import com.base.app.core.designsystem.component.text.AppText
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ import com.base.app.core.devtools.kit.AppText
+// </opt-else:ui_components>
 
 /** The frame-time graph, the numbers, frames per second, the histogram and jank by screen. */
 @Composable

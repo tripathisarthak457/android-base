@@ -175,7 +175,10 @@ class CliTest(unittest.TestCase):
         )
         self.assertEqual(0, result.returncode, result.stderr)
         plan = json.loads(result.stdout)
-        self.assertEqual({"project_name", "enabled", "disabled", "removed_paths", "modules", "tabs", "notes", "warnings"}, set(plan))
+        self.assertEqual(
+            {"project_name", "enabled", "disabled", "options", "removed_paths", "modules", "tabs", "notes", "warnings"},
+            set(plan),
+        )
         self.assertTrue(any("com/example/wp01/std" in path for path in plan["removed_paths"]))
 
     def test_a_preset_replaces_a_specs_features(self):
@@ -202,6 +205,62 @@ class CliTest(unittest.TestCase):
     def test_list_features_json(self):
         features = json.loads(run("--list-features", "--json").stdout)
         self.assertIn("network", {feature["key"] for feature in features})
+
+    def test_list_features_names_the_option_and_what_it_leaves_out(self):
+        result = run("--list-features")
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertIn("No UI components", result.stdout)
+        self.assertIn("ui_components", result.stdout)
+        self.assertIn("leaves out catalog: The catalog app shows", result.stdout)
+
+
+class NoUiComponentsFlagTest(unittest.TestCase):
+    """--no-ui-components: on top of a spec, a preset or --all, and refused for a target without the option."""
+
+    def setUp(self):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        self.spec = Path(temp.name) / "spec.json"
+        self.spec.write_text(json.dumps(SPEC), encoding="utf-8")
+
+    def plan(self, *arguments: str) -> dict:
+        result = run("--spec", str(self.spec), *arguments, "--dry-run", "--json")
+        self.assertEqual(0, result.returncode, result.stderr)
+        return json.loads(result.stdout)
+
+    def test_the_plan_says_the_option_is_off_and_drops_what_it_disables(self):
+        plan = self.plan("--preset", "everything", "--no-ui-components")
+        self.assertEqual({"ui_components": False}, plan["options"])
+        disabled = targets.get("android").manifest.options["ui_components"].disables
+        self.assertFalse(set(plan["enabled"]) & set(disabled))
+        self.assertEqual([f"'{key}' was left out: {reason}" for key, reason in disabled.items()], plan["notes"])
+        self.assertEqual([], plan["tabs"])
+        self.assertEqual([], plan["modules"])
+
+    def test_without_the_flag_the_plan_is_what_it_was(self):
+        plan = self.plan("--preset", "standard")
+        self.assertEqual({"ui_components": True}, plan["options"])
+        self.assertIn("catalog", plan["enabled"])
+        self.assertEqual([], plan["notes"])
+
+    def test_the_human_dry_run_names_the_option(self):
+        result = run("--spec", str(self.spec), "--preset", "lean", "--no-ui-components", "--dry-run")
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertIn("Options:  ui_components off", result.stdout)
+
+    def test_another_platform_exits_2(self):
+        result = run("--target", "multiplatform", "--spec", str(self.spec), "--no-ui-components", "--dry-run", "--json")
+        self.assertEqual(2, result.returncode)
+        answer = json.loads(result.stdout)
+        self.assertEqual("No UI components is Android-only for now.", answer["error"])
+        self.assertEqual("ui_components", answer["field"])
+
+    def test_the_project_records_it(self):
+        out = Path(self.spec.parent) / "noui"
+        result = run("--spec", str(self.spec), "--no-ui-components", "--out", str(out), "--no-zip", "--json")
+        self.assertEqual(0, result.returncode, result.stderr)
+        record = json.loads((out / "generator-spec.json").read_text(encoding="utf-8"))
+        self.assertIs(False, record["ui_components"])
 
 
 class SaveSpecTest(unittest.TestCase):

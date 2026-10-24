@@ -84,8 +84,9 @@ def syntax_for(path: Path, overrides: dict[str, str] | None = None) -> Syntax | 
 #: Anything that looks like a marker. A line containing one must be exactly one valid marker.
 MARKER_TEXT = re.compile(r"</?(?:opt|opt-else|generated):")
 
-_KEY = r"[a-z][a-z0-9_-]*"
-_EXPR = rf"!?{_KEY}(?:[|&]!?{_KEY})*"
+#: A feature's or an option's key, as a marker names it.
+KEY_PATTERN = r"[a-z][a-z0-9_-]*"
+_EXPR = rf"!?{KEY_PATTERN}(?:[|&]!?{KEY_PATTERN})*"
 _NAME = r"[a-z][a-z0-9-]*"
 
 

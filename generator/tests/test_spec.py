@@ -267,6 +267,90 @@ class ValidationCasesTest(unittest.TestCase):
                     self.assertEqual(case["field"], caught.exception.field)
 
 
+class UiComponentsOptionTest(unittest.TestCase):
+    """`ui_components`: absent means true, so every spec written before it generates as it did."""
+
+    #: The record's fields as a project generated before the option existed has them.
+    RECORD_FIELDS = [
+        "schema", "platform", "app_name", "display_name", "package_name", "architecture", "features",
+        "feature_modules", "design_style", "motion_style", "accent_colour", "secondary_colour", "tertiary_colour",
+        "font_name", "mono_font_name", "haptics_enabled", "languages", "android",
+    ]
+
+    def test_a_spec_without_the_field_has_ui_components_and_a_record_without_it(self):
+        parsed = read(minimal(features=["catalog", "pickers"]))
+        self.assertTrue(parsed.spec.option("ui_components"))
+        self.assertEqual({"catalog", "pickers"}, set(parsed.spec.features))
+        self.assertEqual((), parsed.notes)
+        self.assertEqual(self.RECORD_FIELDS, list(to_json(parsed.spec, keystores=False)))
+
+    def test_true_is_the_default_and_is_not_written_down(self):
+        spec = read(minimal(ui_components=True)).spec
+        self.assertTrue(spec.option("ui_components"))
+        self.assertNotIn("ui_components", to_json(spec, keystores=False))
+        self.assertEqual(read(minimal()).spec, spec)
+
+    def test_false_is_recorded_and_reads_back_as_the_same_spec(self):
+        spec = read(minimal(ui_components=False, features=["network"])).spec
+        record = to_json(spec, keystores=False)
+        self.assertIs(False, record["ui_components"])
+        self.assertEqual(self.RECORD_FIELDS[:-1] + ["ui_components", "android"], list(record))
+        self.assertEqual(spec, read(record).spec)
+
+    def test_anything_but_a_boolean_is_refused_on_its_field(self):
+        for value in ("false", 0, 1, [], {}):
+            with self.subTest(value=value), self.assertRaises(SpecError) as caught:
+                read(minimal(ui_components=value))
+            self.assertEqual("ui_components", caught.exception.field)
+            self.assertEqual("`ui_components` must be true or false.", str(caught.exception))
+
+    def test_the_features_that_need_components_are_dropped_with_one_note_each(self):
+        parsed = read(minimal(ui_components=False, features=["pickers", "network", "catalog", "liquidglass"]))
+        self.assertEqual({"network"}, set(parsed.spec.features))
+        self.assertEqual({"network"}, set(parsed.requested))
+        manifest = ANDROID.manifest.options["ui_components"]
+        self.assertEqual(
+            tuple(f"'{key}' was left out: {manifest.disables[key]}" for key in ("catalog", "pickers", "liquidglass")),
+            parsed.notes,
+        )
+
+    def test_every_preset_combines_with_it(self):
+        disabled = set(ANDROID.manifest.options["ui_components"].disables)
+        for preset in ANDROID.manifest.presets:
+            with self.subTest(preset=preset):
+                features = sorted(ANDROID.manifest.preset_features(preset))
+                parsed = read(minimal(ui_components=False, features=features))
+                self.assertEqual(set(features) - disabled, set(parsed.spec.features))
+                self.assertEqual(len(set(features) & disabled), len(parsed.notes))
+
+    def test_a_set_override_turns_it_off_on_top_of_a_spec(self):
+        self.assertFalse(read(minimal(), [("ui_components", False)]).spec.option("ui_components"))
+
+    def test_a_spec_without_a_schema_keeps_it(self):
+        parsed = read({"app_name": "Acme", "package_name": "com.acme.x", "ui_components": False})
+        self.assertFalse(parsed.spec.option("ui_components"))
+        self.assertEqual((), parsed.ignored_fields)
+
+    def test_the_other_targets_say_why_they_refuse_it(self):
+        for platform, extra in (("multiplatform", {}), ("ios", {})):
+            raw = {"schema": 2, "platform": platform, "app_name": "Acme", "package_name": "com.acme.x", **extra}
+            with self.subTest(platform=platform), self.assertRaises(SpecError) as caught:
+                pipeline.read_spec({**raw, "ui_components": False}, get(platform))
+            self.assertEqual("ui_components", caught.exception.field)
+            self.assertEqual(
+                f"Unknown field 'ui_components': the {platform} target has no projects without UI components yet.",
+                str(caught.exception),
+            )
+
+    def test_the_record_of_every_fixture_is_unchanged_by_the_option(self):
+        for path in sorted((FIXTURES / "v2").glob("*.json")):
+            raw = json.loads(path.read_text(encoding="utf-8"))
+            if raw.get("platform", "android") != "android":
+                continue
+            with self.subTest(fixture=path.name):
+                self.assertNotIn("ui_components", to_json(read(raw).spec, keystores=False))
+
+
 class FixtureTest(unittest.TestCase):
 
     def test_the_v2_fixtures_read(self):

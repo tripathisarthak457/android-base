@@ -1,17 +1,9 @@
 package com.base.app.feature.auth
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
@@ -19,13 +11,6 @@ import androidx.lifecycle.viewmodel.compose.saveable
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.common.validation.Validators
 import com.base.app.core.common.validation.and
-import com.base.app.core.designsystem.component.button.AppButton
-import com.base.app.core.designsystem.component.feedback.AppBanner
-import com.base.app.core.designsystem.component.feedback.AppTone
-import com.base.app.core.designsystem.component.input.AppTextField
-import com.base.app.core.designsystem.component.navigation.AppTopBar
-import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.mvi.MviViewModel
 import com.base.app.core.mvi.UiEffect
 import com.base.app.core.mvi.UiEvent
@@ -33,11 +18,31 @@ import com.base.app.core.mvi.UiState
 import com.base.app.core.mvi.UiText
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.ui.MviScreen
-import com.base.app.core.ui.asString
 import com.base.app.data.auth.api.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.drop
 import javax.inject.Inject
+// <opt:ui_components>
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
+import com.base.app.core.designsystem.component.button.AppButton
+import com.base.app.core.designsystem.component.feedback.AppBanner
+import com.base.app.core.designsystem.component.feedback.AppTone
+import com.base.app.core.designsystem.component.input.AppTextField
+import com.base.app.core.designsystem.component.navigation.AppTopBar
+import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.ui.asString
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ import com.base.app.core.ui.PlaceholderScreen
+// </opt-else:ui_components>
 
 @Immutable
 internal data class PasswordResetState(
@@ -137,10 +142,18 @@ internal fun PasswordResetRoute(
                 PasswordResetEffect.NavigateBack -> navigator.navigateUp()
             }
         },
+    // <opt:ui_components>
     ) { state, onEvent ->
         PasswordResetScreen(state = state, email = viewModel.email, onEvent = onEvent)
     }
+    // </opt:ui_components>
+    // <opt-else:ui_components>
+    //~ ) { _, _ ->
+    //~     PlaceholderScreen(title = R.string.auth_reset_password)
+    //~ }
+    // </opt-else:ui_components>
 }
+// <opt:ui_components>
 
 @Composable
 internal fun PasswordResetScreen(
@@ -208,3 +221,4 @@ private fun PasswordResetPreview() {
         )
     }
 }
+// </opt:ui_components>

@@ -15,7 +15,9 @@ android {
 dependencies {
     // AppNavKey is in every signature of this module's API.
     api(project(":core:common"))
+    // <opt:ui_components>
     implementation(project(":core:designsystem"))
+    // </opt:ui_components>
 
     // Only this module sees androidx.navigation3; features depend on AppNavKey and NavGraphEntry.
     implementation(libs.androidx.navigation3.runtime)

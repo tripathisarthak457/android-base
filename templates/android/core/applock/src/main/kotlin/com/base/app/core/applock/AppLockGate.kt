@@ -2,16 +2,8 @@ package com.base.app.core.applock
 
 import androidx.activity.compose.LocalActivity
 import androidx.biometric.BiometricPrompt
-import androidx.compose.foundation.background
 import androidx.compose.foundation.focusGroup
-import androidx.compose.foundation.focusable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
@@ -22,28 +14,44 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
+// <opt:ui_components>
+import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.overlay.SuspendOverlays
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ import com.base.app.core.ui.PlaceholderScreen
+//~ import androidx.compose.foundation.clickable
+//~ import androidx.compose.ui.semantics.semantics
+//~ import androidx.compose.ui.semantics.stateDescription
+// </opt-else:ui_components>
 
 /**
  * Covers [content] with the unlock screen while [lock] says so. The decision for the first frame is
@@ -61,9 +69,11 @@ fun AppLockGate(
     content: @Composable () -> Unit,
 ) {
     val locked by lock.locked.collectAsStateWithLifecycle(initialValue = lock.isLockedNow())
+    // <opt:ui_components>
     // An alert or a toast left up when the app locked would otherwise draw over the cover and stay
     // usable through it. The overlays read this in the frame that shows the cover.
     SuspendOverlays { locked }
+    // </opt:ui_components>
 
     Box(modifier) {
         // Kept composed underneath, so unlocking returns to exactly where the person was. While
@@ -164,6 +174,7 @@ private fun UnlockScreen(lock: AppLock) {
     val back = rememberNavigationEventState(currentInfo = NavigationEventInfo.None)
     NavigationBackHandler(state = back, onBackCompleted = { activity.moveTaskToBack(true) })
 
+    // <opt:ui_components>
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -208,8 +219,24 @@ private fun UnlockScreen(lock: AppLock) {
             modifier = Modifier.padding(top = AppTheme.spacing.xl),
         )
     }
+    // </opt:ui_components>
+    // <opt-else:ui_components>
+    //~ // The cover takes every tap, so none reaches the app underneath; one asks again, as Unlock
+    //~ // would. The system's reason a try failed (a lockout, say) is what a screen reader announces.
+    //~ val unlock = stringResource(R.string.applock_action)
+    //~ PlaceholderScreen(
+    //~     title = R.string.applock_title,
+    //~     modifier = Modifier
+    //~         .focusProperties { onExit = { cancelFocusChange() } }
+    //~         .focusRequester(focus)
+    //~         .semantics { problem?.let { stateDescription = it } }
+    //~         .clickable(onClickLabel = unlock) { prompt.authenticate(info) },
+    //~ )
+    // </opt-else:ui_components>
 }
 
 private const val NotPrompted = Long.MIN_VALUE
+// <opt:ui_components>
 private val IconSize = 48.dp
 private val MessageMaxWidth = 360.dp
+// </opt:ui_components>
