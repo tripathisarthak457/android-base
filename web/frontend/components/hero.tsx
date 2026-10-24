@@ -22,7 +22,7 @@ export function Hero() {
       label: "build environments",
       detail: `${listed(flavours)}, debug and release`,
     },
-    { value: "0", label: "Material components", detail: "A foundation-only design system; the build refuses Material imports" },
+    { value: "0", label: "Material components", detail: "A foundation-only design system; the build refuses Material component imports" },
   ];
 
   return (

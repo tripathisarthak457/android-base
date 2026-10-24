@@ -9,14 +9,21 @@ import { readText, repositoryPath } from "./testing.ts";
 
 const PACKAGE = ["src", "main", "kotlin", "com", "base", "app"];
 const template = (...path: string[]) => readText("templates", "android", ...path);
-const guard = (file: string) => template("build-logic", "convention", ...PACKAGE, "buildlogic", "guard", file);
 
-/** Every main Kotlin source of a template module, joined. */
+/** Kotlin source without its comments, so a KDoc that names a call does not stand in for the call. */
+function withoutComments(source: string): string {
+  return source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:"])\/\/.*$/gm, "$1");
+}
+
+const kotlin = (...path: string[]) => withoutComments(template(...path));
+const guard = (file: string) => kotlin("build-logic", "convention", ...PACKAGE, "buildlogic", "guard", file);
+
+/** Every main Kotlin source of a template module, joined, without comments. */
 function moduleSources(...module: string[]): string {
   const root = repositoryPath("templates", "android", ...module, "src", "main", "kotlin");
   return readdirSync(root, { recursive: true, encoding: "utf8" })
     .filter((path) => path.endsWith(".kt"))
-    .map((path) => readText("templates", "android", ...module, "src", "main", "kotlin", ...path.split(/[\\/]/)))
+    .map((path) => kotlin(...module, "src", "main", "kotlin", ...path.split(/[\\/]/)))
     .join("\n");
 }
 
@@ -35,16 +42,21 @@ const refusesMaterial = () => {
   assert.match(guard("ComposeRules.kt"), /id = "material",/, "the build no longer refuses Material imports");
 };
 
+const refusesMaterialAndRipple = () => {
+  refusesMaterial();
+  assert.match(guard("ComposeRules.kt"), /id = "ripple",/, "the build no longer refuses the ripple");
+};
+
 const CLAIMS: Claim[] = [
   { file: "faq.tsx", says: "No Material component library is a dependency and the build refuses their imports", holds: refusesMaterial },
-  { file: "hero.tsx", says: "the build refuses Material imports", holds: refusesMaterial },
-  { file: "included.tsx", says: "The build refuses Material component imports and the ripple", holds: refusesMaterial },
+  { file: "hero.tsx", says: "the build refuses Material component imports", holds: refusesMaterial },
+  { file: "included.tsx", says: "The build refuses Material component imports and the ripple", holds: refusesMaterialAndRipple },
   {
     file: "faq.tsx",
     says: "window size classes come from androidx.window",
     holds: () =>
       assert.match(
-        template("core", "designsystem", ...PACKAGE, "core", "designsystem", "foundation", "adaptive", "SizeClass.kt"),
+        kotlin("core", "designsystem", ...PACKAGE, "core", "designsystem", "foundation", "adaptive", "SizeClass.kt"),
         /^import androidx\.window\.core\.layout\.computeWindowSizeClass$/m,
       ),
   },
@@ -53,7 +65,7 @@ const CLAIMS: Claim[] = [
     says: "the tabs out of sight pause",
     holds: () =>
       assert.match(
-        template("core", "navigation", ...PACKAGE, "core", "navigation", "shell", "tabs", "KeptTabs.kt"),
+        kotlin("core", "navigation", ...PACKAGE, "core", "navigation", "shell", "tabs", "KeptTabs.kt"),
         /owner\.cap = Lifecycle\.State\.CREATED/,
         "a hidden tab's lifecycle is no longer held at CREATED",
       ),
@@ -62,7 +74,7 @@ const CLAIMS: Claim[] = [
     file: "included.tsx",
     says: "The tab bar becomes a rail on wider windows and a sidebar on large ones",
     holds: () => {
-      const policy = template("core", "navigation", ...PACKAGE, "core", "navigation", "shell", "ShellChromePolicy.kt");
+      const policy = kotlin("core", "navigation", ...PACKAGE, "core", "navigation", "shell", "ShellChromePolicy.kt");
       assert.match(policy, /width == WindowWidth\.Medium -> NavigationChrome\.Rail/);
       assert.match(policy, /\(width >= WindowWidth\.Large\) -> NavigationChrome\.Sidebar/);
     },
