@@ -1,0 +1,21 @@
+{
+  "Loading": "लोड हो रहा है",
+  "Try Again": "फिर से कोशिश करें",
+  "You're Offline": "आप ऑफ़लाइन हैं",
+  "No Response": "कोई जवाब नहीं मिला",
+  "Server Problem": "सर्वर में समस्या",
+  "Request Failed": "अनुरोध पूरा नहीं हुआ",
+  "Something Went Wrong": "कुछ गड़बड़ हो गई",
+  "Check your connection, then try again.": "अपना कनेक्शन जांचें, फिर दोबारा कोशिश करें।",
+  "The server took too long to answer. Try again in a moment.": "सर्वर ने जवाब देने में बहुत देर लगाई। थोड़ी देर में फिर से कोशिश करें।",
+  "The server couldn't handle the request. Try again in a moment.": "सर्वर अनुरोध को पूरा नहीं कर सका। थोड़ी देर में फिर से कोशिश करें।",
+  "The server turned the request down.": "सर्वर ने अनुरोध अस्वीकार कर दिया।",
+  "The app received something it couldn't read.": "ऐप को कुछ ऐसा मिला जिसे वह पढ़ नहीं सका।",
+  "Saved data couldn't be read or written.": "सहेजा गया डेटा पढ़ा या लिखा नहीं जा सका।",
+  "Try again. If it keeps happening, restart the app.": "फिर से कोशिश करें। अगर ऐसा होता रहे, तो ऐप को फिर से शुरू करें।",
+  "Dismiss": "बंद करें",
+  "Close": "बंद करें",
+  "Discard changes?": "बदलाव छोड़ें?",
+  "Discard": "छोड़ें",
+  "Keep Editing": "संपादन जारी रखें"
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="applock_title">Zum Fortfahren entsperren</string>
+    <string name="applock_subtitle">Mit Fingerabdruck, Gesicht oder Displaysperre.</string>
+    <string name="applock_action">Entsperren</string>
+</resources>

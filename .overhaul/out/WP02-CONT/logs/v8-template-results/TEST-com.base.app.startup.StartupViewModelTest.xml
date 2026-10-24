@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.startup.StartupViewModelTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-24T03:15:39.808Z" hostname="SARTHAK-PC" time="0.087">
+  <properties/>
+  <testcase name="each sign-in after a sign-out is a new generation" classname="com.base.app.startup.StartupViewModelTest" time="0.076"/>
+  <testcase name="a restored process keeps the generation its saved shell was keyed on" classname="com.base.app.startup.StartupViewModelTest" time="0.006"/>
+  <testcase name="nothing is decided until the launch hooks have run" classname="com.base.app.startup.StartupViewModelTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

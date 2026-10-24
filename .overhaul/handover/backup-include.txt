@@ -335,6 +335,19 @@
 - /out/gen-pascal-collide/*
 - /out/gen-ref-all/*
 - /out/parentdir/*
+# the fast-track generator stage's generated projects (Oct 24; regenerable, and red-staging carries a .env.example)
+- /out/WP02-CONT/accept/*
+- /out/WP02-CONT/audit/*
+- /out/WP02-CONT/c-local/*
+- /out/WP02-CONT/c-net/*
+- /out/WP02-CONT/c-netdb/*
+- /out/WP02-CONT/fit/*
+- /out/WP02-CONT/h8/*
+- /out/WP02-CONT/logger-before/*
+- /out/WP02-CONT/presets/*
+- /out/WP02-CONT/red-staging/*
+- /out/WP02-CONT/std-after/*
+- /out/WP02-CONT/std-before/*
 - /verify-gen/out/authonly/*
 - /verify-gen/out/bare/A/*
 - /verify-gen/out/com.base.app.demo/*

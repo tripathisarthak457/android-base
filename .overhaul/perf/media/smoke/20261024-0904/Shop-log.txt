@@ -1,0 +1,50 @@
+--------- beginning of main
+I/perf.media( 5220): images busy t=310309551
+I/perf.media( 5220): decoded w=485 h=606 source=network
+I/perf.media( 5220): decoded w=485 h=606 source=network
+I/perf.media( 5220): decoded w=485 h=606 source=network
+I/perf.media( 5220): decoded w=485 h=606 source=network
+I/perf.media( 5220): decoded w=485 h=606 source=network
+I/perf.media( 5220): decoded w=485 h=606 source=network
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): images idle t=310314508
+I/perf.media( 5220): images busy t=310314508
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): decoded w=485 h=606 source=disk
+I/perf.media( 5220): decoded w=485 h=606 source=disk
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): decoded w=485 h=606 source=disk
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): decoded w=485 h=606 source=disk
+I/perf.media( 5220): decoded w=485 h=606 source=disk
+I/perf.media( 5220): decoded w=485 h=606 source=disk
+I/perf.media( 5220): decoded w=485 h=606 source=disk
+I/perf.media( 5220): decoded w=485 h=606 source=disk
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): decoded w=485 h=606 source=disk
+I/perf.media( 5220): decoded w=485 h=606 source=disk
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): prefetched
+I/perf.media( 5220): images idle t=310322234
+I/perf.media( 5220): gc done t=310324810

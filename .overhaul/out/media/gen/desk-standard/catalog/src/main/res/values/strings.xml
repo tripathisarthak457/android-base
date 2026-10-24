@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Desk standard Catalog</string>
+    <string name="catalog_demo_list" translatable="false">List</string>
+    <string name="catalog_demo_settings" translatable="false">Settings</string>
+</resources>

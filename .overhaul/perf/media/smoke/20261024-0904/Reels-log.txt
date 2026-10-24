@@ -1,0 +1,35 @@
+--------- beginning of main
+I/perf.media( 5358): images busy t=310330677
+I/perf.media( 5358): settle page=0 t=310330736
+I/perf.media( 5358): window pages=0,1,2
+I/perf.media( 5358): acquire page=0 clip=flower-moon t=310330748
+I/perf.media( 5358): acquire page=1 clip=kings-peak t=310330769
+I/perf.media( 5358): acquire page=2 clip=tilia t=310330781
+I/perf.media( 5358): decoded w=960 h=1707 source=network
+I/perf.media( 5358): prefetched
+I/perf.media( 5358): prefetched
+I/perf.media( 5358): decoded w=960 h=1707 source=network
+I/perf.media( 5358): decoder clip=tilia name=c2.qti.vp9.decoder init=72
+I/perf.media( 5358): decoder clip=flower-moon name=c2.qti.vp9.decoder init=40
+I/perf.media( 5358): prefetched
+I/perf.media( 5358): decoder clip=kings-peak name=c2.qti.vp9.decoder init=41
+I/perf.media( 5358): frame page=0 clip=flower-moon t=310332025
+I/perf.media( 5358): open page=0 ms=1355
+I/perf.media( 5358): frame page=1 clip=kings-peak t=310332199
+I/perf.media( 5358): prefetched
+I/perf.media( 5358): images idle t=310333664
+I/perf.media( 5358): images busy t=310339839
+I/perf.media( 5358): decoded w=960 h=1707 source=disk
+I/perf.media( 5358): images idle t=310339873
+I/perf.media( 5358): images busy t=310339885
+I/perf.media( 5358): frame page=2 clip=tilia t=310339897
+I/perf.media( 5358): decoded w=960 h=1707 source=disk
+I/perf.media( 5358): images idle t=310339930
+I/perf.media( 5358): images busy t=310340002
+I/perf.media( 5358): http status=429 host=upload.wikimedia.org
+I/perf.media( 5358): http status=429 host=upload.wikimedia.org
+I/perf.media( 5358): http status=429 host=upload.wikimedia.org
+I/perf.media( 5358): images idle t=310340401
+I/perf.media( 5358): settle page=1 t=310340612
+I/perf.media( 5358): window pages=1,2,0
+I/perf.media( 5358): gc done t=310347044

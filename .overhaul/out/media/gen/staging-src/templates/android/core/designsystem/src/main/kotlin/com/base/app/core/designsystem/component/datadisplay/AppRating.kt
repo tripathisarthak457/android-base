@@ -1,0 +1,78 @@
+package com.base.app.core.designsystem.component.datadisplay
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.drawscope.clipRect
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.base.app.core.designsystem.R
+import com.base.app.core.designsystem.component.text.AppIcon
+import com.base.app.core.designsystem.foundation.interaction.PressFeedback
+import com.base.app.core.designsystem.foundation.interaction.pressable
+import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.theme.AppTheme
+
+/** A star rating, with real half stars. */
+@Composable
+fun AppRating(
+    rating: Float,
+    modifier: Modifier = Modifier,
+    max: Int = 5,
+    starSize: Dp = 18.dp,
+    onRatingChange: ((Int) -> Unit)? = null,
+) {
+    val colors = AppTheme.colors
+    // "3.5 out of 5" rather than 3.5 on its own, which a screen reader would read as a bare number.
+    val description = stringResource(R.string.designsystem_rating, rating, max)
+
+    Row(
+        modifier = modifier.semantics { contentDescription = description },
+        horizontalArrangement = Arrangement.spacedBy(2.dp),
+    ) {
+        repeat(max) { index ->
+            val fill = (rating - index).coerceIn(0f, 1f)
+            val tapModifier = if (onRatingChange != null) {
+                Modifier.pressable(onClick = { onRatingChange(index + 1) }, feedback = PressFeedback.Scale)
+            } else {
+                Modifier
+            }
+
+            Box(
+                modifier = Modifier
+                    .clearAndSetSemantics {}
+                    .then(tapModifier),
+            ) {
+                AppIcon(
+                    imageVector = if (fill >= FullStar) AppIcons.StarFilled else AppIcons.Star,
+                    contentDescription = null,
+                    tint = if (fill >= FullStar) colors.warning.content else colors.outline,
+                    size = starSize,
+                )
+
+                if (fill >= HalfStar && fill < FullStar) {
+                    AppIcon(
+                        imageVector = AppIcons.StarFilled,
+                        contentDescription = null,
+                        tint = colors.warning.content,
+                        size = starSize,
+                        modifier = Modifier.drawWithContent {
+                            clipRect(right = size.width / 2f) { this@drawWithContent.drawContent() }
+                        },
+                    )
+                }
+            }
+        }
+    }
+}
+
+/** Above this much of a star is filled, it reads as whole; above half, as a half. */
+private const val FullStar = 0.75f
+private const val HalfStar = 0.25f

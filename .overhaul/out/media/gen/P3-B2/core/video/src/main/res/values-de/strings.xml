@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="video_failed">Dieses Video kann nicht abgespielt werden</string>
+    <string name="video_retry">Erneut versuchen</string>
+    <string name="video_play">Abspielen</string>
+    <string name="video_pause">Pausieren</string>
+</resources>

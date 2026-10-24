@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sample_no_matches">Aucun résultat</string>
+    <string name="sample_no_matches_for_query">Rien ne correspond à « %1$s ».</string>
+    <string name="sample_nothing_here_yet">Rien pour l’instant</string>
+    <string name="sample_pulled_from_a_live_api">Données d’une API réelle</string>
+    <string name="sample_reload">Recharger</string>
+    <string name="sample_refresh_failed">Impossible d’actualiser.</string>
+    <string name="sample_detail_title">Détail</string>
+    <string name="sample_related">Similaires</string>
+    <string name="sample_title">Exemples</string>
+    <string name="sample_search_titles">Rechercher un titre</string>
+    <string name="sample_empty_explanation">Quand il y aura quelque chose à afficher, cela apparaîtra sur cet écran.</string>
+</resources>

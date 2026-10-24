@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="designsystem_cancel">Cancelar</string>
+    <string name="designsystem_close">Fechar</string>
+    <string name="designsystem_try_again">Tentar de novo</string>
+    <string name="designsystem_offline_title">Você está off-line</string>
+    <string name="designsystem_error_title">Algo deu errado</string>
+    <string name="designsystem_navigate_back">Voltar</string>
+    <string name="designsystem_hide_password">Ocultar senha</string>
+    <string name="designsystem_show_password">Mostrar senha</string>
+    <string name="designsystem_search">Buscar</string>
+    <string name="designsystem_clear_search">Limpar busca</string>
+    <string name="designsystem_remove_item">Remover %1$s</string>
+    <string name="designsystem_show_more">Mostrar mais</string>
+    <string name="designsystem_show_less">Mostrar menos</string>
+    <string name="designsystem_expanded">Expandido</string>
+    <string name="designsystem_collapsed">Recolhido</string>
+    <string name="designsystem_expand">Expandir</string>
+    <string name="designsystem_collapse">Recolher</string>
+    <string name="designsystem_page_of">Página %1$d de %2$d</string>
+    <string name="designsystem_loading">Carregando</string>
+    <string name="designsystem_refresh">Atualizar</string>
+    <string name="designsystem_refreshing">Atualizando</string>
+    <string name="designsystem_show_menu">Mostrar menu</string>
+    <plurals name="designsystem_people_count">
+        <item quantity="one">%1$d pessoa</item>
+        <item quantity="other">%1$d pessoas</item>
+    </plurals>
+    <string name="designsystem_sheet_pane">Painel</string>
+    <string name="designsystem_sheet_grabber">Redimensionar painel</string>
+    <string name="designsystem_sheet_expand">Expandir painel</string>
+    <string name="designsystem_sheet_collapse">Recolher painel</string>
+    <string name="designsystem_sheet_dismiss">Dispensar painel</string>
+    <string name="designsystem_sheet_close_scrim">Fechar painel</string>
+    <string name="designsystem_sheet_state_expanded">Expandido</string>
+    <string name="designsystem_sheet_state_partial">Parcialmente expandido</string>
+    <string name="designsystem_sheet_state_collapsed">Recolhido</string>
+    <string name="designsystem_actions_pane">Ações</string>
+    <string name="designsystem_sheet_discard_title">Descartar alterações?</string>
+    <string name="designsystem_sheet_discard">Descartar</string>
+    <string name="designsystem_sheet_keep_editing">Continuar editando</string>
+    <string name="designsystem_none">Nenhum</string>
+    <string name="designsystem_nothing_selected">Nada selecionado</string>
+    <string name="designsystem_nothing_selected_message">Escolha algo na lista para ver aqui.</string>
+</resources>

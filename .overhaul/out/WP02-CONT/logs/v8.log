@@ -1,0 +1,105 @@
+
+== 08:38:26 branch 89fc915d3 with 4 changed paths
+
+== 08:38:26 1. the audit project: regenerate
+2
+
+== 08:38:37 2. the audit on the generated screens (expect PASS)
+rc=0
+BUILD SUCCESSFUL in 1m 23s
+audit cases=60 real-screen failures=0 planted failed=0 planted passed=0
+screens: ['AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview', 'AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview', 'OrderDetailScreenPreview', 'OrderListScreenPreview', 'SampleListLoadingPreview']
+
+== 08:41:47 3. the planted screen (expect FAIL naming each planted kind; every real screen passes)
+rc=1
+audit cases=72 real-screen failures=0 planted failed=12 planted passed=0
+screens: ['AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview', 'AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview', 'AuditPlantedPreview', 'OrderDetailScreenPreview', 'OrderListScreenPreview', 'SampleListLoadingPreview']
+  "A sentence long enough to run across several lines on a phone and across one very long line on a desktop window# ": the text is cut off  <- 12 windows
+  "A sentence long enough to run across several lines on a phone and across one very long line on a desktop window# A sentence long enough to run across several lines on a phone and across one very long line on a desktop window# A sentence long enough to run across several lines on a phone and across one very long line on a desktop window# ": a line #dp wide, past the readable #dp  <- 4 windows
+  "bottom": under the tab bar  <- 2 windows
+  "tiny-a": its #dp touch area runs into "tiny-b"  <- 12 windows
+  "tiny-b": its #dp touch area runs into "tiny-a"  <- 12 windows
+  "under" and "over" overlap  <- 12 windows
+  "wide": partly outside the window at Rect#fromLTRB(-#, #, #, #)  <- 12 windows
+
+== 08:44:17 4. the audit on the template's own screens, every feature on (expect PASS)
+rc=0
+BUILD SUCCESSFUL in 1m 28s
+audit cases=12 real-screen failures=0 planted failed=0 planted passed=0
+screens: ['SampleListLoadingPreview']
+template app tests=35 failures=0
+
+== 08:45:46 5. v7: the list ViewModel's tests against a mutated reducer, then restored
+rc=0
+
+== 08:45:47 mutated: the reducer without its Empty and Error branches (expect the two cases FAIL)
+rc=1
+pass a failed first load is an error the screen can retry
+FAIL rows written after an empty answer replace the empty state
+FAIL rows written after a failed first load replace the error
+pass appearing loads once and lands in Success
+pass rows already stored are shown when the first load fails
+pass a failed refresh keeps the rows on screen
+pass an empty answer is Empty, not Success with no rows
+
+== 08:46:38 restored (expect every case pass)
+rc=0
+pass a failed first load is an error the screen can retry
+pass rows written after an empty answer replace the empty state
+pass rows written after a failed first load replace the error
+pass appearing loads once and lands in Success
+pass rows already stored are shown when the first load fails
+pass a failed refresh keeps the rows on screen
+pass an empty answer is Empty, not Success with no rows
+
+V7 DONE 08:46:45
+
+== 08:46:45 6. none: the stability check after a forced unit-test compile, one worker
+rc=66
+
+== 09:05:18 6. lean: the stability check after a forced unit-test compile, one worker
+rc=0
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugUnitTestKotlin
+> Task :core:designsystem:checkComposeStability
+> Task :core:navigation:compileDebugKotlin
+> Task :core:navigation:compileDebugUnitTestKotlin
+> Task :core:navigation:checkComposeStability
+> Task :core:ui:compileDebugKotlin
+> Task :core:ui:checkComposeStability
+BUILD SUCCESSFUL in 2m 28s
+  designsystem: report read 1264 lines; the shared file now 87 lines
+  navigation: report read 231 lines; the shared file now 16 lines
+  ui: report read 27 lines; the shared file now 27 lines
+
+== 09:07:50 6. standard: the stability check after a forced unit-test compile, one worker
+rc=0
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugUnitTestKotlin
+> Task :core:designsystem:checkComposeStability
+> Task :core:navigation:compileDebugKotlin
+> Task :core:navigation:compileDebugUnitTestKotlin
+> Task :core:navigation:checkComposeStability
+> Task :core:ui:compileDebugKotlin
+> Task :core:ui:checkComposeStability
+BUILD SUCCESSFUL in 1m 19s
+  designsystem: report read 1264 lines; the shared file now 87 lines
+  navigation: report read 231 lines; the shared file now 16 lines
+  ui: report read 31 lines; the shared file now 31 lines
+
+== 09:15:29 6. all: the stability check after a forced unit-test compile, one worker
+rc=0
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugUnitTestKotlin
+> Task :core:designsystem:checkComposeStability
+> Task :core:navigation:compileDebugKotlin
+> Task :core:navigation:compileDebugUnitTestKotlin
+> Task :core:navigation:checkComposeStability
+> Task :core:ui:compileDebugKotlin
+> Task :core:ui:checkComposeStability
+BUILD SUCCESSFUL in 2m 23s
+  designsystem: report read 1576 lines; the shared file now 126 lines
+  navigation: report read 231 lines; the shared file now 16 lines
+  ui: report read 60 lines; the shared file now 60 lines
+
+== 09:38:05 6. everything: the stability check after a forced unit-test compile, one worker

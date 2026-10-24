@@ -1,0 +1,608 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Starting a Gradle Daemon, 3 stopped Daemons could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :app:verifyCodeRules :core:database:compileDebugKotlin :data:order:testDebugUnitTest :feature:order:testDebugUnitTest :app:testDevDebugUnitTest
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies
+> Task :core:database:verifyModuleDependencies
+> Task :core:database:verifyApiPurity
+> Task :core:database:preBuild
+> Task :core:database:preDebugBuild
+> Task :core:common:verifyApiPurity
+> Task :core:datastore:verifyApiPurity
+> Task :core:datastore:verifyModuleDependencies
+> Task :core:datastore:preBuild
+> Task :core:database:javaPreCompileDebug FROM-CACHE
+> Task :core:datastore:preDebugBuild
+> Task :core:datastore:javaPreCompileDebug FROM-CACHE
+> Task :core:network:verifyModuleDependencies
+> Task :core:network:verifyApiPurity
+> Task :core:network:preBuild
+> Task :core:network:preDebugBuild
+> Task :core:network:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:verifyApiPurity
+> Task :core:testing:verifyModuleDependencies
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :data:order:verifyApiPurity
+> Task :data:order:verifyModuleDependencies
+> Task :data:order:preBuild
+> Task :data:order:preDebugBuild
+> Task :data:order:javaPreCompileDebug FROM-CACHE
+> Task :data:order:preDebugTestFixturesBuild
+> Task :data:order:javaPreCompileDebugTestFixtures FROM-CACHE
+> Task :app:verifyCodeRules
+> Task :data:order:preDebugUnitTestBuild
+> Task :data:order:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:mvi:verifyModuleDependencies
+> Task :core:mvi:verifyApiPurity
+> Task :core:mvi:preBuild
+> Task :core:mvi:preDebugBuild
+> Task :core:navigation:verifyApiPurity
+> Task :core:navigation:verifyModuleDependencies
+> Task :core:navigation:preBuild
+> Task :core:navigation:preDebugBuild
+> Task :core:navigation:generateDebugResources FROM-CACHE
+> Task :core:mvi:javaPreCompileDebug FROM-CACHE
+> Task :core:navigation:processDebugNavigationResources FROM-CACHE
+> Task :core:navigation:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:ui:verifyApiPurity
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:ui:verifyModuleDependencies
+> Task :core:ui:preBuild
+> Task :core:ui:preDebugBuild
+> Task :core:ui:generateDebugResources FROM-CACHE
+> Task :core:designsystem:packageDebugResources
+> Task :core:ui:packageDebugResources
+> Task :core:navigation:packageDebugResources
+> Task :core:ui:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:ui:parseDebugLocalResources FROM-CACHE
+> Task :core:navigation:parseDebugLocalResources FROM-CACHE
+> Task :core:ui:generateDebugRFile
+> Task :core:navigation:generateDebugRFile
+> Task :core:designsystem:generateDebugRFile
+> Task :core:ui:javaPreCompileDebug FROM-CACHE
+> Task :feature:order:verifyModuleDependencies
+> Task :feature:order:verifyApiPurity
+> Task :feature:order:preBuild
+> Task :feature:order:preDebugBuild
+> Task :feature:order:generateDebugResources
+> Task :feature:order:generateDebugComposePreviewRobolectricTests
+> Task :feature:order:processDebugNavigationResources
+> Task :feature:order:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:designsystem:compileDebugLibraryResources FROM-CACHE
+> Task :feature:order:packageDebugResources
+> Task :core:navigation:mapDebugSourceSetPaths
+> Task :core:navigation:compileDebugLibraryResources FROM-CACHE
+> Task :core:ui:mapDebugSourceSetPaths
+> Task :core:ui:compileDebugLibraryResources FROM-CACHE
+> Task :core:database:writeDebugAarMetadata
+> Task :core:datastore:writeDebugAarMetadata
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:mvi:writeDebugAarMetadata
+> Task :core:navigation:writeDebugAarMetadata
+> Task :feature:order:parseDebugLocalResources
+> Task :core:network:writeDebugAarMetadata
+> Task :core:testing:writeDebugAarMetadata
+> Task :core:ui:writeDebugAarMetadata
+> Task :feature:order:generateDebugRFile
+> Task :data:order:writeDebugAarMetadata
+> Task :feature:order:preDebugUnitTestBuild
+> Task :data:order:writeDebugTestFixturesAarMetadata
+> Task :feature:order:writeDebugAarMetadata
+> Task :core:testing:compose:verifyModuleDependencies
+> Task :feature:order:mapDebugSourceSetPaths
+> Task :core:testing:compose:verifyApiPurity
+> Task :core:testing:compose:preBuild
+> Task :core:testing:compose:preDebugBuild
+> Task :core:testing:compose:writeDebugAarMetadata
+> Task :feature:order:compileDebugLibraryResources
+> Task :feature:order:mapDebugUnitTestSourceSetPaths
+> Task :core:database:generateDebugEmptyResourceFiles
+> Task :core:datastore:generateDebugEmptyResourceFiles
+> Task :core:mvi:generateDebugEmptyResourceFiles
+> Task :core:network:generateDebugEmptyResourceFiles
+> Task :core:testing:generateDebugEmptyResourceFiles
+> Task :data:order:generateDebugEmptyResourceFiles
+> Task :data:order:generateDebugTestFixturesEmptyResourceFiles
+> Task :feature:order:generateDebugUnitTestResources FROM-CACHE
+> Task :core:testing:compose:generateDebugEmptyResourceFiles
+> Task :feature:order:checkDebugUnitTestAarMetadata
+> Task :core:database:processDebugManifest
+> Task :core:datastore:processDebugManifest
+> Task :core:designsystem:extractDeepLinksDebug FROM-CACHE
+> Task :core:designsystem:processDebugManifest
+> Task :core:mvi:processDebugManifest
+> Task :core:navigation:extractDeepLinksDebug FROM-CACHE
+> Task :core:navigation:processDebugManifest
+> Task :core:network:processDebugManifest
+> Task :core:testing:processDebugManifest
+> Task :core:ui:extractDeepLinksDebug FROM-CACHE
+> Task :core:ui:processDebugManifest
+> Task :data:order:processDebugManifest
+> Task :data:order:processDebugTestFixturesManifest
+> Task :feature:order:extractDeepLinksDebug FROM-CACHE
+> Task :feature:order:processDebugManifest
+> Task :core:testing:compose:processDebugManifest
+> Task :feature:order:mergeDebugUnitTestManifest
+> Task :feature:order:processDebugUnitTestManifest
+> Task :feature:order:mergeDebugUnitTestResources
+> Task :feature:order:processDebugUnitTestResources
+> Task :core:testing:compose:javaPreCompileDebug FROM-CACHE
+> Task :feature:order:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:database:generateDebugAssets UP-TO-DATE
+> Task :core:database:mergeDebugAssets
+> Task :core:datastore:generateDebugAssets UP-TO-DATE
+> Task :core:datastore:mergeDebugAssets
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets
+> Task :core:mvi:generateDebugAssets UP-TO-DATE
+> Task :core:mvi:mergeDebugAssets
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:mergeDebugAssets
+> Task :core:network:generateDebugAssets UP-TO-DATE
+> Task :core:network:mergeDebugAssets
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:mergeDebugAssets
+> Task :core:ui:generateDebugAssets UP-TO-DATE
+> Task :core:ui:mergeDebugAssets
+> Task :data:order:generateDebugAssets UP-TO-DATE
+> Task :data:order:mergeDebugAssets
+> Task :data:order:generateDebugTestFixturesAssets UP-TO-DATE
+> Task :data:order:mergeDebugTestFixturesAssets
+> Task :feature:order:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:order:generateDebugAssets UP-TO-DATE
+> Task :feature:order:mergeDebugAssets
+> Task :core:testing:compose:generateDebugAssets UP-TO-DATE
+> Task :core:testing:compose:mergeDebugAssets
+> Task :feature:order:mergeDebugUnitTestAssets
+> Task :feature:order:packageDebugUnitTestForUnitTest
+> Task :feature:order:generateDebugUnitTestConfig
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDevDebugBuild UP-TO-DATE
+> Task :app:generateDevDebugBuildConfig
+> Task :app:generateDevDebugResources
+> Task :app:packageDevDebugResources
+> Task :data:abcdefghijklmnopqrstuvwxyzabcd:verifyApiPurity
+> Task :data:abcdefghijklmnopqrstuvwxyzabcd:verifyModuleDependencies
+> Task :data:abcdefghijklmnopqrstuvwxyzabcd:preBuild
+> Task :data:abcdefghijklmnopqrstuvwxyzabcd:preDebugBuild
+> Task :data:abcdefghijklmnopqrstuvwxyzabcd:generateDebugEmptyResourceFiles
+> Task :data:sample:verifyApiPurity
+> Task :data:sample:verifyModuleDependencies
+> Task :data:sample:preBuild
+> Task :data:sample:preDebugBuild
+> Task :data:sample:generateDebugEmptyResourceFiles
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:verifyApiPurity
+> Task :core:common:compileKotlin
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:verifyModuleDependencies
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:preBuild
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:preDebugBuild
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:processDebugNavigationResources FROM-CACHE
+> Task :core:common:jar
+> Task :feature:sample:verifyApiPurity
+> Task :core:testing:compose:compileDebugKotlin
+> Task :core:testing:compileDebugKotlin
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibRuntimeToJarDebug
+> Task :core:testing:processDebugJavaRes
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :core:mvi:compileDebugKotlin
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibRuntimeToJarDebug
+> Task :core:mvi:processDebugJavaRes
+> Task :core:mvi:bundleLibCompileToJarDebug
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:bundleLibCompileToJarDebug
+> Task :core:testing:compose:bundleLibRuntimeToJarDebug
+> Task :core:testing:compose:processDebugJavaRes
+> Task :feature:sample:verifyModuleDependencies
+> Task :feature:sample:preBuild
+> Task :feature:sample:preDebugBuild
+> Task :feature:sample:processDebugNavigationResources FROM-CACHE
+> Task :app:processDevDebugNavigationResources
+> Task :app:parseDevDebugLocalResources
+> Task :app:generateDevDebugRFile
+> Task :data:abcdefghijklmnopqrstuvwxyzabcd:javaPreCompileDebug FROM-CACHE
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:generateDebugResources FROM-CACHE
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:packageDebugResources
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:parseDebugLocalResources FROM-CACHE
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:generateDebugRFile
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:javaPreCompileDebug FROM-CACHE
+> Task :data:sample:javaPreCompileDebug FROM-CACHE
+> Task :feature:sample:generateDebugResources FROM-CACHE
+> Task :feature:sample:packageDebugResources
+> Task :feature:sample:parseDebugLocalResources FROM-CACHE
+> Task :feature:sample:generateDebugRFile
+> Task :feature:sample:javaPreCompileDebug FROM-CACHE
+> Task :app:javaPreCompileDevDebug FROM-CACHE
+> Task :data:abcdefghijklmnopqrstuvwxyzabcd:writeDebugAarMetadata
+> Task :data:sample:writeDebugAarMetadata
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:writeDebugAarMetadata
+> Task :feature:sample:writeDebugAarMetadata
+> Task :app:checkDevDebugAarMetadata
+> Task :app:mapDevDebugSourceSetPaths
+> Task :app:compileDevDebugNavigationResources FROM-CACHE
+> Task :app:mergeDevDebugResources
+> Task :app:createDevDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDevDebug
+> Task :data:abcdefghijklmnopqrstuvwxyzabcd:processDebugManifest
+> Task :data:sample:processDebugManifest
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:extractDeepLinksDebug FROM-CACHE
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:processDebugManifest
+> Task :feature:sample:extractDeepLinksDebug FROM-CACHE
+> Task :feature:sample:processDebugManifest
+> Task :app:processDevDebugMainManifest
+> Task :app:processDevDebugManifest
+> Task :app:processDevDebugManifestForPackage
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:mapDebugSourceSetPaths
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:compileDebugLibraryResources FROM-CACHE
+> Task :feature:sample:mapDebugSourceSetPaths
+> Task :feature:sample:compileDebugLibraryResources FROM-CACHE
+> Task :app:processDevDebugResources
+> Task :app:generateDevDebugAssets UP-TO-DATE
+> Task :data:abcdefghijklmnopqrstuvwxyzabcd:generateDebugAssets UP-TO-DATE
+> Task :data:abcdefghijklmnopqrstuvwxyzabcd:mergeDebugAssets
+> Task :data:sample:generateDebugAssets UP-TO-DATE
+> Task :data:sample:mergeDebugAssets
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:generateDebugAssets UP-TO-DATE
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:mergeDebugAssets
+> Task :feature:sample:generateDebugAssets UP-TO-DATE
+> Task :feature:sample:mergeDebugAssets
+> Task :app:mergeDevDebugAssets
+> Task :app:preDevDebugUnitTestBuild UP-TO-DATE
+> Task :app:packageDevDebugUnitTestForUnitTest
+> Task :app:mergeDevDebugUnitTestManifest
+> Task :app:processDevDebugUnitTestManifest
+> Task :app:generateDevDebugUnitTestConfig
+> Task :app:javaPreCompileDevDebugUnitTest FROM-CACHE
+> Task :core:datastore:kspDebugKotlin
+> Task :core:database:kspDebugKotlin
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:datastore:compileDebugKotlin
+> Task :core:datastore:processDebugJavaRes
+> Task :core:database:compileDebugKotlin
+> Task :core:database:processDebugJavaRes
+> Task :core:datastore:compileDebugJavaWithJavac
+> Task :core:datastore:bundleLibCompileToJarDebug
+> Task :core:datastore:bundleLibRuntimeToJarDebug
+> Task :core:database:compileDebugJavaWithJavac
+> Task :core:database:copyRoomSchemas
+> Task :core:database:bundleLibRuntimeToJarDebug
+> Task :core:database:bundleLibCompileToJarDebug
+> Task :core:network:kspDebugKotlin
+> Task :core:network:compileDebugKotlin
+> Task :core:network:processDebugJavaRes
+> Task :core:network:compileDebugJavaWithJavac
+> Task :core:network:bundleLibRuntimeToJarDebug
+> Task :core:network:bundleLibCompileToJarDebug
+> Task :data:order:kspDebugKotlin
+> Task :data:abcdefghijklmnopqrstuvwxyzabcd:kspDebugKotlin
+> Task :data:sample:kspDebugKotlin
+> Task :data:order:compileDebugKotlin
+> Task :data:abcdefghijklmnopqrstuvwxyzabcd:compileDebugKotlin
+> Task :data:order:processDebugJavaRes
+> Task :data:sample:compileDebugKotlin
+> Task :data:sample:compileDebugJavaWithJavac
+> Task :data:sample:bundleLibCompileToJarDebug
+> Task :data:sample:bundleLibRuntimeToJarDebug
+> Task :data:abcdefghijklmnopqrstuvwxyzabcd:processDebugJavaRes
+> Task :data:sample:processDebugJavaRes
+> Task :data:order:compileDebugJavaWithJavac
+> Task :data:abcdefghijklmnopqrstuvwxyzabcd:compileDebugJavaWithJavac
+> Task :data:order:bundleLibCompileToJarDebug
+> Task :data:order:bundleLibRuntimeToJarDebug
+> Task :data:abcdefghijklmnopqrstuvwxyzabcd:bundleLibCompileToJarDebug
+> Task :data:abcdefghijklmnopqrstuvwxyzabcd:bundleLibRuntimeToJarDebug
+> Task :data:order:kspDebugTestFixturesKotlin
+> Task :data:order:compileDebugTestFixturesKotlin
+> Task :data:order:compileDebugTestFixturesJavaWithJavac NO-SOURCE
+> Task :data:order:bundleLibCompileToJarDebugTestFixtures
+> Task :data:order:bundleLibRuntimeToJarDebugTestFixtures
+> Task :data:order:processDebugTestFixturesJavaRes
+> Task :data:order:kspDebugUnitTestKotlin
+> Task :data:order:compileDebugUnitTestKotlin
+> Task :data:order:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:order:processDebugUnitTestJavaRes
+
+> Task :data:order:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugJavaRes
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:navigation:kspDebugKotlin
+> Task :core:navigation:compileDebugKotlin
+> Task :core:navigation:processDebugJavaRes
+> Task :core:navigation:compileDebugJavaWithJavac
+> Task :core:navigation:transformDebugClassesWithAsm
+> Task :core:navigation:bundleLibCompileToJarDebug
+> Task :core:navigation:bundleLibRuntimeToJarDebug
+> Task :core:ui:compileDebugKotlin
+> Task :core:ui:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:ui:bundleLibRuntimeToJarDebug
+> Task :core:ui:processDebugJavaRes
+> Task :core:ui:bundleLibCompileToJarDebug
+> Task :feature:order:kspDebugKotlin
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:kspDebugKotlin
+> Task :feature:sample:kspDebugKotlin
+> Task :feature:order:compileDebugKotlin
+> Task :feature:order:processDebugJavaRes
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:compileDebugKotlin
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:processDebugJavaRes
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:compileDebugJavaWithJavac
+> Task :feature:sample:compileDebugKotlin
+> Task :feature:order:compileDebugJavaWithJavac
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:bundleLibCompileToJarDebug
+> Task :feature:abcdefghijklmnopqrstuvwxyzabcd:bundleLibRuntimeToJarDebug
+> Task :feature:order:bundleLibRuntimeToJarDebug
+> Task :feature:order:bundleLibCompileToJarDebug
+> Task :feature:sample:processDebugJavaRes
+> Task :feature:order:kspDebugUnitTestKotlin
+> Task :feature:sample:compileDebugJavaWithJavac
+> Task :feature:sample:bundleLibCompileToJarDebug
+> Task :feature:sample:bundleLibRuntimeToJarDebug
+> Task :feature:order:compileDebugUnitTestKotlin
+> Task :feature:order:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:order:processDebugUnitTestJavaRes
+
+> Task :feature:order:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :app:kspDevDebugKotlin
+> Task :app:compileDevDebugKotlin
+> Task :app:processDevDebugJavaRes
+> Task :app:compileDevDebugJavaWithJavac
+> Task :app:hiltCollectClassesDevDebug
+> Task :app:hiltAggregateDepsDevDebug
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+> Task :app:hiltJavaCompileDevDebug
+> Task :app:bundleDevDebugClassesToCompileJar
+> Task :app:kspDevDebugUnitTestKotlin
+> Task :app:transformDevDebugClassesWithAsm
+> Task :app:bundleDevDebugClassesToRuntimeJar
+
+> Task :app:compileDevDebugUnitTestKotlin
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/audit/app/src/test/kotlin/io/example/audit/navigation/NavKeyRegistrationTest.kt:141:30 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'ProtectionDomain?'.
+w: file:///D:/projects/tools/.overhaul/out/WP02-CONT/audit/app/src/test/kotlin/io/example/audit/navigation/NavKeyRegistrationTest.kt:143:16 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'String?'.
+
+> Task :app:compileDevDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:hiltCollectClassesDevDebugUnitTest
+> Task :app:processDevDebugUnitTestJavaRes
+> Task :app:hiltAggregateDepsDevDebugUnitTest
+> Task :app:hiltJavaCompileDevDebugUnitTest NO-SOURCE
+> Task :app:transformDevDebugUnitTestClassesWithAsm
+
+> Task :app:testDevDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :feature:order:finalizeTestRoborazziDebug SKIPPED
+
+> Task :app:testDevDebugUnitTest
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Phone, font 1.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Phone, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at PhoneLandscape, font 1.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at PhoneLandscape, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at PhoneLandscape, font 2.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at PhoneLandscape, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Foldable, font 1.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Foldable, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Foldable, font 2.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Foldable, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at SmallTablet, font 1.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at SmallTablet, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at SmallTablet, font 2.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at SmallTablet, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Tablet, font 1.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Tablet, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Tablet, font 2.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Tablet, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Desktop, font 1.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Desktop, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Desktop, font 2.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Desktop, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Phone, font 1.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Phone, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at PhoneLandscape, font 1.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at PhoneLandscape, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at PhoneLandscape, font 2.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at PhoneLandscape, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Foldable, font 1.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Foldable, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Foldable, font 2.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Foldable, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at SmallTablet, font 1.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at SmallTablet, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at SmallTablet, font 2.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at SmallTablet, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Tablet, font 1.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Tablet, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Tablet, font 2.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Tablet, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Desktop, font 1.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Desktop, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Desktop, font 2.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Desktop, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderDetailScreenPreview at Phone, font 1.0x] > the screen fits the window[OrderDetailScreenPreview at Phone, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderDetailScreenPreview at Phone, font 2.0x] > the screen fits the window[OrderDetailScreenPreview at Phone, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderDetailScreenPreview at PhoneLandscape, font 1.0x] > the screen fits the window[OrderDetailScreenPreview at PhoneLandscape, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderDetailScreenPreview at PhoneLandscape, font 2.0x] > the screen fits the window[OrderDetailScreenPreview at PhoneLandscape, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderDetailScreenPreview at Foldable, font 1.0x] > the screen fits the window[OrderDetailScreenPreview at Foldable, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderDetailScreenPreview at Foldable, font 2.0x] > the screen fits the window[OrderDetailScreenPreview at Foldable, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderDetailScreenPreview at SmallTablet, font 1.0x] > the screen fits the window[OrderDetailScreenPreview at SmallTablet, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderDetailScreenPreview at SmallTablet, font 2.0x] > the screen fits the window[OrderDetailScreenPreview at SmallTablet, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderDetailScreenPreview at Tablet, font 1.0x] > the screen fits the window[OrderDetailScreenPreview at Tablet, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderDetailScreenPreview at Tablet, font 2.0x] > the screen fits the window[OrderDetailScreenPreview at Tablet, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderDetailScreenPreview at Desktop, font 1.0x] > the screen fits the window[OrderDetailScreenPreview at Desktop, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderDetailScreenPreview at Desktop, font 2.0x] > the screen fits the window[OrderDetailScreenPreview at Desktop, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderListScreenPreview at Phone, font 1.0x] > the screen fits the window[OrderListScreenPreview at Phone, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderListScreenPreview at Phone, font 2.0x] > the screen fits the window[OrderListScreenPreview at Phone, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderListScreenPreview at PhoneLandscape, font 1.0x] > the screen fits the window[OrderListScreenPreview at PhoneLandscape, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderListScreenPreview at PhoneLandscape, font 2.0x] > the screen fits the window[OrderListScreenPreview at PhoneLandscape, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderListScreenPreview at Foldable, font 1.0x] > the screen fits the window[OrderListScreenPreview at Foldable, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderListScreenPreview at Foldable, font 2.0x] > the screen fits the window[OrderListScreenPreview at Foldable, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderListScreenPreview at SmallTablet, font 1.0x] > the screen fits the window[OrderListScreenPreview at SmallTablet, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderListScreenPreview at SmallTablet, font 2.0x] > the screen fits the window[OrderListScreenPreview at SmallTablet, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderListScreenPreview at Tablet, font 1.0x] > the screen fits the window[OrderListScreenPreview at Tablet, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderListScreenPreview at Tablet, font 2.0x] > the screen fits the window[OrderListScreenPreview at Tablet, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderListScreenPreview at Desktop, font 1.0x] > the screen fits the window[OrderListScreenPreview at Desktop, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [OrderListScreenPreview at Desktop, font 2.0x] > the screen fits the window[OrderListScreenPreview at Desktop, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [SampleListLoadingPreview at Phone, font 1.0x] > the screen fits the window[SampleListLoadingPreview at Phone, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [SampleListLoadingPreview at Phone, font 2.0x] > the screen fits the window[SampleListLoadingPreview at Phone, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [SampleListLoadingPreview at PhoneLandscape, font 1.0x] > the screen fits the window[SampleListLoadingPreview at PhoneLandscape, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [SampleListLoadingPreview at PhoneLandscape, font 2.0x] > the screen fits the window[SampleListLoadingPreview at PhoneLandscape, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [SampleListLoadingPreview at Foldable, font 1.0x] > the screen fits the window[SampleListLoadingPreview at Foldable, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [SampleListLoadingPreview at Foldable, font 2.0x] > the screen fits the window[SampleListLoadingPreview at Foldable, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [SampleListLoadingPreview at SmallTablet, font 1.0x] > the screen fits the window[SampleListLoadingPreview at SmallTablet, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [SampleListLoadingPreview at SmallTablet, font 2.0x] > the screen fits the window[SampleListLoadingPreview at SmallTablet, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [SampleListLoadingPreview at Tablet, font 1.0x] > the screen fits the window[SampleListLoadingPreview at Tablet, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [SampleListLoadingPreview at Tablet, font 2.0x] > the screen fits the window[SampleListLoadingPreview at Tablet, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [SampleListLoadingPreview at Desktop, font 1.0x] > the screen fits the window[SampleListLoadingPreview at Desktop, font 1.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+AdaptiveAuditTest > [SampleListLoadingPreview at Desktop, font 2.0x] > the screen fits the window[SampleListLoadingPreview at Desktop, font 2.0x] FAILED
+    java.lang.AssertionError at AdaptiveAuditTest.kt:90
+
+79 tests completed, 58 failed
+
+> Task :app:testDevDebugUnitTest FAILED
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/out/WP02-CONT/audit/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:testDevDebugUnitTest'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/out/WP02-CONT/audit/app/build/reports/tests/testDevDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 4m 8s
+307 actionable tasks: 259 executed, 48 from cache
+Configuration cache entry stored.

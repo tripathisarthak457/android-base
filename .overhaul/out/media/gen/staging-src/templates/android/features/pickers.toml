@@ -1,0 +1,16 @@
+key = "pickers"
+title = "Date and time pickers"
+headline = "Pick dates and times inline"
+description = """
+An inline month calendar with limits and disabled days, iOS-style wheel pickers for any list,
+a time picker built from wheels, and compact date and time pills that open them in a sheet."""
+group = "Design"
+default = false
+requires = []
+implied_only = false
+owns = [
+  "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/component/pickers",
+  "core/designsystem/src/test/kotlin/{pkg_path}/core/designsystem/component/pickers",
+  "catalog/src/main/kotlin/{pkg_path}/catalog/sections/CatalogPickers.kt",
+]
+legacy = []

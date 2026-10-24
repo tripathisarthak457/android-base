@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_haptics_explanation">Una vibración breve cuando un control responde.</string>
+    <string name="settings_account">Cuenta</string>
+    <string name="settings_appearance">Apariencia</string>
+    <string name="settings_haptic_feedback">Respuesta háptica</string>
+    <string name="settings_analytics_explanation">Nos ayuda a encontrar fallos y pantallas lentas. Nunca incluye tu contenido.</string>
+    <string name="settings_privacy">Privacidad</string>
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_share_usage_data">Compartir datos de uso</string>
+    <string name="settings_sign_out">Cerrar sesión</string>
+    <string name="settings_sign_out_confirm">¿Cerrar sesión?</string>
+    <string name="settings_stay">Quedarme</string>
+    <string name="settings_theme_explanation">«Sistema» sigue el ajuste de tu dispositivo.</string>
+    <string name="settings_theme">Tema</string>
+    <string name="settings_theme_system">Sistema</string>
+    <string name="settings_theme_light">Claro</string>
+    <string name="settings_theme_dark">Oscuro</string>
+    <string name="settings_sign_out_explanation">Tendrás que volver a iniciar sesión para usar la app.</string>
+    <string name="settings_version">Versión %1$s</string>
+    <string name="settings_about">Información</string>
+    <string name="settings_no_licences_recorded">No hay licencias registradas</string>
+    <string name="settings_open_source_licences">Licencias de código abierto</string>
+    <string name="settings_licence_not_stated">Licencia no indicada</string>
+    <string name="settings_licences_explanation">Las bibliotecas con las que está hecha esta app y sus condiciones.</string>
+    <string name="settings_no_licences_explanation">Esta compilación no generó una lista de licencias.</string>
+    <string name="settings_app_lock_explanation">Pide tu huella, tu cara o el bloqueo de pantalla cuando la app ha estado en segundo plano.</string>
+    <string name="settings_require_unlock">Pedir desbloqueo</string>
+    <string name="settings_notifications">Notificaciones</string>
+    <string name="settings_notifications_on">Activadas</string>
+    <string name="settings_notifications_off">Desactivadas. Toca para permitirlas.</string>
+    <string name="settings_notifications_blocked">Desactivadas en los ajustes del teléfono. Toca para abrirlos.</string>
+    <string name="settings_cancel">Cancelar</string>
+    <string name="settings_language">Idioma</string>
+    <string name="settings_language_system">El mismo que el teléfono</string>
+    <string name="settings_legal">Legal</string>
+    <string name="settings_privacy_policy">Política de privacidad</string>
+    <string name="settings_terms">Condiciones del servicio</string>
+</resources>

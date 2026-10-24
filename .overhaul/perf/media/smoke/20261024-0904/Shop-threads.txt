@@ -1,0 +1,46 @@
+USER           PID   TID  PPID        VSZ    RSS WCHAN            ADDR S CMD            
+u0_a307       5220  5220   980    8925332 134632 0                   0 S rything.catalog
+u0_a307       5220  5223   980    8925332 134632 0                   0 S Signal Catcher
+u0_a307       5220  5224   980    8925332 134632 0                   0 S perfetto_hprof_
+u0_a307       5220  5225   980    8925332 134632 0                   0 S Jit thread pool
+u0_a307       5220  5226   980    8925332 134632 0                   0 S HeapTaskDaemon
+u0_a307       5220  5227   980    8925332 134632 0                   0 S ReferenceQueueD
+u0_a307       5220  5228   980    8925332 134632 0                   0 S FinalizerDaemon
+u0_a307       5220  5229   980    8925332 134632 0                   0 S FinalizerWatchd
+u0_a307       5220  5230   980    8925332 134632 0                   0 S binder:5220_1
+u0_a307       5220  5231   980    8925332 134632 0                   0 S binder:5220_2
+u0_a307       5220  5232   980    8925332 134632 0                   0 S Profile Saver
+u0_a307       5220  5235   980    8925332 134632 0                   0 S binder:5220_3
+u0_a307       5220  5236   980    8925332 134632 0                   0 S RenderThread
+u0_a307       5220  5237   980    8925332 134632 0                   0 S TracingMuxer
+u0_a307       5220  5239   980    8925332 134632 0                   0 S catalog-frames
+u0_a307       5220  5241   980    8925332 134632 0                   0 S ProtoLogBackgro
+u0_a307       5220  5242   980    8925332 134632 0                   0 S hwuiTask0
+u0_a307       5220  5243   980    8925332 134632 0                   0 S hwuiTask1
+u0_a307       5220  5245   980    8925332 134632 0                   0 S SurfaceSyncGrou
+u0_a307       5220  5246   980    8925332 134632 0                   0 S binder:5220_4
+u0_a307       5220  5247   980    8925332 134632 0                   0 S DefaultDispatch
+u0_a307       5220  5249   980    8925332 134632 0                   0 S DefaultDispatch
+u0_a307       5220  5250   980    8925332 134632 0                   0 S DefaultDispatch
+u0_a307       5220  5251   980    8925332 134632 0                   0 S DefaultDispatch
+u0_a307       5220  5252   980    8925332 134632 0                   0 S DefaultDispatch
+u0_a307       5220  5253   980    8925332 134632 0                   0 S DefaultDispatch
+u0_a307       5220  5254   980    8925332 134632 0                   0 S DefaultDispatch
+u0_a307       5220  5256   980    8925332 134632 0                   0 S jg2 Dispatcher
+u0_a307       5220  5257   980    8925332 134632 0                   0 S jg2 Dispatcher
+u0_a307       5220  5255   980    8925332 134632 0                   0 S jg2 Dispatcher
+u0_a307       5220  5258   980    8925332 134632 0                   0 S jg2 Dispatcher
+u0_a307       5220  5259   980    8925332 134632 0                   0 S jg2 Dispatcher
+u0_a307       5220  5265   980    8925332 134632 0                   0 S y.picsum.photos
+u0_a307       5220  5270   980    8925332 134632 0                   0 S jg2 TaskRunner
+u0_a307       5220  5272   980    8925332 134632 0                   0 S jg2 TaskRunner
+u0_a307       5220  5273   980    8925332 134632 0                   0 S jg2 ConnectionP
+u0_a307       5220  5274   980    8925332 134632 0                   0 S 2 picsum.photos
+u0_a307       5220  5277   980    8925332 134632 0                   0 S binder:5220_2
+u0_a307       5220  5278   980    8925332 134632 0                   0 S ConscryptStatsL
+u0_a307       5220  5279   980    8925332 134632 0                   0 S ConscryptStatsL
+u0_a307       5220  5280   980    8925332 134632 0                   0 S ConscryptStatsL
+u0_a307       5220  5283   980    8925332 134632 0                   0 S Okio Watchdog
+u0_a307       5220  5292   980    8925332 134632 0                   0 S jg2 TaskRunner
+u0_a307       5220  5298   980    8925332 134632 0                   0 S jg2 Dispatcher
+u0_a307       5220  5299   980    8925332 134632 0                   0 S GrallocUploadTh

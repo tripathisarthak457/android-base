@@ -23,12 +23,26 @@ The user answered media.md 9.2 (self-host the sample clips as a release of the p
 
 ## Progress
 
+- **Run 4 (2026-10-24 08:28 IST on)**: staging moved to `4760b407` (one web commit: the glass note in the builder);
+  merged as `0d843aff`, no conflict. Run 3's smoke never reached the app: the install of B produced no line in any log
+  and `am start` answered "Activity class ... does not exist" (`perf/media/smoke/20261024-0815/*-start.txt`), and each of
+  its adb calls took the lock on its own, so staging's commands could run between them. `media-phone.win.sh` now holds
+  adb once for the whole smoke and once per sheet in `sheets`, keeps the install's output and stops on a failed install,
+  and force-stops the catalog at the end. Smoke re-queued (`logs/media/r4-smoke.log`). Next: the branch review below.
 - **Run 3 (2026-10-24 06:21 IST on)**: staging moved to `7230b666` (5 commits: hairlines as rects, the harness's
   unlisted first frame, the DEV badge per draw, the large title from an effect, re-recorded profiles); merged as
   `782edc95` with no conflict. `91412283` keeps a feed's players when a parent provides a new `LocalTabVisible` holder
   (run 2's uncommitted change, now with its red-first test: `logs/media/r3-vfs-red.log`, green `r3-vfs-green.log`).
-  Next in this run: template `build`, generator suite and matrix on the merged tree; build B (release catalog) and the
-  smoke check on the phone (L2, L3 captures).
+  Acceptance on `91412283` (staging merged): template `./gradlew build --continue` BUILD SUCCESSFUL in 19 min, 990 unit
+  tests in the JUnit files, 0 failures, the three stability checks and the three release dev-tooling guards ran
+  (`logs/media/r3-template-build.log`); generator suite 488 OK, 9 skipped, catalogue current (`r3-gen.log`); full
+  consistency matrix 167 projects, 0 new issues, CONSISTENCY OK (`r3-matrix.log`). Lookups L2, L3 (DUMP) and L10 done
+  (section "Lookups (run 3)"). Standard preset (catalog on, Coil and video off) generated from this branch:
+  `check assembleDevDebug assembleProdRelease :catalog:assembleRelease --continue` BUILD SUCCESSFUL (spotless, lint,
+  tests, rules included), and no file outside the vendored skills names Coil, Media3, `core:image` or `core:video`
+  (`r3-standard.log`, `out/media/gen/desk-standard`). B built: `perf/media/apks/B.apk` (Everything's catalog release
+  from `91412283`, `r3-build-B.log`); `media-arms.py --check` applies all seven image arms on that tree. Smoke check on
+  the phone queued behind staging's A/B session (it holds adb for its whole script); `r3-smoke.log`.
 - **Run 2 (2026-10-24 01:14 IST on)**: staging still `d429cbfb` (merge = up to date). Commits on top of run 1's three:
   `0ebb4b31` District P3 (W3-2..W3-5 in one commit, with its AGENTS line), `2f867a52` one shared media client
   (`MediaCallFactory`), Coil's own `coil3_disk_cache` folder, prefetch by lines with in-flight cancellation, the catalog's
@@ -182,3 +196,20 @@ The user answered media.md 9.2 (self-host the sample clips as a release of the p
 - freeze #10 (`StillFade` around an image fade) and `isStill` for building players (freeze P1): wait for staging's jank
   fix; the video feed uses the two-frame fallback the plan names.
 - Glass and the back card over a SurfaceView (risk 8.6): judged on the phone in session 2.
+- The `images` column's absolute scroll rows: after staging's scroll fix is merged here (decision 9).
+- G3 (gates, pool size, prefetch from the Redmi) and D1's numbers: after sessions 1-2 and their verifier.
+- P7's phone check (lists-images 3.4) runs on the app's Feed tab, inside the shell staging is still fixing: its
+  janky-frame rows share staging's scroll regression; its own question (does a fling reach the loading footer) does not.
+
+## For the gate step (phone sessions; scripts in `D:/projects/tools/.overhaul/bin`)
+
+- `media-phone.win.sh` (header lists every command) and `media-arms.py` (`--check` applies every arm in memory).
+  Builds: `build <name> --arm <arm>` generates Everything from this branch into `out/media/gen/<name>` and builds its
+  catalog's release APK into `perf/media/apks/<name>.apk`; `build-staging` builds staging's catalog as `A0`.
+  Session 1 needs N, A, B, BP, BF, BS, BHW0; session 2 needs V2, V3b0, VT (VF only if 4.6 asks). Run 3 built B
+  from `91412283`; rebuild it if the branch moves.
+- Order: `smoke` (done by run 3 if its section below says so), `session1`, `sheets` (District P3), `session2`; P7's
+  check is lists-images 3.4's own procedure on the app (not scripted here).
+- Every command takes `LOCKED_PRIORITY=low` from the script while staging's fix is open; device files only under
+  `/data/local/tmp`; `perf.py` restores what it changes; the smoke changes no setting.
+

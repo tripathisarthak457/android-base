@@ -1,0 +1,12 @@
+{
+  "schema": 2,
+  "platform": "ios",
+  "app_name": "Field Ops",
+  "package_name": "com.example.iosmodules",
+  "features": ["database", "network", "settings"],
+  "feature_modules": ["orders", "order_history", "wallet"],
+  "languages": ["de", "pt-BR"],
+  "ios": {
+    "bundle_id": "com.example.field-ops"
+  }
+}

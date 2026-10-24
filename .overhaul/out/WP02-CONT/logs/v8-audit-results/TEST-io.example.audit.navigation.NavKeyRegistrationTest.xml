@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.example.audit.navigation.NavKeyRegistrationTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-24T03:11:40.519Z" hostname="SARTHAK-PC" time="0.916">
+  <properties/>
+  <testcase name="the scan sees the app's keys" classname="io.example.audit.navigation.NavKeyRegistrationTest" time="0.795"/>
+  <testcase name="every key comes back from a saved back stack as it went in" classname="io.example.audit.navigation.NavKeyRegistrationTest" time="0.081"/>
+  <testcase name="every key is registered for restore" classname="io.example.audit.navigation.NavKeyRegistrationTest" time="0.04"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

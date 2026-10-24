@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="designsystem_cancel">Abbrechen</string>
+    <string name="designsystem_close">Schließen</string>
+    <string name="designsystem_try_again">Erneut versuchen</string>
+    <string name="designsystem_offline_title">Du bist offline</string>
+    <string name="designsystem_error_title">Etwas ist schiefgelaufen</string>
+    <string name="designsystem_navigate_back">Zurück</string>
+    <string name="designsystem_hide_password">Passwort verbergen</string>
+    <string name="designsystem_show_password">Passwort anzeigen</string>
+    <string name="designsystem_search">Suchen</string>
+    <string name="designsystem_clear_search">Suche löschen</string>
+    <string name="designsystem_remove_item">%1$s entfernen</string>
+    <string name="designsystem_show_more">Mehr anzeigen</string>
+    <string name="designsystem_show_less">Weniger anzeigen</string>
+    <string name="designsystem_expanded">Ausgeklappt</string>
+    <string name="designsystem_collapsed">Eingeklappt</string>
+    <string name="designsystem_expand">Ausklappen</string>
+    <string name="designsystem_collapse">Einklappen</string>
+    <string name="designsystem_page_of">Seite %1$d von %2$d</string>
+    <string name="designsystem_loading">Wird geladen</string>
+    <string name="designsystem_refresh">Aktualisieren</string>
+    <string name="designsystem_refreshing">Wird aktualisiert</string>
+    <string name="designsystem_show_menu">Menü anzeigen</string>
+    <plurals name="designsystem_people_count">
+        <item quantity="one">%1$d Person</item>
+        <item quantity="other">%1$d Personen</item>
+    </plurals>
+    <string name="designsystem_sheet_pane">Blatt</string>
+    <string name="designsystem_sheet_grabber">Blattgröße ändern</string>
+    <string name="designsystem_sheet_expand">Blatt erweitern</string>
+    <string name="designsystem_sheet_collapse">Blatt verkleinern</string>
+    <string name="designsystem_sheet_dismiss">Blatt schließen</string>
+    <string name="designsystem_sheet_close_scrim">Blatt schließen</string>
+    <string name="designsystem_sheet_state_expanded">Erweitert</string>
+    <string name="designsystem_sheet_state_partial">Teilweise erweitert</string>
+    <string name="designsystem_sheet_state_collapsed">Verkleinert</string>
+    <string name="designsystem_actions_pane">Aktionen</string>
+    <string name="designsystem_sheet_discard_title">Änderungen verwerfen?</string>
+    <string name="designsystem_sheet_discard">Verwerfen</string>
+    <string name="designsystem_sheet_keep_editing">Weiter bearbeiten</string>
+    <string name="designsystem_none">Keine</string>
+    <string name="designsystem_nothing_selected">Nichts ausgewählt</string>
+    <string name="designsystem_nothing_selected_message">Wähle etwas aus der Liste, um es hier zu sehen.</string>
+</resources>

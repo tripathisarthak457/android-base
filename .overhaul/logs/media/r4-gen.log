@@ -1,0 +1,153 @@
+Sat Oct 24 08:44:32 IST 2026
+...............................................................................................................s..........................s...........................................ss.................................................................................................................................................s...........s.........................s..........s........................................................................................s..........FFF..FEssFFF.F
+======================================================================
+ERROR: test_the_commit_is_the_same_whatever_git_variables_the_caller_has (tests.test_zip.ZipTest.test_the_commit_is_the_same_whatever_git_variables_the_caller_has)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_zip.py", line 136, in test_the_commit_is_the_same_whatever_git_variables_the_caller_has
+    subprocess.run(["git", "init", "--template=", str(other)], capture_output=True, check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\subprocess.py", line 692, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', 'init', '--template=', 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmp5sngkor5\\other']' returned non-zero exit status 3221225794.
+
+======================================================================
+FAIL: test_a_template_the_repository_cannot_take_whole_is_a_warning (tests.test_zip.ZipTest.test_a_template_the_repository_cannot_take_whole_is_a_warning) (case='a copy refused')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_zip.py", line 246, in test_a_template_the_repository_cannot_take_whole_is_a_warning
+    self.assertIn(reason, warnings[0])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Access is denied' not found in '`git init` failed (exit code 3221225794). The project itself is fine.'
+
+======================================================================
+FAIL: test_a_template_the_repository_cannot_take_whole_is_a_warning (tests.test_zip.ZipTest.test_a_template_the_repository_cannot_take_whole_is_a_warning) (case='a configuration git cannot read')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_zip.py", line 246, in test_a_template_the_repository_cannot_take_whole_is_a_warning
+    self.assertIn(reason, warnings[0])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '`git config` failed' not found in '`git init` failed (exit code 3221225794). The project itself is fine.'
+
+======================================================================
+FAIL: test_a_template_the_repository_cannot_take_whole_is_a_warning (tests.test_zip.ZipTest.test_a_template_the_repository_cannot_take_whole_is_a_warning) (case='a template with a configuration')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_zip.py", line 246, in test_a_template_the_repository_cannot_take_whole_is_a_warning
+    self.assertIn(reason, warnings[0])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpzxpmfp9e\\configured\\config' not found in '`git init` failed (exit code 3221225794). The project itself is fine.'
+
+======================================================================
+FAIL: test_the_commit_holds_a_file_past_windows_path_limit (tests.test_zip.ZipTest.test_the_commit_holds_a_file_past_windows_path_limit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_zip.py", line 170, in test_the_commit_holds_a_file_past_windows_path_limit
+    self.assertEqual([], git_init(self.project, "Initial commit", EXECUTABLE))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'`git init` failed (exit code 3221225794). The project itself is fine.'
+
+- []
++ ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+======================================================================
+FAIL: test_the_commit_marks_the_scripts_it_holds_and_leaves_out_the_ignored_one (tests.test_zip.ZipTest.test_the_commit_marks_the_scripts_it_holds_and_leaves_out_the_ignored_one)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_zip.py", line 75, in test_the_commit_marks_the_scripts_it_holds_and_leaves_out_the_ignored_one
+    self.assertEqual([], git_init(self.project, "Initial commit", EXECUTABLE))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'`git init` failed (exit code 3221225794). The project itself is fine.'
+
+- []
++ ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+======================================================================
+FAIL: test_the_repository_gets_the_users_template_once_the_commit_is_made (tests.test_zip.ZipTest.test_the_repository_gets_the_users_template_once_the_commit_is_made) (route='init.templateDir')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_zip.py", line 198, in test_the_repository_gets_the_users_template_once_the_commit_is_made
+    self.assertEqual([], git_init(project, "Initial commit", EXECUTABLE))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'`git init` failed (exit code 3221225794). The project itself is fine.'
+
+- []
++ ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+======================================================================
+FAIL: test_the_repository_gets_the_users_template_once_the_commit_is_made (tests.test_zip.ZipTest.test_the_repository_gets_the_users_template_once_the_commit_is_made) (route='GIT_TEMPLATE_DIR')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_zip.py", line 198, in test_the_repository_gets_the_users_template_once_the_commit_is_made
+    self.assertEqual([], git_init(project, "Initial commit", EXECUTABLE))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'`git init` failed (exit code 3221225794). The project itself is fine.'
+
+- []
++ ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+======================================================================
+FAIL: test_the_tree_is_clean_and_the_scripts_run_right_after_the_commit (tests.test_zip.ZipTest.test_the_tree_is_clean_and_the_scripts_run_right_after_the_commit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\MEDIA\generator\tests\test_zip.py", line 89, in test_the_tree_is_clean_and_the_scripts_run_right_after_the_commit
+    self.assertEqual([], git_init(self.project, "Initial commit", EXECUTABLE))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'`git init` failed (exit code 3221225794). The project itself is fine.'
+
+- []
++ ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+----------------------------------------------------------------------
+Ran 488 tests in 1264.604s
+
+FAILED (failures=8, errors=1, skipped=11)
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.

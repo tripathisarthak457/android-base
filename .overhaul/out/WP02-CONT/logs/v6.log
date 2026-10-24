@@ -9,3 +9,203 @@ OK (skipped=9)
 == 06:41:55 2. c-local and the audit project: generate
 
 == 06:42:13 2. c-local: build
+rc=0
+BUILD SUCCESSFUL in 3m 15s
+
+== 08:11:07 3. the audit on the generated screens (expect PASS)
+rc=1
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Phone, font 1.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Phone, font 1.0x] FAILED
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at PhoneLandscape, font 1.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at PhoneLandscape, font 1.0x] FAILED
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at PhoneLandscape, font 2.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at PhoneLandscape, font 2.0x] FAILED
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Foldable, font 1.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Foldable, font 1.0x] FAILED
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Foldable, font 2.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Foldable, font 2.0x] FAILED
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at SmallTablet, font 1.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at SmallTablet, font 1.0x] FAILED
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at SmallTablet, font 2.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at SmallTablet, font 2.0x] FAILED
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Tablet, font 1.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Tablet, font 1.0x] FAILED
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Tablet, font 2.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Tablet, font 2.0x] FAILED
+AdaptiveAuditTest > [AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Desktop, font 1.0x] > the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Desktop, font 1.0x] FAILED
+audit cases=60 failures=58 skipped=0
+screens: ['AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview', 'AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview', 'OrderDetailScreenPreview', 'OrderListScreenPreview', 'SampleListLoadingPreview']
+
+== 08:15:18 3. a planted screen that breaks every rule (expect FAIL naming each planted node)
+rc=1
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Phone, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at PhoneLandscape, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at PhoneLandscape, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Foldable, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Foldable, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at SmallTablet, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at SmallTablet, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Tablet, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Tablet, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Desktop, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Desktop, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Phone, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at PhoneLandscape, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at PhoneLandscape, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Foldable, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Foldable, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at SmallTablet, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at SmallTablet, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Tablet, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Tablet, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Desktop, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Desktop, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderDetailScreenPreview at Phone, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderDetailScreenPreview at Phone, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderDetailScreenPreview at PhoneLandscape, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderDetailScreenPreview at PhoneLandscape, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderDetailScreenPreview at Foldable, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderDetailScreenPreview at Foldable, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderDetailScreenPreview at SmallTablet, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderDetailScreenPreview at SmallTablet, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderDetailScreenPreview at Tablet, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderDetailScreenPreview at Tablet, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderDetailScreenPreview at Desktop, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderDetailScreenPreview at Desktop, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderListScreenPreview at Phone, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderListScreenPreview at Phone, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderListScreenPreview at PhoneLandscape, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderListScreenPreview at PhoneLandscape, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderListScreenPreview at Foldable, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderListScreenPreview at Foldable, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderListScreenPreview at SmallTablet, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderListScreenPreview at SmallTablet, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderListScreenPreview at Tablet, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderListScreenPreview at Tablet, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderListScreenPreview at Desktop, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[OrderListScreenPreview at Desktop, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[SampleListLoadingPreview at Phone, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[SampleListLoadingPreview at Phone, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[SampleListLoadingPreview at PhoneLandscape, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[SampleListLoadingPreview at PhoneLandscape, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[SampleListLoadingPreview at Foldable, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[SampleListLoadingPreview at Foldable, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[SampleListLoadingPreview at SmallTablet, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[SampleListLoadingPreview at SmallTablet, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[SampleListLoadingPreview at Tablet, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[SampleListLoadingPreview at Tablet, font 2.0x]
+A REAL SCREEN FAILED: the screen fits the window[SampleListLoadingPreview at Desktop, font 1.0x]
+A REAL SCREEN FAILED: the screen fits the window[SampleListLoadingPreview at Desktop, font 2.0x]
+planted cases failed=12 passed=0
+  "A sentence long enough to run across several lines on a phone and across one very long line on a desktop window# ": the text is cut off  <- ['Desktop, font 1.0x', 'Desktop, font 2.0x', 'Foldable, font 1.0x', 'Foldable, font 2.0x', 'Phone, font 1.0x', 'Phone, font 2.0x', 'PhoneLandscape, font 1.0x', 'PhoneLandscape, font 2.0x', 'SmallTablet, font 1.0x', 'SmallTablet, font 2.0x', 'Tablet, font 1.0x', 'Tablet, font 2.0x']
+  "A sentence long enough to run across several lines on a phone and across one very long line on a desktop window# A sentence long enough to run across several lines on a phone and across one very long line on a desktop window# A sentence long enough to run across several lines on a phone and across one very long line on a desktop window# ": a line #dp wide, past the readable #dp  <- ['Desktop, font 1.0x', 'Desktop, font 2.0x', 'Tablet, font 1.0x', 'Tablet, font 2.0x']
+  "bottom": under the tab bar  <- ['Phone, font 1.0x', 'Phone, font 2.0x']
+  "tiny-a": its #dp touch area runs into "tiny-b"  <- ['Desktop, font 1.0x', 'Desktop, font 2.0x', 'Foldable, font 1.0x', 'Foldable, font 2.0x', 'Phone, font 1.0x', 'Phone, font 2.0x', 'PhoneLandscape, font 1.0x', 'PhoneLandscape, font 2.0x', 'SmallTablet, font 1.0x', 'SmallTablet, font 2.0x', 'Tablet, font 1.0x', 'Tablet, font 2.0x']
+  "tiny-b": its #dp touch area runs into "tiny-a"  <- ['Desktop, font 1.0x', 'Desktop, font 2.0x', 'Foldable, font 1.0x', 'Foldable, font 2.0x', 'Phone, font 1.0x', 'Phone, font 2.0x', 'PhoneLandscape, font 1.0x', 'PhoneLandscape, font 2.0x', 'SmallTablet, font 1.0x', 'SmallTablet, font 2.0x', 'Tablet, font 1.0x', 'Tablet, font 2.0x']
+  "under" and "over" overlap  <- ['Desktop, font 1.0x', 'Desktop, font 2.0x', 'Foldable, font 1.0x', 'Foldable, font 2.0x', 'Phone, font 1.0x', 'Phone, font 2.0x', 'PhoneLandscape, font 1.0x', 'PhoneLandscape, font 2.0x', 'SmallTablet, font 1.0x', 'SmallTablet, font 2.0x', 'Tablet, font 1.0x', 'Tablet, font 2.0x']
+  "wide": partly outside the window at Rect#fromLTRB(-#, #, #, #)  <- ['Desktop, font 1.0x', 'Desktop, font 2.0x', 'Foldable, font 1.0x', 'Foldable, font 2.0x', 'Phone, font 1.0x', 'Phone, font 2.0x', 'PhoneLandscape, font 1.0x', 'PhoneLandscape, font 2.0x', 'SmallTablet, font 1.0x', 'SmallTablet, font 2.0x', 'Tablet, font 1.0x', 'Tablet, font 2.0x']
+
+== 08:16:25 4. the audit on the template's own screens, every feature on
+rc=1
+AdaptiveAuditTest > [SampleListLoadingPreview at Phone, font 1.0x] > the screen fits the window[SampleListLoadingPreview at Phone, font 1.0x] FAILED
+AdaptiveAuditTest > [SampleListLoadingPreview at Phone, font 2.0x] > the screen fits the window[SampleListLoadingPreview at Phone, font 2.0x] FAILED
+AdaptiveAuditTest > [SampleListLoadingPreview at PhoneLandscape, font 1.0x] > the screen fits the window[SampleListLoadingPreview at PhoneLandscape, font 1.0x] FAILED
+AdaptiveAuditTest > [SampleListLoadingPreview at PhoneLandscape, font 2.0x] > the screen fits the window[SampleListLoadingPreview at PhoneLandscape, font 2.0x] FAILED
+AdaptiveAuditTest > [SampleListLoadingPreview at Foldable, font 1.0x] > the screen fits the window[SampleListLoadingPreview at Foldable, font 1.0x] FAILED
+AdaptiveAuditTest > [SampleListLoadingPreview at Foldable, font 2.0x] > the screen fits the window[SampleListLoadingPreview at Foldable, font 2.0x] FAILED
+AdaptiveAuditTest > [SampleListLoadingPreview at SmallTablet, font 1.0x] > the screen fits the window[SampleListLoadingPreview at SmallTablet, font 1.0x] FAILED
+AdaptiveAuditTest > [SampleListLoadingPreview at SmallTablet, font 2.0x] > the screen fits the window[SampleListLoadingPreview at SmallTablet, font 2.0x] FAILED
+AdaptiveAuditTest > [SampleListLoadingPreview at Tablet, font 1.0x] > the screen fits the window[SampleListLoadingPreview at Tablet, font 1.0x] FAILED
+AdaptiveAuditTest > [SampleListLoadingPreview at Tablet, font 2.0x] > the screen fits the window[SampleListLoadingPreview at Tablet, font 2.0x] FAILED
+FAIL AdaptiveAuditTest the screen fits the window[SampleListLoadingPreview at Phone, font 1.0x]
+      java.lang.AssertionError: SampleListLoadingPreview at Phone, font 1.0x:
+        "Pulled from a live API": the text is cut off
+        "node 68": under the tab bar
+        "node 74": partly outside the window at Rect.fromLTRB(16.0, 814.0, 395.0, 908.0)
+        "node 74": under the tab bar
+FAIL AdaptiveAuditTest the screen fits the window[SampleListLoadingPreview at Phone, font 2.0x]
+      java.lang.AssertionError: SampleListLoadingPreview at Phone, font 2.0x:
+        "Pulled from a live API": the text is cut off
+        "node 139": partly outside the window at Rect.fromLTRB(16.0, 804.0, 395.0, 942.0)
+        "node 139": under the tab bar
+FAIL AdaptiveAuditTest the screen fits the window[SampleListLoadingPreview at PhoneLandscape, font 1.0x]
+      java.lang.AssertionError: SampleListLoadingPreview at PhoneLandscape, font 1.0x:
+        "node 195": partly outside the window at Rect.fromLTRB(110.0, 386.0, 782.0, 460.0)
+FAIL AdaptiveAuditTest the screen fits the window[SampleListLoadingPreview at PhoneLandscape, font 2.0x]
+      java.lang.AssertionError: SampleListLoadingPreview at PhoneLandscape, font 2.0x:
+        "node 239": partly outside the window at Rect.fromLTRB(110.0, 278.0, 782.0, 416.0)
+FAIL AdaptiveAuditTest the screen fits the window[SampleListLoadingPreview at Foldable, font 1.0x]
+      java.lang.AssertionError: SampleListLoadingPreview at Foldable, font 1.0x:
+        "Pulled from a live API": the text is cut off
+        "node 322": partly outside the window at Rect.fromLTRB(24.0, 788.0, 649.0, 862.0)
+FAIL AdaptiveAuditTest the screen fits the window[SampleListLoadingPreview at Foldable, font 2.0x]
+      java.lang.AssertionError: SampleListLoadingPreview at Foldable, font 2.0x:
+        "Pulled from a live API": the text is cut off
+        "node 387": partly outside the window at Rect.fromLTRB(24.0, 812.0, 649.0, 950.0)
+FAIL AdaptiveAuditTest the screen fits the window[SampleListLoadingPreview at SmallTablet, font 1.0x]
+      java.lang.AssertionError: SampleListLoadingPreview at SmallTablet, font 1.0x:
+        "Pulled from a live API": the text is cut off
+        "node 458": partly outside the window at Rect.fromLTRB(176.0, 616.0, 848.0, 690.0)
+FAIL AdaptiveAuditTest the screen fits the window[SampleListLoadingPreview at SmallTablet, font 2.0x]
+      java.lang.AssertionError: SampleListLoadingPreview at SmallTablet, font 2.0x:
+        "Pulled from a live API": the text is cut off
+        "node 511": partly outside the window at Rect.fromLTRB(176.0, 512.0, 848.0, 650.0)
+FAIL AdaptiveAuditTest the screen fits the window[SampleListLoadingPreview at Tablet, font 1.0x]
+      java.lang.AssertionError: SampleListLoadingPreview at Tablet, font 1.0x:
+        "Pulled from a live API": the text is cut off
+        "node 594": partly outside the window at Rect.fromLTRB(312.0, 796.0, 968.0, 870.0)
+FAIL AdaptiveAuditTest the screen fits the window[SampleListLoadingPreview at Tablet, font 2.0x]
+      java.lang.AssertionError: SampleListLoadingPreview at Tablet, font 2.0x:
+        "Pulled from a live API": the text is cut off
+        "node 653": partly outside the window at Rect.fromLTRB(312.0, 670.0, 968.0, 808.0)
+FAIL AdaptiveAuditTest the screen fits the window[SampleListLoadingPreview at Desktop, font 1.0x]
+      java.lang.AssertionError: SampleListLoadingPreview at Desktop, font 1.0x:
+        "Pulled from a live API": the text is cut off
+        "node 754": partly outside the window at Rect.fromLTRB(632.0, 1054.0, 1288.0, 1128.0)
+FAIL AdaptiveAuditTest the screen fits the window[SampleListLoadingPreview at Desktop, font 2.0x]
+      java.lang.AssertionError: SampleListLoadingPreview at Desktop, font 2.0x:
+        "Pulled from a live API": the text is cut off
+        "node 825": partly outside the window at Rect.fromLTRB(632.0, 970.0, 1288.0, 1108.0)
+template app tests=35 failures=12
+
+== 08:18:52 5./6. presets: generate
+
+== 08:19:09 5. none: the stability check after a forced unit-test compile, one worker
+rc=1
+BUILD FAILED in 33s
+
+== 08:19:44 5. lean: the stability check after a forced unit-test compile, one worker
+rc=1
+BUILD FAILED in 30s
+
+== 08:25:55 5. standard: the stability check after a forced unit-test compile, one worker
+rc=1
+BUILD FAILED in 56s
+
+== 08:26:52 5. all: the stability check after a forced unit-test compile, one worker
+rc=1
+BUILD FAILED in 35s
+
+== 08:27:29 5. everything: the stability check after a forced unit-test compile, one worker
+rc=1
+BUILD FAILED in 22s
+
+== 08:27:52 6. lean: devRelease with ABI splits
+rc=0
+BUILD SUCCESSFUL in 2m 54s
+SIZE lean app-dev-arm64-v8a-release.apk apk=1387434 dex=2478612
+SIZE lean app-dev-armeabi-v7a-release.apk apk=1385510 dex=2478612
+SIZE lean app-dev-universal-release.apk apk=1485322 dex=2478612
+SIZE lean app-dev-x86-release.apk apk=1385038 dex=2478612
+SIZE lean app-dev-x86_64-release.apk apk=1386492 dex=2478612
+
+== 08:30:48 6. standard: devRelease with ABI splits
+rc=0
+BUILD SUCCESSFUL in 3m 10s
+SIZE standard app-dev-arm64-v8a-release.apk apk=2163787 dex=3961092
+SIZE standard app-dev-armeabi-v7a-release.apk apk=2161863 dex=3961092
+SIZE standard app-dev-universal-release.apk apk=2261675 dex=3961092
+SIZE standard app-dev-x86-release.apk apk=2161391 dex=3961092
+SIZE standard app-dev-x86_64-release.apk apk=2162845 dex=3961092
+
+== 08:34:00 6. everything: devRelease with ABI splits
+rc=0
+BUILD SUCCESSFUL in 10m 20s
+SIZE everything app-dev-arm64-v8a-release.apk apk=3768002 dex=6655688
+SIZE everything app-dev-armeabi-v7a-release.apk apk=3766078 dex=6655688
+SIZE everything app-dev-universal-release.apk apk=3865890 dex=6655688
+SIZE everything app-dev-x86-release.apk apk=3765606 dex=6655688
+SIZE everything app-dev-x86_64-release.apk apk=3767060 dex=6655688
+
+V6 DONE 09:25:51

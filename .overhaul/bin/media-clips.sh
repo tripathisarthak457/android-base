@@ -9,6 +9,8 @@
 #
 #   bash media-clips.sh fetch       # originals into %TEMP%\mrev\clips\src (skips what is there; stops on a 429)
 #   bash media-clips.sh transcode   # $OUT: <key>.mp4, <key>.jpg, CREDITS.md, frames/ for the content review
+#   bash media-clips.sh phone-frames  # L6 for the clips as the catalog plays them now: three screenshots of each
+#                                     # clip on the phone (perf/media/apks/B.apk); nothing is fetched to this machine
 set -uo pipefail
 ROOT=$(cygpath -u "$TEMP")/mrev/clips
 SRC=$ROOT/src
@@ -60,8 +62,36 @@ transcode_one() {
   echo "$key: $(stat -c %s "$OUT/$key.mp4") bytes"
 }
 
+OV=D:/projects/tools/.overhaul
+PKG=com.example.everything.catalog
+export LOCKED_PRIORITY=low
+adbq() { "$OV/bin/locked" adb adb "$@"; }
+
+frames_one() { # <key>: three screenshots of the settled clip, about 1, 4 and 8 s after the swipe that brought it
+  local key=$1 t
+  for t in 1 4 8; do
+    case $t in 1) sleep 1 ;; 4) sleep 2.3 ;; 8) sleep 3.3 ;; esac
+    adbq shell screencap -p /data/local/tmp/media-clip.png
+    adbq pull /data/local/tmp/media-clip.png "$FRAMES/$key-$t.png" > /dev/null
+  done
+  adbq shell input swipe 540 1800 540 600 120
+}
+
 case "${1:-}" in
   fetch) mkdir -p "$SRC"; each fetch_one ;;
+  phone-frames)
+    # One adb lock for the whole pass, so every screenshot is of the page this pass swiped to.
+    case ",${LOCKED_HELD:-}" in *,adb:*) ;; *) exec "$OV/bin/locked" adb bash "$0" phone-frames ;; esac
+    FRAMES=$OV/perf/media/clips/$(date +%Y%m%d-%H%M); mkdir -p "$FRAMES"
+    adbq install -r -t "$OV/perf/media/apks/B.apk" > "$FRAMES/install.txt" 2>&1
+    grep -q Success "$FRAMES/install.txt" || { echo "install failed: $FRAMES/install.txt"; exit 1; }
+    adbq shell am start -W -S -n $PKG/$PKG.CatalogActivity --es section Reels > "$FRAMES/start.txt"
+    sleep 4
+    echo "$CLIPS" | while IFS='|' read -r key url credit; do [ -n "$key" ] && frames_one "$key"; done
+    adbq shell rm -f /data/local/tmp/media-clip.png
+    adbq shell am force-stop $PKG
+    echo "frames -> $FRAMES"
+    ;;
   transcode)
     mkdir -p "$OUT/frames"
     printf '# Sample clips\n\nEach clip is public domain (CC0), its uploader'"'"'s own work, transcoded once for the template'"'"'s catalog.\n\n| File | Credit |\n|---|---|\n' > "$OUT/CREDITS.md"

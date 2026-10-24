@@ -1,0 +1,15 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "A short sentence about what this app does for the person reading it." : {},
+    "Get started" : {},
+    "Next" : {},
+    "Skip" : {},
+    "Stay in the loop" : {},
+    "The reassurance that removes whatever hesitation they have about signing up." : {},
+    "Welcome" : {},
+    "What they will get out of it, phrased as a benefit rather than a feature." : {},
+    "Your data is yours" : {}
+  },
+  "version" : "1.0"
+}

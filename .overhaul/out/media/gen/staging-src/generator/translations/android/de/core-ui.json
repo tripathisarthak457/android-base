@@ -1,0 +1,24 @@
+{
+  "ui_error_generic": "Etwas ist schiefgelaufen. Bitte versuche es noch einmal.",
+  "ui_validation_required": "Pflichtfeld.",
+  "ui_validation_email": "Gib eine gültige E-Mail-Adresse ein.",
+  "ui_validation_mismatch": "Stimmt nicht überein.",
+  "ui_validation_password_letter": "Verwende mindestens einen Buchstaben.",
+  "ui_validation_password_digit": "Verwende mindestens eine Zahl.",
+  "ui_validation_min_length": {
+    "one": "Mindestens %1$d Zeichen.",
+    "other": "Mindestens %1$d Zeichen."
+  },
+  "ui_validation_password_length": {
+    "one": "Verwende mindestens %1$d Zeichen.",
+    "other": "Verwende mindestens %1$d Zeichen."
+  },
+  "ui_error_offline": "Du bist offline. Prüfe deine Verbindung und versuche es noch einmal.",
+  "ui_error_unreachable": "Der Server ist nicht erreichbar. Versuche es gleich noch einmal.",
+  "ui_appstatus_update_title": "Update erforderlich",
+  "ui_appstatus_update_message": "Diese Version wird nicht mehr unterstützt. Aktualisiere die App, um sie weiter zu nutzen.",
+  "ui_appstatus_update_action": "Aktualisieren",
+  "ui_appstatus_maintenance_title": "Wartungsarbeiten",
+  "ui_appstatus_maintenance_message": "Wir arbeiten am Dienst. Versuche es in ein paar Minuten erneut.",
+  "ui_appstatus_maintenance_action": "Erneut versuchen"
+}

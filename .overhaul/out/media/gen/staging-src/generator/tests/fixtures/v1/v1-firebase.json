@@ -1,0 +1,27 @@
+{
+  "app_name": "Firebase One",
+  "package_name": "com.example.firebaseone",
+  "min_sdk": 26,
+  "target_sdk": 37,
+  "compile_sdk": 37,
+  "version_name": "1.0.0",
+  "version_code": 1,
+  "features": [
+    "network",
+    "analytics",
+    "flags",
+    "firebase",
+    "push",
+    "room",
+    "workmanager",
+    "widget",
+    "settings",
+    "sample"
+  ],
+  "feature_modules": [],
+  "keystores": [],
+  "api_base_urls": {},
+  "web_socket_urls": {},
+  "deeplink_scheme": "",
+  "deeplink_host": ""
+}

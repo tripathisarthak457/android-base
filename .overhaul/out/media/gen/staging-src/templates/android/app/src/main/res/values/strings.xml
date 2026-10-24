@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- <generated:app-name> -->
+    <string name="app_name" translatable="false">BaseApp</string>
+    <!-- </generated:app-name> -->
+
+    <!-- <opt:sample> -->
+    <string name="tab_home">Home</string>
+    <!-- </opt:sample> -->
+    <!-- <opt:paging> -->
+    <string name="tab_feed">Feed</string>
+    <!-- </opt:paging> -->
+    <!-- <opt:search> -->
+    <string name="tab_search">Search</string>
+    <!-- </opt:search> -->
+    <!-- <opt:profile> -->
+    <string name="tab_profile">Profile</string>
+    <!-- </opt:profile> -->
+    <!-- <opt:settings> -->
+    <string name="tab_settings">Settings</string>
+    <!-- </opt:settings> -->
+
+    <!-- <opt:deeplink> -->
+    <!--
+      Kept as resources rather than hardcoded in the manifest so a flavour can override them:
+      dropping a strings.xml into src/dev/res gives the dev build its own host without a second
+      intent filter.
+    -->
+    <!-- <generated:deeplink-strings> -->
+    <string name="deeplink_scheme" translatable="false">baseapp</string>
+    <string name="deeplink_host" translatable="false">baseapp.example.com</string>
+    <!-- </generated:deeplink-strings> -->
+    <!-- </opt:deeplink> -->
+</resources>

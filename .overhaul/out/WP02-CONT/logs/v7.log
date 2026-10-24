@@ -1,0 +1,22 @@
+
+== 08:45:47 mutated: the reducer without its Empty and Error branches (expect the two cases FAIL)
+rc=1
+pass a failed first load is an error the screen can retry
+FAIL rows written after an empty answer replace the empty state
+FAIL rows written after a failed first load replace the error
+pass appearing loads once and lands in Success
+pass rows already stored are shown when the first load fails
+pass a failed refresh keeps the rows on screen
+pass an empty answer is Empty, not Success with no rows
+
+== 08:46:38 restored (expect every case pass)
+rc=0
+pass a failed first load is an error the screen can retry
+pass rows written after an empty answer replace the empty state
+pass rows written after a failed first load replace the error
+pass appearing loads once and lands in Success
+pass rows already stored are shown when the first load fails
+pass a failed refresh keeps the rows on screen
+pass an empty answer is Empty, not Success with no rows
+
+V7 DONE 08:46:45

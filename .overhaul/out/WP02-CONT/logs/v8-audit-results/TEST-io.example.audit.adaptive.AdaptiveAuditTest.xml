@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.example.audit.adaptive.AdaptiveAuditTest" tests="60" skipped="0" failures="0" errors="0" timestamp="2026-10-24T03:11:00.653Z" hostname="SARTHAK-PC" time="39.851">
+  <properties/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Phone, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="11.812"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Phone, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.736"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at PhoneLandscape, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.644"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at PhoneLandscape, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.6"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Foldable, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.558"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Foldable, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.512"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at SmallTablet, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.864"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at SmallTablet, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.389"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Tablet, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.451"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Tablet, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.445"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Desktop, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.445"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview at Desktop, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.426"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Phone, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.724"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Phone, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="1.145"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at PhoneLandscape, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.438"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at PhoneLandscape, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.415"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Foldable, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.437"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Foldable, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.452"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at SmallTablet, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.433"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at SmallTablet, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.437"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Tablet, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.372"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Tablet, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.482"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Desktop, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.429"/>
+  <testcase name="the screen fits the window[AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview at Desktop, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.387"/>
+  <testcase name="the screen fits the window[OrderDetailScreenPreview at Phone, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.388"/>
+  <testcase name="the screen fits the window[OrderDetailScreenPreview at Phone, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.353"/>
+  <testcase name="the screen fits the window[OrderDetailScreenPreview at PhoneLandscape, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.446"/>
+  <testcase name="the screen fits the window[OrderDetailScreenPreview at PhoneLandscape, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.418"/>
+  <testcase name="the screen fits the window[OrderDetailScreenPreview at Foldable, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.443"/>
+  <testcase name="the screen fits the window[OrderDetailScreenPreview at Foldable, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.371"/>
+  <testcase name="the screen fits the window[OrderDetailScreenPreview at SmallTablet, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.615"/>
+  <testcase name="the screen fits the window[OrderDetailScreenPreview at SmallTablet, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.97"/>
+  <testcase name="the screen fits the window[OrderDetailScreenPreview at Tablet, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.386"/>
+  <testcase name="the screen fits the window[OrderDetailScreenPreview at Tablet, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.349"/>
+  <testcase name="the screen fits the window[OrderDetailScreenPreview at Desktop, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.399"/>
+  <testcase name="the screen fits the window[OrderDetailScreenPreview at Desktop, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.349"/>
+  <testcase name="the screen fits the window[OrderListScreenPreview at Phone, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.384"/>
+  <testcase name="the screen fits the window[OrderListScreenPreview at Phone, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.347"/>
+  <testcase name="the screen fits the window[OrderListScreenPreview at PhoneLandscape, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.357"/>
+  <testcase name="the screen fits the window[OrderListScreenPreview at PhoneLandscape, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.344"/>
+  <testcase name="the screen fits the window[OrderListScreenPreview at Foldable, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.376"/>
+  <testcase name="the screen fits the window[OrderListScreenPreview at Foldable, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.33"/>
+  <testcase name="the screen fits the window[OrderListScreenPreview at SmallTablet, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.387"/>
+  <testcase name="the screen fits the window[OrderListScreenPreview at SmallTablet, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.343"/>
+  <testcase name="the screen fits the window[OrderListScreenPreview at Tablet, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.378"/>
+  <testcase name="the screen fits the window[OrderListScreenPreview at Tablet, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.333"/>
+  <testcase name="the screen fits the window[OrderListScreenPreview at Desktop, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.401"/>
+  <testcase name="the screen fits the window[OrderListScreenPreview at Desktop, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.309"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at Phone, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.687"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at Phone, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.464"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at PhoneLandscape, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.397"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at PhoneLandscape, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.329"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at Foldable, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.455"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at Foldable, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.406"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at SmallTablet, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.443"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at SmallTablet, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.354"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at Tablet, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.449"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at Tablet, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.353"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at Desktop, font 1.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.427"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at Desktop, font 2.0x]" classname="io.example.audit.adaptive.AdaptiveAuditTest" time="0.414"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,66 @@
+FFFFFF
+======================================================================
+FAIL: test_every_name_the_docs_cite_exists (tests.test_docs.TemplateDocsTest.test_every_name_the_docs_cite_exists) (page='README.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\sw-WP12\generator\tests\test_docs.py", line 247, in test_every_name_the_docs_cite_exists
+    self.assertEqual(set(), names & unknown)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'entryPoint'
+
+======================================================================
+FAIL: test_every_name_the_docs_cite_exists (tests.test_docs.TemplateDocsTest.test_every_name_the_docs_cite_exists) (page='docs/ARCHITECTURE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\sw-WP12\generator\tests\test_docs.py", line 247, in test_every_name_the_docs_cite_exists
+    self.assertEqual(set(), names & unknown)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'surfaceRaised'
+'DeepLinkResolver'
+'debugEnabled'
+'Paged'
+'AppNavHost'
+'AppIndication'
+
+======================================================================
+FAIL: test_every_guide_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_docs_name_is_in_the_project) (preset='none', page='AGENTS.md', guide='docs/ADAPTIVE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\sw-WP12\generator\tests\test_docs.py", line 344, in test_every_guide_the_docs_name_is_in_the_project
+    self.assertTrue((project / guide).is_file(), f"{page.name} names {guide}, which is not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : AGENTS.md names docs/ADAPTIVE.md, which is not in the project
+
+======================================================================
+FAIL: test_every_guide_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_docs_name_is_in_the_project) (preset='lean', page='AGENTS.md', guide='docs/ADAPTIVE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\sw-WP12\generator\tests\test_docs.py", line 344, in test_every_guide_the_docs_name_is_in_the_project
+    self.assertTrue((project / guide).is_file(), f"{page.name} names {guide}, which is not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : AGENTS.md names docs/ADAPTIVE.md, which is not in the project
+
+======================================================================
+FAIL: test_every_guide_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_docs_name_is_in_the_project) (preset='standard', page='AGENTS.md', guide='docs/ADAPTIVE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\sw-WP12\generator\tests\test_docs.py", line 344, in test_every_guide_the_docs_name_is_in_the_project
+    self.assertTrue((project / guide).is_file(), f"{page.name} names {guide}, which is not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : AGENTS.md names docs/ADAPTIVE.md, which is not in the project
+
+======================================================================
+FAIL: test_every_guide_the_docs_name_is_in_the_project (tests.test_docs.GeneratedDocsTest.test_every_guide_the_docs_name_is_in_the_project) (preset='everything', page='AGENTS.md', guide='docs/ADAPTIVE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\sw-WP12\generator\tests\test_docs.py", line 344, in test_every_guide_the_docs_name_is_in_the_project
+    self.assertTrue((project / guide).is_file(), f"{page.name} names {guide}, which is not in the project")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : AGENTS.md names docs/ADAPTIVE.md, which is not in the project
+
+----------------------------------------------------------------------
+Ran 2 tests in 9.864s
+
+FAILED (failures=6)

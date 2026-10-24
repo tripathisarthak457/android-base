@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      The platform theme, not a Material one. Compose paints every pixel of this app, so the only
+      thing this theme is responsible for is the window itself: its background during launch,
+      before the first frame is composed.
+
+      `windowBackground` points at a colour that has a values-night counterpart, which is what
+      stops a dark-mode launch flashing white for the fraction of a second before Compose draws.
+    -->
+    <style name="Theme.BaseApp" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+    <!--
+      The launch theme. `postSplashScreenTheme` is what the window becomes once the splash is
+      dismissed — set it, or the app keeps the splash theme and every subsequent frame is drawn
+      against the splash background.
+    -->
+    <style name="Theme.BaseApp.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/window_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.BaseApp</item>
+    </style>
+</resources>

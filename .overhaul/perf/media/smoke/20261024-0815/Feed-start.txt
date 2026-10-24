@@ -1,0 +1,4 @@
+Stopping: com.example.everything.catalog
+Starting: Intent { cmp=com.example.everything.catalog/.CatalogActivity (has extras) }
+Error type 3
+Error: Activity class {com.example.everything.catalog/com.example.everything.catalog.CatalogActivity} does not exist.

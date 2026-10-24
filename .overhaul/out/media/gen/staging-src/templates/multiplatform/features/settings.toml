@@ -1,0 +1,11 @@
+key = "settings"
+title = "Settings screen"
+headline = "A settings screen"
+description = """
+Theme switch and the build version, wired to the preference store the whole app follows."""
+group = "Screens"
+default = true
+requires = []
+implied_only = false
+owns = ["feature/settings"]
+legacy = []

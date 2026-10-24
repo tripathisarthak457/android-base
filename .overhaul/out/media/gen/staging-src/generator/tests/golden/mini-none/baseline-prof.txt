@@ -1,0 +1,3 @@
+HSPLio/bare/min/BareApplication;-><init>()V
+Lio/bare/min/core/Logger;
+PLandroidx/compose/Foo;

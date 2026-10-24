@@ -1,0 +1,8 @@
+Stopping: com.example.everything.catalog
+Starting: Intent { cmp=com.example.everything.catalog/.CatalogActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.example.everything.catalog/.CatalogActivity
+TotalTime: 220
+WaitTime: 223
+Complete

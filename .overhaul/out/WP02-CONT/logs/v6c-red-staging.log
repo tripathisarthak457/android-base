@@ -1,0 +1,551 @@
+....F.FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE...FFFEF.EF..........F...............................EException ignored while closing generator <generator object PresetTest.each at 0x000002819CCB7010>:
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_adaptive.py", line 88, in test_the_adaptive_audit_renders_every_screen_preview_from_the_app
+    text = audit.read_text(encoding="utf-8")
+RuntimeError: generator ignored GeneratorExit
+EE....
+======================================================================
+ERROR: test_the_data_module_decodes_a_real_answer_when_it_has_a_network (tests.test_android_scaffold.GeneratedModuleTest.test_the_data_module_decodes_a_real_answer_when_it_has_a_network)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 80, in test_the_data_module_decodes_a_real_answer_when_it_has_a_network
+    self.assertIn("NetworkClient", (data / f"main/kotlin/{PKG}/data/orders/remote/OrdersApi.kt").read_text())
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 986, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 970, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpad58p8_t\\online\\data\\orders\\src\\main\\kotlin\\com\\acme\\field\\data\\orders\\remote\\OrdersApi.kt'
+
+======================================================================
+ERROR: test_the_repository_has_the_reference_features_api (tests.test_android_scaffold.GeneratedModuleTest.test_the_repository_has_the_reference_features_api)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 93, in test_the_repository_has_the_reference_features_api
+    self.assertIn("package com.acme.field.data.orders.api.model", (api / "model/OrdersItem.kt").read_text())
+                                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 986, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 970, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpad58p8_t\\online\\data\\orders\\src\\main\\kotlin\\com\\acme\\field\\data\\orders\\api\\model\\OrdersItem.kt'
+
+======================================================================
+ERROR: test_with_a_network_and_no_database_the_list_is_kept_in_memory (tests.test_android_scaffold.GeneratedModuleTest.test_with_a_network_and_no_database_the_list_is_kept_in_memory)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 97, in test_with_a_network_and_no_database_the_list_is_kept_in_memory
+    self.assertIn("class NetworkOrdersRepository", (source / "NetworkOrdersRepository.kt").read_text())
+                                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 986, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 970, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpad58p8_t\\online\\data\\orders\\src\\main\\kotlin\\com\\acme\\field\\data\\orders\\NetworkOrdersRepository.kt'
+
+======================================================================
+ERROR: test_the_adaptive_audit_renders_every_screen_preview_from_the_app (tests.test_android_adaptive.PresetTest.test_the_adaptive_audit_renders_every_screen_preview_from_the_app) (preset='lean')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_adaptive.py", line 53, in each
+    yield project
+GeneratorExit
+
+======================================================================
+ERROR: test_the_adaptive_audit_renders_every_screen_preview_from_the_app (tests.test_android_adaptive.PresetTest.test_the_adaptive_audit_renders_every_screen_preview_from_the_app) (preset='standard')
+----------------------------------------------------------------------
+GeneratorExit
+
+======================================================================
+ERROR: test_the_adaptive_audit_renders_every_screen_preview_from_the_app (tests.test_android_adaptive.PresetTest.test_the_adaptive_audit_renders_every_screen_preview_from_the_app)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_adaptive.py", line 88, in test_the_adaptive_audit_renders_every_screen_preview_from_the_app
+    text = audit.read_text(encoding="utf-8")
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 986, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 970, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpbg_b52p1\\lean\\app\\src\\test\\kotlin\\com\\example\\adaptive\\adaptive\\AdaptiveAuditTest.kt'
+
+======================================================================
+FAIL: test_a_module_the_spec_names_home_fetches_like_any_other (tests.test_android_scaffold.GeneratedModuleTest.test_a_module_the_spec_names_home_fetches_like_any_other)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 120, in test_a_module_the_spec_names_home_fetches_like_any_other
+    self.assertTrue((project / f"data/home/src/main/kotlin/{PKG}/data/home/NetworkHomeRepository.kt").is_file())
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_scrolling_content_clears_the_chrome_and_placeholders_take_the_rows_height (tests.test_android_scaffold.GeneratedModuleTest.test_scrolling_content_clears_the_chrome_and_placeholders_take_the_rows_height)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 177, in test_scrolling_content_clears_the_chrome_and_placeholders_take_the_rows_height
+    self.assertEqual(1, list_screen.count("contentPadding = chromeContentPadding("))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 2
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='ADao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdeDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefgDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghiDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijkDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnoDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrsDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstuDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstuvDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstuvEntity.kt', line=7)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 102 not less than or equal to 100 :  * One abcdefghijklmnopqrstuv row as last fetched; `data/abcdefghijklmnopqrstuv` maps it to its model.
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstuvwDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstuvwEntity.kt', line=7)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 104 not less than or equal to 100 :  * One abcdefghijklmnopqrstuvw row as last fetched; `data/abcdefghijklmnopqrstuvw` maps it to its model.
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstuvwxDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstuvwxEntity.kt', line=7)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 106 not less than or equal to 100 :  * One abcdefghijklmnopqrstuvwx row as last fetched; `data/abcdefghijklmnopqrstuvwx` maps it to its model.
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstuvwxyDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstuvwxyEntity.kt', line=7)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 108 not less than or equal to 100 :  * One abcdefghijklmnopqrstuvwxy row as last fetched; `data/abcdefghijklmnopqrstuvwxy` maps it to its model.
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstuvwxyzDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstuvwxyzEntity.kt', line=7)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 110 not less than or equal to 100 :  * One abcdefghijklmnopqrstuvwxyz row as last fetched; `data/abcdefghijklmnopqrstuvwxyz` maps it to its model.
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstuvwxyzaDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstuvwxyzaEntity.kt', line=7)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 112 not less than or equal to 100 :  * One abcdefghijklmnopqrstuvwxyza row as last fetched; `data/abcdefghijklmnopqrstuvwxyza` maps it to its model.
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstuvwxyzabDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstuvwxyzabEntity.kt', line=7)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 114 not less than or equal to 100 :  * One abcdefghijklmnopqrstuvwxyzab row as last fetched; `data/abcdefghijklmnopqrstuvwxyzab` maps it to its model.
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstuvwxyzabcDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstuvwxyzabcEntity.kt', line=7)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 116 not less than or equal to 100 :  * One abcdefghijklmnopqrstuvwxyzabc row as last fetched; `data/abcdefghijklmnopqrstuvwxyzabc` maps it to its model.
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstuvwxyzabcdDao.kt', line=25)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 107 not less than or equal to 100 :     /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+
+======================================================================
+FAIL: test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length (tests.test_android_scaffold.GeneratedModuleTest.test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length) (file='AbcdefghijklmnopqrstuvwxyzabcdEntity.kt', line=7)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 224, in test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length
+    self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 118 not less than or equal to 100 :  * One abcdefghijklmnopqrstuvwxyzabcd row as last fetched; `data/abcdefghijklmnopqrstuvwxyzabcd` maps it to its model.
+
+======================================================================
+FAIL: test_the_data_module_decodes_a_real_answer_when_it_has_a_network (tests.test_android_scaffold.GeneratedModuleTest.test_the_data_module_decodes_a_real_answer_when_it_has_a_network) (file='remote/dto/OrdersDto.kt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 77, in test_the_data_module_decodes_a_real_answer_when_it_has_a_network
+    self.assertTrue((data / f"main/kotlin/{PKG}/data/orders/{relative}").is_file())
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_the_data_module_decodes_a_real_answer_when_it_has_a_network (tests.test_android_scaffold.GeneratedModuleTest.test_the_data_module_decodes_a_real_answer_when_it_has_a_network) (file='remote/OrdersDtoMappers.kt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 77, in test_the_data_module_decodes_a_real_answer_when_it_has_a_network
+    self.assertTrue((data / f"main/kotlin/{PKG}/data/orders/{relative}").is_file())
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_the_repository_has_the_reference_features_api (tests.test_android_scaffold.GeneratedModuleTest.test_the_repository_has_the_reference_features_api) (member='val items: Flow<List<OrdersItem>>')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 92, in test_the_repository_has_the_reference_features_api
+    self.assertIn(member, repository)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'val items: Flow<List<OrdersItem>>' not found in 'package com.acme.field.data.orders.api\n\nimport com.acme.field.core.common.result.AppResult\n\n/**\n * Everything the app can ask about orders.\n * An interface, so ViewModel tests use a fake.\n */\ninterface OrdersRepository {\n\n    suspend fun items(forceRefresh: Boolean = false): AppResult<List<OrdersItem>>\n\n    suspend fun item(id: String): AppResult<OrdersItem>\n}\n'
+
+======================================================================
+FAIL: test_the_repository_has_the_reference_features_api (tests.test_android_scaffold.GeneratedModuleTest.test_the_repository_has_the_reference_features_api) (member='suspend fun refresh(): AppResult<Unit>')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 92, in test_the_repository_has_the_reference_features_api
+    self.assertIn(member, repository)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'suspend fun refresh(): AppResult<Unit>' not found in 'package com.acme.field.data.orders.api\n\nimport com.acme.field.core.common.result.AppResult\n\n/**\n * Everything the app can ask about orders.\n * An interface, so ViewModel tests use a fake.\n */\ninterface OrdersRepository {\n\n    suspend fun items(forceRefresh: Boolean = false): AppResult<List<OrdersItem>>\n\n    suspend fun item(id: String): AppResult<OrdersItem>\n}\n'
+
+======================================================================
+FAIL: test_the_repository_has_the_reference_features_api (tests.test_android_scaffold.GeneratedModuleTest.test_the_repository_has_the_reference_features_api) (member='fun peek(id: String): OrdersItem?')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 92, in test_the_repository_has_the_reference_features_api
+    self.assertIn(member, repository)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'fun peek(id: String): OrdersItem?' not found in 'package com.acme.field.data.orders.api\n\nimport com.acme.field.core.common.result.AppResult\n\n/**\n * Everything the app can ask about orders.\n * An interface, so ViewModel tests use a fake.\n */\ninterface OrdersRepository {\n\n    suspend fun items(forceRefresh: Boolean = false): AppResult<List<OrdersItem>>\n\n    suspend fun item(id: String): AppResult<OrdersItem>\n}\n'
+
+======================================================================
+FAIL: test_the_screens_follow_the_compose_performance_audit (tests.test_android_scaffold.GeneratedModuleTest.test_the_screens_follow_the_compose_performance_audit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 196, in test_the_screens_follow_the_compose_performance_audit
+    self.assertNotIn("LazyColumn", loading)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'LazyColumn' unexpectedly found in 'private fun LoadingList() {\n    LazyColumn(\n        modifier = Modifier.fillMaxSize(),\n        contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),\n        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),\n        userScrollEnabled = false,\n    ) {\n        items(SKELETON_ROWS) { OrdersRowPlaceholder() }\n    }'
+
+======================================================================
+FAIL: test_with_the_database_the_table_is_the_source_of_truth (tests.test_android_scaffold.GeneratedModuleTest.test_with_the_database_the_table_is_the_source_of_truth)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_scaffold.py", line 104, in test_with_the_database_the_table_is_the_source_of_truth
+    self.assertEqual(
+    ~~~~~~~~~~~~~~~~^
+        ["OfflineFirstOrdersRepository.kt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        sorted(path.name for path in source.glob("*Repository.kt")),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+AssertionError: Lists differ: ['OfflineFirstOrdersRepository.kt'] != ['DefaultOrdersRepository.kt']
+
+First differing element 0:
+'OfflineFirstOrdersRepository.kt'
+'DefaultOrdersRepository.kt'
+
+- ['OfflineFirstOrdersRepository.kt']
+?   ^ ^ -------
+
++ ['DefaultOrdersRepository.kt']
+?   ^^ ^^
+
+
+======================================================================
+FAIL: test_a_module_without_a_network_has_no_table_to_fill (tests.test_android_target.DatabaseTest.test_a_module_without_a_network_has_no_table_to_fill)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\WP02-CONT\red-staging\generator\tests\test_android_target.py", line 132, in test_a_module_without_a_network_has_no_table_to_fill
+    self.assertEqual(["        NoteEntity::class,\n"], regions["database-entities"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['        NoteEntity::class,\n'] != ['        OrdersEntity::class,\n']
+
+First differing element 0:
+'        NoteEntity::class,\n'
+'        OrdersEntity::class,\n'
+
+- ['        NoteEntity::class,\n']
+?           ^^^
+
++ ['        OrdersEntity::class,\n']
+?           ^^^ ++
+
+
+----------------------------------------------------------------------
+Ran 64 tests in 129.241s
+
+FAILED (failures=49, errors=6)

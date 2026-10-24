@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_default">Geral</string>
+    <string name="notification_channel_default_description">Atividade da conta e avisos importantes.</string>
+    <string name="notification_channel_urgent">Urgente</string>
+    <string name="notification_channel_urgent_description">O que precisa da sua atenção agora.</string>
+    <string name="notification_channel_promotions">Ofertas</string>
+    <string name="notification_channel_promotions_description">Promoções e novidades do produto.</string>
+    <string name="notification_channel_silent">Segundo plano</string>
+    <string name="notification_channel_silent_description">Sincronização e progresso.</string>
+    <string name="notification_public_text">Nova notificação</string>
+</resources>

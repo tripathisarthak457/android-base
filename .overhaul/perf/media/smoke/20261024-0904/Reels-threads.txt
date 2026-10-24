@@ -1,0 +1,77 @@
+USER           PID   TID  PPID        VSZ    RSS WCHAN            ADDR S CMD            
+u0_a307       5358  5358   980    9675840 146624 0                   0 S rything.catalog
+u0_a307       5358  5359   980    9675840 146624 0                   0 S Signal Catcher
+u0_a307       5358  5361   980    9675840 146624 0                   0 S perfetto_hprof_
+u0_a307       5358  5362   980    9675840 146624 0                   0 S Jit thread pool
+u0_a307       5358  5363   980    9675840 146624 0                   0 S HeapTaskDaemon
+u0_a307       5358  5364   980    9675840 146624 0                   0 S ReferenceQueueD
+u0_a307       5358  5365   980    9675840 146624 0                   0 S FinalizerDaemon
+u0_a307       5358  5366   980    9675840 146624 0                   0 S FinalizerWatchd
+u0_a307       5358  5367   980    9675840 146624 0                   0 S binder:5358_1
+u0_a307       5358  5368   980    9675840 146624 0                   0 S binder:5358_2
+u0_a307       5358  5369   980    9675840 146624 0                   0 S binder:5358_3
+u0_a307       5358  5370   980    9675840 146624 0                   0 S Profile Saver
+u0_a307       5358  5371   980    9675840 146624 0                   0 S RenderThread
+u0_a307       5358  5372   980    9675840 146624 0                   0 S TracingMuxer
+u0_a307       5358  5374   980    9675840 146624 0                   0 S catalog-frames
+u0_a307       5358  5376   980    9675840 146624 0                   0 S ProtoLogBackgro
+u0_a307       5358  5377   980    9675840 146624 0                   0 S hwuiTask0
+u0_a307       5358  5378   980    9675840 146624 0                   0 S hwuiTask1
+u0_a307       5358  5380   980    9675840 146624 0                   0 S SurfaceSyncGrou
+u0_a307       5358  5381   980    9675840 146624 0                   0 S binder:5358_4
+u0_a307       5358  5382   980    9675840 146624 0                   0 S DefaultDispatch
+u0_a307       5358  5383   980    9675840 146624 0                   0 S DefaultDispatch
+u0_a307       5358  5384   980    9675840 146624 0                   0 S DefaultDispatch
+u0_a307       5358  5385   980    9675840 146624 0                   0 S jg2 Dispatcher
+u0_a307       5358  5386   980    9675840 146624 0                   0 S jg2 Dispatcher
+u0_a307       5358  5389   980    9675840 146624 0                   0 S jg2 Dispatcher
+u0_a307       5358  5390   980    9675840 146624 0                   0 S jg2 Dispatcher
+u0_a307       5358  5397   980    9675840 146624 0                   0 S jg2 TaskRunner
+u0_a307       5358  5398   980    9675840 146624 0                   0 S d.wikimedia.org
+u0_a307       5358  5402   980    9675840 146624 0                   0 S jg2 TaskRunner
+u0_a307       5358  5403   980    9675840 146624 0                   0 S ExoPlayer:Backg
+u0_a307       5358  5404   980    9675840 146624 0                   0 S ExoPlayer:Playb
+u0_a307       5358  5405   980    9675840 146624 0                   0 S jg2 TaskRunner
+u0_a307       5358  5406   980    9675840 146624 0                   0 S DefaultPreloadM
+u0_a307       5358  5408   980    9675840 146624 0                   0 S ExoPlayer:Loade
+u0_a307       5358  5409   980    9675840 146624 0                   0 S binder:5358_3
+u0_a307       5358  5411   980    9675840 146624 0                   0 S ExoPlayer:Loade
+u0_a307       5358  5412   980    9675840 146624 0                   0 S ExoPlayer:Loade
+u0_a307       5358  5413   980    9675840 146624 0                   0 S jg2 Dispatcher
+u0_a307       5358  5414   980    9675840 146624 0                   0 S jg2 TaskRunner
+u0_a307       5358  5415   980    9675840 146624 0                   0 S ConscryptStatsL
+u0_a307       5358  5416   980    9675840 146624 0                   0 S ConscryptStatsL
+u0_a307       5358  5417   980    9675840 146624 0                   0 S ConscryptStatsL
+u0_a307       5358  5419   980    9675840 146624 0                   0 S Okio Watchdog
+u0_a307       5358  5426   980    9675840 146624 0                   0 S jg2 Dispatcher
+u0_a307       5358  5427   980    9675840 146624 0                   0 S DefaultDispatch
+u0_a307       5358  5428   980    9675840 146624 0                   0 S DefaultDispatch
+u0_a307       5358  5429   980    9675840 146624 0                   0 S GrallocUploadTh
+u0_a307       5358  5430   980    9675840 146624 0                   0 S GrallocUploadTh
+u0_a307       5358  5431   980    9675840 146624 0                   0 S GrallocUploadTh
+u0_a307       5358  5432   980    9675840 146624 0                   0 S ExoPlayer:Place
+u0_a307       5358  5433   980    9675840 146624 0                   0 S MediaCodec_loop
+u0_a307       5358  5434   980    9675840 146624 0                   0 S CodecLooper
+u0_a307       5358  5435   980    9675840 146624 0                   0 S CCodecWatchdog
+u0_a307       5358  5436   980    9675840 146624 0                   0 S CodecLooper
+u0_a307       5358  5437   980    9675840 146624 0                   0 S CodecLooper
+u0_a307       5358  5438   980    9675840 146624 0                   0 S HwBinder:5358_1
+u0_a307       5358  5440   980    9675840 146624 0                   0 S ExoPlayer:Media
+u0_a307       5358  5441   980    9675840 146624 0                   0 S CodecLooper
+u0_a307       5358  5444   980    9675840 146624 0                   0 S AudioPortEventH
+u0_a307       5358  5445   980    9675840 146624 0                   0 S MediaCodec_loop
+u0_a307       5358  5446   980    9675840 146624 0                   0 S CodecLooper
+u0_a307       5358  5448   980    9675840 146624 0                   0 S ExoPlayer:Media
+u0_a307       5358  5451   980    9675840 146624 0                   0 S ExoPlayer:Loade
+u0_a307       5358  5452   980    9675840 146624 0                   0 S MediaCodec_loop
+u0_a307       5358  5453   980    9675840 146624 0                   0 S CodecLooper
+u0_a307       5358  5455   980    9675840 146624 0                   0 S ExoPlayer:Media
+u0_a307       5358  5458   980    9675840 146624 0                   0 S ExoPlayer:Loade
+u0_a307       5358  5459   980    9675840 146624 0                   0 S ExoPlayer:Loade
+u0_a307       5358  5460   980    9675840 146624 0                   0 S ExoPlayer:Loade
+u0_a307       5358  5463   980    9675840 146624 0                   0 S ExoPlayer:Loade
+u0_a307       5358  5464   980    9675840 146624 0                   0 S ExoPlayer:Loade
+u0_a307       5358  5465   980    9675840 146624 0                   0 S ExoPlayer:Loade
+u0_a307       5358  5484   980    9675840 146624 0                   0 S ExoPlayer:Loade
+u0_a307       5358  5503   980    9675840 146624 0                   0 S ExoPlayer:Downl
+u0_a307       5358  5504   980    9675840 146624 0                   0 S PreCacheHelper:

@@ -1,0 +1,12 @@
+key = "onboarding"
+title = "Onboarding flow"
+headline = "A first-run walkthrough"
+description = """
+A paged walkthrough shown once, recorded in the preference store. Skipping counts as finishing, so
+it never comes back on the next launch."""
+group = "Screens"
+default = false
+requires = []
+implied_only = false
+owns = ["feature/onboarding"]
+legacy = []

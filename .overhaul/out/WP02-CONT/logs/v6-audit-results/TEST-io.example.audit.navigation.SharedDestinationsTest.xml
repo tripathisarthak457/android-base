@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.example.audit.navigation.SharedDestinationsTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-24T02:45:11.691Z" hostname="SARTHAK-PC" time="0.419">
+  <properties/>
+  <testcase name="the scan sees the features' keys and graphs" classname="io.example.audit.navigation.SharedDestinationsTest" time="0.259"/>
+  <testcase name="every feature key is registered once, by the feature that owns it" classname="io.example.audit.navigation.SharedDestinationsTest" time="0.159"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

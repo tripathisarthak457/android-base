@@ -1,0 +1,13 @@
+key = "playstore"
+title = "Play in-app update and review prompts"
+headline = "Offer updates and ask for ratings"
+description = """
+A newer build offered once per launch through Play's own sheet and never offered again once
+turned down, a restart only when the person asks for it, and a rating prompt on a schedule Play
+honours."""
+group = "Platform"
+default = false
+requires = []
+implied_only = false
+owns = ["core/playstore"]
+legacy = []

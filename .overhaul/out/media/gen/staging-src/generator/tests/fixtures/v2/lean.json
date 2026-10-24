@@ -1,0 +1,17 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Lean",
+  "package_name": "com.example.lean",
+  "architecture": "compact",
+  "features": [
+    "ci",
+    "coil",
+    "deeplink",
+    "googlefonts",
+    "leakcanary",
+    "network"
+  ],
+  "feature_modules": [],
+  "languages": []
+}

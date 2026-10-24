@@ -1,0 +1,2 @@
+Broadcasting: Intent { act=com.example.everything.catalog.PERF_GC flg=0x400000 pkg=com.example.everything.catalog }
+Broadcast completed: result=0

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.WindowManifestTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-24T03:15:35.355Z" hostname="SARTHAK-PC" time="0.021">
+  <properties/>
+  <testcase name="nothing locks the orientation or the window's size" classname="com.base.app.WindowManifestTest" time="0.01"/>
+  <testcase name="a new window size or night mode does not recreate the activity" classname="com.base.app.WindowManifestTest" time="0.005"/>
+  <testcase name="a desktop opens a sized window, and a second window may be opened" classname="com.base.app.WindowManifestTest" time="0.006"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

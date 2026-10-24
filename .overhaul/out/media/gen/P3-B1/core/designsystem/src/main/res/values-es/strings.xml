@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="designsystem_cancel">Cancelar</string>
+    <string name="designsystem_close">Cerrar</string>
+    <string name="designsystem_try_again">Reintentar</string>
+    <string name="designsystem_offline_title">Sin conexión</string>
+    <string name="designsystem_error_title">Algo salió mal</string>
+    <string name="designsystem_navigate_back">Volver</string>
+    <string name="designsystem_hide_password">Ocultar contraseña</string>
+    <string name="designsystem_show_password">Mostrar contraseña</string>
+    <string name="designsystem_search">Buscar</string>
+    <string name="designsystem_clear_search">Borrar búsqueda</string>
+    <string name="designsystem_remove_item">Quitar %1$s</string>
+    <string name="designsystem_show_more">Ver más</string>
+    <string name="designsystem_show_less">Ver menos</string>
+    <string name="designsystem_expanded">Expandido</string>
+    <string name="designsystem_collapsed">Contraído</string>
+    <string name="designsystem_expand">Expandir</string>
+    <string name="designsystem_collapse">Contraer</string>
+    <string name="designsystem_page_of">Página %1$d de %2$d</string>
+    <string name="designsystem_loading">Cargando</string>
+    <string name="designsystem_refresh">Actualizar</string>
+    <string name="designsystem_refreshing">Actualizando</string>
+    <string name="designsystem_show_menu">Mostrar menú</string>
+    <plurals name="designsystem_people_count">
+        <item quantity="one">%1$d persona</item>
+        <item quantity="other">%1$d personas</item>
+    </plurals>
+    <string name="designsystem_sheet_pane">Hoja</string>
+    <string name="designsystem_sheet_grabber">Cambiar tamaño de la hoja</string>
+    <string name="designsystem_sheet_expand">Expandir hoja</string>
+    <string name="designsystem_sheet_collapse">Contraer hoja</string>
+    <string name="designsystem_sheet_dismiss">Descartar hoja</string>
+    <string name="designsystem_sheet_close_scrim">Cerrar hoja</string>
+    <string name="designsystem_sheet_state_expanded">Expandida</string>
+    <string name="designsystem_sheet_state_partial">Parcialmente expandida</string>
+    <string name="designsystem_sheet_state_collapsed">Contraída</string>
+    <string name="designsystem_actions_pane">Acciones</string>
+    <string name="designsystem_sheet_discard_title">¿Descartar los cambios?</string>
+    <string name="designsystem_sheet_discard">Descartar</string>
+    <string name="designsystem_sheet_keep_editing">Seguir editando</string>
+    <string name="designsystem_none">Ninguno</string>
+    <string name="designsystem_nothing_selected">Nada seleccionado</string>
+    <string name="designsystem_nothing_selected_message">Elige algo de la lista para verlo aquí.</string>
+</resources>

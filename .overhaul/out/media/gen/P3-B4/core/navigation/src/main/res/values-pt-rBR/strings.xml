@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="navigation_more">Mais</string>
+    <string name="navigation_back">Voltar</string>
+    <string name="navigation_show_sidebar">Mostrar barra lateral</string>
+    <string name="navigation_hide_sidebar">Ocultar barra lateral</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.session.SessionCoordinatorTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-24T02:48:46.887Z" hostname="SARTHAK-PC" time="0.222">
+  <properties/>
+  <testcase name="tokens that cannot be read at start-up clear what the last person left" classname="com.base.app.session.SessionCoordinatorTest" time="0.212"/>
+  <testcase name="someone else signing in over a session that never signed out finds nothing of it" classname="com.base.app.session.SessionCoordinatorTest" time="0.003"/>
+  <testcase name="two sign-outs at once clear every store exactly once" classname="com.base.app.session.SessionCoordinatorTest" time="0.004"/>
+  <testcase name="a renewed session for the same person keeps their data" classname="com.base.app.session.SessionCoordinatorTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

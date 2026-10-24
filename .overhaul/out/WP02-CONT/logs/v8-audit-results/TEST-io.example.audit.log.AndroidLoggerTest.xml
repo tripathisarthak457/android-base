@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.example.audit.log.AndroidLoggerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-24T03:11:40.507Z" hostname="SARTHAK-PC" time="0.006">
+  <properties/>
+  <testcase name="nothing below an error is reported, verbose or not" classname="io.example.audit.log.AndroidLoggerTest" time="0.004"/>
+  <testcase name="without a reporter an error is only logged" classname="io.example.audit.log.AndroidLoggerTest" time="0.0"/>
+  <testcase name="an error is reported with its tag, and with its throwable when there is one" classname="io.example.audit.log.AndroidLoggerTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

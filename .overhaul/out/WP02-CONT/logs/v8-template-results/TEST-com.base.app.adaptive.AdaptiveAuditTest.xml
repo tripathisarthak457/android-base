@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.adaptive.AdaptiveAuditTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-24T03:15:05.228Z" hostname="SARTHAK-PC" time="30.117">
+  <properties/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at Phone, font 1.0x]" classname="com.base.app.adaptive.AdaptiveAuditTest" time="19.638"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at Phone, font 2.0x]" classname="com.base.app.adaptive.AdaptiveAuditTest" time="1.228"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at PhoneLandscape, font 1.0x]" classname="com.base.app.adaptive.AdaptiveAuditTest" time="1.108"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at PhoneLandscape, font 2.0x]" classname="com.base.app.adaptive.AdaptiveAuditTest" time="1.023"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at Foldable, font 1.0x]" classname="com.base.app.adaptive.AdaptiveAuditTest" time="0.819"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at Foldable, font 2.0x]" classname="com.base.app.adaptive.AdaptiveAuditTest" time="0.86"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at SmallTablet, font 1.0x]" classname="com.base.app.adaptive.AdaptiveAuditTest" time="0.842"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at SmallTablet, font 2.0x]" classname="com.base.app.adaptive.AdaptiveAuditTest" time="0.809"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at Tablet, font 1.0x]" classname="com.base.app.adaptive.AdaptiveAuditTest" time="0.891"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at Tablet, font 2.0x]" classname="com.base.app.adaptive.AdaptiveAuditTest" time="0.81"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at Desktop, font 1.0x]" classname="com.base.app.adaptive.AdaptiveAuditTest" time="0.702"/>
+  <testcase name="the screen fits the window[SampleListLoadingPreview at Desktop, font 2.0x]" classname="com.base.app.adaptive.AdaptiveAuditTest" time="0.82"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

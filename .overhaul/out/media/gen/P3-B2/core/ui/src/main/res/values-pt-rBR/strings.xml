@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_error_generic">Algo deu errado. Tente de novo.</string>
+    <string name="ui_error_offline">Você está off-line. Verifique a conexão e tente de novo.</string>
+    <string name="ui_error_unreachable">Não foi possível falar com o servidor. Tente de novo daqui a pouco.</string>
+    <string name="ui_appstatus_update_title">Atualização necessária</string>
+    <string name="ui_appstatus_update_message">Esta versão não é mais compatível. Atualize o app para continuar usando.</string>
+    <string name="ui_appstatus_update_action">Atualizar</string>
+    <string name="ui_appstatus_maintenance_title">Em manutenção</string>
+    <string name="ui_appstatus_maintenance_message">Estamos trabalhando no serviço. Tente de novo em alguns minutos.</string>
+    <string name="ui_appstatus_maintenance_action">Tentar de novo</string>
+    <string name="ui_validation_required">Campo obrigatório.</string>
+    <string name="ui_validation_email">Informe um e-mail válido.</string>
+    <string name="ui_validation_mismatch">Não confere.</string>
+    <string name="ui_validation_password_letter">Inclua pelo menos uma letra.</string>
+    <string name="ui_validation_password_digit">Inclua pelo menos um número.</string>
+    <plurals name="ui_validation_min_length">
+        <item quantity="one">Deve ter pelo menos %1$d caractere.</item>
+        <item quantity="other">Deve ter pelo menos %1$d caracteres.</item>
+    </plurals>
+    <plurals name="ui_validation_password_length">
+        <item quantity="one">Use pelo menos %1$d caractere.</item>
+        <item quantity="other">Use pelo menos %1$d caracteres.</item>
+    </plurals>
+</resources>

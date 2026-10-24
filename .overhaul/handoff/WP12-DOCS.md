@@ -2,6 +2,88 @@
 
 ## Progress
 
+Run 6 (fix #2: the second review's one blocking finding and its non-blocking list), 2026-10-24 07:25 IST on.
+
+- **Synced:** staging `4760b4071` (07:07, `web/frontend` only: the configurator's glass wording) merged as
+  **`2931d770a`**, clean, with a message that carries the co-author trailer. Nothing the guide, `AGENTS.md` or
+  `ARCHITECTURE.md` quotes moved (no template, `tools/perf` or generator file in it).
+- **Blocking ("merge this stage with `--squash`, never `--no-ff`, so `0ec84b634` and `fb22623c5` keep the three
+  private names out of staging's and main's history"): not taken, because its premise does not hold. Nothing on the
+  branch changes; the real decision is the user's, at the main release.** Evidence (the commands, with each name
+  typed in the shell only; no file this run wrote spells them):
+  1. **Staging's own history already carries all three names, independently of this stage.** `git log staging -i
+     -S<name>` finds, for each of the three, `ff9c77792` (2026-10-09, "Split the generator into a target-agnostic
+     engine with an Android plugin": the generator's two private spec fixtures) and `25380f5b0` (2026-10-20,
+     "Replace the two private app specs in the fixtures with neutral samples", which removes them). `git log staging
+     -i --grep=<name>` finds nine commit messages that name the first or the second (`25380f5b0`, `904a2a8a4`,
+     `d2febdbc7`, `e334d1ad0`, `9cdcf6e81`, `5387c017f`, `68be8d17c`, `827d08b44`, `6ffb4dc1e`). Staging's tree has
+     none (`git grep -i` empty). So a release that merges staging into main with its history publishes the names on
+     main whatever mode this stage merges with, and a release that squashes staging into main keeps them out
+     whatever mode this stage merges with. This stage's merge mode decides nothing for main.
+  2. **They are already public, and were reviewed as such.** `handover/PUSHED.md` §5 (Oct 16) lists the two private
+     spec fixtures in the first public push of the package branches ("Nothing was blocked"). Today `origin`
+     (github.com/tripathisarthak457/android-base) has `ff9c77792` on 27 branches: `staging`,
+     `overhaul/multiplatform-v2`, every `wp/*`, `ci/linux-check`, four `backup/*` and four `staging-wp/*`; and
+     `25380f5b0` on `staging` and `staging-wp/{MEDIA,WP02-CONT,WP10-WEB,WP12-DOCS}`. `origin/overhaul-workspace`'s
+     backups of Oct 17-24 (`c805e4f5d` to `e09b47749`) carry the names as content. **This stage's branch
+     itself was pushed at 07:16:19 today** (`origin/staging-wp/WP12-DOCS@{2026-10-24 07:16:19 +0530}: update by
+     push`, at `9c9608329`, so with `0ec84b634` and `fb22623c5`): run 3's "never pushed" is no longer true, and the
+     pre-push scan let it through (PUSHED.md §5's patterns are secrets; these names are not among them).
+     `origin/main` has none of the three (content, messages, tree).
+  3. **A squash here costs something the finding does not weigh.** WP12-KNOW starts from this stage's ready commit
+     (`decisions/LOG.md`, Oct 23 23:29). After a squash merge, staging no longer has this branch as an ancestor, so
+     KNOW's sync with staging conflicts in every paragraph KNOW rewrites again (both sides changed it from the old
+     base); section 3.2's bisect points and its revert path (`git revert -m 1`) assume a merge commit.
+
+  **So: merge this stage as section 3.2 says (`--no-ff`).** For the orchestrator, to ask the user (a decision only
+  the user takes, with the earlier District scrub as precedent, `decisions/LOG.md` line 45): what keeps the names
+  off main is how staging reaches main. (a) **Recommended:** release staging into main as one squash commit: main's
+  history gets no name, and nothing already pushed has to be rewritten; the cost is that main does not show the
+  per-merge history (it stays on `staging` and the `merged/*` tags). (b) Rewrite staging's history before the
+  release: every branch that carries `ff9c77792` would need a force push, which the rules forbid without the user,
+  and GitHub keeps the old commits reachable by id until garbage collection or a Support request. Either way the
+  names on origin's non-main branches stay until the user removes those branches. Also for the orchestrator: add
+  the three names to the pre-push scan of `git log -p origin/<b>..<b>`, kept outside the public tree.
+- **Committed as `337f9bd4a`** (the branch head; the worktree is clean), the test and the docs together, the test
+  run red first. **State: done, ready for the re-review.**
+- **Non-blocking, fixed** (in `337f9bd4a`; the done-condition's test changed and run red first):
+  - The done-condition allowed no noise ("none of those is worse than it lists there"). The reviewer's wording,
+    "within the smoke tolerance of the listed value", does not work: `gates.toml` gives a `smoke` tolerance to only
+    one of the eight rows the guide lists as over (`scroll_root.janky_pct`; `tabs_tap.first_frame_ms.*`,
+    `pushpop.push_first_frame_ms.max`, `pushpop.pop_first_frame_ms.max`,
+    `pushpop_gesture.gesture_first_frame_ms.median`, `scroll_minimize.janky_pct` and `nav_stress.janky_pct` have
+    none). All three places now say "none of those is worse than it lists there beyond the spread of one build's
+    repeated runs", the stands note gives the size (a row's max moves by up to about a millisecond between blocks of
+    one build: the push's composing frame 20.99-21.94, the pop's first frame 5.87-6.29 in the final build's blocks),
+    and `PENDING.md`'s rule says the same.
+  - Section 10 item 7 now ends like the other two: "and against the previous build measured the same day
+    `--baseline … --gate smoke` passes and no other row got worse (§6)".
+  - `test_being_done_excuses_only_the_rows_the_guide_lists_as_over` now pins the whole condition, from "`--gate
+    solid` fails on no limit" through the spread clause to "passes and no other row", in one wording in all three
+    places. Red on the docs before this run in all three places (`f2-test_docs-red.log`: no spread clause, and item
+    7 without "no other row"); the item-7 tail alone is caught too (`f2-item7-guard.log`: with it removed, item 7 no
+    longer matches); green after.
+  - The stands caption: ranges are "the spread of single-run blocks over several sessions of that build (for the
+    hitch, jank, scroll and stress rows also of the builds just before it, which measured alike there)". Checked
+    against `staging/TEST-REPORT.md` and `staging/perf/fix/`: the hitch and jank ranges are fix2/fix3/final blocks,
+    scroll's 14 blocks span the sitting's builds, which read alike (even the build before its first fix: 0.81 /
+    0.89 % in `y-fx1-nb-*`), navigation stress's 5.21-6.82 are fix2-fix4 (`z-{s1,f3,d1,t4}-*`; the gate's
+    median 5.37 lies inside), while every first-frame range (4.87-4.95, 20.99-21.94, 5.87-6.29, 2.95-4.44) is the
+    final build's blocks and gate only. The reviewer's suggested wording would have said the same of the first-frame
+    rows, where fix3 did not measure alike (push composing max 20.57 / 19.55).
+  - `ARCHITECTURE.md` "Messages and errors": `showMessage(text)`, `kind` `MessageKind.Info` unless another is passed
+    (`MviViewModel.kt:67`), `MessageKind.Error` for "Could not refresh".
+  - The opt-in in both `saveable` recipes (`AGENTS.md` "Recipes", `ARCHITECTURE.md` "Surviving process death"):
+    `@OptIn(SavedStateHandleSaveableApi::class)`, as the template's fields have it (`SignIn.kt:88`). Correction to
+    the finding: without it the build warns, it does not fail: lifecycle-viewmodel-compose 2.11.0 declares the
+    annotation `@RequiresOptIn(level = WARNING)` (read from the aar's class file in the Gradle cache), and the
+    template does not turn warnings into errors.
+- **Non-blocking, not done here, with the reason:** the merge commit `68257e70f` has git's default message without
+  the trailer, and amending it would rewrite history (this run's merge `2931d770a` carries it). The routing notes
+  (the `HostCrossfade` KDoc's per-frame offscreen cost; `BackCardState.textures`' KDoc, a held file of the
+  section 2.2 order; `PERFORMANCE-OVERLAY.md`'s unfenced `tools/perf`; `STALE_NAMES` for WP12-KNOW) stay open with
+  their owners, as "Findings for routing" below says.
+
 Run 5 (sync), 2026-10-24 06:56 IST. `git merge staging`: already up to date. Staging is still at
 `7230b666e`, which run 4 merged as `68257e70f`; no merge commit, the head stays **`9c9608329`**, the
 worktree is clean. Nothing was touched, so nothing needed a compile or a test; the branch's own diff
@@ -164,6 +246,20 @@ Run 2 (impl), 2026-10-24 01:14 IST. Staging still at `d429cbfbf` (the merge at t
 
 ## Verification
 
+Run 6 (fix #2), at staging `4760b4071` merged into the branch (`2931d770a`), head **`337f9bd4a`**, worktree clean.
+Logs under `D:/projects/tools/.overhaul/logs/WP12-DOCS/`.
+
+| Check | Result | Log |
+|---|---|---|
+| The changed `test_being_done_…` against the docs before this run's edits | red, as intended, in all three places (no spread clause; item 7 also without "no other row") | `f2-test_docs-red.log` |
+| The same pattern on the final `AGENTS.md`, and with item 7's "and no other row got worse" removed | matches both places; without the tail, item 7 no longer matches | `f2-item7-guard.log` |
+| `tests.test_docs` + `tests.test_android_target`, final tree | 47 tests OK | `f2-test_docs-final.log` (`f2-test_docs-green.log` is the run before two lines were rewrapped) |
+| Generator suite (`unittest discover -s tests -t .`, memwait) | 489 run, OK, 9 skipped | `f2-generator-suite.log` |
+| No commit after `9c9608329`, no file of the tree, this handoff or `PENDING.md` carries any of the three names | `git log -S` / `--grep`, `git grep -i`, `grep -i -c`: none | (run inline) |
+
+Not run: Gradle and `tools/perf/test_perf.py` (no Kotlin, resource, build-script or `tools/perf` change; the merged
+staging commit is `web/frontend` only, tested on staging), the phone (docs only).
+
 Run 4 (fix #1 completed), at staging `7230b666e` merged into the branch, head `9c9608329`. Logs under
 `D:/projects/tools/.overhaul/logs/WP12-DOCS/`. Run 3's red evidence for the two new tests
 (`f1-test_docs-red-final.log`) holds unchanged: the tests committed are byte for byte the ones it ran.
@@ -245,7 +341,8 @@ For every later stage that writes into the docs base (`docs-draft/PENDING.md` sa
    failing non-regression row fails `--gate solid` like any other, so it must be listed or nothing can
    be done). A stage that re-measures them on merged code (HUD-O1, REG, a train's phone gate, WP13)
    updates the table in the same change; a row that goes green moves to "within". The
-   done-condition excuses exactly the rows marked over, in one wording in three places (section 6,
+   done-condition excuses exactly the rows marked over, at no worse than listed beyond the spread of one
+   build's repeated runs, in one wording in three places (section 6,
    section 10 item 7, the guide's "Before you merge UI work" item 8); the stage that brings the last row
    within removes the exception from all three (the test fails until it does).
 5. **Exceptions to "no whole screen offscreen"** are listed in four places that must agree: the guide

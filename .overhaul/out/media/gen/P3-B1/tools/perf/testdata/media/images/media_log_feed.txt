@@ -1,0 +1,8 @@
+--------- beginning of main
+I/perf.media( 4321): images busy t=1000100
+I/perf.media( 4321): decoded w=1080 h=1350 source=network
+I/perf.media( 4321): prefetched
+I/perf.media( 4321): decoded w=1080 h=608 source=disk
+I/perf.media( 4321): http status=404 host=picsum.photos
+I/perf.media( 4321): images idle t=1000900
+I/perf.media( 4321): gc done t=1001000

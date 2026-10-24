@@ -1,0 +1,32 @@
+
+Summary
+───────
+           App  None (None)
+       Package  com.example.none
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  none
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\WP02-CONT\accept\none
+
+  ! No feature gives the app a tab, so a 'home' module was scaffolded under
+  ! feature/home and data/home. Its repository has no source yet: give it one,
+  ! or rename the module.
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\WP02-CONT\accept\none and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_default">सामान्य</string>
+    <string name="notification_channel_default_description">खाते की गतिविधि और ज़रूरी अपडेट।</string>
+    <string name="notification_channel_urgent">तुरंत ध्यान दें</string>
+    <string name="notification_channel_urgent_description">वे बातें जिन पर अभी आपका ध्यान चाहिए।</string>
+    <string name="notification_channel_promotions">ऑफ़र</string>
+    <string name="notification_channel_promotions_description">डील और प्रॉडक्ट से जुड़ी खबरें।</string>
+    <string name="notification_channel_silent">बैकग्राउंड</string>
+    <string name="notification_channel_silent_description">सिंक और प्रगति से जुड़े अपडेट।</string>
+    <string name="notification_public_text">नई सूचना</string>
+</resources>

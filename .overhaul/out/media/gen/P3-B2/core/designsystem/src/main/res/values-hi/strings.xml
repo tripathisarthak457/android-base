@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="designsystem_cancel">रद्द करें</string>
+    <string name="designsystem_close">बंद करें</string>
+    <string name="designsystem_try_again">फिर से कोशिश करें</string>
+    <string name="designsystem_offline_title">आप ऑफ़लाइन हैं</string>
+    <string name="designsystem_error_title">कुछ गड़बड़ हो गई</string>
+    <string name="designsystem_navigate_back">वापस जाएं</string>
+    <string name="designsystem_hide_password">पासवर्ड छिपाएं</string>
+    <string name="designsystem_show_password">पासवर्ड दिखाएं</string>
+    <string name="designsystem_search">खोजें</string>
+    <string name="designsystem_clear_search">खोज साफ़ करें</string>
+    <string name="designsystem_remove_item">%1$s हटाएं</string>
+    <string name="designsystem_show_more">ज़्यादा दिखाएं</string>
+    <string name="designsystem_show_less">कम दिखाएं</string>
+    <string name="designsystem_expanded">विस्तृत</string>
+    <string name="designsystem_collapsed">संक्षिप्त</string>
+    <string name="designsystem_expand">विस्तृत करें</string>
+    <string name="designsystem_collapse">संक्षिप्त करें</string>
+    <string name="designsystem_page_of">पृष्ठ %1$d / %2$d</string>
+    <string name="designsystem_loading">लोड हो रहा है</string>
+    <string name="designsystem_refresh">रीफ़्रेश करें</string>
+    <string name="designsystem_refreshing">रीफ़्रेश हो रहा है</string>
+    <string name="designsystem_show_menu">मेनू दिखाएँ</string>
+    <plurals name="designsystem_people_count">
+        <item quantity="one">%1$d व्यक्ति</item>
+        <item quantity="other">%1$d लोग</item>
+    </plurals>
+    <string name="designsystem_sheet_pane">शीट</string>
+    <string name="designsystem_sheet_grabber">शीट का आकार बदलें</string>
+    <string name="designsystem_sheet_expand">शीट बड़ी करें</string>
+    <string name="designsystem_sheet_collapse">शीट छोटी करें</string>
+    <string name="designsystem_sheet_dismiss">शीट हटाएं</string>
+    <string name="designsystem_sheet_close_scrim">शीट बंद करें</string>
+    <string name="designsystem_sheet_state_expanded">बड़ी की गई</string>
+    <string name="designsystem_sheet_state_partial">आंशिक रूप से बड़ी</string>
+    <string name="designsystem_sheet_state_collapsed">छोटी की गई</string>
+    <string name="designsystem_actions_pane">कार्रवाइयां</string>
+    <string name="designsystem_sheet_discard_title">बदलाव छोड़ें?</string>
+    <string name="designsystem_sheet_discard">छोड़ें</string>
+    <string name="designsystem_sheet_keep_editing">संपादन जारी रखें</string>
+    <string name="designsystem_none">कोई नहीं</string>
+    <string name="designsystem_nothing_selected">कुछ नहीं चुना गया</string>
+    <string name="designsystem_nothing_selected_message">यहां देखने के लिए सूची में से कुछ चुनें।</string>
+</resources>

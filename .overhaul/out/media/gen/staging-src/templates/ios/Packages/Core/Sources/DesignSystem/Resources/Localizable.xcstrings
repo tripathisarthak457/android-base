@@ -1,0 +1,25 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Check your connection, then try again." : {},
+    "Close" : {},
+    "Discard" : {},
+    "Discard changes?" : {},
+    "Dismiss" : {},
+    "Keep Editing" : {},
+    "Loading" : {},
+    "No Response" : {},
+    "Request Failed" : {},
+    "Saved data couldn't be read or written." : {},
+    "Server Problem" : {},
+    "Something Went Wrong" : {},
+    "The app received something it couldn't read." : {},
+    "The server couldn't handle the request. Try again in a moment." : {},
+    "The server took too long to answer. Try again in a moment." : {},
+    "The server turned the request down." : {},
+    "Try Again" : {},
+    "Try again. If it keeps happening, restart the app." : {},
+    "You're Offline" : {}
+  },
+  "version" : "1.0"
+}

@@ -5,6 +5,34 @@ Lane `WP02`: worktree `D:/projects/tools/.overhaul/wt/sw-WP02`, branch `staging-
 
 ## Progress
 
+Run 4 (started 2026-10-24 08:28 IST): run 3 committed step 4 (`09613c5a`, 08:14) and stopped with `v6.sh` still running
+(it finished its size step in this run) and 23.8 uncommitted. Merged staging `4760b407` (web only) as `89fc915d`.
+
+- [x] `v6.sh` read: generator suite 484 OK; c-local built and tested; the planted screen failed on every kind; but
+      the audit failed **real** screens (58 of 60 generated cases, 12 of the template's) and step 5 never ran a check
+      (it asked for `:core:ui:compileDebugUnitTestKotlin`; no preset's `:core:ui` has tests).
+- [x] Audit false positive 1, "the text is cut off" on short lines ("Order 1"): for plain text the semantics action
+      (`ParagraphLayoutCache.slowCreateTextLayoutResultOrNull`) lays the text out again with the min constraints
+      dropped, so `MultiParagraph.width` is the widest width offered (bytecode: `width = Constraints.maxWidth`) while
+      `size` is the real box: `didOverflowWidth` is true for any line shorter than its space. Now: a line wider than
+      the box, or the lines taller than it.
+- [x] Audit false positive 2, the sample's skeleton rows "outside the window" and "under the tab bar": they sit under
+      `clearAndSetSemantics` (read as one "Loading"), which also drops the lazy list's scroll range on that node, so
+      the rows lost their scrolling exemption. Controls under a clearing node are no longer held to a control's rules
+      (text inside still is).
+- [x] `app/build.gradle.kts`: the WIP's `isIncludeAndroidResources = true` dropped; the convention's
+      `onRobolectricTests` already sets it once `:core:testing:compose` is a test dependency.
+- [x] `v8.sh` (08:38-, `logs/v8.log`): the audit on the regenerated project PASS (60 cases: the reference's skeleton
+      and two scaffolded modules, `order` and a 30-letter name); planted FAIL on all 12 cases with every kind named
+      (text cut, long lines from Large up, under the bar at Phone, the two 48 dp touch areas, the overlap, outside the
+      window) and no real screen failing; the template's screens PASS (12 cases; app tests 35/35); `v7.sh` (via v8):
+      the two "rows written after ..." cases FAIL under the mutated reducer and pass restored, the other five pass both.
+- [x] Committed 23.8: `ce4f6c1c` (the audit, its wiring, the generator test) and `32b86b70` (AGENTS.md and
+      ARCHITECTURE.md).
+- [ ] v8 step 6, the stability order on five presets (queued behind other workflows' Gradle work at 09:04).
+- [ ] `accept.cont.sh` started 09:0x in the background (`logs/accept.log`, `logs/accept/`).
+- [ ] `tools/size_budgets.toml` once v6's everything size lands; Measurements.
+
 Run 3 (started 2026-10-24 06:21 IST): run 2 stopped after `v3.sh` (02:45) with step 4 and 23.8 uncommitted. `v3`:
 c-netdb and c-net green (app assembled, every module's tests and code rules at name lengths 3-30), generator suite 484
 OK (9 skipped); c-local never built (the batch asked for `:data:*:testDebugUnitTest`, which a data module without
@@ -131,6 +159,16 @@ Run 1 (started 2026-10-23 23:29 IST).
   windows and font scales 1 and 2 with every unit-test run; it simulates the floating tab bar (96 dp) only below
   600 dp wide, where the shell shows one. A failure lists each node by its text, content description or test tag.
   Fix the layout, never the audit.
+- **Reading a text's layout from the semantics tree: never `hasVisualOverflow`.** For plain text (`BasicText` with a
+  `String` and no `onTextLayout`) `GetTextLayoutResult` lays the text out again at the widest width it was offered
+  (`slowCreateTextLayoutResultOrNull` drops the min constraints; `MultiParagraph.width` is `Constraints.maxWidth`)
+  and pairs it with the real box, so `didOverflowWidth` is true for every line shorter than its space ("Order 1" in
+  a card). A text is cut when a line is wider than `size.width` or the lines are taller than `size.height`; that is
+  what `AdaptiveAuditTest` checks.
+- **`clearAndSetSemantics` on a lazy list's own modifier wipes that list's semantics too** (the clearing modifier
+  resets the node's collapsed config, dropping the scroll axis range the list adds inside it). A test that walks the
+  unmerged tree still sees the cleared children (`useUnmergedTree = true` includes replaced semantics). The audit
+  treats a clearing node as standing for its subtree: controls inside are not held to a control's rules, text is.
 - **ktlint fit of the scaffold** is checked outside a project by `out/WP02-CONT/fit.sh`: Spotless alone resolves okio
   3.6.0, which the offline cache lacks (forced to 3.9.1), and without a `.gitattributes` it writes CRLF on Windows
   (`lineEndings = UNIX`). ktlint keeps more than one layout stable (a joined `peek` came back wrapped inside its

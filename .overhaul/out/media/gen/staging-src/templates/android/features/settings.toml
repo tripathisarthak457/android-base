@@ -1,0 +1,12 @@
+key = "settings"
+title = "Settings screen"
+headline = "A settings screen"
+description = """
+Theme switch, analytics opt-out, sign-out with confirmation and the build version — wired to the
+preference store and the session."""
+group = "Screens"
+default = false
+requires = []
+implied_only = false
+owns = ["feature/settings"]
+legacy = []

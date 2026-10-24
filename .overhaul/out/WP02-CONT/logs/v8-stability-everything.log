@@ -1,0 +1,6 @@
+[locked:gradle] waiting for the lock (pid 8036 since 2026-10-24 09:38:05: bash D:/projects/tools/.overhaul/out/WP02/gw.win.sh check assembleDevDebug --console=plain)
+[locked:gradle] waiting for the lock (pid 8036 since 2026-10-24 09:38:05: bash D:/projects/tools/.overhaul/out/WP02/gw.win.sh check assembleDevDebug --console=plain)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Starting a Gradle Daemon, 3 stopped Daemons could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:designsystem:compileDebugUnitTestKotlin --rerun :core:designsystem:checkComposeStability --rerun :core:navigation:compileDebugUnitTestKotlin --rerun :core:navigation:checkComposeStability --rerun :core:ui:checkComposeStability --rerun

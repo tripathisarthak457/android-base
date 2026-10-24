@@ -1,0 +1,24 @@
+{
+  "ui_error_generic": "Algo deu errado. Tente de novo.",
+  "ui_validation_required": "Campo obrigatório.",
+  "ui_validation_email": "Informe um e-mail válido.",
+  "ui_validation_mismatch": "Não confere.",
+  "ui_validation_password_letter": "Inclua pelo menos uma letra.",
+  "ui_validation_password_digit": "Inclua pelo menos um número.",
+  "ui_validation_min_length": {
+    "one": "Deve ter pelo menos %1$d caractere.",
+    "other": "Deve ter pelo menos %1$d caracteres."
+  },
+  "ui_validation_password_length": {
+    "one": "Use pelo menos %1$d caractere.",
+    "other": "Use pelo menos %1$d caracteres."
+  },
+  "ui_error_offline": "Você está off-line. Verifique a conexão e tente de novo.",
+  "ui_error_unreachable": "Não foi possível falar com o servidor. Tente de novo daqui a pouco.",
+  "ui_appstatus_update_title": "Atualização necessária",
+  "ui_appstatus_update_message": "Esta versão não é mais compatível. Atualize o app para continuar usando.",
+  "ui_appstatus_update_action": "Atualizar",
+  "ui_appstatus_maintenance_title": "Em manutenção",
+  "ui_appstatus_maintenance_message": "Estamos trabalhando no serviço. Tente de novo em alguns minutos.",
+  "ui_appstatus_maintenance_action": "Tentar de novo"
+}

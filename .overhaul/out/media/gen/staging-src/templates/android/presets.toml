@@ -1,0 +1,28 @@
+# Named starting points. Features are listed before `requires` closes over them.
+default = "standard"
+
+[lean]
+title = "Lean"
+description = """
+The design system, the navigation shell and one home screen, with networking, images and CI. The
+smallest app that still looks and moves like the rest."""
+features = ["network", "coil", "googlefonts", "leakcanary", "deeplink", "ci"]
+
+[standard]
+title = "Standard"
+description = """
+The lean set plus sign-in, onboarding, settings with a language picker, the in-app browser, feature
+flags, the developer panel with its performance overlay, a local database and the reference
+list-detail feature to copy. What most products want on day one."""
+features = [
+  "network", "coil", "googlefonts", "leakcanary", "deeplink", "ci",
+  "catalog", "auth", "settings", "onboarding", "language", "browser", "flags", "devtools", "perfhud", "database",
+  "sample",
+]
+
+[everything]
+title = "Everything"
+description = """
+Every feature the template offers, working together. The template's own proof that they coexist;
+delete what you do not need."""
+all = true

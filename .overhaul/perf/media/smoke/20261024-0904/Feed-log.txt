@@ -1,0 +1,34 @@
+--------- beginning of main
+I/perf.media( 5075): images busy t=310286035
+I/perf.media( 5075): decoded w=132 h=132 source=network
+I/perf.media( 5075): decoded w=132 h=132 source=network
+I/perf.media( 5075): decoded w=132 h=132 source=network
+I/perf.media( 5075): decoded w=132 h=132 source=network
+I/perf.media( 5075): decoded w=132 h=132 source=network
+I/perf.media( 5075): decoded w=96 h=96 source=network
+I/perf.media( 5075): decoded w=132 h=132 source=network
+I/perf.media( 5075): decoded w=132 h=132 source=network
+I/perf.media( 5075): decoded w=96 h=96 source=network
+I/perf.media( 5075): decoded w=1080 h=720 source=network
+I/perf.media( 5075): prefetched
+I/perf.media( 5075): prefetched
+I/perf.media( 5075): decoded w=1080 h=1350 source=network
+I/perf.media( 5075): prefetched
+I/perf.media( 5075): prefetched
+I/perf.media( 5075): prefetched
+I/perf.media( 5075): prefetched
+I/perf.media( 5075): prefetched
+I/perf.media( 5075): prefetched
+I/perf.media( 5075): prefetched
+I/perf.media( 5075): images idle t=310293615
+I/perf.media( 5075): images busy t=310295451
+I/perf.media( 5075): decoded w=96 h=96 source=network
+I/perf.media( 5075): decoded w=1080 h=721 source=disk
+I/perf.media( 5075): decoded w=96 h=96 source=network
+I/perf.media( 5075): decoded w=1080 h=1350 source=disk
+I/perf.media( 5075): decoded w=1080 h=721 source=network
+I/perf.media( 5075): decoded w=1080 h=810 source=disk
+I/perf.media( 5075): decoded w=96 h=96 source=network
+I/perf.media( 5075): decoded w=96 h=96 source=network
+I/perf.media( 5075): images idle t=310297037
+I/perf.media( 5075): gc done t=310302368

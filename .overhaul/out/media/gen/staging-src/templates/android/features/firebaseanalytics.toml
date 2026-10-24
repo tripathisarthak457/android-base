@@ -1,0 +1,13 @@
+key = "firebaseanalytics"
+title = "Firebase Analytics"
+headline = "Send analytics to Firebase"
+description = """
+Firebase Analytics behind the analytics seam, switched off when the person opts out in settings.
+It brings the advertising-id permissions with it, which is why it is a choice of its own."""
+group = "Observability"
+default = false
+requires = ["analytics", "firebase"]
+implied_only = false
+owns = ["core/analytics/src/main/kotlin/{pkg_path}/core/analytics/firebase/FirebaseAnalyticsTracker.kt"]
+# Schema 1 had one Firebase switch for all three SDKs.
+legacy = [{ key = "firebase", schema = 1 }, "analytics-firebase"]

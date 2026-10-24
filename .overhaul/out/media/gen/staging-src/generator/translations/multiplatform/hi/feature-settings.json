@@ -1,0 +1,12 @@
+{
+  "settings_title": "सेटिंग",
+  "settings_appearance": "रूप-रंग",
+  "settings_theme_system": "सिस्टम",
+  "settings_theme_light": "लाइट",
+  "settings_theme_dark": "डार्क",
+  "settings_theme_explanation": "“सिस्टम” आपके डिवाइस की सेटिंग के हिसाब से चलता है।",
+  "settings_about": "जानकारी",
+  "settings_version": "वर्शन",
+  "settings_language": "भाषा",
+  "settings_language_explanation": "इस ऐप की भाषा अपने डिवाइस की सेटिंग में चुनें।"
+}

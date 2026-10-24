@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_skip">Pular</string>
+    <string name="onboarding_next">Próximo</string>
+    <string name="onboarding_get_started">Começar</string>
+    <string name="onboarding_stay_in_the_loop">Fique por dentro</string>
+    <string name="onboarding_welcome">Boas-vindas</string>
+    <string name="onboarding_your_data_is_yours">Seus dados são seus</string>
+    <string name="onboarding_body_benefit">O que a pessoa ganha com isso, dito como benefício e não como recurso.</string>
+    <string name="onboarding_body_reassurance">A garantia que tira qualquer dúvida antes do cadastro.</string>
+    <string name="onboarding_body_what_it_does">Uma frase curta sobre o que este app faz por quem está lendo.</string>
+</resources>

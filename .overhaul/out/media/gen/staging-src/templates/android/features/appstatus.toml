@@ -1,0 +1,15 @@
+key = "appstatus"
+title = "Forced update and maintenance screens"
+headline = "Turn away old versions, announce downtime"
+description = """
+The server can require an update (HTTP 426, or a minimum-version header) or announce maintenance
+(503), and the app shows a full-screen message for either, whichever screen made the call."""
+group = "Networking and data"
+default = false
+requires = ["network"]
+implied_only = false
+owns = [
+  "core/network/src/main/kotlin/{pkg_path}/core/network/appstatus",
+  "core/ui/src/main/kotlin/{pkg_path}/core/ui/appstatus",
+]
+legacy = []

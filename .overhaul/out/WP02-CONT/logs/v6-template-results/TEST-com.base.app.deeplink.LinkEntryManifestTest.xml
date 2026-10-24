@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.deeplink.LinkEntryManifestTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-24T02:48:43.758Z" hostname="SARTHAK-PC" time="0.012">
+  <properties/>
+  <testcase name="the app's activity is single top and takes no links itself" classname="com.base.app.deeplink.LinkEntryManifestTest" time="0.007"/>
+  <testcase name="links land on the trampoline, outside the app's task and Recents" classname="com.base.app.deeplink.LinkEntryManifestTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,13 @@
+key = "applock"
+title = "Biometric app lock"
+headline = "Ask for a fingerprint on return"
+description = """
+A fingerprint, face or screen-lock prompt over the app at launch and after half a minute away, a
+setting to turn it on, and the app kept out of the task switcher's thumbnail while it is on."""
+group = "Sign-in and account"
+default = false
+# The toggle lives on the settings screen.
+requires = ["settings"]
+implied_only = false
+owns = ["core/applock"]
+legacy = []

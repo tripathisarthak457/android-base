@@ -19,9 +19,15 @@ stage table: phone "no").
   `ab0e716d0` glyphs, tab glyphs, chip, module empty state, More list; `453bce2e5` tab bar (treatments, indicators,
   springs) and the Motion step's shell springs; `3199b7040` hero, included cards and FAQ claims, `ci.ts`,
   `claims.test.ts`; `dc98fe2bd` the tab reveal in the live phone and the Motion step; `5fbc1283a` docs (`AGENTS.md`,
-  `web/README.md`).
-- Checks at `5fbc1283a`: 256/256 site tests, `tsc --noEmit` clean; `next build` and `npm audit` under Measurements.
-- Not done: a browser check of the rebuilt bar and the reveal (see Measurements for what ran).
+  `web/README.md`); `7be629354` `next` 15.5.28 (a new critical advisory, Decisions); `e3754904d` the Motion cards'
+  spring values kept inside the card (found by the browser check); `337f64c72` merge of staging `4760b4071` (the Build
+  step's glass notice in `state.ts`/`BuildStep.tsx`, no overlap).
+- **State: ready for review** at `337f64c72`, worktree clean. Checks there: 257/257 site tests, `tsc --noEmit` clean,
+  `next build` passes, `npm audit` 0 vulnerabilities, `genkit.core.catalogue --check` current, browser check done
+  (Measurements). Nothing waits on the phone, CP2 or another stage. Not merged into staging (fast track: stop at ready).
+- Left running, not started by this run so not stopped: run 1's `next start -p 3110` (node pid 9988 with its npx, bash
+  and cmd parents, since 02:26) and its Browser pane tab "seed" on that port. It serves the `.next` this run rebuilt.
+  The orchestrator may stop it.
 
 ## What changed, and why
 
@@ -36,6 +42,8 @@ stage table: phone "no").
 | Motion | `MotionPreview.tsx`, `MotionStep.tsx`, `bar.ts` (`SHELL_SPRINGS`), `theme.ts` (`framerSpring`) | The push and the tab switch run on the springs the template's shell uses in every style (`ScreenMotion` 0.344 s, `TabCells`' lead, trail and bounce springs, `TabReveal`'s reveal spring), not on the motion style's tokens, which the shell does not read yet. The Motion step's rows are press, release, sheet and dialog, which a style does change, and its intro says the push and the tab switch move alike in every style |
 | Tab reveal (run 2) | `bar.ts` (`TAB_REVEAL_SHIFT`, `revealFrom`, `SHELL_SPRINGS.tabReveal`), `bar.test.ts`, `AppPreview.tsx`, `MotionPreview.tsx` | The template's `KeptTabs` no longer switches instantly: a tab the person taps arrives 12 dp toward the side it comes from and springs into place (`TabReveal.kt`, stiffness 503.5, damping 1); only it is drawn. The live phone does this for a tab tapped on its bar, not for a screen picked beside it (it stands in for a link or a programmatic switch, which the shell shows at once), and not under reduced motion; a second tap mid-reveal restarts from its own offset, as `switchTo` does. The Motion step's loop nudges its tab switch on the same spring (the whole list tab on the way back, its button with it). The test reads the spring, the shift, the direction formula and `animate = revealSwitch() && !reduceMotion` from the template |
 | Claims | `hero.tsx`, `faq.tsx`, `included.tsx`, `features/catalogue/ci.ts`, `ci.test.ts` | CI: worded from `CI_PROJECTS`, which a test holds equal to `ci.yml`'s matrix (`none`, `lean`, `everything`, `all`): "the Lean and Everything presets, plus every feature at once and none at all" until CI builds every preset, then "every preset" by itself. Material: "No Material component library is a dependency and the build refuses their imports; window size classes come from androidx.window" (run 2's wording, which stays true if a later stage adds the adaptive libraries REQUIREMENTS 31 allows; run 1's "not even its adaptive layouts" would not). Tabs: kept tabs are shown again rather than rebuilt and pause out of sight (they are laid out, so "only the visible one is laid out" was false). Adaptive: rail, then sidebar on large windows. Motion styles: "set how presses spring back and how sheets, dialogs and layout changes move" (they do not change every spring); the hero stat says "Spring presets for presses, sheets and dialogs". `features/catalogue/claims.test.ts` (run 2) pairs each of these sentences with the code that makes it true: no `androidx.compose.material`/`material3` artifact in `libs.versions.toml` and the `material` code rule; `SizeClass.kt`'s `androidx.window` import; `KeptTabs`' `owner.cap = Lifecycle.State.CREATED`; `ShellChromePolicy`'s Medium-to-Rail and Large-to-Sidebar lines; `ManifestRules`' `screenOrientation` lock; `springs.press`, `release`, `sheet`, `dialog` and `layout` read in `:core:designsystem`. A second test fails when a sentence leaves the page, so the table cannot go stale. It fails on staging's copy |
+| Motion cards (run 2) | `MotionStep.tsx` | The label column is as wide as its longest label (`ch`) instead of 86 px, the value may shrink, a no-break space keeps each number with its unit and the bounce follows a comma ("0.32 s, bounce 0.15"), so the 274 px cards (desktop) and the 320 px screen wrap between words with nothing past the card's edge |
+| Dependencies (run 2) | `package.json`, `package-lock.json` | `next` 15.5.27 to 15.5.28 (Decisions) |
 | Docs (run 2) | `AGENTS.md` ("The website must not over-promise"), `web/README.md` ("What is recorded") | AGENTS.md names each template change the site's tests now hold it to (glyphs and `npm run glyphs`, the bar, chip and tab copies, the claims table, `CI_PROJECTS`, the privacy page). web/README.md's summary said the funnel was recorded once per visitor per day (telemetry v1); it now points to the privacy page and says one visit per tab and the steps it reached |
 
 ## Decisions (and why)
@@ -51,6 +59,14 @@ stage table: phone "no").
 - **All 87 glyphs ship in `glyphs.ts`** (20 KB source, about 6 KB gzipped) rather than the ones the preview uses
   today: the generator's glyph choice falls through to every outline past eight unmatched modules (12 are allowed), and
   a selection list would be one more thing to keep in step.
+- **`next` 15.5.27 to 15.5.28 (run 2).** `npm audit` on Oct 24 reported a new critical advisory against 15.5.27
+  (GHSA-2464-fhr4-w9xw, remote code execution in the image optimisation API when SVGs are used; also
+  GHSA-p3m5-59mp-jv5r, a Server Actions denial of service), fixed in 15.5.28, a stable patch of the same minor
+  published Oct 14. Neither is reachable on this site (every route is static, it uses neither `next/image` nor Server
+  Actions), but the stage's done-definition is a clean audit and the release should not ship a flagged version. Taken
+  under the user's standing approval of the npm security upgrades (REQUIREMENTS 47, Oct 19 22:16), as `f0898fc0` did:
+  `npm install next@15.5.28 --save-exact --ignore-scripts` through `memwait`, cache in `D:/.caches/npm`; only
+  `next` and its `@next/*` packages moved in the lock file. Not 16.x (`latest`): a major upgrade is not a security fix.
 - **The Docked bar's surface is always drawn.** The template shows it in proportion to `scrolledUnder`; no built-in
   style docks, so the preview does not track the scroll edge.
 
@@ -75,11 +91,35 @@ stage table: phone "no").
    Vercel before the deploy); its "Nothing in it identifies them" about an attached report is loose, since a report
    keeps the app and package names with no time limit (the privacy page states the facts). Not changed here: the
    table is the API's documentation, outside this stage's scope.
+5. **Editorial's uppercase labels may be cut in a five-tab bar** (QA2, WP03): with five tabs at 360 dp the preview
+   shrinks "PROFILE" and "SETTINGS" to the template's 0.85 floor (`MIN_LABEL_SHRINK`) and still ends them with an
+   ellipsis ("PROFI…", "SETTIN…"), in Fraunces caption2. The preview follows `TabCells.kt`'s rule, so the app probably
+   does the same (REQUIREMENTS 18 names truncated tab labels); only a phone capture of the Editorial style with five
+   tabs can confirm it.
 
 ## Measurements
 
-No phone measurement: the stage changes no template code. Site: tests 223 on staging, 253 after (30 new); `tsc` clean;
-`next build` and `npm audit` below once run.
+No phone measurement: the stage changes no template, generator or API code (`touched_measured_path` false).
+
+| Check (logs in `logs/WP10-WEB/run2-*`) | Staging `7230b666e` (tests: `4760b4071`) | This branch `337f64c72` |
+|---|---|---|
+| Site tests | 224/224 | 257/257 (33 new: glyphs 3, tabs 6, chip 2, bar 11, CI 4, claims 2, privacy 5) |
+| `tsc --noEmit` | clean | clean |
+| `next build`, `/` (gzip) / first load | 62.1 kB / 209 kB (`staging/logs/fix/f112-site.log`) | 68.5 kB / 216 kB: +6.4 kB, mostly the 87 glyphs (4.2 kB gzipped source) and the two-layer bar |
+| `next build`, `/admin`; shared | 14.4 kB / 162 kB; 104 kB | unchanged |
+| `npm audit` | 1 critical (`next` 15.5.27, new advisories) | 0 (`next` 15.5.28) |
+| `genkit.core.catalogue --check` | current | current |
+
+**Browser check** (built site served by `next start` on 127.0.0.1:3112, the built-in Browser pane; light and dark; 320,
+400 and 1024 px wide): the showcase's four styles draw their bars as the template does (Utility and Editorial a
+Subtle tinted pill, Social and Playful a solid Pill in the accent with the legible content colour, Editorial's
+Translucent capsule on the elevated surface in dark with no shadow); the live phone's Subtle pill and capsule in both
+themes; tapping Settings on the live bar nudged the screen in from the right (`translateX` 9.33 px = 12 dp at the
+preview's scale, falling toward 0 and settling at none), and picking a screen beside the phone did not; no horizontal
+page overflow at 320; the platform step offers Android Native alone, Compose Multiplatform and Swift "Coming soon";
+the footer links Privacy. Found and fixed: the Motion cards' values broke inside "0.16 s" and ran past the card edge at
+320 px and on the 274 px desktop cards (`e3754904d`). The pane was hidden, so animations ran on throttled frames:
+the reveal's start, direction and landing were read from the computed transform, not watched.
 
 ## Rules and gotchas the docs must state
 

@@ -1,0 +1,21 @@
+{
+  "Loading": "Carregando",
+  "Try Again": "Tentar de novo",
+  "You're Offline": "Você está offline",
+  "No Response": "Sem resposta",
+  "Server Problem": "Problema no servidor",
+  "Request Failed": "Falha na solicitação",
+  "Something Went Wrong": "Algo deu errado",
+  "Check your connection, then try again.": "Verifique sua conexão e tente de novo.",
+  "The server took too long to answer. Try again in a moment.": "O servidor demorou demais para responder. Tente de novo em instantes.",
+  "The server couldn't handle the request. Try again in a moment.": "O servidor não conseguiu processar a solicitação. Tente de novo em instantes.",
+  "The server turned the request down.": "O servidor recusou a solicitação.",
+  "The app received something it couldn't read.": "O app recebeu algo que não conseguiu ler.",
+  "Saved data couldn't be read or written.": "Não foi possível ler ou gravar os dados salvos.",
+  "Try again. If it keeps happening, restart the app.": "Tente de novo. Se continuar acontecendo, reinicie o app.",
+  "Dismiss": "Fechar",
+  "Close": "Fechar",
+  "Discard changes?": "Descartar alterações?",
+  "Discard": "Descartar",
+  "Keep Editing": "Continuar editando"
+}

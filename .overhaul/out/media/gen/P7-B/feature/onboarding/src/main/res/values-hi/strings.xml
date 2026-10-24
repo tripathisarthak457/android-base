@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_skip">छोड़ें</string>
+    <string name="onboarding_next">आगे</string>
+    <string name="onboarding_get_started">शुरू करें</string>
+    <string name="onboarding_stay_in_the_loop">हर अपडेट से जुड़े रहें</string>
+    <string name="onboarding_welcome">स्वागत है</string>
+    <string name="onboarding_your_data_is_yours">आपका डेटा आपका है</string>
+    <string name="onboarding_body_benefit">इससे उन्हें क्या मिलेगा, फ़ीचर की तरह नहीं बल्कि फ़ायदे की तरह बताएं।</string>
+    <string name="onboarding_body_reassurance">वह भरोसा जो साइन अप करने से पहले की हर हिचक दूर कर दे।</string>
+    <string name="onboarding_body_what_it_does">एक छोटा वाक्य कि यह ऐप पढ़ने वाले के लिए क्या करता है।</string>
+</resources>

@@ -1,0 +1,12 @@
+{
+  "schema": 2,
+  "platform": "ios",
+  "app_name": "Standard",
+  "package_name": "com.example.iosstandard",
+  "features": ["language", "network", "onboarding", "sample", "settings"],
+  "feature_modules": [],
+  "languages": ["es", "hi"],
+  "ios": {
+    "deployment_target": "17.0"
+  }
+}

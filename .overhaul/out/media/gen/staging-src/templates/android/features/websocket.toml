@@ -1,0 +1,15 @@
+key = "websocket"
+title = "WebSocket"
+headline = "Keep a live connection open"
+description = """
+One long-lived socket that is open while the app is in front: pings, a backoff that grows until a
+frame gets through, the new token after an account change, and a connection state a screen can
+render."""
+group = "Networking and data"
+default = false
+requires = ["network"]
+implied_only = false
+owns = [
+  "core/network/src/main/kotlin/{pkg_path}/core/network/websocket",
+]
+legacy = []

@@ -1,6 +1,0 @@
-# Library components the merged manifest may carry although they break a rule of
-# verifyManifestRules: one class name per line, then `# reason`. The app's own components never
-# go here.
-leakcanary.internal.RequestPermissionActivity  # LeakCanary, debug builds only, no intent filter
-leakcanary.internal.NotificationReceiver  # LeakCanary, debug builds only, no intent filter
-androidx.core.widget.RemoteViewsCompatService  # androidx.core for Glance widgets, bound by the launcher under BIND_REMOTEVIEWS

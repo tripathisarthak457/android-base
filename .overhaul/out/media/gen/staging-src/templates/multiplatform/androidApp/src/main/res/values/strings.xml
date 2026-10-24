@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- <generated:app-name> -->
+    <string name="app_name" translatable="false">BaseApp</string>
+    <!-- </generated:app-name> -->
+</resources>

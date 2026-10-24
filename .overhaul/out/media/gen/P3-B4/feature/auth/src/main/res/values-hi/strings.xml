@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_password_rules">कम से कम आठ वर्ण, जिनमें एक अक्षर और एक अंक हो।</string>
+    <string name="auth_confirm_password">पासवर्ड की पुष्टि करें</string>
+    <string name="auth_create_account">खाता बनाएं</string>
+    <string name="auth_email">ईमेल</string>
+    <string name="auth_reset_explanation">जिस ईमेल से आपने साइन अप किया था, वह डालें। हम आपको एक लिंक भेजेंगे।</string>
+    <string name="auth_forgot_password">पासवर्ड भूल गए</string>
+    <string name="auth_reset_sent">अगर इस पते से कोई खाता जुड़ा है, तो रीसेट लिंक भेज दिया गया है।</string>
+    <string name="auth_name">नाम</string>
+    <string name="auth_password">पासवर्ड</string>
+    <string name="auth_reset_password">पासवर्ड रीसेट करें</string>
+    <string name="auth_send_reset_link">रीसेट लिंक भेजें</string>
+    <string name="auth_sign_in">साइन इन करें</string>
+    <string name="auth_welcome_back">फिर से स्वागत है</string>
+    <string name="auth_continue_with_google">Google के साथ जारी रखें</string>
+    <string name="auth_or">या</string>
+    <string name="auth_google_sign_in_failed">Google से साइन इन नहीं हो सका।</string>
+    <string name="auth_google_failed">Google से साइन इन पूरा नहीं हुआ। फिर से कोशिश करें या अपना ईमेल इस्तेमाल करें।</string>
+    <string name="auth_wrong_credentials">यह ईमेल और पासवर्ड किसी खाते से मेल नहीं खाते।</string>
+    <string name="auth_too_many_attempts">बहुत ज़्यादा कोशिशें हो गईं। कुछ मिनट बाद फिर से कोशिश करें।</string>
+    <string name="auth_sign_in_failed">साइन इन नहीं हो सका।</string>
+    <string name="auth_sign_up_failed">खाता नहीं बन सका।</string>
+    <string name="auth_reset_failed">लिंक नहीं भेजा जा सका।</string>
+    <string name="auth_passwords_do_not_match">पासवर्ड मेल नहीं खाते।</string>
+</resources>

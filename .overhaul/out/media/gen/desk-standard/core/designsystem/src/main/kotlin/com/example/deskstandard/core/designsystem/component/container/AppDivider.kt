@@ -1,0 +1,45 @@
+package com.example.deskstandard.core.designsystem.component.container
+
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.example.deskstandard.core.designsystem.theme.AppTheme
+
+/**
+ * A separator one physical pixel thick, as iOS draws them. Between rows of one list, prefer
+ * `Modifier.hairline` on the rows, which adds no layout node per divider.
+ */
+@Composable
+fun AppDivider(
+    modifier: Modifier = Modifier,
+    color: Color = AppTheme.colors.separator,
+    startIndent: Dp = 0.dp,
+) {
+    val pixel = with(LocalDensity.current) { 1f.toDp() }
+    Canvas(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(start = startIndent)
+            .height(pixel),
+    ) {
+        drawRect(color)
+    }
+}
+
+@Composable
+fun AppVerticalDivider(
+    modifier: Modifier = Modifier,
+    color: Color = AppTheme.colors.separator,
+) {
+    val pixel = with(LocalDensity.current) { 1f.toDp() }
+    Canvas(modifier = modifier.fillMaxHeight().width(pixel)) { drawRect(color) }
+}

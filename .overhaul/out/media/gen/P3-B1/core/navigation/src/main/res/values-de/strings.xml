@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="navigation_more">Mehr</string>
+    <string name="navigation_back">Zurück</string>
+    <string name="navigation_show_sidebar">Seitenleiste einblenden</string>
+    <string name="navigation_hide_sidebar">Seitenleiste ausblenden</string>
+</resources>

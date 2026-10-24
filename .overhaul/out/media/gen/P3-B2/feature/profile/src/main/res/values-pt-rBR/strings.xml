@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_title">Perfil</string>
+    <string name="profile_name">Nome</string>
+    <string name="profile_name_placeholder">Como devemos chamar você?</string>
+    <string name="profile_bio">Sobre você</string>
+    <string name="profile_bio_placeholder">Uma ou duas linhas para o seu perfil</string>
+    <string name="profile_save">Salvar alterações</string>
+    <string name="profile_saved">Perfil salvo</string>
+    <string name="profile_name_required">Adicione um nome para as pessoas saberem quem você é.</string>
+    <string name="profile_unnamed">Você</string>
+    <string name="profile_change_photo">Trocar foto</string>
+    <string name="profile_remove_photo">Remover foto</string>
+</resources>

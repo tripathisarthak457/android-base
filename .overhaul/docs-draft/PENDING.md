@@ -32,7 +32,8 @@ edit the template files, never the drafts). When you paste an entry:
   preset's release gate: every release row, and each non-regression row the gate fails. A stage that re-measures them on the merged code (HUD-O1, REG, every train's phone
   gate, WP13) updates that table in the same change; a row that goes green moves to "within". While any
   row is over, the done-condition (section 6 and section 10 item 7 of `AGENTS.md`, the guide's "Before
-  you merge UI work" item 8) excuses exactly those limits, in one wording; when the last row reads
+  you merge UI work" item 8) excuses exactly those limits, at no worse than listed beyond the spread of
+  one build's repeated runs, in one wording; when the last row reads
   "within", the stage that made it so removes that exception from all three places
   (`test_docs.test_being_done_excuses_only_the_rows_the_guide_lists_as_over` fails until it does).
 - Headings: a rule directly under a `##` section is `###`, under `### Start-up` or `### Rules for

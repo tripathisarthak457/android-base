@@ -1,0 +1,27 @@
+# Synthetic, in the layout AOSP's ResourceManagerService dump uses (clients under their process, each with
+# its resources). Replace it with a capture from the reference phone before trusting codecs_max (media.md L3).
+ResourceManagerService: 0xb400007a1c2e9c50
+  Policies:
+    SupportsMultipleSecureCodecs: true
+    SupportsSecureWithNonSecureCodec: true
+  Processes:
+    Pid: 5555
+      Clients:
+        Id: 1001
+          Name: c2.qti.vp9.decoder
+          Resources:
+            nonsecure-codec/video-codec:1
+        Id: 1002
+          Name: c2.qti.vp9.decoder
+          Resources:
+            nonsecure-codec/video-codec:1
+        Id: 1003
+          Name: c2.qti.avc.decoder
+          Resources:
+            nonsecure-codec/video-codec:1
+    Pid: 7777
+      Clients:
+        Id: 2001
+          Name: c2.android.aac.decoder
+          Resources:
+            nonsecure-codec/audio-codec:1

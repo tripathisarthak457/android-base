@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.ui.AppDestinationsTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-24T03:15:39.897Z" hostname="SARTHAK-PC" time="0.002">
+  <properties/>
+  <testcase name="every tab has its own root key" classname="com.base.app.ui.AppDestinationsTest" time="0.0"/>
+  <testcase name="root keys hash by value, the same in every process" classname="com.base.app.ui.AppDestinationsTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

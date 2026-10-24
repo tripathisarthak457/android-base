@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">Accueil</string>
+    <string name="tab_feed">Fil</string>
+    <string name="tab_search">Recherche</string>
+    <string name="tab_profile">Profil</string>
+    <string name="tab_settings">Réglages</string>
+</resources>

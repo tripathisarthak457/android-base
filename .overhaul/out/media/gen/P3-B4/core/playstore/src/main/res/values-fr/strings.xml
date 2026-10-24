@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="playstore_update_ready">Une mise à jour est prête.</string>
+    <string name="playstore_update_restart">Redémarrer</string>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.session.SessionBackupRulesTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-24T03:15:39.432Z" hostname="SARTHAK-PC" time="0.01">
+  <properties/>
+  <testcase name="the session's tokens stay out of every backup and device transfer" classname="com.base.app.session.SessionBackupRulesTest" time="0.01"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,21 @@
+--------- beginning of main
+I/perf.media( 5555): settle page=0 t=2000000
+I/perf.media( 5555): window pages=0,1,2
+I/perf.media( 5555): acquire page=0 clip=flower-moon t=2000010
+I/perf.media( 5555): acquire page=1 clip=kings-peak t=2000020
+I/perf.media( 5555): frame page=0 clip=flower-moon t=2000400
+I/perf.media( 5555): open page=0 ms=612
+I/perf.media( 5555): acquire page=2 clip=tilia t=2000030
+I/perf.media( 5555): frame page=1 clip=kings-peak t=2000500
+I/perf.media( 5555): frame page=2 clip=tilia t=2000600
+I/perf.media( 5555): settle page=1 t=2003000
+I/perf.media( 5555): window pages=1,2,0
+I/perf.media( 5555): settle page=2 t=2005000
+I/perf.media( 5555): window pages=2,3,1
+I/perf.media( 5555): acquire page=3 clip=oystercatcher t=2005010
+I/perf.media( 5555): frame page=3 clip=oystercatcher t=2005900
+I/perf.media( 5555): settle page=3 t=2007000
+I/perf.media( 5555): window pages=3,4,2
+I/perf.media( 5555): acquire page=4 clip=srnka t=2007010
+I/perf.media( 5555): drops clip=flower-moon dropped=3 rendered=297
+I/perf.media( 5555): drops clip=kings-peak dropped=0 rendered=150
