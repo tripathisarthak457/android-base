@@ -1,6 +1,19 @@
 import { isObject } from "../../lib/json.ts";
+import { effectiveUiComponents } from "../catalogue/options.ts";
 import type { Catalogue } from "../catalogue/types.ts";
-import { type ConfigState, type Setting, featuresFor, findTarget, initialState, settingFields, suggestPackage, typeface } from "./state.ts";
+import { presetFeatures } from "./resolve.ts";
+import {
+  type ConfigState,
+  type Setting,
+  featuresFor,
+  findTarget,
+  initialState,
+  settingFields,
+  skippedOf,
+  stylesFor,
+  suggestPackage,
+  typeface,
+} from "./state.ts";
 
 /**
  * The configurator's answers, kept in `localStorage` so a visitor who comes back finds them again.
@@ -105,9 +118,16 @@ export function parseDraft(text: string | null, catalogue: Catalogue): ConfigSta
       if (isSetting(value)) settings[field.key] = value;
     }
   }
-  const designStyle = target.design_styles.find((style) => style.key === saved.designStyle);
-  const motionStyle = target.motion_styles.find((style) => style.key === saved.motionStyle);
+  // A deployment that locks the option overrides the box a draft from before the lock remembers.
+  const uiComponents = effectiveUiComponents(target, typeof saved.uiComponents === "boolean" ? saved.uiComponents : state.uiComponents);
+  const { designStyle, motionStyle } = stylesFor(
+    target,
+    uiComponents,
+    target.design_styles.find((style) => style.key === saved.designStyle)?.key ?? state.designStyle,
+    target.motion_styles.find((style) => style.key === saved.motionStyle)?.key ?? state.motionStyle,
+  );
   const architecture = target.architectures.find((option) => option.key === saved.architecture && option.available);
+  const features = Array.isArray(saved.features) ? strings(saved.features) : [...presetFeatures(target, target.defaults.preset)];
 
   return {
     ...state,
@@ -118,9 +138,11 @@ export function parseDraft(text: string | null, catalogue: Catalogue): ConfigSta
     modules: savedText("modules"),
     languages: strings(saved.languages).filter((tag) => offered.has(tag)),
     architecture: architecture?.key ?? state.architecture,
-    features: featuresFor(Array.isArray(saved.features) ? strings(saved.features) : state.features, target, designStyle?.key ?? state.designStyle),
-    designStyle: designStyle?.key ?? state.designStyle,
-    motionStyle: motionStyle?.key ?? state.motionStyle,
+    uiComponents,
+    features: featuresFor(features, target, designStyle, uiComponents),
+    skipped: skippedOf([...features, ...strings(saved.skipped)], target, uiComponents),
+    designStyle,
+    motionStyle,
     hapticsEnabled: typeof saved.hapticsEnabled === "boolean" ? saved.hapticsEnabled : state.hapticsEnabled,
     accent: savedText("accent"),
     secondary: savedText("secondary"),

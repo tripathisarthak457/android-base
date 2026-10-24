@@ -77,6 +77,10 @@ export function validateSpec(raw: unknown, catalogue: Catalogue, targetKey: stri
 
   const blocks = blocksOf(target);
   const topLevel = new Map(target.fields.filter((field) => !field.key.includes(".")).map((field) => [field.key, field]));
+  // Each option is a top-level true or false; a target without one has no such field.
+  for (const option of target.options) {
+    if (!topLevel.has(option.key)) topLevel.set(option.key, { key: option.key, type: "bool", default: option.default });
+  }
   const android = blocks.get("android");
   if (android && (platform === "android" || platform === "multiplatform")) {
     const flat = android.map((field) => field.key.slice("android.".length)).filter((key) => key in data);

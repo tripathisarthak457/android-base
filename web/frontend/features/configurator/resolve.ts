@@ -57,19 +57,25 @@ export function dependentsOf(selected: ReadonlySet<string>, key: string, target:
     .map((feature) => feature.key);
 }
 
-/** The preset whose features are exactly `resolved`, or null for a set of the visitor's own. */
-export function derivePreset(resolved: ReadonlySet<string>, target: Target): string | null {
+/**
+ * The preset whose features are exactly `resolved`, or null for a set of the visitor's own. A preset
+ * keeps its list when some features cannot be had; it is matched without them.
+ */
+export function derivePreset(resolved: ReadonlySet<string>, target: Target, excluded: { has(key: string): boolean } = NONE): string | null {
   const match = target.presets.find((preset) => {
-    const features = presetFeatures(target, preset.key);
+    const features = presetFeatures(target, preset.key, excluded);
     return features.size === resolved.size && [...features].every((key) => resolved.has(key));
   });
   return match?.key ?? null;
 }
 
-export function presetFeatures(target: Target, key: string): Set<string> {
+/** A preset's features, resolved after `excluded` is taken out, as the generator drops a disabled feature from one. */
+export function presetFeatures(target: Target, key: string, excluded: { has(key: string): boolean } = NONE): Set<string> {
   const preset = target.presets.find((candidate) => candidate.key === key);
-  return resolveChoices(preset?.features ?? [], target);
+  return resolveChoices((preset?.features ?? []).filter((feature) => !excluded.has(feature)), target);
 }
+
+const NONE: ReadonlySet<string> = new Set();
 
 function featureMap(target: Target): Map<string, Feature> {
   return new Map(target.features.map((feature) => [feature.key, feature]));

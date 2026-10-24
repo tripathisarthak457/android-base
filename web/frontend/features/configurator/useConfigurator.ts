@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "r
 import { API_BASE, ApiError, BUILD, apiError } from "../../lib/api.ts";
 import { saveFile } from "../../lib/download.ts";
 import { canMakeKeystores, parseCatalogue } from "../catalogue/guard.ts";
+import { disabledFeatures } from "../catalogue/options.ts";
 import type { Catalogue } from "../catalogue/types.ts";
 import { sessionId, track, trackLanding } from "../telemetry/client.ts";
 import { landed } from "../telemetry/events.ts";
@@ -193,7 +194,10 @@ export function useConfigurator(catalogue: Catalogue) {
 
   const spec = useMemo(() => toSpecV2(state, catalogue), [state, catalogue]);
   const errors: SpecErrors = useMemo(() => validateSpec(spec, catalogue, state.target), [spec, catalogue, state.target]);
-  const preset = useMemo(() => derivePreset(new Set(state.features), target), [state.features, target]);
+  const preset = useMemo(
+    () => derivePreset(new Set(state.features), target, disabledFeatures(target, state.uiComponents)),
+    [state.features, state.uiComponents, target],
+  );
 
   const goTo = useCallback(
     (next: Step) => {
