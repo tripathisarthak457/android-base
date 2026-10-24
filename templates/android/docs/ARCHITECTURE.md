@@ -57,9 +57,18 @@ singleton and the other observes it.
 ### Where a feature lives
 
 ```
-data/orders/       DTO · mapper · API service · repository interface and implementation   no Compose
+data/orders/       api/: repository interface and model · remote/: API, DTO, mappers      no Compose
+                   local/: table mappers · the repository, named after its source
 feature/orders/    contract · ViewModel · screen · navigation key                          no network
 ```
+
+The repository is named after where its data comes from: `NetworkOrdersRepository` keeps the last
+answer in memory; with the database, `OfflineFirstOrdersRepository` makes the module's own table the
+source of truth and writes each refresh into it. Either way the API is the same: the list as a
+`Flow` that follows every write, `refresh()`, `peek(id)` for what is already in memory, and
+`item(id)`. A module named in the spec's `feature_modules` is generated in this shape, with its
+table when the project has the database; the generator's `add_feature.py` adds one without a table
+(`Network…`, or `Default…` with no source in a project without a network).
 
 The split lets the data half compile in parallel with the feature half instead of before it. It
 also makes cross-feature UI possible without a feature edge: a cart badge on the home screen reads

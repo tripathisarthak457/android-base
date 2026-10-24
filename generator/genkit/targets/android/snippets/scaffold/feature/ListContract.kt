@@ -5,7 +5,7 @@ import __PKG__.core.common.LoadState
 import __PKG__.core.mvi.UiEffect
 import __PKG__.core.mvi.UiEvent
 import __PKG__.core.mvi.UiState
-import __PKG__.data.__NAME__.api.__P__Item
+import __PKG__.data.__NAME__.api.model.__P__Item
 
 @Immutable
 internal data class __P__ListState(

@@ -10,22 +10,25 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface __P__Dao {
 
-    @Query("SELECT * FROM __TABLE__")
+    @Query("SELECT * FROM `__TABLE__` ORDER BY position")
     fun observeAll(): Flow<List<__P__Entity>>
 
-    @Query("SELECT * FROM __TABLE__ WHERE id = :id")
+    @Query("SELECT * FROM `__TABLE__` WHERE id = :id")
     suspend fun byId(id: String): __P__Entity?
 
     @Upsert
     suspend fun upsertAll(rows: List<__P__Entity>)
 
-    @Query("DELETE FROM __TABLE__")
-    suspend fun deleteAll()
+    @Query("DELETE FROM `__TABLE__` WHERE id NOT IN (:ids)")
+    suspend fun deleteAllExcept(ids: List<String>)
 
-    /** Makes the table the server's list in one transaction, so an observer never sees it half written. */
+    /**
+     * Makes the table the server's list in one transaction, so an observer never sees it half
+     * written: rows the server no longer has go, the rest are written over in place.
+     */
     @Transaction
     suspend fun replaceAll(rows: List<__P__Entity>) {
-        deleteAll()
+        deleteAllExcept(rows.map { it.id })
         upsertAll(rows)
     }
 }

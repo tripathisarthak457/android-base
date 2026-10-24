@@ -1,6 +1,6 @@
 package __PKG__.data.__NAME__.di
 
-import __PKG__.data.__NAME__.Default__P__Repository
+import __PKG__.data.__NAME__.__IMPL__
 import __PKG__.data.__NAME__.api.__P__Repository
 import dagger.Binds
 import dagger.Module
@@ -13,10 +13,10 @@ internal interface __P__DataModule {
 
     @Binds
 __FIT__
-    fun bind__P__Repository(impl: Default__P__Repository): __P__Repository
+    fun bind__P__Repository(impl: __IMPL__): __P__Repository
 __ELSE__
     fun bind__P__Repository(
-        impl: Default__P__Repository,
+        impl: __IMPL__,
     ): __P__Repository
 __END_FIT__
 }

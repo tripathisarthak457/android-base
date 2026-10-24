@@ -110,8 +110,8 @@ class ScaffoldTest(unittest.TestCase):
 
 class DatabaseTest(unittest.TestCase):
 
-    def test_each_scaffolded_module_gets_a_table(self):
-        regions = database.regions(spec(features=["database"], feature_modules=["order_history"]))
+    def test_each_scaffolded_module_that_fetches_gets_a_table(self):
+        regions = database.regions(spec(features=["database", "network"], feature_modules=["order_history"]))
         self.assertEqual(
             [
                 "import com.acme.field.core.database.order_history.OrderHistoryDao\n",
@@ -124,6 +124,11 @@ class DatabaseTest(unittest.TestCase):
 
     def test_a_database_with_no_other_table_gets_the_starter_one(self):
         regions = database.regions(spec(features=["database"]))
+        self.assertEqual(["        NoteEntity::class,\n"], regions["database-entities"])
+
+    def test_a_module_without_a_network_has_no_table_to_fill(self):
+        # Its repository has no source, so the database gets the starter table instead.
+        regions = database.regions(spec(features=["database"], feature_modules=["orders"]))
         self.assertEqual(["        NoteEntity::class,\n"], regions["database-entities"])
 
     def test_the_reference_feature_table_is_enough(self):

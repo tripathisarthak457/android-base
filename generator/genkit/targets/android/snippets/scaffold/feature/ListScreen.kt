@@ -39,7 +39,7 @@ import __PKG__.core.designsystem.foundation.scroll.AppScrollDefaults
 import __PKG__.core.designsystem.theme.AppTheme
 import __PKG__.core.navigation.ScrollToTopOnReselect
 import __PKG__.core.ui.text
-import __PKG__.data.__NAME__.api.__P__Item
+import __PKG__.data.__NAME__.api.model.__P__Item
 import __PKG__.feature.__NAME__.R
 __PREVIEW_IMPORTS__
 

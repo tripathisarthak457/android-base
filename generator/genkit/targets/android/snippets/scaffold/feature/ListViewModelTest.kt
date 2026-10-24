@@ -5,7 +5,8 @@ import __PKG__.core.common.result.AppError
 import __PKG__.core.common.result.AppResult
 import __PKG__.core.testing.MainDispatcherRule
 import __PKG__.data.__NAME__.api.Fake__P__Repository
-import __PKG__.data.__NAME__.api.__P__Item
+import __PKG__.data.__NAME__.api.model.__P__Item
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -54,6 +55,26 @@ __END_FIT__
     }
 
     @Test
+    fun `rows written after an empty answer replace the empty state`() = runTest {
+__FIT__
+        val repository = Fake__P__Repository(AppResult.Success(emptyList()))
+__ELSE__
+        val repository =
+            Fake__P__Repository(AppResult.Success(emptyList()))
+__END_FIT__
+        val viewModel = __P__ListViewModel(repository)
+        viewModel.state.launchIn(backgroundScope)
+        viewModel.onEvent(__P__ListEvent.Appeared)
+        advanceUntilIdle()
+
+        repository.write(items)
+        advanceUntilIdle()
+
+        assertEquals(LoadState.Success, viewModel.state.value.loadState)
+        assertEquals(items, viewModel.state.value.items)
+    }
+
+    @Test
     fun `a failed refresh keeps the rows on screen`() = runTest {
         val repository = Fake__P__Repository(AppResult.Success(items))
         val viewModel = __P__ListViewModel(repository)
@@ -62,6 +83,20 @@ __END_FIT__
 
         repository.result = AppResult.Failure(AppError.Offline)
         viewModel.onEvent(__P__ListEvent.Refresh)
+        advanceUntilIdle()
+
+        assertEquals(LoadState.Success, viewModel.state.value.loadState)
+        assertEquals(items, viewModel.state.value.items)
+    }
+
+    @Test
+    fun `rows already stored are shown when the first load fails`() = runTest {
+        val repository = Fake__P__Repository(AppResult.Success(items))
+        repository.refresh()
+        repository.result = AppResult.Failure(AppError.Offline)
+        val viewModel = __P__ListViewModel(repository)
+
+        viewModel.onEvent(__P__ListEvent.Appeared)
         advanceUntilIdle()
 
         assertEquals(LoadState.Success, viewModel.state.value.loadState)
@@ -86,5 +121,25 @@ __END_FIT__
         viewModel.onEvent(__P__ListEvent.Retry)
         advanceUntilIdle()
         assertEquals(LoadState.Success, viewModel.state.value.loadState)
+    }
+
+    @Test
+    fun `rows written after a failed first load replace the error`() = runTest {
+__FIT__
+        val repository = Fake__P__Repository(AppResult.Failure(AppError.Offline))
+__ELSE__
+        val repository =
+            Fake__P__Repository(AppResult.Failure(AppError.Offline))
+__END_FIT__
+        val viewModel = __P__ListViewModel(repository)
+        viewModel.state.launchIn(backgroundScope)
+        viewModel.onEvent(__P__ListEvent.Appeared)
+        advanceUntilIdle()
+
+        repository.write(items)
+        advanceUntilIdle()
+
+        assertEquals(LoadState.Success, viewModel.state.value.loadState)
+        assertEquals(items, viewModel.state.value.items)
     }
 }

@@ -1,13 +1,13 @@
 """
-A table in `:core:database` for each scaffolded module, when the project has the database.
+A table in `:core:database` for each scaffolded module that fetches, when the project has the database.
 
 Core may not depend on data, so a module's entity and DAO live in `core/database/<name>/`, and
 `AppDatabase` lists them at its three generated points. A scaffolded table joins version 1: a new
 app has shipped no schema to migrate from.
 
 Room refuses a database without a table. A project with the database but neither the reference
-feature nor a scaffolded module gets one starter table, `note`, in the same shape, to rename for
-its first domain.
+feature nor a scaffolded module that fetches gets one starter table, `note`, in the same shape, to
+rename for its first domain.
 """
 
 from __future__ import annotations
@@ -16,6 +16,7 @@ from pathlib import Path
 
 from ...core.copy import write_text
 from ...core.spec import Spec, module_title, pascal_case
+from . import scaffold
 
 SNIPPETS = Path(__file__).parent / "snippets" / "database"
 
@@ -63,9 +64,12 @@ def write_tables(project: Path, spec: Spec) -> None:
 def _tables(spec: Spec) -> list[str]:
     if not spec.has("database"):
         return []
-    if not spec.feature_modules and not spec.has("sample"):
+    # A module reads its table only when it has a server to fill it from; without one its repository
+    # has no source, and a table nothing reads would only be a schema to migrate.
+    stored = [name for name in spec.feature_modules if scaffold.stores(spec, name)]
+    if not stored and not spec.has("sample"):
         return [STARTER_TABLE]
-    return list(spec.feature_modules)
+    return stored
 
 
 def _about(name: str) -> str:
@@ -74,7 +78,7 @@ def _about(name: str) -> str:
             "A starter table, because Room needs at least one. Rename it for the app's first domain,\n"
             " * or delete it once another table exists."
         )
-    return f"One {module_title(name).lower()} row as last fetched; `data/{name}` maps it to its model."
+    return f"One {module_title(name).lower()} row as last fetched.\n * `data/{name}` maps it to its model."
 
 
 def _camel(name: str) -> str:

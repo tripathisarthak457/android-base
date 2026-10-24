@@ -9,7 +9,7 @@ from pathlib import Path
 
 from genkit.core import pipeline
 from genkit.targets import get
-from genkit.targets.android import scaffold
+from genkit.targets.android import database, scaffold
 
 ANDROID = get("android")
 PKG = "com/acme/field"
@@ -45,8 +45,10 @@ class GeneratedModuleTest(unittest.TestCase):
         cls.temp = tempfile.TemporaryDirectory()
         cls.online = Path(cls.temp.name) / "online"
         cls.offline = Path(cls.temp.name) / "offline"
+        cls.stored = Path(cls.temp.name) / "stored"
         scaffold.write_feature_modules(cls.online, spec(features=["network", "sample"], feature_modules=["orders"]))
         scaffold.write_feature_modules(cls.offline, spec(features=["settings"], feature_modules=["orders"]))
+        scaffold.write_feature_modules(cls.stored, spec(features=["network", "database"], feature_modules=["orders"]))
 
     @classmethod
     def tearDownClass(cls):
@@ -70,13 +72,55 @@ class GeneratedModuleTest(unittest.TestCase):
 
     def test_the_data_module_decodes_a_real_answer_when_it_has_a_network(self):
         data = self.online / "data/orders/src"
-        self.assertTrue((data / f"main/kotlin/{PKG}/data/orders/remote/OrdersDto.kt").is_file())
+        for relative in ("remote/dto/OrdersDto.kt", "remote/OrdersDtoMappers.kt"):
+            with self.subTest(file=relative):
+                self.assertTrue((data / f"main/kotlin/{PKG}/data/orders/{relative}").is_file())
         self.assertTrue((data / f"test/kotlin/{PKG}/data/orders/remote/OrdersDtoTest.kt").is_file())
         self.assertTrue((data / "test/resources/orders.json").is_file())
-        self.assertIn("NetworkClient", (data / f"main/kotlin/{PKG}/data/orders/DefaultOrdersRepository.kt").read_text())
+        self.assertIn("NetworkClient", (data / f"main/kotlin/{PKG}/data/orders/remote/OrdersApi.kt").read_text())
+
+    def test_the_repository_has_the_reference_features_api(self):
+        api = self.online / f"data/orders/src/main/kotlin/{PKG}/data/orders/api"
+        repository = (api / "OrdersRepository.kt").read_text()
+        for member in (
+            "val items: Flow<List<OrdersItem>>",
+            "suspend fun refresh(): AppResult<Unit>",
+            "fun peek(id: String): OrdersItem?",
+            "suspend fun item(id: String): AppResult<OrdersItem>",
+        ):
+            with self.subTest(member=member):
+                self.assertIn(member, repository)
+        self.assertIn("package com.acme.field.data.orders.api.model", (api / "model/OrdersItem.kt").read_text())
+
+    def test_with_a_network_and_no_database_the_list_is_kept_in_memory(self):
+        source = self.online / f"data/orders/src/main/kotlin/{PKG}/data/orders"
+        self.assertIn("class NetworkOrdersRepository", (source / "NetworkOrdersRepository.kt").read_text())
+        self.assertIn("impl: NetworkOrdersRepository", (source / "di/OrdersDataModule.kt").read_text())
+        self.assertFalse((source / "local").exists())
+        self.assertNotIn(":core:database", (self.online / "data/orders/build.gradle.kts").read_text())
+
+    def test_with_the_database_the_table_is_the_source_of_truth(self):
+        source = self.stored / f"data/orders/src/main/kotlin/{PKG}/data/orders"
+        self.assertEqual(
+            ["OfflineFirstOrdersRepository.kt"],
+            sorted(path.name for path in source.glob("*Repository.kt")),
+        )
+        self.assertIn("dao.replaceAll(", (source / "OfflineFirstOrdersRepository.kt").read_text())
+        mappers = (source / "local/OrdersEntityMappers.kt").read_text()
+        self.assertIn("internal fun OrdersDto.toEntity(position: Int): OrdersEntity", mappers)
+        module = (source / "di/OrdersDataModule.kt").read_text()
+        self.assertIn("impl: OfflineFirstOrdersRepository", module)
+        self.assertIn("fun provideOrdersDao(database: AppDatabase): OrdersDao = database.orders()", module)
+        self.assertIn('implementation(project(":core:database"))', (self.stored / "data/orders/build.gradle.kts").read_text())
+
+    def test_a_module_the_spec_names_home_fetches_like_any_other(self):
+        with tempfile.TemporaryDirectory() as temp:
+            project = Path(temp)
+            scaffold.write_feature_modules(project, spec(features=["network"], feature_modules=["home"]))
+            self.assertTrue((project / f"data/home/src/main/kotlin/{PKG}/data/home/NetworkHomeRepository.kt").is_file())
 
     def test_the_fake_repository_is_shared_through_the_data_modules_test_fixtures(self):
-        for project in (self.online, self.offline):
+        for project in (self.online, self.offline, self.stored):
             with self.subTest(project=project.name):
                 fake = project / f"data/orders/src/testFixtures/kotlin/{PKG}/data/orders/api/FakeOrdersRepository.kt"
                 self.assertIn("class FakeOrdersRepository(", fake.read_text())
@@ -93,9 +137,13 @@ class GeneratedModuleTest(unittest.TestCase):
         self.assertFalse((data / f"src/main/kotlin/{PKG}/data/orders/remote").exists())
         self.assertNotIn(":core:network", (data / "build.gradle.kts").read_text())
         self.assertIn("no network", (data / f"src/main/kotlin/{PKG}/data/orders/DefaultOrdersRepository.kt").read_text())
+        self.assertIn(
+            "impl: DefaultOrdersRepository",
+            (data / f"src/main/kotlin/{PKG}/data/orders/di/OrdersDataModule.kt").read_text(),
+        )
 
     def test_the_keys_and_models_are_the_public_surface_and_everything_else_is_internal(self):
-        for path in self.online.rglob("src/main/kotlin/**/*.kt"):
+        for path in [*self.online.rglob("src/main/kotlin/**/*.kt"), *self.stored.rglob("src/main/kotlin/**/*.kt")]:
             text = path.read_text(encoding="utf-8")
             public = re.findall(r"^(?:data |sealed |abstract )?(?:class|interface|object|fun) (\w+)", text, re.MULTILINE)
             with self.subTest(file=path.name):
@@ -103,7 +151,7 @@ class GeneratedModuleTest(unittest.TestCase):
                     self.assertEqual([], public)
 
     def test_every_file_is_filled_in_its_package_and_sorted(self):
-        for path in [*self.online.rglob("*.kt"), *self.offline.rglob("*.kt")]:
+        for path in [*self.online.rglob("*.kt"), *self.offline.rglob("*.kt"), *self.stored.rglob("*.kt")]:
             text = path.read_text(encoding="utf-8")
             with self.subTest(file=path.name):
                 self.assertIsNone(re.search(r"__[A-Z_]+__", text))
@@ -161,12 +209,13 @@ class GeneratedModuleTest(unittest.TestCase):
         letters = "abcdefghijklmnopqrstuvwxyzabcd"
         names = [letters[:length] for length in range(1, len(letters) + 1)]
         with tempfile.TemporaryDirectory() as temp:
-            for features in (["network", "sample"], ["settings"]):
+            for features in (["network", "sample"], ["network", "database"], ["settings"]):
                 # A spec scaffolds at most 12 modules.
                 for start in range(0, len(names), 10):
                     project = Path(temp) / f"{features[0]}-{start}"
                     parsed = spec(features=features, feature_modules=names[start:start + 10])
                     scaffold.write_feature_modules(project, parsed)
+                    database.write_tables(project, parsed)
                     for path in [*project.rglob("*.kt"), *project.rglob("*.kts")]:
                         for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
                             if line.startswith(("import ", "package ")):

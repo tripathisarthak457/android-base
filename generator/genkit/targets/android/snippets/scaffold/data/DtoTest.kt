@@ -1,5 +1,6 @@
 package __PKG__.data.__NAME__.remote
 
+import __PKG__.data.__NAME__.remote.dto.__P__Dto
 import kotlinx.serialization.json.Json
 import org.junit.Assert.assertEquals
 import org.junit.Test

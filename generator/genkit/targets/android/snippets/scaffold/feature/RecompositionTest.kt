@@ -7,7 +7,7 @@ import __PKG__.core.common.LoadState
 import __PKG__.core.designsystem.theme.AppTheme
 import __PKG__.core.testing.compose.TEST_SDK
 import __PKG__.core.testing.compose.recomposition.RecompositionCounter
-import __PKG__.data.__NAME__.api.__P__Item
+import __PKG__.data.__NAME__.api.model.__P__Item
 import __PKG__.feature.__NAME__.list.__P__ListScreen
 import __PKG__.feature.__NAME__.list.__P__ListState
 import org.junit.Assert.assertEquals

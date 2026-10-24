@@ -101,27 +101,48 @@ def _tokens(spec: Spec, name: str) -> dict[str, str]:
     }
 
 
+def fetches(spec: Spec, name: str) -> bool:
+    """Whether the module has a server to load from: the project has a network and the spec named the module."""
+    return spec.has("network") and name in spec.feature_modules
+
+
+def stores(spec: Spec, name: str) -> bool:
+    """Whether the module keeps what it fetched in its own table in `:core:database` (`database.py`)."""
+    return fetches(spec, name) and spec.has("database")
+
+
 def _write_data_module(project: Path, spec: Spec, name: str, tokens: dict[str, str]) -> None:
+    """
+    The data module in the reference's shape (`data/sample`): an offline-first repository over the module's table with
+    a network and the database, a network one without the database, and one with no source without a network.
+    """
     root = project / "data" / name
     source = root / "src/main/kotlin" / spec.package_path / "data" / name
     tests = root / "src/test/kotlin" / spec.package_path / "data" / name
     fixtures = root / "src/testFixtures/kotlin" / spec.package_path / "data" / name
-    remote = spec.has("network") and name != HOME
+    pascal = tokens["__P__"]
+    remote, stored = fetches(spec, name), stores(spec, name)
 
-    _render("data/build.remote.gradle.kts" if remote else "data/build.local.gradle.kts", root / "build.gradle.kts", tokens)
-    _render("data/Item.kt", source / "api" / f"{tokens['__P__']}Item.kt", tokens)
-    _render("data/Repository.kt", source / "api" / f"{tokens['__P__']}Repository.kt", tokens)
-    _render(
-        "data/DefaultRepository.remote.kt" if remote else "data/DefaultRepository.local.kt",
-        source / f"Default{tokens['__P__']}Repository.kt",
-        tokens,
-    )
-    _render("data/DataModule.kt", source / "di" / f"{tokens['__P__']}DataModule.kt", tokens)
+    build = "database" if stored else "remote" if remote else "local"
+    _render(f"data/build.{build}.gradle.kts", root / "build.gradle.kts", tokens)
+    _render("data/Item.kt", source / "api/model" / f"{pascal}Item.kt", tokens)
+    _render("data/Repository.kt", source / "api" / f"{pascal}Repository.kt", tokens)
     # Beside the interface it fakes, so a modular split moves it into `:data:<name>:api` with it.
-    _render("data/FakeRepository.kt", fixtures / "api" / f"Fake{tokens['__P__']}Repository.kt", tokens)
+    _render("data/FakeRepository.kt", fixtures / "api" / f"Fake{pascal}Repository.kt", tokens)
+    if stored:
+        _render("data/OfflineFirstRepository.kt", source / f"OfflineFirst{pascal}Repository.kt", tokens)
+        _render("data/EntityMappers.kt", source / "local" / f"{pascal}EntityMappers.kt", tokens)
+        _render("data/DataModule.database.kt", source / "di" / f"{pascal}DataModule.kt", tokens)
+    else:
+        implementation = f"{'Network' if remote else 'Default'}{pascal}Repository"
+        snippet = "data/NetworkRepository.kt" if remote else "data/DefaultRepository.local.kt"
+        _render(snippet, source / f"{implementation}.kt", tokens)
+        _render("data/DataModule.kt", source / "di" / f"{pascal}DataModule.kt", {**tokens, "__IMPL__": implementation})
     if remote:
-        _render("data/Dto.kt", source / "remote" / f"{tokens['__P__']}Dto.kt", tokens)
-        _render("data/DtoTest.kt", tests / "remote" / f"{tokens['__P__']}DtoTest.kt", tokens)
+        _render("data/Api.kt", source / "remote" / f"{pascal}Api.kt", tokens)
+        _render("data/Dto.kt", source / "remote/dto" / f"{pascal}Dto.kt", tokens)
+        _render("data/DtoMappers.kt", source / "remote" / f"{pascal}DtoMappers.kt", tokens)
+        _render("data/DtoTest.kt", tests / "remote" / f"{pascal}DtoTest.kt", tokens)
         _render("data/fixture.json", root / "src/test/resources" / f"{name}.json", tokens)
 
 
