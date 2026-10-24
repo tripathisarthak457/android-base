@@ -303,9 +303,10 @@ up in the detail pane, and Back steps through them before it closes the pane.
 system Back to the stack as `NavCommand.Up`, and decorates every entry with saved state and a ViewModel store
 (`rememberSaveableStateHolderNavEntryDecorator`, `rememberViewModelStoreNavEntryDecorator`), so each screen keeps its
 state and its ViewModel while it is in the stack. The back stack is saved through `NavKeySerialization`, so process
-death restores it; `NavDisplayHostTest` covers push, Up, system Back, a deep link and restore. `:core:navigation` does
-not depend on `:core:designsystem`: navigation draws nothing of its own. Until you give it transitions, `NavDisplay`
-uses Navigation 3's defaults, which fade whole screens; replace them when you build the shell (below).
+death restores it. `:core:navigation` does not depend on `:core:designsystem`: navigation draws nothing of its own. A
+change of screen moves nothing: the host replaces Navigation 3's default transitions, which fade whole screens, with
+none; give it a slide when you build the shell (below). `NavDisplayHostTest` covers push, Up, the change with no fade,
+system Back, a deep link and restore.
 
 ### The start screen
 
@@ -342,8 +343,8 @@ ready for a shell. To build one:
 - **List and detail, sheets, dialogs:** a `SceneStrategy` passed to `NavDisplay` that reads each entry's pane or
   presentation metadata; the `navigation-3` skill has list-detail, dialog and bottom-sheet recipes.
 - **Transitions:** `NavDisplay`'s `transitionSpec`, `popTransitionSpec` and `predictivePopTransitionSpec`, set in
-  `:core:navigation` only (a feature never sets them: `nav-fade`). Navigation 3's defaults fade whole screens, which
-  renders both offscreen on every frame of the fade; slide them instead
+  `:core:navigation` only (a feature never sets them: `nav-fade`). The host passes none; never go back to Navigation
+  3's defaults, which fade whole screens and render both offscreen on every frame of the fade: slide them instead
   ([PERFORMANCE.md](PERFORMANCE.md#layers-and-alpha)).
 <!-- </opt:!ui_components> -->
 

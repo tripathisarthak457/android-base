@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import com.base.app.core.common.navigation.AppNavKey
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotSame
@@ -15,7 +16,10 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import java.util.Optional
 
-/** The one-stack host: navigation commands, system Back, a deep link, and process death. */
+/**
+ * The one-stack host: navigation commands, no fade between screens, system Back, a deep link, and
+ * process death.
+ */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [ROBOLECTRIC_SDK])
 class NavDisplayHostTest {
@@ -63,6 +67,20 @@ class NavDisplayHostTest {
         rule.waitForIdle()
         assertEquals(listOf<AppNavKey>(FeedTab), stack!!.keys)
         rule.onNodeWithTagExists(FeedTab)
+    }
+
+    @Test
+    fun `a push replaces the screen at once, never fading the two together`() {
+        host()
+        rule.waitForIdle()
+        rule.mainClock.autoAdvance = false
+
+        rule.runOnUiThread { stack!!.applyNow(NavCommand.Navigate(Post(1))) }
+        // Navigation 3's default fade would still draw both screens here, 0.1 s into its 0.7 s.
+        rule.mainClock.advanceTimeBy(100)
+
+        rule.onNodeWithTagExists(Post(1))
+        rule.onNodeWithTag(FeedTab.toString(), useUnmergedTree = true).assertDoesNotExist()
     }
 
     @Test

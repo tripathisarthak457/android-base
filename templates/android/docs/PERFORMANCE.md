@@ -565,9 +565,9 @@ screen of content light.
 
 The template's shell was measured into these rules; keep them when you build yours on `NavDisplay`:
 
-- **Replace Navigation 3's default transitions**, which fade whole screens (and scale one during a predictive back):
-  each fade renders both screens offscreen on every frame. Pass `transitionSpec`, `popTransitionSpec` and
-  `predictivePopTransitionSpec` in `:core:navigation`.
+- **Never use Navigation 3's default transitions**, which fade whole screens (and scale one during a predictive
+  back): each fade renders both screens offscreen on every frame. The host passes none until you give it yours, as
+  `transitionSpec`, `popTransitionSpec` and `predictivePopTransitionSpec` in `:core:navigation`.
 - **Slide whole screens on the `screen` spring; never fade or scale them.** Start the slide after the frame that
   composes the new screen, so that heavy frame shows nothing moving.
 - **Give each screen a layer of its own**, so a slide frame records only the operations around each screen (measured:

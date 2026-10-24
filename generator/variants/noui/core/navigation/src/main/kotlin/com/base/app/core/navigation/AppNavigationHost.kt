@@ -1,5 +1,9 @@
 package com.base.app.core.navigation
 
+import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -14,14 +18,18 @@ import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.navigation.back.submit
 
 /**
- * One back stack drawn by Navigation 3's own `NavDisplay`, with its default transitions and
- * predictive back. Each entry keeps its saved state and its ViewModels for as long as it is on the
- * stack. Commands from the navigator are applied while the activity is started.
+ * One back stack drawn by Navigation 3's own `NavDisplay`. Each entry keeps its saved state and its
+ * ViewModels for as long as it is on the stack. Commands from the navigator are applied while the
+ * activity is started.
  *
- * Every destination is drawn as a screen of its own: [NavPane] and [Presentation] stay on each
- * registration for the scene strategies a project adds once it has a design system (a list beside
- * its detail on a wide window, a sheet over the screen it opened from), passed to `NavDisplay`
- * here.
+ * A change of screen moves nothing: Navigation 3's default transitions fade whole screens (and
+ * scale one under a predictive back), which renders both offscreen on every frame, so they are
+ * replaced with none until the project's design system brings its own slide.
+ *
+ * Every destination is drawn as a screen of its own: [NavPane], [Presentation] and
+ * [NavTransitionStyle] stay on each registration for the scene strategies and transitions a
+ * project adds once it has a design system (a list beside its detail on a wide window, a sheet over
+ * the screen it opened from), passed to `NavDisplay` here.
  */
 @Composable
 fun AppNavigationHost(
@@ -51,13 +59,18 @@ fun AppNavigationHost(
     NavDisplay(
         entries = entries,
         modifier = modifier,
+        transitionSpec = { noMotion() },
+        popTransitionSpec = { noMotion() },
+        predictivePopTransitionSpec = { noMotion() },
         onBack = { backStack.applyNow(NavCommand.Up) },
     )
 }
 
+private fun noMotion(): ContentTransform = EnterTransition.None togetherWith ExitTransition.None
+
 /**
- * Applies [command] by the stack's rules, at once. `NavDisplay` animates the change itself and
- * tells the stack nothing, so the change is marked settled as soon as it is made; otherwise the
+ * Applies [command] by the stack's rules, at once. `NavDisplay` runs the change's transition itself
+ * and tells the stack nothing, so the change is marked settled as soon as it is made; otherwise the
  * next command would wait for a transition nobody reports.
  */
 internal fun AppBackStack.applyNow(command: NavCommand) {
