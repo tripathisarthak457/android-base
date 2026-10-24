@@ -37,7 +37,8 @@ class SharedDestinationsTest {
     fun `the scan sees the features' keys and graphs`() {
         // <opt:!ui_components>        // Without UI components a project can start with no feature module;
         // <opt:!ui_components>        // the first one brings its keys, and from then on the scan must see them.
-        // <opt:!ui_components>        assumeTrue("No feature module yet", File("../feature").isDirectory)
+        // <opt:!ui_components>        val features = File("../feature").listFiles(File::isDirectory).orEmpty()
+        // <opt:!ui_components>        assumeTrue("No feature module yet", features.isNotEmpty())
         // A source tree the scan cannot read would pass the next test with nothing checked.
         assertTrue("No keys found in any feature's api package", owners.isNotEmpty())
         assertTrue("No entry<…> registrations found", registrations.isNotEmpty())

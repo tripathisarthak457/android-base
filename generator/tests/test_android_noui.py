@@ -30,8 +30,9 @@ def generate(directory: Path, name: str, **fields) -> Path:
     return project
 
 
-def snapshot(project: Path) -> dict[str, bytes]:
-    return {path.relative_to(project).as_posix(): path.read_bytes() for path in project.rglob("*") if path.is_file()}
+def snapshot(project: Path) -> dict[str, bytes | None]:
+    """Every file's bytes and every folder (as None): an empty folder left behind changes what Gradle and tests see."""
+    return {path.relative_to(project).as_posix(): path.read_bytes() if path.is_file() else None for path in project.rglob("*")}
 
 
 #: Every preset in both architectures, and no features with a module: the shapes a No-UI project takes.

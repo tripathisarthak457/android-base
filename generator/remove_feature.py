@@ -82,6 +82,11 @@ def main(argv: list[str] | None = None) -> int:
 
     for path in present:
         shutil.rmtree(path)
+    # A tier left with no module is gone too, as it was before the first one was added: the
+    # project's tests read an existing `feature/` as "this project has feature modules".
+    for tier in {path.parent for path in present}:
+        if not any(tier.iterdir()):
+            tier.rmdir()
 
     unregister_modules(project, names)
     unregister_dependencies(project, names)
