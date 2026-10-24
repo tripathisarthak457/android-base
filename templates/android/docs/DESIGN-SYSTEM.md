@@ -320,8 +320,8 @@ In this order, each under the contract above:
    that implements it and is provided above the navigation host makes `showMessage` reach people.
 2. **A press modifier and a fling.** One `Modifier.Node` for presses ([Interaction](#interaction)), and one fling for
    every scrolling container (`scroll-fling`). The template's fling, which feels like iOS: a decay that keeps 0.998 of
-   its speed per millisecond and stops at 30 px/s, built once (for example as `object AppScrollDefaults` with a
-   `@Composable fun flingBehavior()` that remembers a `FlingBehavior` over that decay).
+   its speed per millisecond and stops at 30 px/s, built once as a remembered `FlingBehavior` over that decay, in a
+   defaults object every scrolling container's caller passes as `flingBehavior`.
 3. **Text, buttons, rows and fields** you need for the first screen, each with its `XDefaults` and preview.
 4. **Screens** in place of each `PlaceholderScreen`: a stateless `XScreen(state, onEvent)` that the route already
    connects through `MviScreen`, drawing every `LoadState`, with `@AppScreenPreviews` on its preview
