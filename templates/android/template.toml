@@ -29,7 +29,7 @@ required = [
 ]
 
 [files]
-template_only = ["catalog/src/test/screenshots", "template.toml", "presets.toml", "removed.toml", "features"]
+template_only = ["catalog/src/test/screenshots", "template.toml", "presets.toml", "removed.toml", "features", "options"]
 binary_suffixes = [".jar", ".png", ".jpg", ".jpeg", ".webp", ".ttf", ".otf", ".jks", ".keystore", ".ico"]
 executable = ["gradlew", "tools/adaptive/*.sh", "tools/perf/*.sh"]
 # Upstream files the project vendors, copied byte for byte: never renamed, never marker-parsed.

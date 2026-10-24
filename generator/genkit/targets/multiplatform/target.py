@@ -14,6 +14,7 @@ from ...core.manifest import TemplateManifest
 from ...core.spec import DEFAULT_FONT, DEFAULT_MONO_FONT, AndroidSettings, IosSettings, Spec, SpecError, Vocabulary
 from ...core.target import BuildContext
 from ...tokens import kotlin_common
+from .. import foreign_options
 from ..android.target import API_LEVELS, MAX_VERSION_CODE, MIN_COMPILE_SDK, describe_api_level, validate_android
 from . import modules, settings, strings
 
@@ -67,6 +68,7 @@ class MultiplatformTarget:
             design_styles=tokens.design_style_requirements(),
             motion_styles=tokens.motion_style_names(),
             reserved_module_names=self.reserved_module_names,
+            foreign_options=foreign_options(self.key),
         )
 
     def validate(self, spec: Spec) -> list[str]:

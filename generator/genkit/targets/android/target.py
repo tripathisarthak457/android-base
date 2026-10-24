@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from ... import tokens
+from .. import foreign_options
 from ...core import translations
 from ...core.manifest import TemplateManifest
 from ...core.spec import (
@@ -78,7 +79,9 @@ class AndroidTarget:
 
     @cached_property
     def manifest(self) -> TemplateManifest:
-        return TemplateManifest.load(self.template_dir)
+        manifest = TemplateManifest.load(self.template_dir)
+        variants.check(manifest)
+        return manifest
 
     @cached_property
     def reserved_module_names(self) -> frozenset[str]:
@@ -94,6 +97,7 @@ class AndroidTarget:
             design_styles=tokens.design_style_requirements(),
             motion_styles=tokens.motion_style_names(),
             reserved_module_names=self.reserved_module_names,
+            foreign_options=foreign_options(self.key),
         )
 
     def validate(self, spec: Spec) -> list[str]:
@@ -123,7 +127,7 @@ class AndroidTarget:
         return {**settings.regions(spec), **tabs.regions(spec), **scaffold.regions(spec), **database.regions(spec)}
 
     def overlays(self, spec: Spec) -> dict[str, Path]:
-        return variants.overlays(spec)
+        return variants.overlays(spec, self.manifest)
 
     def transform(self, project: Path, spec: Spec) -> list[str]:
         scaffold.write_feature_modules(project, spec)
