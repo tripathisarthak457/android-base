@@ -35,8 +35,6 @@ UPSTREAM = "https://github.com/android/skills"
 SKILLS_DIR = ".agents/skills"
 POINTERS_DIR = ".claude/skills"
 LICENCE = "LICENSE.txt"
-#: Files in SKILLS_DIR that are written here rather than copied, so the manifest leaves them out.
-OWN_FILES = ("README.md", "MANIFEST.sha256")
 
 #: Official skills that no project made from this base needs, with the reason.
 LEFT_OUT = {
