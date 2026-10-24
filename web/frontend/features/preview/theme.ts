@@ -12,7 +12,12 @@ export const dp = (value: number) => value * DP;
 
 type TextStyle = { fontSize: number; lineHeight: string; fontWeight: number; letterSpacing: string };
 
-type FramerSpring = { type: "spring"; stiffness: number; damping: number; mass: 1 };
+export type FramerSpring = { type: "spring"; stiffness: number; damping: number; mass: 1; restDelta?: number };
+
+/** A token's spring as framer takes it: the damping ratio becomes a damping coefficient at mass 1. */
+export function framerSpring({ stiffness, dampingRatio }: { stiffness: number; dampingRatio: number }): FramerSpring {
+  return { type: "spring", stiffness, damping: dampingRatio * 2 * Math.sqrt(stiffness), mass: 1 };
+}
 
 export type PreviewTheme = {
   dark: boolean;
@@ -106,10 +111,7 @@ export function previewTheme(tokens: Tokens, choices: PreviewChoices): PreviewTh
     };
   };
 
-  const spring = (name: SpringName): FramerSpring => {
-    const value = motion?.springs[name] ?? { stiffness: 685, dampingRatio: 1 };
-    return { type: "spring", stiffness: value.stiffness, damping: value.dampingRatio * 2 * Math.sqrt(value.stiffness), mass: 1 };
-  };
+  const spring = (name: SpringName): FramerSpring => framerSpring(motion?.springs[name] ?? { stiffness: 685, dampingRatio: 1 });
 
   return { dark: choices.dark, colour, status, style, type, spring };
 }

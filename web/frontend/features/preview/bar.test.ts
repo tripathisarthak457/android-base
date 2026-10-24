@@ -1,0 +1,167 @@
+import assert from "node:assert/strict";
+import { test } from "node:test";
+import { loadCatalogue, readJson, readText } from "../catalogue/testing.ts";
+import {
+  BAR,
+  DRAWN_INDICATORS,
+  DRAWN_TREATMENTS,
+  SHELL_SPRINGS,
+  barLook,
+  isFloating,
+  pillSpan,
+  pillWidth,
+  pillCross,
+} from "./bar.ts";
+
+// The bar preview draws what `AppTabBar.kt` and `TabCells.kt` draw. Their enums, sizes and springs
+// are read from the template here, so a treatment WP03 retires or a size it changes fails a test
+// instead of leaving the site describing a bar the app no longer has.
+
+const NAVIGATION = ["templates", "android", "core", "designsystem", "src", "main", "kotlin", "com", "base", "app", "core", "designsystem"];
+const styleSource = readText(...NAVIGATION, "theme", "AppDesignStyle.kt");
+const barSource = readText(...NAVIGATION, "component", "navigation", "AppTabBar.kt");
+const cellsSource = readText(...NAVIGATION, "component", "navigation", "TabCells.kt");
+const shellPath = ["templates", "android", "core", "navigation", "src", "main", "kotlin", "com", "base", "app", "core", "navigation"];
+
+function enumEntries(source: string, name: string): string[] {
+  const body = new RegExp(`enum class ${name} \\{([\\s\\S]*?)\\n\\}`).exec(source)?.[1];
+  assert.ok(body, `enum class ${name} is not in the template`);
+  const code = body.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+  return [...code.matchAll(/^\s*([A-Z]\w*)\s*,?\s*$/gm)].map(([, entry]) => entry ?? "");
+}
+
+function dpConstant(source: string, name: string): number {
+  const value = new RegExp(`\\bval ${name} = ([\\d.]+)\\.dp\\b`).exec(source)?.[1];
+  assert.ok(value, `${name} is not a dp constant in the template`);
+  return Number(value);
+}
+
+function spring(source: string, name: string): { stiffness: number; dampingRatio: number } {
+  const match = new RegExp(`\\bval ${name}\\b[^=]*= spring\\(dampingRatio = ([\\d.]+)f, stiffness = ([\\d.]+)f`).exec(source);
+  assert.ok(match, `${name} is not a fixed spring in the template`);
+  return { dampingRatio: Number(match[1]), stiffness: Number(match[2]) };
+}
+
+const colour = (role: string) => `<${role}>`;
+
+test("the preview draws every bar treatment and indicator the template has, and no retired one", () => {
+  const treatments = enumEntries(styleSource, "BarTreatment");
+  const indicators = enumEntries(styleSource, "BarIndicator");
+  assert.ok(treatments.length >= 3 && indicators.length >= 2, `${treatments} / ${indicators}`);
+  for (const treatment of treatments) assert.ok(DRAWN_TREATMENTS.has(treatment), `the preview cannot draw ${treatment}`);
+  // Glass is WP05's treatment, fenced behind liquid glass in the template it brings.
+  assert.deepEqual(
+    [...DRAWN_TREATMENTS].filter((treatment) => !treatments.includes(treatment)),
+    treatments.includes("Glass") ? [] : ["Glass"],
+  );
+  assert.deepEqual([...DRAWN_INDICATORS].sort(), [...indicators].sort());
+});
+
+test("every design style in the catalogue uses a treatment and an indicator the preview draws", () => {
+  const { tokens } = loadCatalogue();
+  for (const [name, style] of Object.entries(tokens.styles)) {
+    assert.ok(DRAWN_TREATMENTS.has(style.bar), `${name}: ${style.bar}`);
+    assert.ok(DRAWN_INDICATORS.has(style.indicator), `${name}: ${style.indicator}`);
+  }
+});
+
+test("the bar's sizes are the template's", () => {
+  assert.equal(BAR.height, dpConstant(barSource, "BarHeight"));
+  assert.equal(BAR.margin, dpConstant(barSource, "BarMargin"));
+  assert.equal(BAR.lift, dpConstant(barSource, "BarLift"));
+  assert.equal(BAR.dockedInset, dpConstant(barSource, "DockedInset"));
+  assert.equal(BAR.pillHeight, dpConstant(barSource, "PillHeight"));
+  assert.equal(BAR.minPill, dpConstant(barSource, "MinPillWidth"));
+  assert.equal(BAR.maxPill, dpConstant(barSource, "MaxPillWidth"));
+  assert.equal(BAR.slotGap, dpConstant(barSource, "SlotGap"));
+  assert.equal(BAR.labelPadding, dpConstant(barSource, "LabelPadding"));
+  assert.equal(BAR.labelPaddingMin, dpConstant(barSource, "LabelPaddingMin"));
+  assert.equal(BAR.maxStretch, Number(/const val MAX_STRETCH = ([\d.]+)f/.exec(cellsSource)?.[1]));
+  assert.equal(BAR.squash, Number(/const val SQUASH = ([\d.]+)f/.exec(cellsSource)?.[1]));
+  assert.equal(BAR.bounceScale, Number(/const val BOUNCE_DOWN = ([\d.]+)f/.exec(cellsSource)?.[1]));
+  assert.equal(BAR.minLabelShrink, Number(/const val MIN_LABEL_SHRINK = ([\d.]+)f/.exec(cellsSource)?.[1]));
+});
+
+test("the push and the tab bar move on the shell's own springs, whatever the motion style", () => {
+  // When the template reads these from AppTheme.springs, as MOTION-PLAN rule 1 asks, the preview
+  // and the Motion step go back to the motion style's springs and this test goes with them.
+  assert.deepEqual(SHELL_SPRINGS.indicatorLead, spring(cellsSource, "LeadSpring"));
+  assert.deepEqual(SHELL_SPRINGS.indicatorTrail, spring(cellsSource, "TrailSpring"));
+  assert.deepEqual(SHELL_SPRINGS.iconBounceDown, spring(cellsSource, "BounceDown"));
+  assert.deepEqual(SHELL_SPRINGS.iconBounceUp, spring(cellsSource, "BounceUp"));
+  const transitions = readText(...shellPath, "transition", "NavTransitions.kt");
+  const shell = readText(...shellPath, "AppShell.kt");
+  assert.match(shell, /ScreenMotion\(response = screenResponse \?: ScreenMotion\.DEFAULT_RESPONSE\)/);
+  const response = Number(/const val DEFAULT_RESPONSE = ([\d.]+)f/.exec(transitions)?.[1]);
+  assert.equal(SHELL_SPRINGS.screen.dampingRatio, 1);
+  assert.ok(Math.abs(SHELL_SPRINGS.screen.stiffness - ((2 * Math.PI) / response) ** 2) < 1e-6);
+});
+
+test("Floating and Translucent are capsules, Docked sits on the edge, and an unknown treatment floats", () => {
+  assert.equal(isFloating("Floating"), true);
+  assert.equal(isFloating("Translucent"), true);
+  assert.equal(isFloating("Glass"), true);
+  assert.equal(isFloating("Docked"), false);
+  assert.equal(isFloating("SomethingNew"), true);
+});
+
+test("a Pill indicator is a solid accent pill with onAccent content; Subtle tints it", () => {
+  const pill = barLook({ bar: "Floating", indicator: "Pill", borderWidth: 1 }, colour, false);
+  assert.equal(pill.indicator, "<accent>");
+  assert.equal(pill.selectedContent, "<onAccent>");
+  assert.equal(pill.content, "<contentSecondary>");
+  const subtle = barLook({ bar: "Floating", indicator: "Subtle", borderWidth: 1 }, colour, false);
+  assert.equal(subtle.indicator, "<accentSubtle>");
+  assert.equal(subtle.selectedContent, "<accentContent>");
+  // A style naming an indicator this build does not know gets the quieter one.
+  assert.deepEqual(barLook({ bar: "Floating", indicator: "Underline", borderWidth: 1 }, colour, false), subtle);
+});
+
+test("barIndicator, which a Pill is filled with, is the accent in every palette", () => {
+  const palette = readJson<unknown>("tokens", "palette.json");
+  const found: unknown[] = [];
+  const visit = (node: unknown) => {
+    if (!node || typeof node !== "object") return;
+    for (const [key, value] of Object.entries(node)) {
+      if (key === "barIndicator") found.push(value);
+      else visit(value);
+    }
+  };
+  visit(palette);
+  assert.ok(found.length >= 2);
+  assert.deepEqual(new Set(found), new Set(["@accent"]));
+});
+
+test("a capsule is the surface with a hairline and a soft shadow in light theme, raised and unshadowed in dark", () => {
+  const light = barLook({ bar: "Floating", indicator: "Subtle", borderWidth: 2 }, colour, false);
+  assert.deepEqual([light.floating, light.surface, light.border, light.borderWidth, light.shadow], [true, "<surface>", "<separator>", 2, true]);
+  const dark = barLook({ bar: "Floating", indicator: "Subtle", borderWidth: 2 }, colour, true);
+  assert.equal(dark.surface, "<surfaceElevated>");
+  assert.equal(dark.border, "rgba(255, 255, 255, 0.07)");
+  assert.equal(dark.shadow, false);
+  const translucent = barLook({ bar: "Translucent", indicator: "Subtle", borderWidth: 1 }, colour, false);
+  assert.equal(translucent.surface, "color-mix(in srgb, <surface> 88%, transparent)");
+  const docked = barLook({ bar: "Docked", indicator: "Pill", borderWidth: 2 }, colour, true);
+  assert.deepEqual([docked.floating, docked.surface, docked.border, docked.borderWidth, docked.shadow], [false, "<surface>", "<separator>", 1, false]);
+});
+
+test("the pill fits its label with room to spare, between 52 and 72 dp, never past its slot", () => {
+  assert.equal(pillWidth(120, 24), 52);
+  assert.equal(pillWidth(120, 40), 60);
+  assert.equal(pillWidth(120, 70), 78);
+  assert.equal(pillWidth(120, 60), 72);
+  assert.equal(pillWidth(64, 50), 56);
+  assert.equal(pillWidth(56, 24), 48);
+});
+
+test("the pill stretches toward its target by at most half a slot, and thins as it does", () => {
+  assert.deepEqual(pillSpan(1, 1, true), [1, 1]);
+  assert.deepEqual(pillSpan(0.2, 0.6, true), [0.2, 0.6]);
+  assert.deepEqual(pillSpan(0, 2, true), [1.5, 2]);
+  assert.deepEqual(pillSpan(0, 2, false), [0, 0.5]);
+  const resting = pillCross(10, 54, 1);
+  assert.deepEqual(resting, [10, 54]);
+  const [top, bottom] = pillCross(10, 54, 1.5);
+  assert.ok(top > 10 && bottom < 54);
+  assert.ok(Math.abs(bottom - top - 44 * (1 - BAR.squash * 0.5)) < 1e-9);
+});

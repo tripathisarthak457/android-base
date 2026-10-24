@@ -168,6 +168,7 @@ export type TypeRole = {
 
 export type StyleTokens = {
   bar: string;
+  indicator: string;
   card: string;
   field: string;
   borderWidth: number;

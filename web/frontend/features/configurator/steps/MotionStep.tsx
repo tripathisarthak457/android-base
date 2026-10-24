@@ -26,11 +26,13 @@ function MotionCard({ input, model, styleKey, title, description, name, dark, pa
 }) {
   const theme = usePreviewTheme({ ...input, motionStyle: styleKey }, dark);
   const springs = input.tokens.motion.styles[styleKey]?.springs;
+  // The springs a style changes in the app. Pushes and the tab bar keep the shell's own springs in
+  // every style (SHELL_SPRINGS), so their tokens are not listed as the style's.
   const rows: [string, string][] = [
     ["press", describe(springs?.press)],
     ["release", describe(springs?.release)],
-    ["push and pop", describe(springs?.screen)],
-    ["selection", describe(springs?.indicatorLead)],
+    ["sheet", describe(springs?.sheet)],
+    ["dialog", describe(springs?.dialog)],
   ];
   return (
     <ChoiceCard
@@ -79,9 +81,10 @@ export function MotionStep({
           <div>
             <p className="text-sm font-medium text-ink-200">How it moves</p>
             <p className="mt-1 text-xs leading-relaxed text-ink-400">
-              Each loop runs the style&apos;s own springs from the design tokens: a press and its release, a screen pushed and popped,
-              a tab switch. Hold a phone&apos;s button down with the mouse or a finger to feel the press. Every spring is interruptible
-              and keeps its velocity in the app.
+              Each loop runs the style&apos;s own press and release from the design tokens, then a screen pushed and popped and a
+              tab switch, which move alike in every style. The style also sets how sheets, dialogs and layout changes move. Hold a
+              phone&apos;s button down with the mouse or a finger to feel the press. Every spring is interruptible and keeps its
+              velocity in the app.
             </p>
           </div>
           <PauseButton paused={paused} onChange={setPaused} label="the motion previews" />

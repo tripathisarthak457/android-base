@@ -3,8 +3,9 @@
 import { useAnimate, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
 import type { Tokens } from "../catalogue/types.ts";
+import { SHELL_SPRINGS, barLook } from "./bar.ts";
 import { loop } from "./loop.ts";
-import type { PreviewTheme } from "./theme.ts";
+import { type PreviewTheme, framerSpring } from "./theme.ts";
 
 /** Where each moving part sits between runs, as the markup first draws it. */
 const REST: [part: string, values: Record<string, string | number>][] = [
@@ -18,10 +19,11 @@ const REST: [part: string, values: Record<string, string | number>][] = [
 ];
 
 /**
- * A few seconds of the app moving in one motion style, on its own springs: a press and release,
- * a push and pop (slide only, the covered screen darkened by a drawn scrim and moving at the
- * parallax fraction), and a tab switch (instant content, the indicator on its leading-edge spring).
- * It loops while in view and not `paused`; the button answers a press either way.
+ * A few seconds of the app moving in one motion style: a press and release on the style's own
+ * springs, then a push and pop (slide only, the covered screen darkened by a drawn scrim and
+ * moving at the parallax fraction) and a tab switch (instant content, the indicator on its
+ * leading-edge spring), on the springs the template's shell uses in every style. It loops while in
+ * view and not `paused`; the button answers a press either way.
  */
 export function MotionPreview({ theme, tokens, font, paused }: { theme: PreviewTheme; tokens: Tokens; font: string; paused: boolean }) {
   const [scope, animate] = useAnimate<HTMLDivElement>();
@@ -38,8 +40,8 @@ export function MotionPreview({ theme, tokens, font, paused }: { theme: PreviewT
     // half-pushed or the other tab showing, and React does not restore styles it never changed.
     for (const [part, values] of REST) animate(`[data-part=${part}]`, values, { duration: 0 });
     if (!inView || paused) return;
-    const screen = theme.spring("screen");
-    const selection = theme.spring("indicatorLead");
+    const screen = framerSpring(SHELL_SPRINGS.screen);
+    const selection = framerSpring(SHELL_SPRINGS.indicatorLead);
 
     return loop(async ({ settle, wait }) => {
       await wait(700);
@@ -74,6 +76,7 @@ export function MotionPreview({ theme, tokens, font, paused }: { theme: PreviewT
 
   const surface = theme.colour("surface");
   const line = theme.colour("outline");
+  const bar = barLook(theme.style, theme.colour, theme.dark);
   return (
     <div
       ref={scope}
@@ -141,18 +144,21 @@ export function MotionPreview({ theme, tokens, font, paused }: { theme: PreviewT
       </div>
       <div
         className="absolute inset-x-1.5 bottom-1.5 flex h-[22px] items-center rounded-full px-0.5"
-        style={{ background: surface, border: `1px solid ${theme.colour("separator")}` }}
+        style={{ background: bar.surface, border: `1px solid ${bar.border}` }}
       >
-        <span
-          data-part="indicator"
-          className="absolute inset-y-[3px] left-0.5 w-[calc((100%-4px)/3)] rounded-full"
-          style={{ background: theme.colour("accentSubtle") }}
-        />
         {[0, 1, 2].map((tab) => (
-          <span key={tab} className="relative z-10 flex flex-1 justify-center">
-            <span className="h-2 w-2 rounded-full" style={{ background: tab === 2 ? line : theme.colour("accentContent") }} />
+          <span key={tab} className="flex flex-1 justify-center">
+            <span className="h-2 w-2 rounded-full" style={{ background: bar.content }} />
           </span>
         ))}
+        {/* The selected tab's dot rides inside the pill, in the colour the template draws there. */}
+        <span
+          data-part="indicator"
+          className="absolute inset-y-[3px] left-0.5 flex w-[calc((100%-4px)/3)] items-center justify-center rounded-full"
+          style={{ background: bar.indicator }}
+        >
+          <span className="h-2 w-2 rounded-full" style={{ background: bar.selectedContent }} />
+        </span>
       </div>
     </div>
   );
