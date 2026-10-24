@@ -5,7 +5,7 @@ description = """
 Remote images that cost a list nothing: decoded at the size they are drawn, on the skeleton colour
 until they arrive, with the items ahead fetched to disk before a fling reaches them. One loader with
 set limits: a capped memory cache that halves in the background, a bounded disk cache, hardware bitmaps
-and a measured number of decodes at once. The catalog shows a photo feed and a shop grid of real photos."""
+and a capped number of decodes at once. The catalog shows a photo feed and a shop grid of real photos."""
 group = "Networking and data"
 default = false
 requires = []
