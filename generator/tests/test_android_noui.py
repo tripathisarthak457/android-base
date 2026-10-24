@@ -206,7 +206,7 @@ class ProjectShapeTest(unittest.TestCase):
                     missing |= {n for n in names if n not in declared and n not in ADVICE_LIBRARY_NAMES}
                 self.assertEqual(set(), missing)
 
-    def test_the_app_profile_names_only_classes_the_project_has(self):
+    def test_the_profiles_name_only_classes_the_project_has(self):
         from tests.android_profile import classes_of, kept
 
         # The names the profile was recorded under, so its application and component classes match.
@@ -218,9 +218,14 @@ class ProjectShapeTest(unittest.TestCase):
             project = Path(directory) / "everything"
             pipeline.build(pipeline.read_spec(raw, ANDROID)[0].spec, ANDROID, project, zip_output=False, commit="test")
             known = classes_of(project)
-            profile = (project / "app/src/main/baseline-prof.txt").read_text(encoding="utf-8").splitlines()
-        self.assertTrue(profile)
-        self.assertEqual([], [line for line in profile if not kept(line, known)][:10])
+            profiles = {
+                module: (project / module / "src/main/baseline-prof.txt").read_text(encoding="utf-8").splitlines()
+                for module in ("app", "core/navigation", "core/designsystem", "core/ui")
+            }
+        for module, profile in profiles.items():
+            with self.subTest(module=module):
+                self.assertTrue(profile)
+                self.assertEqual([], [line for line in profile if not kept(line, known)][:10])
 
 
 class UiProjectTest(unittest.TestCase):
