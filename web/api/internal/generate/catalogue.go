@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/exec"
 	"slices"
+	"strings"
 	"time"
 )
 
@@ -38,6 +39,7 @@ type TargetEntry struct {
 	Features   []FeatureInfo `json:"features"`
 	Presets    []PresetInfo  `json:"presets"`
 	Defaults   Defaults      `json:"defaults"`
+	Options    []OptionInfo  `json:"options"`
 }
 
 type FeatureInfo struct {
@@ -47,6 +49,23 @@ type FeatureInfo struct {
 	Implies []string `json:"implies"`
 	// ImpliedOnly features are pulled in by others and cannot be asked for directly.
 	ImpliedOnly bool `json:"implied_only"`
+}
+
+// OptionInfo is a spec-level switch the target declares, such as ui_components. ParseCatalogue
+// refuses one without a boolean Default, or with a Locked it could not enforce, so both are safe to
+// dereference afterwards.
+type OptionInfo struct {
+	Key string `json:"key"`
+	// Default is what a spec that leaves the field out gets.
+	Default *bool       `json:"default"`
+	Locked  *OptionLock `json:"locked"`
+}
+
+// OptionLock is set on a deployment that generates only one value of an option: any other value is
+// refused with Note, which says why.
+type OptionLock struct {
+	Value *bool  `json:"value"`
+	Note  string `json:"note"`
 }
 
 // PresetInfo carries the preset's resolved feature list.
@@ -114,9 +133,36 @@ func ParseCatalogue(raw []byte) (*Catalogue, error) {
 	if len(c.Targets) == 0 {
 		return nil, errors.New("the catalogue lists no targets")
 	}
+	// A lock that cannot be read must stop the boot: serving with it ignored would generate exactly
+	// what the deployment was locked to refuse.
+	for _, target := range c.Targets {
+		if err := checkOptions(target); err != nil {
+			return nil, fmt.Errorf("the catalogue's %s target: %w", target.Key, err)
+		}
+	}
 	c.Raw = raw
 	c.ETag = fmt.Sprintf(`"%x"`, sha256.Sum256(raw))
 	return &c, nil
+}
+
+func checkOptions(target TargetEntry) error {
+	seen := map[string]bool{}
+	for _, option := range target.Options {
+		switch {
+		case option.Key == "":
+			return errors.New("an option has no key")
+		case seen[option.Key]:
+			return fmt.Errorf("option %q is declared twice", option.Key)
+		case option.Default == nil:
+			return fmt.Errorf("option %q has no default", option.Key)
+		case option.Locked != nil && option.Locked.Value == nil:
+			return fmt.Errorf("option %q is locked to no value", option.Key)
+		case option.Locked != nil && strings.TrimSpace(option.Locked.Note) == "":
+			return fmt.Errorf("option %q is locked without a note to refuse requests with", option.Key)
+		}
+		seen[option.Key] = true
+	}
+	return nil
 }
 
 func runCatalogue(ctx context.Context, opts Options) ([]byte, error) {

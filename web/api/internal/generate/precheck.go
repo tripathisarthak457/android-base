@@ -70,6 +70,9 @@ type Spec struct {
 	// Sanitised is the spec as it is stored: keystore entries are reduced to their names, so no
 	// password or certificate subject reaches the database.
 	Sanitised json.RawMessage
+
+	// fields are the spec's top-level fields as decoded, for the checks that need the catalogue.
+	fields map[string]any
 }
 
 // SpecBytesLimit is the largest body the generate routes read.
@@ -194,6 +197,7 @@ func summarise(object map[string]any) (Spec, error) {
 		return Spec{}, fmt.Errorf("encoding the sanitised spec: %w", err)
 	}
 	spec.Sanitised = encoded
+	spec.fields = object
 	return spec, nil
 }
 

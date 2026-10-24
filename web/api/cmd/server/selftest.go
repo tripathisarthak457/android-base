@@ -15,8 +15,8 @@ import (
 )
 
 // selfTest proves an image can do its job: it loads the catalogue and generates one small project
-// per enabled target through the same code path as a request, then checks each zip opens. CI runs
-// it against the built container.
+// per enabled target through the same checks and generator as a request, then checks each zip
+// opens. CI runs it against the built container.
 func selfTest(log *slog.Logger) error {
 	cfg, err := config.Load()
 	if err != nil {
@@ -56,16 +56,33 @@ func selfTest(log *slog.Logger) error {
 	return nil
 }
 
-func generateOne(ctx context.Context, g *generate.Generator) (int, error) {
-	spec, err := json.Marshal(map[string]any{
+// selftestSpec is the smallest project the target makes, with each locked option at its locked
+// value, so a locked deployment proves it can generate what it serves.
+func selftestSpec(target generate.TargetEntry) ([]byte, error) {
+	spec := map[string]any{
 		"schema":       2,
-		"platform":     g.Target.Key,
+		"platform":     target.Key,
 		"app_name":     "Selftest",
 		"package_name": "com.example.selftest",
-		"features":     g.Target.SmallestPresetFeatures(),
-	})
+		"features":     target.SmallestPresetFeatures(),
+	}
+	for key, value := range target.LockedValues() {
+		spec[key] = value
+	}
+	return json.Marshal(spec)
+}
+
+func generateOne(ctx context.Context, g *generate.Generator) (int, error) {
+	spec, err := selftestSpec(g.Target)
 	if err != nil {
 		return 0, err
+	}
+	prechecked, err := generate.Precheck(spec, g.Target.Key, g.Rules)
+	if err == nil {
+		err = g.Target.CheckOptions(prechecked)
+	}
+	if err != nil {
+		return 0, fmt.Errorf("the generate route would refuse the selftest's spec: %w", err)
 	}
 	out, err := g.Run(ctx, spec)
 	var failure *generate.Failure
