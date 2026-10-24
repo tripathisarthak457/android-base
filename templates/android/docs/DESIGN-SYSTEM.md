@@ -314,6 +314,36 @@ class AppTagTest {
     }
 }
 ```
+<!-- <opt:!ui_components> -->
+
+What the build refuses in a component, each line marked with the rule that reports it. `DesignSystemDocTest` runs
+the rules over both templates (no finding) and over this one (exactly these), so this page and the guard agree:
+
+```kotlin component-dont
+@Composable
+fun AppBadge(
+    count: State<Int>, // state-param
+    updates: Flow<Int>, // stateless-params
+    modifier: Modifier = Modifier,
+) {
+    val grown by animateFloatAsState(if (count.value > 0) 1f else 0.8f, tween(150)) // animated-delegate, raw-tween
+    BasicText(
+        text = "${count.value}",
+        style = TextStyle(fontSize = 12.sp), // raw-type
+        modifier = modifier
+            .scale(grown)
+            .padding(horizontal = 6.dp) // raw-dp
+            .background(Color(0xFFD93025), AppTheme.shapes.pill), // raw-color
+    )
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppBadgePreview() {
+    AppBadge(count = remember { mutableIntStateOf(3) }, updates = emptyFlow())
+}
+```
+<!-- </opt:!ui_components> -->
 
 ## First things to build
 
