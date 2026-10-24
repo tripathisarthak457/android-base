@@ -11,8 +11,9 @@ The command line generator (`generator/create_project.py`) runs on your own mach
 ## In short
 
 - No account, no sign-up, no cookies and no third-party analytics.
-- No IP address and no raw user agent string is ever written down. Visits are counted with a salted hash of your
-  network that changes every day, and with a random id that lives only as long as your browser tab.
+- No IP address and no raw user agent string is stored. The API's logs leave both out, except for the address of a
+  request that makes the code answering it crash (below). Visits are counted with a salted hash of your network that
+  changes every day, and with a random id that lives only as long as your browser tab.
 - For each project generated, the server keeps what it was generated with. Its app and package names, its server
   addresses, its deep link and its Apple team are removed after 90 days.
 - A problem report keeps what you write in it, and an email address only if you give one.
@@ -43,10 +44,14 @@ security policy allows only its own origin, the API's, and the two Google Fonts 
 ## On the server
 
 The API needs your IP address while it answers a request: it is turned into the daily hash below, and it keys the rate
-limits, which the server holds in memory for at most an hour. It is never written to the database or to the API's
-logs. Your browser, system and device are reduced to their family names and a class (`mobile`, `tablet`, `desktop`
-or `unknown`) as the request arrives; the raw user agent string is not kept. Location comes from the country, region
-and city headers that Vercel's edge adds, and only when the API runs behind Vercel.
+limits. The limits live only in the server's memory. Each one is cleared by the first request it counts after its hour
+is up, or when the server restarts, so on a route nobody calls for a while an address stays in memory until someone
+does. The address is never written to the database, and the API's own log lines leave it out. The exception is a
+request that makes the code answering it crash: Go's HTTP server then logs the address the connection came from with
+the error, which is yours when the API is exposed directly and the proxy's when one is in front of it. Your browser,
+system and device are reduced to their family names and a class (`mobile`, `tablet`, `desktop` or `unknown`) as the
+request arrives; the raw user agent string is not kept. Location comes from the country, region and city headers that
+Vercel's edge adds, and only when the API runs behind Vercel.
 
 ### The daily hash
 
@@ -131,13 +136,13 @@ One row in `feedback` per report sent with **Report a problem**. Kept with no ti
 | Column | What |
 |---|---|
 | `created_at`, `visitor_hash` | When, and the daily hash |
-| `kind`, `severity`, `area`, `target` | What kind of report, how bad, where, and the platform |
+| `kind`, `severity`, `area` | What kind of report, how bad, and where |
 | `title`, `body`, `steps` | What you wrote |
 | `expected`, `actual` | What you expected and what happened, if a script sends them; the site's form does not ask |
 | `contact` | An email address, only if you give one |
 | `user_agent` | Browser family, system family and device class, as `browser · OS · device class`, derived by the API; never the raw user agent |
 | `app_version` | The site's build |
-| `app_name`, `package_name`, `preset`, `features`, `min_sdk`, `motion_style`, `font_name`, `accent_colour` | Your configurator answers, only if **Attach what you configured** stays ticked. Unlike a generation's, these are not removed after 90 days |
+| `target`, `app_name`, `package_name`, `preset`, `features`, `min_sdk`, `motion_style`, `font_name`, `accent_colour` | Your configurator answers, the platform among them, only if **Attach what you configured** stays ticked (a script may send them too). Unlike a generation's, these are not removed after 90 days |
 | `page_url` | The page's origin and path, never its query or fragment, only with the answers attached |
 | `status`, `notes`, `updated_at` | The maintainer's triage |
 
@@ -156,8 +161,8 @@ One row in `errors` per distinct failure, grouped by a `fingerprint`, with the n
 
 ### Request timings
 
-One row in `requests` per call to the API, for its percentiles: `at`, `route`, `method`, `status`, `duration_ms` and
-`bytes_out`. Nothing about who called. Kept for 30 days.
+One row in `requests` per call to the API, for its percentiles, except health checks and the admin portal's own
+calls: `at`, `route`, `method`, `status`, `duration_ms` and `bytes_out`. Nothing about who called. Kept for 30 days.
 
 ## Who sees it
 

@@ -56,12 +56,19 @@ function storageKeys(): StorageKey[] {
 /** Each table's columns, from the API's migrations in order. */
 function storedColumns(): Map<string, Set<string>> {
   const directory = repositoryPath("web", "api", "internal", "store", "migrations");
+  return columnsOf(
+    readdirSync(directory)
+      .filter((name) => name.endsWith(".sql"))
+      .sort()
+      .map((name) => readFileSync(join(directory, name), "utf8"))
+      .join("\n"),
+  );
+}
+
+/** Each table's columns once `migrations` (SQL) has run. */
+function columnsOf(migrations: string): Map<string, Set<string>> {
   const tables = new Map<string, Set<string>>();
-  const sql = readdirSync(directory)
-    .filter((name) => name.endsWith(".sql"))
-    .sort()
-    .map((name) => readFileSync(join(directory, name), "utf8").replace(/--.*$/gm, ""))
-    .join("\n");
+  const sql = migrations.replace(/--.*$/gm, "");
   for (const statement of sql.split(";")) {
     const created = /CREATE TABLE(?: IF NOT EXISTS)?\s+(\w+)\s*\(([\s\S]*)\)\s*$/i.exec(statement.trim());
     if (created) {
@@ -83,12 +90,21 @@ function storedColumns(): Map<string, Set<string>> {
       tables.set(table, columns);
       continue;
     }
-    const altered = /ALTER TABLE\s+(\w+)/i.exec(statement);
+    const altered = /ALTER TABLE\s+(?:IF EXISTS\s+)?(?:ONLY\s+)?(\w+)/i.exec(statement);
     if (altered?.[1]) {
       const columns = tables.get(altered[1]);
       assert.ok(columns, `ALTER TABLE ${altered[1]} before it is created`);
-      for (const [, name = ""] of statement.matchAll(/ADD COLUMN\s+(\w+)/gi)) columns.add(name);
+      for (const [, name = ""] of statement.matchAll(/ADD COLUMN\s+(?:IF NOT EXISTS\s+)?(\w+)/gi)) columns.add(name);
       for (const [, name = ""] of statement.matchAll(/DROP COLUMN\s+(?:IF EXISTS\s+)?(\w+)/gi)) columns.delete(name);
+      for (const [, from = "", to = ""] of statement.matchAll(/RENAME COLUMN\s+(\w+)\s+TO\s+(\w+)/gi)) {
+        columns.delete(from);
+        columns.add(to);
+      }
+      const renamed = /RENAME TO\s+(\w+)/i.exec(statement)?.[1];
+      if (renamed) {
+        tables.delete(altered[1]);
+        tables.set(renamed, columns);
+      }
     }
   }
   return tables;
@@ -141,4 +157,18 @@ test("the retention periods on the privacy page are the API's defaults", () => {
     assert.ok(row, `${variable} is not on the privacy page`);
     assert.match(row, new RegExp(`\\b${days}\\b`), `the privacy page's line for ${variable} does not give its default, ${days}`);
   }
+});
+
+test("the migration reader follows columns and tables as they are added, dropped and renamed", () => {
+  const tables = columnsOf(`
+    CREATE TABLE visits (id bigserial PRIMARY KEY, ip_hash text, at timestamptz NOT NULL, UNIQUE (ip_hash, at));
+    CREATE TABLE IF NOT EXISTS hits (n integer);
+    ALTER TABLE visits ADD COLUMN IF NOT EXISTS city text, ADD COLUMN country text; -- a comment; with a semicolon
+    ALTER TABLE visits DROP COLUMN IF EXISTS country;
+    ALTER TABLE ONLY visits RENAME COLUMN ip_hash TO visitor_hash;
+    ALTER TABLE hits RENAME TO counts;
+  `);
+  assert.deepEqual([...tables.keys()].sort(), ["counts", "visits"]);
+  assert.deepEqual([...(tables.get("visits") ?? [])].sort(), ["at", "city", "id", "visitor_hash"]);
+  assert.deepEqual([...(tables.get("counts") ?? [])], ["n"]);
 });
