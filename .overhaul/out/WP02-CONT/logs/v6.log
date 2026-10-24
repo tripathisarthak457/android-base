@@ -1,0 +1,11 @@
+
+== 06:28:42 branch 2e447a6fa with 35 changed paths
+
+== 06:28:42 1. generator suite
+rc=0
+Ran 484 tests in 485.356s
+OK (skipped=9)
+
+== 06:41:55 2. c-local and the audit project: generate
+
+== 06:42:13 2. c-local: build

@@ -5,6 +5,21 @@ Lane `WP02`: worktree `D:/projects/tools/.overhaul/wt/sw-WP02`, branch `staging-
 
 ## Progress
 
+Run 3 (started 2026-10-24 06:21 IST): run 2 stopped after `v3.sh` (02:45) with step 4 and 23.8 uncommitted. `v3`:
+c-netdb and c-net green (app assembled, every module's tests and code rules at name lengths 3-30), generator suite 484
+OK (9 skipped); c-local never built (the batch asked for `:data:*:testDebugUnitTest`, which a data module without
+`src/test` does not have: the convention disables its unit tests). Staging moved to `7230b666` (5 commits: hairline
+rects, the badge's per-draw fade, the large title's collapse from an effect, a new code rule, re-recorded profiles).
+
+- [x] Merged staging (`2e447a6f`): one conflict, `app/src/main/baseline-prof.txt` (staging's re-recorded profile, its
+      five `AndroidLogger` lines renamed to `com/base/app/log/`). The WIP stayed uncommitted across the merge.
+- [x] The audit gives each case its own `LocalBottomChrome` holder instead of writing the shared default from a
+      `SideEffect` (the shell's default holder is process-wide, so a case could inherit another's bar).
+- [ ] `v6.sh`: generator suite; c-local (no-source shape) built and tested; the audit on a generated project (pass),
+      then on a planted screen (fail naming each kind); the audit on the template's own screens (everything on);
+      the stability order on five presets; devRelease sizes for `tools/size_budgets.toml`.
+- [ ] Commit step 4 and 23.8; `size_budgets.toml`; `accept.cont.sh`; Measurements.
+
 Run 2 (started 2026-10-24 01:14 IST): staging still at `d429cbfb` (nothing to merge). Run 1's work was uncommitted;
 its batch `v1.sh` showed the logger and AuthFrame tests red on staging and green here, but its H-8 probe was void
 (`MutableList<String>` counts as stable through `compose-stability.conf`'s `kotlin.collections.List<*>`, so neither
@@ -95,8 +110,23 @@ Run 1 (started 2026-10-23 23:29 IST).
 - **The scaffold's data module is the reference's shape**: `api/` (interface, `model/`), `remote/` (`<P>Api`,
   `dto/`, mappers), `local/` (entity mappers, with the database); the implementation is named after its source
   (`Network…`, `OfflineFirst…`, `Default…` with no source). The list ViewModel observes `items`, so rows written
-  after an empty answer replace the empty state (followups F-5, fixed in the scaffold; the reference's own
-  `SampleListViewModel` still has it, WP02-M3).
+  after an empty answer or a failed first load replace that state (followups F-5, fixed in the scaffold; the
+  reference's own `SampleListViewModel` still has it, WP02-M3).
+- **The scaffold's list, as the compose-performance audit left it** (skill categories: lazy layouts, effects):
+  a loading state of a few fixed placeholders is a `Column` (`wrapContentHeight(unbounded = true)` +
+  `clipToBounds`, one TalkBack node), not a `LazyColumn` with scrolling off: the push's first frame does not build a
+  lazy layout's machinery for six rows that never scroll. Every `items()` call carries a `contentType`, so a header
+  or footer added later never reuses a row's composition. A one-off event on entering composition is
+  `SideEffect(Unit) { … }` (keyed, Compose 1.12), not `LaunchedEffect(Unit)`: sending an event suspends nothing,
+  so it needs no coroutine. Anti-pattern: `LazyColumn(userScrollEnabled = false)` for a skeleton.
+- **A screen inside the shell pads its scrolling content with `chromeContentPadding()`, inside the scroll** (AuthFrame
+  drew its form under SignUp's and PasswordReset's top bar until this stage): the padding's floor is the navigation
+  bar, so no separate `navigationBarsPadding()` beside it; give the scroll a minimum height when the content is
+  centred, so a form that fits does not scroll.
+- **`add_feature.py` writes no table.** It reads only whether the project has `:core:network`, so in a project with
+  the database it adds a `Network<P>Repository` kept in memory; an offline-first module needs its table in
+  `:core:database` (entity, DAO, the three `AppDatabase` lists) and `OfflineFirst<P>Repository` by hand (WP14 owns
+  the tool).
 - **`AdaptiveAuditTest`**: put `@AppScreenPreviews` on a screen's stateless preview and the audit renders it at six
   windows and font scales 1 and 2 with every unit-test run; it simulates the floating tab bar (96 dp) only below
   600 dp wide, where the shell shows one. A failure lists each node by its text, content description or test tag.

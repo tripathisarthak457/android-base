@@ -57,9 +57,18 @@ singleton and the other observes it.
 ### Where a feature lives
 
 ```
-data/orders/       DTO · mapper · API service · repository interface and implementation   no Compose
+data/orders/       api/: repository interface and model · remote/: API, DTO, mappers      no Compose
+                   local/: table mappers · the repository, named after its source
 feature/orders/    contract · ViewModel · screen · navigation key                          no network
 ```
+
+The repository is named after where its data comes from: `NetworkOrdersRepository` keeps the last
+answer in memory; with the database, `OfflineFirstOrdersRepository` makes the module's own table the
+source of truth and writes each refresh into it. Either way the API is the same: the list as a
+`Flow` that follows every write, `refresh()`, `peek(id)` for what is already in memory, and
+`item(id)`. A module named in the spec's `feature_modules` is generated in this shape, with its
+table when the project has the database; the generator's `add_feature.py` adds one without a table
+(`Network…`, or `Default…` with no source in a project without a network).
 
 The split lets the data half compile in parallel with the feature half instead of before it. It
 also makes cross-feature UI possible without a feature edge: a cart badge on the home screen reads
@@ -398,6 +407,16 @@ What adapts, and how:
 - **Display cutouts:** `AppScaffold` pads both sides for them. A screen with a full-bleed panel turns
   that off (`clearDisplayCutout = false`) and pads the panel's content itself, so the colour reaches
   the edge of the glass.
+
+`AdaptiveAuditTest` (`app/src/test`) holds every screen to this. It finds each preview that carries
+`@AppScreenPreviews`, renders it at the six windows a pull request is checked at (a phone either
+way, a foldable, two tablets, a desktop window) and at font scales 1 and 2, and fails on what a
+person would see as broken: text cut off, a control outside the window or under the tab bar (where
+the shell shows one), a control whose 48dp touch area runs into another, two controls on top of
+each other, and lines wider than `readableMaxWidth` plus the gutter from Large width up. It needs no
+goldens and runs with the unit tests. A screen joins by carrying `@AppScreenPreviews` on its
+stateless preview, which the `adaptive-preview` rule asks of every screen; a failure is fixed in the
+layout, never in the audit.
 
 To check a screen on other sizes without other devices, run the emulator and change its display:
 `adb shell wm size 1600x2560` and `adb shell wm density 320` make a tablet, rotating makes it a

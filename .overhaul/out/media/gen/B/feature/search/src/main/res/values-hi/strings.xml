@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_title">खोजें</string>
+    <string name="search_placeholder">पोस्ट खोजें</string>
+    <string name="search_recent">हाल की खोजें</string>
+    <string name="search_clear_recent">साफ़ करें</string>
+    <string name="search_start_title">कुछ भी खोजें</string>
+    <string name="search_start_message">टाइप करते ही नतीजे दिखते हैं। आपकी खोजें यहां सेव रहती हैं।</string>
+    <string name="search_no_results_title">कोई नतीजा नहीं</string>
+    <string name="search_no_results_message">“%1$s” से कुछ भी मेल नहीं खाता। कम या अलग शब्द आज़माएं।</string>
+    <string name="search_retry">फिर से कोशिश करें</string>
+</resources>

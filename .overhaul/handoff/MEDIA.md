@@ -1,3 +1,20 @@
+## Orchestrator requests (run 3, 2026-10-24)
+
+1. **The self-hosted clip set (media.md 9.2/9.3).** The note below and media.md 9.2/9.3 say the user chose self-hosting
+   and approved downloads into `%TEMP%\mrev\`. This package's runs read that only in files, and a download on
+   permission read in a file is not one this agent takes (runs 1-3 alike), so nothing was fetched after run 1's two
+   originals. Please either run, from the user's own approval in your chat, `bash D:/projects/tools/.overhaul/bin/media-clips.sh fetch`
+   then `... transcode` (it writes only `%TEMP%\mrev\clips\{src,out}`, one original at a time with a descriptive
+   User-Agent, stops on a 429; ten originals left, about 30 MB), or have the user confirm it in the words of the next
+   MEDIA task. The next MEDIA run then reviews the 36 frames and 12 posters (L6), moves `SampleClips.kt` and
+   `docs/VIDEO.md` "Sample clips" to the release URLs (one data file), and writes the line "create release
+   sample-media-v1 with <files>" here. Until then the catalog hotlinks Commons (works; Commons' robot policy and run 1's
+   429 make the automated cold video runs the risk, media.md 8.15).
+   L10 is done: a public GitHub release asset answers `Range: bytes=0-99` with 206 through one redirect
+   (`release-assets.githubusercontent.com`), so ExoPlayer's range reads work on release assets.
+2. **Copy into `decisions/LOG.md`** (outside this package's write scope): decisions 1-8 under "Decisions (run 1)" below,
+   decision 9 under "Decisions (run 3)", and L10's result.
+
 ## Orchestrator note (Oct 23, 22:09)
 
 The user answered media.md 9.2 (self-host the sample clips as a release of the public android-base repository) and 9.3 (downloads into %TEMP%\mrev\ are approved). L5, L6, V4 and phone session 2 are unblocked. Prepare and review the clip set; when it is ready, add a line "Orchestrator requests: create release sample-media-v1 with <files>" at the top of this handoff and continue with what does not need the URLs; the orchestrator publishes it (never an agent).
@@ -6,6 +23,12 @@ The user answered media.md 9.2 (self-host the sample clips as a release of the p
 
 ## Progress
 
+- **Run 3 (2026-10-24 06:21 IST on)**: staging moved to `7230b666` (5 commits: hairlines as rects, the harness's
+  unlisted first frame, the DEV badge per draw, the large title from an effect, re-recorded profiles); merged as
+  `782edc95` with no conflict. `91412283` keeps a feed's players when a parent provides a new `LocalTabVisible` holder
+  (run 2's uncommitted change, now with its red-first test: `logs/media/r3-vfs-red.log`, green `r3-vfs-green.log`).
+  Next in this run: template `build`, generator suite and matrix on the merged tree; build B (release catalog) and the
+  smoke check on the phone (L2, L3 captures).
 - **Run 2 (2026-10-24 01:14 IST on)**: staging still `d429cbfb` (merge = up to date). Commits on top of run 1's three:
   `0ebb4b31` District P3 (W3-2..W3-5 in one commit, with its AGENTS line), `2f867a52` one shared media client
   (`MediaCallFactory`), Coil's own `coil3_disk_cache` folder, prefetch by lines with in-flight cancellation, the catalog's
@@ -105,6 +128,52 @@ The user answered media.md 9.2 (self-host the sample clips as a release of the p
 8. The behavioural "memory halves in the background" test was dropped: Coil registers its memory callbacks only after
    a real request reaches its engine, which a unit test cannot do without the network; the loader test asserts the
    background share Coil reads instead.
+
+## Lookups (run 3)
+
+- **L2, the Redmi's video decoders** (`perf/media/lookups/media_codecs.xml`, read from `/vendor/etc/media_codecs*.xml`):
+  hardware `c2.qti.vp9.decoder` (6 concurrent instances, up to 4096x2160), `c2.qti.vp8.decoder` (16, up to 1920x1088),
+  `c2.qti.avc.decoder` and `c2.qti.hevc.decoder` (16 each, up to 4096x2160); Google's software `c2.android.*` behind
+  them. The Commons WebM clips (VP9 or VP8, at most 1920x1080) decode in hardware, and a pool of 3 is within every
+  decoder's limit, so the pool size is a memory and thermal question for G3, not a decoder-count one.
+- **L3, shell holds DUMP**: `android.permission.DUMP: granted=true` for `com.android.shell`
+  (`perf/media/lookups/shell-package.txt`), so the GC hook's `DUMP` guard admits `am broadcast` from adb.
+  The idle resource-manager dump (`perf/media/lookups/resource_manager-idle.txt`) lists no processes and an
+  "Events logs" section whose `addResource(pid N, ...)` lines are not client entries.
+- **L10**: see "Orchestrator requests" 1 (206 through one redirect).
+
+## Decisions (run 3)
+
+9. **The image scenes' absolute rows wait for staging's scroll fix.** Feed and Shop are lists inside `AppScaffold`, whose
+   content slot is a `SubcomposeLayout`: staging's TEST-REPORT ("Still open" 1, candidate (a)) suspects exactly that
+   keeps the lazy list's prefetch from composing rows between frames. Until staging's fix lands, session 1's A/B
+   deltas (every arm shares the scaffold) are valid, but the `images` column's absolute scroll rows may carry staging's
+   cost; the gate step should run the acceptance runs of the `images` column after the fix is merged into this branch.
+   The Reels scene draws its pager outside the scaffold and is not affected.
+
+## For WP12 (docs base; outside this package's write scope)
+
+- `docs-draft/PERFORMANCE.md`, "One image loader, on the app's client" (about :803-811): the rule becomes "The loader always
+  fetches through the call factory the app passes: its `OkHttpClient` without the HTTP cache (`newBuilder().cache(null)`),
+  or, without the networking module, the image module's `MediaCallFactory`, which video shares. Never a second loader and
+  never a client of Coil's own (its service loader is off)." Why adds "video uses the same client". "Enforced by" becomes
+  `image-loader` (a second `ImageLoader`, `SingletonImageLoader.setSafe`/`set` outside `core/image`, `app`, `catalog`).
+- `docs-draft/PERFORMANCE.md`, "Draw remote images as painters": `AppNetworkImage` is in `:core:image` now (not `:core:ui`).
+- `docs-draft/AGENTS-rules.md:67`: "...the app has one image loader, `appImageLoader()` in `:core:image`, set in
+  `BaseAppApplication` on the app's one media client (its `OkHttpClient`, or `MediaCallFactory` without the networking
+  module). — `subcompose-image`, `image-loader`".
+- `T/docs/PERFORMANCE.md` sections to carry from this branch, fenced as the template fences them: Images (`coil`:
+  P3's two entries, "Decode at the size you draw", "Fetch the items ahead to disk", "How the image scenes are
+  measured"; source text `T/docs/IMAGES.md` "Rules for images in a list", "The loader and its limits", "How the image
+  scenes are measured"); Video (`video`: entries 1-7 of media.md 5.4; source `T/docs/VIDEO.md` "Rules" and "How the scene
+  is measured"); P7 ("Fetch a page before a fling can reach the end", lists-images 3.5), P9 ("Very large data", 4.1),
+  District P3 ("A sheet's first frame is paid during the press", 5.5). The `AGENTS.md` lines for all of them shipped on
+  this branch (§4 recipes "A paged list", "A very large list", "A sheet with a list", "Remote images", "Video").
+  Every `{...}` number comes from the gate step's sessions (G3), not from this branch.
+- `docs-draft/PENDING.md`: T-P3, T-P7, T-P9 and D-P3 can be marked "AGENTS.md shipped on staging-wp/MEDIA; PERFORMANCE.md
+  hunk with WP12's base".
+- The root README's presets table (:100-104) is stale on staging already (counts; Lean and Standard never named Coil);
+  this branch changed only the feature rows (:275-276). WP12's knowledge pass owns the rest.
 
 ## Waiting on staging's open fix or on others
 

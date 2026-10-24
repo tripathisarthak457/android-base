@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_title">Buscar</string>
+    <string name="search_placeholder">Buscar publicaciones</string>
+    <string name="search_recent">Recientes</string>
+    <string name="search_clear_recent">Borrar</string>
+    <string name="search_start_title">Encuentra lo que quieras</string>
+    <string name="search_start_message">Los resultados aparecen mientras escribes. Tus búsquedas se guardan aquí.</string>
+    <string name="search_no_results_title">Sin resultados</string>
+    <string name="search_no_results_message">Nada coincide con «%1$s». Prueba con menos palabras o con otras.</string>
+    <string name="search_retry">Reintentar</string>
+</resources>

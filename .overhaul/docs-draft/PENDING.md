@@ -28,8 +28,8 @@ edit the template files, never the drafts). When you paste an entry:
   `opt-else` wording for projects without it; the overlay inside `perfhud`, dev tooling inside `devtools`,
   Coil inside `coil`, glass inside `liquidglass`. `generator/tests/test_docs.py` fails on a path, name,
   rule id, gate row, scenario, spring or link a generated project lacks.
-- "Where the template stands" (in "Screen transitions") holds the last measured release rows of the
-  Everything preset. A stage that re-measures them on the merged code (HUD-O1, REG, every train's phone
+- "Where the template stands" (in "Screen transitions") holds the last measured rows of the Everything
+  preset's release gate: every release row, and each non-regression row the gate fails. A stage that re-measures them on the merged code (HUD-O1, REG, every train's phone
   gate, WP13) updates that table in the same change; a row that goes green moves to "within". While any
   row is over, the done-condition (section 6 and section 10 item 7 of `AGENTS.md`, the guide's "Before
   you merge UI work" item 8) excuses exactly those limits, in one wording; when the last row reads

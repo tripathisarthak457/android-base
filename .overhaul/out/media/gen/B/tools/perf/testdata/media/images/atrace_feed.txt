@@ -1,0 +1,11 @@
+# Cut from the shape of an `atrace --async_stop` dump (pid 4321 is the catalog). Lines the parser reads:
+# a decode slice on the main thread, photo- and icon-sized uploads on RenderThread, a photo-sized upload on
+# a decode thread, and another process's upload, which never counts.
+ com.example.everything.catalog-4321  ( 4321) [006] ...1  1001.000100: tracing_mark_write: B|4321|Choreographer#doFrame 1
+ com.example.everything.catalog-4321  ( 4321) [006] ...1  1001.000200: tracing_mark_write: B|4321|decode bitmap
+          RenderThread-4350  ( 4321) [007] ...1  1001.000300: tracing_mark_write: B|4321|Upload 1080x1350 Texture
+          RenderThread-4350  ( 4321) [007] ...1  1001.000400: tracing_mark_write: B|4321|Upload 66x66 Texture
+          RenderThread-4350  ( 4321) [007] ...1  1001.000500: tracing_mark_write: B|4321|DrawFrames 1
+   DefaultDispatch-4377  ( 4321) [002] ...1  1001.000600: tracing_mark_write: B|4321|Upload 1080x1350 Texture
+   DefaultDispatch-4377  ( 4321) [002] ...1  1001.000700: tracing_mark_write: B|4321|ImageDecoder#decode
+          RenderThread-999   (  999) [005] ...1  1001.000800: tracing_mark_write: B|999|Upload 1080x1350 Texture

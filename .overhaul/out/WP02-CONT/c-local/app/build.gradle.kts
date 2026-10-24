@@ -12,6 +12,9 @@ android {
     defaultConfig {
         applicationId = "io.example.fitclocal"
     }
+
+    // AdaptiveAuditTest renders every screen under Robolectric, which reads the merged resources.
+    testOptions.unitTests.isIncludeAndroidResources = true
 }
 
 dependencies {
@@ -43,5 +46,10 @@ dependencies {
     // Names each composable in a Perfetto trace, so a slow frame shows what composed in it. Only
     // the dev flavour, where traces and benchmarks are taken; it costs nothing until one records.
     devImplementation(libs.androidx.compose.runtime.tracing)
+
+    // AdaptiveAuditTest: every feature's screen previews, found by scanning and rendered here,
+    // where the app sees them all.
+    testImplementation(project(":core:testing:compose"))
+    testImplementation(libs.composable.preview.scanner)
 }
 

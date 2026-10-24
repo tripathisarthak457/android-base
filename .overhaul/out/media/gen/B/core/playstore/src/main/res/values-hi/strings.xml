@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="playstore_update_ready">एक अपडेट तैयार है।</string>
+    <string name="playstore_update_restart">फिर से शुरू करें</string>
+</resources>

@@ -265,6 +265,26 @@ class CodeRuleCasesTest {
     }
 
     @Test
+    fun `a one-pixel line is flagged with its width named or fourth, a thicker one and a hairline rect are not`() {
+        val source = """
+            private fun DrawScope.separators(color: Color, stroke: Float) {
+                drawLine(color, Offset(0f, 0.5f), Offset(size.width, 0.5f), strokeWidth = 1f)
+                drawLine(color, Offset(0f, size.height - 0.5f), Offset(size.width, size.height - 0.5f), 1f, alpha = 0.5f)
+                drawLine(color, Offset(0f, 1f), Offset(size.width, 1f), stroke)
+                drawLine(
+                    color = color,
+                    start = Offset(0f, 2f),
+                    end = Offset(size.width, 2f),
+                    strokeWidth = 1f,
+                )
+                drawHairline(color, 0f, size.width, size.height - 1f)
+            }
+        """.trimIndent()
+
+        assertEquals(listOf("2 pixel-line", "3 pixel-line", "5 pixel-line"), rules(DESIGN_SYSTEM, source))
+    }
+
+    @Test
     fun `NavigationBackHandler is the replacement, not a legacy handler`() {
         assertEquals(emptyList<String>(), rules(CORE_UI, "fun f() { NavigationBackHandler(state) { } }"))
     }

@@ -107,4 +107,19 @@ class AbcdefghijklmnopqrsListViewModelTest {
         advanceUntilIdle()
         assertEquals(LoadState.Success, viewModel.state.value.loadState)
     }
+
+    @Test
+    fun `rows written after a failed first load replace the error`() = runTest {
+        val repository = FakeAbcdefghijklmnopqrsRepository(AppResult.Failure(AppError.Offline))
+        val viewModel = AbcdefghijklmnopqrsListViewModel(repository)
+        viewModel.state.launchIn(backgroundScope)
+        viewModel.onEvent(AbcdefghijklmnopqrsListEvent.Appeared)
+        advanceUntilIdle()
+
+        repository.write(items)
+        advanceUntilIdle()
+
+        assertEquals(LoadState.Success, viewModel.state.value.loadState)
+        assertEquals(items, viewModel.state.value.items)
+    }
 }

@@ -37,11 +37,27 @@ run consistency-quick $W/generator $M python -B -m tests.consistency --quick
 run catalogue-check $W/generator python -B -m genkit.core.catalogue --check
 run tokens-check $W/generator python -B -m genkit.tokens --check
 
-for spec in standard standard-modular none modules-compact modules-modular; do
+for spec in lean standard standard-modular everything none modules-compact modules-modular; do
   rm -rf $O/$spec
   run gen-$spec $W/generator python -B create_project.py --spec tests/fixtures/v2/$spec.json --out $O/$spec --no-zip --force
 done
-for d in standard standard-modular; do run build-$d $O/$d $L gradle $GW check assembleDevDebug --console=plain; done
+for d in lean standard standard-modular; do run build-$d $O/$d $L gradle $GW check assembleDevDebug --console=plain; done
+# everything's check fails on the formatting tasks alone until the one reformat (H-10, WP02-FMT): every other task
+# must pass, so the failed tasks are listed and only the two Spotless checks are allowed among them.
+echo "$(date +%H:%M:%S) start build-everything (formatting excepted)"
+(cd $O/everything && $L gradle $GW check assembleDevDebug --continue --console=plain) > $LOGS/build-everything-raw.log 2>&1
+echo "$(date +%H:%M:%S) build-everything-raw exit=$?"
+run build-everything $LOGS python -I -c "
+import re, sys
+log = open('build-everything-raw.log', encoding='utf-8', errors='replace').read()
+failed = set(re.findall(r'^> Task (\S+) FAILED', log, re.M))
+print('failed tasks:', sorted(failed))
+allowed = {':spotlessKotlinCheck', ':spotlessKotlinGradleCheck'}
+# A failure outside any task (configuration, the lock) lists no task, so it must not pass as clean.
+clean = 'BUILD SUCCESSFUL' in log or (failed and failed <= allowed)
+sys.exit(0 if clean else 1)
+"
+
 # Library unit tests are testDebugUnitTest; the app's (the adaptive audit over the scaffolded screens) is per flavour.
 for d in none modules-compact modules-modular; do
   run build-$d $O/$d $L gradle $GW assembleDevDebug testDebugUnitTest :app:testDevDebugUnitTest --console=plain

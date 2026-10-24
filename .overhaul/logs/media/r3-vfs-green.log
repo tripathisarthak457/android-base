@@ -1,0 +1,159 @@
+[locked:gradle] waiting for the lock (pid 14468 since 2026-10-24 06:27:51: ./gradlew :core:designsystem:checkComposeStability --console=plain)
+[locked:gradle] waiting for the lock (pid 14468 since 2026-10-24 06:27:51: ./gradlew :core:designsystem:checkComposeStability --console=plain)
+[locked:gradle] 668 MB available, 8880 MB commit left; waiting for 1500 MB
+[locked:gradle] 514 MB available, 8885 MB commit left; waiting for 1500 MB
+[locked:gradle] 615 MB available, 8875 MB commit left; waiting for 1500 MB
+[locked:gradle] 520 MB available, 8947 MB commit left; waiting for 1500 MB
+[locked:gradle] 617 MB available, 8959 MB commit left; waiting for 1500 MB
+[locked:gradle] 570 MB available plus 5293 MB of system cache Windows will trim; continuing
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as configuration cache cannot be reused because an input to task ':build-logic:convention:compileKotlin' has changed.
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:verifyApiPurity UP-TO-DATE
+> Task :core:common:processResources NO-SOURCE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:image:verifyModuleDependencies UP-TO-DATE
+> Task :core:image:verifyApiPurity UP-TO-DATE
+> Task :core:image:preBuild UP-TO-DATE
+> Task :core:image:preDebugBuild UP-TO-DATE
+> Task :core:testing:verifyApiPurity UP-TO-DATE
+> Task :core:testing:verifyModuleDependencies UP-TO-DATE
+> Task :core:testing:preBuild UP-TO-DATE
+> Task :core:testing:preDebugBuild UP-TO-DATE
+> Task :core:image:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity UP-TO-DATE
+> Task :core:designsystem:preBuild UP-TO-DATE
+> Task :core:designsystem:preDebugBuild UP-TO-DATE
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:video:verifyModuleDependencies UP-TO-DATE
+> Task :core:video:verifyApiPurity
+> Task :core:video:preBuild
+> Task :core:video:preDebugBuild
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:video:generateDebugResources UP-TO-DATE
+> Task :core:video:processDebugNavigationResources UP-TO-DATE
+> Task :core:video:javaPreCompileDebug UP-TO-DATE
+> Task :core:video:preDebugUnitTestBuild
+> Task :core:video:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:image:writeDebugAarMetadata UP-TO-DATE
+> Task :core:video:parseDebugLocalResources UP-TO-DATE
+> Task :core:testing:writeDebugAarMetadata UP-TO-DATE
+> Task :core:video:generateDebugRFile UP-TO-DATE
+> Task :core:video:writeDebugAarMetadata UP-TO-DATE
+> Task :core:testing:compose:verifyApiPurity UP-TO-DATE
+> Task :core:video:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:video:compileDebugLibraryResources UP-TO-DATE
+> Task :core:testing:compose:verifyModuleDependencies UP-TO-DATE
+> Task :core:video:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:testing:compose:preBuild UP-TO-DATE
+> Task :core:testing:compose:preDebugBuild UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:testing:compose:writeDebugAarMetadata UP-TO-DATE
+> Task :core:image:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:testing:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:video:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:common:jar UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:testing:compose:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:testing:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:testing:processDebugJavaRes UP-TO-DATE
+> Task :core:testing:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :core:image:processDebugManifest UP-TO-DATE
+> Task :core:testing:processDebugManifest UP-TO-DATE
+> Task :core:video:extractDeepLinksDebug UP-TO-DATE
+> Task :core:video:processDebugManifest UP-TO-DATE
+> Task :core:testing:compose:processDebugManifest UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:image:compileDebugKotlin UP-TO-DATE
+> Task :core:image:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:image:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:image:processDebugJavaRes UP-TO-DATE
+> Task :core:image:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:video:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:video:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:testing:compose:javaPreCompileDebug UP-TO-DATE
+> Task :core:video:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:video:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:image:generateDebugAssets UP-TO-DATE
+> Task :core:video:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:image:mergeDebugAssets UP-TO-DATE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:mergeDebugAssets UP-TO-DATE
+> Task :core:video:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:video:generateDebugAssets UP-TO-DATE
+> Task :core:video:mergeDebugAssets UP-TO-DATE
+> Task :core:testing:compose:generateDebugAssets UP-TO-DATE
+> Task :core:testing:compose:mergeDebugAssets UP-TO-DATE
+> Task :core:video:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:video:koverFindJar UP-TO-DATE
+> Task :core:video:verifyCodeRules
+> Task :core:testing:compose:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:testing:compose:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:testing:compose:processDebugJavaRes UP-TO-DATE
+> Task :core:video:processDebugUnitTestResources UP-TO-DATE
+> Task :core:video:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:video:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:video:compileDebugKotlin
+> Task :core:video:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:video:processDebugJavaRes UP-TO-DATE
+> Task :core:video:bundleLibRuntimeToJarDebug
+> Task :core:video:bundleLibCompileToJarDebug
+> Task :core:video:compileDebugUnitTestKotlin
+> Task :core:video:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:video:processDebugUnitTestJavaRes UP-TO-DATE
+
+> Task :core:video:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+System.logW: A resource failed to call SQLiteConnection.close. 
+System.logW: A resource failed to call SQLiteConnectionPool.close. 
+System.logW: A resource failed to call close. 
+System.logW: A resource failed to call close. 
+
+BUILD SUCCESSFUL in 1m 40s
+93 actionable tasks: 7 executed, 86 up-to-date
+Configuration cache entry stored.
+exit 0

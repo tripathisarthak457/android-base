@@ -1,0 +1,17 @@
+[locked:memwait] 1403 MB available, 5954 MB commit left; waiting for 1500 MB
+[locked:memwait] 1482 MB available, 6020 MB commit left; waiting for 1500 MB
+# npm audit report
+
+next  10.0.0 - 15.5.27
+Severity: critical
+Next.js: Unauthenticated Remote Code Execution in Image Optimization API when SVG files are used - https://github.com/advisories/GHSA-2464-fhr4-w9xw
+Next.js: Denial of Service in App Router using Server Actions - https://github.com/advisories/GHSA-p3m5-59mp-jv5r
+fix available via `npm audit fix --force`
+Will install next@15.5.28, which is outside the stated dependency range
+node_modules/next
+
+1 critical severity vulnerability
+
+To address all issues, run:
+  npm audit fix --force
+audit exit=1

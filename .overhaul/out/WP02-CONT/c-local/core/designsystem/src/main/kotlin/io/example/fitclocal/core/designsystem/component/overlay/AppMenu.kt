@@ -23,7 +23,6 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -44,6 +43,7 @@ import io.example.fitclocal.core.designsystem.component.text.AppIcon
 import io.example.fitclocal.core.designsystem.component.text.AppText
 import io.example.fitclocal.core.designsystem.foundation.content.AppSurface
 import io.example.fitclocal.core.designsystem.foundation.draw.disabledAlpha
+import io.example.fitclocal.core.designsystem.foundation.draw.drawHairline
 import io.example.fitclocal.core.designsystem.foundation.interaction.PressFeedback
 import io.example.fitclocal.core.designsystem.foundation.interaction.pressable
 import io.example.fitclocal.core.designsystem.theme.AppTheme
@@ -196,7 +196,7 @@ private fun MenuColumn(content: @Composable () -> Unit) {
         content = content,
         modifier = Modifier.drawBehind {
             val edges = placedEdges
-            for (y in edges) drawLine(separator, Offset(0f, y - 0.5f), Offset(size.width, y - 0.5f), strokeWidth = 1f)
+            for (y in edges) drawHairline(separator, 0f, size.width, y - 1f)
         },
     ) { measurables, constraints ->
         val placeables = measurables.map { it.measure(constraints.copy(minHeight = 0)) }

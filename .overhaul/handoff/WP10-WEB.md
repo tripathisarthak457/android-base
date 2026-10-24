@@ -8,14 +8,20 @@ stage table: phone "no").
 
 ## Progress
 
-- Run 1 (Oct 24): worktree created from staging `d429cbfbf` (staging had not moved, so the start-of-run merge was a
-  no-op). `release/STATE.md` and `staging/REQUIREMENTS-GAPS.md` do not exist yet (staging's Requirements phase has not
-  run): no gaps routed here. Baseline on staging: 223/223 site tests.
-- Done in run 1 (commits listed under "Commits" once made): the privacy page with a test that checks it against the
-  code; the preview's glyphs, chip, module empty state and More list as the template draws them; the tab bar preview
-  rebuilt on the template's treatments, Pill/Subtle indicator, two-layer selection, stretch and bounce; the CI, Material,
-  tabs, adaptive and motion claims made true.
-- Still to do in this run: browser check at 320/1280 in both themes, `next build`, `npm audit`, commits.
+- Run 1 (Oct 24, to about 03:00): worktree created from staging `d429cbfbf`. `release/STATE.md` and
+  `staging/REQUIREMENTS-GAPS.md` do not exist (staging's Requirements phase has not run): no gaps routed here. Baseline
+  on staging: 223/223 site tests. Committed the privacy page (`24d3e4154`); the rest was left uncommitted.
+- Run 2 (Oct 24, from 06:21): merged staging `7230b666e` (`0538b2d0f`; staging touched no web or docs file since
+  `d429cbfbf`). Reviewed run 1's uncommitted work against staging's template (every value, claim and file it cites
+  re-read), kept it, and committed it in four steps; added the tab reveal, the claims test and the docs. Line endings:
+  run 1 had left `glyphSource.ts` with CRLF; every file is LF now (counted with Python).
+- Commits on `staging-wp/WP10-WEB` (oldest first): `24d3e4154` privacy page; `0538b2d0f` merge of staging;
+  `ab0e716d0` glyphs, tab glyphs, chip, module empty state, More list; `453bce2e5` tab bar (treatments, indicators,
+  springs) and the Motion step's shell springs; `3199b7040` hero, included cards and FAQ claims, `ci.ts`,
+  `claims.test.ts`; `dc98fe2bd` the tab reveal in the live phone and the Motion step; `5fbc1283a` docs (`AGENTS.md`,
+  `web/README.md`).
+- Checks at `5fbc1283a`: 256/256 site tests, `tsc --noEmit` clean; `next build` and `npm audit` under Measurements.
+- Not done: a browser check of the rebuilt bar and the reveal (see Measurements for what ran).
 
 ## What changed, and why
 
@@ -27,8 +33,10 @@ stage table: phone "no").
 | Tab bar | `features/preview/bar.ts`, `bar.test.ts`, `TabBar.tsx` | Treatments Floating, Translucent, Docked (and WP05's Glass); WP03's retired Chunky and Minimal are gone. Pill (accent pill, onAccent content) and Subtle (accentSubtle, accentContent) indicators. The 44 dp pill sized to its label (52 to 72 dp, slot less 8 dp), two layers clipped to the pill so a half-covered tab is half selected, the leading edge on the lead spring and the trailing one on the trail spring with the 0.5-slot stretch limit and the squash, the tapped glyph's dip to 0.84 and spring back (skipped under reduced motion). Capsule: surface, hairline at the style's border width and the soft shadow in light theme; surfaceElevated, a 7 % white outline and no shadow in dark; Translucent at 88 %; Docked on the surface with a 1 px rule. No inner padding (the old preview had 6 dp). Sizes, enums and springs are read from `AppTabBar.kt`, `TabCells.kt` and `AppDesignStyle.kt` in the test |
 | Chip | `features/preview/chip.ts`, `chip.test.ts`, `parts.tsx`, `screens.tsx` | AppChip's look: the `fill` role, no outline, subheadline in contentPrimary, a 16 dp glyph in the content colour, and the Search screen's chips with their remove cross (10 dp end padding). "Recent" is footnote, as SearchScreen sets it |
 | Screens | `screens.tsx`, `parts.tsx` | The scaffolded module's empty state as `AppStateView` draws it (no glyph, title3, callout message, a Tinted "Reload" button); the More list under an inline top bar with accent glyphs, as `MoreList.kt` draws it |
-| Motion | `MotionPreview.tsx`, `MotionStep.tsx`, `bar.ts` (`SHELL_SPRINGS`), `theme.ts` (`framerSpring`) | The push and the tab switch run on the springs the template's shell uses in every style (`ScreenMotion` 0.344 s, `TabCells`' lead, trail and bounce springs), not on the motion style's tokens, which the shell does not read yet. The Motion step's rows are press, release, sheet and dialog, which a style does change, and its intro says the push and the tab switch move alike in every style |
-| Claims | `hero.tsx`, `faq.tsx`, `included.tsx`, `features/catalogue/ci.ts`, `ci.test.ts` | CI: worded from `CI_PROJECTS`, which a test holds equal to `ci.yml`'s matrix (`none`, `lean`, `everything`, `all`): "the Lean and Everything presets, plus every feature at once and none at all" until CI builds every preset, then "every preset" by itself. Material: no Material library at all, not even the adaptive ones (the template uses `androidx.window`). Tabs: kept tabs are shown again rather than rebuilt and pause out of sight (they are laid out, so "only the visible one is laid out" was false). Adaptive: rail, then sidebar on large windows. Motion styles: "set how presses spring back and how sheets, dialogs and layout changes move" (they do not change every spring); the hero stat says "Spring presets for presses, sheets and dialogs" |
+| Motion | `MotionPreview.tsx`, `MotionStep.tsx`, `bar.ts` (`SHELL_SPRINGS`), `theme.ts` (`framerSpring`) | The push and the tab switch run on the springs the template's shell uses in every style (`ScreenMotion` 0.344 s, `TabCells`' lead, trail and bounce springs, `TabReveal`'s reveal spring), not on the motion style's tokens, which the shell does not read yet. The Motion step's rows are press, release, sheet and dialog, which a style does change, and its intro says the push and the tab switch move alike in every style |
+| Tab reveal (run 2) | `bar.ts` (`TAB_REVEAL_SHIFT`, `revealFrom`, `SHELL_SPRINGS.tabReveal`), `bar.test.ts`, `AppPreview.tsx`, `MotionPreview.tsx` | The template's `KeptTabs` no longer switches instantly: a tab the person taps arrives 12 dp toward the side it comes from and springs into place (`TabReveal.kt`, stiffness 503.5, damping 1); only it is drawn. The live phone does this for a tab tapped on its bar, not for a screen picked beside it (it stands in for a link or a programmatic switch, which the shell shows at once), and not under reduced motion; a second tap mid-reveal restarts from its own offset, as `switchTo` does. The Motion step's loop nudges its tab switch on the same spring (the whole list tab on the way back, its button with it). The test reads the spring, the shift, the direction formula and `animate = revealSwitch() && !reduceMotion` from the template |
+| Claims | `hero.tsx`, `faq.tsx`, `included.tsx`, `features/catalogue/ci.ts`, `ci.test.ts` | CI: worded from `CI_PROJECTS`, which a test holds equal to `ci.yml`'s matrix (`none`, `lean`, `everything`, `all`): "the Lean and Everything presets, plus every feature at once and none at all" until CI builds every preset, then "every preset" by itself. Material: "No Material component library is a dependency and the build refuses their imports; window size classes come from androidx.window" (run 2's wording, which stays true if a later stage adds the adaptive libraries REQUIREMENTS 31 allows; run 1's "not even its adaptive layouts" would not). Tabs: kept tabs are shown again rather than rebuilt and pause out of sight (they are laid out, so "only the visible one is laid out" was false). Adaptive: rail, then sidebar on large windows. Motion styles: "set how presses spring back and how sheets, dialogs and layout changes move" (they do not change every spring); the hero stat says "Spring presets for presses, sheets and dialogs". `features/catalogue/claims.test.ts` (run 2) pairs each of these sentences with the code that makes it true: no `androidx.compose.material`/`material3` artifact in `libs.versions.toml` and the `material` code rule; `SizeClass.kt`'s `androidx.window` import; `KeptTabs`' `owner.cap = Lifecycle.State.CREATED`; `ShellChromePolicy`'s Medium-to-Rail and Large-to-Sidebar lines; `ManifestRules`' `screenOrientation` lock; `springs.press`, `release`, `sheet`, `dialog` and `layout` read in `:core:designsystem`. A second test fails when a sentence leaves the page, so the table cannot go stale. It fails on staging's copy |
+| Docs (run 2) | `AGENTS.md` ("The website must not over-promise"), `web/README.md` ("What is recorded") | AGENTS.md names each template change the site's tests now hold it to (glyphs and `npm run glyphs`, the bar, chip and tab copies, the claims table, `CI_PROJECTS`, the privacy page). web/README.md's summary said the funnel was recorded once per visitor per day (telemetry v1); it now points to the privacy page and says one visit per tab and the steps it reached |
 
 ## Decisions (and why)
 
@@ -59,6 +67,14 @@ stage table: phone "no").
 2. **The template's own tabs have no filled glyph** (`AppDestinations.kt` sets only `icon`), while scaffolded modules
    get one (`followups.md` "WP04": "the filled glyphs in `AppDestinations`"). The preview draws today's state; the tab
    test reads `AppDestinations.kt`, so it follows when that changes.
+3. **Two template docs still say a tab switch is instant or crossfades** (WP12-KNOW, WP04): `AppTabBar.kt`'s KDoc
+   "Switching tabs is instant; the bar is the motion." and `templates/android/AGENTS.md`'s recipe "switching
+   crossfades". `KeptTabs`/`TabReveal` nudge the arriving tab 12 dp and draw nothing over it (no crossfade, no veil).
+4. **`web/README.md` (WP12-KNOW, web docs)**: its Configuration table lacks `ENABLE_TARGETS`, `TRUSTED_PROXY` and the
+   three `RETENTION_*` variables the privacy page lists (and the user sets `ENABLE_TARGETS` and `TRUSTED_PROXY` in
+   Vercel before the deploy); its "Nothing in it identifies them" about an attached report is loose, since a report
+   keeps the app and package names with no time limit (the privacy page states the facts). Not changed here: the
+   table is the API's documentation, outside this stage's scope.
 
 ## Measurements
 
@@ -77,7 +93,15 @@ No phone measurement: the stage changes no template code. Site: tests 223 on sta
   `AppDestinations.kt`'s tabs, change the preview's copy of them (`bar.ts`, `chip.ts`, `tabs.ts`) in the same commit;
   the site's tests say which.
 - **CI's claims follow `ci.yml`'s matrix** through `CI_PROJECTS` (`features/catalogue/ci.ts`); changing the matrix
-  means changing that list, and the hero and FAQ word themselves from it.
+  means changing that list, and the hero and FAQ word themselves from it. **WP13-PREP:** `ci.test.ts` reads the matrix
+  as one `preset: [...]` line; the `ci.yml` rewrite either keeps that line or changes the test's reader in the same
+  commit, and adds `standard` to `CI_PROJECTS` once CI builds it (the copy then says "every preset" by itself).
+- **The site's claims about the template are a table** (`features/catalogue/claims.test.ts`): each sentence of the
+  hero, the included cards and the FAQ that a template change could falsify, beside the code that makes it true.
+  Rewording a sentence means rewording its row; a template change that falsifies one fails the site's tests.
+- **The tab switch in the previews follows `TabReveal`**: the shift, the spring and "only a switch the person makes,
+  never under reduced motion" are read from `TabReveal.kt` and `KeptTabs.kt` by `bar.test.ts`. When the shell takes
+  the motion style's springs (finding 1), the reveal moves with them.
 - **Reports and errors are kept with no time limit** and the admin has no delete for them; app and package names in a
   report are not removed after 90 days as a generation's are. Whether to offer deletion on request is the user's call
   (not promised on the page).

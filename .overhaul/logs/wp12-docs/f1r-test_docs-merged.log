@@ -1,0 +1,12 @@
+[locked:memwait] 632 MB available, 9606 MB commit left; waiting for 1500 MB
+[locked:memwait] 639 MB available, 9583 MB commit left; waiting for 1500 MB
+[locked:memwait] 590 MB available, 9610 MB commit left; waiting for 1500 MB
+[locked:memwait] 638 MB available, 9583 MB commit left; waiting for 1500 MB
+[locked:memwait] 516 MB available, 9049 MB commit left; waiting for 1500 MB
+[locked:memwait] 536 MB available plus 4931 MB of system cache Windows will trim; continuing
+...............................................
+----------------------------------------------------------------------
+Ran 47 tests in 192.186s
+
+OK
+exit=0

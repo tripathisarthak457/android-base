@@ -1,0 +1,41 @@
+{
+  "generator": {
+    "commit": "2e447a6facdd",
+    "generatedOn": "2026-10-24"
+  },
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Audit",
+  "display_name": "",
+  "package_name": "io.example.audit",
+  "architecture": "compact",
+  "features": [
+    "database",
+    "network",
+    "sample"
+  ],
+  "feature_modules": [
+    "order",
+    "abcdefghijklmnopqrstuvwxyzabcd"
+  ],
+  "design_style": "Utility",
+  "motion_style": "Standard",
+  "accent_colour": "",
+  "secondary_colour": "",
+  "tertiary_colour": "",
+  "font_name": "DM Sans",
+  "mono_font_name": "JetBrains Mono",
+  "haptics_enabled": true,
+  "languages": [],
+  "android": {
+    "min_sdk": 26,
+    "target_sdk": 37,
+    "compile_sdk": 37,
+    "version_name": "1.0.0",
+    "version_code": 1,
+    "api_base_urls": {},
+    "web_socket_urls": {},
+    "deeplink_scheme": "",
+    "deeplink_host": ""
+  }
+}

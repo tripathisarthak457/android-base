@@ -80,12 +80,12 @@ internal class AbcdefghijklmnopqrstuvwListViewModel @Inject constructor(
 
 /**
  * Where the list stands once the rows it holds change: rows already stored end a first load's
- * placeholders as a refresh, rows written after an empty answer replace the empty state, and a
- * list emptied elsewhere (a sign-out) shows it.
+ * placeholders as a refresh, rows written after an empty answer or a failed first load replace
+ * that state, and a list emptied elsewhere (a sign-out) shows it.
  */
 private fun LoadState.holding(rows: Boolean): LoadState = when {
     rows && this == LoadState.Loading -> LoadState.Refreshing
-    rows && this == LoadState.Empty -> LoadState.Success
+    rows && (this == LoadState.Empty || this is LoadState.Error) -> LoadState.Success
     !rows && this == LoadState.Success -> LoadState.Empty
     else -> this
 }

@@ -1,0 +1,6 @@
+# Composable parameters the Compose compiler compares by identity, accepted with a reason:
+# `fqName(parameter)  # why it has to stay`. Deleting a line records a fix; the check fails
+# again if the parameter comes back.
+io.example.audit.core.designsystem.component.list.AppSwipeToAction(resetKey)  # any value whose change closes the row; callers pass the row's own key
+io.example.audit.core.navigation.back.BackHandlerEffect(handler)  # added to and removed from the dispatcher by identity, so identity is the comparison it needs; every caller remembers its handler
+io.example.audit.core.navigation.stack.rememberEntryLifecycle(key)  # returns a value, so it is never skipped; the key is only an effect key, which effects compare with equals

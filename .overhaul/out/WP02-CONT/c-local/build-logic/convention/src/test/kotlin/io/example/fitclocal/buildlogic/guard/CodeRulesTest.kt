@@ -75,6 +75,7 @@ class CodeRulesTest {
                 .graphicsLayer { alpha = a } /*!*/
             """.trimIndent(),
         ),
+        Fixture("pixel-line", DESIGN_SYSTEM, "fun DrawScope.f(c: Color) = drawLine(c, Offset.Zero, Offset(9f, 0f), strokeWidth = 1f) /*!*/"),
         Fixture("legacy-back", CORE_UI, "fun f() { BackHandler { } } /*!*/"),
         Fixture("experimental-api", DESIGN_SYSTEM, "@OptIn(ExperimentalGridApi::class) /*!*/"),
         Fixture("blocking", DATA, "val v = runBlocking { 1 } /*!*/"),

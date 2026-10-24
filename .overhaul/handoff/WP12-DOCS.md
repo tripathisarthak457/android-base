@@ -2,9 +2,56 @@
 
 ## Progress
 
+Run 5 (sync), 2026-10-24 06:56 IST. `git merge staging`: already up to date. Staging is still at
+`7230b666e`, which run 4 merged as `68257e70f`; no merge commit, the head stays **`9c9608329`**, the
+worktree is clean. Nothing was touched, so nothing needed a compile or a test; the branch's own diff
+against staging touches no token or catalogue source, and `genkit.tokens --check` /
+`genkit.core.catalogue --check` (memwait) confirm it: "3 token copies current", "catalogue.json is
+current", both exit 0.
+
+Run 4 (fix #1 again, after run 3 was cut off), 2026-10-24 06:20 IST on. Run 3 stopped between its
+two commits: nothing of it was committed, and `test_docs.py` in the worktree had been cut back to the
+first commit's one-line change, losing its two new tests. The full file was intact in the session
+scratchpad (`test_docs.full.py`, 02:26:57, the version run 3's green run used). Reviewed run 3's diff
+against the three blocking findings: each fix is right, as run 3 describes below.
+
+- Committed as run 3 planned: **`fb22623c5`** (the word list without private names; `test_docs.py`
+  only) and **`9764827d8`** (the done-condition in three places, the name check, the doc fixes, run 3's
+  non-blocking fixes). Before committing, `test_docs` + `test_android_target` on that tree: 47 OK
+  (`f1r-test_docs-premerge.log`).
+- Merged staging `7230b666e` (the fix loop's sittings 3 and 4: `09a66b811` separators as filled rects
+  with the new code rule `pixel-line`, `86bc23b53` the harness's first frame, `fa8b92bd1` the DEV badge
+  per draw, `7a64fc556` the large title from an effect, `7230b666e` re-recorded profiles) as
+  **`68257e70f`**, clean.
+- Re-checked against staging's newest head and fixed in one commit, **`9c9608329`** (the branch head; the
+  worktree is clean):
+  - "Where the template stands" rewritten from `staging/TEST-REPORT.md` "Fix loop, sittings 3 and 4"
+    (the release gate at `7230b666`, `PF/gate-7230b666/gates-solid.txt`, and the A-B blocks of the same
+    builds): push/pop, the back gesture's release rows, tab switches and Rapid Back are now within; the
+    five non-regression first-frame rows the gate failed are listed as over (plain-tap tab first frame
+    4.91 / 11.8 against 4.5 / 11.7, push composing max 20.99 against 18.3, pop first max 6.22 against
+    5.9, the gesture's first three frames 3.12 against 2.7), with scroll (0.81 / 1.04 % at the gate) and
+    navigation stress (5.37 %). Without them the done-condition would again be unreachable, since the
+    gate fails on those rows too. The back gesture's paragraph no longer says its release rows are over.
+  - New guide rule "Draw one-pixel separators as filled rects" (`pixel-line`, with the measured cost:
+    push frames 3-7 at about 10 ms of GPU against 7.8, push/pop hitch 8.1 ms/s to 0, the gesture's
+    8.5-11.5 to 1.4-4.3) and its line in `AGENTS.md` section 6 "Motion".
+  - Two findings of the fix loop folded into existing rules (REQUIREMENTS 25): a `derivedStateOf` read in
+    composition costs a recompose pass per input change even while its value holds (the large title's 622
+    empty passes in a traced scroll; read it in `snapshotFlow` in the effect); a small layer resting below
+    alpha 1 renders offscreen every frame (the badge's 106 buffer waits for 332 ms against 34 for 115 ms;
+    use `ModulateAlpha`).
+  - Every other shell constant, gate limit and rule scope the guide quotes was unaffected (the merge
+    touched no `gates.toml`, no `core/navigation` Kotlin; `perf.py` changed only how the first frame is
+    found, which the guide does not describe beyond "after each motion's first").
+- **Still for the orchestrator (unchanged from run 3):** commit `0ec84b634` carries the three private
+  names in its tree, so merge this stage with `git merge --squash`, or, with the user's OK, recut it.
+- The merge commit `68257e70f` has git's default message without the co-author trailer (amending it would
+  rewrite history).
+
 Run 3 (fix #1, the first review's three blocking findings), 2026-10-24 01:55-02:30 IST. Staging still at
-`d429cbfbf` (the merge at the start was a no-op). The fix is two commits on top of `0ec84b634`; their shas
-are in "Verification".
+`d429cbfbf` (the merge at the start was a no-op). Planned as two commits on top of `0ec84b634`; cut off
+before either (run 4 committed them).
 
 - **Private names in `test_docs.py` (blocking 1): fixed.** `WORKSPACE_WORDS` keeps only the workshop words
   (`overhaul`, `staging-wp`, `WP\d\d`, `REQUIREMENTS`). No guard for private names stays in the test: the
@@ -117,6 +164,21 @@ Run 2 (impl), 2026-10-24 01:14 IST. Staging still at `d429cbfbf` (the merge at t
 
 ## Verification
 
+Run 4 (fix #1 completed), at staging `7230b666e` merged into the branch, head `9c9608329`. Logs under
+`D:/projects/tools/.overhaul/logs/WP12-DOCS/`. Run 3's red evidence for the two new tests
+(`f1-test_docs-red-final.log`) holds unchanged: the tests committed are byte for byte the ones it ran.
+
+| Check | Result | Log |
+|---|---|---|
+| `tests.test_docs` + `tests.test_android_target` on `9764827d8`'s tree, before the merge | 47 tests OK | `f1r-test_docs-premerge.log` |
+| The same after the merge and this run's guide edits (the final tree) | 47 tests OK | `f1r-test_docs-merged.log` |
+| Generator suite (`unittest discover -s tests -t .`, memwait), final tree | 489 run, OK, 9 skipped | `f1r-generator-suite.log` |
+| `tools/perf/test_perf.py` (staging's harness change came in with the merge) | 56 tests OK | `f1r-test_perf.log` |
+| `rows_over_limit` on the final guide | Tab switch, Push and pop, Back gesture, Scroll, Navigation stress (the five the gate at `7230b666` fails) | (run inline) |
+
+Not run: Gradle (no Kotlin, resource or build-script change in this run; the merged Kotlin is staging's,
+built and tested there: `staging/logs/fix/f106-template-build.log`), the phone (docs only).
+
 Run 3 (fix #1), at staging `d429cbfbf` + this branch. Logs under `D:/projects/tools/.overhaul/logs/WP12-DOCS/`.
 
 | Check | Result | Log |
@@ -178,9 +240,11 @@ For every later stage that writes into the docs base (`docs-draft/PENDING.md` sa
    has no check for private names: the review and the pre-push scan hold that, never the public tree.
    "Enforced by." paragraphs and the part after " — " in section 6 are parsed: name real ids there, in
    backticks.
-4. **"Where the template stands"** (in "Screen transitions") holds the last measured release rows of the
-   Everything preset. A stage that re-measures them on merged code (HUD-O1, REG, a train's phone gate,
-   WP13) updates the table in the same change; a row that goes green moves to "within". The
+4. **"Where the template stands"** (in "Screen transitions") holds the last measured rows of the
+   Everything preset's release gate: every release row, and each non-regression row the gate fails (a
+   failing non-regression row fails `--gate solid` like any other, so it must be listed or nothing can
+   be done). A stage that re-measures them on merged code (HUD-O1, REG, a train's phone gate, WP13)
+   updates the table in the same change; a row that goes green moves to "within". The
    done-condition excuses exactly the rows marked over, in one wording in three places (section 6,
    section 10 item 7, the guide's "Before you merge UI work" item 8); the stage that brings the last row
    within removes the exception from all three (the test fails until it does).

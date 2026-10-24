@@ -64,7 +64,8 @@ python3 path/to/generator/add_feature.py orders --project . --tab
 
 By hand, a feature is:
 
-1. A repository **interface** plus a `Default…` implementation, bound in a Hilt `@Module`.
+1. A repository **interface** in `api/` plus its implementation, named after its source
+   (`Network…`, or `OfflineFirst…` over a table with the database), bound in a Hilt `@Module`.
 2. A contract: an `@Immutable` state, a sealed event, and a sealed effect.
 3. A ViewModel extending `MviViewModel`. State changes go through `updateState`, one-off things
    (navigate, show a message) through `emitEffect` or `showMessage`.

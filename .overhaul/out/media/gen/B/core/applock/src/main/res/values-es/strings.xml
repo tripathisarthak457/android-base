@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="applock_title">Desbloquea para continuar</string>
+    <string name="applock_subtitle">Usa tu huella, tu cara o el bloqueo de pantalla.</string>
+    <string name="applock_action">Desbloquear</string>
+</resources>
