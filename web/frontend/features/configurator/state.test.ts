@@ -10,6 +10,7 @@ import {
   type ConfigState,
   type StartOverUndo,
   type Step,
+  drawsGlassBar,
   enabledTarget,
   findTarget,
   initialState,
@@ -131,6 +132,20 @@ test("a customised feature set keeps what the new platform also has", () => {
   state = reducer(state, { type: "feature", key: "database" }, three);
   state = reducer(state, { type: "target", target: "multiplatform" }, three);
   assert.deepEqual(state.features, ["coil", "database", "network"]);
+});
+
+test("only a design style with a glass bar says where glass blurs, not the liquidglass feature alone", () => {
+  const everything = run(initialState(catalogue), { type: "preset", key: "everything" });
+  assert.ok(everything.features.includes("liquidglass"));
+  assert.notEqual(catalogue.tokens.styles[everything.designStyle]?.bar, "Glass");
+  assert.equal(drawsGlassBar(everything, catalogue), false);
+  assert.equal(drawsGlassBar(run(initialState(catalogue), { type: "feature", key: "liquidglass" }), catalogue), false);
+
+  const withGlass = loadCatalogue();
+  withGlass.tokens.styles.Glass = { ...withGlass.tokens.styles[everything.designStyle]!, bar: "Glass" };
+  const android = withGlass.targets[0]!;
+  android.design_styles = [...android.design_styles, { key: "Glass", title: "Glass", description: "", requires: ["liquidglass"] }];
+  assert.equal(drawsGlassBar(reducer(everything, { type: "designStyle", value: "Glass" }, withGlass), withGlass), true);
 });
 
 test("a design style that needs a feature turns it on", () => {
