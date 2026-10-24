@@ -21,7 +21,8 @@ import (
 const glassFeature = "liquidglass"
 
 // generate answers POST /api/v1/{target}/generate (and the legacy /api/generate as android): the spec
-// is checked for size and shape, passed to the generator unchanged, and the zip streamed back. A
+// is checked for size, shape and the target's locked options, passed to the generator unchanged, and
+// the zip streamed back. A
 // request for an enabled target is recorded with its outcome unless its body could not be read; a
 // client over the rate limit is recorded once per window, not once per refusal.
 func (s *Server) generate(w http.ResponseWriter, r *http.Request, target string) {
@@ -88,12 +89,24 @@ func (s *Server) generate(w http.ResponseWriter, r *http.Request, target string)
 	}
 
 	spec, err := generate.Precheck(body, target, gen.Rules)
+	if err == nil {
+		err = gen.Target.CheckOptions(spec)
+	}
 	var refused *generate.PrecheckError
+	var locked *generate.OptionLockedError
 	switch {
 	case errors.As(err, &refused):
 		record.FailureReason, record.FailureField = refused.Message, refused.Field
 		finish(telemetry.Invalid)
 		writeError(w, http.StatusBadRequest, "invalid_spec", refused.Message, refused.Field)
+		return
+	case errors.As(err, &locked):
+		// A well-formed spec this deployment does not generate: recorded with what it asked for, so
+		// the admin sees what people wanted while the option is locked.
+		describe(&record, spec, &gen.Target, s.catalogue.GeneratorCommit)
+		record.FailureReason, record.FailureField = locked.Note, locked.Field
+		finish(telemetry.Invalid)
+		writeError(w, http.StatusForbidden, "option_locked", locked.Note, locked.Field)
 		return
 	case err != nil:
 		s.generationFailed(w, r, &record, err)

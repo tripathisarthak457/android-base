@@ -13,7 +13,7 @@ site at `/`, and the API as a container at `/api`. They share a domain, which is
 never needs a second origin and CORS never enters into it.
 
 The API is a container rather than a plain Go build for one reason: it shells out to
-`generate_headless.py`, and Vercel's Go runtime image has no Python in it. `Dockerfile.api` at the
+`generate_headless.py`, and Vercel's Go runtime image has no Python in it. The `Dockerfile` at the
 repository root puts the Go binary, the interpreter, `generator/` and `templates/` in one image.
 
 ---
@@ -127,6 +127,8 @@ than at the first request that needs them.
 | `GENERATE_TIMEOUT` | `90s` | A full-feature project takes about 3s |
 | `MAX_CONCURRENT_GENERATIONS` | `4` | Each is one Python process |
 | `RATE_LIMIT_PER_HOUR` | `30` | Per client IP |
+| `ENABLE_TARGETS` | `android` | Comma-separated targets this deployment generates. A target the catalogue lists and this leaves out is shown as coming soon, and its generate route answers 404 `target_unavailable`. The image sets `android` |
+| `TRUSTED_PROXY` | `none` | Which `X-Forwarded-For` entry is the client: `none` (the connection), `vercel` (Vercel's edge, whose geo headers are then trusted too) or `hops=N` behind N proxies that append. The image sets `vercel`; anything else behind Vercel counts every visitor as the edge |
 
 ---
 
@@ -160,6 +162,57 @@ curl -X POST https://android-base.vercel.app/api/generate \
   -d '{"app_name":"My App","package_name":"com.acme.myapp","features":["network","catalog"]}' \
   -o MyApp.zip
 ```
+
+---
+
+## No UI components, and the setup-only lock
+
+The Android target declares one option, `ui_components` (`templates/android/options/ui_components.toml`).
+A spec that leaves it out, or sets it to `true`, gets a project with the design system's components,
+exactly as before the option existed. `"ui_components": false` gets a setup-only project: the
+architecture, the theme skeleton and every build guard, without components. The generator drops the
+features that need components (the catalogue's `disables`, each with a reason) with a note each,
+rather than refusing a preset that lists them.
+
+The site shows the option as the "No UI components" box, first on the Features step. It sends
+`"ui_components": false` only when the box is ticked, so every other request is the one it always
+sent. Ticking it greys the disabled features with their reasons, hides design and motion style
+(the option's `hides`), and Review says what was skipped and why. Multiplatform and iOS have no such
+option yet; the site says so where the box would be.
+
+**The lock.** A deployment can generate setup-only projects and nothing else, until the Android
+release brings the components. The switch is a `[locked]` table in the option file:
+
+```toml
+[locked]
+value = false
+note = "UI components come with the Android release. Until then this site generates setup-only projects: the architecture, the theme skeleton and every build guard, without components."
+```
+
+It reaches both halves through the catalogue, which records it as the option's `locked`: the image
+computes its catalogue from the same commit at build (`CATALOGUE_FILE`, written by the `Dockerfile`),
+and the site builds from the checked-in `frontend/lib/catalogue.json`. With it on, the site shows
+the box ticked and fixed with the note, and marks each disabled feature "Coming with the Android
+release". The site is not the guard. The API holds every request to the lock before it takes a
+generator slot: a spec without the field (or with `null`, which the generator reads the same way)
+counts as the default, `true`, and is refused like one that asks for `true`:
+
+```
+HTTP/1.1 403 Forbidden
+
+{"error": "UI components come with the Android release. Until then …", "code": "option_locked", "field": "ui_components"}
+```
+
+A value that is not `true` or `false` is a 400 `invalid_spec` on `ui_components`, locked or not.
+A catalogue whose lock has no boolean `value` or no `note` stops the API at boot: serving with the
+lock ignored would generate exactly what it is there to refuse. The boot selftest asks for the
+locked value. A refused request is recorded as an invalid generation with the note as its reason,
+so the admin shows what people asked for while the lock is on.
+
+The lock lives only on the branch that deploys setup-only; it never merges back into the
+integration branches. The Android release removes it: delete `[locked]` from the option file, run
+`python3 -m genkit.core.catalogue --write` in `generator/`, and that commit goes through the Android
+release gate like any other.
 
 ---
 

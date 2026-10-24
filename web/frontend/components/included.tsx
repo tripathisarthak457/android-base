@@ -1,8 +1,13 @@
+import { COMING_WITH_RELEASE, isSetupOnly } from "../features/catalogue/options.ts";
 import { CATALOGUE, android } from "../lib/catalogue.ts";
 import { listed } from "../lib/text.ts";
+import { Badge } from "./ui.tsx";
 
-/** What arrives whatever you tick. */
-function items() {
+/**
+ * What arrives whatever you tick. `components` marks what a project without UI components does not
+ * have, which a setup-only deployment says comes with the Android release.
+ */
+function items(): { title: string; body: string; detail: string; components?: boolean }[] {
   const target = android();
   const flavours = CATALOGUE.rules.flavours;
   return [
@@ -13,6 +18,7 @@ function items() {
         "inset-grouped lists, detent sheets, menus, toasts and a hand-drawn icon set. The build refuses Material component " +
         "imports and the ripple, so neither can drift back in.",
       detail: "verifyCodeRules",
+      components: true,
     },
     {
       title: "Smooth by rule, not by hope",
@@ -28,6 +34,7 @@ function items() {
         "floats over the content at every depth while the content scrolls under it. Re-tapping a tab pops it to its root, " +
         "and a burst of Back presses settles into one animated pop.",
       detail: "KeptTabs",
+      components: true,
     },
     {
       title: "Navigation nobody has to coordinate on",
@@ -42,6 +49,7 @@ function items() {
         "Layout follows the window size class, never orientation or device. The tab bar becomes a rail on wide windows, a list " +
         "and its detail share one, and forms stop at a readable width. Locking an activity to one orientation fails the build.",
       detail: "window size classes",
+      components: true,
     },
     {
       title: "A look you pick, then own",
@@ -50,6 +58,7 @@ function items() {
         `voice together, each checked against WCAG AA in both themes, and ${target.motion_styles.length} motion styles change ` +
         "every spring. Both come from one set of design tokens; the components are plain Compose in your own module.",
       detail: "AppTheme",
+      components: true,
     },
     {
       title: "Compact now, modular when you grow",
@@ -91,6 +100,7 @@ function items() {
 }
 
 export function Included() {
+  const setupOnly = isSetupOnly(CATALOGUE);
   return (
     <section className="border-y border-ink-800 bg-ink-900/40">
       <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
@@ -99,6 +109,7 @@ export function Included() {
           <p className="mt-3 text-ink-300">
             Everything below arrives whatever you tick. It is the reason the template exists, and the part that would take a
             fortnight to assemble by hand.
+            {setupOnly && " Until the Android release this site makes setup-only projects, so what needs UI components is marked."}
           </p>
         </div>
 
@@ -109,6 +120,11 @@ export function Included() {
                 <h3 className="font-semibold text-ink-100">{item.title}</h3>
                 <code className="shrink-0 rounded bg-ink-800 px-2 py-0.5 font-mono text-[11px] text-ink-300">{item.detail}</code>
               </div>
+              {setupOnly && item.components && (
+                <p className="mt-2">
+                  <Badge tone="amber">{COMING_WITH_RELEASE}</Badge>
+                </p>
+              )}
               <p className="mt-2.5 text-sm leading-relaxed text-ink-300">{item.body}</p>
             </li>
           ))}

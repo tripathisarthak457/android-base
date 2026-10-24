@@ -78,6 +78,31 @@ export type TargetDefaults = {
   ios?: Record<string, unknown>;
 };
 
+/**
+ * A deployment that generates only one value of an option, with the sentence that says why. The
+ * API refuses any other value, so the site shows the box set and fixed.
+ */
+export type OptionLock = { value: boolean; note: string };
+
+/**
+ * A spec-level switch the template declares, such as `ui_components`. The spec field is the key; a
+ * spec that leaves it out gets `default`.
+ */
+export type Option = {
+  key: string;
+  title: string;
+  /** The box the site and the wizard show, and the value a ticked box stands for. */
+  checkbox: { label: string; ticked_value: boolean };
+  headline: string;
+  description: string;
+  default: boolean;
+  /** Features a project cannot have while the option is not at its default, in catalogue order. */
+  disables: { feature: string; reason: string }[];
+  /** Spec fields that mean nothing while the option is not at its default. */
+  hides: { field: string; reason: string }[];
+  locked: OptionLock | null;
+};
+
 export type Target = {
   key: string;
   title: string;
@@ -93,6 +118,8 @@ export type Target = {
   design_styles: DesignStyle[];
   motion_styles: MotionStyle[];
   languages: Language[];
+  /** Empty for a target that has none. */
+  options: Option[];
 };
 
 export type Rules = {

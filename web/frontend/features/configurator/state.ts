@@ -1,3 +1,4 @@
+import { disabledFeatures, effectiveUiComponents, hiddenFields, uiComponentsOption } from "../catalogue/options.ts";
 import { selectableTargets } from "../catalogue/platforms.ts";
 import type { Catalogue, Field, Rules, Target } from "../catalogue/types.ts";
 import { presetFeatures, resolveChoices, toggleFeature } from "./resolve.ts";
@@ -26,7 +27,7 @@ const LOOK_FIELDS = ["design_style", "accent_colour", "secondary_colour", "terti
 export function stepOf(field: string): Step {
   if (field === "platform" || field === "schema") return "platform";
   if (IDENTITY_FIELDS.includes(field)) return "identity";
-  if (field === "features") return "features";
+  if (field === "features" || field === "ui_components") return "features";
   if (LOOK_FIELDS.includes(field)) return "look";
   if (field === "motion_style" || field === "haptics_enabled") return "motion";
   return "build";
@@ -65,8 +66,15 @@ export type ConfigState = {
   modules: string;
   languages: string[];
   architecture: string;
+  /** Whether the project gets UI components; false is the ticked "No UI components" box. */
+  uiComponents: boolean;
   /** Closed over `requires`, sorted. */
   features: string[];
+  /**
+   * The features the selection or the chosen preset had that a project without UI components
+   * leaves out, in the catalogue's order, so Review can say what was skipped and why.
+   */
+  skipped: string[];
   designStyle: string;
   motionStyle: string;
   hapticsEnabled: boolean;
@@ -90,6 +98,7 @@ export type Action =
   | { type: "modules"; value: string }
   | { type: "language"; tag: string }
   | { type: "architecture"; value: string }
+  | { type: "uiComponents"; value: boolean }
   | { type: "feature"; key: string }
   | { type: "undoToggle" }
   | { type: "preset"; key: string }
@@ -176,12 +185,35 @@ export function typeface(fontName: string, target: Target): string {
 }
 
 /**
- * `keys` resolved as a visitor's choices, plus what the design style needs, so Glass keeps
- * liquidglass on through a preset, a platform switch or a restored draft.
+ * `keys` resolved as a visitor's choices, plus what the design style needs, so a style keeps the
+ * features it draws with through a preset, a platform switch or a restored draft. Without UI
+ * components the disabled features are taken out before `requires` is resolved, as the generator
+ * drops them.
  */
-export function featuresFor(keys: Iterable<string>, target: Target, designStyle: string): string[] {
+export function featuresFor(keys: Iterable<string>, target: Target, designStyle: string, uiComponents: boolean): string[] {
+  const disabled = disabledFeatures(target, uiComponents);
   const requires = target.design_styles.find((style) => style.key === designStyle)?.requires ?? [];
-  return [...resolveChoices([...keys, ...requires], target)].sort();
+  return [...resolveChoices([...keys, ...requires].filter((key) => !disabled.has(key)), target)].sort();
+}
+
+/** The disabled features among `keys`, in the order the option lists them. */
+export function skippedOf(keys: Iterable<string>, target: Target, uiComponents: boolean): string[] {
+  const asked = new Set(keys);
+  return [...disabledFeatures(target, uiComponents).keys()].filter((key) => asked.has(key));
+}
+
+/** The design and motion style a project gets: the target's own defaults where the option hides them. */
+export function stylesFor(
+  target: Target,
+  uiComponents: boolean,
+  designStyle: string,
+  motionStyle: string,
+): { designStyle: string; motionStyle: string } {
+  const hidden = hiddenFields(target, uiComponents);
+  return {
+    designStyle: hidden.has("design_style") ? target.defaults.design_style : designStyle,
+    motionStyle: hidden.has("motion_style") ? target.defaults.motion_style : motionStyle,
+  };
 }
 
 /**
@@ -197,6 +229,9 @@ export function initialState(catalogue: Catalogue, targetKey?: string): ConfigSt
   const target = findTarget(catalogue, targetKey ?? "android");
   const defaults = target.defaults;
   const appName = "My App";
+  const uiComponents = effectiveUiComponents(target, uiComponentsOption(target)?.default ?? true);
+  const preset = presetFeatures(target, defaults.preset);
+  const styles = stylesFor(target, uiComponents, defaults.design_style, defaults.motion_style);
   return {
     target: target.key,
     appName,
@@ -206,9 +241,11 @@ export function initialState(catalogue: Catalogue, targetKey?: string): ConfigSt
     modules: "",
     languages: [...defaults.languages],
     architecture: defaults.architecture,
-    features: [...presetFeatures(target, defaults.preset)].sort(),
-    designStyle: defaults.design_style,
-    motionStyle: defaults.motion_style,
+    uiComponents,
+    features: featuresFor(preset, target, styles.designStyle, uiComponents),
+    skipped: skippedOf(preset, target, uiComponents),
+    designStyle: styles.designStyle,
+    motionStyle: styles.motionStyle,
     hapticsEnabled: defaults.haptics_enabled,
     accent: defaults.accent_colour,
     secondary: "",
@@ -232,9 +269,16 @@ function switchTarget(state: ConfigState, catalogue: Catalogue, key: string): Co
   const from = findTarget(catalogue, state.target);
   const fresh = initialState(catalogue, to.key);
 
-  const untouched = sameSet(state.features, [...presetFeatures(from, from.defaults.preset)]);
-  const designStyle = to.design_styles.some((style) => style.key === state.designStyle) ? state.designStyle : fresh.designStyle;
-  const kept = featuresFor(state.features, to, designStyle);
+  const untouched = sameSet(state.features, [...presetFeatures(from, from.defaults.preset, disabledFeatures(from, state.uiComponents))]);
+  const uiComponents = effectiveUiComponents(to, state.uiComponents);
+  const { designStyle, motionStyle } = stylesFor(
+    to,
+    uiComponents,
+    to.design_styles.some((style) => style.key === state.designStyle) ? state.designStyle : fresh.designStyle,
+    to.motion_styles.some((style) => style.key === state.motionStyle) ? state.motionStyle : fresh.motionStyle,
+  );
+  const kept = featuresFor(state.features, to, designStyle, uiComponents);
+  const source = untouched || kept.length === 0 ? presetFeatures(to, to.defaults.preset) : state.features;
   const offered = new Set(to.languages.map((language) => language.tag));
   const settings = { ...fresh.settings };
   for (const field of settingFields(to)) {
@@ -245,11 +289,13 @@ function switchTarget(state: ConfigState, catalogue: Catalogue, key: string): Co
   return {
     ...state,
     target: to.key,
-    features: untouched || kept.length === 0 ? featuresFor(fresh.features, to, designStyle) : kept,
+    uiComponents,
+    features: featuresFor(source, to, designStyle, uiComponents),
+    skipped: skippedOf(source, to, uiComponents),
     languages: state.languages.filter((tag) => offered.has(tag)),
     architecture: architecture?.key ?? fresh.architecture,
     designStyle,
-    motionStyle: to.motion_styles.some((style) => style.key === state.motionStyle) ? state.motionStyle : fresh.motionStyle,
+    motionStyle,
     settings,
     signing: hasKeystores(to) ? state.signing : fresh.signing,
     hint: null,
@@ -267,6 +313,7 @@ function sameSet(a: readonly string[], b: readonly string[]): boolean {
 
 export function reducer(state: ConfigState, action: Action, catalogue: Catalogue): ConfigState {
   const target = findTarget(catalogue, state.target);
+  const hidden = hiddenFields(target, state.uiComponents);
   const edit = (patch: Partial<ConfigState>): ConfigState => ({
     ...state,
     ...patch,
@@ -293,14 +340,26 @@ export function reducer(state: ConfigState, action: Action, catalogue: Catalogue
     }
     case "architecture":
       return edit({ architecture: action.value });
+    case "uiComponents": {
+      const uiComponents = effectiveUiComponents(target, action.value);
+      if (uiComponents === state.uiComponents) return state;
+      const styles = stylesFor(target, uiComponents, state.designStyle, state.motionStyle);
+      return edit({
+        uiComponents,
+        ...styles,
+        features: featuresFor(state.features, target, styles.designStyle, uiComponents),
+        skipped: skippedOf(state.features, target, uiComponents),
+      });
+    }
     case "feature": {
+      if (disabledFeatures(target, state.uiComponents).has(action.key)) return state;
       const toggle = toggleFeature(new Set(state.features), action.key, target);
       // A design style that needs what was unticked goes with it, as a feature that needs it does.
       const requires = target.design_styles.find((style) => style.key === state.designStyle)?.requires ?? [];
       const designStyle = requires.every((key) => toggle.next.has(key)) ? state.designStyle : target.defaults.design_style;
       const quiet = toggle.alsoAdded.length === 0 && toggle.alsoRemoved.length === 0 && designStyle === state.designStyle;
       return edit({
-        features: featuresFor(toggle.next, target, designStyle),
+        features: featuresFor(toggle.next, target, designStyle, state.uiComponents),
         designStyle,
         hint: quiet
           ? null
@@ -316,15 +375,20 @@ export function reducer(state: ConfigState, action: Action, catalogue: Catalogue
     }
     case "undoToggle":
       return state.hint ? edit({ features: state.hint.previous, designStyle: state.hint.previousStyle }) : state;
-    case "preset":
-      return edit({ features: featuresFor(presetFeatures(target, action.key), target, state.designStyle) });
+    case "preset": {
+      const preset = presetFeatures(target, action.key);
+      return edit({
+        features: featuresFor(preset, target, state.designStyle, state.uiComponents),
+        skipped: skippedOf(preset, target, state.uiComponents),
+      });
+    }
     case "designStyle": {
       const style = target.design_styles.find((option) => option.key === action.value);
-      if (!style) return state;
-      return edit({ designStyle: style.key, features: featuresFor(state.features, target, style.key) });
+      if (!style || hidden.has("design_style")) return state;
+      return edit({ designStyle: style.key, features: featuresFor(state.features, target, style.key, state.uiComponents) });
     }
     case "motionStyle":
-      return edit({ motionStyle: action.value });
+      return hidden.has("motion_style") ? state : edit({ motionStyle: action.value });
     case "haptics":
       return edit({ hapticsEnabled: action.value });
     case "colour":

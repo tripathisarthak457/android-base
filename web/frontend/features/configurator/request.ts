@@ -90,6 +90,9 @@ export function toSpecV2(state: ConfigState, catalogue: Catalogue): Spec {
     haptics_enabled: state.hapticsEnabled,
     languages: orderedLanguages(state, target),
   };
+  // Only the ticked box is sent: a spec without the field has UI components, so every other
+  // request stays the one the generator has always been sent.
+  if (!state.uiComponents) spec.ui_components = false;
   if (state.displayName !== "") spec.display_name = state.displayName;
   if (state.secondary !== "") spec.secondary_colour = state.secondary;
   if (state.tertiary !== "") spec.tertiary_colour = state.tertiary;

@@ -2,6 +2,7 @@ package generate
 
 import (
 	"slices"
+	"strings"
 	"testing"
 )
 
@@ -122,5 +123,63 @@ func TestSmallestPresetFeaturesLeavesOutWhatCannotBeAskedFor(t *testing.T) {
 	// Marshalled into a spec, where null is not a list.
 	if got := (&TargetEntry{}).SmallestPresetFeatures(); got == nil {
 		t.Fatal("a target without presets gave nil")
+	}
+}
+
+// optionCatalogue is sampleCatalogue with the android target declaring one option, whose `locked`
+// is the JSON given.
+func optionCatalogue(locked string) string {
+	return strings.Replace(sampleCatalogue, `"defaults": {"preset": "standard"`,
+		`"options": [{"key": "ui_components", "title": "UI components", "default": true,
+		  "disables": [{"feature": "liquidglass", "reason": "Glass is drawn by components."}],
+		  "hides": [{"field": "design_style", "reason": "Your design system decides."}],
+		  "locked": `+locked+`}],
+		"defaults": {"preset": "standard"`, 1)
+}
+
+const lockNote = "UI components come with the Android release."
+
+func TestParseCatalogueReadsOptionsAndTheirLock(t *testing.T) {
+	c, err := ParseCatalogue([]byte(optionCatalogue("null")))
+	if err != nil {
+		t.Fatal(err)
+	}
+	options := c.Target("android").Options
+	if len(options) != 1 || options[0].Key != "ui_components" || !*options[0].Default || options[0].Locked != nil {
+		t.Fatalf("options %+v", options)
+	}
+	if got := c.Target("multiplatform").Options; len(got) != 0 {
+		t.Fatalf("a target without options has %+v", got)
+	}
+
+	c, err = ParseCatalogue([]byte(optionCatalogue(`{"value": false, "note": "` + lockNote + `"}`)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	lock := c.Target("android").Options[0].Locked
+	if lock == nil || *lock.Value || lock.Note != lockNote {
+		t.Fatalf("lock %+v", lock)
+	}
+}
+
+func TestParseCatalogueRefusesAnOptionItCannotEnforce(t *testing.T) {
+	cases := map[string]string{
+		"a lock that is not an object":    optionCatalogue(`true`),
+		"a lock with a string value":      optionCatalogue(`{"value": "false", "note": "` + lockNote + `"}`),
+		"a lock without a value":          optionCatalogue(`{"note": "` + lockNote + `"}`),
+		"a lock without a note":           optionCatalogue(`{"value": false}`),
+		"a lock with a blank note":        optionCatalogue(`{"value": false, "note": "  "}`),
+		"an option without a default":     strings.Replace(optionCatalogue("null"), `"default": true,`, "", 1),
+		"an option with a string default": strings.Replace(optionCatalogue("null"), `"default": true`, `"default": "true"`, 1),
+		"an option without a key":         strings.Replace(optionCatalogue("null"), `"key": "ui_components",`, "", 1),
+		"an option declared twice": strings.Replace(optionCatalogue("null"), `"options": [`,
+			`"options": [{"key": "ui_components", "default": true, "locked": null}, `, 1),
+	}
+	for name, raw := range cases {
+		t.Run(name, func(t *testing.T) {
+			if _, err := ParseCatalogue([]byte(raw)); err == nil {
+				t.Fatal("the catalogue was accepted, so the API would boot without enforcing it")
+			}
+		})
 	}
 }

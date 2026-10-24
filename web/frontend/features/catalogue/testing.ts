@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import type { Catalogue, Target } from "./types.ts";
+import type { Catalogue, OptionLock, Target } from "./types.ts";
 
 /** The repository root, for the fixtures the generator and the API share with these tests. */
 const REPOSITORY = join(import.meta.dirname, "..", "..", "..", "..");
@@ -11,6 +11,29 @@ export function readJson<T>(...path: string[]): T {
 
 export function loadCatalogue(): Catalogue {
   return readJson<Catalogue>("web", "frontend", "lib", "catalogue.json");
+}
+
+/** The note the setup-only release locks the option with. */
+export const SETUP_ONLY: OptionLock = {
+  value: false,
+  note:
+    "UI components come with the Android release. Until then this site generates setup-only projects: the architecture, " +
+    "the theme skeleton and every build guard, without components.",
+};
+
+/**
+ * The checked-in catalogue as a deployment that serves only one value of `ui_components` has it.
+ * Branches other than the release's carry no lock, so the locked behaviour is tested on this.
+ */
+export function lockedCatalogue(lock: OptionLock = SETUP_ONLY): Catalogue {
+  const catalogue = loadCatalogue();
+  return {
+    ...catalogue,
+    targets: catalogue.targets.map((target) => ({
+      ...target,
+      options: target.options.map((option) => (option.key === "ui_components" ? { ...option, locked: lock } : option)),
+    })),
+  };
 }
 
 export function androidTarget(catalogue: Catalogue = loadCatalogue()): Target {
@@ -51,6 +74,7 @@ export function threePlatformCatalogue(): Catalogue {
       { key: "ios.team_id", type: "string", rule: "ios_team_id" },
     ],
     languages: android.languages.filter((language) => language.tag !== "hi"),
+    options: [],
   };
   const ios: Target = { ...multiplatform, key: "ios", title: "Swift", status: "coming_soon", status_note: "" };
   const rules = Object.assign({}, catalogue.rules, { ios_bundle_id: "^[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+$", ios_team_id: "^[A-Z0-9]{10}$" });

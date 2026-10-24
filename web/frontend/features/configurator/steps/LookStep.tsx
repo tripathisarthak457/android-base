@@ -2,15 +2,18 @@
 
 import { memo, useDeferredValue, useId, useMemo, useState } from "react";
 import { ChoiceCard, Field, TextInput } from "../../../components/primitives.tsx";
+import { hiddenFields } from "../../catalogue/options.ts";
 import type { Catalogue } from "../../catalogue/types.ts";
 import { ScaledPreview } from "../../preview/AppPreview.tsx";
 import { brandColours, parseHex, toHex } from "../../preview/brand.ts";
 import { type FontStatus, useFamily, useSuggestionFonts } from "../../preview/fonts.ts";
 import { LivePreview, type PreviewView } from "../../preview/LivePreview.tsx";
 import { type PreviewTab, planTabs } from "../../preview/tabs.ts";
+import { ThemeSlotsPreview } from "../../preview/ThemeSlots.tsx";
 import { weightsFor } from "../../preview/theme.ts";
 import { traits } from "../../preview/traits.ts";
 import { type PreviewInput, usePreviewTheme } from "../../preview/usePreviewTheme.ts";
+import { HiddenChoice } from "../HiddenChoice.tsx";
 import { typeface } from "../state.ts";
 import type { ConfiguratorModel } from "../useConfigurator.ts";
 import { usePreviewInput } from "../usePreviewInput.ts";
@@ -49,56 +52,61 @@ export function LookStep({
   const featureTitle = new Map(target.features.map((feature) => [feature.key, feature.title]));
   const accent = parseHex(state.accent);
   const derived = accent ? brandColours(accent, null, null) : null;
+  const styleHidden = hiddenFields(target, state.uiComponents).get("design_style");
 
   return (
     <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
       <div className="min-w-0 space-y-8">
-        <fieldset aria-describedby={styleError ? `${styleName}-error` : undefined}>
-          <legend className="text-sm font-medium text-ink-200">Design style</legend>
-          <p className="mt-1 text-xs leading-relaxed text-ink-400">
-            Corners, borders, fields, the tab bar and the type voice, chosen together. One argument to{" "}
-            <code className="text-ink-300">AppTheme</code>, and the components are yours to reshape from there.
-          </p>
-          <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {target.design_styles.map((style) => {
-              const tokens = catalogue.tokens.styles[style.key];
-              return (
-                <ChoiceCard
-                  key={style.key}
-                  type="radio"
-                  name={styleName}
-                  checked={state.designStyle === style.key}
-                  onChange={() => dispatch({ type: "designStyle", value: style.key })}
-                  className="flex gap-3 overflow-hidden p-3"
-                >
-                  <StyleThumbnail input={thumbnailInput} styleKey={style.key} dark={view.dark} />
-                  <span className="min-w-0 py-1">
-                    <span className="block font-display text-base font-bold text-ink-100">{style.title}</span>
-                    <span className="mt-1 block text-xs leading-relaxed text-ink-400">{style.description}</span>
-                    {tokens && (
-                      <span className="mt-2 block space-y-0.5">
-                        {traits(tokens).map((trait) => (
-                          <span key={trait} className="flex items-center gap-1.5 text-[11px] text-ink-300">
-                            <span aria-hidden className="h-1 w-1 shrink-0 rounded-full bg-accent" />
-                            {trait}
-                          </span>
-                        ))}
-                      </span>
-                    )}
-                    {style.requires.length > 0 && (
-                      <span className="mt-2 block text-[11px] text-amber">Turns on {style.requires.map((key) => featureTitle.get(key) ?? key).join(", ")}</span>
-                    )}
-                  </span>
-                </ChoiceCard>
-              );
-            })}
-          </div>
-          {styleError && (
-            <p id={`${styleName}-error`} className="mt-2 text-xs text-rose">
-              {styleError}
+        {styleHidden !== undefined ? (
+          <HiddenChoice title="Design style" reason={styleHidden} />
+        ) : (
+          <fieldset aria-describedby={styleError ? `${styleName}-error` : undefined}>
+            <legend className="text-sm font-medium text-ink-200">Design style</legend>
+            <p className="mt-1 text-xs leading-relaxed text-ink-400">
+              Corners, borders, fields, the tab bar and the type voice, chosen together. One argument to{" "}
+              <code className="text-ink-300">AppTheme</code>, and the components are yours to reshape from there.
             </p>
-          )}
-        </fieldset>
+            <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {target.design_styles.map((style) => {
+                const tokens = catalogue.tokens.styles[style.key];
+                return (
+                  <ChoiceCard
+                    key={style.key}
+                    type="radio"
+                    name={styleName}
+                    checked={state.designStyle === style.key}
+                    onChange={() => dispatch({ type: "designStyle", value: style.key })}
+                    className="flex gap-3 overflow-hidden p-3"
+                  >
+                    <StyleThumbnail input={thumbnailInput} styleKey={style.key} dark={view.dark} />
+                    <span className="min-w-0 py-1">
+                      <span className="block font-display text-base font-bold text-ink-100">{style.title}</span>
+                      <span className="mt-1 block text-xs leading-relaxed text-ink-400">{style.description}</span>
+                      {tokens && (
+                        <span className="mt-2 block space-y-0.5">
+                          {traits(tokens).map((trait) => (
+                            <span key={trait} className="flex items-center gap-1.5 text-[11px] text-ink-300">
+                              <span aria-hidden className="h-1 w-1 shrink-0 rounded-full bg-accent" />
+                              {trait}
+                            </span>
+                          ))}
+                        </span>
+                      )}
+                      {style.requires.length > 0 && (
+                        <span className="mt-2 block text-[11px] text-amber">Turns on {style.requires.map((key) => featureTitle.get(key) ?? key).join(", ")}</span>
+                      )}
+                    </span>
+                  </ChoiceCard>
+                );
+              })}
+            </div>
+            {styleError && (
+              <p id={`${styleName}-error`} className="mt-2 text-xs text-rose">
+                {styleError}
+              </p>
+            )}
+          </fieldset>
+        )}
 
         <fieldset>
           <legend className="text-sm font-medium text-ink-200">Brand colours</legend>
@@ -139,7 +147,11 @@ export function LookStep({
         />
       </div>
 
-      <LivePreview input={input} view={view} onView={onView} />
+      {state.uiComponents ? (
+        <LivePreview input={input} view={view} onView={onView} />
+      ) : (
+        <ThemeSlotsPreview input={input} view={view} onView={onView} />
+      )}
     </div>
   );
 }

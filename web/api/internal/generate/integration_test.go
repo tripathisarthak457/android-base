@@ -115,6 +115,48 @@ func TestIntegrationRealGenerator(t *testing.T) {
 		}
 	})
 
+	// The site sends the field only when the box is ticked; the generator drops what the option
+	// disables, with a note each, rather than refusing a preset that has them.
+	t.Run("no UI components", func(t *testing.T) {
+		target := catalogue.Target("android")
+		if target == nil || len(target.Options) == 0 {
+			t.Skip("the android target has no options")
+		}
+		var everything []string
+		for _, preset := range target.Presets {
+			if len(preset.Features) > len(everything) {
+				everything = preset.Features
+			}
+		}
+		spec := mustJSON(t, map[string]any{
+			"schema": 2, "platform": "android", "app_name": "Integration", "package_name": "com.example.integration",
+			"features": everything, "ui_components": false,
+		})
+		prechecked, err := Precheck(spec, "android", catalogue.Rules)
+		if err == nil {
+			err = target.CheckOptions(prechecked)
+		}
+		if err != nil {
+			t.Fatalf("the API refused what the site sends with the box ticked: %v", err)
+		}
+		g, err := New(ctx, opts, *target, catalogue.Rules)
+		if err != nil {
+			t.Fatal(err)
+		}
+		out, err := g.Run(ctx, spec)
+		var failure *Failure
+		if errors.As(err, &failure) {
+			t.Fatalf("%v\n%s", failure, failure.Detail)
+		}
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer func() { _ = out.Close() }()
+		if slices.Contains(out.ResolvedFeatures, "catalog") || len(out.Notes) == 0 {
+			t.Fatalf("resolved %v with notes %v: the disabled features should be dropped with a note", out.ResolvedFeatures, out.Notes)
+		}
+	})
+
 	t.Run("v1 spec", func(t *testing.T) {
 		target := catalogue.Target("android")
 		if target == nil {

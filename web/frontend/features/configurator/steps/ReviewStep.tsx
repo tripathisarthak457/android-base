@@ -4,14 +4,17 @@ import { useMemo } from "react";
 import { Button } from "../../../components/primitives.tsx";
 import { Spinner } from "../../../components/ui.tsx";
 import { selectableFeatures } from "../../catalogue/features.ts";
+import { hiddenFields, uiComponentsOption } from "../../catalogue/options.ts";
 import type { Catalogue } from "../../catalogue/types.ts";
 import { ScaledPreview } from "../../preview/AppPreview.tsx";
 import { useFamily } from "../../preview/fonts.ts";
 import { planTabs } from "../../preview/tabs.ts";
+import { StartScreenPreview } from "../../preview/ThemeSlots.tsx";
 import { weightsFor } from "../../preview/theme.ts";
 import { usePreviewTheme } from "../../preview/usePreviewTheme.ts";
 import type { Spec } from "../request.ts";
 import { STEP_LABELS, stepOf } from "../state.ts";
+import { reviewSkipped } from "../uiComponents.ts";
 import type { ConfiguratorModel } from "../useConfigurator.ts";
 import { usePreviewInput } from "../usePreviewInput.ts";
 
@@ -29,6 +32,9 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
   const { min_sdk: minSdk, target_sdk: targetSdk } = (spec.android ?? {}) as Spec;
   const sdk = typeof minSdk === "number" && typeof targetSdk === "number" ? `${minSdk} / ${targetSdk}` : null;
   const presetTitle = target.presets.find((option) => option.key === preset)?.title ?? "Your own";
+  const uiOption = uiComponentsOption(target);
+  const hidden = hiddenFields(target, state.uiComponents);
+  const skipped = reviewSkipped(target, state);
 
   const rows: [string, string][] = [
     ["Platform", target.title],
@@ -36,11 +42,13 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
     ["Package", state.packageName],
     ["Architecture", target.architectures.find((option) => option.key === state.architecture)?.title ?? state.architecture],
     ...(sdk ? ([["Min / target SDK", sdk]] as [string, string][]) : []),
-    ["Design style", target.design_styles.find((style) => style.key === state.designStyle)?.title ?? state.designStyle],
-    [
-      "Motion",
-      `${target.motion_styles.find((style) => style.key === state.motionStyle)?.title ?? state.motionStyle}, haptics ${state.hapticsEnabled ? "on" : "off"}`,
-    ],
+    ...(uiOption ? ([[uiOption.title, state.uiComponents ? "Included" : "None (setup only)"]] as [string, string][]) : []),
+    ...(hidden.has("design_style")
+      ? []
+      : ([["Design style", target.design_styles.find((style) => style.key === state.designStyle)?.title ?? state.designStyle]] as [string, string][])),
+    hidden.has("motion_style")
+      ? ["Haptics", state.hapticsEnabled ? "On" : "Off"]
+      : ["Motion", `${target.motion_styles.find((style) => style.key === state.motionStyle)?.title ?? state.motionStyle}, haptics ${state.hapticsEnabled ? "on" : "off"}`],
     ["Typeface", input.font],
     ["Modules", input.modules.length ? input.modules.join(", ") : "none"],
     ["Languages", ["English", ...target.languages.filter((language) => state.languages.includes(language.tag)).map((language) => language.name)].join(", ")],
@@ -83,13 +91,33 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
             ))}
           </ul>
         </div>
+
+        {skipped.length > 0 && (
+          <div>
+            <p className="mb-2 text-sm font-medium text-ink-200">Skipped, and why</p>
+            <ul className="space-y-2">
+              {skipped.map((entry) => (
+                <li key={entry.title} className="rounded-lg border border-dashed border-ink-600 px-4 py-3">
+                  <span className="block text-sm font-medium text-ink-100">{entry.title}</span>
+                  <span className="mt-0.5 block text-xs leading-relaxed text-ink-400">{entry.reason}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       <div className="min-w-0 md:col-span-2">
-        {screen && (
+        {!state.uiComponents ? (
           <div className="mb-4 flex justify-center">
-            <ScaledPreview theme={theme} font={input.font} tabs={tabs} screen={screen} options={options} scale={0.62} />
+            <StartScreenPreview theme={theme} scale={0.62} />
           </div>
+        ) : (
+          screen && (
+            <div className="mb-4 flex justify-center">
+              <ScaledPreview theme={theme} font={input.font} tabs={tabs} screen={screen} options={options} scale={0.62} />
+            </div>
+          )
         )}
 
         {errors.size > 0 && (

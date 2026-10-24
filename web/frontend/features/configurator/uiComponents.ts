@@ -1,0 +1,69 @@
+import { COMING_WITH_RELEASE, androidOnlyNote, disabledFeatures, hiddenFields, isSetupOnly, uiComponentsOption } from "../catalogue/options.ts";
+import type { Catalogue, Target } from "../catalogue/types.ts";
+import type { ConfigState } from "./state.ts";
+
+// What the steps say about the "No UI components" box, worked out here so the wording is tested
+// without rendering a step.
+
+/** The box at the top of the Features step, the note that stands in for it, or nothing. */
+export type UiComponentsBox =
+  | {
+      kind: "box";
+      label: string;
+      headline: string;
+      description: string;
+      ticked: boolean;
+      /** Why the box cannot be changed on this deployment, or null when it can. */
+      lockedNote: string | null;
+    }
+  | { kind: "note"; text: string }
+  | { kind: "none" };
+
+export function uiComponentsBox(catalogue: Catalogue, target: Target, uiComponents: boolean): UiComponentsBox {
+  const option = uiComponentsOption(target);
+  if (!option) {
+    const text = androidOnlyNote(catalogue, target.key);
+    return text ? { kind: "note", text } : { kind: "none" };
+  }
+  return {
+    kind: "box",
+    label: option.checkbox.label,
+    headline: option.headline,
+    description: option.description,
+    ticked: uiComponents === option.checkbox.ticked_value,
+    lockedNote: option.locked?.note ?? null,
+  };
+}
+
+/** How one feature's card reads: open to tick, or greyed with the reason it cannot be had. */
+export type FeatureCard =
+  | { disabled: false }
+  | {
+      disabled: true;
+      reason: string;
+      /** On a setup-only deployment, the release that brings it; null elsewhere. */
+      release: string | null;
+    };
+
+export function featureCard(catalogue: Catalogue, target: Target, uiComponents: boolean, key: string): FeatureCard {
+  const reason = disabledFeatures(target, uiComponents).get(key);
+  if (reason === undefined) return { disabled: false };
+  return { disabled: true, reason, release: isSetupOnly(catalogue) ? COMING_WITH_RELEASE : null };
+}
+
+const FIELD_TITLES: Record<string, string> = { design_style: "Design style", motion_style: "Motion style" };
+
+/** Review's "Skipped, and why": each feature the answers had that the project leaves out, then each field it does not ask. */
+export function reviewSkipped(target: Target, state: ConfigState): { title: string; reason: string }[] {
+  const disabled = disabledFeatures(target, state.uiComponents);
+  const titleOf = new Map(target.features.map((feature) => [feature.key, feature.title]));
+  const features = state.skipped.flatMap((key) => {
+    const reason = disabled.get(key);
+    return reason === undefined ? [] : [{ title: titleOf.get(key) ?? key, reason }];
+  });
+  const fields = [...hiddenFields(target, state.uiComponents)].map(([field, reason]) => ({
+    title: FIELD_TITLES[field] ?? field,
+    reason,
+  }));
+  return [...features, ...fields];
+}

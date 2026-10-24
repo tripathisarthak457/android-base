@@ -20,23 +20,6 @@ import (
 
 const sessionID = "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c"
 
-func decodeError(t *testing.T, body string) apiError {
-	t.Helper()
-	var e apiError
-	if err := json.Unmarshal([]byte(body), &e); err != nil {
-		t.Fatalf("error body %q: %v", body, err)
-	}
-	return e
-}
-
-func onlyGeneration(t *testing.T, b *store.Batch) store.Generation {
-	t.Helper()
-	if len(b.Generations) != 1 {
-		t.Fatalf("%d generations recorded, want 1", len(b.Generations))
-	}
-	return b.Generations[0]
-}
-
 func TestGenerateStreamsTheZipAndRecordsTheSession(t *testing.T) {
 	ts := newTestServer(t, okScript, nil)
 	spec := `{"schema": 2, "platform": "android", "app_name": "Trail Notes", "package_name": "com.example.trail",
@@ -407,5 +390,31 @@ func TestGenerationErrorsAreGroupedByTheBugBehindThem(t *testing.T) {
 			t.Errorf("%s shares a fingerprint with %s", name, previous)
 		}
 		seen[fp] = name
+	}
+}
+
+func TestOptionValuesTheDeploymentGeneratesReachTheGenerator(t *testing.T) {
+	cases := []struct {
+		name   string
+		locked string
+		bodies []string
+	}{
+		{"locked", `{"value": false, "note": "` + setupOnlyNote + `"}`, []string{`{"schema": 2, "app_name": "X", "ui_components": false}`}},
+		{"unlocked", "null", []string{
+			`{"schema": 2, "app_name": "X"}`,
+			`{"schema": 2, "app_name": "X", "ui_components": true}`,
+			`{"schema": 2, "app_name": "X", "ui_components": false}`,
+		}},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			ts := newServer(t, optionsCatalogue(c.locked), "/bin/sh", okScript, nil)
+			for _, body := range c.bodies {
+				w := ts.do(http.MethodPost, "/api/v1/android/generate", body, nil)
+				if w.Code != http.StatusOK || w.Body.String() != body {
+					t.Fatalf("%s: got %d %q, want the generator's zip of the spec as sent", body, w.Code, w.Body.String())
+				}
+			}
+		})
 	}
 }

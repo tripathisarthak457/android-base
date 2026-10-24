@@ -1,4 +1,5 @@
 import { selectableFeatures } from "../features/catalogue/features.ts";
+import { setupOnlyNote } from "../features/catalogue/options.ts";
 import { CATALOGUE, PLATFORMS, PRIVACY, REPO, android } from "../lib/catalogue.ts";
 import { listed } from "../lib/text.ts";
 import { Badge, LinkButton } from "./ui.tsx";
@@ -10,6 +11,7 @@ import { Badge, LinkButton } from "./ui.tsx";
 export function Hero() {
   const target = android();
   const flavours = CATALOGUE.rules.flavours;
+  const setupOnly = setupOnlyNote(CATALOGUE);
   const stats = [
     { value: String(selectableFeatures(target).length), label: "features you can switch off", detail: "Each one removes its modules, not just its code" },
     { value: String(target.design_styles.length), label: "design styles", detail: target.design_styles.map((style) => style.title).join(", ") },
@@ -55,6 +57,7 @@ export function Hero() {
             a design system with no Material components that moves like iOS. Pick your features and a look, and get a zip that
             compiles.
           </p>
+          {setupOnly && <p className="mt-4 max-w-2xl text-base leading-relaxed text-amber">{setupOnly}</p>}
 
           <div className="mt-9 flex flex-wrap items-center gap-3">
             <LinkButton href="#configure" variant="primary">

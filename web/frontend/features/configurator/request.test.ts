@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { CLIENT_PREFIX, clientHeader } from "../../lib/api.ts";
-import { loadCatalogue, readJson, threePlatformCatalogue } from "../catalogue/testing.ts";
+import { disabledFeatures } from "../catalogue/options.ts";
+import { androidTarget, loadCatalogue, readJson, threePlatformCatalogue } from "../catalogue/testing.ts";
 import { CONFIG_MS_MAX, SESSION_ID, deepLinkScheme, sessionHeaders, toSpecV2 } from "./request.ts";
+import { presetFeatures } from "./resolve.ts";
 import { type Action, type ConfigState, choiceValue, initialState, reducer } from "./state.ts";
 import { validateSpec } from "./validation/validate.ts";
 
@@ -71,6 +73,51 @@ test("signing keys are described only when asked for, and pass the generator's r
   assert.deepEqual([...validateSpec(spec, catalogue, "android")], []);
   const weak = run(state, { type: "signing", value: { passwords: { ...passwords, prod: "123" } } });
   assert.deepEqual([...validateSpec(toSpecV2(weak, catalogue), catalogue, "android").keys()], ["android.keystores"]);
+});
+
+/** Every field a request had before the "No UI components" box, in the order it was sent. */
+const UI_REQUEST_FIELDS = [
+  "schema",
+  "platform",
+  "app_name",
+  "package_name",
+  "architecture",
+  "features",
+  "feature_modules",
+  "design_style",
+  "motion_style",
+  "accent_colour",
+  "font_name",
+  "mono_font_name",
+  "haptics_enabled",
+  "languages",
+  "android",
+];
+
+test("a UI request is the one the site sent before the box existed, for every preset", () => {
+  const android = androidTarget(catalogue);
+  for (const preset of android.presets) {
+    const state = run(initialState(catalogue), { type: "preset", key: preset.key });
+    const spec = toSpecV2(state, catalogue);
+    assert.deepEqual(Object.keys(spec), UI_REQUEST_FIELDS, preset.key);
+    assert.deepEqual(spec.features, [...presetFeatures(android, preset.key)].sort(), preset.key);
+    const backAgain = run(state, { type: "uiComponents", value: false }, { type: "uiComponents", value: true }, { type: "preset", key: preset.key });
+    assert.equal(JSON.stringify(toSpecV2(backAgain, catalogue)), JSON.stringify(spec), preset.key);
+  }
+});
+
+test("a No UI request carries the field and none of the disabled features, for every preset", () => {
+  const android = androidTarget(catalogue);
+  const disabled = disabledFeatures(android, false);
+  assert.ok(disabled.size > 0);
+  for (const preset of android.presets) {
+    const state = run(initialState(catalogue), { type: "uiComponents", value: false }, { type: "preset", key: preset.key });
+    const spec = toSpecV2(state, catalogue);
+    assert.equal(spec.ui_components, false, preset.key);
+    assert.deepEqual((spec.features as string[]).filter((key) => disabled.has(key)), [], preset.key);
+    assert.deepEqual(spec.features, [...presetFeatures(android, preset.key)].filter((key) => !disabled.has(key)).sort(), preset.key);
+    assert.deepEqual([...validateSpec(spec, catalogue, "android")], [], preset.key);
+  }
 });
 
 test("languages go out in the catalogue's order", () => {

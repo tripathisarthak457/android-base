@@ -2,10 +2,13 @@
 
 import { useId } from "react";
 import { ChoiceCard, PauseButton, Toggle, usePaused } from "../../../components/primitives.tsx";
+import { hiddenFields } from "../../catalogue/options.ts";
 import type { Catalogue, Spring } from "../../catalogue/types.ts";
 import { LivePreview, type PreviewView } from "../../preview/LivePreview.tsx";
 import { MotionPreview } from "../../preview/MotionPreview.tsx";
+import { ThemeSlotsPreview } from "../../preview/ThemeSlots.tsx";
 import { type PreviewInput, usePreviewTheme } from "../../preview/usePreviewTheme.ts";
+import { HiddenChoice } from "../HiddenChoice.tsx";
 import type { ConfiguratorModel } from "../useConfigurator.ts";
 import { usePreviewInput } from "../usePreviewInput.ts";
 
@@ -72,36 +75,43 @@ export function MotionStep({
   const input = usePreviewInput(catalogue, target, state);
   const name = useId();
   const [paused, setPaused] = usePaused();
+  const styleHidden = hiddenFields(target, state.uiComponents).get("motion_style");
   return (
     <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
       <div className="min-w-0 space-y-6">
-        <div className="flex flex-col items-start gap-3 sm:flex-row sm:justify-between sm:gap-4">
-          <div>
-            <p className="text-sm font-medium text-ink-200">How it moves</p>
-            <p className="mt-1 text-xs leading-relaxed text-ink-400">
-              Each loop runs the style&apos;s own springs from the design tokens: a press and its release, a screen pushed and popped,
-              a tab switch. Hold a phone&apos;s button down with the mouse or a finger to feel the press. Every spring is interruptible
-              and keeps its velocity in the app.
-            </p>
-          </div>
-          <PauseButton paused={paused} onChange={setPaused} label="the motion previews" />
-        </div>
-        <fieldset className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          <legend className="sr-only">Motion style</legend>
-          {target.motion_styles.map((style) => (
-            <MotionCard
-              key={style.key}
-              input={input}
-              model={model}
-              styleKey={style.key}
-              title={style.title}
-              description={style.description}
-              name={name}
-              dark={view.dark}
-              paused={paused}
-            />
-          ))}
-        </fieldset>
+        {styleHidden !== undefined ? (
+          <HiddenChoice title="Motion style" reason={styleHidden} />
+        ) : (
+          <>
+            <div className="flex flex-col items-start gap-3 sm:flex-row sm:justify-between sm:gap-4">
+              <div>
+                <p className="text-sm font-medium text-ink-200">How it moves</p>
+                <p className="mt-1 text-xs leading-relaxed text-ink-400">
+                  Each loop runs the style&apos;s own springs from the design tokens: a press and its release, a screen pushed and popped,
+                  a tab switch. Hold a phone&apos;s button down with the mouse or a finger to feel the press. Every spring is interruptible
+                  and keeps its velocity in the app.
+                </p>
+              </div>
+              <PauseButton paused={paused} onChange={setPaused} label="the motion previews" />
+            </div>
+            <fieldset className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <legend className="sr-only">Motion style</legend>
+              {target.motion_styles.map((style) => (
+                <MotionCard
+                  key={style.key}
+                  input={input}
+                  model={model}
+                  styleKey={style.key}
+                  title={style.title}
+                  description={style.description}
+                  name={name}
+                  dark={view.dark}
+                  paused={paused}
+                />
+              ))}
+            </fieldset>
+          </>
+        )}
 
         <div className="flex items-start gap-3 rounded-xl border border-ink-700 bg-ink-900 p-4">
           <Toggle checked={state.hapticsEnabled} onChange={(value) => dispatch({ type: "haptics", value })} label="Haptics on by default" />
@@ -115,7 +125,11 @@ export function MotionStep({
         </div>
       </div>
 
-      <LivePreview input={input} view={view} onView={onView} />
+      {state.uiComponents ? (
+        <LivePreview input={input} view={view} onView={onView} />
+      ) : (
+        <ThemeSlotsPreview input={input} view={view} onView={onView} />
+      )}
     </div>
   );
 }
