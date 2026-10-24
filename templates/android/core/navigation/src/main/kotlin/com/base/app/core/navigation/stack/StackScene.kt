@@ -355,33 +355,7 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
         return true
     }
 
-    /**
-     * The page beneath the back card, and the card's scrim over it, drawn only around [hole], in up to
-     * four strips. The card is opaque, so what lies under it would be drawn and painted over on every
-     * frame of the gesture: at its smallest the card still hides 81 % of the page, at its start all
-     * of it, and each frame starts with the GPU at the clock the gesture found it at.
-     */
-    private fun ContentDrawScope.drawAroundCard(hole: MutableRect) {
-        val w = size.width
-        val h = size.height
-        // Whole pixels, so every strip is a scissor; the hole shrinks to them, so the strips reach a
-        // little under the card's edges and no rounding opens a seam beside it.
-        val left = ceil(hole.left).coerceIn(0f, w)
-        val right = floor(hole.right).coerceIn(left, w)
-        val top = ceil(hole.top).coerceIn(0f, h)
-        val bottom = floor(hole.bottom).coerceIn(top, h)
-        val scrim = card.scrim.value
-        drawStrip(0f, 0f, w, top, scrim)
-        drawStrip(0f, bottom, w, h, scrim)
-        drawStrip(0f, top, left, bottom, scrim)
-        drawStrip(right, top, w, bottom, scrim)
-    }
-
-    private fun ContentDrawScope.drawStrip(left: Float, top: Float, right: Float, bottom: Float, scrim: Float) {
-        if (right <= left || bottom <= top) return
-        clipRect(left, top, right, bottom) { this@drawStrip.drawContent() }
-        if (scrim > 0f) drawRect(Color.Black, Offset(left, top), Size(right - left, bottom - top), alpha = scrim)
-    }
+    private fun ContentDrawScope.drawAroundCard(hole: MutableRect) = drawAroundHole(hole, card.scrim.value)
 
     private fun DrawScope.drawCardScrim() {
         val alpha = card.scrim.value
@@ -397,3 +371,39 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
 
 /** How dark the covered screen gets at the start of a push: lighter on a light theme, where black reads heavier. */
 internal fun coverScrimAlpha(isLight: Boolean): Float = if (isLight) 0.10f else 0.24f
+
+/**
+ * The page beneath the back card, and the card's scrim over it, drawn only around [hole], in up to
+ * four strips. The card is opaque, so what lies under it would be drawn and painted over on every
+ * frame of the gesture: at its smallest the card still hides 81 % of the page, at its start all
+ * of it, and each frame starts with the GPU at the clock the gesture found it at.
+ *
+ * While the card hides all of the page, as on the gesture's first frame, the page is still drawn,
+ * clipped to nothing. A frame that leaves it out of the window's drawing takes it out of the
+ * renderer's tree, which frees the display list of every layer in it, and the next frame, the first
+ * to show the page around the card, would record all of it again; a parked page is drawn at alpha 0
+ * for the same reason.
+ */
+internal fun ContentDrawScope.drawAroundHole(hole: MutableRect, scrim: Float) {
+    val w = size.width
+    val h = size.height
+    // Whole pixels, so every strip is a scissor; the hole shrinks to them, so the strips reach a
+    // little under the card's edges and no rounding opens a seam beside it.
+    val left = ceil(hole.left).coerceIn(0f, w)
+    val right = floor(hole.right).coerceIn(left, w)
+    val top = ceil(hole.top).coerceIn(0f, h)
+    val bottom = floor(hole.bottom).coerceIn(top, h)
+    val drawn = drawStrip(0f, 0f, w, top, scrim) or
+        drawStrip(0f, bottom, w, h, scrim) or
+        drawStrip(0f, top, left, bottom, scrim) or
+        drawStrip(right, top, w, bottom, scrim)
+    if (!drawn) clipRect(0f, 0f, 0f, 0f) { this@drawAroundHole.drawContent() }
+}
+
+/** One strip of the page around the card, under the scrim; false when the strip is empty. */
+private fun ContentDrawScope.drawStrip(left: Float, top: Float, right: Float, bottom: Float, scrim: Float): Boolean {
+    if (right <= left || bottom <= top) return false
+    clipRect(left, top, right, bottom) { this@drawStrip.drawContent() }
+    if (scrim > 0f) drawRect(Color.Black, Offset(left, top), Size(right - left, bottom - top), alpha = scrim)
+    return true
+}
