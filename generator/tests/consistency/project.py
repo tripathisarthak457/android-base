@@ -6,6 +6,13 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
+from genkit.core.copy import is_verbatim
+from genkit.targets import get
+
+#: Upstream files the template vendors byte for byte, such as the Kotlin samples in Google's skills: not the project's
+#: code, so never read as its sources.
+VERBATIM = get("android").manifest.verbatim
+
 DECLARATION = re.compile(
     r"^[ \t]*(?:@[\w.]+(?:\([^)]*\))?[ \t]+)*"
     r"(?:(?:public|internal|private|protected|abstract|open|sealed|data|enum|annotation|inline|value|inner|const"
@@ -57,8 +64,8 @@ def _templates(body: str) -> str:
 class Project:
     def __init__(self, root: Path):
         self.root = root
-        self.kotlin = sorted(root.rglob("*.kt"))
-        self.gradle = sorted(root.rglob("*.kts"))
+        self.kotlin = sorted(path for path in root.rglob("*.kt") if not self._verbatim(path))
+        self.gradle = sorted(path for path in root.rglob("*.kts") if not self._verbatim(path))
         self.text = {path: path.read_text(encoding="utf-8") for path in self.kotlin + self.gradle}
         self.code = {path: strip_code(text) for path, text in self.text.items()}
         #: package → names declared in it.
@@ -89,3 +96,6 @@ class Project:
 
     def relative(self, path: Path) -> str:
         return path.relative_to(self.root).as_posix()
+
+    def _verbatim(self, path: Path) -> bool:
+        return is_verbatim(self.relative(path), VERBATIM)

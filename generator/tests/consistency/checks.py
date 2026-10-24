@@ -16,14 +16,11 @@ from genkit.core.copy import is_verbatim
 from genkit.core.record import RECORD_NAME
 from genkit.targets import get
 
-from .project import IMPORT, Project
+from .project import IMPORT, VERBATIM, Project
 
 MARKER = re.compile(r"</?(?:opt|opt-else|generated):")
 IDENTITY = re.compile(r"(?<![\w.])com\.base\.app(?!\w)|com/base/app(?!\w)|(?<!\w)BaseApp|(?<![A-Za-z0-9])base_?app(?![A-Za-z0-9])")
 BINARY = {".jar", ".png", ".jpg", ".jpeg", ".webp", ".jks", ".ttf", ".otf", ".ico"}
-#: Upstream files the template vendors byte for byte; their text is not the template's to rename.
-VERBATIM = get("android").manifest.verbatim
-
 #: Operator and delegate names a Kotlin import provides without the name appearing in the code.
 _IMPLICIT = {
     "getValue", "setValue", "provideDelegate", "invoke", "plus", "minus", "times", "div", "contains",

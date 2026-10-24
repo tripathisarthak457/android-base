@@ -118,6 +118,27 @@ class IssuePathTest(unittest.TestCase):
         ], [issue.split(":", 1)[0] for issue in issues])
 
 
+class ProjectTest(unittest.TestCase):
+
+    def test_vendored_files_are_not_read_as_the_projects_sources(self):
+        files = {
+            "app/src/main/kotlin/x/Screen.kt": "package x\nfun title() = 1\n",
+            "app/build.gradle.kts": "plugins { }\n",
+            ".agents/skills/glance/references/Widget.kt": "package com.upstream\nimport nowhere.Missing\nfun widget() = 1\n",
+            ".agents/skills/glance/references/build.gradle.kts": "plugins { }\n",
+        }
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            for relative, text in files.items():
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(text, encoding="utf-8")
+            project = Project(root)
+            self.assertEqual(["app/src/main/kotlin/x/Screen.kt"], [project.relative(path) for path in project.kotlin])
+            self.assertEqual(["app/build.gradle.kts"], [project.relative(path) for path in project.gradle])
+            self.assertNotIn("com.upstream", project.declared)
+
+
 class RunnerTest(unittest.TestCase):
 
     def test_the_pool_is_handed_a_function_its_workers_can_import(self):
