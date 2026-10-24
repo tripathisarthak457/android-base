@@ -215,14 +215,14 @@ class SyntaxTableTest(unittest.TestCase):
 
 
 class RealTemplatesTest(unittest.TestCase):
-    """Every file of every template renders with all features on and with all off."""
+    """Every file of every template renders with all features and options on and with all off."""
 
     def test_every_template_renders_both_ways(self):
         from genkit.core.copy import is_verbatim, template_files
 
         for target in REGISTRY.values():
             manifest = target.manifest
-            known = frozenset(manifest.features)
+            known = frozenset(manifest.marker_keys)
             names = template_region_names(target.template_dir)
             regions: dict[str, list[str] | None] = dict.fromkeys(names, None)
             for enabled in (known, frozenset()):

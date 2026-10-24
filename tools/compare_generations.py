@@ -36,6 +36,7 @@ REPOSITORY = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPOSITORY / "generator"))
 
 from genkit.core import translations  # noqa: E402
+from genkit.core.copy import write_text  # noqa: E402
 from genkit.core.record import RECORD_NAME  # noqa: E402
 from genkit.core.spec import STAMP_KEY  # noqa: E402
 from genkit.targets import get  # noqa: E402
@@ -95,7 +96,7 @@ def generate(checkout: Path, spec: dict, destination: Path) -> float:
     """Generates `spec` with `checkout`'s own generator; returns the seconds it took."""
     destination.parent.mkdir(parents=True, exist_ok=True)
     spec_file = destination.parent / f"{destination.name}.spec.json"
-    spec_file.write_text(json.dumps(spec), encoding="utf-8")
+    write_text(spec_file, json.dumps(spec))
     started = time.perf_counter()
     result = subprocess.run(
         [sys.executable, str(checkout / "generator" / "create_project.py"),
