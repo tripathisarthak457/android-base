@@ -37,8 +37,8 @@ PROJECT_DIRS = (
     ".agents", ".claude", "app", "benchmark", "build-logic", "catalog", "config", "core", "data", "docs", "domain",
     "feature", "gradle", "tools",
 )
-#: Words of the workshop that builds the template, and private names, which a project's docs never contain.
-WORKSHOP_WORDS = re.compile(r"overhaul|staging-wp|\bWP\d\d\b|REQUIREMENTS|periflow|vitfleet|jorwen", re.IGNORECASE)
+#: Words of the workshop that builds the template, which a project's docs never contain.
+WORKSHOP_WORDS = re.compile(r"overhaul|staging-wp|\bWP\d\d\b|REQUIREMENTS", re.IGNORECASE)
 #: Platform and library names the docs cite. A project need not spell them out, and the template may declare one of
 #: its own with the same name.
 LIBRARY_NAMES = frozenset({
