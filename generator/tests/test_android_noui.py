@@ -48,6 +48,41 @@ SHAPES = {
 
 OPTION = ANDROID.manifest.options["ui_components"]
 
+#: The names in the rules' advice that libraries declare, not the project (and a word that only looks
+#: like code). Every other name the advice cites must be the project's own, so a rule never sends a
+#: reader to a component, token or helper the project does not have.
+ADVICE_LIBRARY_NAMES = frozenset({
+    # Kotlin and coroutines
+    "checkNotNull", "runCatching", "GlobalScope",
+    # Compose
+    "BoxWithConstraints", "CompositingStrategy", "ModulateAlpha", "FlexBox", "LazyVerticalGrid", "MediaQuery",
+    "ModifierNodeElement", "collectAsState", "contentPadding", "contentType", "drawLine", "drawRect", "fillMax",
+    "flingBehavior", "horizontalScroll", "stringResource", "verticalScroll", "widthIn",
+    # Lifecycle, Navigation 3, navigationevent, Material 3 adaptive, Coil
+    "collectAsStateWithLifecycle", "ViewModel", "ViewModels", "NavDisplay", "SceneStrategy", "NavigationBackHandler",
+    "NavigationSuiteScaffold", "AsyncImage", "SubcomposeAsyncImage",
+    # Words
+    "iOS",
+})
+_ADVICE = re.compile(r'advice\s*=\s*((?:"(?:[^"\\]|\\.)*"\s*\+?\s*)+)')
+_ADVICE_PART = re.compile(r'"((?:[^"\\]|\\.)*)"')
+_RULE_SETS = re.compile(r"val ALL: List<Rule> =([^\n]*\n(?:[ \t]+[^\n]*\n)*)")
+_THEME_MEMBER = re.compile(r"\bAppTheme\.(\w+)")
+_ANNOTATION = re.compile(r"@([A-Z]\w*)")
+#: Code-shaped names: two or more humps, PascalCase or camelCase; an acronym (UI, GPU, TODO) is not one.
+_CODE_NAME = re.compile(r"(?<![\w@])(?=\w*[a-z])([A-Za-z][a-z0-9]*(?:[A-Z][a-z0-9]*)+)\b")
+
+
+def active_advice(project: Path) -> list[str]:
+    """The advice of every rule in the project's CodeRules.ALL."""
+    guard = project / f"build-logic/convention/src/main/kotlin/{PKG}/buildlogic/guard"
+    sets = _RULE_SETS.search((guard / "CodeRules.kt").read_text(encoding="utf-8")).group(1)
+    return [
+        "".join(_ADVICE_PART.findall(match.group(1)))
+        for name in re.findall(r"(\w+)\.ALL", sets)
+        for match in _ADVICE.finditer((guard / f"{name}.kt").read_text(encoding="utf-8"))
+    ]
+
 
 class ProjectShapeTest(unittest.TestCase):
     """What every shape of No-UI project holds and lacks."""
@@ -146,6 +181,30 @@ class ProjectShapeTest(unittest.TestCase):
         for name, project in self.projects.items():
             with self.subTest(project=name):
                 self.assertFalse((project / "feature/home").exists())
+
+    def test_every_name_the_rules_advise_is_in_the_project(self):
+        for name, project in self.projects.items():
+            with self.subTest(project=name):
+                sources = "\n".join(
+                    path.read_text(encoding="utf-8")
+                    for path in project.rglob("*.kt")
+                    if "/src/main/" in path.as_posix() and not path.is_relative_to(project / "build-logic")
+                )
+                theme = project / f"core/designsystem/src/main/kotlin/{PKG}/core/designsystem/theme/AppTheme.kt"
+                members = set(re.findall(r"\b(?:val|fun)\s+(\w+)", theme.read_text(encoding="utf-8")))
+                annotations = set(re.findall(r"\bannotation class (\w+)", sources))
+                declared = set(re.findall(
+                    r"\b(?:class|object|interface|fun|val|var|typealias)\s+(?:<[^>]*>\s*)?(?:[\w.]+\.)?(\w+)", sources,
+                ))
+                missing = set()
+                advice = active_advice(project)
+                self.assertTrue(advice)
+                for line in advice:
+                    missing |= {f"AppTheme.{m}" for m in _THEME_MEMBER.findall(line) if m not in members}
+                    missing |= {f"@{a}" for a in _ANNOTATION.findall(line) if a not in annotations}
+                    names = _CODE_NAME.findall(_THEME_MEMBER.sub("", line))
+                    missing |= {n for n in names if n not in declared and n not in ADVICE_LIBRARY_NAMES}
+                self.assertEqual(set(), missing)
 
     def test_the_app_profile_names_only_classes_the_project_has(self):
         from tests.android_profile import classes_of, kept
