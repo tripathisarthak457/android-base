@@ -134,9 +134,11 @@ change can fail them:
 - **Glyphs.** The preview draws `AppIcons` from `features/preview/glyphs.ts`. After adding or
   redrawing a glyph in `core/designsystem/.../icon/glyph/`, run `npm run glyphs` and commit the file.
 - **The tab bar, the chip and the tabs.** `features/preview/bar.ts`, `chip.ts` and `tabs.ts` copy the
-  sizes, enums and springs of `AppTabBar.kt`, `TabCells.kt`, `TabReveal.kt`, `AppDesignStyle.kt` and
-  `AppChip.kt`, the glyph tables of `generator/genkit/targets/android/tabs.py` and the tabs of
-  `AppDestinations.kt`. Change the copy in the same commit; the failing test names the value.
+  sizes, enums, colours and springs of `AppTabBar.kt`, `TabCells.kt`, `TabReveal.kt`, `AppDesignStyle.kt`
+  and `AppChip.kt`, the push spring of `NavTransitions.kt` and the line of `AppShell.kt` that picks it,
+  the condition in `KeptTabs.kt` that reveals a tab, the glyph tables of
+  `generator/genkit/targets/android/tabs.py` and the tabs of `AppDestinations.kt`. Change the copy in
+  the same commit; the failing test names the value.
 - **Claims.** `features/catalogue/claims.test.ts` pairs each sentence the hero, the included cards
   and the FAQ say about the template with the code that makes it true. Reword the sentence, and its
   row, when a change makes it false.
@@ -144,7 +146,9 @@ change can fail them:
   (`features/catalogue/ci.ts`); change both together.
 - **Privacy.** `docs/telemetry-and-privacy.md` must name every browser storage key, every outside
   origin in the site's content security policy, every column under `web/api/internal/store/migrations`
-  and every retention default; `features/privacy/privacy.test.ts` fails otherwise.
+  and every retention default; `features/privacy/privacy.test.ts` fails otherwise. What it says about
+  the API's logs and how long the rate limits hold an address is not tested: re-read it when you change
+  the server's logging (`cmd/server/main.go`) or the limiter (`internal/httpapi/middleware.go`).
 
 ## Code quality
 
