@@ -10,6 +10,7 @@ import {
   type ConfigState,
   type StartOverUndo,
   type Step,
+  drawsGlassBar,
   enabledTarget,
   findTarget,
   initialState,
@@ -140,6 +141,20 @@ test("ticking video brings image loading, and unticking image loading takes vide
   const unticked = run(ticked, { type: "feature", key: "coil" });
   assert.ok(!unticked.features.includes("coil"));
   assert.ok(!unticked.features.includes("video"));
+});
+
+test("only a design style with a glass bar says where glass blurs, not the liquidglass feature alone", () => {
+  const everything = run(initialState(catalogue), { type: "preset", key: "everything" });
+  assert.ok(everything.features.includes("liquidglass"));
+  assert.notEqual(catalogue.tokens.styles[everything.designStyle]?.bar, "Glass");
+  assert.equal(drawsGlassBar(everything, catalogue), false);
+  assert.equal(drawsGlassBar(run(initialState(catalogue), { type: "feature", key: "liquidglass" }), catalogue), false);
+
+  const withGlass = loadCatalogue();
+  withGlass.tokens.styles.Glass = { ...withGlass.tokens.styles[everything.designStyle]!, bar: "Glass" };
+  const android = withGlass.targets[0]!;
+  android.design_styles = [...android.design_styles, { key: "Glass", title: "Glass", description: "", requires: ["liquidglass"] }];
+  assert.equal(drawsGlassBar(reducer(everything, { type: "designStyle", value: "Glass" }, withGlass), withGlass), true);
 });
 
 test("a design style that needs a feature turns it on", () => {

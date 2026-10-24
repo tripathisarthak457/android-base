@@ -4,7 +4,7 @@ import { type InputHTMLAttributes, useId, useState } from "react";
 import { ChoiceCard, Field, TextInput, Toggle } from "../../../components/primitives.tsx";
 import type { Catalogue, Field as CatalogueField, Rules } from "../../catalogue/types.ts";
 import { offersSigning } from "../request.ts";
-import { choiceValue, lowerName, settingFields } from "../state.ts";
+import { choiceValue, drawsGlassBar, lowerName, settingFields } from "../state.ts";
 import type { ConfiguratorModel } from "../useConfigurator.ts";
 import { passwordProblem } from "../validation/keystores.ts";
 
@@ -51,7 +51,7 @@ export function BuildStep({ catalogue, model }: { catalogue: Catalogue; model: C
     (field) => field.type !== "keystores" && (field.requires ?? []).every((key) => features.has(key)) && !(field.choices && field.choices.length < 2),
   );
   const minSdk = typeof state.settings["android.min_sdk"] === "number" ? state.settings["android.min_sdk"] : undefined;
-  const glass = features.has("liquidglass") || catalogue.tokens.styles[state.designStyle]?.bar === "Glass";
+  const glass = drawsGlassBar(state, catalogue);
   const keystores = target.fields.find((field) => field.type === "keystores");
 
   return (
