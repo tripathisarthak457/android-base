@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import type { Catalogue, Option, OptionLock, Target } from "./types.ts";
+import type { Catalogue, OptionLock, Target } from "./types.ts";
 
 /** The repository root, for the fixtures the generator and the API share with these tests. */
 const REPOSITORY = join(import.meta.dirname, "..", "..", "..", "..");
@@ -9,48 +9,8 @@ export function readJson<T>(...path: string[]): T {
   return JSON.parse(readFileSync(join(REPOSITORY, ...path), "utf8")) as T;
 }
 
-/**
- * The android target's `ui_components` option, word for word as the generator's option file
- * describes it, for a checked-in catalogue written before the generator emitted options.
- */
-const UI_COMPONENTS: Option = {
-  key: "ui_components",
-  title: "UI components",
-  checkbox: { label: "No UI components", ticked_value: false },
-  headline: "Setup only: the architecture, every build guard and a theme skeleton, without UI components",
-  description:
-    "Every non-UI part of the project: the modules, MVI, Navigation 3 with deep links and process-death restore, data, DI, " +
-    "tests and every build guard. core:designsystem is a theme skeleton (AppTheme with colour, type, spacing, shape and " +
-    "motion slots, filled with neutral values and your colours and font) with no components; each screen is a one-line " +
-    "placeholder route over its ViewModel, and the app opens on a blank start screen. The developer panel, the performance " +
-    "overlay and LeakCanary stay.",
-  default: true,
-  disables: [
-    { feature: "catalog", reason: "The catalog app shows the design system's components, and this project has none." },
-    {
-      feature: "collections",
-      reason: "Carousels, reorderable lists and the image viewer are components; build yours on the theme skeleton.",
-    },
-    { feature: "datadisplay", reason: "Stat tiles, charts and tables are components; build yours on the theme skeleton." },
-    { feature: "formfields", reason: "Code, money and phone fields are components; form state and validation (forms) stay." },
-    { feature: "pickers", reason: "Calendars and wheel pickers are components; build yours on the theme skeleton." },
-    { feature: "liquidglass", reason: "Glass is drawn by components and the shell, which this project leaves to your design system." },
-  ],
-  hides: [
-    { field: "design_style", reason: "Your design system decides corners, surfaces and type voice; the theme starts from neutral values." },
-    { field: "motion_style", reason: "Your components decide their motion; the theme keeps neutral springs and reduce-motion." },
-  ],
-  locked: null,
-};
-
 export function loadCatalogue(): Catalogue {
-  const catalogue = readJson<Catalogue>("web", "frontend", "lib", "catalogue.json");
-  return {
-    ...catalogue,
-    targets: catalogue.targets.map((target) =>
-      Array.isArray(target.options) ? target : { ...target, options: target.key === "android" ? [UI_COMPONENTS] : [] },
-    ),
-  };
+  return readJson<Catalogue>("web", "frontend", "lib", "catalogue.json");
 }
 
 /** The note the setup-only release locks the option with. */
