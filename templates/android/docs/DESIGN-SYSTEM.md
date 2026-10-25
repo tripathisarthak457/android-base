@@ -179,12 +179,18 @@ Each rule's message names the reference page in `.agents/skills/` where one appl
 | `sheet-conditional`, `sheet-root`, `sheet-ime-padding`, `sheet-modifier` | sheets that move only layers | keep `AppSheet` composed; one root taking `contentPadding` |
 | `sheet-window`, `sheet-shadow`, `sheet-raw-delta`, `sheet-when-else`, `shell-seam` | the sheet system's geometry | no `Dialog` or shadows inside; an `else` branch; no `ShellSeamApi` in features |
 <!-- </opt:ui_components> -->
-<!-- <opt:!ui_components> -->
 | `designsystem-imports` | a design system that cannot reach data | import only Compose and the theme |
 | `stateless-params` | stateless components | take values and callbacks, never a ViewModel, repository or `Flow` |
 | `raw-type` | one type scale | `AppTheme.typography.x`, `.copy()` for a one-off |
+| `modifier-unused` | callers can size, place and describe a component | apply the `modifier` parameter to what the composable draws |
+| `composition-read` | a moving value redraws, it does not recompose | read `x.value` inside `graphicsLayer { }`, `offset { }` or `layout { }` |
+| `feature-composition-local` | configuration a reader can follow | pass it as a parameter; a value the whole tree reads is a theme token |
+| `empty-description` | nothing hidden from screen readers by accident | `null` for decoration, or a string resource that says what it shows |
+| `navigation-host-api` | features stay out of the navigation host | navigate through `AppNavigator`, register with `entry<Key>` |
+<!-- <opt:!ui_components> -->
 | `feature-primitive` | features arrange, the design system draws | draw it once in `:core:designsystem` |
 | `component-preview` | every component rendered and tested | `@AppComponentPreviews` on the component's preview |
+| `offscreen-layer` | no texture per frame without a reason | draw without the layer (`CompositingStrategy.ModulateAlpha` for alpha), or say why in the marker |
 <!-- </opt:!ui_components> -->
 
 A `@Composable` in a module without the Compose compiler fails as `compose-compiler`: apply the Compose convention.

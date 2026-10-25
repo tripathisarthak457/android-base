@@ -27,8 +27,8 @@ internal object SheetRules {
         ),
         Rule(
             id = "sheet-shadow",
-            advice = "a sheet draws its shadow from one cached nine-slice (SheetShadow); a shadow modifier " +
-                "re-renders a blur every frame it moves",
+            advice = "a sheet draws its shadow from one cached nine-slice (SheetShadowCache); a shadow " +
+                "modifier re-renders a blur every frame it moves",
             applies = sheetCode,
             lines = pattern(Regex("""\.\s*(?:shadow|dropShadow)\s*\(|\bshadowElevation\b""")),
         ),

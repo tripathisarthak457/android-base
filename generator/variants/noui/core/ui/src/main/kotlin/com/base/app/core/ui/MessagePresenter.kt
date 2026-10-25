@@ -31,6 +31,7 @@ class PresentedMessage(
     val onAction: (() -> Unit)?,
 )
 
+// allow(feature-composition-local): the seam the design system's message host fills once
 val LocalMessagePresenter = staticCompositionLocalOf { LoggingPresenter }
 
 private val LoggingPresenter = MessagePresenter { message ->

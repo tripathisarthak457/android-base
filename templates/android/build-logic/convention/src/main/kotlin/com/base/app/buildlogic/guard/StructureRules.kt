@@ -50,6 +50,15 @@ internal object StructureRules {
             applies = { it.inData && it.isProduction && API_DIRECTORY in it.inSourceSet },
             lines = CodeRules.pattern(Regex("""${MUTABLE.pattern}|\bArray<|\b(?:Int|Long|Short|Byte|Char|Float|Double|Boolean)Array\b""")),
         ),
+        // The navigation host's own API crosses into the runtime behind an opt-in so the app and the
+        // shell can call it; a feature that opts in can reach back-stack internals it must not touch.
+        Rule(
+            id = "navigation-host-api",
+            advice = "a feature never opts in to the navigation host's API; it navigates through " +
+                "AppNavigator and registers its screens with entry<Key>",
+            applies = { it.inFeature },
+            lines = CodeRules.pattern(Regex("""\bNavigationHostApi\b""")),
+        ),
         Rule(
             id = "hardcoded-copy",
             advice = "move the copy to src/main/res/values/strings.xml and read it with stringResource or UiText",

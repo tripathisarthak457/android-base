@@ -28,6 +28,68 @@ internal object Declarations {
         }.toList()
     }
 
+    /**
+     * The offsets of [function]'s body: its `{ … }` block, or the expression after `=` up to the
+     * line break that ends it. Null for a function without one (abstract, or in an interface).
+     */
+    fun body(source: KotlinSource, function: Function): IntRange? {
+        val code = source.code
+        val parameters = code.indexOf('(', function.offset)
+        if (parameters < 0) return null
+        var index = skipBlank(code, closing(code, parameters) + 1, lines = false)
+        if (code.getOrNull(index) == ':') index = returnTypeEnd(code, index + 1)
+        index = skipBlank(code, index, lines = true)
+        return when (code.getOrNull(index)) {
+            '{' -> index..closing(code, index)
+            '=' -> index..expressionEnd(code, index + 1)
+            else -> null
+        }
+    }
+
+    /** Where a return type ends: at the body's `{` or `=`, or at the end of its line. */
+    private fun returnTypeEnd(code: String, from: Int): Int {
+        var angles = 0
+        var index = from
+        while (index < code.length) {
+            when (code[index]) {
+                '<' -> angles++
+                // `->` in a function type is not a closing angle bracket.
+                '>' -> if (code[index - 1] != '-') angles--
+                '(', '[' -> index = closing(code, index)
+                '{', '=', '\n' -> if (angles == 0) return index
+            }
+            index++
+        }
+        return index
+    }
+
+    /**
+     * Where an expression body that starts at [from] ends: the first line break outside brackets
+     * that the next line does not continue with an operator (`.`, `?.`, `?:`, `&&`, …) or `else`.
+     */
+    private fun expressionEnd(code: String, from: Int): Int {
+        var index = skipBlank(code, from, lines = true)
+        while (index < code.length) {
+            when (code[index]) {
+                '(', '[', '{' -> index = closing(code, index)
+                '\n' -> {
+                    val next = skipBlank(code, index, lines = true)
+                    val continues = code.getOrNull(next) in CONTINUATIONS || code.startsWith("else", next)
+                    if (!continues) return index - 1
+                    index = next - 1
+                }
+            }
+            index++
+        }
+        return code.length - 1
+    }
+
+    private fun skipBlank(code: String, from: Int, lines: Boolean): Int {
+        var index = from
+        while (index < code.length && code[index].isWhitespace() && (lines || code[index] != '\n')) index++
+        return index
+    }
+
     /** Declarations at the top of the file, outside any class, function or parameter list. */
     fun topLevel(source: KotlinSource): List<TopLevel> {
         val depths = source.depths
@@ -164,6 +226,9 @@ internal object Declarations {
     }
 
     private val PAIRS = mapOf('(' to ')', '{' to '}', '[' to ']')
+
+    /** The first character of a line that carries on the expression of the line above. */
+    private val CONTINUATIONS = setOf('.', '?', ':', '&', '|', '+', '-', '*', '/')
 
     private const val ANNOTATION = """@[\w.]+(?:\([^()]*\))?\s+"""
     private const val MODIFIER_WORDS =

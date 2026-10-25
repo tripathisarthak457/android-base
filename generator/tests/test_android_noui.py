@@ -61,7 +61,8 @@ ADVICE_LIBRARY_NAMES = frozenset({
     # Compose
     "BoxWithConstraints", "CompositingStrategy", "ModulateAlpha", "FlexBox", "LazyVerticalGrid", "MediaQuery",
     "ModifierNodeElement", "collectAsState", "contentPadding", "contentType", "drawLine", "drawRect", "fillMax",
-    "flingBehavior", "horizontalScroll", "stringResource", "verticalScroll", "widthIn",
+    "flingBehavior", "horizontalScroll", "stringResource", "verticalScroll", "widthIn", "graphicsLayer",
+    "dispatchRawDelta",
     "WindowInsets", "asPaddingValues", "safeDrawing", "windowInsetsPadding",
     # Lifecycle, Navigation 3, navigationevent, Material 3 adaptive, Coil
     "collectAsStateWithLifecycle", "ViewModel", "ViewModels", "NavDisplay", "SceneStrategy", "NavigationBackHandler",
@@ -128,15 +129,41 @@ def section(settings: list[str], tier: str) -> int:
     return next(index for index, line in enumerate(settings) if line.startswith(f"// ── {tier} "))
 
 
-def active_advice(project: Path) -> list[str]:
+def active_advice(project: Path, package_path: str = PKG) -> list[str]:
     """The advice of every rule in the project's CodeRules.ALL."""
-    guard = project / f"build-logic/convention/src/main/kotlin/{PKG}/buildlogic/guard"
+    guard = project / f"build-logic/convention/src/main/kotlin/{package_path}/buildlogic/guard"
     sets = _RULE_SETS.search((guard / "CodeRules.kt").read_text(encoding="utf-8")).group(1)
     return [
         "".join(_ADVICE_PART.findall(match.group(1)))
         for name in re.findall(r"(\w+)\.ALL", sets)
         for match in _ADVICE.finditer((guard / f"{name}.kt").read_text(encoding="utf-8"))
     ]
+
+
+def unreachable_advice(project: Path, package_path: str = PKG) -> set[str]:
+    """
+    What the active rules' advice names that the project does not declare: an `AppTheme.x` member, an `@AppX`
+    annotation, or a code name (`AppX`, `XDefaults`, `Modifier.x`'s `x`) that is neither the project's nor in
+    ADVICE_LIBRARY_NAMES. Empty when every rule sends its reader to something the project has.
+    """
+    sources = "\n".join(
+        path.read_text(encoding="utf-8")
+        for path in project.rglob("*.kt")
+        if "/src/main/" in path.as_posix() and not path.is_relative_to(project / "build-logic")
+    )
+    theme = project / f"core/designsystem/src/main/kotlin/{package_path}/core/designsystem/theme/AppTheme.kt"
+    members = set(re.findall(r"\b(?:val|fun)\s+(\w+)", theme.read_text(encoding="utf-8")))
+    annotations = set(re.findall(r"\bannotation class (\w+)", sources))
+    declared = set(re.findall(
+        r"\b(?:class|object|interface|fun|val|var|typealias)\s+(?:<[^>]*>\s*)?(?:[\w.]+\.)?(\w+)", sources,
+    ))
+    missing: set[str] = set()
+    for line in active_advice(project, package_path):
+        missing |= {f"AppTheme.{m}" for m in _THEME_MEMBER.findall(line) if m not in members}
+        missing |= {f"@{a}" for a in _ANNOTATION.findall(line) if a not in annotations}
+        names = _CODE_NAME.findall(_THEME_MEMBER.sub("", line))
+        missing |= {n for n in names if n not in declared and n not in ADVICE_LIBRARY_NAMES}
+    return missing
 
 
 class ProjectShapeTest(unittest.TestCase):
@@ -282,26 +309,8 @@ class ProjectShapeTest(unittest.TestCase):
     def test_every_name_the_rules_advise_is_in_the_project(self):
         for name, project in self.projects.items():
             with self.subTest(project=name):
-                sources = "\n".join(
-                    path.read_text(encoding="utf-8")
-                    for path in project.rglob("*.kt")
-                    if "/src/main/" in path.as_posix() and not path.is_relative_to(project / "build-logic")
-                )
-                theme = project / f"core/designsystem/src/main/kotlin/{PKG}/core/designsystem/theme/AppTheme.kt"
-                members = set(re.findall(r"\b(?:val|fun)\s+(\w+)", theme.read_text(encoding="utf-8")))
-                annotations = set(re.findall(r"\bannotation class (\w+)", sources))
-                declared = set(re.findall(
-                    r"\b(?:class|object|interface|fun|val|var|typealias)\s+(?:<[^>]*>\s*)?(?:[\w.]+\.)?(\w+)", sources,
-                ))
-                missing = set()
-                advice = active_advice(project)
-                self.assertTrue(advice)
-                for line in advice:
-                    missing |= {f"AppTheme.{m}" for m in _THEME_MEMBER.findall(line) if m not in members}
-                    missing |= {f"@{a}" for a in _ANNOTATION.findall(line) if a not in annotations}
-                    names = _CODE_NAME.findall(_THEME_MEMBER.sub("", line))
-                    missing |= {n for n in names if n not in declared and n not in ADVICE_LIBRARY_NAMES}
-                self.assertEqual(set(), missing)
+                self.assertTrue(active_advice(project))
+                self.assertEqual(set(), unreachable_advice(project))
 
     def test_the_profiles_name_only_classes_the_project_has(self):
         from tests.android_profile import classes_of, kept

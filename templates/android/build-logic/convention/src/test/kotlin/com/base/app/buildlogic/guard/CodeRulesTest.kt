@@ -194,16 +194,26 @@ class CodeRulesTest {
         ),
         // </opt:ui_components>
         // <opt-else:ui_components>
-        //~ Fixture("designsystem-imports", DESIGN_SYSTEM, "import androidx.room.Dao /*!*/"),
-        //~ Fixture("stateless-params", DESIGN_SYSTEM, "@Composable fun Tag(rows: Flow<List<Row>>) {} /*!*/"),
-        //~ Fixture("raw-type", FEATURE, "private val s = 14.sp /*!*/"),
         //~ Fixture("feature-primitive", FEATURE, "private fun f(m: Modifier) = m.border(border) /*!*/"),
         //~ Fixture(
         //~     "component-preview",
         //~     DESIGN_SYSTEM,
-        //~     "package com.acme.core.designsystem.component /*!*/\n@Composable fun Tag(modifier: Modifier) {}",
+        //~     "package com.acme.core.designsystem.component /*!*/\n@Composable fun Tag(modifier: Modifier) = Box(modifier)",
+        //~ ),
+        //~ Fixture(
+        //~     "offscreen-layer",
+        //~     DESIGN_SYSTEM,
+        //~     "fun Modifier.frost() = graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen } /*!*/",
         //~ ),
         // </opt-else:ui_components>
+        Fixture("designsystem-imports", DESIGN_SYSTEM, "import androidx.room.Dao /*!*/"),
+        Fixture("stateless-params", DESIGN_SYSTEM, "@Composable fun Tag(rows: Flow<List<Row>>) {} /*!*/"),
+        Fixture("raw-type", FEATURE, "private val s = 14.sp /*!*/"),
+        Fixture("modifier-unused", DESIGN_SYSTEM, "@Composable private fun Tag(modifier: Modifier) {} /*!*/"),
+        Fixture("composition-read", FEATURE, "private fun f(m: Modifier, fade: State<Float>) = m.alpha(fade.value) /*!*/"),
+        Fixture("feature-composition-local", CORE_UI, "val LocalClock = staticCompositionLocalOf<Clock> { error(\"none\") } /*!*/"),
+        Fixture("empty-description", FEATURE, "private fun f() = Icon(icon, contentDescription = \"\") /*!*/"),
+        Fixture("navigation-host-api", FEATURE, "@OptIn(NavigationHostApi::class) /*!*/"),
 
         Fixture("scroll-fling", CORE_UI, "private fun Photos() = LazyRow(state = photos) { } /*!*/"),
     )
