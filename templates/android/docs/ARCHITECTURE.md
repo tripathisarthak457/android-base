@@ -317,9 +317,21 @@ like any destination. `AppDestinations.start` names it; change it to your first 
 
 `StartupViewModel` still turns settings and the session into an `EntryIdentity` (onboarding, signed out, signed in
 with a session generation), and `AppRoot` keys the host on it, so a sign-out or a new account starts a fresh back
-stack and no screen outlives its session. Every identity opens on the start screen: onboarding and sign-in are routes
-reachable by navigation and deep links, and their placeholders have no way forward yet. When your onboarding and
-sign-in screens exist, pass the identity to the stack `AppRoot` keys on it and pick its start key there:
+stack and no screen outlives its session. Every identity opens on the start screen.
+<!-- <opt:onboarding&auth> -->
+Nothing opens onboarding or sign-in yet: their routes are registered, a link reaches them only once a `DeepLinkRoute`
+maps it, and their placeholders have no way forward.
+<!-- </opt:onboarding&auth> -->
+<!-- <opt:onboarding&!auth> -->
+Nothing opens onboarding yet: its route is registered, a link reaches it only once a `DeepLinkRoute` maps it, and its
+placeholder has no way forward.
+<!-- </opt:onboarding&!auth> -->
+<!-- <opt:auth&!onboarding> -->
+Nothing opens sign-in yet: its route is registered, a link reaches it only once a `DeepLinkRoute` maps it, and its
+placeholder has no way forward.
+<!-- </opt:auth&!onboarding> -->
+When your onboarding and sign-in screens exist, pass the identity to the stack `AppRoot` keys on it and pick its start
+key there:
 
 ```kotlin
 val start = when (identity) {

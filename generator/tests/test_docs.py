@@ -363,10 +363,18 @@ class GeneratedDocsTest(unittest.TestCase):
                     for path, text in main.items()
                 )
 
+            def opened_by_nothing(feature: str, key: str) -> bool:
+                own = f"feature/{feature}/"
+                return (project / own).is_dir() and not any(
+                    re.search(rf"\b{key}\b", text) for path, text in main.items() if not path.startswith(own)
+                )
+
             claims = {
                 "asked at the end of onboarding": lambda: asks_in("feature/onboarding/"),
                 "offered again in settings": lambda: asks_in("feature/settings/"),
                 "Nothing asks for the permission to post notifications": lambda: not asks_in(""),
+                "Nothing opens onboarding": lambda: opened_by_nothing("onboarding", "OnboardingKey"),
+                r"Nothing opens (?:onboarding or )?sign-in": lambda: opened_by_nothing("auth", "SignInKey"),
             }
             for page, text in self.pages(project).items():
                 flat = " ".join(prose(text).split())
@@ -374,6 +382,20 @@ class GeneratedDocsTest(unittest.TestCase):
                     if re.search(claim, flat):
                         with self.subTest(case=name, page=page, claim=claim):
                             self.assertTrue(holds(), f"{page} says '{claim}', which the code does not do")
+
+    def test_the_docs_call_onboarding_and_sign_in_routes_only_where_the_project_has_them(self):
+        for name, project in self.projects.items():
+            for feature, word in (("onboarding", "onboarding"), ("auth", "sign-in")):
+                if (project / "feature" / feature).is_dir():
+                    continue
+                for page, text in self.pages(project).items():
+                    sentences = re.split(r"(?<=[.:;])\s+", " ".join(prose(text).split()))
+                    with self.subTest(case=name, page=page, feature=feature):
+                        self.assertEqual([], [
+                            sentence for sentence in sentences
+                            if re.search(rf"\b{word}\b", sentence, re.IGNORECASE)
+                            and re.search(r"\b(?:routes?|placeholders?)\b", sentence)
+                        ])
 
     def test_the_design_system_doc_carries_both_templates(self):
         for name, project in self.projects.items():

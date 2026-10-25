@@ -191,10 +191,11 @@ re-tapping the active tab pops it to its root.
 <!-- <opt:!ui_components> -->
 
 The app opens on a blank start screen (`StartKey`, named by `AppDestinations.start`) hosted by
-Navigation 3's own `NavDisplay`. Onboarding, sign-in and every other screen are placeholder
-routes reachable by navigation and deep links. The session still keys the host, so signing out
-starts a fresh back stack; [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#the-entry-identity-is-wired-the-gates-are-yours)
-shows how to send each identity to its own start once those screens exist.
+Navigation 3's own `NavDisplay`, and nothing leads off it yet: every destination a feature
+registers draws a placeholder, which a navigator call reaches, and a link only once a
+`DeepLinkRoute` maps it. The session still keys the host, so signing out starts a fresh back
+stack; [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#the-entry-identity-is-wired-the-gates-are-yours)
+shows how to send each identity to its own start once you have onboarding and sign-in screens.
 <!-- </opt:!ui_components> -->
 
 ## Adding a feature
