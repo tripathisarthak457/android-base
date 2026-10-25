@@ -90,6 +90,47 @@ Pass a stable type, a `() -> T` provider, or declare a type immutable in
 deliberately: `./gradlew :core:designsystem:recordComposeStability`, then write the reason, in a
 commit that says why.
 
+### Accessibility in every preview
+
+Every `@Preview` is a screenshot test, and each render goes through Google's Accessibility Test
+Framework: a touch target under 48 dp, a control with no label or two controls on one spot fails
+the test that drew it (`./gradlew check` runs them all). Fix the finding in the component or the
+screen; a result that is right to accept goes in `AccessibilityPreviewTester`'s list with its
+reason, never by turning a check off.
+
+### What the release ships
+
+```bash
+./gradlew dependencyGuard              # part of check
+./gradlew dependencyGuardBaseline      # after a deliberate change
+```
+
+The prod release's libraries, transitive ones included, are listed under app/dependencies. The first
+build writes the list; commit it. From then on a new library, or a version a bump drags in, fails
+the build until `dependencyGuardBaseline` rewrites the list, so the change is read in the same
+commit as its cause.
+
+### Formatting and the Compose rules
+
+<!-- <opt:formatting> -->
+```bash
+./gradlew spotlessCheck      # part of check
+./gradlew spotlessApply      # fixes the layout
+```
+
+Spotless runs ktlint in Android Studio's style over every Kotlin and Gradle file, so the IDE's
+reformat and the build agree, and the Compose Rules for ktlint, which check how a composable takes
+and uses its parameters. `.editorconfig` holds both, and names each Compose rule turned off and why.
+<!-- </opt:formatting> -->
+<!-- <opt:!formatting> -->
+```bash
+./gradlew spotlessCheck      # part of check
+```
+
+Spotless runs the Compose Rules for ktlint over every Kotlin file: how a composable takes and uses
+its parameters. `.editorconfig` names each rule turned off and why.
+<!-- </opt:!formatting> -->
+
 <!-- <opt:coverage> -->
 
 ### Coverage

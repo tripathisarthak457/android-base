@@ -147,7 +147,7 @@ something the template calls, and `./gradlew build --warning-mode all` is where 
 Nothing is done until these pass. Run them and read the output.
 
 ```bash
-cd generator && python3 -m unittest discover -s tests -t .       # seconds
+cd generator && python3 -m unittest discover -s tests -t .       # several minutes
 cd templates/android && ./gradlew build                                  # the template, all features on
 
 # both extremes of the generator, built for real

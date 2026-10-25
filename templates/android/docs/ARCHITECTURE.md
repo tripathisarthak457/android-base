@@ -261,8 +261,8 @@ anything from the composition and a test asserts on the commands.
 
 `:core:navigation` is the runtime a feature sees: keys, `navGraph { }`, `AppNavigator`, deep links, the back stacks,
 `TabStacks` and their restore after process death, as the `navigation-3` skill's modular recipe keeps its navigator
-in a common module. It draws nothing and does not depend on `:core:designsystem`.
 <!-- <opt:ui_components> -->
+in a common module. It draws nothing and does not depend on `:core:designsystem`.
 `:core:navigation:shell` draws it: the tab bar, rail and sidebar, the stack host, the back card, sheets and covers.
 <!-- <opt:catalog> -->
 Only `:app` and `:catalog` depend on the shell, so a feature cannot reach a shell API by accident.
@@ -271,6 +271,10 @@ Only `:app` and `:catalog` depend on the shell, so a feature cannot reach a shel
 Only `:app` depends on the shell, so a feature cannot reach a shell API by accident.
 <!-- </opt:!catalog> -->
 <!-- </opt:ui_components> -->
+<!-- <opt:!ui_components> -->
+in a common module. It also holds the one host, `AppNavigationHost` (below), which shows the screens and draws nothing
+of its own, so it does not depend on `:core:designsystem`.
+<!-- </opt:!ui_components> -->
 What only a host uses (a stack's entries and its back gate, the rules a command is applied by, the content a key
 renders) is marked `@NavigationHostApi`, an opt-in a host makes for its whole module and a feature never makes.
 

@@ -111,9 +111,9 @@ The three presets:
 
 | Preset | Feature count | What's in it |
 |---|---|---|
-| `lean` | 4 | Ktor, the design system, the catalog app, one reference feature, LeakCanary. |
-| `standard` | 18 | The lean set plus Room caching, Coil, forms, auth, settings with a language picker, onboarding, a profile tab, media, deep links, the in-app browser, the inspector and feature flags. |
-| `everything` | 28 | The standard set plus Firebase, FCM push, Google sign-in, a paged feed, search, a home-screen widget, WorkManager, WebSocket and baseline profiles. |
+| `lean` | 6 | The design system, the navigation shell and one home screen, with Ktor, Coil, a downloadable Google Font, LeakCanary, deep links and CI. |
+| `standard` | 18 | The lean set plus the catalog app, auth (with forms), onboarding, settings with a language picker, the in-app browser, feature flags, the inspector with its performance overlay, the app database and the reference list-detail feature. |
+| `everything` | 44 | Every feature, working together: the template's own proof that they coexist. |
 
 ---
 
@@ -285,7 +285,6 @@ dead code behind.
 | App database (Room) | off | The app's own data, separate from the network cache: an entity, a DAO returning flows, a hand-written migration, and a test that replays it against a database that really was at the older version |
 | Image loading (Coil) | on | Remote images with a skeleton placeholder and a failure glyph |
 | Paged feed | off | A Feed tab on Paging 3. A failed page keeps what is loaded and offers a retry; pull to refresh reloads from where you are. The list component is in `:core:ui` for your own feeds |
-| WorkManager | off | Hilt-injected workers, including the manifest fix that stops WorkManager self-initialising past the Hilt factory |
 | Auth | on | Sign in, sign up and password reset against your endpoints, writing the encrypted token store |
 | Sign in with Google | off | A Continue with Google button through Credential Manager; the ID token goes to your backend like any other sign-in |
 | Onboarding | on | A paged walkthrough shown once. Skipping counts as finishing |
@@ -300,16 +299,13 @@ dead code behind.
 | Open source licences screen | off | The real dependency list, generated from the resolved classpath at build time and rendered by the design system. The build also fails on a licence the project has not allowed |
 | Deep linking | on | Custom scheme plus verified App Links, resolved through one function, with the `onNewIntent` handling that is usually missing |
 | In-app browser | off | Links open in a Custom Tab coloured like the app. Adds privacy and terms rows to settings |
-| Home-screen widget | off | A Glance widget in the launcher's colours with the app's name and a line the app keeps current |
 | Play in-app update and review | off | A flexible update downloaded in the background with a restart prompt, and a rating request on a schedule Play will honour rather than silently drop |
 | Analytics seam | on | Vendor-agnostic `AnalyticsTracker` and `CrashReporter` with no-op defaults |
 | Feature flag seam | on | Typed flags declared with their defaults beside them, read through an interface that resolves locally until a vendor is bound |
 | Firebase | off | One switch for Analytics, Crashlytics and Remote Config: the analytics seam, crash breadcrumbs and the flag seam all bound to Firebase |
 | Push notifications (FCM) | off | Channels, the runtime permission check, a messaging service, token re-registration |
-| Lottie animations | off | `AppLottie` for raw, asset and URL animations, tinted to the theme and held on the last frame when the system's animations are off. A success animation plays when a password-reset link is sent |
 | Downloadable Google Font | on | Real files per weight through the Play Services provider |
 | Component catalog app | on | A second installable app showing every component in both themes and all four design styles |
-| Compose stability check | off | Reads the Compose compiler's own report and fails on a design-system composable that restarts without skipping, or takes a parameter it cannot prove immutable. A baseline holds what is already there, so it starts green and can only improve |
 | LeakCanary | on | Debug builds only |
 | On-device inspector | on | A draggable badge naming the environment in dev and debug builds, and a panel behind it with the last 200 requests, their full bodies, timings and failure rate |
 | Live performance overlay | on | Frames per second and the janky-frame share under the inspector's badge, a Performance tab with frame-time, frames-per-second, histogram, per-screen jank and memory graphs, an optimisation score from 0 to 100 with a fix for each lost point, a logcat summary and an exported report. Dev and debug builds only, and nothing on the window while it is off |
@@ -324,10 +320,11 @@ dead code behind.
 Some things are not optional, because they are the reason the template exists.
 
 **No Material.** The design system is built on `androidx.compose.foundation` and
-`androidx.compose.ui` and nothing else. It supplies its own ripple, typography, 80-odd components,
-date and time pickers, bottom sheet, charts and a hand-drawn icon set. An
-`androidx.compose.material` import fails the build — see the `verifyComposeUsage` task, which also
-catches a `@Composable` in a module that forgot the Compose compiler plugin.
+`androidx.compose.ui` and nothing else. With UI components it supplies its own ripple, typography,
+80-odd components, date and time pickers, bottom sheet, charts and a hand-drawn icon set; without
+them it is a theme skeleton for your own. An `androidx.compose.material` import fails the build —
+see the `verifyCodeRules` task, which also catches a `@Composable` in a module that forgot the
+Compose compiler plugin.
 
 **One place for the look.** Colours, type, spacing, shapes, elevation, motion and haptics are
 composition locals read through `AppTheme.`. Changing the font is one string; changing a brand
@@ -340,22 +337,26 @@ bar becomes a rail from Medium width; a list and its detail share the window fro
 forms and text stop at a readable width and centre; sheets and dialogs stop stretching. Locking an
 activity to one orientation fails the build.
 
-**Decentralised navigation.** A feature registers its own screens through Hilt multibinding.
-Adding a screen touches no file outside its own module — there is no central sealed `Route` class
-to extend and no `when` in `:app` to add a branch to. Navigation 3 is named in exactly one file,
-so replacing it is a change to that file and its transitions.
+**Decentralised navigation.** A feature registers its own screens through Hilt multibinding, in
+one step: `navGraph { entry<Key> { … } }` also records the key's serializer, so every screen that
+can be opened comes back after process death. Adding a screen touches no file outside its own
+module — there is no central sealed `Route` class to extend and no `when` in `:app` to add a branch
+to. Navigation 3 is named only in `:core:navigation`, the runtime features see, and in
+`:core:navigation:shell`, which draws it; features see neither its types nor the shell.
 
-**Per-tab back stacks.** Switching tabs and coming back returns the user where they were, scroll
-position and loaded data included. Tabs crossfade rather than slide, because they are peers, not
-forward navigation. Re-tapping the active tab pops it to its root, and Back at a tab root returns
-to the first tab.
+**Per-tab back stacks**, in the shell that comes with the UI components. Switching tabs and coming
+back returns the user where they were, scroll position and loaded data included. Tabs never slide,
+because they are peers, not forward navigation. Re-tapping the active tab pops it to its root, and
+Back at a tab root returns to the first tab. Without components, `:core:navigation` holds the
+per-tab stacks for the shell you build.
 
 **A ViewModel per screen.** Every destination gets its own ViewModel store, cleared when the
 screen is popped, so two detail screens never share state.
 
-**An AI agent guide.** `AGENTS.md` (with `CLAUDE.md` pointing at it) tells an agent how the
-project is laid out, that the base components are there to be reshaped, and how to write code and
-comments the way the rest of the project does.
+**An AI agent guide.** `CLAUDE.md` and `AGENTS.md` hold the same text, with three detailed docs
+behind it (architecture, performance, the design system): how the project is laid out, which of
+Google's Android skills it ships to read when, that the base components are there to be reshaped,
+and how to write code and comments the way the rest of the project does.
 
 **Seven build variants.** dev / staging / prod / playstore × debug / release, minus
 `playstoreDebug`, which does not exist. Only the two application modules carry flavours, so
@@ -366,7 +367,7 @@ review. See the `verifyModuleDependencies` task.
 
 **Copy that can be translated.** Every string the app renders lives in a `strings.xml`, and a
 literal typed into a composable fails the build in the features, the app shell and the design
-system — see the third check in `verifyComposeUsage`. It catches copy passed to any copy parameter
+system — see the `hardcoded-copy` rule of `verifyCodeRules`. It catches copy passed to any copy parameter
 (`text`, `title`, `confirmLabel` and the rest), either branch of an `if` written into one, and an
 English fallback turned into a `UiText`, but never anything inside a `@Preview`. Adding a
 `stringResource` is easy and remembering to is not, so it is checked rather than asked for.
@@ -379,18 +380,19 @@ follows a locale change without the ViewModel knowing there was one.
 
 ## What the build refuses to let through
 
-Three guards, none of which a reviewer could reliably catch by reading a diff. Each is a build
-failure rather than a warning, because a warning in a build log is a thing nobody has read since
-the second week.
+Guards none of which a reviewer could reliably catch by reading a diff. Each is a build failure
+rather than a warning, because a warning in a build log is a thing nobody has read since the second
+week. All of them run in `./gradlew check`, in every project, with or without UI components.
 
-| Guard | Where it lives | What it catches |
-|---|---|---|
-| `verifyModuleDependencies` | every module | An edge the layering forbids — `:feature:cart` depending on `:feature:catalog`, `:core:*` reaching up into `:data:*`. Reads only that module's own dependencies, so it stays compatible with configuration caching |
-| `verifyComposeUsage` | every module | An `androidx.compose.material` import, a `@Composable` in a module without the compiler plugin, and copy typed into Kotlin instead of a `strings.xml` |
-| `checkComposeStability` | `:core:designsystem`, `:core:ui` | A component that recomposes when nothing it draws has changed |
-
-All three are Gradle tasks in `build-logic`. The first two run on every build; the stability check
-only exists when that feature is on.
+| Guard | What it catches |
+|---|---|
+| `verifyModuleDependencies` | An edge the layering forbids — `:feature:cart` depending on `:feature:catalog`, `:core:*` reaching up into `:data:*`. Reads only that module's own dependencies, so it stays compatible with configuration caching |
+| `verifyCodeRules` | The source rules, each listed with its fix in the project's `docs/DESIGN-SYSTEM.md`: a Material import, a `@Composable` in a module without the compiler plugin, copy typed into Kotlin instead of a `strings.xml`, a raw colour, size or duration in a feature, a lazy list without keys, and the rest. The list is the same with and without UI components, but for the rules about the sheet that only the components have |
+| `checkComposeStability` | A composable parameter in the design system, `:core:ui`, the navigation modules or a feature that the compiler cannot prove stable, beyond a baseline where each entry carries its reason |
+| `dependencyGuard` | A change to the libraries the prod release ships, transitive ones included, against the list the first build writes and the project commits |
+| `spotlessCheck` | The Compose Rules for ktlint (how a composable takes and uses its parameters), and with the `formatting` feature ktlint's Android Studio style |
+| the preview tests | Every `@Preview`, rendered through Roborazzi and audited by Google's Accessibility Test Framework: a touch target under 48 dp, a control without a label |
+| `verifyManifestRules` | An orientation or size lock, and Back that does not go through `OnBackInvokedCallback` |
 
 ---
 
@@ -564,8 +566,10 @@ cd generator
 py -m unittest discover -s tests -t .
 ```
 
-88 tests over the marker grammar, the rename, feature resolution, the design and brand-colour
-settings, the validation rules and the scaffolder. They run in milliseconds and use only the standard library.
+About 660 tests over the marker grammar, the rename, feature resolution, the design and brand-colour
+settings, the validation rules, the scaffolders and the generated projects' docs and guards, with and
+without UI components. They use only the standard library and take several minutes, most of it
+generating projects.
 
 They are not sufficient on their own. The real test is generating both extremes and building
 them, because that is what catches a marker left unbalanced in a file nobody thought about:
