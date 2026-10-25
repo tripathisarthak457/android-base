@@ -399,11 +399,17 @@ def ask_feature_modules(target: Target, values: dict[str, bool]) -> list[str]:
             print(red(f"  {error}"))
 
 
-def ask_languages(target: Target) -> list[str]:
+def ask_languages(target: Target, described: Mapping[str, str] | None = None) -> list[str]:
+    """The translations to add. With `languages` in `described`, the option's words say what a choice brings."""
     offered = translations.available(target.key)
     heading("Languages")
-    print(dim("  English is always included. Add others as comma-separated tags; the language"))
-    print(dim("  picker in Settings lists them."))
+    copy = (described or {}).get("languages")
+    if copy is None:
+        print(dim("  English is always included. Add others as comma-separated tags; the language"))
+        print(dim("  picker in Settings lists them."))
+    else:
+        for line in wrap(f"{copy} Add them as comma-separated tags.", 76):
+            print(dim(f"  {line}"))
     print(dim("  " + ", ".join(f"{tag} ({name})" for tag, name in offered.items())))
     print()
     while True:
@@ -620,7 +626,7 @@ def run_wizard(
     raw.update(ask_fonts(features))
     raw.update(ask_look(features, hidden, described))
     raw["feature_modules"] = ask_feature_modules(target, values)
-    raw["languages"] = ask_languages(target)
+    raw["languages"] = ask_languages(target, described)
     return raw
 
 

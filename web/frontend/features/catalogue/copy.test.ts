@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { type Action, type ConfigState, initialState, reducer } from "../configurator/state.ts";
-import { hapticsHint, producesNote } from "../configurator/uiComponents.ts";
+import { hapticsHint, languagesHint, producesNote } from "../configurator/uiComponents.ts";
 import { disabledFeatures, effectiveUiComponents, featureCopy, fieldCopy, moduleCopy, presetDescription, uiComponentsOption } from "./options.ts";
 import { androidTarget, loadCatalogue, lockedCatalogue } from "./testing.ts";
 import type { Catalogue, Target } from "./types.ts";
@@ -39,6 +39,7 @@ function copyOf(target: Target, uiComponents: boolean): { name: string; text: st
   return [
     { name: "feature modules", text: moduleCopy(target, uiComponents) ?? "" },
     { name: "haptics", text: hapticsHint(target, uiComponents) },
+    { name: "languages", text: languagesHint(target, uiComponents) },
     ...target.presets.map((preset) => ({ name: `preset ${preset.key}`, text: presetDescription(target, uiComponents, preset) })),
     ...target.features
       .filter((feature) => !feature.implied_only && !disabled.has(feature.key))

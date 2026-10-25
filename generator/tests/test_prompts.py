@@ -180,5 +180,27 @@ class AskLookTest(unittest.TestCase):
         )
 
 
+class AskLanguagesTest(unittest.TestCase):
+
+    def shown(self, described: dict[str, str]) -> str:
+        with mock.patch("builtins.input", lambda _prompt: ""), redirect_stdout(io.StringIO()) as out:
+            self.assertEqual([], prompts.ask_languages(targets.get("android"), described))
+        return " ".join(out.getvalue().split())
+
+    def test_without_ui_components_the_languages_read_as_what_a_choice_brings(self):
+        manifest = targets.get("android").manifest
+        described = manifest.field_descriptions(manifest.option_values({"ui_components": False}))
+        shown = self.shown(described)
+        self.assertIn(described["languages"], shown)
+        self.assertIn("Add them as comma-separated tags.", shown)
+        self.assertNotIn("language picker", shown)
+
+    def test_with_ui_components_the_languages_keep_their_words(self):
+        self.assertIn(
+            "English is always included. Add others as comma-separated tags; the language picker in Settings lists them.",
+            self.shown({}),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

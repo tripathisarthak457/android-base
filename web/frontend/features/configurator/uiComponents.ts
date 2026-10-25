@@ -79,6 +79,14 @@ export function hapticsHint(target: Target, uiComponents: boolean): string {
   return fieldCopy(target, uiComponents, "haptics_enabled") ?? HAPTICS_HINT;
 }
 
+/** The Languages hint's words where a project has screens to translate and a picker to list them. */
+const LANGUAGES_HINT = "English is always included. Each one you pick translates every screen and joins the language picker.";
+
+/** What a language picked on the Project step brings: the option's words in a project with no screens or picker yet. */
+export function languagesHint(target: Target, uiComponents: boolean): string {
+  return fieldCopy(target, uiComponents, "languages") ?? LANGUAGES_HINT;
+}
+
 /**
  * The last line of the Project step's "What that produces": the tabs a project with UI components
  * gets, a scaffolded home module among them when nothing else gives one. A project without them

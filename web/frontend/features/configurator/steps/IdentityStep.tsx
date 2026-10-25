@@ -8,7 +8,7 @@ import { moduleCopy } from "../../catalogue/options.ts";
 import type { Catalogue } from "../../catalogue/types.ts";
 import { deepLinkScheme } from "../request.ts";
 import { moduleNames } from "../state.ts";
-import { producesNote } from "../uiComponents.ts";
+import { languagesHint, producesNote } from "../uiComponents.ts";
 import type { ConfiguratorModel } from "../useConfigurator.ts";
 
 export function IdentityStep({ catalogue, model }: { catalogue: Catalogue; model: ConfiguratorModel }) {
@@ -128,7 +128,7 @@ export function IdentityStep({ catalogue, model }: { catalogue: Catalogue; model
               })}
             </div>
             <p id={`${languagesId}-hint`} className="mt-1.5 text-xs text-ink-400">
-              English is always included. Each one you pick translates every screen and joins the language picker.
+              {languagesHint(target, state.uiComponents)}
             </p>
             {languagesError && (
               <p id={`${languagesId}-error`} className="mt-1 text-xs text-rose">

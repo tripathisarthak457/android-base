@@ -559,9 +559,14 @@ features, the app, `:core:designsystem` and `:core:ui`. A ViewModel produces `Ui
 for a count), resolved when it is drawn, so a language change reaches it without the ViewModel knowing. If the project
 was generated with more languages, each module has a `values-xx/strings.xml` beside `values/`, and lint fails a build
 with a string missing from one.
-<!-- <opt:language> -->
+<!-- <opt:language&ui_components> -->
 `AppLocales.supported` lists the languages for the in-app picker.
-<!-- </opt:language> -->
+<!-- </opt:language&ui_components> -->
+<!-- <opt:language&!ui_components> -->
+`AppLocales.supported` lists the languages for the picker your settings screen draws; `SettingsEvent.LanguagePicked`
+applies a choice through the settings route, and the phone's per-app language setting offers them on Android 13 and up
+(`generateLocaleConfig`).
+<!-- </opt:language&!ui_components> -->
 
 ## Every form factor
 

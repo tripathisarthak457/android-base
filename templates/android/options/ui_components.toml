@@ -72,6 +72,10 @@ haptics_enabled = """
 The default behind AppTheme.hapticsEnabled, which the components you build read before they play a
 tick: nothing in the project plays one yet. A person who turns haptics off in the preference store
 turns it off too, and the phone's own setting still applies on top."""
+languages = """
+English is always included. Each one you pick gets every module's strings, the placeholder titles
+included, in a values-xx folder lint keeps complete; with the language feature, AppLocales.supported
+lists them for the picker your settings screen draws."""
 
 # A kept feature whose own copy describes a screen, a row, a prompt, a tab, a component or the
 # harness this project leaves out: what it brings here instead, shown by the website, the wizard and

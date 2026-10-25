@@ -1,5 +1,5 @@
 {
-  "generator_commit": "72a3a3947fa2",
+  "generator_commit": "43a2462ae45f",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -1615,6 +1615,10 @@
             {
               "description": "The default behind AppTheme.hapticsEnabled, which the components you build read before they play a tick: nothing in the project plays one yet. A person who turns haptics off in the preference store turns it off too, and the phone's own setting still applies on top.",
               "field": "haptics_enabled"
+            },
+            {
+              "description": "English is always included. Each one you pick gets every module's strings, the placeholder titles included, in a values-xx folder lint keeps complete; with the language feature, AppLocales.supported lists them for the picker your settings screen draws.",
+              "field": "languages"
             }
           ],
           "headline": "Setup only: the architecture, every build guard and a theme skeleton, without UI components",
