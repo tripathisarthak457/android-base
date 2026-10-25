@@ -3,13 +3,18 @@ package com.base.app.core.designsystem.theme
 import androidx.compose.animation.core.DecayAnimationSpec
 import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.FiniteAnimationSpec
+import androidx.compose.animation.core.InfiniteRepeatableSpec
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.exponentialDecay
+import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
@@ -204,6 +209,21 @@ class AppSprings internal constructor(val style: AppMotionStyle) {
     fun <T> fadeIn(): FiniteAnimationSpec<T> = tween(fadeSlow, easing = enterEasing)
     fun <T> fadeOut(): FiniteAnimationSpec<T> = tween(fadeQuick, easing = exitEasing)
 
+    /** Colour and opacity on Compose's standard curve, over [fadeQuick] or [fadeSlow]. */
+    fun <T> quickFade(): FiniteAnimationSpec<T> = tween(fadeQuick)
+    fun <T> slowFade(): FiniteAnimationSpec<T> = tween(fadeSlow)
+
+    /**
+     * Something arriving over [durationMillis]: decelerating as the fades do, or [linear] for a
+     * progress that has to read as steady.
+     */
+    fun <T> arrival(durationMillis: Int, linear: Boolean = false): FiniteAnimationSpec<T> =
+        tween(durationMillis, easing = if (linear) LinearEasing else enterEasing)
+
+    /** A text caret blinking, at a steady rate for as long as it is shown. */
+    fun <T> caretBlink(): InfiniteRepeatableSpec<T> =
+        infiniteRepeatable(tween(CaretBlinkMillis, easing = LinearEasing), RepeatMode.Reverse)
+
     /** The delay between items of a list appearing together, how many wait their turn, and how far they rise. */
     val staggerMillis: Int = DesignTokens.Motion.staggerStepMs
     val staggerMaxItems: Int = DesignTokens.Motion.staggerMaxItems
@@ -224,6 +244,12 @@ class AppSprings internal constructor(val style: AppMotionStyle) {
     /** How long a pressed row's highlight takes to fade after the finger lifts. It appears at once. */
     val highlightFadeOut: Int = DesignTokens.Motion.highlightFadeOutMs
 
+    /** The highlight fading over [highlightFadeOut]. */
+    fun <T> highlightFade(): FiniteAnimationSpec<T> = tween(highlightFadeOut)
+
+    /** A tap's press, finished quickly before the release so the tap is felt. */
+    fun <T> pressDip(): FiniteAnimationSpec<T> = tween(PressDipMillis)
+
     val navigation = NavigationMotion()
 
     val tabBar = TabBarMotion()
@@ -236,6 +262,29 @@ class AppSprings internal constructor(val style: AppMotionStyle) {
  * would only stop the fling instead of reaching the row under it.
  */
 private const val FlingRestVelocity = 30f
+
+private const val CaretBlinkMillis = 550
+private const val PressDipMillis = 80
+
+/**
+ * The tab bar's and the sidebar's own springs, given as damping and stiffness and the same in every
+ * motion style: the glyph's dip and return, the pill's two edges, and the selection that slides
+ * (the sidebar's highlight, the bar minimizing), iOS's segmented-thumb spring.
+ */
+internal object TabBarSprings {
+    val GlyphDip: SpringSpec<Float> = spring(dampingRatio = 1f, stiffness = 1500f, visibilityThreshold = 0.001f)
+    val GlyphReturn: SpringSpec<Float> = spring(dampingRatio = 0.45f, stiffness = 500f, visibilityThreshold = 0.001f)
+    val PillLead: SpringSpec<Float> = spring(dampingRatio = 0.85f, stiffness = 815.6f, visibilityThreshold = 0.001f)
+    val PillTrail: SpringSpec<Float> = spring(dampingRatio = 1f, stiffness = 385.5f, visibilityThreshold = 0.001f)
+    val Selection: SpringSpec<Float> = spring(dampingRatio = 1f, stiffness = 503.5f, visibilityThreshold = 0.001f)
+}
+
+/** [this] spring for an offset in pixels held as floats, settled within half a pixel. */
+internal fun SpringSpec<Float>.forPixelOffset(): SpringSpec<Offset> = spring(dampingRatio, stiffness, PixelOffsetThreshold)
+
+internal fun AppSpring.forPixelOffset(): SpringSpec<Offset> = spring(dampingRatio, stiffness, PixelOffsetThreshold)
+
+private val PixelOffsetThreshold = Offset(0.5f, 0.5f)
 
 private val SpringsByStyle = AppMotionStyle.entries.associateWith(::AppSprings)
 

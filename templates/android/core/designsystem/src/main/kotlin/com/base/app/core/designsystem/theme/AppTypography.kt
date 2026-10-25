@@ -6,6 +6,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.sp
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
 
 /**
@@ -87,5 +89,8 @@ fun sansWeights(voice: TypeVoice): List<FontWeight> =
 
 /** The weights of the mono family the scale uses. */
 val MonoWeights: List<FontWeight> = listOfNotNull(DefaultTypography.mono.fontWeight)
+
+/** The finest step text sized to fit shrinks by: a quarter point, below what the eye tells apart. */
+internal val AutoSizeStep: TextUnit = 0.25.sp
 
 internal val LocalAppTypography = staticCompositionLocalOf { DefaultTypography }
