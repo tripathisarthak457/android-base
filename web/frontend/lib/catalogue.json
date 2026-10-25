@@ -1,5 +1,5 @@
 {
-  "generator_commit": "1920b6829d67",
+  "generator_commit": "8d99907e1e43",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -657,7 +657,7 @@
         },
         {
           "default": false,
-          "description": "Firebase Cloud Messaging alone: notification channels, the permission asked for at the end of onboarding and offered again in settings, a tap that opens the app, a lock-screen-safe preview, and registration that is renewed only when it changes and removed at sign-out.",
+          "description": "Firebase Cloud Messaging alone: notification channels, a helper that asks for the permission in context, which onboarding and settings call when the project has them, a tap that opens the app, a lock-screen-safe preview, and registration that is renewed only when it changes and removed at sign-out.",
           "group": "platform",
           "headline": "Receive push notifications",
           "implied_only": false,

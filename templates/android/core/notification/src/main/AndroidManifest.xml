@@ -5,7 +5,18 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- <opt:onboarding&settings&ui_components> -->
     <!-- Asked for in context on Android 13 and later: at the end of onboarding, and in settings. -->
+    <!-- </opt:onboarding&settings&ui_components> -->
+    <!-- <opt:onboarding&!settings&ui_components> -->
+    <!-- Asked for in context on Android 13 and later: at the end of onboarding. -->
+    <!-- </opt:onboarding&!settings&ui_components> -->
+    <!-- <opt:settings&!onboarding&ui_components> -->
+    <!-- Asked for in context on Android 13 and later: from the notifications row in settings. -->
+    <!-- </opt:settings&!onboarding&ui_components> -->
+    <!-- <opt:!ui_components|!onboarding&!settings> -->
+    <!-- Nothing asks for it yet: on Android 13 and later a screen of yours asks in context, through rememberNotificationPermission. -->
+    <!-- </opt:!ui_components|!onboarding&!settings> -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application>

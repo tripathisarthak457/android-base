@@ -485,17 +485,25 @@ Remote Config starts from the same defaults, so the app behaves the same before 
 <!-- </opt:flags> -->
 <!-- <opt:push> -->
 **Notifications.** Channels are the `NotificationChannelSpec` enum, created at start-up off the main thread, so people
-<!-- <opt:ui_components> -->
+<!-- <opt:ui_components&onboarding&settings> -->
 can mute a category before its first message. The permission is asked at the end of onboarding and offered again in
 settings. The push token is handed to `PushTokenSink` only when it changes, and sign-out unregisters it.
-<!-- </opt:ui_components> -->
-<!-- <opt:!ui_components> -->
+<!-- </opt:ui_components&onboarding&settings> -->
+<!-- <opt:ui_components&onboarding&!settings> -->
+can mute a category before its first message. The permission is asked at the end of onboarding. The push token is
+handed to `PushTokenSink` only when it changes, and sign-out unregisters it.
+<!-- </opt:ui_components&onboarding&!settings> -->
+<!-- <opt:ui_components&settings&!onboarding> -->
+can mute a category before its first message. The permission is asked from the notifications row in settings. The
+push token is handed to `PushTokenSink` only when it changes, and sign-out unregisters it.
+<!-- </opt:ui_components&settings&!onboarding> -->
+<!-- <opt:!ui_components|!onboarding&!settings> -->
 can mute a category before its first message. The push token is handed to `PushTokenSink` only when it changes, and
 sign-out unregisters it. Nothing asks for the permission to post notifications yet, so on Android 13 and up none is
 shown (`AppNotifications.post` logs and drops it) until a screen of yours asks: call `rememberNotificationPermission()`
 from `:core:notification` there and `request()` it where the person sees why, and it opens the app's notification
 settings instead once the system will not ask again.
-<!-- </opt:!ui_components> -->
+<!-- </opt:!ui_components|!onboarding&!settings> -->
 
 <!-- </opt:push> -->
 **Connectivity.** `NetworkMonitor.isOnline` is one shared registration with the system and counts networks that claim

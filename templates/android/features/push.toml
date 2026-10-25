@@ -2,9 +2,10 @@ key = "push"
 title = "Push notifications (FCM)"
 headline = "Receive push notifications"
 description = """
-Firebase Cloud Messaging alone: notification channels, the permission asked for at the end of
-onboarding and offered again in settings, a tap that opens the app, a lock-screen-safe preview,
-and registration that is renewed only when it changes and removed at sign-out."""
+Firebase Cloud Messaging alone: notification channels, a helper that asks for the permission in
+context, which onboarding and settings call when the project has them, a tap that opens the app, a
+lock-screen-safe preview, and registration that is renewed only when it changes and removed at
+sign-out."""
 group = "Platform"
 default = false
 requires = ["firebase"]
