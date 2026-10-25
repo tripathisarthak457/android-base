@@ -88,7 +88,12 @@ on the home screen reads the cart repository, not the cart feature. In a data mo
 | `:core:ui` | What screens share beyond the theme: `MviScreen`, message delivery, `UiText` resolution, `AppError.toUiText`, locales. |
 <!-- <opt:ui_components> -->
 | `:core:navigation` | The navigation runtime: the destination registry, `AppNavigator`, the back stacks and `TabStacks`, deep links and process-death restore. No design system. |
+<!-- <opt:catalog> -->
 | `:core:navigation:shell` | The shell that draws it: the tab bar, rail and sidebar, the stack host and its slides, the back card, sheets and covers. Only `:app` and `:catalog` depend on it. |
+<!-- </opt:catalog> -->
+<!-- <opt:!catalog> -->
+| `:core:navigation:shell` | The shell that draws it: the tab bar, rail and sidebar, the stack host and its slides, the back card, sheets and covers. Only `:app` depends on it. |
+<!-- </opt:!catalog> -->
 <!-- </opt:ui_components> -->
 <!-- <opt:!ui_components> -->
 | `:core:navigation` | The navigation runtime: the destination registry, `AppNavigator`, the back stack and `TabStacks`, deep links, process-death restore and the `NavDisplay` host. No design system. |
@@ -259,7 +264,12 @@ anything from the composition and a test asserts on the commands.
 in a common module. It draws nothing and does not depend on `:core:designsystem`.
 <!-- <opt:ui_components> -->
 `:core:navigation:shell` draws it: the tab bar, rail and sidebar, the stack host, the back card, sheets and covers.
+<!-- <opt:catalog> -->
 Only `:app` and `:catalog` depend on the shell, so a feature cannot reach a shell API by accident.
+<!-- </opt:catalog> -->
+<!-- <opt:!catalog> -->
+Only `:app` depends on the shell, so a feature cannot reach a shell API by accident.
+<!-- </opt:!catalog> -->
 <!-- </opt:ui_components> -->
 What only a host uses (a stack's entries and its back gate, the rules a command is applied by, the content a key
 renders) is marked `@NavigationHostApi`, an opt-in a host makes for its whole module and a feature never makes.
@@ -610,7 +620,12 @@ These run as part of `./gradlew build` and fail it:
 | `verifyApiPurity` | A compact project's `api` packages stay splittable into modules of their own. |
 | `verifyCodeRules` | The forbidden patterns, one rule each in `build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/`; [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md#the-rule-index) lists them with their fixes. A justified exception is `// allow(<rule-id>): <reason>` on the line above; a marker with no reason, or that silences nothing, fails too. |
 | `verifyManifestRules` | No orientation or size lock, the configuration changes handled in place, Back through `OnBackInvokedCallback`. |
+<!-- <opt:ui_components> -->
+| `checkComposeStability` | No composable parameter in `:core:designsystem`, `:core:ui`, `:core:navigation`, `:core:navigation:shell` or a feature module is compared by identity, beyond `config/compose-stability-baseline.txt`, where each entry carries its reason. |
+<!-- </opt:ui_components> -->
+<!-- <opt:!ui_components> -->
 | `checkComposeStability` | No composable parameter in `:core:designsystem`, `:core:ui`, `:core:navigation` or a feature module is compared by identity, beyond `config/compose-stability-baseline.txt`, where each entry carries its reason. |
+<!-- </opt:!ui_components> -->
 <!-- <opt:devtools> -->
 | `verify<Variant>CarriesNoDevTooling` | A shippable build (staging, prod and playstore releases) depends on no dev tooling module, directly or through another. |
 <!-- </opt:devtools> -->

@@ -71,8 +71,16 @@ the whole graph.
 ./gradlew checkComposeStability
 ```
 
-Part of `check`. Reads the Compose compiler's own report for `:core:designsystem`, `:core:ui` and
-`:core:navigation` and fails on a composable parameter whose type the compiler cannot prove stable.
+<!-- <opt:ui_components> -->
+Part of `check`. Reads the Compose compiler's own report for `:core:designsystem`, `:core:ui`,
+`:core:navigation`, `:core:navigation:shell` and every feature module, and fails on a composable
+parameter whose type the compiler cannot prove stable.
+<!-- </opt:ui_components> -->
+<!-- <opt:!ui_components> -->
+Part of `check`. Reads the Compose compiler's own report for `:core:designsystem`, `:core:ui`,
+`:core:navigation` and every feature module, and fails on a composable parameter whose type the
+compiler cannot prove stable.
+<!-- </opt:!ui_components> -->
 Under strong skipping such a parameter is compared by identity, so the composable reruns whenever
 its caller passes a new instance, even an equal one, and nothing in a diff shows it.
 
