@@ -1,5 +1,7 @@
 package com.base.app.buildlogic.android
 
+import com.base.app.buildlogic.guard.ModuleKind
+import com.base.app.buildlogic.guard.ModuleShape
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.Project
@@ -21,13 +23,22 @@ import java.io.File
 
 /**
  * The modules whose composables every screen calls: a parameter compared by identity here costs a
- * recomposition in every screen that uses them. Their stability report is always written.
+ * recomposition in every screen that uses them.
  */
-internal val STABILITY_CHECKED_MODULES = setOf(":core:designsystem", ":core:ui", ":core:navigation")
+internal val STABILITY_CHECKED_MODULES =
+    setOf(":core:designsystem", ":core:ui", ":core:navigation", ":core:navigation:shell")
+
+/**
+ * Whether [path]'s stability report is always written and checked: the shared modules above, and
+ * every feature, whose screens recompose with each state change they render.
+ */
+internal fun isStabilityChecked(path: String): Boolean =
+    path in STABILITY_CHECKED_MODULES ||
+        ModuleShape.of(path)?.kind.let { it == ModuleKind.FEATURE || it == ModuleKind.FEATURE_IMPL }
 
 /** Registers `checkComposeStability`, which reads the compiler's report, and wires it into `check`. */
 internal fun Project.configureComposeStability() {
-    if (path !in STABILITY_CHECKED_MODULES) return
+    if (!isStabilityChecked(path)) return
 
     // A file tree rather than the directory itself: the compiler has not written it at
     // configuration time, and Gradle rejects an @InputDirectory that does not exist.

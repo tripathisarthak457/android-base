@@ -14,8 +14,8 @@ internal fun Project.configureCompose(extension: CommonExtension) {
     pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
     extension.buildFeatures.compose = true
 
-    // The stability gate reads the report of the modules every screen calls, so they always write
-    // it. Elsewhere writing reports slows every compile, so they come only when asked for:
+    // The stability gate reads the report of the shared modules and the features, so they always
+    // write it. Elsewhere reports come only when asked for:
     // `./gradlew <task> -PcomposeReports`, then read build/compose_reports and build/compose_metrics.
     val requested = providers.gradleProperty("composeReports").orNull.toBoolean()
 
@@ -25,7 +25,7 @@ internal fun Project.configureCompose(extension: CommonExtension) {
         stabilityConfigurationFiles.add(
             isolated.rootProject.projectDirectory.file("config/compose-stability.conf"),
         )
-        if (requested || path in STABILITY_CHECKED_MODULES) {
+        if (requested || isStabilityChecked(path)) {
             reportsDestination.set(layout.buildDirectory.dir(COMPOSE_REPORTS))
         }
         if (requested) {

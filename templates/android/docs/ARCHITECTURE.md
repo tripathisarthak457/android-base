@@ -573,7 +573,7 @@ These run as part of `./gradlew build` and fail it:
 | `verifyApiPurity` | A compact project's `api` packages stay splittable into modules of their own. |
 | `verifyCodeRules` | The forbidden patterns, one rule each in `build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/`; [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md#the-rule-index) lists them with their fixes. A justified exception is `// allow(<rule-id>): <reason>` on the line above; a marker with no reason, or that silences nothing, fails too. |
 | `verifyManifestRules` | No orientation or size lock, the configuration changes handled in place, Back through `OnBackInvokedCallback`. |
-| `checkComposeStability` | No composable parameter in `:core:designsystem`, `:core:ui` or `:core:navigation` is compared by identity, beyond `config/compose-stability-baseline.txt`, where each entry carries its reason. |
+| `checkComposeStability` | No composable parameter in `:core:designsystem`, `:core:ui`, `:core:navigation` or a feature module is compared by identity, beyond `config/compose-stability-baseline.txt`, where each entry carries its reason. |
 <!-- <opt:devtools> -->
 | `verify<Variant>CarriesNoDevTooling` | A shippable build (staging, prod and playstore releases) depends on no dev tooling module, directly or through another. |
 <!-- </opt:devtools> -->

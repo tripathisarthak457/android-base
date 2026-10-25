@@ -130,11 +130,11 @@ tests ([below](#prove-it-with-a-recomposition-test)).
   — `state-param`
 - **Parameters are stable.** Under strong skipping an unstable parameter is compared with `===`, so the composable
   reruns whenever its caller passes a new, equal instance. `checkComposeStability` reads the compiler's reports for
-  `:core:designsystem`, `:core:ui` and `:core:navigation` and fails on such a parameter; fix it with a stable type, an
-  entry in `config/compose-stability.conf` for a type that really is immutable, or a provider. An accepted exception
-  goes in `config/compose-stability-baseline.txt` with a `# reason`. `List`, `Set` and `Map` are configured stable,
-  so never `ImmutableList`, and never `@Immutable` on a model that carries a large list into a lazy layout.
-  `./gradlew <task> -PcomposeReports` writes the reports for any module. — `checkComposeStability`
+  `:core:designsystem`, `:core:ui`, `:core:navigation` and every feature module and fails on such a parameter; fix it
+  with a stable type, an entry in `config/compose-stability.conf` for a type that really is immutable, or a provider.
+  An accepted exception goes in `config/compose-stability-baseline.txt` with a `# reason`. `List`, `Set` and `Map`
+  are configured stable, so never `ImmutableList`, and never `@Immutable` on a model that carries a large list into
+  a lazy layout. `./gradlew <task> -PcomposeReports` writes the reports for any module. — `checkComposeStability`
 - **UI state is read-only and holds no per-frame values.** `UiState` holds `val`s and read-only collections built by
   the ViewModel; scroll offsets, drag positions and animation progress live in UI state holders read in layout or
   draw. Nothing in composition calls `.map { }` or `.filter { }` on state without `remember(keys)`: a list rebuilt

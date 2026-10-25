@@ -116,6 +116,18 @@ class ComposeStabilityTest {
     }
 
     @Test
+    fun `the shared modules and every feature are checked, other modules only when asked`() {
+        val checked = listOf(
+            ":core:designsystem", ":core:ui", ":core:navigation", ":core:navigation:shell",
+            ":feature:orders", ":feature:orders:impl",
+        )
+        val unchecked = listOf(":feature:orders:api", ":core:network", ":data:orders", ":app", ":catalog")
+
+        assertEquals(checked, checked.filter(::isStabilityChecked))
+        assertEquals(emptyList<String>(), unchecked.filter(::isStabilityChecked))
+    }
+
+    @Test
     fun `the module's other compilations write their report only after the check has read this one`() {
         val root = ProjectBuilder.builder().withProjectDir(folder.root).build()
         val core = ProjectBuilder.builder().withName("core").withParent(root).build()
