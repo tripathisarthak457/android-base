@@ -137,14 +137,14 @@ alongside production (`.dev` and `.staging` application id suffixes) and are sta
 <!-- </generated:readme-version> -->
 because that string ends up on a store listing.
 
-<!-- <opt:ui_components> -->
+<!-- <opt:catalog> -->
 Only `:app` and `:catalog` carry flavours. Every library module builds once, which is why
 switching environment does not rebuild the project.
-<!-- </opt:ui_components> -->
-<!-- <opt:!ui_components> -->
+<!-- </opt:catalog> -->
+<!-- <opt:!catalog> -->
 Only `:app` carries flavours. Every library module builds once, which is why switching
 environment does not rebuild the project.
-<!-- </opt:!ui_components> -->
+<!-- </opt:!catalog> -->
 
 ## Release artifacts
 

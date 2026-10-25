@@ -690,7 +690,7 @@ compares against them, and without them a schema change cannot be reviewed.
   switches between online and offline. Each fake lives once. A fake other modules' tests use sits in the
   `src/testFixtures` of the module that owns its interface (a data module's beside the interface in its `api` package;
   `FakeAuthTokenStore` and `FakePreferencesDataStore` in `:core:datastore`), and a test reaches it with
-  `testImplementation(testFixtures(project(":data:x")))`; the modular layout moves a domain's fixtures to its `:api`
+  `testImplementation(testFixtures(project(":data:x")))`; the modular layout moves a domain's fixtures to its api
   module with the interface. A double scripted for one module's tests, such as a network client that answers that
   module's endpoints, stays in those tests. Fakes, never mocks.
 - Unit tests run against the real Android stubs, which throw rather than return defaults: code that needs Android runs
