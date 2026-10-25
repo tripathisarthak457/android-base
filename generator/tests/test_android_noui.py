@@ -245,7 +245,7 @@ class ProjectShapeTest(unittest.TestCase):
                 start = project / f"app/src/main/kotlin/{PKG}/ui/start"
                 navigation = (start / "StartNavigation.kt").read_text(encoding="utf-8")
                 self.assertIn("entry<StartKey> { StartScreen() }", navigation)
-                self.assertIn("subclass(StartKey::class, StartKey.serializer())", navigation)
+                self.assertNotIn("navKeys", navigation)
                 self.assertIn('.testTag("start")', (start / "StartScreen.kt").read_text(encoding="utf-8"))
                 destinations = (project / f"app/src/main/kotlin/{PKG}/ui/AppDestinations.kt").read_text(encoding="utf-8")
                 self.assertIn("val start: AppNavKey = StartKey", destinations)

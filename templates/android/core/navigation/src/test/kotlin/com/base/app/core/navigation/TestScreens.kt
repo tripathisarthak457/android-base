@@ -18,19 +18,20 @@ internal fun Screen(key: AppNavKey) {
     Box(Modifier.fillMaxSize().testTag(key.toString())) { BasicText(key.toString()) }
 }
 
-internal fun testRegistry(screen: @Composable (AppNavKey) -> Unit = { Screen(it) }): NavRegistry = NavRegistry(
-    setOf(
-        navGraph {
-            entry<FeedTab> { screen(it) }
-            entry<Post> { screen(it) }
-            entry<Player> { screen(it) }
-        },
-        navGraph {
-            entry<ProfileTab> { screen(it) }
-            entry<Compose>(presentation = Presentation.Cover) { screen(it) }
-        },
-    ),
+/** Two features' graphs: Feed's (the feed, its posts and the player) and Profile's, with Compose presented. */
+internal fun testGraphs(screen: @Composable (AppNavKey) -> Unit = { Screen(it) }): Set<NavGraphEntry> = setOf(
+    navGraph {
+        entry<FeedTab> { screen(it) }
+        entry<Post> { screen(it) }
+        entry<Player> { screen(it) }
+    },
+    navGraph {
+        entry<ProfileTab> { screen(it) }
+        entry<Compose>(presentation = Presentation.Cover) { screen(it) }
+    },
 )
+
+internal fun testRegistry(screen: @Composable (AppNavKey) -> Unit = { Screen(it) }): NavRegistry = NavRegistry(testGraphs(screen))
 
 // <opt:ui_components>
 /** Feed and Profile tabs. The labels only need to be some string the test can resolve. */
@@ -40,14 +41,4 @@ internal val testTabs = listOf(
 )
 // </opt:ui_components>
 
-internal val testSerialization = NavKeySerialization(
-    setOf(
-        navKeys {
-            subclass(FeedTab::class, FeedTab.serializer())
-            subclass(ProfileTab::class, ProfileTab.serializer())
-            subclass(Post::class, Post.serializer())
-            subclass(Compose::class, Compose.serializer())
-            subclass(Player::class, Player.serializer())
-        },
-    ),
-)
+internal val testSerialization = NavKeySerialization(testGraphs())

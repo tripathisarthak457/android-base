@@ -118,9 +118,9 @@ private fun backStackSaver(
 private val stackSerializer = ListSerializer(PolymorphicSerializer(AppNavKey::class))
 
 /**
- * The stack as saved state, or null when a key cannot be encoded. A key missing from its feature's
- * navKeys block loses the whole stack with it, so the failure is logged: the gap shows up in
- * development rather than as an app that forgets where it was.
+ * The stack as saved state, or null when a key cannot be encoded: one no nav graph registers, which
+ * only a key pushed without a destination can be. The whole stack is lost with it, so the failure
+ * is logged: the gap shows up in development rather than as an app that forgets where it was.
  */
 internal fun NavKeySerialization.encodeStack(keys: List<AppNavKey>): String? =
     runCatching { json.encodeToString(stackSerializer, keys) }

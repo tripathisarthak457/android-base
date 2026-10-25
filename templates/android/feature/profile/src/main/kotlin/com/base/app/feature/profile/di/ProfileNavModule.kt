@@ -2,7 +2,6 @@ package com.base.app.feature.profile.di
 
 import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.navGraph
-import com.base.app.core.navigation.navKeys
 import com.base.app.feature.profile.ProfileRoute
 import com.base.app.feature.profile.api.ProfileKey
 import dagger.Module
@@ -10,7 +9,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.multibindings.IntoSet
-import kotlinx.serialization.modules.SerializersModule
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
@@ -20,11 +18,5 @@ internal object ProfileNavModule {
     @IntoSet
     fun profileNavGraph(): NavGraphEntry = navGraph {
         entry<ProfileKey> { ProfileRoute() }
-    }
-
-    @Provides
-    @IntoSet
-    fun profileNavKeys(): SerializersModule = navKeys {
-        subclass(ProfileKey::class, ProfileKey.serializer())
     }
 }

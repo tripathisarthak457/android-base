@@ -2,14 +2,12 @@ package com.base.app.feature.onboarding
 
 import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.navGraph
-import com.base.app.core.navigation.navKeys
 import com.base.app.feature.onboarding.api.OnboardingKey
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.multibindings.IntoSet
-import kotlinx.serialization.modules.SerializersModule
 
 /**
  * Finishing writes the completed flag, and the app moves on to sign-in or the tabs by itself: they
@@ -23,11 +21,5 @@ internal object OnboardingNavModule {
     @IntoSet
     fun onboardingNavGraph(): NavGraphEntry = navGraph {
         entry<OnboardingKey> { OnboardingRoute() }
-    }
-
-    @Provides
-    @IntoSet
-    fun onboardingNavKeys(): SerializersModule = navKeys {
-        subclass(OnboardingKey::class, OnboardingKey.serializer())
     }
 }

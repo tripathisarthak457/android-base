@@ -20,7 +20,6 @@ import com.base.app.core.navigation.Screen
 import com.base.app.core.navigation.ShellState
 import com.base.app.core.navigation.ShellTab
 import com.base.app.core.navigation.navGraph
-import com.base.app.core.navigation.navKeys
 import com.base.app.core.navigation.rememberShellState
 import kotlinx.serialization.Serializable
 import org.junit.Assert.assertEquals
@@ -47,8 +46,9 @@ class MoreTabTest {
     val rule = createAndroidComposeRule<ComponentActivity>()
 
     private val tabs = List(6) { ShellTab(Tab(it), R.string.designsystem_search, AppIcons.Home) }
-    private val registry = NavRegistry(setOf(navGraph { entry<Tab> { Screen(it) } }))
-    private val serialization = NavKeySerialization(setOf(navKeys { subclass(Tab::class, Tab.serializer()) }))
+    private val graphs = setOf(navGraph { entry<Tab> { Screen(it) } })
+    private val registry = NavRegistry(graphs)
+    private val serialization = NavKeySerialization(graphs)
 
     private fun showShell(): ShellState {
         var state: ShellState? = null

@@ -216,8 +216,8 @@ holds each typed field as `savedStateHandle.saveable(KEY, saver = TextFieldState
 ## Navigation
 
 Feature modules never import a navigation library. A destination is a `@Serializable` key implementing `AppNavKey`
-in the feature's `api` package, and the feature contributes two things through Hilt `@IntoSet`: what each key shows
-(`navGraph { }`) and the key serializers (`navKeys { }`).
+in the feature's `api` package, and the feature contributes what each key shows through Hilt `@IntoSet`
+(`navGraph { }`). That one registration also records the key's serializer, which the saved back stack is written with.
 
 ```kotlin
 @Serializable
@@ -226,11 +226,6 @@ data class OrderKey(val orderId: Long) : AppNavKey
 @Provides @IntoSet
 fun ordersNavGraph(): NavGraphEntry = navGraph {
     entry<OrderKey> { key -> OrderRoute(key.orderId) }
-}
-
-@Provides @IntoSet
-fun ordersNavKeys(): SerializersModule = navKeys {
-    subclass(OrderKey::class, OrderKey.serializer())
 }
 ```
 
@@ -248,10 +243,12 @@ the background. The id reaches the ViewModel through Hilt assisted injection, at
 ViewModel store, so each open screen has its own ViewModel and Retry works from the injected id even when the first
 load failed.
 
-### Registering the serializer is easy to forget
+### A key is registered in one step
 
-Without `navKeys { }` the app works until the system kills it in the background; then it reopens at the start
-destination instead of where the person was. `NavKeyRegistrationTest` fails on a key with no serializer.
+A key whose serializer is missing works until the system kills the app in the background; then the app reopens at the
+start destination instead of where the person was. So there is no second list to forget: `entry<K>` records K's
+serializer, `NavKeySerialization` is built from the graphs, and a key that can be opened can be saved.
+`NavKeyRegistrationTest` still fails on a key in the app that no graph registers.
 
 <!-- <opt:ui_components> -->
 ### The entry point is derived, not navigated to

@@ -45,12 +45,12 @@ import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.BarTreatment
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.AppShell
+import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.NavKeySerialization
 import com.base.app.core.navigation.NavRegistry
 import com.base.app.core.navigation.Presentation
 import com.base.app.core.navigation.ShellTab
 import com.base.app.core.navigation.navGraph
-import com.base.app.core.navigation.navKeys
 import com.base.app.core.navigation.rememberShellState
 import kotlinx.serialization.Serializable
 
@@ -194,12 +194,14 @@ private fun Frame(height: Int, content: @Composable BoxScope.() -> Unit) {
 @Composable
 private fun DemoShell() {
     val navigator = remember { AppNavigator() }
-    val registry = remember(navigator) { demoRegistry(navigator) }
-    val state = rememberShellState(tabs = DemoTabs, registry = registry, serialization = DemoSerialization)
+    val graphs = remember(navigator) { demoGraphs(navigator) }
+    val registry = remember(graphs) { NavRegistry(graphs) }
+    val serialization = remember(graphs) { NavKeySerialization(graphs) }
+    val state = rememberShellState(tabs = DemoTabs, registry = registry, serialization = serialization)
     AppShell(tabs = DemoTabs, state = state, registry = registry, navigator = navigator)
 }
 
-private fun demoRegistry(navigator: AppNavigator) = NavRegistry(
+private fun demoGraphs(navigator: AppNavigator): Set<NavGraphEntry> =
     setOf(
         navGraph {
             entry<DemoList> {
@@ -239,8 +241,7 @@ private fun demoRegistry(navigator: AppNavigator) = NavRegistry(
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { AppText("Second tab") }
             }
         },
-    ),
-)
+    )
 
 @Serializable
 private data object DemoList : AppNavKey
@@ -257,17 +258,6 @@ private data object DemoSettings : AppNavKey
 private val DemoTabs = listOf(
     ShellTab(DemoList, R.string.catalog_demo_list, AppIcons.Home),
     ShellTab(DemoSettings, R.string.catalog_demo_settings, AppIcons.Settings),
-)
-
-private val DemoSerialization = NavKeySerialization(
-    setOf(
-        navKeys {
-            subclass(DemoList::class, DemoList.serializer())
-            subclass(DemoDetail::class, DemoDetail.serializer())
-            subclass(DemoCover::class, DemoCover.serializer())
-            subclass(DemoSettings::class, DemoSettings.serializer())
-        },
-    ),
 )
 
 private val DemoItems = listOf(

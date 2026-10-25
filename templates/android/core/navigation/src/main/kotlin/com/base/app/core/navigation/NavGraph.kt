@@ -2,6 +2,11 @@ package com.base.app.core.navigation
 
 import androidx.compose.runtime.Composable
 import com.base.app.core.common.navigation.AppNavKey
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.modules.PolymorphicModuleBuilder
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.serializer
 import kotlin.reflect.KClass
 
 /**
@@ -11,10 +16,10 @@ import kotlin.reflect.KClass
  * ```
  * @Module
  * @InstallIn(ActivityRetainedComponent::class)
- * object SampleNavModule {
+ * internal object SampleNavigation {
  *     @Provides
  *     @IntoSet
- *     fun sampleEntries(): NavGraphEntry = navGraph {
+ *     fun sampleNavGraph(): NavGraphEntry = navGraph {
  *         entry<SampleListKey>(pane = NavPane.List) { SampleListRoute() }
  *         entry<SampleDetailKey>(pane = NavPane.Detail) { key -> SampleDetailRoute(key.id) }
  *         entry<SampleFilterKey>(presentation = Presentation.Sheet()) { SampleFilterRoute() }
@@ -22,11 +27,16 @@ import kotlin.reflect.KClass
  * }
  * ```
  *
+ * Registering a key is also what lets the back stack save it: each `entry<K>` records K's
+ * serializer, so a destination cannot be opened yet be missing when the process comes back.
+ *
  * The keys of one graph belong together: a link to a detail opens the tab whose root key is
  * registered in the same graph.
  */
 class NavGraphEntry internal constructor(
     internal val destinations: Map<KClass<out AppNavKey>, Destination>,
+    /** How this graph's keys are written into a saved back stack and read back from it. */
+    internal val keys: SerializersModule,
 )
 
 internal class Destination(
@@ -40,10 +50,13 @@ class NavGraphBuilder internal constructor() {
 
     private val destinations = mutableMapOf<KClass<out AppNavKey>, Destination>()
 
+    private val serializers = mutableListOf<PolymorphicModuleBuilder<AppNavKey>.() -> Unit>()
+
     /**
-     * Registers [content] as the screen for key type [T]. A [NavPane.List] and the [NavPane.Detail]
-     * opened from it share the window when it is wide enough. A key with a [presentation] is shown
-     * above the tab bar, as a sheet or a cover, wherever it is navigated to from.
+     * Registers [content] as the screen for key type [T], and [T]'s serializer for the saved back
+     * stack, so [T] must be `@Serializable`. A [NavPane.List] and the [NavPane.Detail] opened from
+     * it share the window when it is wide enough. A key with a [presentation] is shown above the
+     * tab bar, as a sheet or a cover, wherever it is navigated to from.
      */
     @Suppress("UNCHECKED_CAST")
     inline fun <reified T : AppNavKey> entry(
@@ -52,12 +65,13 @@ class NavGraphBuilder internal constructor() {
         presentation: Presentation? = null,
         noinline content: @Composable (T) -> Unit,
     ) {
-        register(T::class, transition, pane, presentation) { key -> content(key as T) }
+        register(T::class, serializer<T>(), transition, pane, presentation) { key -> content(key as T) }
     }
 
     @PublishedApi
-    internal fun register(
-        type: KClass<out AppNavKey>,
+    internal fun <T : AppNavKey> register(
+        type: KClass<T>,
+        serializer: KSerializer<T>,
         transition: NavTransitionStyle,
         pane: NavPane,
         presentation: Presentation?,
@@ -66,9 +80,13 @@ class NavGraphBuilder internal constructor() {
         require(destinations.put(type, Destination(transition, pane, presentation, content)) == null) {
             "${type.simpleName} is registered twice in the same nav graph."
         }
+        serializers += { subclass(type, serializer) }
     }
 
-    internal fun build(): NavGraphEntry = NavGraphEntry(destinations.toMap())
+    internal fun build(): NavGraphEntry = NavGraphEntry(
+        destinations = destinations.toMap(),
+        keys = SerializersModule { polymorphic(AppNavKey::class) { serializers.forEach { it(this) } } },
+    )
 }
 
 fun navGraph(builder: NavGraphBuilder.() -> Unit): NavGraphEntry =

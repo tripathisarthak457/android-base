@@ -1,6 +1,8 @@
 package com.base.app.navigation
 
 import com.base.app.core.common.navigation.AppNavKey
+import com.base.app.core.navigation.AppNavigator
+import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.NavKeySerialization
 import com.base.app.ui.AppDestinations
 import java.io.File
@@ -31,15 +33,15 @@ import org.junit.Test
 
 /**
  * Every navigation key in the app survives the saved state, written with the [NavKeySerialization]
- * the back stacks use. The keys are found on the classpath rather than listed here, so a key left
- * out of its feature's `navKeys { }` block fails this test instead of sending a user who comes back
- * from the background to Home.
+ * the back stacks use, which holds the keys the features' nav graphs register. The keys are found on
+ * the classpath rather than listed here, so a key no graph registers with `entry<…>` fails this test
+ * instead of sending a user who comes back from the background to Home.
  */
 @OptIn(ExperimentalSerializationApi::class)
 class NavKeyRegistrationTest {
     private val classes = appClasses()
     private val keyTypes = classes.filter(::isConcreteNavKey).toSet()
-    private val serialization = NavKeySerialization(classes.flatMap(::navKeyModules).toSet())
+    private val serialization = NavKeySerialization(classes.flatMap(::navGraphs).toSet())
     private val stack = ListSerializer(PolymorphicSerializer(AppNavKey::class))
 
     @Test
@@ -53,7 +55,7 @@ class NavKeyRegistrationTest {
         val registered = serialization.json.serializersModule.navKeyTypes()
         val missing = (keyTypes - registered).map { it.name }.sorted()
 
-        assertTrue("Not in any navKeys { } block: $missing", missing.isEmpty())
+        assertTrue("Registered by no nav graph's entry<…>: $missing", missing.isEmpty())
     }
 
     @Test
@@ -70,17 +72,26 @@ class NavKeyRegistrationTest {
         AppNavKey::class.java.isAssignableFrom(type) && !type.isInterface && !Modifier.isAbstract(type.modifiers) &&
             !type.name.startsWith(NAVIGATION_PACKAGE)
 
-    /** What a feature's nav module contributes: an object's no-argument function returning a module. */
-    private fun navKeyModules(type: Class<*>): List<SerializersModule> {
+    /**
+     * What a feature's navigation object contributes: each function returning a nav graph, called
+     * with a navigator of its own, since a graph only captures the navigator its screens call later.
+     */
+    private fun navGraphs(type: Class<*>): List<NavGraphEntry> {
         // Only a class that declares such a function is initialised: most objects here are not
         // meant to start up outside the app.
         val providers = runCatching { type.declaredMethods.toList() }.getOrDefault(emptyList())
-            .filter { it.parameterCount == 0 && it.returnType == SerializersModule::class.java && !Modifier.isStatic(it.modifiers) }
+            .filter { it.returnType == NavGraphEntry::class.java && !Modifier.isStatic(it.modifiers) }
         if (providers.isEmpty()) return emptyList()
         val instance = runCatching { type.getDeclaredField("INSTANCE").get(null) }.getOrNull() ?: return emptyList()
-        return providers
-            .map { it.invoke(instance) as SerializersModule }
-            .filter { it.navKeyTypes().isNotEmpty() }
+        return providers.map { provider ->
+            val arguments = provider.parameterTypes.map { parameter ->
+                check(parameter == AppNavigator::class.java) {
+                    "${type.name}.${provider.name} takes a ${parameter.simpleName}; give this test one to pass it"
+                }
+                AppNavigator()
+            }
+            provider.invoke(instance, *arguments.toTypedArray()) as NavGraphEntry
+        }
     }
 
     private fun SerializersModule.navKeyTypes(): Set<Class<*>> {
