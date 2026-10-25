@@ -249,7 +249,7 @@ private fun AppTransitionsPreview() {
         AppStaggeredColumn(itemCount = 3) { index -> AppText(text = "Staggered row ${index + 1}") }
         LazyColumn(modifier = Modifier.height(AppTheme.sizes.rowHeight * 2)) {
             items(listOf("Placed in a list", "Moves when the list changes"), key = { it }) { item ->
-                AppText(text = item, modifier = Modifier.appAnimateItem())
+                AppText(text = item, modifier = appAnimateItem())
             }
         }
     }
