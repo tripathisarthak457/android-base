@@ -1,7 +1,6 @@
 package com.base.app.core.designsystem.component.refresh
 
 import android.os.SystemClock
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -12,18 +11,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.ColorProducer
-import androidx.compose.ui.graphics.drawscope.ContentDrawScope
-import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
@@ -35,12 +26,10 @@ import androidx.compose.ui.layout.MeasureScope
 import androidx.compose.ui.layout.MultiContentMeasurePolicy
 import androidx.compose.ui.node.CompositionLocalConsumerModifierNode
 import androidx.compose.ui.node.DelegatingNode
-import androidx.compose.ui.node.DrawModifierNode
 import androidx.compose.ui.node.LayoutAwareModifierNode
 import androidx.compose.ui.node.ModifierNodeElement
 import androidx.compose.ui.node.SemanticsModifierNode
 import androidx.compose.ui.node.currentValueOf
-import androidx.compose.ui.node.invalidateDraw
 import androidx.compose.ui.node.invalidateSemantics
 import androidx.compose.ui.node.requireDensity
 import androidx.compose.ui.platform.InspectorInfo
@@ -57,7 +46,6 @@ import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.feedback.ActivitySpokes
-import com.base.app.core.designsystem.component.feedback.drawActivitySpokes
 import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.LocalHapticsEnabled
@@ -73,7 +61,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlin.math.ceil
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.roundToInt
@@ -125,21 +112,6 @@ fun AppPullToRefresh(
         ),
         measurePolicy = measurePolicy,
     )
-}
-
-/** What the pull shows: how far the content has moved down, and the state of the spinner in the gap. */
-@Stable
-private class RefreshIndicator {
-    var gap by mutableFloatStateOf(0f)
-
-    /** The brightest spoke while the spinner turns. */
-    var head by mutableIntStateOf(0)
-
-    /** A refresh is showing, or a finished one is still closing over its spinner. */
-    var spinning by mutableStateOf(false)
-
-    /** The refresh has ended and the gap is closing; the spinner shrinks with it. */
-    var retracting by mutableStateOf(false)
 }
 
 /** The content as measured, and the spinner centred just below whatever top bar the content runs under. */
@@ -424,56 +396,6 @@ private class PullToRefreshNode(
     }
 }
 
-private data class RefreshSpinnerElement(
-    val indicator: RefreshIndicator,
-    val color: ColorProducer,
-) : ModifierNodeElement<RefreshSpinnerNode>() {
-    override fun create() = RefreshSpinnerNode(indicator, color)
-
-    override fun update(node: RefreshSpinnerNode) = node.update(color)
-
-    override fun InspectorInfo.inspectableProperties() {
-        name = "refreshSpinner"
-    }
-}
-
-/**
- * The spinner, in the part of the gap below its top edge: its spokes appear one by one as the pull
- * nears the trigger, then turn while the refresh runs, and shrink as a finished refresh closes.
- */
-private class RefreshSpinnerNode(
-    private val indicator: RefreshIndicator,
-    private var color: ColorProducer,
-) : Modifier.Node(), DrawModifierNode {
-
-    fun update(color: ColorProducer) {
-        if (color == this.color) return
-        this.color = color
-        invalidateDraw()
-    }
-
-    override fun ContentDrawScope.draw() {
-        val gap = indicator.gap
-        // The gap opens from the top bar down; the spinner starts SpinnerTop below it.
-        val uncovered = gap - AppPullToRefreshDefaults.SpinnerTop.toPx()
-        if (uncovered <= 0.5f) return
-        val spinning = indicator.spinning
-        val retracting = indicator.retracting
-        val radius = size.minDimension / 2f
-        val pulled = (gap / AppPullToRefreshDefaults.Trigger.toPx()).coerceIn(0f, 1f)
-        clipRect(bottom = uncovered) {
-            drawActivitySpokes(
-                center = center,
-                radius = if (retracting) radius * (gap / AppPullToRefreshDefaults.Rest.toPx()).coerceIn(0f, 1f) else radius,
-                color = color(),
-                head = if (spinning) indicator.head else null,
-                revealed = if (spinning) ActivitySpokes else ceil(ActivitySpokes * pulled).toInt(),
-                alpha = if (spinning) 1f else FastOutSlowInEasing.transform((pulled / FadeInFraction).coerceAtMost(1f)),
-            )
-        }
-    }
-}
-
 /** iOS's rubber band: `y = c·x·d / (d + c·x)`, so the further it is pulled the less it gives. */
 private fun rubberBand(travel: Float, range: Float): Float {
     val d = range.coerceAtLeast(1f)
@@ -489,9 +411,6 @@ private fun rubberBandInverse(visible: Float, range: Float): Float {
 private const val Resistance = DesignTokens.Motion.rubberBand
 private const val SpinStepMillis = 125L
 private const val MinVisibleMillis = 400L
-
-/** The spinner fades in over the first part of the pull, then the spokes alone show progress. */
-private const val FadeInFraction = 0.35f
 
 /** How far a pull refreshes, where the content rests while it does, and the spinner. */
 object AppPullToRefreshDefaults {
