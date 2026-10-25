@@ -417,8 +417,14 @@ def report(spec, warnings: list[str], summary: list[str], destination: Path, zip
     print(prompts.bold("  Next"))
     print("    1. Unzip it and open the folder in Android Studio." if zip_output else f"    1. cd {destination} and open it in Android Studio.")
     print("    2. ./gradlew :app:installDevDebug")
+    step = 3
+    if spec.platform == "android":
+        # dependency-guard writes the list on the first check and passes; it guards nothing until committed.
+        print("    3. Commit app/dependencies/ after the first ./gradlew check: it is the list of libraries the prod")
+        print("       release ships, which every later check compares against.")
+        step += 1
     if spec.has("firebase"):
-        print(prompts.yellow("    3. Replace app/google-services.json: the included one is a placeholder."))
+        print(prompts.yellow(f"    {step}. Replace app/google-services.json: the included one is a placeholder."))
     print()
 
 

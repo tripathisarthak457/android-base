@@ -202,6 +202,11 @@ class CliTest(unittest.TestCase):
         self.assertIn("API 24 · Android 7.0 (Nougat)", result.stdout)
         self.assertIn("Desugaring  on: java.time below API 26", result.stdout)
 
+    def test_the_next_steps_say_to_commit_the_dependency_list(self):
+        result = run("--spec", str(self.spec), "--out", str(self.root / "p"), "--no-zip")
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertIn("3. Commit app/dependencies/ after the first ./gradlew check", result.stdout)
+
     def test_list_features_json(self):
         features = json.loads(run("--list-features", "--json").stdout)
         self.assertIn("network", {feature["key"] for feature in features})
