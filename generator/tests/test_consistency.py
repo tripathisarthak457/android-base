@@ -11,6 +11,7 @@ from pathlib import Path
 from unittest import mock
 
 from tests.consistency import __main__ as runner
+from tests.consistency import worker
 from tests.consistency.checks import _hollow, _manifests, _resources, _translations, _unused_resources
 from tests.consistency.project import Project
 
@@ -161,6 +162,18 @@ class RunnerTest(unittest.TestCase):
         # with spawn or forkserver never import, so a function defined there cannot be unpickled in one.
         self.assertNotEqual(runner.__name__, runner.run_one.__module__)
 
+    def test_the_quick_run_adds_a_component_with_and_without_ui_components(self):
+        quick = runner.combinations(quick=True)
+        added = {name: raw for name, raw in quick.items() if runner.COMPONENTS.get(name)}
+        self.assertEqual({True, False}, {raw.get("ui_components", True) for raw in added.values()})
+
+    def test_a_component_add_component_refuses_is_an_issue_of_its_run(self):
+        raw = {"schema": 2, "platform": "android", "app_name": "Consistency", "package_name": worker.PACKAGE}
+        with tempfile.TemporaryDirectory() as temp:
+            name, issues = worker.run_one("refused", raw, temp, keep=False, components=("Button",))
+        self.assertEqual("refused", name)
+        self.assertEqual(1, len([issue for issue in issues if issue.startswith("ADD_COMPONENT Button")]), issues)
+
     def test_a_failed_run_leaves_nothing_in_the_temporary_folder(self):
         with tempfile.TemporaryDirectory() as temp:
             directory = Path(temp, "consistency-run")
@@ -185,7 +198,7 @@ class NoUiRunsTest(unittest.TestCase):
             f"noui-preset-{preset}-{architecture}"
             for preset in ("lean", "standard", "everything")
             for architecture in ("compact", "modular")
-        } | {"noui-everything-modules", "noui-none-modules"}
+        } | {"noui-everything-modules", "noui-none-modules", "noui-component-everything"}
         self.assertEqual(expected, noui)
         self.assertTrue(all(runs[name]["ui_components"] is False for name in noui))
         self.assertTrue(all("ui_components" not in raw for name, raw in runs.items() if name not in noui))

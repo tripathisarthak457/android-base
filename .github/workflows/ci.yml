@@ -125,6 +125,10 @@ jobs:
             *) chosen=(--preset "${{ matrix.preset }}") ;;
           esac
           python create_project.py --spec ci-spec.json "${chosen[@]}" --out "$GITHUB_WORKSPACE/out" --no-zip
+          # A component added later, as a developer would, built and checked with the rest in both modes.
+          case "${{ matrix.preset }}" in
+            everything | noui-everything) python add_component.py Tag --project "$GITHUB_WORKSPACE/out" ;;
+          esac
 
       - name: The wrapper is executable
         # Exit 126 here means the generator lost the bit. It is the first command the README

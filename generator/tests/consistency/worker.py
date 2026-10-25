@@ -8,9 +8,13 @@ never imports a package's `__main__` there, so the function cannot live in `__ma
 
 from __future__ import annotations
 
+import io
 import shutil
+from contextlib import redirect_stdout
 from functools import cache
 from pathlib import Path
+
+import add_component
 
 from genkit.core import pipeline
 from genkit.targets import get
@@ -35,7 +39,10 @@ def reference(directory: str) -> Project:
     return Project(project)
 
 
-def run_one(name: str, raw: dict, directory: str, keep: bool) -> tuple[str, list[str]]:
+def run_one(
+    name: str, raw: dict, directory: str, keep: bool, components: tuple[str, ...] = ()
+) -> tuple[str, list[str]]:
+    """Generates `raw` as `name`, adds each of `components` with add_component.py as a developer would, and checks it."""
     target = get("android")
     project = Path(directory) / name
     try:
@@ -43,9 +50,17 @@ def run_one(name: str, raw: dict, directory: str, keep: bool) -> tuple[str, list
         pipeline.build(parsed.spec, target, project, zip_output=False, commit="consistency")
     except Exception as error:  # noqa: BLE001 - a crash is itself the finding
         return name, [f"GENERATION {type(error).__name__}: {error}"]
+    refused = []
+    for component in components:
+        output = io.StringIO()
+        with redirect_stdout(output):
+            code = add_component.main([component, "--project", str(project)])
+        if code != 0:
+            refused.append(f"ADD_COMPONENT {component}: {' '.join(output.getvalue().split())}")
     hostile = name.startswith(("hostile-", "noui-hostile-"))
     issues = check(project, raw["package_name"], None if hostile else reference(directory), identity=not hostile)
     issues += missing_bindings(project)
+    issues = refused + issues
     if not keep:
         shutil.rmtree(project)
     package = raw["package_name"]

@@ -7,7 +7,9 @@ The static consistency matrix: many generated projects, each checked without Gra
 
 Every project ships all the languages. Runs named noui-* are generated without UI components: the
 quick run has every preset in both architectures, everything with modules and none with one; the
-full run adds each feature alone, seeded subsets and hostile names. An issue fails the run unless
+full run adds each feature alone, seeded subsets and hostile names. The runs in COMPONENTS, in both
+modes and in the quick run too, add a design-system component with add_component.py after
+generation, as add_feature's modules are scaffolded into others. An issue fails the run unless
 `known_issues.toml` lists it with the package that will fix it.
 """
 
@@ -33,6 +35,8 @@ from .worker import PACKAGE, reference, run_one
 ROOT = Path(__file__).resolve().parents[3]
 KNOWN_ISSUES = Path(__file__).resolve().parent / "known_issues.toml"
 SEED = 20261009
+#: Runs that add design-system components with add_component.py once generated, as a developer would.
+COMPONENTS = {"component-everything": ("Tag",), "noui-component-everything": ("Tag",)}
 
 #: Names that contain a template token or sit on a rule's edge. Their own spelling may contain a
 #: token, so the leftover-identity check is off for them.
@@ -88,6 +92,8 @@ def combinations(quick: bool) -> dict[str, dict]:
     })
     runs["noui-everything-modules"] = spec(keys, ["orders", "order_history"], components=False)
     runs["noui-none-modules"] = spec([], ["orders"], components=False)
+    runs["component-everything"] = spec(manifest.preset_features("everything"))
+    runs["noui-component-everything"] = spec(manifest.preset_features("everything"), components=False)
     if quick:
         return runs
 
@@ -140,7 +146,8 @@ def main(argv: list[str] | None = None) -> int:
         reference(str(directory))
         with concurrent.futures.ProcessPoolExecutor(max_workers=args.jobs) as pool:
             futures = [
-                pool.submit(run_one, name, raw, str(directory), args.keep is not None) for name, raw in runs.items()
+                pool.submit(run_one, name, raw, str(directory), args.keep is not None, COMPONENTS.get(name, ()))
+                for name, raw in runs.items()
             ]
             for future in concurrent.futures.as_completed(futures):
                 name, issues = future.result()
