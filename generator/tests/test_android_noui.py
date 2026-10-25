@@ -15,6 +15,7 @@ from contextlib import redirect_stdout
 from pathlib import Path
 
 from genkit.core import pipeline
+from genkit.core.markers import Expression
 from genkit.core.record import RECORD_NAME
 from genkit.targets import get
 
@@ -73,6 +74,16 @@ _THEME_MEMBER = re.compile(r"\bAppTheme\.(\w+)")
 _ANNOTATION = re.compile(r"@([A-Z]\w*)")
 #: Code-shaped names: two or more humps, PascalCase or camelCase; an acronym (UI, GPU, TODO) is not one.
 _CODE_NAME = re.compile(r"(?<![\w@])(?=\w*[a-z])([A-Za-z][a-z0-9]*(?:[A-Z][a-z0-9]*)+)\b")
+_WHOLE_FENCE = re.compile(r"\Apackage [^\n]*\n// <opt:([^>\n]+)>\n.*\n// </opt:\1>\n\Z", re.DOTALL)
+
+
+def whole_file_fence(source: Path) -> Expression | None:
+    """
+    The expression that fences everything after a Kotlin file's package line, or None. Such a file
+    renders to a package line alone when the expression does not hold, and is left out.
+    """
+    match = _WHOLE_FENCE.match(source.read_text(encoding="utf-8")) if source.suffix == ".kt" else None
+    return Expression.parse(match.group(1), ANDROID.manifest.marker_keys, source, 2) if match else None
 
 
 def active_advice(project: Path) -> list[str]:
@@ -113,10 +124,15 @@ class ProjectShapeTest(unittest.TestCase):
         for name, project in self.projects.items():
             with self.subTest(project=name):
                 names = {path.name for path in project.rglob("*") if path.is_file()}
+                enabled = frozenset(json.loads((project / RECORD_NAME).read_text(encoding="utf-8"))["features"])
                 for relative in files:
                     module = project / relative.as_posix().split("/src/")[0]
                     # A variant of a feature's module comes only with that feature: devtools, performance, sample.
-                    if module.exists() or (project / relative.parts[0] / relative.parts[1] / "impl").exists():
+                    if not (module.exists() or (project / relative.parts[0] / relative.parts[1] / "impl").exists()):
+                        continue
+                    # So does one a feature fences whole, such as a test of that feature's code.
+                    fence = whole_file_fence(variants / relative)
+                    if fence is None or fence.holds(enabled):
                         self.assertIn(relative.name, names, relative.as_posix())
 
     def test_no_source_reaches_the_components_the_primitives_or_the_shell(self):

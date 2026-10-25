@@ -1,30 +1,31 @@
 package com.base.app.core.ui.appstatus
 
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
 import com.base.app.core.network.appstatus.AppStatus
 import com.base.app.core.ui.R
 // <opt:ui_components>
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.input.pointer.pointerInput
 import com.base.app.core.designsystem.component.feedback.AppStateView
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 // </opt:ui_components>
 // <opt-else:ui_components>
+//~ import androidx.compose.foundation.clickable
 //~ import com.base.app.core.ui.PlaceholderScreen
 // </opt-else:ui_components>
 
@@ -41,9 +42,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 fun AppStatusGate(status: AppStatus, onRetry: () -> Unit, modifier: Modifier = Modifier) {
     if (status == AppStatus.Available) return
 
-    // <opt:ui_components>
     val context = LocalContext.current
-    // </opt:ui_components>
     val activity = LocalActivity.current
     // Back leaves the app as it is: nothing underneath can be used until this is resolved.
     val back = rememberNavigationEventState(currentInfo = NavigationEventInfo.None)
@@ -79,16 +78,29 @@ fun AppStatusGate(status: AppStatus, onRetry: () -> Unit, modifier: Modifier = M
     }
     // </opt:ui_components>
     // <opt-else:ui_components>
-    //~ // Each screen's action (update, or onRetry) comes with the components that draw it.
-    //~ val title = if (status == AppStatus.UpdateRequired) {
+    //~ // The cover takes every tap, so none reaches the app underneath, and a tap does what the
+    //~ // screen's button will: maintenance asks again, which is the only way it clears, and an
+    //~ // update opens the store. Without it the cover could be left only by ending the process.
+    //~ val update = status == AppStatus.UpdateRequired
+    //~ val title = if (update) {
     //~     R.string.ui_appstatus_update_title
     //~ } else {
     //~     R.string.ui_appstatus_maintenance_title
     //~ }
-    //~ PlaceholderScreen(title = title, modifier = modifier.pointerInput(Unit) {})
+    //~ val action = if (update) {
+    //~     R.string.ui_appstatus_update_action
+    //~ } else {
+    //~     R.string.ui_appstatus_maintenance_action
+    //~ }
+    //~ PlaceholderScreen(
+    //~     title = title,
+    //~     // allow(bare-clickable): the cover is the whole screen, which no press may scale or dim
+    //~     modifier = modifier.clickable(onClickLabel = stringResource(action)) {
+    //~         if (update) context.openStoreListing() else onRetry()
+    //~     },
+    //~ )
     // </opt-else:ui_components>
 }
-// <opt:ui_components>
 
 /** The Play Store app when it is installed, its website otherwise. */
 private fun Context.openStoreListing() {
@@ -100,4 +112,3 @@ private fun Context.openStoreListing() {
         startActivity(web)
     }
 }
-// </opt:ui_components>
