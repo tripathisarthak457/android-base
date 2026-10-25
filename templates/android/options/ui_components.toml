@@ -88,19 +88,60 @@ liquidglass = "Glass is drawn by components and the shell, which this project le
 design_style = "Your design system decides corners, surfaces and type voice; the theme starts from neutral values."
 motion_style = "Your components decide their motion; the theme keeps neutral springs and reduce-motion."
 
-# A kept feature whose own copy names a tab, a component or the harness this project leaves out:
-# what it brings here instead, shown by the website, the wizard and --list-features while the value
-# is false. Without `headline` the feature's own still holds.
+# A kept feature whose own copy describes a screen, a row, a prompt, a tab, a component or the
+# harness this project leaves out: what it brings here instead, shown by the website, the wizard and
+# --list-features while the value is false. Without `headline` the feature's own still holds.
+# test_android_noui finds every feature that needs an entry from the template and its projects.
+[feature_copy.applock]
+description = """
+A fingerprint, face or screen-lock prompt at launch and after half a minute away, over a
+placeholder cover that asks again on a tap, and the app kept out of the task switcher's thumbnail
+while the lock is on. It starts off: the settings ViewModel's AppLockToggled turns it on, from the
+switch your settings screen draws."""
+
+[feature_copy.appstatus]
+description = """
+The server can require an update (HTTP 426, or a minimum-version header) or announce maintenance
+(503), whichever screen made the call, and the app covers itself with a placeholder for either: a
+tap opens the store listing for an update and retries during maintenance, until your own design
+replaces the placeholder."""
+
+[feature_copy.auth]
+description = """
+Sign-in, sign-up and password-reset ViewModels against your auth endpoints, behind three
+placeholder routes, writing the encrypted token store. Their form state holds each field's text and
+error, with the server's field errors mapped back onto the field that caused them, for the inputs
+your sign-in screen draws."""
+
+[feature_copy.browser]
+description = """
+Web pages open in a Custom Tab coloured like the app rather than in the browser, through
+rememberInAppBrowser() in core:ui, for the links you draw. With settings on, the settings module's
+resources hold the privacy and terms addresses for the links your settings screen draws."""
+
 [feature_copy.coil]
 description = """
 Coil's image loader on the app's own HTTP client, sharing its connections and its certificate pins,
 ready for the image component your design system draws."""
 
+[feature_copy.database]
+description = """
+A Room 3 database with a table per domain, emptied when the person signs out. With the reference
+feature, its list is offline-first: the list's state holds what was fetched last at once, and a
+refresh writes the server's answer into the table."""
+
 [feature_copy.deeplink]
 description = """
-A custom scheme plus verified App Links. Each feature maps its own links to a screen; a link is
-held until onboarding, sign-in and the startup checks are done, opens on the back stack, which
-survives process death, and is never replayed from Recents or after rotation."""
+A custom scheme plus verified App Links. Each feature maps its own links to a destination; a link
+is held until start-up has read the settings and the session, then opens on the back stack, which
+survives process death, over the start screen, whether or not anyone is signed in: the project has
+no entry gates until you add yours. A link is never replayed from Recents or after rotation."""
+
+[feature_copy.firebaseanalytics]
+description = """
+Firebase Analytics behind the analytics seam, switched off by the analytics opt-out in the
+preference store; the switch that sets it is your settings screen's to draw. It brings the
+advertising-id permissions with it, which is why it is a choice of its own."""
 
 [feature_copy.googlesignin]
 headline = "Sign in with a Google account"
@@ -109,11 +150,32 @@ Credential Manager's Google sign-in, ready for the control your sign-in screen d
 ID token to the sign-in ViewModel. The token goes to your backend, which answers with its own
 tokens like any sign-in."""
 
+[feature_copy.language]
+description = """
+AppLocales sets and reads the app's own language: the system's per-app language on Android 13+, so
+the choice also appears in the phone's settings, applied by hand on older releases. The settings
+ViewModel holds it in its state and applies a choice through its route, for the picker your
+settings screen draws."""
+
 [feature_copy.licenses]
 description = """
 The real dependency list, generated from the resolved classpath at build time and loaded by its
 ViewModel behind a placeholder route. The build also fails on a licence the project has not
 allowed."""
+
+[feature_copy.media]
+description = """
+rememberMediaPicker() for the screen that asks: the system photo picker and the camera app, with
+no permissions to ask for, and one image compressor that turns a picked photo upright, scales it
+and writes a copy the app owns."""
+
+[feature_copy.onboarding]
+headline = "Record a first run once"
+description = """
+An onboarding ViewModel over three pages of copy in resources, behind a placeholder route:
+finishing and skipping both record it in the preference store, so a person goes through it once. A
+first launch still opens on the blank start screen; AppRoot can open onboarding instead once you
+draw its pages."""
 
 [feature_copy.paging]
 headline = "Paged loading for an endless feed"
@@ -130,11 +192,33 @@ profile, run against the dev flavour, and the baseline profile generator that re
 every build ships. The journey benchmarks and the frame-time scripts come with the components they
 measure."""
 
+[feature_copy.playstore]
+description = """
+A newer build offered once per launch through Play's own sheet and never offered again once turned
+down, and a rating prompt on a schedule Play honours. A downloaded update installs when the app next
+goes to the background; the offer to restart into it at once goes to LocalMessagePresenter, which
+logs it until your design system shows messages."""
+
 [feature_copy.profile]
 headline = "A profile with a photo, per user"
 description = """
 A name, a bio and an avatar, saved on the device per user, behind the profile's ViewModel and a
-placeholder route. With the media picker on, the avatar can be a photo."""
+placeholder route. With the media picker on, the ViewModel takes a picked photo for the avatar."""
+
+[feature_copy.push]
+description = """
+Firebase Cloud Messaging alone: notification channels, a tap that opens the app, a
+lock-screen-safe preview, and registration that is renewed only when it changes and removed at
+sign-out. Nothing asks for the notification permission yet: rememberNotificationPermission() is
+ready for the screen you build to ask from, and on Android 13 and up notifications stay off until it
+does."""
+
+[feature_copy.sample]
+headline = "A worked feature to learn from"
+description = """
+A list + detail feature against a live public API, with its tests: keys, ViewModels, repository
+and navigation behind two placeholder routes that load and open items as the finished ones will.
+Copy its shape for your first feature, then delete it."""
 
 [feature_copy.search]
 description = """
@@ -142,12 +226,24 @@ Results as you type with a debounce, and recent searches kept per user, behind t
 ViewModel and a placeholder route; its state holds the results, whether they are loading and
 why they failed."""
 
+[feature_copy.settings]
+headline = "Settings state over the preference store"
+description = """
+The settings ViewModel, wired to the preference store and the session: theme, analytics opt-out,
+haptics and sign-out, with the build version in its state, behind a placeholder route. Your
+settings screen draws the switches and asks before it sends sign-out."""
+
 # A preset's description, likewise.
 [preset_copy]
 lean = """
 The architecture, a theme skeleton and every build guard, with networking, image loading, your
 font, leak detection in debug builds, deep links and CI. The app opens on a blank start screen for
 your design system to build on."""
+standard = """
+The lean set plus the logic of sign-in, onboarding, settings and the app's own language, each
+behind a placeholder route, with the in-app browser, feature flags, the developer panel with its
+performance overlay, a local database and the reference list-detail feature to copy. What most
+products want on day one, ready for your own design system."""
 everything = """
 Every feature that does not need UI components, working together: the template's own proof that
 they coexist without them. Delete what you do not need."""

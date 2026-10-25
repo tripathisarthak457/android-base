@@ -6,8 +6,11 @@ import type { Target } from "./types.ts";
 
 /**
  * What a project without UI components lacks: the harness the option owns, a tab bar and its tabs,
- * the navigation shell, a home screen and core/ui's list component. A browser's Custom Tab and the
- * inspector's own tabs are no such promise: "a Performance tab in the inspector" stays.
+ * the navigation shell, a home screen, core/ui's list component, drawn screens and their rows, the
+ * onboarding pages and the permission prompt at their end, and entry gates a link waits behind. A
+ * browser's Custom Tab and the inspector's own tabs are no such promise: "a Performance tab in the
+ * inspector" stays. The generator's test_android_noui finds which features need the option's words;
+ * this list keeps those words, and every text left as it is, from promising these again.
  */
 const MISSING = [
   /tools\/perf/,
@@ -16,6 +19,14 @@ const MISSING = [
   /navigation shell/i,
   /home screen/i,
   /list component/i,
+  /\bscreens\b/i,
+  /\brows?\b/i,
+  /walkthrough/i,
+  /working screen/i,
+  /already drawn/i,
+  /language picker/i,
+  /end of onboarding/i,
+  /held until[^.]*\b(?:onboarding|sign-in)\b/i,
 ];
 
 function copyOf(target: Target, uiComponents: boolean): { name: string; text: string }[] {

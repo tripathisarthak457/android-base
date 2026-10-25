@@ -106,8 +106,9 @@ class AskFeaturesTest(unittest.TestCase):
         self.assertNotIn(manifest.presets["lean"].description, shown)
         self.assertIn(option.feature_copy["performance"].description, shown)
         self.assertNotIn(manifest.features["performance"].description, shown)
-        # A preset or feature the option does not describe reads as it always has.
-        self.assertIn(manifest.presets["standard"].description, shown)
+        self.assertIn(option.preset_copy["standard"], shown)
+        self.assertNotIn(manifest.presets["standard"].description, shown)
+        # A feature the option does not describe reads as it always has.
         self.assertIn(manifest.features["network"].description, shown)
 
     def test_a_preset_without_ui_components_loses_only_what_they_disable(self):

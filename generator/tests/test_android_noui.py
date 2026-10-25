@@ -88,6 +88,45 @@ def whole_file_fence(source: Path) -> Expression | None:
     return Expression.parse(match.group(1), ANDROID.manifest.marker_keys, source, 2) if match else None
 
 
+_MARKER = re.compile(r"<opt(?:-else)?:([^>\n]+)>")
+
+
+def ui_the_option_takes() -> dict[str, str]:
+    """
+    Kept feature → where the template shows that the option takes some of its UI: a fence that
+    needs the feature and UI components both, or a path the option owns that the feature owns or
+    fences. A placeholder route in a generated project is the third way, which only a project shows.
+    """
+    manifest = ANDROID.manifest
+    token = manifest.package_path_token
+    kept = {key for key, feature in manifest.features.items() if not feature.implied_only} - set(OPTION.disables)
+    owned = [path.format(pkg_path=token) for path in OPTION.owns]
+    taken: dict[str, str] = {}
+    for path in sorted(manifest.root.rglob("*")):
+        relative = path.relative_to(manifest.root).as_posix()
+        if (
+            not path.is_file()
+            or is_verbatim(relative, manifest.verbatim)
+            or path.suffix.lower() in manifest.binary_suffixes
+            or {"build", ".gradle"} & set(path.relative_to(manifest.root).parts)
+        ):
+            continue
+        in_owned = any(relative == root or relative.startswith(root + "/") for root in owned)
+        for text in _MARKER.findall(path.read_text(encoding="utf-8")):
+            for term in Expression.parse(text, manifest.marker_keys, path, 1).terms:
+                on = {key for key, negated in term if not negated}
+                if in_owned or OPTION.key in on:
+                    for feature in sorted(on & kept):
+                        taken.setdefault(feature, f"{relative} <opt:{text}>")
+    for root in owned:
+        for feature in sorted(kept):
+            for path in manifest.features[feature].owns:
+                path = path.format(pkg_path=token)
+                if root == path or root.startswith(path + "/") or path.startswith(root + "/"):
+                    taken.setdefault(feature, f"{root}, which the option owns")
+    return taken
+
+
 def section(settings: list[str], tier: str) -> int:
     """The line of settings.gradle.kts that heads [tier]'s includes: `// ── data ──…`."""
     return next(index for index, line in enumerate(settings) if line.startswith(f"// ── {tier} "))
@@ -173,6 +212,26 @@ class ProjectShapeTest(unittest.TestCase):
                     if harness.search(line)
                 ]
                 self.assertEqual([], named)
+
+    def test_every_feature_whose_ui_the_option_takes_reads_in_the_option_s_words(self):
+        # A kept feature's own copy describes the screens, rows and prompts a project with components
+        # has. Where the option takes any of them, the site, the wizard and --list-features must show
+        # the option's words for it, which say what the project has instead.
+        manifest = ANDROID.manifest
+        taken = ui_the_option_takes()
+        for name, project in self.projects.items():
+            enabled = json.loads((project / RECORD_NAME).read_text(encoding="utf-8"))["features"]
+            for feature in enabled:
+                for owned in manifest.features[feature].owns:
+                    base = project / owned.format(pkg_path=PKG)
+                    sources = [base] if base.is_file() else sorted(base.rglob("*.kt")) if base.is_dir() else []
+                    for path in sources:
+                        if "/src/main/" in path.as_posix() and "PlaceholderScreen(" in path.read_text(encoding="utf-8"):
+                            taken.setdefault(feature, f"{name}: {path.relative_to(project).as_posix()} draws a placeholder")
+        # Each way is still seen: a placeholder route, a fence with the option, a file the option owns.
+        self.assertTrue({"settings", "push", "coil"} <= set(taken), sorted(taken))
+        self.maxDiff = None
+        self.assertEqual([], [f"{feature}: {why}" for feature, why in sorted(taken.items()) if feature not in OPTION.feature_copy])
 
     def test_every_placeholder_is_titled_with_a_string_of_its_own_module(self):
         title = re.compile(r"PlaceholderScreen\(\s*title = R\.string\.(\w+)")
