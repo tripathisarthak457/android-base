@@ -15,6 +15,7 @@ from contextlib import redirect_stdout
 from pathlib import Path
 
 from genkit.core import pipeline
+from genkit.core.copy import is_verbatim
 from genkit.core.markers import Expression
 from genkit.core.record import RECORD_NAME
 from genkit.targets import get
@@ -149,6 +150,23 @@ class ProjectShapeTest(unittest.TestCase):
                     if NO_UI_FORBIDDEN.search(line)
                 ]
                 self.assertEqual([], reached)
+
+    def test_nothing_sends_a_reader_to_the_harness_the_option_leaves_out(self):
+        # The option owns tools/perf and tools/adaptive, so no project without UI components has them,
+        # `performance` or not; the overlay's advice, the docs and the KDoc must not point there.
+        harness = re.compile(r"tools/perf|tools/adaptive|perf\.sh|gates\.toml")
+        for name, project in self.projects.items():
+            with self.subTest(project=name):
+                named = [
+                    f"{relative}:{number}"
+                    for path in sorted(project.rglob("*"))
+                    if path.is_file()
+                    and not is_verbatim(relative := path.relative_to(project).as_posix(), ANDROID.manifest.verbatim)
+                    and path.suffix.lower() not in ANDROID.manifest.binary_suffixes
+                    for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1)
+                    if harness.search(line)
+                ]
+                self.assertEqual([], named)
 
     def test_every_placeholder_is_titled_with_a_string_of_its_own_module(self):
         title = re.compile(r"PlaceholderScreen\(\s*title = R\.string\.(\w+)")

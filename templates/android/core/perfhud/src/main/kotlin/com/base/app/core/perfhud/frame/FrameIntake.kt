@@ -5,6 +5,7 @@ import androidx.metrics.performance.FrameDataApi24
 import androidx.metrics.performance.FrameDataApi31
 import androidx.metrics.performance.JankStats
 
+// <opt:ui_components>
 /**
  * Turns each frame JankStats reports into a [FrameLog] entry, on JankStats' thread, counted for the
  * screen [ScreenTimeline] had in front when it was drawn.
@@ -13,6 +14,17 @@ import androidx.metrics.performance.JankStats
  * FrameTimeline counts and so what `perf.sh` and `dumpsys gfxinfo` report; JankStats' own
  * `isJank`, a frame over twice the refresh interval, counts about half as many.
  */
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ /**
+//~  * Turns each frame JankStats reports into a [FrameLog] entry, on JankStats' thread, counted for the
+//~  * screen [ScreenTimeline] had in front when it was drawn.
+//~  *
+//~  * A frame is janky when it missed its deadline, which on API 31 and later is what the platform's
+//~  * FrameTimeline counts and so what `dumpsys gfxinfo` reports; JankStats' own `isJank`, a frame
+//~  * over twice the refresh interval, counts about half as many.
+//~  */
+// </opt-else:ui_components>
 internal class FrameIntake(
     private val log: FrameLog,
     private val refresh: RefreshRate,

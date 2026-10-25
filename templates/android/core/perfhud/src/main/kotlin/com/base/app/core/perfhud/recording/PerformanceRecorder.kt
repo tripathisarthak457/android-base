@@ -43,6 +43,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
+// <opt:ui_components>
 /**
  * Starts and stops everything the overlay records, and holds what it has recorded.
  *
@@ -58,6 +59,24 @@ import javax.inject.Singleton
  * activity-lifecycle callback, a DataStore and one read of the stored choice, whose file I/O runs
  * on the I/O dispatcher.
  */
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ /**
+//~  * Starts and stops everything the overlay records, and holds what it has recorded.
+//~  *
+//~  * Recording is on by default in a debug build, where a developer wants to see it, and off in a
+//~  * release-like dev build (devRelease, devBenchmarkRelease), which is what a measurement takes.
+//~  * The developer's own choice is kept across launches, and a launch with the extra
+//~  * `perf.hud=on|off` overrides both for that process: that is how a scripted run measures the app
+//~  * with the overlay and without it.
+//~  *
+//~  * Until the first recording starts nothing listens to the window and nothing is sampled; the rings
+//~  * are allocated by the first recording, or by the Perf tab's first read of them. The recorder is
+//~  * built with the inspector, on the main thread during the launch: that costs the launch an
+//~  * activity-lifecycle callback, a DataStore and one read of the stored choice, whose file I/O runs
+//~  * on the I/O dispatcher.
+//~  */
+// </opt-else:ui_components>
 @Singleton
 internal class PerformanceRecorder @Inject constructor(
     @ApplicationContext context: Context,
