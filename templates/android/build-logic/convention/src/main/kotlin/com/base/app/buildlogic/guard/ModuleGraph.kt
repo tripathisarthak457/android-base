@@ -256,8 +256,13 @@ private val SHELL_BLIND = setOf(
  * Compose is the design system's whole toolkit; each other line is a reason, not a convenience.
  */
 private val DESIGN_SYSTEM_LIBRARIES = listOf(
-    // Compose, from its BOM, with its tooling and test rule, Google Fonts among them.
-    "androidx.compose*:*",
+    // Compose without Material, from its BOM, with its tooling and test rule, Google Fonts among them:
+    // the design system draws its own components.
+    "androidx.compose:compose-bom",
+    "androidx.compose.runtime:*",
+    "androidx.compose.ui:*",
+    "androidx.compose.foundation:*",
+    "androidx.compose.animation:*",
     // Android's own window size classes, so breakpoints match every other app on the device.
     "androidx.window:*",
     // Back and predictive back for sheets and overlays, and the lifecycle a timed message counts against.
@@ -279,7 +284,7 @@ private val DESIGN_SYSTEM_LIBRARIES = listOf(
     "androidx.test*:*",
 )
 
-/** `androidx.compose*:*` as a regex over `group:name`, where `*` is any run of characters. */
+/** `androidx.compose.ui:*` as a regex over `group:name`, where `*` is any run of characters. */
 private fun glob(pattern: String): Regex =
     Regex(pattern.split('*').joinToString(".*") { Regex.escape(it) })
 

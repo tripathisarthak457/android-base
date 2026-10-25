@@ -117,6 +117,9 @@ class ModuleGraphTest {
             "io.ktor:ktor-client-core",
             "androidx.room3:room3-runtime",
             "io.coil-kt.coil3:coil-compose",
+            // Compose, but not the design system's: it draws its own components.
+            "androidx.compose.material3:material3",
+            "androidx.compose.material:material-icons-core",
         )
         val designSystem = ModuleShape.of(":core:designsystem")!!
 
