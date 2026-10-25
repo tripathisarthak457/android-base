@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.base.app.MainActivity
 
+// <opt:ui_components>
 /**
  * Where a link lands, so MainActivity can stay singleTop. MainActivity is started exactly as the
  * launcher starts it, with the link as an extra: a task a link opened then has the launcher's
@@ -13,6 +14,17 @@ import com.base.app.MainActivity
  * CLEAR_TOP with SINGLE_TOP brings a running instance forward; MainActivity holds the link and
  * opens it once the tabs are up, as it does for one that arrived before sign-in.
  */
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ /**
+//~  * Where a link lands, so MainActivity can stay singleTop. MainActivity is started exactly as the
+//~  * launcher starts it, with the link as an extra: a task a link opened then has the launcher's
+//~  * intent at its root (extras do not count when Android compares intents), and the icon tapped
+//~  * later brings that task back instead of stacking a second copy of the app on top of it.
+//~  * CLEAR_TOP with SINGLE_TOP brings a running instance forward; MainActivity holds the link and
+//~  * the app's stack opens it once start-up has read the settings and the session.
+//~  */
+// </opt-else:ui_components>
 class LinkActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
