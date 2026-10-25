@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.IntSize
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
 import kotlin.math.PI
 
-// <opt:ui_components>
 /**
  * How the app moves, as one choice: how much a release overshoots, and how quickly things travel.
  * The numbers are in `DesignTokens.Motion`.
@@ -25,14 +24,6 @@ import kotlin.math.PI
  * AppTheme(motionStyle = AppMotionStyle.Calm) { … }
  * ```
  */
-// </opt:ui_components>
-// <opt-else:ui_components>
-//~ /**
-//~  * How the app moves, as one choice: how much a release overshoots, and how quickly things travel.
-//~  * The theme skeleton provides the project's style through `AppTheme.springs`. The numbers are in
-//~  * `DesignTokens.Motion`.
-//~  */
-// </opt-else:ui_components>
 enum class AppMotionStyle {
     /** A trace of overshoot on release. Lively without drawing attention to itself. */
     Standard,

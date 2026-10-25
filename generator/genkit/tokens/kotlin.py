@@ -21,8 +21,23 @@ PROJECT_HEADER = (
     "// Edit the values here to change them app-wide; AppTheme and every component read them."
 )
 
+#: A project without UI components owns a theme skeleton's values, and nothing a component of the
+#: template's would have read.
+SKELETON_HEADER = (
+    "// The theme skeleton's values: palette, type scale, spacing, shapes, sizes, elevation and springs.\n"
+    "// Edit them here to change them app-wide. A value only one component uses belongs in its XDefaults."
+)
+
 #: Where the Android copy lives, under the module's source root and the package path.
 RELATIVE_PATH = "core/designsystem/src/main/kotlin/{package_path}/core/designsystem/theme/tokens/DesignTokens.kt"
+
+#: What only the template's components read, which a theme skeleton leaves out: the tab bar's sizes,
+#: the springs of its indicator and of a glyph's bounce, and the colours of the bar's selection and
+#: the loading skeleton. The rest of what is left out is a whole section. The segmented thumb stays:
+#: the developer panel's switches and segmented control draw with it.
+COMPONENT_SIZES: tuple[str, ...] = ("tabBarHeight", "tabBarSideMargin", "tabBarLift", "tabBarMaxWidth")
+COMPONENT_SPRINGS: tuple[str, ...] = ("indicatorLead", "indicatorTrail", "iconBounceDown", "iconBounceUp")
+COMPONENT_ROLES: tuple[str, ...] = ("barIndicator", "skeleton", "skeletonHighlight")
 
 
 def emit(tokens: dict[str, Any], package: str, header: str = HEADER) -> str:
@@ -65,6 +80,116 @@ def emit(tokens: dict[str, Any], package: str, header: str = HEADER) -> str:
         lines.extend(_indent(section))
     lines.append("}")
     return "\n".join(lines) + "\n"
+
+
+def emit_skeleton(tokens: dict[str, Any], package: str, header: str = SKELETON_HEADER) -> str:
+    """
+    The theme skeleton's `DesignTokens`: one value per slot `AppTheme` provides (colours, type,
+    spacing, shapes, sizes, elevation, motion), resolved for the project's design and motion style,
+    with no design styles to choose between and no section only a component reads.
+    """
+    theme = f"{package}.core.designsystem.theme"
+    defaults = tokens["defaults"]
+    style = tokens["styles"][defaults["designStyle"]]
+    lines = [
+        header,
+        f"package {theme}.tokens",
+        "",
+        "import androidx.compose.animation.core.CubicBezierEasing",
+        "import androidx.compose.ui.graphics.Color",
+        "import androidx.compose.ui.unit.Dp",
+        "import androidx.compose.ui.unit.TextUnit",
+        "import androidx.compose.ui.unit.dp",
+        "import androidx.compose.ui.unit.sp",
+        f"import {theme}.AppColors",
+        f"import {theme}.StatusColors",
+        "",
+        "internal object DesignTokens {",
+    ]
+    radii = {"none": tokens["radii"]["none"], **{key: value for key, value in style["radii"].items() if key != "sheet"}}
+    sizes = {key: value for key, value in tokens["sizes"].items() if key not in COMPONENT_SIZES}
+    sections = [
+        _dp_object("Spacing", tokens["spacing"]),
+        _dp_object("Radii", radii),
+        _dp_object("Sizes", sizes),
+        _dp_object("Elevation", tokens["elevation"]),
+        _skeleton_type(tokens["type"], style["voice"]),
+        _skeleton_motion(tokens["motion"], defaults["motionStyle"]),
+        _skeleton_palette(tokens["palette"]["tones"][style["surfaces"]]),
+        [
+            "/** The project's own choices, which `AppTheme` falls back to. */",
+            "object Defaults {",
+            f"    const val hapticsEnabled: Boolean = {'true' if defaults['hapticsEnabled'] else 'false'}",
+            f"    const val fontName: String = \"{defaults['fontName']}\"",
+            f"    const val monoFontName: String = \"{defaults['monoFontName']}\"",
+            "}",
+        ],
+    ]
+    for section in sections:
+        lines.append("")
+        lines.extend(_indent(section))
+    lines.append("}")
+    return "\n".join(lines) + "\n"
+
+
+def _skeleton_type(type_tokens: dict[str, Any], voice: str) -> list[str]:
+    lines = [
+        "/** One role of the type scale. */",
+        "class TypeRole(val size: TextUnit, val lineHeight: TextUnit, val tracking: TextUnit, val weight: Int)",
+        "",
+        "object Type {",
+    ]
+    for name, role in type_tokens["roles"].items():
+        lines.append(
+            f"    val {name} = TypeRole({_sp(role['size'])}, {_sp(role['lineHeight'])}, "
+            f"{_sp(role['tracking'])}, {role['weight'][voice]})"
+        )
+    lines.append("}")
+    return lines
+
+
+def _skeleton_motion(motion: dict[str, Any], style: str) -> list[str]:
+    springs = motion["styles"][style]["springs"]
+    fades = motion["fades"]
+    return [
+        "/** A spring in iOS's terms: seconds to settle, and how far it overshoots (negative: overdamped). */",
+        "class Spring(val response: Float, val bounce: Float)",
+        "",
+        "object Motion {",
+        *(
+            f"    val {name} = Spring({_float(spring['response'])}, {_float(spring['bounce'])})"
+            for name, spring in springs.items()
+            if name not in COMPONENT_SPRINGS
+        ),
+        "",
+        f"    const val visibilityThreshold: Float = {_float(motion['visibilityThreshold']['float'])}",
+        f"    const val flingFriction: Float = {_float(motion['scroll']['flingFriction'])}",
+        f"    const val pagingFriction: Float = {_float(motion['scroll']['pagingFriction'])}",
+        f"    const val fadeShortMs: Int = {int(fades['shortMs'])}",
+        f"    const val fadeLongMs: Int = {int(fades['longMs'])}",
+        f"    val fadeEnterEasing = CubicBezierEasing({', '.join(_float(c) for c in fades['enterEasing'])})",
+        f"    val fadeExitEasing = CubicBezierEasing({', '.join(_float(c) for c in fades['exitEasing'])})",
+        "}",
+    ]
+
+
+def _skeleton_palette(themes: dict[str, Any]) -> list[str]:
+    """The surface tone's light and dark `AppColors`: the plain roles, then the statuses."""
+    lines = ["object Palette {"]
+    for theme, roles in themes.items():
+        kept = {name: value for name, value in roles.items() if name not in COMPONENT_ROLES}
+        lines.append(f"    val {theme} = AppColors(")
+        for name, value in kept.items():
+            if not isinstance(value, dict):
+                lines.append(f"        {name} = {_color(value)},")
+        for name, value in kept.items():
+            if isinstance(value, dict):
+                fields = ", ".join(f"{field} = {_color(colour)}" for field, colour in value.items())
+                lines.append(f"        {name} = StatusColors({fields}),")
+        lines.append(f"        isLight = {'true' if theme == 'light' else 'false'},")
+        lines.append("    )")
+    lines.append("}")
+    return lines
 
 
 def _indent(lines: list[str]) -> list[str]:

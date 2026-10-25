@@ -81,11 +81,13 @@ data class AppColors(
     val scrim: Color,
     val focusRing: Color,
     val shadow: Color,
+    // <opt:ui_components>
     /** The tab bar's selection pill. Content on it uses [onAccent]. */
     val barIndicator: Color,
     val skeleton: Color,
     /** The sweep across a skeleton, a visible step lighter than [skeleton] in both themes. */
     val skeletonHighlight: Color,
+    // </opt:ui_components>
 
     /** Drives the decisions that cannot be expressed as a token, such as shadows. */
     val isLight: Boolean,
@@ -107,6 +109,7 @@ data class StatusColors(
     val on: Color,
 )
 
+// <opt:ui_components>
 /**
  * The palette a surface tone draws with, light or [dark]. Every role is resolved when the tokens
  * are emitted, the brand's colours included, and the roles drawn over the surfaces (the accent as
@@ -121,3 +124,15 @@ fun SurfaceTone.colors(dark: Boolean): AppColors = when (this) {
 }
 
 internal val LocalAppColors = staticCompositionLocalOf { SurfaceTone.Cool.colors(dark = false) }
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ /**
+//~  * The palette the theme draws with, light or [dark]. Every role is resolved when the tokens are
+//~  * emitted, the brand's colours included, and the roles drawn over the surfaces (the accent as text,
+//~  * status text, outlines) already darkened or lightened until they keep their contrast on every one
+//~  * of them; `PaletteContrastTest` holds them to it.
+//~  */
+//~ fun appColors(dark: Boolean): AppColors = if (dark) DesignTokens.Palette.dark else DesignTokens.Palette.light
+//~
+//~ internal val LocalAppColors = staticCompositionLocalOf { appColors(dark = false) }
+// </opt-else:ui_components>

@@ -95,6 +95,7 @@ class FontPreload(private val downloaded: AppFonts) {
 val PreloadBudget: Duration = 150.milliseconds
 // <opt:googlefonts>
 
+// <opt:ui_components>
 /**
  * The app's preload: the startup gate runs it, and [AppTheme] draws with its answer. It downloads
  * exactly the weights the design style's type voice uses.
@@ -105,6 +106,19 @@ val AppFontPreload = FontPreload(
         mono = googleFamily(DesignTokens.Defaults.monoFontName, MonoWeights),
     ),
 )
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ /**
+//~  * The app's preload: the startup gate runs it, and [AppTheme] draws with its answer. It downloads
+//~  * exactly the weights the type scale uses.
+//~  */
+//~ val AppFontPreload = FontPreload(
+//~     AppFonts(
+//~         sans = googleFamily(DesignTokens.Defaults.fontName, SansWeights),
+//~         mono = googleFamily(DesignTokens.Defaults.monoFontName, MonoWeights),
+//~     ),
+//~ )
+// </opt-else:ui_components>
 // </opt:googlefonts>
 // <opt-else:googlefonts>
 //~

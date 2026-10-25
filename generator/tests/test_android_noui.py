@@ -20,6 +20,7 @@ from genkit.core.copy import is_verbatim, template_files
 from genkit.core.markers import Expression
 from genkit.core.record import RECORD_NAME
 from genkit.targets import get
+from genkit.tokens import kotlin
 
 ANDROID = get("android")
 PACKAGE = "com.acme.noui"
@@ -262,6 +263,33 @@ class ProjectShapeTest(unittest.TestCase):
                 previews = project / f"core/designsystem/src/main/kotlin/{PKG}/core/designsystem/preview"
                 self.assertTrue((previews / "ThemePreview.kt").is_file())
 
+    def test_its_tokens_are_the_skeleton_s_and_every_one_the_code_reads_is_there(self):
+        from tests.test_tokens import _kotlin_code, _token_members
+
+        for name, project in self.projects.items():
+            with self.subTest(project=name):
+                theme = project / f"core/designsystem/src/main/kotlin/{PKG}/core/designsystem/theme"
+                emitted = (theme / "tokens/DesignTokens.kt").read_text(encoding="utf-8")
+                self.assertTrue(emitted.startswith(kotlin.SKELETON_HEADER + "\n"))
+                declared = _token_members(emitted)
+                self.assertNotIn("Styles", declared)
+                sources = {
+                    path.relative_to(project).as_posix(): _kotlin_code(path.read_text(encoding="utf-8"))
+                    for path in project.rglob("*.kt")
+                    if path.name != "DesignTokens.kt" and not {".agents", ".claude"} & set(path.parts)
+                }
+                missing = set()
+                for relative, code in sources.items():
+                    # An extension's receiver declares a function; it reads nothing.
+                    code = re.sub(r"\bfun\s+(?:<[^>]*>\s*)?DesignTokens\.\w+\.\w+", "", code)
+                    for group, member in re.findall(r"\bDesignTokens\.(\w+)(?:\.(\w+))?", code):
+                        if group not in declared or (member and member not in declared[group]):
+                            missing.add(f"{relative}: DesignTokens.{group}.{member}".rstrip("."))
+                self.assertEqual(set(), missing)
+                # The design and motion styles are not the skeleton's to choose, and nothing names them.
+                styles = re.compile(r"\b(AppDesignStyle|AppMotionStyle|AppStyle|SurfaceTone|TypeVoice|TabBarMotion|NavigationMotion)\b")
+                self.assertEqual({}, {relative: styles.findall(code) for relative, code in sources.items() if styles.search(code)})
+
     def test_feature_modules_render_no_screenshots(self):
         for name, project in self.projects.items():
             with self.subTest(project=name):
@@ -337,6 +365,9 @@ class UiProjectTest(unittest.TestCase):
             self.assertTrue((project / f"core/navigation/src/main/kotlin/{PKG}/core/navigation/AppShell.kt").is_file())
             self.assertFalse((project / f"app/src/main/kotlin/{PKG}/ui/start").exists())
             self.assertTrue((project / "feature/home").is_dir())
+            emitted = (project / kotlin.RELATIVE_PATH.format(package_path=PKG)).read_text(encoding="utf-8")
+            self.assertTrue(emitted.startswith(kotlin.PROJECT_HEADER + "\n"))
+            self.assertIn("    object Sheet {\n", emitted)
 
 
 class ProjectScriptsTest(unittest.TestCase):

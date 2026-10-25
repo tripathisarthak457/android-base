@@ -42,9 +42,11 @@ data class AppShapes(
     val lg: Shape = RoundedCornerShape(DesignTokens.Radii.lg),
     val xl: Shape = RoundedCornerShape(DesignTokens.Radii.xl),
     val pill: Shape = RoundedCornerShape(percent = 50),
+    // <opt:ui_components>
 
     /** Bottom sheets: rounded at the top, square where they meet the window edge. */
     val sheet: Shape = RoundedCornerShape(topStart = DesignTokens.Radii.sheet, topEnd = DesignTokens.Radii.sheet),
+    // </opt:ui_components>
 )
 
 /** Elevation, as a token rather than a raw `Dp` at the call site. */
@@ -77,4 +79,6 @@ data class AppSizes(
 )
 
 internal val LocalAppSpacing = staticCompositionLocalOf { AppSpacing() }
+// <opt:ui_components>
 internal val LocalAppShapes = staticCompositionLocalOf { AppShapes() }
+// </opt:ui_components>

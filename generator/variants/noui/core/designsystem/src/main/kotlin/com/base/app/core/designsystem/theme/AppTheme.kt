@@ -47,11 +47,9 @@ enum class ThemeMode {
     }
 }
 
-/** The look the project was generated with: its type voice and springs, haptics and fonts. */
+/** What the project was generated with: haptics and fonts. */
 @Immutable
 class AppThemeDefaults internal constructor(
-    val designStyle: AppDesignStyle,
-    val motionStyle: AppMotionStyle,
     val hapticsEnabled: Boolean,
     val fontName: String,
     val monoFontName: String,
@@ -61,13 +59,13 @@ class AppThemeDefaults internal constructor(
  * The theme skeleton: one slot for each kind of token the app's components read (colours, type,
  * spacing, shapes, sizes, elevation, springs and reduce-motion) and the window's size classes,
  * posture and input, with no component behind them. The values are neutral, with the project's
- * own colours and fonts; change them in `tokens/DesignTokens.kt` and the files beside this one,
- * and build components that read them through [AppTheme].
+ * own colours and fonts; change them in `tokens/DesignTokens.kt`, and build components that read
+ * them through [AppTheme].
  *
  * Nothing draws a press overlay unless a component asks for one: the default indication draws
  * nothing, so a `clickable` without an indication of its own gives no grey flash.
  *
- * [colors] default to the palette of the project's surface tone in the mode's theme.
+ * [colors] default to the project's palette in the mode's theme.
  * [reduceMotion] overrides the system's "Remove animations" setting, for previews and tests; left
  * null, the setting is followed as it changes. [posture] and [input] come from the activity, which
  * watches the window for them; a nested theme keeps its parent's.
@@ -75,7 +73,7 @@ class AppThemeDefaults internal constructor(
 @Composable
 fun AppTheme(
     mode: ThemeMode = ThemeMode.System,
-    colors: AppColors = AppTheme.defaults.designStyle.style().surfaces.colors(dark = mode.isDark()),
+    colors: AppColors = appColors(dark = mode.isDark()),
     fonts: AppFonts = themeFonts(),
     hapticsEnabled: Boolean = AppTheme.defaults.hapticsEnabled,
     reduceMotion: Boolean? = null,
@@ -83,8 +81,7 @@ fun AppTheme(
     input: InputTraits = AppTheme.input,
     content: @Composable () -> Unit,
 ) {
-    val style = AppTheme.defaults.designStyle.style()
-    val typography = remember(fonts, style.voice) { appTypography(fonts, style.voice) }
+    val typography = remember(fonts) { appTypography(fonts) }
     val selectionColors = remember(colors) {
         TextSelectionColors(
             handleColor = colors.accent,
@@ -121,8 +118,6 @@ fun AppTheme(
         LocalWindowPosture provides posture,
         LocalInputTraits provides input,
         LocalAppLayout provides layout,
-        LocalAppShapes provides style.shapes,
-        LocalAppSprings provides AppTheme.defaults.motionStyle.springs(),
         LocalReduceMotion provides reduceMotionState,
         LocalTextSelectionColors provides selectionColors,
         LocalIndication provides NoIndication,
@@ -137,10 +132,8 @@ fun AppTheme(
  */
 object AppTheme {
 
-    /** The type voice, springs, haptics and fonts the project was generated with. */
+    /** The haptics and fonts the project was generated with. */
     val defaults = AppThemeDefaults(
-        designStyle = DesignTokens.Defaults.designStyle,
-        motionStyle = DesignTokens.Defaults.motionStyle,
         hapticsEnabled = DesignTokens.Defaults.hapticsEnabled,
         fontName = DesignTokens.Defaults.fontName,
         monoFontName = DesignTokens.Defaults.monoFontName,
@@ -164,7 +157,7 @@ object AppTheme {
     val shapes: AppShapes
         @Composable
         @ReadOnlyComposable
-        get() = LocalAppShapes.current
+        get() = AppShapesDefault
 
     val elevation: AppElevation
         @Composable
@@ -179,7 +172,7 @@ object AppTheme {
     val springs: AppSprings
         @Composable
         @ReadOnlyComposable
-        get() = LocalAppSprings.current
+        get() = DefaultSprings
 
     /** Whether to skip motion that is not needed to understand a change. */
     val reduceMotion: Boolean
@@ -242,5 +235,6 @@ private val LocalHapticsEnabled = staticCompositionLocalOf { true }
 /** Whether an outer theme is already installed, so a nested one keeps its pane's size classes. */
 private val LocalThemeInstalled = staticCompositionLocalOf { false }
 
+private val AppShapesDefault = AppShapes()
 private val AppElevationDefault = AppElevation()
 private val AppSizesDefault = AppSizes()
