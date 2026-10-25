@@ -57,8 +57,8 @@ internal class SearchViewModel @Inject constructor(
     init {
         observe(repository.recent) { copy(recent = it) }
         // Typing has to start a search, a side effect that `observe`'s pure reducer cannot run, so
-        // the watcher lives as long as the ViewModel from the screen's first look on. Between
-        // keystrokes it only checks each snapshot apply against the one field it reads.
+        // the watcher runs from the screen's first start for as long as the ViewModel lives.
+        // Between keystrokes it only checks each snapshot apply against the one field it reads.
         onFirstObserved {
             launchExclusive(TYPING) {
                 snapshotFlow { query.text.toString() }.collect { search(it, debounce = true) }
