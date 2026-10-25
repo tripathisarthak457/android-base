@@ -210,8 +210,10 @@ HTTP/1.1 403 Forbidden
 
 A value that is not `true` or `false` is a 400 `invalid_spec` on `ui_components`, locked or not.
 A catalogue whose lock has no boolean `value` or no `note` stops the API at boot: serving with the
-lock ignored would generate exactly what it is there to refuse. The boot selftest asks for the
-locked value. A refused request is recorded as an invalid generation with the note as its reason,
+lock ignored would generate exactly what it is there to refuse; that is all the boot checks of the
+lock. `server -selftest` sends the locked value through the route's checks and the generator, but
+nothing runs it on its own, neither the image's command nor CI: run it against an image before
+deploying it. A refused request is recorded as an invalid generation with the note as its reason,
 so the admin shows what people asked for while the lock is on.
 
 The lock lives only on the branch that deploys setup-only; it never merges back into the
