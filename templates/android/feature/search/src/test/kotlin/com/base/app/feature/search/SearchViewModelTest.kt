@@ -4,7 +4,6 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.lifecycle.SavedStateHandle
 import com.base.app.core.common.LoadState
-import com.base.app.core.common.result.AppResult
 import com.base.app.core.testing.MainDispatcherRule
 import com.base.app.data.search.api.FakeSearchRepository
 import com.base.app.data.search.api.SearchRepository
