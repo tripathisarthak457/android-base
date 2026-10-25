@@ -57,7 +57,9 @@ A spec is plain JSON. Only `app_name` and `package_name` are required:
 - Then build it (`./gradlew :app:assembleDevDebug`) before you tell the user it is ready.
 
 After that, work in the generated project and follow its `AGENTS.md`. Its base components are a
-starting point to reshape, not a kit to ship unchanged.
+starting point to reshape, not a kit to ship unchanged. For a new design-system component,
+`python3 add_component.py Tag --project ../MyApp` (from `generator/`) writes `AppTag` and its test
+from the two templates in that project's `docs/DESIGN-SYSTEM.md`, with or without UI components.
 
 ## Changing the template
 

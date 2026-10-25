@@ -480,6 +480,23 @@ error about a missing project rather than about the directory they deleted. It r
 the template itself ships: those are removed by generating without them, not by deleting a
 directory that half the app still references.
 
+## Adding a design-system component
+
+```bash
+cd generator
+py add_component.py Tag --project ../MyApp             # component/tag/AppTag.kt and its test
+py add_component.py SearchBar --project ../MyApp --dry-run
+```
+
+It writes `AppTag` into `:core:designsystem`, in a package of its own under `component` (or the
+one `--group` names), and `AppTagTest` beside it in the module's tests. Both come from the two
+templates in the project's own `docs/DESIGN-SYSTEM.md`, renamed, with the imports they need: that
+page is where a component is learned, and in a project without UI components the build's rules
+check both templates, so the page, the scaffold and the guard cannot disagree. It works the same
+with or without UI components, each project getting the previews its own page shows. It refuses a
+name that is not PascalCase, one the design system already has, and a project without
+`:core:designsystem`.
+
 ---
 
 ## Working on the template itself
@@ -569,6 +586,7 @@ generator/
   create_project.py      the wizard and the entry point
   add_feature.py         the scaffolder, for a project that already exists
   remove_feature.py      its inverse: delete a module and the three lines naming it
+  add_component.py       a design-system component and its test, from the project's DESIGN-SYSTEM.md
   generate_headless.py   JSON on stdin, a zip out. What the web API runs
   genkit/
     spec.py              what a project is, the feature catalogue, the presets, the rules

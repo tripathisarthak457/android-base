@@ -147,23 +147,23 @@
     <string name="perfhud_fix_slow_frames">Frames over 16 ms miss even a 60 Hz budget. Find them in Frame times and record a trace of that moment.</string>
     <string name="perfhud_fix_frozen_frames">A frame took longer than 700 ms: the app froze. Something blocked the main thread: disk or network on it (check StrictMode below), a large decode, or a lock. Move it to a background dispatcher.</string>
     <string name="perfhud_fix_long_work">The main thread did more than 50 ms of work for single frames. StrictMode below names disk and network calls; a trace names the rest. Defer what is not needed for the first frame.</string>
-    <!-- <opt:ui_components> -->
+    <!-- <opt:performance&ui_components> -->
     <string name="perfhud_fix_cold_start">Start-up does too much before the first frame. Keep Application.onCreate and the first screen\'s creation free of I/O and of eager singletons, make sure the baseline profile is compiled, and measure with tools/perf/perf.sh coldstart on devRelease.</string>
-    <!-- </opt:ui_components> -->
-    <!-- <opt-else:ui_components> -->
+    <!-- </opt:performance&ui_components> -->
+    <!-- <opt-else:performance&ui_components> -->
     <!--~ <string name="perfhud_fix_cold_start">Start-up does too much before the first frame. Keep Application.onCreate and the first screen\'s creation free of I/O and of eager singletons, make sure the baseline profile is compiled, and measure on devRelease with Macrobenchmark\'s StartupTimingMetric, or as the median TotalTime of several adb shell am start -W cold starts.</string> -->
-    <!-- </opt-else:ui_components> -->
+    <!-- </opt-else:performance&ui_components> -->
     <string name="perfhud_fix_warm_start">Re-creating the activity is slow: the first screen does work on creation that it could keep in its ViewModel, or restores more state than it needs.</string>
     <string name="perfhud_fix_app_memory">The app keeps more memory than the 58.4 MB budget. Look for caches without a bound, images decoded at full size, and screens that hold their data after they close. A heap dump from the profiler shows who owns it.</string>
     <string name="perfhud_fix_blocking_gc">The garbage collector stopped every thread. That comes from allocating fast: objects created on every frame, in draw lambdas or animation callbacks. Hoist them into remember or a node.</string>
     <string name="perfhud_fix_strict_mode">The main thread touched the disk or the network. The examples below name where; move each call to a background dispatcher, or into a repository that already runs there.</string>
     <string name="perfhud_fix_minified">This build is not shrunk by R8, which also optimises the code. Release builds are; measure one: devRelease.</string>
-    <!-- <opt:ui_components> -->
+    <!-- <opt:performance&ui_components> -->
     <string name="perfhud_fix_baseline_profile">ART has not compiled this build with the baseline profile, so its first use of each screen runs interpreted. On a debuggable build it never will; install devRelease. Otherwise run tools/perf/perf.sh, or adb shell cmd package compile -f -m speed-profile.</string>
-    <!-- </opt:ui_components> -->
-    <!-- <opt-else:ui_components> -->
+    <!-- </opt:performance&ui_components> -->
+    <!-- <opt-else:performance&ui_components> -->
     <!--~ <string name="perfhud_fix_baseline_profile">ART has not compiled this build with the baseline profile, so its first use of each screen runs interpreted. On a debuggable build it never will; install devRelease. Otherwise run adb shell cmd package compile -f -m speed-profile with the app\'s id, which compiles it now rather than at the next idle maintenance.</string> -->
-    <!-- </opt-else:ui_components> -->
+    <!-- </opt-else:performance&ui_components> -->
     <string name="perfhud_fix_not_debuggable">A debuggable build turns off most of ART\'s compilation, so it is several times slower than the release. Its numbers are pessimistic; measure devRelease.</string>
 
     <string name="perfhud_report_title">Performance report: %1$s %2$s (%3$s)</string>

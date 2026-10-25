@@ -514,17 +514,25 @@ Remote Config starts from the same defaults, so the app behaves the same before 
 <!-- </opt:flags> -->
 <!-- <opt:push> -->
 **Notifications.** Channels are the `NotificationChannelSpec` enum, created at start-up off the main thread, so people
-<!-- <opt:ui_components> -->
+<!-- <opt:ui_components&onboarding&settings> -->
 can mute a category before its first message. The permission is asked at the end of onboarding and offered again in
 settings. The push token is handed to `PushTokenSink` only when it changes, and sign-out unregisters it.
-<!-- </opt:ui_components> -->
-<!-- <opt:!ui_components> -->
+<!-- </opt:ui_components&onboarding&settings> -->
+<!-- <opt:ui_components&onboarding&!settings> -->
+can mute a category before its first message. The permission is asked at the end of onboarding. The push token is
+handed to `PushTokenSink` only when it changes, and sign-out unregisters it.
+<!-- </opt:ui_components&onboarding&!settings> -->
+<!-- <opt:ui_components&settings&!onboarding> -->
+can mute a category before its first message. The permission is asked from the notifications row in settings. The
+push token is handed to `PushTokenSink` only when it changes, and sign-out unregisters it.
+<!-- </opt:ui_components&settings&!onboarding> -->
+<!-- <opt:!ui_components|!onboarding&!settings> -->
 can mute a category before its first message. The push token is handed to `PushTokenSink` only when it changes, and
 sign-out unregisters it. Nothing asks for the permission to post notifications yet, so on Android 13 and up none is
 shown (`AppNotifications.post` logs and drops it) until a screen of yours asks: call `rememberNotificationPermission()`
 from `:core:notification` there and `request()` it where the person sees why, and it opens the app's notification
 settings instead once the system will not ask again.
-<!-- </opt:!ui_components> -->
+<!-- </opt:!ui_components|!onboarding&!settings> -->
 
 <!-- </opt:push> -->
 **Connectivity.** `NetworkMonitor.isOnline` is one shared registration with the system and counts networks that claim
@@ -666,9 +674,10 @@ compares against them, and without them a schema change cannot be reviewed.
 - Unit tests run against the real Android stubs, which throw rather than return defaults: code that needs Android runs
   under Robolectric, and everything else sits behind a seam such as `Log`'s `AppLogger`.
 <!-- <opt:ui_components> -->
-- Compose tests run on the JVM with Robolectric. Every `@Preview` becomes a screenshot test through Roborazzi, and
-  `RecompositionCounter` with `framesUntilIdle` proves a journey composes nothing while it moves
-  ([PERFORMANCE.md](PERFORMANCE.md#state-reads-per-frame)).
+- Compose tests run on the JVM with Robolectric. Every `@Preview` becomes a screenshot test through Roborazzi, which
+  also runs Google's Accessibility Test Framework over what it drew
+  ([DESIGN-SYSTEM.md](DESIGN-SYSTEM.md#previews-are-render-tests)), and `RecompositionCounter` with `framesUntilIdle`
+  proves a journey composes nothing while it moves ([PERFORMANCE.md](PERFORMANCE.md#state-reads-per-frame)).
 <!-- </opt:ui_components> -->
 <!-- <opt:!ui_components> -->
 - Compose tests run on the JVM with Robolectric, and `RecompositionCounter` with `framesUntilIdle` proves a journey
@@ -677,7 +686,8 @@ compares against them, and without them a schema change cannot be reviewed.
   that screenshots convention, because a placeholder has nothing to render: when a feature gets its first screen and
   its `@AppScreenPreviews`, add `id("com.base.app.android.screenshots")` to the `plugins { }` of that feature's
   `build.gradle.kts`. Once every feature has screens, apply it in `AndroidFeatureConventionPlugin` instead, as a
-  project with UI components does.
+  project with UI components does. Each of those tests also runs Google's Accessibility Test Framework over what it
+  drew ([DESIGN-SYSTEM.md](DESIGN-SYSTEM.md#previews-are-render-tests)).
 <!-- </opt:!ui_components> -->
 - `NavKeyRegistrationTest` fails on a destination with no serializer.
 <!-- <opt:sample> -->
