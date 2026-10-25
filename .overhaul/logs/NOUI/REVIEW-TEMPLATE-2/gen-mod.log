@@ -1,0 +1,32 @@
+  ! 'catalog' was left out: The catalog app shows the design system's components, and this project has none.
+
+Summary
+───────
+           App  Review Mod (ReviewMod)
+       Package  com.example.reviewmod
+        Target  android
+  Architecture  modular
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  auth, browser, ci, coil, database, deeplink, devtools,
+                flags, forms, googlefonts, language, leakcanary, network,
+                onboarding, perfhud, sample, settings
+       Options  ui_components off
+       Modules  orders
+     Languages  en, de, hi
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI\review-template-2\mod
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI\review-template-2\mod and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+

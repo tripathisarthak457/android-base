@@ -1,0 +1,150 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:devtools:compileDebugUnitTestKotlin
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:mvi:verifyApiPurity
+> Task :core:mvi:verifyModuleDependencies
+> Task :core:common:verifyApiPurity
+> Task :core:mvi:preBuild
+> Task :core:mvi:preDebugBuild
+> Task :core:mvi:javaPreCompileDebug FROM-CACHE
+> Task :core:navigation:verifyModuleDependencies
+> Task :core:ui:verifyApiPurity
+> Task :core:navigation:verifyApiPurity
+> Task :core:navigation:preBuild
+> Task :core:navigation:preDebugBuild
+> Task :core:ui:verifyModuleDependencies
+> Task :core:navigation:processDebugNavigationResources FROM-CACHE
+> Task :core:navigation:generateDebugResources FROM-CACHE
+> Task :core:navigation:javaPreCompileDebug FROM-CACHE
+> Task :core:ui:preBuild
+> Task :core:ui:preDebugBuild
+> Task :core:ui:generateDebugResources FROM-CACHE
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:navigation:packageDebugResources
+> Task :core:ui:packageDebugResources
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:ui:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:packageDebugResources
+> Task :core:navigation:parseDebugLocalResources FROM-CACHE
+> Task :core:ui:parseDebugLocalResources FROM-CACHE
+> Task :core:navigation:generateDebugRFile
+> Task :core:ui:generateDebugRFile
+> Task :core:ui:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:devtools:verifyModuleDependencies
+> Task :core:devtools:verifyApiPurity
+> Task :core:devtools:preBuild
+> Task :core:devtools:preDebugBuild
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:devtools:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:compileDebugLibraryResources FROM-CACHE
+> Task :core:devtools:preDebugUnitTestBuild
+> Task :core:designsystem:generateDebugRFile
+> Task :core:devtools:writeDebugAarMetadata
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:navigation:writeDebugAarMetadata
+> Task :core:mvi:writeDebugAarMetadata
+> Task :core:testing:verifyModuleDependencies
+> Task :core:testing:verifyApiPurity
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :core:ui:writeDebugAarMetadata
+> Task :core:testing:writeDebugAarMetadata
+> Task :core:devtools:mapDebugUnitTestSourceSetPaths
+> Task :core:devtools:generateDebugEmptyResourceFiles
+> Task :core:devtools:generateDebugUnitTestResources FROM-CACHE
+> Task :core:mvi:generateDebugEmptyResourceFiles
+> Task :core:testing:generateDebugEmptyResourceFiles
+> Task :core:devtools:checkDebugUnitTestAarMetadata
+> Task :core:designsystem:extractDeepLinksDebug FROM-CACHE
+> Task :core:designsystem:processDebugManifest
+> Task :core:devtools:processDebugManifest
+> Task :core:mvi:processDebugManifest
+> Task :core:navigation:extractDeepLinksDebug FROM-CACHE
+> Task :core:navigation:processDebugManifest
+> Task :core:testing:processDebugManifest
+> Task :core:ui:extractDeepLinksDebug FROM-CACHE
+> Task :core:ui:processDebugManifest
+> Task :core:common:compileKotlin
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar
+> Task :core:devtools:mergeDebugUnitTestManifest
+> Task :core:devtools:processDebugUnitTestManifest
+> Task :core:navigation:mapDebugSourceSetPaths
+> Task :core:navigation:compileDebugLibraryResources FROM-CACHE
+> Task :core:ui:mapDebugSourceSetPaths
+> Task :core:ui:compileDebugLibraryResources FROM-CACHE
+> Task :core:devtools:mergeDebugUnitTestResources
+> Task :core:testing:compileDebugKotlin
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :core:mvi:compileDebugKotlin
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibCompileToJarDebug
+> Task :core:devtools:processDebugUnitTestResources
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:navigation:kspDebugKotlin
+> Task :core:navigation:compileDebugKotlin
+> Task :core:navigation:compileDebugJavaWithJavac
+> Task :core:navigation:transformDebugClassesWithAsm
+> Task :core:navigation:bundleLibCompileToJarDebug
+> Task :core:ui:kspDebugKotlin
+> Task :core:ui:compileDebugKotlin
+> Task :core:ui:compileDebugJavaWithJavac
+> Task :core:ui:bundleLibCompileToJarDebug
+> Task :core:devtools:kspDebugKotlin
+> Task :core:devtools:compileDebugKotlin
+> Task :core:devtools:compileDebugJavaWithJavac
+> Task :core:devtools:bundleLibCompileToJarDebug
+> Task :core:devtools:kspDebugUnitTestKotlin
+
+> Task :core:devtools:compileDebugUnitTestKotlin FAILED
+e: file:///D:/projects/tools/.overhaul/out/NOUI/review-generator-1/ident/after-devtools/core/devtools/src/test/kotlin/com/example/ident/core/devtools/badge/DevToolsOverlayTest.kt:87:72 Unresolved reference 'pressable' on receiver of type 'Modifier'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI/review-generator-1/ident/after-devtools/core/devtools/src/test/kotlin/com/example/ident/core/devtools/badge/DevToolsOverlayTest.kt:87:113 Unresolved reference 'PressFeedback'.
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/out/NOUI/review-generator-1/ident/after-devtools/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:devtools:compileDebugUnitTestKotlin' (registered by plugin 'com.android.internal.library').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: UNRESOLVED_REFERENCE
+       Kotlin compiler error
+         Unresolved reference 'pressable' on receiver of type 'Modifier'.
+         Location: D:/projects/tools/.overhaul/out/NOUI/review-generator-1/ident/after-devtools/core/devtools/src/test/kotlin/com/example/ident/core/devtools/badge/DevToolsOverlayTest.kt line 87
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1m 25s
+94 actionable tasks: 72 executed, 22 from cache
+Configuration cache entry stored.
+EXIT 1

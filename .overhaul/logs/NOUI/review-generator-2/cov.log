@@ -1,0 +1,25 @@
+== 05:43:23 cov build A: tier kover artifacts and the app's unit tests with orders
+cov A exit 0 BUILD SUCCESSFUL in 2m 55s
+D:/projects/tools/.overhaul/out/NOUI/review-generator-2/lean-cov/data:
+.
+..
+build
+orders
+
+D:/projects/tools/.overhaul/out/NOUI/review-generator-2/lean-cov/feature:
+.
+..
+build
+orders
+cov remove exit 1
+D:/projects/tools/.overhaul/out/NOUI/review-generator-2/lean-cov/data:
+.
+..
+build
+
+D:/projects/tools/.overhaul/out/NOUI/review-generator-2/lean-cov/feature:
+.
+..
+build
+orders
+== 05:49:28 cov build B: the app's unit tests after remove

@@ -1,0 +1,18 @@
+
+Removing
+────────
+  delete  feature/orders/
+
+  and the lines naming them in:
+    settings.gradle.kts, app/build.gradle.kts, ui/AppDestinations.kt
+
+
+  Done.
+
+  Removed: orders
+
+  Next
+    1. Sync Gradle.
+    2. Anything else that referenced these screens is now a compile error, which is
+       the list of places to look.
+

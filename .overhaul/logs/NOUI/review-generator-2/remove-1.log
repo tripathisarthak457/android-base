@@ -1,0 +1,31 @@
+
+Removing
+────────
+  delete  data/orders/
+  delete  feature/orders/
+
+  and the lines naming them in:
+    settings.gradle.kts, app/build.gradle.kts, ui/AppDestinations.kt
+
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\remove_feature.py", line 166, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\remove_feature.py", line 84, in main
+    shutil.rmtree(path)
+    ~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\shutil.py", line 859, in rmtree
+    _rmtree_impl(path, dir_fd, onexc)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\shutil.py", line 697, in _rmtree_unsafe
+    onexc(os.rmdir, fullname, err)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\shutil.py", line 693, in _rmtree_unsafe
+    os.rmdir(fullname)
+    ~~~~~~~~^^^^^^^^^^
+OSError: [WinError 145] The directory is not empty: 'D:\\projects\\tools\\.overhaul\\out\\NOUI\\review-generator-2\\lean-modular\\data\\orders\\build\\.transforms\\5ad0dac064c975ac841f86f5b9706931\\transformed\\bundleLibRuntimeToDirDebug\\hilt_aggregated_deps'
+ M app/build.gradle.kts
+ M settings.gradle.kts
+?? data/
+?? domain/
+?? feature/

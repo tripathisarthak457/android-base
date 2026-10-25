@@ -1,0 +1,37 @@
+[locked:memwait] 389 MB available, 1333 MB commit left; waiting for 1500 MB
+[locked:memwait] 818 MB available, 3369 MB commit left; waiting for 1500 MB
+[locked:memwait] 235 MB available, 4655 MB commit left; waiting for 1500 MB
+.....................................................................................................................................s......................................................s...........................................ss...................................................................................................................................................................................s...........s.........................s..........s........................................................................................s.............................
+----------------------------------------------------------------------
+Ran 581 tests in 377.204s
+
+OK (skipped=9)
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+exit 0

@@ -1,0 +1,25 @@
+
+Removing
+────────
+  delete  feature/orders/
+
+  and the lines naming them in:
+    settings.gradle.kts, app/build.gradle.kts, ui/AppDestinations.kt
+
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\remove_feature.py", line 166, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\remove_feature.py", line 84, in main
+    shutil.rmtree(path)
+    ~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\shutil.py", line 859, in rmtree
+    _rmtree_impl(path, dir_fd, onexc)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\shutil.py", line 697, in _rmtree_unsafe
+    onexc(os.rmdir, fullname, err)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\shutil.py", line 693, in _rmtree_unsafe
+    os.rmdir(fullname)
+    ~~~~~~~~^^^^^^^^^^
+OSError: [WinError 145] The directory is not empty: 'D:\\projects\\tools\\.overhaul\\out\\NOUI\\review-generator-2\\lean-cov\\feature\\orders\\build\\intermediates\\built_in_kotlinc\\debug\\compileDebugKotlin\\classes\\com\\example\\revcov\\feature\\orders\\navigation'

@@ -1,0 +1,27 @@
+ok  	github.com/base-android/generator-api/cmd/server	1.496s
+ok  	github.com/base-android/generator-api/internal/clip	1.260s
+ok  	github.com/base-android/generator-api/internal/config	1.431s
+ok  	github.com/base-android/generator-api/internal/generate	0.752s
+ok  	github.com/base-android/generator-api/internal/httpapi	1.222s
+ok  	github.com/base-android/generator-api/internal/store	3.246s
+ok  	github.com/base-android/generator-api/internal/telemetry	1.944s
+--- PASS: TestParseCatalogueReadsTargetsAndRules (0.00s)
+--- PASS: TestParseCatalogueRefusesAnotherVersion (0.00s)
+--- PASS: TestParseCatalogueReadsOptionsAndTheirLock (0.00s)
+--- PASS: TestParseCatalogueRefusesAnOptionItCannotEnforce (0.00s)
+--- PASS: TestChildEnvPassesOnlyWhatPythonNeeds (0.01s)
+--- PASS: TestCheckOptionsRefusesAValueThatIsNotTrueOrFalse (0.00s)
+--- PASS: TestCheckOptionsAcceptsEveryValueWhileUnlocked (0.00s)
+--- PASS: TestCheckOptionsHoldsALockedOptionToItsValue (0.00s)
+--- PASS: TestCheckOptionsLeavesATargetWithoutOptionsToItsGenerator (0.00s)
+--- PASS: TestLockedValuesAreWhatASelftestMustAskFor (0.00s)
+PASS
+ok  	github.com/base-android/generator-api/internal/generate	1.035s
+--- PASS: TestALockedOptionRefusesEveryOtherValueBeforeTheGenerator (0.01s)
+--- PASS: TestAnOptionThatIsNotTrueOrFalseIsAnInvalidSpec (0.01s)
+PASS
+ok  	github.com/base-android/generator-api/internal/httpapi	1.443s
+--- PASS: TestTheSelftestSpecIsOneTheRouteAccepts (0.00s)
+--- PASS: TestTheSelftestSendsTheLockedValueAndNothingElseNew (0.00s)
+PASS
+ok  	github.com/base-android/generator-api/cmd/server	0.961s

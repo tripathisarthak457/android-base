@@ -330,3 +330,144 @@ For the integrator:
 ## Pause (Oct 25, 01:21), usage 94 % of the window that resets 02:40
 
 Stopped at a clean point: the three lanes had returned (GEN done d3c5b818c, WEB partial 314b0fd15, DOCS done a76edea35; their results are saved with the plan in plans/2026-10-24/noui-resume-args.json under 'built'), and the integrator had just started: staging-wp/NOUI at 39f71cca7, clean tree. NOUI-WEB's two untracked entries are the stray Python folder and its log from incident 1 (leave them). The relaunch at 02:43 skips the architecture reviews, the plan and the lanes, and starts at the integration, which continues from 39f71cca7.
+
+## Integration
+
+Integrator in `wt/NOUI` (`staging-wp/NOUI`). **State at 03:18: done; head `4b169b8d2`.** Nothing pushed; `main`,
+branches, worktrees and history untouched; no stash.
+
+Merges (made by the first integration run before the 01:21 pause, checked by this one): `cb9560dfa` GEN (`d3c5b818c`),
+`0a51c82a5` DOCS (`a76edea35`), `7c1129a1c` WEB (`314b0fd15`), each `--no-ff` with a why-message and the trailer, in
+the plan's order. None had a conflict (no hand-resolved hunk in `git diff-tree --cc`), so nothing was resolved by
+taking both sides. Emitted files: `39f71cca7` ran `catalogue --write` after the merges; content was already current
+and only `generator_commit` moved (to `7c1129a1c645`). Nothing this run changed is emitted, so `--check` stays
+current at the head and the stamp was not moved again (`--check` ignores it).
+
+Cross-lane items finished (commits on `staging-wp/NOUI`):
+
+- `77fb9371e` The five ComponentRules rows (`designsystem-imports`, `stateless-params`, `raw-type`,
+  `feature-primitive`, `component-preview`) in DESIGN-SYSTEM.md's No-UI rule index; `component-preview`'s fix names
+  `@AppComponentPreviews` (the rule's own advice) rather than DOCS's draft "a `@Preview`". The No-UI component template
+  carries `@AppComponentPreviews` (UI keeps its four `@Preview`s), and "Previews are render tests" names it.
+  `test_docs.active_rule_ids` read `CodeRules.ALL` from one line; GEN's No-UI sum wraps over three, so every No-UI
+  case errored (`logs/NOUI/INTEG/test-docs-1.log`). It now follows lines ending in `=` or `+`.
+- `9a804b1cf` `DesignSystemDocTest` (P1, F3), a No-UI variant test in build-logic: the component template and the
+  test template break no rule, and a new No-UI "what the build refuses" block (`kotlin component-dont`, an `AppBadge`
+  whose lines carry `// state-param`, `// stateless-params`, `// animated-delegate, raw-tween`, `// raw-type`,
+  `// raw-dp`, `// raw-color`) yields exactly those findings at exactly those lines. That block is the "don't" block
+  the plan's 4.2 asked for and DOCS had not written. The test reads the project's page from outside build-logic, so
+  the No-UI `build-logic/convention/build.gradle.kts` declares the page as an input of `tasks.test` (a
+  `<opt:!ui_components>` block: live but harmless in the raw template like GEN's `core:ui` line, absent from every UI
+  output; D5 below proves it).
+- `dbadd6ab2` + `4b169b8d2` **Decision (logged in `decisions/LOG.md`):** the No-UI `AppNavigationHost` passes no
+  motion (`EnterTransition.None togetherWith ExitTransition.None`) for push, pop and predictive pop instead of
+  Navigation 3's defaults (fade whole screens, scale one under predictive back), which broke the template's own rule
+  in every No-UI project. Options were no motion, a slide, or the defaults with the docs' warning; no motion because
+  (c) takes the shell's visuals out and No-UI `:core:navigation` has no design system (no springs or reduce-motion to
+  slide with); the docs already say to add a slide with the shell. ARCHITECTURE.md and PERFORMANCE.md changed with
+  it. New `NavDisplayHostTest` case: six paused frames (0.1 s) after a push only the new screen is composed. The first
+  form (one 0.1 s advance) failed in the build because the paused clock never let the looper hand the change to
+  Compose (`build-everything-1.log`); fixed in `4b169b8d2`. Checked both ways in the generated project: green with
+  the host (`navhost-test-2.log`), red with the defaults put back (`navhost-test-3-defaults.log`, the start screen
+  still drawn), then restored.
+- `9c25389d9` Root `AGENTS.md`: DOCS's replacement for the feature-owned-skill sentence, `--tag` on the refresh
+  command, and the Compose Multiplatform template described as carrying no skills (it never did; its
+  `template.toml` has no verbatim rule).
+
+Checks (logs under `logs/NOUI/INTEG/`):
+
+| Check | Result | Log |
+|---|---|---|
+| Docs, skills and markers tests after the edits | 80 tests OK, 1 skip | `test-docs-2.log` |
+| D1 generator suite, `memwait python -I -m unittest discover -s tests -t .` | 576 OK, 9 skipped, at `9c25389d9` and again at `4b169b8d2` | `unittest-1.log`, `unittest-2.log` |
+| D2 `catalogue --check`, `tokens --check` | current, at both heads | `catalogue-tokens-check.log`, `-2.log` |
+| D5 `compare_generations.py --before out/NOUI/base --after wt/NOUI` | 19 specs identical outside 1.6's globs; the `CodeRules.kt` hunk is the message only | `compare-1.log` |
+| No-UI everything (`--preset everything --no-ui-components`, wizard by Enter, `out/NOUI/integ-everything`), `locked gradle ./gradlew check assembleDevDebug --continue` at `4b169b8d2` | every task green except `:spotlessKotlinCheck` (178 files) and `:spotlessKotlinGradleCheck` (`benchmark/build.gradle.kts`): the WP02 carry-over, exactly GEN's result. `DesignSystemDocTest` 3/3 (in `build-everything-1.log`'s run; cache hit at head), `NavDisplayHostTest` green, 31 `verifyCodeRules`, lint, Kover, `assembleDevDebug` | `build-everything-2.log` (first run at `9c25389d9`: `build-everything-1.log`) |
+| The four files this run added or changed, in the generated project, through Spotless's IDE hook (nothing written) | all `IS CLEAN` | `spotless-ide-hook.log` |
+| D12 website: `memwait npm ci`, `npm run typecheck`, `npm test`, `memwait npx next build` | ok; 246 tests, 0 fail | `npm-ci.log`, `web-typecheck-test.log`, `next-build.log` |
+
+Not run here: D13 `go test` (Smart App Control, WEB's incident 2), D3/D4 consistency, D7-D11, D15-D17 and the phone
+rows: they are the gate's.
+
+Open, for the orchestrator and the gate:
+
+- **`next` 15.5.27 has a critical advisory** (`npm audit`: GHSA-2464-fhr4-w9xw, remote code execution in the Image
+  Optimization API with SVG; GHSA-p3m5-59mp-jv5r, a Server Actions DoS); fixed in 15.5.28, while `package.json` pins
+  exactly `15.5.27`. Present since before this work (`package.json` unchanged since `8fdcba741`; WEB's `npm ci` log shows it
+  too). The site uses neither `next/image` nor server actions, but `/_next/image` is served by default. For D15 and the
+  deploy: a one-line bump of `next` (and the lock file) is WEB's to make and gate; not done here.
+- Spotless carry-over (both modes): the planned one-time `spotlessApply` after the last UI change.
+- `EverythingApplication`/`DaggerEverythingApplication_*` names in the app profiles (GEN's note): unchanged.
+- WEB's incident 1 (the stray Python registration) and incident 2 (Smart App Control) still need the user.
+- Flags for the morning report (plan 1.6, risk 9): README.md and the CodeRules failure message change in UI projects.
+- The Vercel deploy waits for the gate and the user's go; the Vercel plugin still needs `/mcp` authorisation.
+- Housekeeping: `%TEMP%\nav3ui` (navigation3-ui's classes, extracted to read `NavDisplay`'s signature) was sent to the
+  Recycle Bin; one scratch formatter output in `%TEMP%` was deleted with `rm`. Handoff backup before this section:
+  `C:/Users/CRAZYH~1/AppData/Local/Temp/claude/D--projects-tools/8d80ef9d-4533-47d0-b348-d4c6caaeb696/scratchpad/NOUI.md.before-integration`.
+
+## Fix round 1
+
+Fixer in `wt/NOUI` (`staging-wp/NOUI`), from `4b169b8d2`, for the 13 blocking findings of the generator, template
+and web/API reviews (two of them the same private-name finding). **Head `b7eeb6c9a`.** One commit per cause, each
+with a test where the cause is code. Nothing pushed; `main`, other branches, worktrees and history untouched; no
+stash; `wt/STAGING` not touched; the phone not used (no finding needed it). Logs under `logs/NOUI/FIX1/`.
+
+| # | Finding | Commit | What changed, and the proof |
+|---|---|---|---|
+| 1 | Private names in `test_docs.py` (`WORKSHOP_WORDS`), reported twice | `e00ea8a3d` | The three names are gone from the repository's tree (`git grep -i` over HEAD finds none); the test keeps the workshop words. Private names are the workspace pre-push scan's job (see Open). `test_docs` green (`test-docs-1.log`). |
+| 2 | `tools/android_skills.py` refresh deleted a project's own skills | `268ca81ed`, `36a924385` (drops the constant the old manifest read) | The tool's `MANIFEST.sha256` is the record of what it vendored: only those skills are replaced or removed, the manifest hashes only them, and a skill that would land on a folder or pointer it did not write is refused before anything changes (`SkillsError`). New `ToolTest` cases: a user's `.claude/skills/my-own-skill` and `.agents/skills/my-team-skill` survive a refresh and an upstream drop, byte for byte, and are not called dropped; `--add` over a user folder exits 1 and changes nothing. Both new cases fail on the old tool and pass on the new one (run with the old file put back and then restored). The template's README, pointers and manifest are unchanged (the template-copy tests compare them). |
+| 3 | No-UI app profile named `EverythingApplication` and its Hilt/Dagger classes | `39215bd49` | The variant profile names them in the identity form (`BaseAppApplication`, `Hilt_BaseAppApplication`, `DaggerBaseAppApplication_…`, `injectBaseAppApplication`; 222 occurrences), and `template.toml` gains three identity tokens (`Hilt_BaseApp`, `DaggerBaseApp`, `injectBaseApp` → the `{pascal}` forms, prefix boundary), data rather than engine special cases; no UI file contains them (git grep), and D5 below is identical. `test_rename` covers the three forms and their boundaries; the profile test now generates as "Acme NoUi" / `com.acme.noui` and asserts the profile names `AcmeNoUiApplication`, `Hilt_AcmeNoUiApplication` and `DaggerAcmeNoUiApplication_HiltComponents_SingletonC`. With the old profile put back it fails (DaggerEverything… lines unmatched, the three classes absent). The UI template's own profile has the same quirk; not changed (UI output), see Open. |
+| 4 | `DevToolsOverlayTest` press imports inside `<opt:flags>` | `6dbd13dd6` | The UI/No-UI import pair sits above `// <opt:flags>`; the generator sorts imports, so UI bytes equal the base again. `compare_generations.py`'s default set gains `only-<key>` and `allbut-<key>` for every selectable feature (105 specs). D5 (`compare-1.log` before the fix commit was made, `compare-2.log` at the head): identical outside 1.6's globs, `only-devtools`, `only-perfhud`, `allbut-flags` included. Gradle: a UI project with `features: ["devtools"]`, `locked gradle ./gradlew :core:devtools:testDebugUnitTest`: BUILD SUCCESSFUL, `DevToolsOverlayTest` 3/3 (`build-ui-devtools-only-test.log`; the review's log of the same spec at the old head fails with `Unresolved reference 'pressable'`). No-UI lean + devtools, no flags: the same test 3/3 (row 5's build). |
+| 5 | add then remove a feature left No-UI lean/none red | `51031084e` | `remove_feature.py` deletes a tier (`feature/`, `data/`) it leaves empty; `SharedDestinationsTest`'s No-UI guard needs a module folder (`File("../feature").listFiles(File::isDirectory).orEmpty().isNotEmpty()`), not the tier; the test helper `snapshot` records folders too, so `test_remove_undoes_add` compares the folder set (it fails with the old `remove_feature.py`, passes now). Gradle: No-UI lean + devtools generated, `add_feature orders`, `remove_feature orders --yes` (both tiers gone afterwards), then an empty `feature/` made by hand to recreate the review's state, `locked gradle ./gradlew check assembleDevDebug --continue`: BUILD SUCCESSFUL in 3m 51s, `SharedDestinationsTest` 2 tests, the scan check skipped (`build-noui-lean-removed.log`). |
+| 6 | The consistency matrix read the skills' 45 Kotlin samples | `f169cf3a1`, `b7eeb6c9a` | First `Project` skipped the manifest's `verbatim` paths; the quick run then still failed every project with 88 `RES` issues from the glance skill's sample widget XML (`consistency-quick-1.log`: 81 projects, 7128 new issues, all under `.agents/skills`), because the resource, manifest, settings, translation, empty-file and leftovers checks each walked the tree themselves. The root fix is one walker, `project_files(root, pattern)` in `project.py`, which every check and `Project` use. `VendoredFilesTest`: vendored Kotlin and Gradle are not read, and `_resources`, `_translations` and `_hollow` report nothing under `.agents/skills` (fails on `f169cf3a1`'s walkers, passes now). D3 `consistency-quick-2.log`: 81 projects, 0 new issues, 188 known. |
+| 7 | Setup-only site still promised slides and predictive back | `888951c47` | The landing items moved to `features/landing/included.ts` (`includedItems(catalogue)`), so they are testable with `node --test`; on a setup-only catalogue "Smooth by rule" drops "screens slide rather than fade" and "Navigation nobody has to coordinate on" says deep links open on the back stack, which survives process death, instead of predictive back. The unlocked copy is the same text as before. `included.test.ts`: in locked mode no unbadged item promises slides, predictive back, a tab bar or a floating bar; unlocked keeps both promises; both list the same items. |
+| 8 | FAQ and landing said AGENTS.md with CLAUDE.md pointing at it | `52c7720e2` | Both now say CLAUDE.md and AGENTS.md hold the same rules, with the three detailed guides CLAUDE.md imports and Google's Android skills pinned to a release (`.agents/skills`). |
+| 9 | No-UI docs promised render tests features do not run | `dea19fad0` | Option 2 of the finding, keeping T4 (a placeholder feature would pay Robolectric resource merging and a preview scan for nothing). No-UI only: ARCHITECTURE.md Testing (its bullet split per mode), DESIGN-SYSTEM.md "Previews are render tests" and "First things to build" step 4, and the `testing-setup` row in CLAUDE.md and AGENTS.md say the convention runs in `:core:designsystem`, and a feature adds `id("<package>.android.screenshots")` to its own `plugins { }` with its first screen and `@AppScreenPreviews` (per module, so features still on placeholders are not scanned), moving it into `AndroidFeatureConventionPlugin` once every feature has screens. UI text unchanged. Rendered in `out/NOUI/fix1-noui-lean/docs/ARCHITECTURE.md` with the project's own plugin id. |
+| 10 | No-UI scroll-chrome accepted only padding the project never has | `d47dbb02e` | Option 2. In No-UI (`opt-else` fences, UI lines unchanged) the rule also accepts insets inside the scroll: `contentPadding = WindowInsets.<x>[.only(…)…].asPaddingValues()` on a list, and after `.verticalScroll(…)` `.windowInsetsPadding(…)`, `.safeDrawingPadding()`, `.safeContentPadding()`, `.systemBarsPadding()` or `.padding(WindowInsets.<x>.asPaddingValues())`; the pass-through `contentPadding` stays for a shell the user builds. The advice names the edge-to-edge forms; PERFORMANCE.md (No-UI block, with an example) and DESIGN-SYSTEM.md's rule row say the same. New No-UI variant test `ScrollChromeCasesTest` (six forms pass; insets on the list's modifier, insets before the scroll and a fixed `PaddingValues` are flagged at lines 1, 8, 10); the shared `CodeRuleCasesTest` pads with insets in No-UI. The F1.4 advice test's library list gains `WindowInsets`, `asPaddingValues`, `safeDrawing`, `windowInsetsPadding` (Compose foundation names). Gradle (row 5's No-UI build): `:build-logic:convention:test` ran, `ScrollChromeCasesTest` 2/2, `CodeRuleCasesTest` 22/22, `DesignSystemDocTest` passed. |
+| 11 | PERFORMANCE-OVERLAY.md pointed at `tools/perf` everywhere | `7a703f571` | Every `perf.sh` / `gates.toml` / `devBenchmarkRelease` line is in `<opt:performance&ui_components>`; the other branch gives `dumpsys gfxinfo`, `am start -W` and Macrobenchmark's `StartupTimingMetric`, with the thresholds as plain numbers (0.5 % janky, 380 ms cold start, 58.4 MB PSS). `test_docs` checks the page (`FEATURE_DOCS`) like the other docs in every case that has the overlay: with the old page it fails on `tools/perf/perf.sh` and `tools/perf/gates.toml` in noui-standard, noui-everything and noui-everything-modular; green now. `run-as` joined the tool words the rule-id check skips (an adb command the page names). |
+| 12 | D7: UI generation +16 % | none | Not fixable in code without dropping files from (g); the user decides (see Open). Not re-measured; the review's numbers stand and D7 is not reported as passing. |
+
+Checks at the head (logs in `logs/NOUI/FIX1/`):
+
+| Check | Result | Log |
+|---|---|---|
+| D1 generator suite, `memwait python -I -m unittest discover -s tests -t .` | 581 tests OK, 9 skipped, at `b7eeb6c9a` (580 OK at `7a703f571`) | `unittest-2.log`, `unittest-1.log` |
+| D5 `compare_generations.py --before out/NOUI/base --after wt/NOUI` (105 specs) | 105 specs identical outside 1.6's globs; the reviewed `CodeRules.kt` hunk is the message only. Run at `7a703f571`: the two later commits touch only `tools/android_skills.py` (an exception path) and the generator's tests | `compare-2.log` |
+| D2 `catalogue --check`, `tokens --check` | both current | `catalogue-tokens-check.log` |
+| D3 `memwait python -m tests.consistency --quick` | 81 projects in 268 s, 0 new issues, 188 known (`-1.log` is the run between the two commits of row 6) | `consistency-quick-2.log` |
+| D4 `memwait python -m tests.consistency` | 223 projects in 497 s, 0 new issues, 374 known | `consistency-full-2.log` |
+| No-UI lean + devtools, add/remove, empty `feature/`, `locked gradle ./gradlew check assembleDevDebug --continue` | BUILD SUCCESSFUL | `build-noui-lean-removed.log` |
+| UI `features: ["devtools"]`, `locked gradle ./gradlew :core:devtools:testDebugUnitTest` | BUILD SUCCESSFUL, 3/3 | `build-ui-devtools-only-test.log` |
+| D12 `npm run typecheck`, `npm test`, `memwait npx next build` | ok; 249 tests, 0 fail | `web-typecheck-test.log`, `web-next-build.log` |
+
+Not run: D7 (row 12), D8-D11 beyond the two builds above, D13 (no Go change), the phone rows.
+
+Process note: a full matrix run on `f169cf3a1`'s walkers (started about 04:54, before row 6's second commit) was
+stopped as a task, but its Python process and four workers kept running; stopping those PIDs was refused by the
+permission classifier, so it ran to its end at 05:05 (`consistency-full-1.log`: 223 projects, 19624 new issues, which
+is 223 x 88, the skill-XML `RES` class alone). It is evidence that nothing but that class was left; D4 is
+`consistency-full-2.log`.
+
+Open, for the orchestrator and the user:
+
+- **The private names are already public.** `10f24c9df` (the commit that added them) is on `origin/staging-wp/NOUI-DOCS`
+  and `origin/staging-wp/NOUI` (`git branch -r --contains 10f24c9df`). The fix removes them from the tree; only a
+  history rewrite and a force push would take them out of those branches, which the rules forbid without the user.
+  The user's call: leave them in that history, or rewrite and force-push those two branches (and keep them out of
+  any release branch, which a squash would do). Also: the orchestrator's pre-push scan should carry the private names
+  (case-insensitive) beside PUSHED.md §5's token patterns, so a later slip is caught before a push.
+- **D7, generation time (REQUIREMENTS 59 g against m).** The review measured UI generation at 2.14 s against 1.84 s
+  at the base (+16 %, about 0.3 s per project), almost all of it the 459 vendored skill files against 169 (about
+  0.9 ms each on this machine; `shutil.copyfile` is no faster). Options, recommended first:
+  (a) accept the cost of the full skills set in the gate report: (g) as the user asked, 0.3 s per project; catch: (m)'s
+  "as fast as before" is then not literally true, and D7's +10 % bar has to be waived by the user;
+  (b) ship fewer files, for example without glance-canonical-layouts' 45 reference `.kt` files: fewer files to copy;
+  catch: the vendored copies stop being upstream's unmodified set (the manifest, the README's "unmodified" and the
+  verbatim policy change), the skill points at files it does not have, and it may still not reach +10 %;
+  (c) leave a skill out entirely (`LEFT_OUT`): catch: (g) asks for the latest official set.
+- The UI template's own `app/src/main/baseline-prof.txt` still names `EverythingApplication` and its Hilt/Dagger classes,
+  so in every UI project not named "Everything" those rules match nothing. With the identity tokens of row 3 in, the fix is
+  the same rewrite of that file to the identity form; it changes UI output (D5), so it waits for the UI release work.
+- Housekeeping: this round left generated projects in `out/NOUI/fix1-noui-lean`, `out/NOUI/fix1-ui-devtools` and
+  `out/NOUI/fix1-read-std` (specs `out/NOUI/fix1-noui-lean.json`, `fix1-ui-devtools.json`), kept as evidence; nothing was
+  written outside the workspace, the worktree and the scratchpad, and no setting or system state was changed.

@@ -1,0 +1,5 @@
+GOCACHE=D:\.caches\go\build GOMODCACHE=D:\.caches\go\mod
+gofmt-clean
+vet-ok
+vet-linux-ok
+build-done

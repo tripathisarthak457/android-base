@@ -1,0 +1,131 @@
+.......FFFFFFFFFFFFFF........
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='ui-standard', page='docs/PERFORMANCE-OVERLAY.md', token='run-as')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 295, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'run-as' not found in {'run-catching', 'shell-seam', 'api-immutable', 'state-param', 'spaced-test-name', 'adaptive-fixed-size', 'adaptive-orientation', 'pixel-line', 'raw-color', 'experimental-api', 'sheet-shadow', 'adaptive-preview', 'layer-package', 'hardcoded-copy', 'bang-bang', 'scroll-chrome', 'lazy-key', 'adaptive-device-type', 'dispatchers-io', 'blocking', 'file-length', 'composed', 'compose-compiler', 'adaptive-screen-metrics', 'legacy-back', 'sheet-conditional', 'collect-as-state', 'sheet-root', 'adaptive-mediaquery', 'slop-comment', 'sheet-modifier', 'uistate-mutable', 'material', 'bare-clickable', 'feature-public', 'layer-alpha-fill', 'adaptive-material-scope', 'sheet-raw-delta', 'ripple', 'commented-code', 'subcompose-image', 'sheet-window', 'vm-forwarding', 'sheet-when-else', 'raw-tween', 'raw-dp', 'lazy-content-type', 'animated-delegate', 'nav-fade', 'adaptive-box-constraints', 'scroll-fling', 'sheet-ime-padding'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='ui-standard', page='docs/PERFORMANCE-OVERLAY.md', token='run-as')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 295, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'run-as' not found in {'run-catching', 'shell-seam', 'api-immutable', 'state-param', 'spaced-test-name', 'adaptive-fixed-size', 'adaptive-orientation', 'pixel-line', 'raw-color', 'experimental-api', 'sheet-shadow', 'adaptive-preview', 'layer-package', 'hardcoded-copy', 'bang-bang', 'scroll-chrome', 'lazy-key', 'adaptive-device-type', 'dispatchers-io', 'blocking', 'file-length', 'composed', 'compose-compiler', 'adaptive-screen-metrics', 'legacy-back', 'sheet-conditional', 'collect-as-state', 'sheet-root', 'adaptive-mediaquery', 'slop-comment', 'sheet-modifier', 'uistate-mutable', 'material', 'bare-clickable', 'feature-public', 'layer-alpha-fill', 'adaptive-material-scope', 'sheet-raw-delta', 'ripple', 'commented-code', 'subcompose-image', 'sheet-window', 'vm-forwarding', 'sheet-when-else', 'raw-tween', 'raw-dp', 'lazy-content-type', 'animated-delegate', 'nav-fade', 'adaptive-box-constraints', 'scroll-fling', 'sheet-ime-padding'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='ui-everything', page='docs/PERFORMANCE-OVERLAY.md', token='run-as')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 295, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'run-as' not found in {'run-catching', 'shell-seam', 'api-immutable', 'state-param', 'spaced-test-name', 'adaptive-fixed-size', 'adaptive-orientation', 'pixel-line', 'raw-color', 'experimental-api', 'sheet-shadow', 'adaptive-preview', 'layer-package', 'hardcoded-copy', 'bang-bang', 'scroll-chrome', 'lazy-key', 'adaptive-device-type', 'dispatchers-io', 'blocking', 'file-length', 'composed', 'compose-compiler', 'adaptive-screen-metrics', 'legacy-back', 'sheet-conditional', 'collect-as-state', 'sheet-root', 'adaptive-mediaquery', 'slop-comment', 'sheet-modifier', 'uistate-mutable', 'material', 'bare-clickable', 'feature-public', 'layer-alpha-fill', 'adaptive-material-scope', 'sheet-raw-delta', 'ripple', 'commented-code', 'subcompose-image', 'sheet-window', 'vm-forwarding', 'sheet-when-else', 'raw-tween', 'raw-dp', 'lazy-content-type', 'animated-delegate', 'nav-fade', 'adaptive-box-constraints', 'scroll-fling', 'sheet-ime-padding'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='ui-everything', page='docs/PERFORMANCE-OVERLAY.md', token='run-as')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 295, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'run-as' not found in {'run-catching', 'shell-seam', 'api-immutable', 'state-param', 'spaced-test-name', 'adaptive-fixed-size', 'adaptive-orientation', 'pixel-line', 'raw-color', 'experimental-api', 'sheet-shadow', 'adaptive-preview', 'layer-package', 'hardcoded-copy', 'bang-bang', 'scroll-chrome', 'lazy-key', 'adaptive-device-type', 'dispatchers-io', 'blocking', 'file-length', 'composed', 'compose-compiler', 'adaptive-screen-metrics', 'legacy-back', 'sheet-conditional', 'collect-as-state', 'sheet-root', 'adaptive-mediaquery', 'slop-comment', 'sheet-modifier', 'uistate-mutable', 'material', 'bare-clickable', 'feature-public', 'layer-alpha-fill', 'adaptive-material-scope', 'sheet-raw-delta', 'ripple', 'commented-code', 'subcompose-image', 'sheet-window', 'vm-forwarding', 'sheet-when-else', 'raw-tween', 'raw-dp', 'lazy-content-type', 'animated-delegate', 'nav-fade', 'adaptive-box-constraints', 'scroll-fling', 'sheet-ime-padding'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='ui-everything-modular', page='docs/PERFORMANCE-OVERLAY.md', token='run-as')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 295, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'run-as' not found in {'run-catching', 'shell-seam', 'api-immutable', 'state-param', 'spaced-test-name', 'adaptive-fixed-size', 'adaptive-orientation', 'pixel-line', 'raw-color', 'experimental-api', 'sheet-shadow', 'adaptive-preview', 'layer-package', 'hardcoded-copy', 'bang-bang', 'scroll-chrome', 'lazy-key', 'adaptive-device-type', 'dispatchers-io', 'blocking', 'file-length', 'composed', 'compose-compiler', 'adaptive-screen-metrics', 'legacy-back', 'sheet-conditional', 'collect-as-state', 'sheet-root', 'adaptive-mediaquery', 'slop-comment', 'sheet-modifier', 'uistate-mutable', 'material', 'bare-clickable', 'feature-public', 'layer-alpha-fill', 'adaptive-material-scope', 'sheet-raw-delta', 'ripple', 'commented-code', 'subcompose-image', 'sheet-window', 'vm-forwarding', 'sheet-when-else', 'raw-tween', 'raw-dp', 'lazy-content-type', 'animated-delegate', 'nav-fade', 'adaptive-box-constraints', 'scroll-fling', 'sheet-ime-padding'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='ui-everything-modular', page='docs/PERFORMANCE-OVERLAY.md', token='run-as')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 295, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'run-as' not found in {'run-catching', 'shell-seam', 'api-immutable', 'state-param', 'spaced-test-name', 'adaptive-fixed-size', 'adaptive-orientation', 'pixel-line', 'raw-color', 'experimental-api', 'sheet-shadow', 'adaptive-preview', 'layer-package', 'hardcoded-copy', 'bang-bang', 'scroll-chrome', 'lazy-key', 'adaptive-device-type', 'dispatchers-io', 'blocking', 'file-length', 'composed', 'compose-compiler', 'adaptive-screen-metrics', 'legacy-back', 'sheet-conditional', 'collect-as-state', 'sheet-root', 'adaptive-mediaquery', 'slop-comment', 'sheet-modifier', 'uistate-mutable', 'material', 'bare-clickable', 'feature-public', 'layer-alpha-fill', 'adaptive-material-scope', 'sheet-raw-delta', 'ripple', 'commented-code', 'subcompose-image', 'sheet-window', 'vm-forwarding', 'sheet-when-else', 'raw-tween', 'raw-dp', 'lazy-content-type', 'animated-delegate', 'nav-fade', 'adaptive-box-constraints', 'scroll-fling', 'sheet-ime-padding'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='ui-everything-languages', page='docs/PERFORMANCE-OVERLAY.md', token='run-as')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 295, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'run-as' not found in {'run-catching', 'shell-seam', 'api-immutable', 'state-param', 'spaced-test-name', 'adaptive-fixed-size', 'adaptive-orientation', 'pixel-line', 'raw-color', 'experimental-api', 'sheet-shadow', 'adaptive-preview', 'layer-package', 'hardcoded-copy', 'bang-bang', 'scroll-chrome', 'lazy-key', 'adaptive-device-type', 'dispatchers-io', 'blocking', 'file-length', 'composed', 'compose-compiler', 'adaptive-screen-metrics', 'legacy-back', 'sheet-conditional', 'collect-as-state', 'sheet-root', 'adaptive-mediaquery', 'slop-comment', 'sheet-modifier', 'uistate-mutable', 'material', 'bare-clickable', 'feature-public', 'layer-alpha-fill', 'adaptive-material-scope', 'sheet-raw-delta', 'ripple', 'commented-code', 'subcompose-image', 'sheet-window', 'vm-forwarding', 'sheet-when-else', 'raw-tween', 'raw-dp', 'lazy-content-type', 'animated-delegate', 'nav-fade', 'adaptive-box-constraints', 'scroll-fling', 'sheet-ime-padding'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='ui-everything-languages', page='docs/PERFORMANCE-OVERLAY.md', token='run-as')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 295, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'run-as' not found in {'run-catching', 'shell-seam', 'api-immutable', 'state-param', 'spaced-test-name', 'adaptive-fixed-size', 'adaptive-orientation', 'pixel-line', 'raw-color', 'experimental-api', 'sheet-shadow', 'adaptive-preview', 'layer-package', 'hardcoded-copy', 'bang-bang', 'scroll-chrome', 'lazy-key', 'adaptive-device-type', 'dispatchers-io', 'blocking', 'file-length', 'composed', 'compose-compiler', 'adaptive-screen-metrics', 'legacy-back', 'sheet-conditional', 'collect-as-state', 'sheet-root', 'adaptive-mediaquery', 'slop-comment', 'sheet-modifier', 'uistate-mutable', 'material', 'bare-clickable', 'feature-public', 'layer-alpha-fill', 'adaptive-material-scope', 'sheet-raw-delta', 'ripple', 'commented-code', 'subcompose-image', 'sheet-window', 'vm-forwarding', 'sheet-when-else', 'raw-tween', 'raw-dp', 'lazy-content-type', 'animated-delegate', 'nav-fade', 'adaptive-box-constraints', 'scroll-fling', 'sheet-ime-padding'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-standard', page='docs/PERFORMANCE-OVERLAY.md', token='run-as')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 295, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'run-as' not found in {'raw-type', 'run-catching', 'stateless-params', 'api-immutable', 'state-param', 'spaced-test-name', 'adaptive-fixed-size', 'adaptive-orientation', 'pixel-line', 'raw-color', 'experimental-api', 'layer-package', 'adaptive-preview', 'hardcoded-copy', 'bang-bang', 'scroll-chrome', 'lazy-key', 'adaptive-device-type', 'dispatchers-io', 'designsystem-imports', 'blocking', 'file-length', 'composed', 'compose-compiler', 'adaptive-screen-metrics', 'legacy-back', 'collect-as-state', 'adaptive-mediaquery', 'slop-comment', 'uistate-mutable', 'material', 'bare-clickable', 'feature-public', 'layer-alpha-fill', 'adaptive-material-scope', 'ripple', 'commented-code', 'subcompose-image', 'component-preview', 'vm-forwarding', 'raw-tween', 'raw-dp', 'lazy-content-type', 'animated-delegate', 'nav-fade', 'adaptive-box-constraints', 'scroll-fling', 'feature-primitive'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-standard', page='docs/PERFORMANCE-OVERLAY.md', token='run-as')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 295, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'run-as' not found in {'raw-type', 'run-catching', 'stateless-params', 'api-immutable', 'state-param', 'spaced-test-name', 'adaptive-fixed-size', 'adaptive-orientation', 'pixel-line', 'raw-color', 'experimental-api', 'layer-package', 'adaptive-preview', 'hardcoded-copy', 'bang-bang', 'scroll-chrome', 'lazy-key', 'adaptive-device-type', 'dispatchers-io', 'designsystem-imports', 'blocking', 'file-length', 'composed', 'compose-compiler', 'adaptive-screen-metrics', 'legacy-back', 'collect-as-state', 'adaptive-mediaquery', 'slop-comment', 'uistate-mutable', 'material', 'bare-clickable', 'feature-public', 'layer-alpha-fill', 'adaptive-material-scope', 'ripple', 'commented-code', 'subcompose-image', 'component-preview', 'vm-forwarding', 'raw-tween', 'raw-dp', 'lazy-content-type', 'animated-delegate', 'nav-fade', 'adaptive-box-constraints', 'scroll-fling', 'feature-primitive'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-everything', page='docs/PERFORMANCE-OVERLAY.md', token='run-as')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 295, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'run-as' not found in {'raw-type', 'run-catching', 'stateless-params', 'api-immutable', 'state-param', 'spaced-test-name', 'adaptive-fixed-size', 'adaptive-orientation', 'pixel-line', 'raw-color', 'experimental-api', 'layer-package', 'adaptive-preview', 'hardcoded-copy', 'bang-bang', 'scroll-chrome', 'lazy-key', 'adaptive-device-type', 'dispatchers-io', 'designsystem-imports', 'blocking', 'file-length', 'composed', 'compose-compiler', 'adaptive-screen-metrics', 'legacy-back', 'collect-as-state', 'adaptive-mediaquery', 'slop-comment', 'uistate-mutable', 'material', 'bare-clickable', 'feature-public', 'layer-alpha-fill', 'adaptive-material-scope', 'ripple', 'commented-code', 'subcompose-image', 'component-preview', 'vm-forwarding', 'raw-tween', 'raw-dp', 'lazy-content-type', 'animated-delegate', 'nav-fade', 'adaptive-box-constraints', 'scroll-fling', 'feature-primitive'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-everything', page='docs/PERFORMANCE-OVERLAY.md', token='run-as')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 295, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'run-as' not found in {'raw-type', 'run-catching', 'stateless-params', 'api-immutable', 'state-param', 'spaced-test-name', 'adaptive-fixed-size', 'adaptive-orientation', 'pixel-line', 'raw-color', 'experimental-api', 'layer-package', 'adaptive-preview', 'hardcoded-copy', 'bang-bang', 'scroll-chrome', 'lazy-key', 'adaptive-device-type', 'dispatchers-io', 'designsystem-imports', 'blocking', 'file-length', 'composed', 'compose-compiler', 'adaptive-screen-metrics', 'legacy-back', 'collect-as-state', 'adaptive-mediaquery', 'slop-comment', 'uistate-mutable', 'material', 'bare-clickable', 'feature-public', 'layer-alpha-fill', 'adaptive-material-scope', 'ripple', 'commented-code', 'subcompose-image', 'component-preview', 'vm-forwarding', 'raw-tween', 'raw-dp', 'lazy-content-type', 'animated-delegate', 'nav-fade', 'adaptive-box-constraints', 'scroll-fling', 'feature-primitive'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-everything-modular', page='docs/PERFORMANCE-OVERLAY.md', token='run-as')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 295, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'run-as' not found in {'raw-type', 'run-catching', 'stateless-params', 'api-immutable', 'state-param', 'spaced-test-name', 'adaptive-fixed-size', 'adaptive-orientation', 'pixel-line', 'raw-color', 'experimental-api', 'layer-package', 'adaptive-preview', 'hardcoded-copy', 'bang-bang', 'scroll-chrome', 'lazy-key', 'adaptive-device-type', 'dispatchers-io', 'designsystem-imports', 'blocking', 'file-length', 'composed', 'compose-compiler', 'adaptive-screen-metrics', 'legacy-back', 'collect-as-state', 'adaptive-mediaquery', 'slop-comment', 'uistate-mutable', 'material', 'bare-clickable', 'feature-public', 'layer-alpha-fill', 'adaptive-material-scope', 'ripple', 'commented-code', 'subcompose-image', 'component-preview', 'vm-forwarding', 'raw-tween', 'raw-dp', 'lazy-content-type', 'animated-delegate', 'nav-fade', 'adaptive-box-constraints', 'scroll-fling', 'feature-primitive'}
+
+======================================================================
+FAIL: test_every_rule_the_docs_cite_is_a_rule_of_the_project (tests.test_docs.GeneratedDocsTest.test_every_rule_the_docs_cite_is_a_rule_of_the_project) (case='noui-everything-modular', page='docs/PERFORMANCE-OVERLAY.md', token='run-as')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_docs.py", line 295, in test_every_rule_the_docs_cite_is_a_rule_of_the_project
+    self.assertIn(token, rules)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 'run-as' not found in {'raw-type', 'run-catching', 'stateless-params', 'api-immutable', 'state-param', 'spaced-test-name', 'adaptive-fixed-size', 'adaptive-orientation', 'pixel-line', 'raw-color', 'experimental-api', 'layer-package', 'adaptive-preview', 'hardcoded-copy', 'bang-bang', 'scroll-chrome', 'lazy-key', 'adaptive-device-type', 'dispatchers-io', 'designsystem-imports', 'blocking', 'file-length', 'composed', 'compose-compiler', 'adaptive-screen-metrics', 'legacy-back', 'collect-as-state', 'adaptive-mediaquery', 'slop-comment', 'uistate-mutable', 'material', 'bare-clickable', 'feature-public', 'layer-alpha-fill', 'adaptive-material-scope', 'ripple', 'commented-code', 'subcompose-image', 'component-preview', 'vm-forwarding', 'raw-tween', 'raw-dp', 'lazy-content-type', 'animated-delegate', 'nav-fade', 'adaptive-box-constraints', 'scroll-fling', 'feature-primitive'}
+
+----------------------------------------------------------------------
+Ran 16 tests in 104.277s
+
+FAILED (failures=14)

@@ -1,0 +1,16 @@
+== core/navigation/src/main/kotlin/com/example/nouiinteg/core/navigation/AppNavigationHost.kt
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+IS CLEAN
+exit 0
+== core/navigation/src/test/kotlin/com/example/nouiinteg/core/navigation/NavDisplayHostTest.kt
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+IS CLEAN
+exit 0
+== build-logic/convention/src/test/kotlin/com/example/nouiinteg/buildlogic/guard/DesignSystemDocTest.kt
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+IS CLEAN
+exit 0
+== build-logic/convention/build.gradle.kts
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+IS CLEAN
+exit 0

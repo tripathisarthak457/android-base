@@ -1,0 +1,18 @@
+{"time":"2026-10-25T05:35:31.6779193+05:30","level":"INFO","msg":"configuration","summary":"addr=127.0.0.1:18089 generator=D:/projects/tools/.overhaul/wt/NOUI/generator python=C:/Users/crazyhusir/AppData/Local/Python/pythoncore-3.15-64/python.exe persistent=false origins=[http://localhost:3000] targets=[android] proxy=none concurrency=4"}
+{"time":"2026-10-25T05:35:31.7259503+05:30","level":"WARN","msg":"DATABASE_URL is unset: nothing will be recorded and the admin portal is off"}
+{"time":"2026-10-25T05:35:31.7356017+05:30","level":"INFO","msg":"listening","addr":"127.0.0.1:18089","targets":["android"]}
+{"time":"2026-10-25T05:35:51.1522941+05:30","level":"INFO","msg":"request","route":"health","method":"GET","status":200,"ms":0,"bytes":99}
+{"time":"2026-10-25T05:35:52.2307993+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":403,"ms":10,"bytes":236}
+{"time":"2026-10-25T05:35:54.760855+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":403,"ms":0,"bytes":236}
+{"time":"2026-10-25T05:35:56.0149527+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":403,"ms":0,"bytes":236}
+{"time":"2026-10-25T05:35:59.4197467+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":400,"ms":0,"bytes":97}
+{"time":"2026-10-25T05:36:01.1674348+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":400,"ms":0,"bytes":97}
+{"time":"2026-10-25T05:36:03.8059985+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":403,"ms":0,"bytes":236}
+{"time":"2026-10-25T05:36:07.0266555+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":403,"ms":0,"bytes":236}
+{"time":"2026-10-25T05:36:10.1041167+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":403,"ms":1,"bytes":236}
+{"time":"2026-10-25T05:36:12.9020106+05:30","level":"INFO","msg":"request","route":"legacy.generate","method":"POST","status":403,"ms":1,"bytes":236}
+{"time":"2026-10-25T05:36:15.3504836+05:30","level":"INFO","msg":"request","route":"legacy.generate","method":"POST","status":403,"ms":0,"bytes":236}
+{"time":"2026-10-25T05:36:18.1022133+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":404,"ms":26,"bytes":101}
+{"time":"2026-10-25T05:36:20.5904375+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":400,"ms":209,"bytes":127}
+{"time":"2026-10-25T05:36:47.7856589+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":200,"ms":24684,"bytes":1686558}
+{"time":"2026-10-25T05:37:13.4661459+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":200,"ms":22437,"bytes":1682544}

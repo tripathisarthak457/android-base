@@ -1,0 +1,63 @@
+== lean-modular
+    Desugaring  off
+      Features  ci, coil, deeplink, devtools, googlefonts, leakcanary,
+                network
+       Options  ui_components off
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI\review-generator-2\lean-modular
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI\review-generator-2\lean-modular and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+
+EXIT 0 
+== standard-compact
+    Desugaring  off
+      Features  auth, browser, database, devtools, flags, forms, language,
+                network, onboarding, perfhud, sample, settings
+       Options  ui_components off
+       Modules  orders
+     Languages  en, hi, de
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI\review-generator-2\standard-compact
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI\review-generator-2\standard-compact and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+
+EXIT 0 
+== mp
+Unknown field 'ui_components': the multiplatform target has no projects without UI components yet.
+EXIT 2
+== bad
+`ui_components` must be true or false.
+EXIT 2
+== null
+  ! No feature gives the app a tab, so a 'home' module was scaffolded under
+  ! feature/home and data/home. Its repository has no source yet: give it one,
+  ! or rename the module.
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI\review-generator-2\null and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+
+EXIT 0
+== mp flag
+No UI components is Android-only for now.
+EXIT 2

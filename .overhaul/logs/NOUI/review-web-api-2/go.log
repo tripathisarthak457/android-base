@@ -1,0 +1,5 @@
+gofmt:
+vet:
+vet-ok
+vet-linux-ok
+build-ok

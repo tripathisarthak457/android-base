@@ -1,0 +1,3 @@
+{"time":"2026-10-25T05:35:21.1371962+05:30","level":"INFO","msg":"selftest","target":"android","zip_entries":705}
+{"time":"2026-10-25T05:35:21.1371962+05:30","level":"INFO","msg":"selftest passed","targets":1,"generator_commit":"b7eeb6c9aa6a"}
+selftest exit=0

@@ -1,0 +1,34 @@
+[locked:memwait] 419 MB available, 10953 MB commit left; waiting for 1500 MB
+[locked:memwait] 425 MB available, 10658 MB commit left; waiting for 1500 MB
+[locked:memwait] 1273 MB available, 11051 MB commit left; waiting for 1500 MB
+
+Summary
+───────
+           App  Setup Only (SetupOnly)
+       Package  com.example.setuponly
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  auth, browser, ci, coil, database, deeplink, devtools,
+                flags, forms, googlefonts, language, leakcanary, network,
+                onboarding, perfhud, sample, settings
+       Options  ui_components off
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI\review-web-api-2\standard
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI\review-web-api-2\standard and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+

@@ -1,0 +1,45 @@
+--- selftest
+{"time":"2026-10-25T03:25:32.7098005+05:30","level":"INFO","msg":"selftest","target":"android","zip_entries":704}
+{"time":"2026-10-25T03:25:32.7103239+05:30","level":"INFO","msg":"selftest passed","targets":1,"generator_commit":"unknown"}
+selftest exit=0
+--- /api/v1/android/generate {"schema":2,"platform":"android","app_name":"Smoke","package_name":"com.example.smoke"}
+403 application/json; charset=utf-8
+{"error":"UI components come with the Android release. Until then this site generates setup-only projects: the architecture, the theme skeleton and every build guard, without components.","code":"option_locked","field":"ui_components"}
+
+--- /api/v1/android/generate {"schema":2,"platform":"android","app_name":"Smoke","package_name":"com.example.smoke","ui_components":true}
+403 application/json; charset=utf-8
+{"error":"UI components come with the Android release. Until then this site generates setup-only projects: the architecture, the theme skeleton and every build guard, without components.","code":"option_locked","field":"ui_components"}
+
+--- /api/v1/android/generate {"schema":2,"platform":"android","app_name":"Smoke","package_name":"com.example.smoke","ui_components":"false"}
+400 application/json; charset=utf-8
+{"error":"`ui_components` must be true or false.","code":"invalid_spec","field":"ui_components"}
+
+--- /api/v1/android/generate {"schema":2,"platform":"android","app_name":"Smoke","package_name":"com.example.smoke","ui_components":false,"ui_components":true}
+403 application/json; charset=utf-8
+{"error":"UI components come with the Android release. Until then this site generates setup-only projects: the architecture, the theme skeleton and every build guard, without components.","code":"option_locked","field":"ui_components"}
+
+--- /api/v1/android/generate {"app_name":"Smoke","package_name":"com.example.smoke","ui_components":true}
+403 application/json; charset=utf-8
+{"error":"UI components come with the Android release. Until then this site generates setup-only projects: the architecture, the theme skeleton and every build guard, without components.","code":"option_locked","field":"ui_components"}
+
+--- /api/generate {"schema":2,"app_name":"Smoke","package_name":"com.example.smoke"}
+403 application/json; charset=utf-8
+{"error":"UI components come with the Android release. Until then this site generates setup-only projects: the architecture, the theme skeleton and every build guard, without components.","code":"option_locked","field":"ui_components"}
+
+--- /api/v1/multiplatform/generate {"schema":2,"platform":"multiplatform","app_name":"Smoke","package_name":"com.example.smoke"}
+404 application/json; charset=utf-8
+{"error":"Compose Multiplatform projects cannot be generated here yet.","code":"target_unavailable"}
+
+--- /api/v1/android/generate {"schema":2,"platform":"android","app_name":"Smoke","package_name":"com.example.smoke","features":["catalog","liquidglass","settings"],"ui_components":false}
+200 application/zip
+z¸¡£Ì›BctﬁÇŒXV`q∞¶˙uE—≥≠tﬁ z§ﬂÉp–“ëÿB=¡#Ú”˛˛`Õ∏?¿_¿t‡“Akö±GÌOı2ˆL±∆ìï˚És‘h¡X@Ì•ü@å˛`¨¸>/ πÙÜ?“¡ﬁ
+Ì•ﬁÛC—Ö∏
+
+--- /api/v1/android/generate {"app_name":"Smoke","package_name":"com.example.smoke","ui_components":false}
+200 application/zip
+z¸¡£Ì›BctﬁÇŒXV`q∞¶˙uE—≥≠tﬁ z§ﬂÉp–“ëÿB=¡#Ú”˛˛`Õ∏?¿_¿t‡“Akö±GÌOı2ˆL±∆ìï˚És‘h¡X@Ì•ü@å˛`¨¸>/ πÙÜ?“¡ﬁ
+Ì•ﬁÛC—Ö∏
+
+--- catalogue lock as served
+[('android', [True]), ('multiplatform', []), ('ios', [])]
+stopped

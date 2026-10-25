@@ -1,0 +1,27 @@
+== tab
+This project has no tab bar (it was generated without UI components). The module is reachable by its keys and deep links; add it to your own navigation once you build one.
+EXIT 1
+== add orders
+
+  Done.
+
+    Added :data:orders and :feature:orders with its ViewModel and a placeholder route.
+    No UI components: build the screen on your design system.
+
+  Next
+    1. Sync Gradle.
+    2. Open it from your own navigation by its keys, or by a deep link.
+
+EXIT 0
+== add domain
+
+  Done.
+    :domain:pricing
+    Add the data :api modules it reads to its build file, and depend on it from the features that use it.
+
+EXIT 0
+ M app/build.gradle.kts
+ M settings.gradle.kts
+?? data/
+?? domain/
+?? feature/

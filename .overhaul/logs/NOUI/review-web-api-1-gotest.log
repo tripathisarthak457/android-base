@@ -1,0 +1,3 @@
+ok  	github.com/base-android/generator-api/internal/generate	2.127s
+ok  	github.com/base-android/generator-api/internal/httpapi	2.857s
+ok  	github.com/base-android/generator-api/cmd/server	1.869s
