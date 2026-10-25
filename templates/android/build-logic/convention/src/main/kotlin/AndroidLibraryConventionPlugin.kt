@@ -4,6 +4,9 @@ import com.android.build.api.variant.HostTestBuilder
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.base.app.buildlogic.android.configureAndroidCommon
 import com.base.app.buildlogic.android.configureTestDependencies
+// <opt:coverage|depsanalysis>
+import com.base.app.buildlogic.config.feedProjectReports
+// </opt:coverage|depsanalysis>
 import com.base.app.buildlogic.guard.verifyApiPurity
 import com.base.app.buildlogic.guard.verifyCodeRules
 import com.base.app.buildlogic.guard.verifyModuleDependencies
@@ -21,6 +24,9 @@ import org.gradle.kotlin.dsl.configure
 class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("com.android.library")
+        // <opt:coverage|depsanalysis>
+        feedProjectReports()
+        // </opt:coverage|depsanalysis>
 
         val hasResources = file("src/main/res").exists()
         val hasUnitTests = file("src/test").exists()

@@ -5,6 +5,9 @@ import com.android.build.api.variant.HostTestBuilder
 import com.base.app.buildlogic.android.configureAndroidCommon
 import com.base.app.buildlogic.android.configureTestDependencies
 import com.base.app.buildlogic.config.AppConfig
+// <opt:coverage|depsanalysis>
+import com.base.app.buildlogic.config.feedProjectReports
+// </opt:coverage|depsanalysis>
 import com.base.app.buildlogic.guard.verifyCodeRules
 import com.base.app.buildlogic.guard.verifyManifestRules
 import com.base.app.buildlogic.library
@@ -18,6 +21,9 @@ import org.gradle.kotlin.dsl.dependencies
 class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("com.android.application")
+        // <opt:coverage|depsanalysis>
+        feedProjectReports()
+        // </opt:coverage|depsanalysis>
 
         val hasUnitTests = file("src/test").exists()
         val hasDeviceTests = file("src/androidTest").exists()

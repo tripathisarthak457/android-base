@@ -24,7 +24,7 @@ import javax.xml.parsers.DocumentBuilderFactory
  * Wired into `check`.
  */
 internal fun Project.verifyManifestRules(components: ApplicationAndroidComponentsExtension) {
-    val allowList = rootProject.layout.projectDirectory.file(ManifestRules.ALLOW_FILE)
+    val allowList = isolated.rootProject.projectDirectory.file(ManifestRules.ALLOW_FILE)
     val all = tasks.register("verifyManifestRules") {
         group = "verification"
         description = "Fails on orientation or resize locks, missing configChanges, exported or back flags."

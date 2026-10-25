@@ -1,4 +1,7 @@
 import com.base.app.buildlogic.config.AppConfig
+// <opt:coverage|depsanalysis>
+import com.base.app.buildlogic.config.feedProjectReports
+// </opt:coverage|depsanalysis>
 import com.base.app.buildlogic.guard.verifyApiPurity
 import com.base.app.buildlogic.guard.verifyCodeRules
 import com.base.app.buildlogic.guard.verifyModuleDependencies
@@ -16,6 +19,9 @@ class JvmLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("org.jetbrains.kotlin.jvm")
         pluginManager.apply("org.jetbrains.kotlin.plugin.serialization")
+        // <opt:coverage|depsanalysis>
+        feedProjectReports()
+        // </opt:coverage|depsanalysis>
         // A modular data domain's fakes sit beside the interfaces they implement, in its `:api`.
         if (file("src/testFixtures").exists()) {
             pluginManager.apply("java-test-fixtures")

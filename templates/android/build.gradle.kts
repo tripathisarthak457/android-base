@@ -65,14 +65,14 @@ spotless {
 
 // <opt:coverage>
 /*
- * Coverage, merged across every module, with a floor the build enforces.
+ * Coverage, merged across every module, with a floor the build enforces. Each module applies Kover
+ * through its convention plugin. The benchmarks apply none: they run on a phone and have no unit
+ * tests to cover.
  */
-subprojects {
-    apply(plugin = "org.jetbrains.kotlinx.kover")
-}
-
 dependencies {
-    subprojects.forEach { kover(project(it.path)) }
+    subprojects
+        .filter { it.buildFile.isFile && it.path != ":benchmark" }
+        .forEach { kover(project(it.path)) }
 }
 
 kover {
@@ -124,12 +124,9 @@ kover {
  * report to build/reports/dependency-analysis. It reports rather than fails: the advice is for a
  * person to weigh, and an unused declaration is not worth stopping a build over.
  *
- * Applied to every module, not only the root. The root plugin aggregates; it does not analyse.
+ * Each module applies it through its convention plugin (the benchmarks, which apply none, are not
+ * analysed); the root plugin aggregates, it does not analyse.
  */
-subprojects {
-    apply(plugin = "com.autonomousapps.dependency-analysis")
-}
-
 dependencyAnalysis {
     issues {
         all {

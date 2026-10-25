@@ -23,7 +23,7 @@ internal fun Project.configureCompose(extension: CommonExtension) {
         // Types the compiler cannot see into but which are immutable here, so composables taking
         // them are compared with equals rather than by identity.
         stabilityConfigurationFiles.add(
-            rootProject.layout.projectDirectory.file("config/compose-stability.conf"),
+            isolated.rootProject.projectDirectory.file("config/compose-stability.conf"),
         )
         if (requested || path in STABILITY_CHECKED_MODULES) {
             reportsDestination.set(layout.buildDirectory.dir(COMPOSE_REPORTS))
