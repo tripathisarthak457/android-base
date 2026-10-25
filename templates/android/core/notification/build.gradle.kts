@@ -8,6 +8,10 @@ plugins {
 
 android {
     namespace = "com.base.app.core.notification"
+
+    // The channel and notification tests read this module's strings under Robolectric, which
+    // needs the merged manifest and resources.
+    testOptions.unitTests.isIncludeAndroidResources = true
 }
 
 dependencies {
