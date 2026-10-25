@@ -42,11 +42,11 @@ internal class SampleListViewModel @Inject constructor(
                 loadState = if (loadState == LoadState.Loading && items.isNotEmpty()) LoadState.Refreshing else loadState,
             )
         }
+        onFirstObserved { load(refreshing = false) }
     }
 
     override fun handleEvent(event: SampleListEvent) {
         when (event) {
-            SampleListEvent.Appeared -> if (current.loadState == LoadState.Idle) load(refreshing = false)
             SampleListEvent.Refresh -> load(refreshing = true)
             SampleListEvent.Retry -> load(refreshing = false)
             is SampleListEvent.ItemClicked -> emit(SampleListEffect.OpenDetail(event.id))

@@ -35,7 +35,6 @@ internal data class ProfileState(
 ) : UiState
 
 internal sealed interface ProfileEvent : UiEvent {
-    data object Appeared : ProfileEvent
     data object Save : ProfileEvent
     // <opt:media>
     data class PhotoPicked(val uri: String?) : ProfileEvent
@@ -70,11 +69,11 @@ internal class ProfileViewModel @Inject constructor(
                 nameError = nameError && name.isBlank(),
             )
         }
+        onFirstObserved { launchExclusive(FILL) { fillFields() } }
     }
 
     override fun handleEvent(event: ProfileEvent) {
         when (event) {
-            ProfileEvent.Appeared -> if (!current.loaded) launchExclusive(FILL) { fillFields() }
             ProfileEvent.Save -> save()
             // <opt:media>
             is ProfileEvent.PhotoPicked -> setPhoto(event.uri)

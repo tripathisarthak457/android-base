@@ -23,9 +23,12 @@ internal class SampleDetailViewModel @AssistedInject constructor(
         fun create(itemId: Int): SampleDetailViewModel
     }
 
+    init {
+        onFirstObserved { load() }
+    }
+
     override fun handleEvent(event: SampleDetailEvent) {
         when (event) {
-            SampleDetailEvent.Appeared -> if (current.loadState == LoadState.Idle) load()
             SampleDetailEvent.Retry -> load()
             SampleDetailEvent.BackClicked -> emit(SampleDetailEffect.NavigateBack)
             is SampleDetailEvent.RelatedClicked -> emit(SampleDetailEffect.OpenDetail(event.id))

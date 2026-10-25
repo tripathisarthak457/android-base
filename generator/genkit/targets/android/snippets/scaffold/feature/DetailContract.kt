@@ -14,7 +14,6 @@ internal data class __P__DetailState(
 ) : UiState
 
 internal sealed interface __P__DetailEvent : UiEvent {
-    data object Appeared : __P__DetailEvent
     data object Retry : __P__DetailEvent
     data object BackClicked : __P__DetailEvent
 }

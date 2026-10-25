@@ -19,7 +19,6 @@ internal data class SampleListState(
 ) : UiState
 
 internal sealed interface SampleListEvent : UiEvent {
-    data object Appeared : SampleListEvent
     data object Refresh : SampleListEvent
     data object Retry : SampleListEvent
     data class ItemClicked(val id: Int) : SampleListEvent

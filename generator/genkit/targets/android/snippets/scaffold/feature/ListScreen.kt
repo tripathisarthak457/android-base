@@ -54,7 +54,7 @@ internal fun __P__ListScreen(
         },
     ) {
         when (val loadState = state.loadState) {
-            // Idle is the first frame, before the route's Appeared has started the load.
+            // Idle is the first frame, before the screen's first observation has started the load.
             LoadState.Idle, LoadState.Loading -> LoadingList()
 
             is LoadState.Error -> AppStateView(

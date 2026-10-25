@@ -31,7 +31,6 @@ internal data class SearchState(
 ) : UiState
 
 internal sealed interface SearchEvent : UiEvent {
-    data object Appeared : SearchEvent
     data object Submit : SearchEvent
     data object Retry : SearchEvent
     data class RecentClicked(val query: String) : SearchEvent
@@ -57,17 +56,18 @@ internal class SearchViewModel @Inject constructor(
 
     init {
         observe(repository.recent) { copy(recent = it) }
+        // Typing has to start a search, a side effect that `observe`'s pure reducer cannot run, so
+        // the watcher lives as long as the ViewModel from the screen's first look on. Between
+        // keystrokes it only checks each snapshot apply against the one field it reads.
+        onFirstObserved {
+            launchExclusive(TYPING) {
+                snapshotFlow { query.text.toString() }.collect { search(it, debounce = true) }
+            }
+        }
     }
 
     override fun handleEvent(event: SearchEvent) {
         when (event) {
-            // Typing has to start a search, a side effect that `observe`'s pure reducer cannot run,
-            // so the watcher lives as long as the ViewModel. Between keystrokes it only checks each
-            // snapshot apply against the one field it reads.
-            SearchEvent.Appeared -> launchExclusive(TYPING) {
-                snapshotFlow { query.text.toString() }.collect { search(it, debounce = true) }
-            }
-
             SearchEvent.Submit -> {
                 val text = query.text.toString()
                 search(text, debounce = false)

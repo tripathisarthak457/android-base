@@ -70,7 +70,7 @@ internal fun SampleListScreen(
         },
     ) {
         when {
-            // Idle is the first frame, before the route's Appeared has started the load.
+            // Idle is the first frame, before the screen's first observation has started the load.
             state.loadState == LoadState.Idle || state.loadState == LoadState.Loading -> LoadingList()
 
             state.loadState is LoadState.Error -> AppStateView(

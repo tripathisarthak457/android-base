@@ -1,7 +1,6 @@
 package com.base.app.feature.sample.list
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.ui.MviScreen
@@ -13,8 +12,6 @@ internal fun SampleListRoute(
     navigator: AppNavigator,
     viewModel: SampleListViewModel = hiltViewModel(),
 ) {
-    LaunchedEffect(Unit) { viewModel.onEvent(SampleListEvent.Appeared) }
-
     MviScreen(
         viewModel = viewModel,
         onEffect = { effect ->
