@@ -21,10 +21,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -201,7 +203,10 @@ private fun MonthGrid(
     val leadingBlanks = (month.atDay(1).dayOfWeek.value - firstDayOfWeek.value + DaysInWeek) % DaysInWeek
     val dayCount = month.lengthOfMonth()
     // Always six rows, so a month with five does not make the pager's height jump.
-    Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(AppDatePickerDefaults.WeekSpacing)) {
+    Column(
+        modifier = Modifier.fillMaxWidth().semantics { testTagsAsResourceId = true },
+        verticalArrangement = Arrangement.spacedBy(AppDatePickerDefaults.WeekSpacing),
+    ) {
         repeat(MaxRows) { row ->
             Row(modifier = Modifier.fillMaxWidth()) {
                 repeat(DaysInWeek) { column ->
@@ -245,12 +250,13 @@ private fun DayCell(
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1f)
-            .padding(AppDatePickerDefaults.DayInset)
+            .testTag(DayTag)
             .pressable(onClick = onClick, feedback = PressFeedback.Scale, enabled = enabled)
             .semantics {
                 contentDescription = description
                 selected = isSelected
             }
+            .padding(AppDatePickerDefaults.DayInset)
             .background(if (isSelected) colors.accent else Color.Transparent, AppTheme.shapes.pill),
         contentAlignment = Alignment.Center,
     ) {
@@ -270,6 +276,9 @@ private const val MaxRows = 6
 private const val MonthsEachWay = 1200
 
 /** The date picker's pill and day grid. */
+/** A day's test tag and resource name. */
+internal const val DayTag = "date_picker_day"
+
 object AppDatePickerDefaults {
     val PillHorizontalPadding = 12.dp
     val PillVerticalPadding = 7.dp

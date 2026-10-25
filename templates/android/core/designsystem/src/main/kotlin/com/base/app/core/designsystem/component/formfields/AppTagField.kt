@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.input.AppTextField
 import com.base.app.core.designsystem.component.selection.AppChip
@@ -38,9 +39,15 @@ fun AppTagField(
     val full = tags.size >= maxTags
     Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
         if (tags.isNotEmpty()) {
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.xs), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.xs)) {
+            // A tag's remove target is 48 dp, past the chip's edges: rows this far apart keep each
+            // target whole and clear of the next row's.
+            FlowRow(
+                modifier = Modifier.padding(vertical = AppTagFieldDefaults.TargetOverhang),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.xs),
+                verticalArrangement = Arrangement.spacedBy(AppTagFieldDefaults.TargetOverhang * 2),
+            ) {
                 tags.forEach { tag ->
-                    AppChip(label = tag, onClick = {}, enabled = enabled, onRemove = { onTagsChange(tags - tag) })
+                    AppChip(label = tag, onClick = null, enabled = enabled, onRemove = { onTagsChange(tags - tag) })
                 }
             }
         }
@@ -58,6 +65,12 @@ fun AppTagField(
             },
         )
     }
+}
+
+/** The tag field's metrics. */
+object AppTagFieldDefaults {
+    /** How far a tag's 48 dp remove target reaches past its 32 dp chip, above and below. */
+    val TargetOverhang = 8.dp
 }
 
 @AppComponentPreviews

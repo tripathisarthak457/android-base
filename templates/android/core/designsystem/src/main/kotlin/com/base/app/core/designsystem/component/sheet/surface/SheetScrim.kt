@@ -9,6 +9,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.hideFromAccessibility
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
@@ -30,6 +31,9 @@ internal fun SheetScrim(controller: SheetController) {
         Modifier
             .testTag(ScrimTag)
             .semantics {
+                // A screen reader dismisses through the sheet's own action (sheetActions), so the strip
+                // left above a tall sheet, often thinner than a finger, is no target of its own.
+                hideFromAccessibility()
                 traversalIndex = 1f
                 if (dismisses) {
                     contentDescription = label

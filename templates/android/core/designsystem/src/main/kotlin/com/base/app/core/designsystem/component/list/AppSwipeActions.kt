@@ -49,6 +49,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalViewConfiguration
 import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.hideFromAccessibility
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.LayoutDirection
@@ -350,7 +352,9 @@ private fun BoxScope.ActionPanel(
                     .width(actionWidth)
                     .fillMaxHeight()
                     .background(container)
-                    .pressable(onClick = { onAction(action) }, feedback = PressFeedback.Dim),
+                    .pressable(onClick = { onAction(action) }, feedback = PressFeedback.Dim)
+                    // The row offers every action to a screen reader as a custom action.
+                    .semantics { hideFromAccessibility() },
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(AppSwipeActionsDefaults.LabelSpacing, Alignment.CenterVertically),
             ) {

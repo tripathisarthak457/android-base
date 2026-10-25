@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -33,6 +34,7 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
 import com.base.app.core.designsystem.foundation.adaptive.shouldUseTwoPanes
 import com.base.app.core.designsystem.foundation.content.AppSurface
+import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 
@@ -79,10 +81,10 @@ internal fun AuthFrame(
                     Column(
                         modifier = Modifier
                             .heightIn(min = if (centred) viewport else 0.dp)
-                            // Without a top bar the form carries the status-bar inset itself.
+                            // Without a top bar the form carries the status-bar inset itself; with one,
+                            // the chrome the bar reports, so the first field starts below the bar.
                             .then(if (topBar == null) Modifier.statusBarsPadding() else Modifier)
-                            .navigationBarsPadding()
-                            .padding(AppTheme.spacing.gutter),
+                            .padding(chromeContentPadding(PaddingValues(AppTheme.spacing.gutter))),
                         verticalArrangement = Arrangement.spacedBy(
                             AppTheme.spacing.lg,
                             if (centred) Alignment.CenterVertically else Alignment.Top,

@@ -20,12 +20,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.base.app.core.designsystem.R
@@ -46,12 +48,13 @@ import kotlinx.coroutines.launch
 /**
  * A chip: a filter, a choice, or a removable token. It shrinks under the finger. A selected chip
  * takes the accent's tint and its legible text colour. [onRemove] adds a remove button that is its
- * own 48dp target, so a tap near the cross never selects the chip instead.
+ * own 48dp target, so a tap near the cross never selects the chip instead. A token that nothing
+ * happens to when tapped, such as a tag in a field, passes a null [onClick] and is no button.
  */
 @Composable
 fun AppChip(
     label: String,
-    onClick: () -> Unit,
+    onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
     selected: Boolean = false,
     enabled: Boolean = true,
@@ -69,8 +72,15 @@ fun AppChip(
     Box(modifier = modifier.disabledAlpha(enabled), contentAlignment = Alignment.CenterEnd) {
         Row(
             modifier = Modifier
-                .pressable(onClick = onClick, feedback = PressFeedback.Scale, enabled = enabled, role = Role.Button)
-                .semantics { this.selected = selected }
+                .then(
+                    if (onClick != null) {
+                        Modifier
+                            .pressable(onClick = onClick, feedback = PressFeedback.Scale, enabled = enabled, role = Role.Button)
+                            .semantics { this.selected = selected }
+                    } else {
+                        Modifier
+                    },
+                )
                 .then(redacted)
                 .background(container, shape)
                 .heightIn(min = AppChipDefaults.Height)
@@ -111,6 +121,10 @@ fun AppChip(
             val removeLabel = stringResource(R.string.designsystem_remove_item, label)
             Box(
                 Modifier
+                    .size(AppChipDefaults.RemoveTargetWidth, AppChipDefaults.Height)
+                    // The 48 dp square around the cross takes the touch, reaching past the chip's
+                    // edges without making the chip any bigger.
+                    .removeTarget()
                     .pressable(
                         onClick = onRemove,
                         feedback = PressFeedback.None,
@@ -118,11 +132,19 @@ fun AppChip(
                         onClickLabel = removeLabel,
                         interactionSource = removeInteractions,
                     )
-                    .size(AppChipDefaults.RemoveTargetWidth, AppChipDefaults.Height)
                     .semantics { contentDescription = removeLabel },
             )
         }
     }
+}
+
+/** Lays the rest of the chain out at the 48 dp touch target, centred on the slot it reports. */
+private fun Modifier.removeTarget(): Modifier = layout { measurable, constraints ->
+    val target = AppChipDefaults.RemoveTarget.roundToPx()
+    val width = constraints.maxWidth
+    val height = constraints.maxHeight
+    val placeable = measurable.measure(Constraints.fixed(maxOf(target, width), maxOf(target, height)))
+    layout(width, height) { placeable.place((width - placeable.width) / 2, (height - placeable.height) / 2) }
 }
 
 /** 1 while [interactions] holds a press, fading to 0 after it: a dim read only in the layer. */
@@ -146,6 +168,7 @@ object AppChipDefaults {
     val RemoveGlyph = 14.dp
     val RemoveEndPadding = 10.dp
     val RemoveTargetWidth = RemoveEndPadding + RemoveGlyph + IconSpacing
+    val RemoveTarget = 48.dp
 }
 
 @AppComponentPreviews

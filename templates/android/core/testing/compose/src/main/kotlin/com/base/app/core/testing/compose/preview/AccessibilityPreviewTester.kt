@@ -17,9 +17,14 @@ import com.github.takahirom.roborazzi.RoborazziComposeOptions
 import com.github.takahirom.roborazzi.RoborazziOptions
 import com.github.takahirom.roborazzi.captureRoboImage
 import com.github.takahirom.roborazzi.checkRoboAccessibility
+import com.github.takahirom.roborazzi.size
 import com.google.android.apps.common.testing.accessibility.framework.AccessibilityCheckPreset
+import com.google.android.apps.common.testing.accessibility.framework.AccessibilityCheckResultUtils
 import com.google.android.apps.common.testing.accessibility.framework.AccessibilityViewCheckResult
+import com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+import com.google.android.apps.common.testing.accessibility.framework.uielement.ViewHierarchyElement
 import org.hamcrest.BaseMatcher
+import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.robolectric.RuntimeEnvironment
@@ -60,9 +65,39 @@ class AccessibilityPreviewTester : ComposePreviewTester<AndroidPreviewJUnit4Test
  * builds them: `matchesChecks`, `matchesViews`, `matchesElements`) and why it was reviewed and
  * accepted. A suppressed result is still printed, marked as suppressed.
  */
-private val SUPPRESSIONS: List<Suppression> = emptyList()
+private val SUPPRESSIONS: List<Suppression> = listOf(
+    Suppression(
+        matcher = allOf(
+            AccessibilityCheckResultUtils.matchesCheck(TouchTargetSizeCheck::class.java),
+            AccessibilityCheckResultUtils.matchesElements(ResourceNamed("date_picker_day")),
+        ),
+        reason = "A month is seven days to a row: under 336 dp of width a day's whole cell, its target, " +
+            "is narrower than 48 dp (41 dp at 320 dp; Material's own picker draws 40 dp days).",
+    ),
+    Suppression(
+        matcher = allOf(
+            AccessibilityCheckResultUtils.matchesCheck(TouchTargetSizeCheck::class.java),
+            AccessibilityCheckResultUtils.matchesElements(ResourceNamed("sheet_grabber")),
+        ),
+        reason = "The grabber's 48 dp target is centred on its pill at the sheet's top edge, so part of it is " +
+            "above the sheet, and it takes a tap only in the band above the header, which owns the touches " +
+            "below; a screen reader uses its expand, collapse and dismiss actions (SheetGrabberHost).",
+    ),
+)
+
+/** An element whose resource name, a test tag exposed as one, is [name]. */
+private class ResourceNamed(private val name: String) : BaseMatcher<ViewHierarchyElement>() {
+    override fun matches(item: Any?): Boolean = (item as? ViewHierarchyElement)?.resourceName == name
+
+    override fun describeTo(description: Description) {
+        description.appendText("resource name $name")
+    }
+}
 
 private class Suppression(val matcher: Matcher<in AccessibilityViewCheckResult>, val reason: String)
+
+/** Room for the longest component preview at twice the font size. */
+private const val UNSIZED_PREVIEW_HEIGHT_DP = 1600
 
 private val CHECKS = RoborazziATFAccessibilityCheckOptions(
     checker = RoborazziATFAccessibilityChecker(
@@ -85,9 +120,14 @@ private class AuditingCapturer(
 ) : AndroidComposePreviewTester.Capturer {
 
     override fun capture(parameter: AndroidComposePreviewTester.CaptureParameter) {
-        val options = parameter.roborazziComposeOptions.builder()
+        val builder = parameter.roborazziComposeOptions.builder()
             .addOption(AccessibilityAudit(rule, parameter.roborazziOptions))
-            .build()
+        // A preview with no size of its own is drawn as tall as its content in Android Studio, but
+        // the test's window is 470 dp: a long one is cut off at its foot, and the audit would judge
+        // the half-drawn controls there, which no person ever sees.
+        val info = parameter.preview.previewInfo
+        if (info.heightDp <= 0 && info.device.isBlank()) builder.size(heightDp = UNSIZED_PREVIEW_HEIGHT_DP)
+        val options = builder.build()
         val roborazziOptions = parameter.roborazziOptions
         if (roborazziOptions.taskType.isEnabled()) {
             parameter.preview.captureRoboImage(parameter.filePath, roborazziOptions, options)
