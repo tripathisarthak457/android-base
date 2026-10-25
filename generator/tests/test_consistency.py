@@ -174,6 +174,22 @@ class RunnerTest(unittest.TestCase):
         self.assertEqual("refused", name)
         self.assertEqual(1, len([issue for issue in issues if issue.startswith("ADD_COMPONENT Button")]), issues)
 
+    def test_a_component_added_without_ui_components_is_the_developers_not_the_options(self):
+        component = "core/designsystem/src/main/kotlin/x/core/designsystem/component"
+        added = frozenset({f"{component}/tag/AppTag.kt"})
+        issues = [
+            f"NOUI-OWNED {component} is still there",
+            f"NOUI-REACH {component}/tag/AppTag.kt:1: package x.core.designsystem.component.tag",
+            "NOUI-REACH feature/a/src/main/kotlin/x/A.kt:3: import x.core.designsystem.component.tag.AppTag",
+            "NOUI-OWNED core/navigation/shell is still there",
+        ]
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / component / "tag").mkdir(parents=True)
+            (root / component / "tag/AppTag.kt").write_text("package x\n", encoding="utf-8")
+            (root / "core/navigation/shell").mkdir(parents=True)
+            self.assertEqual(issues[2:], worker.without_added(issues, root, added))
+
     def test_a_failed_run_leaves_nothing_in_the_temporary_folder(self):
         with tempfile.TemporaryDirectory() as temp:
             directory = Path(temp, "consistency-run")

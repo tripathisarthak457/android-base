@@ -50,6 +50,7 @@ def run_one(
         pipeline.build(parsed.spec, target, project, zip_output=False, commit="consistency")
     except Exception as error:  # noqa: BLE001 - a crash is itself the finding
         return name, [f"GENERATION {type(error).__name__}: {error}"]
+    before = _files(project) if components else set()
     refused = []
     for component in components:
         output = io.StringIO()
@@ -60,8 +61,35 @@ def run_one(
     hostile = name.startswith(("hostile-", "noui-hostile-"))
     issues = check(project, raw["package_name"], None if hostile else reference(directory), identity=not hostile)
     issues += missing_bindings(project)
+    if components:
+        issues = without_added(issues, project, frozenset(_files(project) - before))
     issues = refused + issues
     if not keep:
         shutil.rmtree(project)
     package = raw["package_name"]
     return name, [issue.replace(package.replace(".", "/"), "{pkg}").replace(package, "{package}") for issue in issues]
+
+
+def without_added(issues: list[str], project: Path, added: frozenset[str]) -> list[str]:
+    """
+    `issues` less the No-UI findings about files the run added itself, as a developer would. The option owns the
+    components the generator would emit; a component the developer builds into the same package is theirs to have.
+    """
+
+    def added_only(folder: str) -> bool:
+        files = [path.relative_to(project).as_posix() for path in (project / folder).rglob("*") if path.is_file()]
+        return bool(files) and all(path in added for path in files)
+
+    kept = []
+    for issue in issues:
+        kind, _, rest = issue.partition(" ")
+        if kind == "NOUI-REACH" and rest.split(":", 1)[0] in added:
+            continue
+        if kind == "NOUI-OWNED" and added_only(rest.removesuffix(" is still there")):
+            continue
+        kept.append(issue)
+    return kept
+
+
+def _files(project: Path) -> set[str]:
+    return {path.relative_to(project).as_posix() for path in project.rglob("*") if path.is_file()}
