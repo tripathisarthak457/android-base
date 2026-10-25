@@ -15,13 +15,13 @@ import androidx.navigationevent.NavigationEvent
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.AppBackStack
 import com.base.app.core.navigation.NavCommand
-import com.base.app.core.navigation.screenNode
 import com.base.app.core.navigation.shell.FeedTab
 import com.base.app.core.navigation.shell.Post
 import com.base.app.core.navigation.shell.ROBOLECTRIC_SDK
+import com.base.app.core.navigation.shell.screenNode
 import com.base.app.core.navigation.shell.testRegistry
+import com.base.app.core.navigation.shell.texturesAround
 import com.base.app.core.navigation.shell.transition.ScreenMotion
-import com.base.app.core.navigation.texturesAround
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
