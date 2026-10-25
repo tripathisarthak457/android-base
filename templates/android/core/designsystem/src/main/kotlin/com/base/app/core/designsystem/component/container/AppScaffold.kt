@@ -2,9 +2,12 @@ package com.base.app.core.designsystem.component.container
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
@@ -18,12 +21,15 @@ import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
+import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.sheet.LocalSheetSurface
+import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.adaptive.centeredMaxWidth
 import com.base.app.core.designsystem.foundation.layout.ChromeInset
 import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
 import com.base.app.core.designsystem.foundation.layout.LocalPaintedBackground
 import com.base.app.core.designsystem.foundation.layout.LocalTopChrome
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -111,3 +117,21 @@ fun AppScaffold(
 
 /** The colour the current scaffold paints, for a bar that must cover content in the same colour. */
 internal val LocalScaffoldBackground = staticCompositionLocalOf { Color.Unspecified }
+
+@AppComponentPreviews
+@Composable
+private fun AppScaffoldPreview() {
+    AppScaffold(
+        modifier = Modifier.height(AppTheme.sizes.rowHeight * 6),
+        topBar = { AppText(text = "Orders", style = AppTheme.typography.headline, modifier = Modifier.padding(AppTheme.spacing.lg)) },
+        bottomBar = {
+            AppBottomActionBar {
+                AppButton(text = "New order", onClick = {}, modifier = Modifier.weight(1f))
+            }
+        },
+    ) {
+        Column(modifier = Modifier.padding(AppTheme.spacing.lg)) {
+            AppText(text = "Every order placed this week, newest first.")
+        }
+    }
+}

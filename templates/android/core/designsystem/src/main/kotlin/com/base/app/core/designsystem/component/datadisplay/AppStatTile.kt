@@ -1,6 +1,7 @@
 package com.base.app.core.designsystem.component.datadisplay
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.StatusColors
 
@@ -54,7 +56,7 @@ fun AppStatTile(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 icon?.let {
-                    AppIcon(it, contentDescription = null, tint = colors.contentTertiary, size = 16.dp)
+                    AppIcon(it, contentDescription = null, tint = colors.contentTertiary, size = AppStatTileDefaults.IconSize)
                 }
                 AppText(
                     text = label,
@@ -74,7 +76,7 @@ fun AppStatTile(
 
             delta?.let {
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(2.dp),
+                    horizontalArrangement = Arrangement.spacedBy(AppStatTileDefaults.DeltaSpacing),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     AppIcon(
@@ -83,7 +85,7 @@ fun AppStatTile(
                             if (deltaIsPositive) R.string.designsystem_trend_up else R.string.designsystem_trend_down,
                         ),
                         tint = deltaColors.content,
-                        size = 14.dp,
+                        size = AppStatTileDefaults.DeltaIconSize,
                     )
                     AppText(
                         text = it,
@@ -93,5 +95,27 @@ fun AppStatTile(
                 }
             }
         }
+    }
+}
+
+/** The stat tile's glyphs. */
+object AppStatTileDefaults {
+    val IconSize = 16.dp
+    val DeltaSpacing = 2.dp
+    val DeltaIconSize = 14.dp
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppStatTilePreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md)) {
+            AppStatTile(label = "Revenue", value = "12.4k", delta = "+8%", icon = AppIcons.CreditCard, modifier = Modifier.weight(1f))
+            AppStatTile(label = "Refunds", value = "312", delta = "-2%", deltaIsPositive = false, modifier = Modifier.weight(1f))
+        }
+        AppStatTile(label = "Active subscribers across every plan and region", value = "48,210", onClick = {})
     }
 }

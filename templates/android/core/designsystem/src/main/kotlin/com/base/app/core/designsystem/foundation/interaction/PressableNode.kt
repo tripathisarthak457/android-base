@@ -2,7 +2,6 @@ package com.base.app.core.designsystem.foundation.interaction
 
 import android.view.ViewConfiguration
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.FocusInteraction
 import androidx.compose.foundation.interaction.Interaction
@@ -278,14 +277,14 @@ internal class PressableNode(
             PressFeedback.Scale -> coroutineScope.launch {
                 // A quick tap is over before the press has shown. Finish the dip first, briefly, so
                 // the tap is felt; a held press has already arrived and goes straight to the bounce.
-                if (tapped && progress.value < HalfPressed) progress.animateTo(1f, tween(DipMillis))
+                if (tapped && progress.value < HalfPressed) progress.animateTo(1f, springs.pressDip())
                 progress.animateTo(0f, springs.release.unit)
             }
-            PressFeedback.Dim -> coroutineScope.launch { progress.animateTo(0f, tween(springs.fadeSlow)) }
+            PressFeedback.Dim -> coroutineScope.launch { progress.animateTo(0f, springs.slowFade()) }
             PressFeedback.Highlight -> coroutineScope.launch {
                 // A tap is shown even when it ends before the press did: the row flashes and fades.
                 if (tapped) progress.snapTo(1f)
-                progress.animateTo(0f, tween(springs.highlightFadeOut))
+                progress.animateTo(0f, springs.highlightFade())
             }
             PressFeedback.None -> null
         }
@@ -366,15 +365,15 @@ internal class PressableNode(
 
     override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
         val placeable = measurable.measure(constraints)
-        val target = MinTouchTarget.roundToPx()
+        val target = MinimumTouchTargetDefaults.Size.roundToPx()
         val width = if (reserveWidth) constraints.constrainWidth(maxOf(placeable.width, target)) else placeable.width
         val height = constraints.constrainHeight(maxOf(placeable.height, target))
         childOffset = IntOffset((width - placeable.width) / 2, (height - placeable.height) / 2)
         childSize = IntSize(placeable.width, placeable.height)
         val springs = currentValueOf(LocalAppSprings)
         scaleTarget = when {
-            placeable.height >= LargeSurface.roundToPx() -> springs.pressScaleLarge
-            maxOf(placeable.width, placeable.height) <= CompactControl.roundToPx() -> springs.pressScaleCompact
+            placeable.height >= PressableDefaults.LargeSurface.roundToPx() -> springs.pressScaleLarge
+            maxOf(placeable.width, placeable.height) <= PressableDefaults.CompactControl.roundToPx() -> springs.pressScaleCompact
             else -> springs.pressScale
         }
         val animated = feedback == PressFeedback.Scale || feedback == PressFeedback.Dim
@@ -396,10 +395,10 @@ internal class PressableNode(
             if (value > 0f) drawRect(currentValueOf(LocalAppColors).highlight, alpha = value)
         }
         if (focus == null) return
-        val inset = FocusRingGap.toPx()
-        val stroke = FocusRingWidth.toPx()
+        val inset = PressableDefaults.FocusRingGap.toPx()
+        val stroke = PressableDefaults.FocusRingWidth.toPx()
         val ringSize = Size(childSize.width + inset * 2, childSize.height + inset * 2)
-        val radius = minOf(ringSize.minDimension / 2, FocusRingCorner.toPx())
+        val radius = minOf(ringSize.minDimension / 2, PressableDefaults.FocusRingCorner.toPx())
         drawRoundRect(
             color = currentValueOf(LocalAppColors).focusRing,
             topLeft = Offset(childOffset.x - inset, childOffset.y - inset),
@@ -479,13 +478,16 @@ private class PointerExtrasNode(
     override fun onCancelPointerInput() = onCancel()
 }
 
-private val LargeSurface = 80.dp
-private val CompactControl = 56.dp
-private val FocusRingWidth = 2.dp
-private val FocusRingGap = 3.dp
-private val FocusRingCorner = 14.dp
+/** Which surfaces count as large or compact for their press scale, and the keyboard focus ring. */
+internal object PressableDefaults {
+    val LargeSurface = 80.dp
+    val CompactControl = 56.dp
+    val FocusRingWidth = 2.dp
+    val FocusRingGap = 3.dp
+    val FocusRingCorner = 14.dp
+}
+
 private val ClickKeys = setOf(Key.Enter, Key.NumPadEnter, Key.DirectionCenter, Key.Spacebar)
 private const val HalfPressed = 0.5f
 private const val HoverHighlight = 0.5f
-private const val DipMillis = 80
 private val TapTimeout: Long = ViewConfiguration.getTapTimeout().toLong()

@@ -1,5 +1,6 @@
 package com.base.app.core.designsystem.component.feedback
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -29,6 +30,7 @@ import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /** Why a screen is showing a state instead of its content. */
@@ -83,12 +85,12 @@ fun AppStateView(
             when {
                 illustration != null -> illustration()
                 glyph != null -> AppSurface(
-                    modifier = Modifier.size(64.dp),
+                    modifier = Modifier.size(AppStateViewDefaults.GlyphBackingSize),
                     shape = AppTheme.shapes.pill,
                     color = if (kind == StateKind.Empty) colors.accentSubtle else colors.fill,
                 ) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        AppIcon(glyph, contentDescription = null, tint = if (kind == StateKind.Empty) colors.accentContent else colors.contentSecondary, size = 28.dp)
+                        AppIcon(glyph, contentDescription = null, tint = if (kind == StateKind.Empty) colors.accentContent else colors.contentSecondary, size = AppStateViewDefaults.GlyphSize)
                     }
                 }
             }
@@ -98,7 +100,7 @@ fun AppStateView(
             message?.let {
                 AppText(
                     text = it,
-                    modifier = Modifier.widthIn(max = 320.dp),
+                    modifier = Modifier.widthIn(max = AppStateViewDefaults.MaxTextWidth),
                     style = AppTheme.typography.callout,
                     color = colors.contentSecondary,
                     textAlign = TextAlign.Center,
@@ -113,5 +115,29 @@ fun AppStateView(
                 )
             }
         }
+    }
+}
+
+/** The state view's glyph and the measure of its text. */
+object AppStateViewDefaults {
+    val GlyphBackingSize = 64.dp
+    val GlyphSize = 28.dp
+    val MaxTextWidth = 320.dp
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppStateViewPreview() {
+    Column(modifier = Modifier.background(AppTheme.colors.background)) {
+        AppStateView(
+            title = "No orders yet",
+            message = "Orders you place appear here, newest first.",
+            icon = AppIcons.Cart,
+            actionLabel = "Browse the shop",
+            onAction = {},
+            contentPadding = PaddingValues(AppTheme.spacing.lg),
+        )
+        AppStateView(kind = StateKind.Error, onAction = {}, contentPadding = PaddingValues(AppTheme.spacing.lg))
+        AppStateView(kind = StateKind.Offline, onAction = {}, contentPadding = PaddingValues(AppTheme.spacing.lg))
     }
 }

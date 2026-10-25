@@ -1,5 +1,9 @@
 package com.base.app.core.designsystem.component.sheet.choice
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -22,6 +26,7 @@ import com.base.app.core.designsystem.component.sheet.content.sheetFooterItem
 import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
 import com.base.app.core.designsystem.foundation.content.rememberCurrentLocale
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
 
@@ -147,3 +152,21 @@ private val DefaultProperties = AppSheetProperties()
 private const val SearchKey = "choice_search"
 private const val NoneKey = "choice_none"
 private const val RowType = "choice_row"
+
+@AppComponentPreviews
+@Composable
+private fun AppChoiceSheetPreview() {
+    Box(modifier = Modifier.background(AppTheme.colors.background).fillMaxWidth().height(AppTheme.sizes.rowHeight * 10)) {
+        AppChoiceSheet(
+            visible = true,
+            choices = listOf("English", "Deutsch", "Español", "Français", "Hindi"),
+            selected = "Español",
+            onSelect = {},
+            onDismissRequest = {},
+            label = { it },
+            title = "Language",
+            supportingText = { if (it == "English") "The language the app was written in" else null },
+            enabled = { it != "Français" },
+        )
+    }
+}

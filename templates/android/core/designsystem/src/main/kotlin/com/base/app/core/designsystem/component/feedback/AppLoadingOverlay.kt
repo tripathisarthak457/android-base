@@ -3,10 +3,13 @@ package com.base.app.core.designsystem.component.feedback
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.rememberTransition
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
@@ -26,6 +29,7 @@ import com.base.app.core.designsystem.component.overlay.HostedOverlay
 import com.base.app.core.designsystem.component.overlay.OverlayBackHandler
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.content.AppSurface
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -70,18 +74,38 @@ fun AppLoadingOverlay(
             ) {
                 Column(
                     modifier = Modifier
-                        .widthIn(max = 240.dp)
+                        .widthIn(max = AppLoadingOverlayDefaults.MaxPanelWidth)
                         .padding(AppTheme.spacing.xl)
                         .semantics(mergeDescendants = true) { liveRegion = LiveRegionMode.Polite },
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
                 ) {
-                    AppActivityIndicator(size = 28.dp)
+                    AppActivityIndicator(size = AppLoadingOverlayDefaults.IndicatorSize)
                     label?.let {
                         AppText(text = it, style = AppTheme.typography.subheadline, color = AppTheme.colors.contentSecondary, textAlign = TextAlign.Center)
                     }
                 }
             }
         }
+    }
+}
+
+/** The loading overlay's panel. */
+object AppLoadingOverlayDefaults {
+    val MaxPanelWidth = 240.dp
+    val IndicatorSize = 28.dp
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppLoadingOverlayPreview() {
+    Box(
+        modifier = Modifier
+            .background(AppTheme.colors.background)
+            .fillMaxWidth()
+            .height(AppTheme.sizes.rowHeight * 5),
+    ) {
+        AppText(text = "Checkout", modifier = Modifier.padding(AppTheme.spacing.lg))
+        AppLoadingOverlay(visible = true, label = "Placing your order")
     }
 }

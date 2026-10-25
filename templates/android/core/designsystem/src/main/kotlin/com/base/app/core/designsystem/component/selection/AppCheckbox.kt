@@ -1,9 +1,12 @@
 package com.base.app.core.designsystem.component.selection
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.runtime.Composable
@@ -26,6 +29,7 @@ import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.minimumTouchTarget
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -56,7 +60,7 @@ fun AppCheckbox(
     LabelledControl(modifier.then(interaction), label, enabled) {
         Spacer(
             Modifier
-                .size(BoxSize)
+                .size(AppCheckboxDefaults.Size)
                 .drawWithCache {
                     // Built once per size; the tick is drawn as a growing segment of the same path.
                     val tick = Path().apply {
@@ -66,9 +70,9 @@ fun AppCheckbox(
                     }
                     val measure = PathMeasure().apply { setPath(tick, false) }
                     val segment = Path()
-                    val radius = CornerRadius(BoxCorner.toPx())
-                    val ring = Stroke(1.5.dp.toPx())
-                    val tickStroke = Stroke(2.dp.toPx(), cap = StrokeCap.Round, join = StrokeJoin.Round)
+                    val radius = CornerRadius(AppCheckboxDefaults.Corner.toPx())
+                    val ring = Stroke(AppCheckboxDefaults.RingWidth.toPx())
+                    val tickStroke = Stroke(AppCheckboxDefaults.TickWidth.toPx(), cap = StrokeCap.Round, join = StrokeJoin.Round)
                     onDrawBehind {
                         val p = progress.value
                         drawRoundRect(colors.outline, cornerRadius = radius, style = ring, alpha = 1f - p)
@@ -102,5 +106,32 @@ internal fun LabelledControl(
     }
 }
 
-internal val BoxSize = 22.dp
-private val BoxCorner = 6.dp
+/**
+ * The checkbox's metrics, iOS's 22 dp control. [Size] is the radio button's too, so the two line up
+ * in a form.
+ */
+internal object AppCheckboxDefaults {
+    val Size = 22.dp
+    val Corner = 6.dp
+    val RingWidth = 1.5.dp
+    val TickWidth = 2.dp
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppCheckboxPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppCheckbox(checked = true, onCheckedChange = {}, label = "Email me receipts")
+        AppCheckbox(checked = false, onCheckedChange = {}, label = "Share anonymous usage data")
+        AppCheckbox(checked = true, onCheckedChange = {}, label = "Required by your organisation", enabled = false)
+        AppCheckbox(checked = false, onCheckedChange = null)
+        AppCheckbox(
+            checked = false,
+            onCheckedChange = {},
+            label = "I have read the terms of service and the privacy policy, and I agree to both of them",
+        )
+    }
+}

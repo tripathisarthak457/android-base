@@ -1,6 +1,9 @@
 package com.base.app.core.designsystem.component.sheet.chrome
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -17,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
 
@@ -29,7 +33,10 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens
 @Composable
 fun AppSheetGrabber(modifier: Modifier = Modifier) {
     val look = LocalSheetGrabber.current
-    val outside = AppTheme.colors.contentTertiary.copy(alpha = DesignTokens.Sheet.Grabber.alpha)
+    val colors = AppTheme.colors
+    val outside = colors.contentTertiary.copy(alpha = DesignTokens.Sheet.Grabber.alpha)
+    val contrastFill = colors.sheen.copy(alpha = DesignTokens.Sheet.Grabber.contrastAlpha)
+    val contrastEdge = colors.shade.copy(alpha = ContrastEdgeAlpha)
     Spacer(
         modifier.size(PillSize).drawWithCache {
             val radius = CornerRadius(size.height / 2f)
@@ -39,8 +46,8 @@ fun AppSheetGrabber(modifier: Modifier = Modifier) {
             val ringSize = Size(size.width - edge, size.height - edge)
             onDrawBehind {
                 if (look?.contrast == true) {
-                    drawRoundRect(ContrastFill, cornerRadius = radius)
-                    drawRoundRect(ContrastEdge, topLeft = ringOffset, size = ringSize, cornerRadius = radius, style = ring)
+                    drawRoundRect(contrastFill, cornerRadius = radius)
+                    drawRoundRect(contrastEdge, topLeft = ringOffset, size = ringSize, cornerRadius = radius, style = ring)
                 } else {
                     val color = look?.color ?: outside
                     drawRoundRect(if (look?.hovered == true) color.copy(alpha = DesignTokens.Sheet.Grabber.hoverAlpha) else color, cornerRadius = radius)
@@ -61,6 +68,13 @@ internal class SheetGrabberLook(color: Color, contrast: Boolean) {
 internal val LocalSheetGrabber = staticCompositionLocalOf<SheetGrabberLook?> { null }
 
 private val PillSize = DpSize(DesignTokens.Sheet.Grabber.width, DesignTokens.Sheet.Grabber.height)
-private val ContrastFill = Color.White.copy(alpha = DesignTokens.Sheet.Grabber.contrastAlpha)
-private val ContrastEdge = Color.Black.copy(alpha = 0.2f)
+private const val ContrastEdgeAlpha = 0.2f
 private val EdgeWidth = 1.dp
+
+@AppComponentPreviews
+@Composable
+private fun AppSheetGrabberPreview() {
+    Column(modifier = Modifier.background(AppTheme.colors.surfaceElevated).padding(AppTheme.spacing.lg)) {
+        AppSheetGrabber()
+    }
+}

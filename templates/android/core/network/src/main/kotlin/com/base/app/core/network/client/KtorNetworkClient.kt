@@ -43,7 +43,7 @@ import com.base.app.core.network.appstatus.ApiSignals
 // </opt:appstatus>
 // <opt:offlinequeue>
 import com.base.app.core.network.queue.RequestQueue
-import java.util.UUID
+import kotlin.uuid.Uuid
 // </opt:offlinequeue>
 
 /**
@@ -184,7 +184,7 @@ internal class KtorNetworkClient @Inject constructor(
 private fun NetworkRequest.withIdempotencyKey(): NetworkRequest {
     if (!enqueueOnFailure || method == HttpMethodType.GET) return this
     if (headers.keys.any { it.equals(IDEMPOTENCY_KEY, ignoreCase = true) }) return this
-    return copy(headers = headers + (IDEMPOTENCY_KEY to UUID.randomUUID().toString()))
+    return copy(headers = headers + (IDEMPOTENCY_KEY to Uuid.random().toString()))
 }
 
 private const val IDEMPOTENCY_KEY = "Idempotency-Key"

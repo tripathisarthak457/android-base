@@ -44,7 +44,7 @@ object AppSheetDefaults {
     @Composable
     @ReadOnlyComposable
     fun solidRim(): Color =
-        if (AppTheme.colors.isLight) Color.Transparent else Color.White.copy(alpha = DesignTokens.Sheet.Rim.solidDarkAlpha)
+        if (AppTheme.colors.isLight) Color.Transparent else AppTheme.colors.sheen.copy(alpha = DesignTokens.Sheet.Rim.solidDarkAlpha)
 
     /** Soft in light theme; null in dark, where the rim shows the edge. */
     @Composable
@@ -54,7 +54,6 @@ object AppSheetDefaults {
     } else {
         Shadow(
             radius = DesignTokens.Sheet.Shadow.blur,
-            color = Color.Black,
             offset = DpOffset(0.dp, DesignTokens.Sheet.Shadow.y),
             alpha = DesignTokens.Sheet.Shadow.alpha,
         )

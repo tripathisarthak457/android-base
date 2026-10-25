@@ -260,6 +260,21 @@ class KtorNetworkClientTest {
         assertEquals(AppError.Offline, result.errorOrNull())
         assertTrue(queued.single().headers["Idempotency-Key"].orEmpty().isNotBlank())
     }
+
+    @Test
+    fun `each queued mutation's idempotency key is a fresh random UUID`() = runTest {
+        monitor.setOnline(false)
+        val client = client({ throw IOException("offline") })
+        val mutation = NetworkRequest(HttpMethodType.POST, "notes", body = RequestBody.Json("{}"), enqueueOnFailure = true)
+
+        client.execute(mutation)
+        client.execute(mutation)
+
+        val keys = queued.map { it.headers["Idempotency-Key"].orEmpty() }
+        assertEquals(2, keys.size)
+        keys.forEach { assertTrue(it, Regex("[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}").matches(it)) }
+        assertEquals(2, keys.toSet().size)
+    }
     // </opt:offlinequeue>
 
     private fun get() = NetworkRequest(HttpMethodType.GET, "items")

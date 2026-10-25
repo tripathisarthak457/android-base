@@ -1,5 +1,9 @@
 package com.base.app.core.designsystem.component.sheet
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -7,8 +11,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.base.app.core.designsystem.component.button.AppButton
+import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.overlay.HostedOverlay
+import com.base.app.core.designsystem.component.sheet.AppSheet
+import com.base.app.core.designsystem.component.sheet.chrome.AppSheetHeader
+import com.base.app.core.designsystem.component.sheet.content.SheetColumn
 import com.base.app.core.designsystem.component.sheet.layout.SheetSession
+import com.base.app.core.designsystem.preview.AppComponentPreviews
+import com.base.app.core.designsystem.theme.AppTheme
 
 /**
  * A sheet in the app's design language with iOS 26 behaviour. It rises to one of [state]'s detents,
@@ -206,4 +217,29 @@ fun <T : Any> AppSheet(
             content = { content(current) },
         )
     }
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppSheetPreview() {
+    Box(modifier = Modifier.background(AppTheme.colors.background).fillMaxWidth().height(AppTheme.sizes.rowHeight * 10)) {
+        AppSheet(
+            visible = true,
+            onDismissRequest = {},
+            header = { AppSheetHeader(title = "Filters", subtitle = "12 results") },
+            footer = { PreviewFooterButton("Show results") },
+        ) {
+            SheetColumn {
+                AppRow(title = "Price", value = "Any", onClick = {})
+                AppRow(title = "Distance", value = "Within 5 km", onClick = {})
+                AppRow(title = "Open now", onClick = {})
+            }
+        }
+    }
+}
+
+// Outside the AppSheet call: sheet-modifier reads any modifier in the call's text as the sheet's.
+@Composable
+private fun PreviewFooterButton(text: String) {
+    AppButton(text = text, onClick = {}, modifier = Modifier.fillMaxWidth())
 }

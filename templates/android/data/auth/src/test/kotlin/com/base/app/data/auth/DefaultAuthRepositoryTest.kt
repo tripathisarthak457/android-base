@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.DeserializationStrategy
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -43,6 +44,20 @@ class DefaultAuthRepositoryTest {
         repository.signIn("ada@example.com", "secret")
 
         assertTrue(store.saved?.owner.orEmpty().isNotBlank())
+    }
+
+    @Test
+    fun `the owner made up for an account without an id is a fresh random UUID each time`() = runTest {
+        client.answer = """{"access_token":"A1","refresh_token":"R1"}"""
+
+        repository.signIn("ada@example.com", "secret")
+        val first = store.saved?.owner.orEmpty()
+        repository.signIn("ada@example.com", "secret")
+        val second = store.saved?.owner.orEmpty()
+
+        assertTrue(first, RandomUuid.matches(first))
+        assertTrue(second, RandomUuid.matches(second))
+        assertNotEquals(first, second)
     }
 
     @Test
@@ -99,5 +114,10 @@ class DefaultAuthRepositoryTest {
         override suspend fun clear() {
             state.value = null
         }
+    }
+
+    private companion object {
+        /** A version 4 (random) UUID in its canonical lower-case form. */
+        val RandomUuid = Regex("[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")
     }
 }

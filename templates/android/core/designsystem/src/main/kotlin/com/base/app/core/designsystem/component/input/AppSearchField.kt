@@ -2,6 +2,7 @@ package com.base.app.core.designsystem.component.input
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +19,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,6 +51,7 @@ import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.component.text.scaledLike
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlin.math.roundToInt
 
@@ -112,7 +115,7 @@ fun AppSearchField(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .heightIn(min = SearchHeight)
+                                .heightIn(min = AppSearchFieldDefaults.Height)
                                 .padding(start = spacing.sm),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(spacing.xs),
@@ -191,4 +194,26 @@ private class CancelRoom {
     var width = 0f
 }
 
-private val SearchHeight = 36.dp
+/** The search field's metrics, iOS's. */
+object AppSearchFieldDefaults {
+    val Height = 36.dp
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppSearchFieldPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppSearchField(state = rememberTextFieldState())
+        AppSearchField(state = rememberTextFieldState("trail running shoes"), onCancel = {})
+        AppSearchField(
+            state = rememberTextFieldState(),
+            placeholder = "Search orders, customers and invoices",
+            scopes = listOf("All", "Orders", "Customers"),
+            selectedScope = 1,
+        )
+        AppSearchField(state = rememberTextFieldState(), enabled = false)
+    }
+}

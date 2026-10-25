@@ -1,6 +1,10 @@
 package com.base.app.core.designsystem.component.text
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,6 +27,8 @@ import androidx.compose.ui.unit.Dp
 import com.base.app.core.designsystem.foundation.content.LocalContentColor
 import com.base.app.core.designsystem.foundation.draw.LocalRedacted
 import com.base.app.core.designsystem.foundation.draw.skeleton
+import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /** An icon, tinted to the surrounding content colour unless told otherwise. */
@@ -105,5 +111,20 @@ private class TintedPainterNode(
             filter = ColorFilter.tint(color)
         }
         with(painter) { draw(size, colorFilter = filter) }
+    }
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppIconPreview() {
+    Row(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppIcon(AppIcons.Home, contentDescription = "Home", size = AppTheme.sizes.iconSmall)
+        AppIcon(AppIcons.Bell, contentDescription = "Notifications", tint = AppTheme.colors.accent)
+        AppIcon(AppIcons.Settings, contentDescription = "Settings", size = AppTheme.sizes.iconLarge)
+        val danger = AppTheme.colors.danger.base
+        AppIcon(AppIcons.Heart, contentDescription = null, tint = { danger })
     }
 }

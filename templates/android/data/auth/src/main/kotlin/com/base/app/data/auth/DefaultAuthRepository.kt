@@ -19,10 +19,10 @@ import com.base.app.data.auth.remote.dto.SignUpRequestDto
 import com.base.app.data.auth.remote.dto.TokenResponseDto
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
-import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.seconds
+import kotlin.uuid.Uuid
 
 /**
  * Talks to the auth endpoints and puts what comes back in the token store.
@@ -90,7 +90,7 @@ internal class DefaultAuthRepository @Inject constructor(
                     accessToken = value.accessToken,
                     refreshToken = value.refreshToken,
                     expiresAtEpochMillis = value.expiresIn?.let { (clock.now() + it.seconds).toEpochMilliseconds() },
-                    owner = value.userId ?: UUID.randomUUID().toString(),
+                    owner = value.userId ?: Uuid.random().toString(),
                 ),
             )
             map { }

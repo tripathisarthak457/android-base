@@ -1,13 +1,17 @@
 package com.base.app.core.designsystem.component.formfields
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.drag
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,6 +45,7 @@ import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -154,7 +159,7 @@ fun AppRangeSlider(
             }
             .drawBehind {
                 val centerY = size.height / 2f
-                val trackHeight = TrackHeight.toPx()
+                val trackHeight = AppRangeSliderDefaults.TrackHeight.toPx()
                 val radius = CornerRadius(trackHeight / 2f)
                 val startX = thumbX(startFraction)
                 val endX = thumbX(endFraction)
@@ -171,8 +176,8 @@ fun AppRangeSlider(
                     size = Size(abs(endX - startX), trackHeight),
                     cornerRadius = radius,
                 )
-                drawThumb(Offset(startX, centerY), startRadius, Color.White, colors.outline)
-                drawThumb(Offset(endX, centerY), endRadius, Color.White, colors.outline)
+                drawThumb(Offset(startX, centerY), startRadius, colors.thumb, colors.outline)
+                drawThumb(Offset(endX, centerY), endRadius, colors.thumb, colors.outline)
             },
     ) {
         ThumbControl(
@@ -235,7 +240,7 @@ private fun ThumbControl(
 
 private fun DrawScope.drawThumb(center: Offset, radius: Float, fill: Color, ring: Color) {
     drawCircle(color = fill, radius = radius.dp.toPx(), center = center)
-    drawCircle(color = ring, radius = radius.dp.toPx(), center = center, style = Stroke(width = 2.5.dp.toPx()))
+    drawCircle(color = ring, radius = radius.dp.toPx(), center = center, style = Stroke(width = AppRangeSliderDefaults.ThumbRingWidth.toPx()))
 }
 
 private const val NoThumb = -1
@@ -243,4 +248,22 @@ private const val StartThumb = 0
 private const val EndThumb = 1
 private const val ThumbRadius = 10f
 private const val ThumbRadiusDragged = 12f
-private val TrackHeight = 6.dp
+
+/** The range slider's track and the ring around its thumbs. */
+object AppRangeSliderDefaults {
+    val ThumbRingWidth = 2.5.dp
+    val TrackHeight = 6.dp
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppRangeSliderPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppRangeSlider(value = 0.2f..0.7f, onValueChange = {})
+        AppRangeSlider(value = 20f..60f, onValueChange = {}, valueRange = 0f..100f, steps = 9)
+        AppRangeSlider(value = 0.4f..0.5f, onValueChange = {}, enabled = false)
+    }
+}

@@ -2,13 +2,17 @@ package com.base.app.core.designsystem.component.selection
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.awaitHorizontalTouchSlopOrCancellation
 import androidx.compose.foundation.gestures.horizontalDrag
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.progressSemantics
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
@@ -22,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.shadow.Shadow
@@ -37,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlin.math.roundToInt
 
@@ -86,11 +90,11 @@ fun AppSlider(
     }
 
     val shadowContext = LocalGraphicsContext.current.shadowContext
-    val thumbShadow = remember(shadowContext) { shadowContext.createDropShadowPainter(CircleShape, ThumbShadow) }
+    val thumbShadow = remember(shadowContext) { shadowContext.createDropShadowPainter(CircleShape, AppSliderDefaults.ThumbShadow) }
     Canvas(
         modifier = modifier
             .fillMaxWidth()
-            .height(ThumbSize + 16.dp)
+            .height(AppSliderDefaults.ThumbSize + AppSliderDefaults.VerticalSlack)
             .disabledAlpha(enabled)
             .progressSemantics(value, valueRange, steps)
             .semantics {
@@ -104,7 +108,7 @@ fun AppSlider(
             .then(
                 if (enabled) {
                     Modifier.pointerInput(steps, rtl, span) {
-                        val inset = ThumbSize.toPx() / 2f
+                        val inset = AppSliderDefaults.ThumbSize.toPx() / 2f
                         fun fractionAt(x: Float): Float {
                             val f = (x - inset) / (size.width - inset * 2)
                             return if (rtl) 1f - f else f
@@ -140,8 +144,8 @@ fun AppSlider(
                 },
             ),
     ) {
-        val thumb = ThumbSize.toPx()
-        val track = TrackHeight.toPx()
+        val thumb = AppSliderDefaults.ThumbSize.toPx()
+        val track = AppSliderDefaults.TrackHeight.toPx()
         val inset = thumb / 2f
         val usable = size.width - inset * 2
         val f = shown.value
@@ -154,15 +158,38 @@ fun AppSlider(
         translate(left = x - inset, top = y - inset) {
             with(thumbShadow) { draw(Size(thumb, thumb)) }
         }
-        drawCircle(Color.White, radius = inset, center = Offset(x, y))
-        drawCircle(ThumbRing, radius = inset, center = Offset(x, y), style = Stroke(0.5.dp.toPx()))
+        drawCircle(colors.thumb, radius = inset, center = Offset(x, y))
+        drawCircle(
+            colors.shade.copy(alpha = AppSliderDefaults.ThumbRingAlpha),
+            radius = inset,
+            center = Offset(x, y),
+            style = Stroke(AppSliderDefaults.RingWidth.toPx()),
+        )
     }
 }
 
-// iOS's thumb: a soft blur that lifts it off a white page, and a faint ring that still outlines it
-// where the blur is too light to see.
-private val ThumbShadow = Shadow(radius = 2.dp, alpha = 0.15f, offset = DpOffset(0.dp, 1.dp))
-private val ThumbRing = Color.Black.copy(alpha = 0.04f)
+/** The slider's metrics, iOS's. */
+object AppSliderDefaults {
+    // iOS's thumb: a soft blur that lifts it off a white page, and a faint ring that still outlines
+    // it where the blur is too light to see.
+    val ThumbShadow = Shadow(radius = 2.dp, alpha = 0.15f, offset = DpOffset(0.dp, 1.dp))
+    const val ThumbRingAlpha = 0.04f
+    val ThumbSize = 28.dp
+    val TrackHeight = 4.dp
+    /** Room above and below the thumb for its shadow and the finger. */
+    val VerticalSlack = 16.dp
+    val RingWidth = 0.5.dp
+}
 
-private val ThumbSize = 28.dp
-private val TrackHeight = 4.dp
+@AppComponentPreviews
+@Composable
+private fun AppSliderPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppSlider(value = 0.3f, onValueChange = {})
+        AppSlider(value = 40f, onValueChange = {}, valueRange = 0f..100f, steps = 9)
+        AppSlider(value = 0.7f, onValueChange = {}, enabled = false)
+    }
+}

@@ -1,7 +1,6 @@
 package com.base.app.core.designsystem.component.navigation
 
 import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.annotation.FrequentlyChangingValue
@@ -17,6 +16,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
+import com.base.app.core.designsystem.theme.TabBarSprings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -72,7 +72,7 @@ class AppTabBarState internal constructor(private val density: Density, private 
             val readOn = -consumed.y
             if (readOn == 0f) return Offset.Zero
             drift = if (sign(drift) == sign(readOn)) drift + readOn else readOn
-            if (abs(drift) >= with(density) { Hysteresis.toPx() }) fold(minimized = drift > 0f)
+            if (abs(drift) >= with(density) { AppTabBarStateDefaults.Hysteresis.toPx() }) fold(minimized = drift > 0f)
             return Offset.Zero
         }
     }
@@ -89,7 +89,7 @@ class AppTabBarState internal constructor(private val density: Density, private 
         target = to
         motion?.cancel()
         motion = scope.launch {
-            animate(collapse, to, velocity, MinimizeSpring) { value, speed ->
+            animate(collapse, to, velocity, TabBarSprings.Selection) { value, speed ->
                 collapse = value
                 velocity = speed
             }
@@ -112,7 +112,8 @@ fun rememberAppTabBarState(): AppTabBarState {
     return remember(density, scope) { AppTabBarState(density, scope) }
 }
 
-private val Hysteresis = 10.dp
+/** How far content scrolls one way before the bar minimizes or comes back. */
+internal object AppTabBarStateDefaults {
+    val Hysteresis = 10.dp
+}
 
-/** iOS's segmented-thumb spring, response 0.28 s with no bounce: the bar moves, it does not wobble. */
-private val MinimizeSpring = spring(dampingRatio = 1f, stiffness = 503.5f, visibilityThreshold = 0.001f)

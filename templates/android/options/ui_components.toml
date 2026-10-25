@@ -22,6 +22,7 @@ owns = [
   "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/foundation/scroll",
   "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/animation",
   "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/icon",
+  "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/theme/AppDesignStyle.kt",
   "core/designsystem/src/main/res/values/strings.xml",
   "core/designsystem/src/test/kotlin/{pkg_path}/core/designsystem/component",
   "core/designsystem/src/test/kotlin/{pkg_path}/core/designsystem/animation",

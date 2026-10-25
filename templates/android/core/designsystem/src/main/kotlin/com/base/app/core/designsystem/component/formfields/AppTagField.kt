@@ -1,12 +1,15 @@
 package com.base.app.core.designsystem.component.formfields
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -14,6 +17,7 @@ import androidx.compose.ui.text.input.ImeAction
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.input.AppTextField
 import com.base.app.core.designsystem.component.selection.AppChip
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -53,5 +57,23 @@ fun AppTagField(
                 input.clearText()
             },
         )
+    }
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppTagFieldPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppTagField(tags = emptyList(), onTagsChange = {}, input = rememberTextFieldState(), label = "Tags")
+        AppTagField(
+            tags = listOf("hiking", "weekend", "a much longer tag than the others"),
+            onTagsChange = {},
+            input = rememberTextFieldState("ca"),
+            label = "Tags",
+        )
+        AppTagField(tags = listOf("archived"), onTagsChange = {}, input = rememberTextFieldState(), enabled = false)
     }
 }

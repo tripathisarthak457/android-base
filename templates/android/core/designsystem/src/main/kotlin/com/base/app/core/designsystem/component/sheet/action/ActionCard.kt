@@ -3,8 +3,12 @@ package com.base.app.core.designsystem.component.sheet.action
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.rememberTransition
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
@@ -31,8 +35,11 @@ import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.overlay.HostedOverlay
 import com.base.app.core.designsystem.component.overlay.OverlayBackHandler
 import com.base.app.core.designsystem.component.sheet.AppSheetDefaults
+import com.base.app.core.designsystem.component.sheet.action.SheetAction
 import com.base.app.core.designsystem.component.sheet.surface.SheetShadowCache
 import com.base.app.core.designsystem.foundation.content.AppSurface
+import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
 import kotlin.math.roundToInt
@@ -134,7 +141,7 @@ internal fun ActionCard(
                 .drawBehind { if (anchor == null) drawRect(colors.scrim, alpha = shown.value.coerceIn(0f, 1f)) }
                 .pointerInput(Unit) { detectTapGestures { if (presence.targetState) dismiss() } },
         ) { measurables, constraints ->
-            val margin = Margin.roundToPx()
+            val margin = ActionCardDefaults.Margin.roundToPx()
             val width = minOf(DesignTokens.Sheet.ActionSheet.cardWidth.roundToPx(), constraints.maxWidth - 2 * margin)
             val card = measurables.first().measure(Constraints(maxWidth = width, maxHeight = constraints.maxHeight - 2 * margin))
             layout(constraints.maxWidth, constraints.maxHeight) {
@@ -163,4 +170,28 @@ internal fun ActionCard(
 
 /** The card arrives from this scale, as iOS 26's menus and popovers grow from their source. */
 private const val CardScale = 0.94f
-private val Margin = 8.dp
+
+/** How far the card keeps from the window's edges. */
+internal object ActionCardDefaults {
+    val Margin = 8.dp
+}
+
+@AppComponentPreviews
+@Composable
+private fun ActionCardPreview() {
+    Box(modifier = Modifier.background(AppTheme.colors.background).fillMaxWidth().height(AppTheme.sizes.rowHeight * 8)) {
+        ActionCard(
+            visible = true,
+            actions = listOf(
+                SheetAction(label = "Reply", onClick = {}),
+                SheetAction(label = "Forward to everyone on the thread", onClick = {}),
+                SheetAction(label = "Delete", onClick = {}, icon = AppIcons.Trash, destructive = true),
+            ),
+            onDismissRequest = {},
+            modifier = Modifier,
+            title = "Message",
+            message = "From Ada, yesterday",
+            anchor = null,
+        )
+    }
+}

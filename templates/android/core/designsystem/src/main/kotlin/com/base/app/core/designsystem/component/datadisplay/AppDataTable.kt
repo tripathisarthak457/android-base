@@ -4,11 +4,13 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -50,14 +52,15 @@ import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.foundation.scroll.appScrollIndicator
 import com.base.app.core.designsystem.foundation.scroll.bottomEdgeFade
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /** How a column's values read and line up. Figures keep one width per digit so they align. */
 enum class AppColumnType(internal val defaultWidth: Dp, internal val alignEnd: Boolean, internal val figures: Boolean) {
-    Text(defaultWidth = 160.dp, alignEnd = false, figures = false),
-    Number(defaultWidth = 88.dp, alignEnd = true, figures = true),
-    Money(defaultWidth = 124.dp, alignEnd = true, figures = true),
-    Date(defaultWidth = 112.dp, alignEnd = false, figures = true),
+    Text(defaultWidth = AppDataTableDefaults.TextColumnWidth, alignEnd = false, figures = false),
+    Number(defaultWidth = AppDataTableDefaults.NumberColumnWidth, alignEnd = true, figures = true),
+    Money(defaultWidth = AppDataTableDefaults.MoneyColumnWidth, alignEnd = true, figures = true),
+    Date(defaultWidth = AppDataTableDefaults.DateColumnWidth, alignEnd = false, figures = true),
 }
 
 /**
@@ -271,3 +274,35 @@ internal fun fittedWidths(widths: List<Dp>, available: Dp): List<Dp> {
 private const val HeaderKey = "app-data-table-header"
 private const val TotalsKey = "app-data-table-totals"
 private const val RowType = "app-data-table-row"
+
+/** The table's column widths, by what a column holds. */
+object AppDataTableDefaults {
+    val TextColumnWidth = 160.dp
+    val NumberColumnWidth = 88.dp
+    val MoneyColumnWidth = 124.dp
+    val DateColumnWidth = 112.dp
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppDataTablePreview() {
+    val columns: List<AppTableColumn<Triple<String, String, String>>> = listOf(
+        AppTableColumn(label = "Customer") { it.first },
+        AppTableColumn(label = "Orders", type = AppColumnType.Number, total = "17") { it.second },
+        AppTableColumn(label = "Spent", type = AppColumnType.Money, total = "2,310.00") { it.third },
+    )
+    val rows = listOf(
+        Triple("Ada Lovelace", "4", "412.00"),
+        Triple("Grace Hopper", "12", "1,768.50"),
+        Triple("A customer with a very long registered business name", "1", "129.50"),
+    )
+    Column(modifier = Modifier.background(AppTheme.colors.background)) {
+        AppDataTable(
+            columns = columns,
+            rows = rows,
+            modifier = Modifier.height(AppTheme.sizes.rowHeight * 6),
+            rowKey = { it.first },
+            onRowClick = {},
+        )
+    }
+}

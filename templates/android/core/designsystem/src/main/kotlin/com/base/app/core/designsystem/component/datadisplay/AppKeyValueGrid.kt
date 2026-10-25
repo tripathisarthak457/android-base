@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /** A dense two-column grid for records, where a list row would waste half the width. */
@@ -48,5 +49,20 @@ fun AppKeyValueGrid(
                 )
             }
         }
+    }
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppKeyValueGridPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppKeyValueGrid(entries = listOf("Order" to "#4021", "Placed" to "25 Oct", "Status" to "Shipped"))
+        AppKeyValueGrid(
+            entries = listOf("Delivery address" to "Flat 2, 14 Long Acre Road, Littleton-upon-Severn", "Phone" to "+44 7700 900123"),
+            striped = false,
+        )
     }
 }

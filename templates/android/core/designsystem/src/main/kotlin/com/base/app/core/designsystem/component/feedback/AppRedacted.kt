@@ -1,12 +1,19 @@
 package com.base.app.core.designsystem.component.feedback
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.draw.LocalRedactedState
+import com.base.app.core.designsystem.preview.AppComponentPreviews
+import com.base.app.core.designsystem.theme.AppTheme
 
 /**
  * Draws [content] as placeholders while [active], as SwiftUI's `redacted(reason: .placeholder)`
@@ -50,5 +57,21 @@ fun AppRedacted(
     }
     CompositionLocalProvider(LocalRedactedState provides active) {
         Box(modifier = modifier.then(hidden), propagateMinConstraints = true) { content() }
+    }
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppRedactedPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppRedacted(active = true, contentDescription = "Loading the balance") {
+            AppText(text = "Balance 1,204.50", style = AppTheme.typography.title2)
+        }
+        AppRedacted(active = false) {
+            AppText(text = "Balance 1,204.50", style = AppTheme.typography.title2)
+        }
     }
 }

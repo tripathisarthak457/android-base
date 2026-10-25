@@ -2,9 +2,11 @@ package com.base.app.core.designsystem.component.navigation
 
 import android.graphics.Path.Direction
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.SpringSpec
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.BasicText
@@ -16,6 +18,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -41,10 +44,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import com.base.app.core.designsystem.component.feedback.AppBadgedBox
+import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.designsystem.theme.AutoSizeStep
+import com.base.app.core.designsystem.theme.TabBarSprings
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.ceil
@@ -114,8 +120,8 @@ internal class IndicatorEdges(selected: Int) {
         forward = to > start.value
         val lead = if (forward) end else start
         val trail = if (forward) start else end
-        launch { lead.animateTo(to, LeadSpring) }
-        trail.animateTo(to, TrailSpring)
+        launch { lead.animateTo(to, TabBarSprings.PillLead) }
+        trail.animateTo(to, TabBarSprings.PillTrail)
     }
 
     /** The pill's drawn span in slot units, never wider than [MAX_STRETCH] past one slot. */
@@ -149,14 +155,12 @@ internal class TabBounce(count: Int) {
 
     suspend fun play(index: Int) {
         val scale = scales.getOrNull(index) ?: return
-        scale.animateTo(BOUNCE_DOWN, BounceDown)
-        scale.animateTo(1f, BounceUp)
+        scale.animateTo(BOUNCE_DOWN, TabBarSprings.GlyphDip)
+        scale.animateTo(1f, TabBarSprings.GlyphReturn)
     }
 
     private companion object {
         const val BOUNCE_DOWN = 0.84f
-        val BounceDown: SpringSpec<Float> = spring(dampingRatio = 1f, stiffness = 1500f, visibilityThreshold = 0.001f)
-        val BounceUp: SpringSpec<Float> = spring(dampingRatio = 0.45f, stiffness = 500f, visibilityThreshold = 0.001f)
     }
 }
 
@@ -230,7 +234,7 @@ private fun TabCell(
                     contentDescription = null,
                     colorFilter = filter,
                     modifier = Modifier
-                        .size(IconSize)
+                        .size(AppTabBarDefaults.IconSize)
                         .graphicsLayer {
                             val s = scale()
                             scaleX = s
@@ -257,7 +261,7 @@ private fun TabCell(
                         autoSize = TextAutoSize.StepBased(
                             minFontSize = style.fontSize * MIN_LABEL_SHRINK,
                             maxFontSize = style.fontSize,
-                            stepSize = LabelSizeStep,
+                            stepSize = AutoSizeStep,
                         ),
                     )
                 }
@@ -269,14 +273,14 @@ private fun TabCell(
         val icon = measurables[0].measure(Constraints())
         // A label never reaches past the pill: it keeps the pill's gap to the slot edge and the
         // pill's own padding inside it.
-        val labelRoom = (width - 2 * (SlotGap + LabelPaddingMin).roundToPx()).coerceAtLeast(0)
+        val labelRoom = (width - 2 * (AppTabBarDefaults.SlotGap + AppTabBarDefaults.LabelPaddingMin).roundToPx()).coerceAtLeast(0)
         val label = measurables.getOrNull(1)?.measure(Constraints(maxWidth = labelRoom))
-        val content = icon.height + (label?.let { LabelGap.roundToPx() + it.height } ?: 0)
+        val content = icon.height + (label?.let { AppTabBarDefaults.LabelGap.roundToPx() + it.height } ?: 0)
         val top = (height - content) / 2
         val contentStart = (width - (label?.width ?: icon.width).coerceAtLeast(icon.width)) / 2
         layout(width, height, mapOf(ContentStart to contentStart)) {
             icon.placeRelative((width - icon.width) / 2, top)
-            label?.placeRelative((width - label.width) / 2, top + icon.height + LabelGap.roundToPx())
+            label?.placeRelative((width - label.width) / 2, top + icon.height + AppTabBarDefaults.LabelGap.roundToPx())
         }
     }
 }
@@ -302,7 +306,7 @@ internal class TabMeasure(
 
     private fun barPolicy(writesSlots: Boolean) = MeasurePolicy { measurables, constraints ->
         val width = constraints.maxWidth
-        val height = BarHeight.roundToPx()
+        val height = AppTabBarDefaults.Height.roundToPx()
         val count = measurables.size.coerceAtLeast(1)
         val slot = width / count
         val placeables = measurables.map { it.measure(Constraints.fixed(slot, height)) }
@@ -311,19 +315,19 @@ internal class TabMeasure(
             val ends = FloatArray(placeables.size)
             placeables.forEachIndexed { index, placeable ->
                 val content = (slot - 2 * placeable.contentStart()).toFloat()
-                val pill = (content + 2 * LabelPadding.toPx())
-                    .coerceIn(MinPillWidth.toPx(), MaxPillWidth.toPx())
-                    .coerceAtLeast(content + 2 * LabelPaddingMin.toPx())
-                    .coerceAtMost(slot - 2 * SlotGap.toPx())
+                val pill = (content + 2 * AppTabBarDefaults.LabelPadding.toPx())
+                    .coerceIn(AppTabBarDefaults.MinPillWidth.toPx(), AppTabBarDefaults.MaxPillWidth.toPx())
+                    .coerceAtLeast(content + 2 * AppTabBarDefaults.LabelPaddingMin.toPx())
+                    .coerceAtMost(slot - 2 * AppTabBarDefaults.SlotGap.toPx())
                 starts[index] = index * slot + (slot - pill) / 2f
                 ends[index] = starts[index] + pill
             }
-            val inset = (height - PillHeight.toPx()) / 2f
+            val inset = (height - AppTabBarDefaults.PillHeight.toPx()) / 2f
             publish(PillSlots(starts, ends, inset, height - inset))
         }
         layout(width, height) {
             val collapse = state?.collapse ?: 0f
-            val folded = MinimizedWidth.roundToPx()
+            val folded = AppTabBarDefaults.MinimizedWidth.roundToPx()
             val current = selected()
             placeables.forEachIndexed { index, placeable ->
                 if (index == current) {
@@ -342,13 +346,13 @@ internal class TabMeasure(
         // Items shrink toward their minimum before the rail scrolls, so a short window keeps every
         // tab in view as long as it can.
         val fit = if (railViewport == Constraints.Infinity) Int.MAX_VALUE else railViewport / count
-        val item = fit.coerceIn(RailItemMinHeight.roundToPx(), RailItemHeight.roundToPx())
+        val item = fit.coerceIn(AppTabBarDefaults.RailItemMinHeight.roundToPx(), AppTabBarDefaults.RailItemHeight.roundToPx())
         val placeables = measurables.map { it.measure(Constraints.fixed(width, item)) }
         if (writesSlots) {
-            val inset = RailPillInset.toPx()
+            val inset = AppTabBarDefaults.RailPillInset.toPx()
             val starts = FloatArray(placeables.size) { it * item + inset }
             val ends = FloatArray(placeables.size) { (it + 1) * item - inset }
-            val cross = (width - RailPillWidth.toPx()) / 2f
+            val cross = (width - AppTabBarDefaults.RailPillWidth.toPx()) / 2f
             publish(PillSlots(starts, ends, cross, width - cross))
         }
         layout(width, item * placeables.size) {
@@ -438,7 +442,29 @@ private const val MAX_LABEL_SCALE = 1.3f
 
 /** How far a label that does not fit is set below its size, before it is ellipsized. */
 private const val MIN_LABEL_SHRINK = 0.85f
-private val LabelSizeStep = 0.25.sp
 
-private val LeadSpring = spring(dampingRatio = 0.85f, stiffness = 815.6f, visibilityThreshold = 0.001f)
-private val TrailSpring = spring(dampingRatio = 1f, stiffness = 385.5f, visibilityThreshold = 0.001f)
+
+@AppComponentPreviews
+@Composable
+private fun TabCellsPreview() {
+    val items = listOf(
+        TabItem(label = "Home", icon = AppIcons.Home),
+        TabItem(label = "Search", icon = AppIcons.Search),
+        TabItem(label = "Inbox", icon = AppIcons.Mail, badgeCount = 3),
+        TabItem(label = "Settings", icon = AppIcons.Settings),
+    )
+    val look = barLook(AppTheme.style.bar)
+    val bounce = remember { TabBounce(items.size) }
+    // One measure per bar, as each bar has: two base layers writing their pill slots into one
+    // measure would remeasure each other forever.
+    val labelled = remember { TabMeasure(vertical = false, state = null, selected = { 1 }, slots = mutableStateOf(PillSlots.Empty)) }
+    val iconsOnly = remember { TabMeasure(vertical = false, state = null, selected = { 1 }, slots = mutableStateOf(PillSlots.Empty)) }
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        TabCells(items, 1, TabLayer.Base, TabLabels.Always, look, bounce, labelled, onTap = {})
+        TabCells(items, 1, TabLayer.Selected, TabLabels.Always, look, bounce, labelled, onTap = null)
+        TabCells(items, 1, TabLayer.Base, TabLabels.Never, look, bounce, iconsOnly, onTap = {})
+    }
+}

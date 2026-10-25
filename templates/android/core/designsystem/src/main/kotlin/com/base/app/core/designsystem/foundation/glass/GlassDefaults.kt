@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import com.base.app.core.designsystem.theme.AppColors
 import com.base.app.core.designsystem.theme.AppTheme
 import com.kyant.shapes.Capsule
 
@@ -37,8 +38,8 @@ object GlassDefaults {
         val colors = AppTheme.colors
         return GlassColors(
             body = colors.surface.copy(alpha = if (colors.isLight) 0.62f else 0.72f),
-            rim = rim(colors.isLight),
-            sheen = Color.White.copy(alpha = if (colors.isLight) 0.45f else 0.10f),
+            rim = rim(colors),
+            sheen = colors.sheen.copy(alpha = if (colors.isLight) 0.45f else 0.10f),
         )
     }
 
@@ -49,7 +50,7 @@ object GlassDefaults {
         val colors = AppTheme.colors
         return GlassColors(
             body = colors.surface.copy(alpha = if (colors.isLight) 0.40f else 0.35f),
-            rim = rim(colors.isLight),
+            rim = rim(colors),
             sheen = Color.Transparent,
         )
     }
@@ -61,8 +62,8 @@ object GlassDefaults {
         val colors = AppTheme.colors
         return GlassColors(
             body = colors.surface.copy(alpha = if (colors.isLight) 0.92f else 0.94f),
-            rim = rim(colors.isLight),
-            sheen = Color.White.copy(alpha = if (colors.isLight) 0.30f else 0.06f),
+            rim = rim(colors),
+            sheen = colors.sheen.copy(alpha = if (colors.isLight) 0.30f else 0.06f),
         )
     }
 
@@ -79,7 +80,7 @@ object GlassDefaults {
     @ReadOnlyComposable
     fun contentShadow(): Shadow? = if (AppTheme.colors.isLight) ContentShadow else null
 
-    private fun rim(light: Boolean): Color = Color.White.copy(alpha = if (light) 0.85f else 0.20f)
+    private fun rim(colors: AppColors): Color = colors.sheen.copy(alpha = if (colors.isLight) 0.85f else 0.20f)
 
     private val ChromeShadow = Shadow(radius = 16.dp, offset = DpOffset(0.dp, 4.dp), alpha = 0.10f)
     private val ContentShadow = Shadow(radius = 10.dp, offset = DpOffset(0.dp, 3.dp), alpha = 0.08f)

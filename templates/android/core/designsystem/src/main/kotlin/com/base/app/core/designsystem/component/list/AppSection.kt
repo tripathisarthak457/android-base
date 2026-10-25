@@ -25,6 +25,7 @@ import com.base.app.core.designsystem.component.button.AppLinkButton
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.adaptive.centeredMaxWidth
 import com.base.app.core.designsystem.foundation.draw.drawHairline
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -169,3 +170,21 @@ private class SeparatorLines {
 /** Full width up to the pane's readable width, then centred: a section on a tablet reads as a column. */
 private fun Modifier.readableWidth(readable: Dp): Modifier =
     if (readable.isFinite) centeredMaxWidth(readable) else fillMaxWidth()
+
+@AppComponentPreviews
+@Composable
+private fun AppSectionPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppSectionHeader(title = "Recent", actionLabel = "See all", onAction = {})
+        AppSection(header = "Account", footer = "Your email is never shown to other people.") {
+            AppRow(title = "Email", value = "ada@example.com")
+            AppRow(title = "Password", onClick = {})
+        }
+        AppSection {
+            AppRow(title = "Sign out", onClick = {}, destructive = true)
+        }
+    }
+}

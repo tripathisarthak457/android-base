@@ -22,21 +22,6 @@ android = "core/mvi/src/main/kotlin/com/base/app/core/mvi"
 multiplatform = "core/mvi/src/commonMain/kotlin/com/base/app/core/mvi"
 
 [[pair.difference]]
-file = "UiMessage.kt"
-reason = """
-Kotlin/Native has no java.util.concurrent. The id counter is kotlin.concurrent.atomics' AtomicLong,
-which takes its start value and names the increment after the value it returns."""
-android = [
-  "    val id: Long = ids.incrementAndGet(),",
-  "        private val ids = AtomicLong()",
-]
-multiplatform = [
-  "@OptIn(ExperimentalAtomicApi::class)",
-  "    val id: Long = ids.incrementAndFetch(),",
-  "        private val ids = AtomicLong(0)",
-]
-
-[[pair.difference]]
 file = "UiText.kt"
 reason = """
 Strings are Compose resources here, typed StringResource and PluralStringResource rather than

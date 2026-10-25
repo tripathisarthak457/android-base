@@ -2,7 +2,7 @@ package com.base.app.core.designsystem.component.input
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +21,7 @@ import androidx.compose.foundation.text.input.TextFieldDecorator
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.maxLength
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.input.then
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -54,6 +55,8 @@ import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.component.text.scaledLike
 import com.base.app.core.designsystem.foundation.draw.disabledAlpha
+import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.FieldTreatment
 import kotlin.math.min
@@ -184,7 +187,7 @@ internal fun fieldDecorator(
             treatment == FieldTreatment.Filled -> Color.Transparent
             else -> colors.outline
         },
-        animationSpec = tween(AppTheme.springs.fadeQuick),
+        animationSpec = AppTheme.springs.quickFade(),
         label = "fieldEdge",
     )
     val fill = when {
@@ -290,5 +293,27 @@ private fun Modifier.fieldBox(
                 drawOutline(outline, edge.value, style = Stroke(stroke))
             }
         }
+    }
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppTextFieldPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppTextField(state = rememberTextFieldState(), label = "Email", placeholder = "you@example.com", leadingIcon = AppIcons.Mail)
+        AppTextField(state = rememberTextFieldState("Ada"), label = "First name", helper = "As it appears on your card")
+        AppTextField(state = rememberTextFieldState("ada@"), label = "Email", error = "Enter a full email address")
+        AppTextField(state = rememberTextFieldState("12.50"), label = "Price", prefix = "€", suffix = "per month")
+        AppTextField(state = rememberTextFieldState("Locked"), label = "Account", enabled = false)
+        AppTextField(
+            state = rememberTextFieldState("A note long enough to wrap onto a second line inside the field, as a bio would."),
+            label = "Bio",
+            lineLimits = TextFieldLineLimits.MultiLine(maxHeightInLines = 4),
+            maxLength = 160,
+            showCounter = true,
+        )
     }
 }

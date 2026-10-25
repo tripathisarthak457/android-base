@@ -4,8 +4,6 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -16,9 +14,15 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,6 +39,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.semantics
+import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppSprings
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.delay
@@ -59,14 +65,14 @@ class AppTransitions internal constructor(
         get() = if (reduceMotion) {
             EnterTransition.None
         } else {
-            expandVertically(springs.layout.size) + fadeIn(tween(springs.fadeQuick))
+            expandVertically(springs.layout.size) + fadeIn(springs.quickFade())
         }
 
     val collapseOut: ExitTransition
         get() = if (reduceMotion) {
             ExitTransition.None
         } else {
-            shrinkVertically(springs.layout.size) + fadeOut(tween(springs.fadeQuick))
+            shrinkVertically(springs.layout.size) + fadeOut(springs.quickFade())
         }
 
     /** For something arriving from the bottom edge: a banner, a bar. */
@@ -81,14 +87,14 @@ class AppTransitions internal constructor(
         get() = if (reduceMotion) {
             EnterTransition.None
         } else {
-            scaleIn(springs.emphasis.unit, initialScale = PopScale) + fadeIn(tween(springs.fadeQuick))
+            scaleIn(springs.emphasis.unit, initialScale = PopScale) + fadeIn(springs.quickFade())
         }
 
     val popOut: ExitTransition
         get() = if (reduceMotion) {
             ExitTransition.None
         } else {
-            scaleOut(springs.press.unit, targetScale = PopScale) + fadeOut(tween(springs.fadeQuick))
+            scaleOut(springs.press.unit, targetScale = PopScale) + fadeOut(springs.quickFade())
         }
 
     /** A lateral move inside one screen: step 2 of a form replacing step 1. */
@@ -145,9 +151,9 @@ fun LazyItemScope.appAnimateItem(modifier: Modifier = Modifier): Modifier {
     if (AppTheme.reduceMotion) return modifier
     val springs = AppTheme.springs
     return modifier.animateItem(
-        fadeInSpec = tween(springs.fadeSlow, easing = springs.enterEasing),
+        fadeInSpec = springs.fadeIn(),
         placementSpec = springs.layout.offset,
-        fadeOutSpec = tween(springs.fadeQuick, easing = springs.exitEasing),
+        fadeOutSpec = springs.fadeOut(),
     )
 }
 
@@ -203,7 +209,7 @@ private fun rememberAppearProgress(
     LaunchedEffect(Unit) {
         if (progress.value < 1f) {
             if (delayMillis > 0) delay(delayMillis)
-            progress.animateTo(1f, tween(durationMillis, easing = if (linear) LinearEasing else springs.enterEasing))
+            progress.animateTo(1f, springs.arrival(durationMillis, linear))
         }
         shown = true
     }
@@ -229,3 +235,20 @@ fun Modifier.busyOverlay(busy: Boolean): Modifier {
 }
 
 private const val BusyAlpha = 0.4f
+
+@AppComponentPreviews
+@Composable
+private fun AppTransitionsPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppAppear { AppText(text = "Appears once composed") }
+        AppStaggeredColumn(itemCount = 3) { index -> AppText(text = "Staggered row ${index + 1}") }
+        LazyColumn(modifier = Modifier.height(AppTheme.sizes.rowHeight * 2)) {
+            items(listOf("Placed in a list", "Moves when the list changes"), key = { it }) { item ->
+                AppText(text = item, modifier = appAnimateItem())
+            }
+        }
+    }
+}

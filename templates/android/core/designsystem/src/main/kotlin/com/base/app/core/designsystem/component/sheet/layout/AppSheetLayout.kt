@@ -1,7 +1,12 @@
 package com.base.app.core.designsystem.component.sheet.layout
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.sheet.AppSheetDefaults
 import com.base.app.core.designsystem.component.sheet.AppSheetProperties
 import com.base.app.core.designsystem.component.sheet.AppSheetScope
@@ -9,7 +14,12 @@ import com.base.app.core.designsystem.component.sheet.AppSheetState
 import com.base.app.core.designsystem.component.sheet.AppSheetStyle
 import com.base.app.core.designsystem.component.sheet.SheetDetent
 import com.base.app.core.designsystem.component.sheet.SheetModality
+import com.base.app.core.designsystem.component.sheet.chrome.AppSheetHeader
+import com.base.app.core.designsystem.component.sheet.content.SheetColumn
+import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
 import com.base.app.core.designsystem.foundation.layout.ShellSeamApi
+import com.base.app.core.designsystem.preview.AppComponentPreviews
+import com.base.app.core.designsystem.theme.AppTheme
 
 /**
  * The sheet drawn where it is composed. It appears and leaves only through [state]'s show() and
@@ -54,4 +64,20 @@ fun AppSheetLayout(
         content = content,
         destination = true,
     )
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppSheetLayoutPreview() {
+    Box(modifier = Modifier.background(AppTheme.colors.background).fillMaxWidth().height(AppTheme.sizes.rowHeight * 8)) {
+        AppSheetLayout(
+            state = rememberAppSheetState(),
+            onDismissRequest = {},
+            header = { AppSheetHeader(title = "New list") },
+        ) {
+            SheetColumn {
+                AppRow(title = "A sheet that is a destination of its own")
+            }
+        }
+    }
 }

@@ -1,7 +1,6 @@
 package com.base.app.core.designsystem.foundation.scroll
 
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
@@ -73,10 +72,10 @@ private class ScrollIndicatorNode(private var state: ScrollableState) :
         watcher = coroutineScope.launch {
             snapshotFlow { state.isScrollInProgress }.collectLatest { scrolling ->
                 if (scrolling) {
-                    shown.animateTo(1f, tween(currentValueOf(LocalAppSprings).fadeQuick))
+                    shown.animateTo(1f, currentValueOf(LocalAppSprings).quickFade())
                 } else {
                     delay(LingerMillis)
-                    shown.animateTo(0f, tween(currentValueOf(LocalAppSprings).fadeSlow))
+                    shown.animateTo(0f, currentValueOf(LocalAppSprings).slowFade())
                 }
             }
         }
@@ -92,14 +91,14 @@ private class ScrollIndicatorNode(private var state: ScrollableState) :
         val offset = indicator.scrollOffset
         if (content == Int.MAX_VALUE || offset == Int.MAX_VALUE || content <= viewport || viewport <= 0) return
 
-        val top = currentValueOf(LocalTopChrome).value.toPx() + Inset.toPx()
-        val bottom = size.height - currentValueOf(LocalBottomChrome).value.toPx() - Inset.toPx()
+        val top = currentValueOf(LocalTopChrome).value.toPx() + ScrollIndicatorDefaults.Inset.toPx()
+        val bottom = size.height - currentValueOf(LocalBottomChrome).value.toPx() - ScrollIndicatorDefaults.Inset.toPx()
         val track = bottom - top
         if (track <= 0f) return
-        val length = (track * viewport / content).coerceIn(MinLength.toPx().coerceAtMost(track), track)
+        val length = (track * viewport / content).coerceIn(ScrollIndicatorDefaults.MinLength.toPx().coerceAtMost(track), track)
         val travel = (offset.toFloat() / (content - viewport)).coerceIn(0f, 1f)
-        val width = (if (currentValueOf(LocalInputTraits).finePointer) PointerWidth else TouchWidth).toPx()
-        val x = if (layoutDirection == LayoutDirection.Ltr) size.width - Inset.toPx() - width else Inset.toPx()
+        val width = (if (currentValueOf(LocalInputTraits).finePointer) ScrollIndicatorDefaults.PointerWidth else ScrollIndicatorDefaults.TouchWidth).toPx()
+        val x = if (layoutDirection == LayoutDirection.Ltr) size.width - ScrollIndicatorDefaults.Inset.toPx() - width else ScrollIndicatorDefaults.Inset.toPx()
         drawRoundRect(
             color = currentValueOf(LocalAppColors).contentTertiary,
             topLeft = Offset(x, top + (track - length) * travel),
@@ -110,8 +109,15 @@ private class ScrollIndicatorNode(private var state: ScrollableState) :
     }
 }
 
-private val TouchWidth = 3.dp
-private val PointerWidth = 6.dp
-private val Inset = 3.dp
-private val MinLength = 36.dp
+/**
+ * The indicator's width for touch and for a pointer, its inset from the edge and its shortest
+ * length.
+ */
+internal object ScrollIndicatorDefaults {
+    val TouchWidth = 3.dp
+    val PointerWidth = 6.dp
+    val Inset = 3.dp
+    val MinLength = 36.dp
+}
+
 private const val LingerMillis = 500L

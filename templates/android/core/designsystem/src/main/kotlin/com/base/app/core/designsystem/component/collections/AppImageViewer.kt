@@ -10,6 +10,7 @@ import androidx.compose.foundation.gestures.calculateZoom
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,7 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.isCtrlPressed
@@ -47,7 +47,9 @@ import com.base.app.core.designsystem.component.button.AppIconButton
 import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.overlay.OverlayBackHandler
 import com.base.app.core.designsystem.foundation.adaptive.WindowPosture
+import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -106,10 +108,11 @@ fun AppImageViewer(
 
     OverlayBackHandler(enabled = true) { dismiss() }
 
+    val colors = AppTheme.colors
     Box(
         modifier = modifier
             .fillMaxSize()
-            .drawBehind { drawRect(Color.Black, alpha = 1f - (abs(pull) / DismissFade).coerceIn(0f, MaxFade)) },
+            .drawBehind { drawRect(colors.mediaBackdrop, alpha = 1f - (abs(pull) / DismissFade).coerceIn(0f, MaxFade)) },
     ) {
         Box(
             modifier = Modifier
@@ -200,9 +203,9 @@ fun AppImageViewer(
                     },
                 )
                 .padding(AppTheme.spacing.sm)
-                .background(Color.Black.copy(alpha = CloseBackingAlpha), CircleShape),
+                .background(colors.mediaBackdrop.copy(alpha = CloseBackingAlpha), CircleShape),
             variant = ButtonVariant.Plain,
-            colors = AppButtonDefaults.iconButtonColors(content = Color.White),
+            colors = AppButtonDefaults.iconButtonColors(content = colors.onMedia),
         )
     }
 }
@@ -217,3 +220,17 @@ private const val CloseBackingAlpha = 0.5f
 
 /** How far ahead a release is projected: the distance a flick at this speed would still travel. */
 private const val ProjectionSeconds = 0.1f
+
+@AppComponentPreviews
+@Composable
+private fun AppImageViewerPreview() {
+    Box(modifier = Modifier.fillMaxWidth().height(AppTheme.sizes.rowHeight * 8)) {
+        AppImageViewer(onDismiss = {}) {
+            AppSurface(
+                modifier = Modifier.fillMaxWidth().aspectRatio(4f / 3f),
+                color = AppTheme.colors.accent,
+                shape = AppTheme.shapes.none,
+            ) {}
+        }
+    }
+}

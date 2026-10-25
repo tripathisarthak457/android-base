@@ -41,6 +41,7 @@ import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
@@ -179,7 +180,7 @@ internal fun PickerPill(text: String, open: Boolean, onClick: () -> Unit) {
         modifier = Modifier
             .pressable(onClick = onClick, feedback = PressFeedback.Dim)
             .background(colors.fill, AppTheme.shapes.sm)
-            .padding(horizontal = 12.dp, vertical = 7.dp),
+            .padding(horizontal = AppDatePickerDefaults.PillHorizontalPadding, vertical = AppDatePickerDefaults.PillVerticalPadding),
         style = AppTheme.typography.body,
         color = if (open) colors.accentContent else colors.contentPrimary,
     )
@@ -200,7 +201,7 @@ private fun MonthGrid(
     val leadingBlanks = (month.atDay(1).dayOfWeek.value - firstDayOfWeek.value + DaysInWeek) % DaysInWeek
     val dayCount = month.lengthOfMonth()
     // Always six rows, so a month with five does not make the pager's height jump.
-    Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+    Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(AppDatePickerDefaults.WeekSpacing)) {
         repeat(MaxRows) { row ->
             Row(modifier = Modifier.fillMaxWidth()) {
                 repeat(DaysInWeek) { column ->
@@ -244,7 +245,7 @@ private fun DayCell(
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1f)
-            .padding(3.dp)
+            .padding(AppDatePickerDefaults.DayInset)
             .pressable(onClick = onClick, feedback = PressFeedback.Scale, enabled = enabled)
             .semantics {
                 contentDescription = description
@@ -267,3 +268,31 @@ private const val MaxRows = 6
 
 /** How far the calendar pages either way from the month it opened on: a century. */
 private const val MonthsEachWay = 1200
+
+/** The date picker's pill and day grid. */
+object AppDatePickerDefaults {
+    val PillHorizontalPadding = 12.dp
+    val PillVerticalPadding = 7.dp
+    val WeekSpacing = 2.dp
+    val DayInset = 3.dp
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppDatePickerPreview() {
+    // A fixed day, so the screenshots do not change with the calendar.
+    val today = LocalDate.of(2026, 10, 25)
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppDatePicker(
+            selectedDate = today.plusDays(3),
+            onDateSelected = {},
+            today = today,
+            minDate = today,
+            isDateEnabled = { it.dayOfWeek != DayOfWeek.SUNDAY },
+        )
+        AppDatePill(date = today, onDateChange = {})
+    }
+}

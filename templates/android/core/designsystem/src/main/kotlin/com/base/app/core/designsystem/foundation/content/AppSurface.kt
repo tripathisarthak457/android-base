@@ -3,7 +3,10 @@ package com.base.app.core.designsystem.foundation.content
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,6 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -51,5 +56,28 @@ fun AppSurface(
         contentAlignment = contentAlignment,
     ) {
         ProvideContentColor(contentColor) { content() }
+    }
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppSurfacePreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppSurface {
+            AppText(text = "A surface", modifier = Modifier.padding(AppTheme.spacing.lg))
+        }
+        AppSurface(
+            color = AppTheme.colors.surfaceElevated,
+            elevation = AppTheme.elevation.overlay,
+            shape = AppTheme.shapes.lg,
+        ) {
+            AppText(text = "Raised over the content", modifier = Modifier.padding(AppTheme.spacing.lg))
+        }
+        AppSurface(border = BorderStroke(AppTheme.style.borderWidth, AppTheme.colors.outline), color = AppTheme.colors.background) {
+            AppText(text = "Outlined", modifier = Modifier.padding(AppTheme.spacing.lg))
+        }
     }
 }

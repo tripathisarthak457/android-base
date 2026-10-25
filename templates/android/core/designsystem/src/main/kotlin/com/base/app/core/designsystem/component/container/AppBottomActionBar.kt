@@ -2,6 +2,7 @@ package com.base.app.core.designsystem.component.container
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
@@ -16,10 +17,13 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.base.app.core.designsystem.component.button.AppButton
+import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.sheet.LocalSheetSurface
 import com.base.app.core.designsystem.component.sheet.surface.sheetFooterBacking
 import com.base.app.core.designsystem.foundation.draw.HairlineEdge
 import com.base.app.core.designsystem.foundation.draw.hairline
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -49,4 +53,15 @@ fun AppBottomActionBar(
         verticalAlignment = Alignment.CenterVertically,
         content = content,
     )
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppBottomActionBarPreview() {
+    Column(modifier = Modifier.background(AppTheme.colors.background)) {
+        AppBottomActionBar {
+            AppButton(text = "Cancel", onClick = {}, modifier = Modifier.weight(1f), variant = ButtonVariant.Tinted)
+            AppButton(text = "Place order", onClick = {}, modifier = Modifier.weight(1f))
+        }
+    }
 }

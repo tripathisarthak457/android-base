@@ -1,5 +1,6 @@
 package com.base.app.core.designsystem.component.sheet.chrome
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,8 +17,11 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
+import com.base.app.core.designsystem.component.button.AppButton
+import com.base.app.core.designsystem.component.sheet.chrome.AppSheetHeader
 import com.base.app.core.designsystem.component.sheet.content.LocalSheetSlots
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
 
@@ -120,3 +124,16 @@ fun AppSheetHeader(
 
 /** From this font scale the title may wrap to a second line rather than lose its end. */
 private const val LargeTextScale = 1.5f
+
+@AppComponentPreviews
+@Composable
+private fun AppSheetHeaderPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.surfaceElevated),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppSheetHeader(title = "Edit profile")
+        AppSheetHeader(title = "Filters", subtitle = "12 results", leading = { AppButton(text = "Reset", onClick = {}) })
+        AppSheetHeader(title = { AppText(text = "A title written as its own composable, long enough to wrap", style = AppTheme.typography.headline) })
+    }
+}

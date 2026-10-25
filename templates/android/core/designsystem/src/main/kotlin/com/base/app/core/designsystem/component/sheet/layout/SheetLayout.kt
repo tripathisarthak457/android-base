@@ -1,7 +1,11 @@
 package com.base.app.core.designsystem.component.sheet.layout
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.anchoredDraggable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -22,13 +26,18 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.LayoutDirection
 import com.base.app.core.designsystem.R
+import com.base.app.core.designsystem.component.button.AppButton
+import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
+import com.base.app.core.designsystem.component.sheet.AppSheet
 import com.base.app.core.designsystem.component.sheet.AppSheetScope
 import com.base.app.core.designsystem.component.sheet.SheetController
 import com.base.app.core.designsystem.component.sheet.SheetPlacement
 import com.base.app.core.designsystem.component.sheet.back.sheetFocus
+import com.base.app.core.designsystem.component.sheet.chrome.AppSheetHeader
 import com.base.app.core.designsystem.component.sheet.chrome.SheetGrabberHost
 import com.base.app.core.designsystem.component.sheet.chrome.rememberSheetLabels
+import com.base.app.core.designsystem.component.sheet.content.SheetColumn
 import com.base.app.core.designsystem.component.sheet.content.SheetContentHost
 import com.base.app.core.designsystem.component.sheet.content.SheetFooterHost
 import com.base.app.core.designsystem.component.sheet.content.SheetHeaderHost
@@ -37,6 +46,8 @@ import com.base.app.core.designsystem.component.sheet.gesture.sheetCatch
 import com.base.app.core.designsystem.component.sheet.surface.SheetScrim
 import com.base.app.core.designsystem.component.sheet.surface.sheetSemantics
 import com.base.app.core.designsystem.component.sheet.surface.sheetSurface
+import com.base.app.core.designsystem.preview.AppComponentPreviews
+import com.base.app.core.designsystem.theme.AppTheme
 import kotlin.math.roundToInt
 
 /**
@@ -157,3 +168,27 @@ private class SheetContainerPolicy(private val controller: SheetController) : Mu
 
 /** The sheet's root test tag: the overlay host exposes it as a resource id for the perf scripts. */
 internal const val SurfaceTag = "sheet_surface"
+
+@AppComponentPreviews
+@Composable
+private fun SheetLayoutPreview() {
+    Box(modifier = Modifier.background(AppTheme.colors.background).fillMaxWidth().height(AppTheme.sizes.rowHeight * 10)) {
+        AppSheet(
+            visible = true,
+            onDismissRequest = {},
+            header = { AppSheetHeader(title = "Grabber, header, content and footer") },
+            footer = { PreviewFooterButton("Done") },
+        ) {
+            SheetColumn {
+                AppRow(title = "The content scrolls between the header and the footer")
+                AppRow(title = "Second row")
+            }
+        }
+    }
+}
+
+// Outside the AppSheet call: sheet-modifier reads any modifier in the call's text as the sheet's.
+@Composable
+private fun PreviewFooterButton(text: String) {
+    AppButton(text = text, onClick = {}, modifier = Modifier.fillMaxWidth())
+}

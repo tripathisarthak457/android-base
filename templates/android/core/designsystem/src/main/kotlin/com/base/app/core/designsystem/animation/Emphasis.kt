@@ -3,7 +3,6 @@ package com.base.app.core.designsystem.animation
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -38,7 +37,7 @@ fun rememberCountUp(target: Int): Int {
     LaunchedEffect(Unit) { started = true }
     val shown by animateIntAsState(
         targetValue = if (started || reduceMotion) target else 0,
-        animationSpec = if (reduceMotion) snap() else tween(springs.fadeSlow * 2, easing = springs.enterEasing),
+        animationSpec = if (reduceMotion) snap() else springs.arrival(springs.fadeSlow * 2),
         label = "countUp",
     )
     return shown

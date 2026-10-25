@@ -64,6 +64,8 @@ import com.base.app.core.designsystem.foundation.interaction.LocalContainerActio
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppMotionStyle
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.springs
@@ -152,7 +154,7 @@ fun AppSwipeActions(
     allowFullSwipe: Boolean = true,
     shape: Shape = RectangleShape,
     background: Color = AppTheme.colors.surface,
-    actionWidth: Dp = 74.dp,
+    actionWidth: Dp = AppSwipeActionsDefaults.ActionWidth,
     content: @Composable () -> Unit,
 ) {
     val density = LocalDensity.current
@@ -350,7 +352,7 @@ private fun BoxScope.ActionPanel(
                     .background(container)
                     .pressable(onClick = { onAction(action) }, feedback = PressFeedback.Dim),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
+                verticalArrangement = Arrangement.spacedBy(AppSwipeActionsDefaults.LabelSpacing, Alignment.CenterVertically),
             ) {
                 AppIcon(action.icon, contentDescription = null, tint = content)
                 AppText(text = action.label, style = AppTheme.typography.caption1, color = content, maxLines = 1)
@@ -375,3 +377,28 @@ private val RubberBand = DesignTokens.Motion.rubberBand
 
 // How far ahead of the row a release looks for where it was thrown (iOS's 0.99 projection).
 private const val ProjectionSeconds = 0.099f
+
+/** The swipe actions' metrics. */
+object AppSwipeActionsDefaults {
+    val ActionWidth = 74.dp
+    val LabelSpacing = 4.dp
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppSwipeActionsPreview() {
+    Column(modifier = Modifier.background(AppTheme.colors.background)) {
+        AppSwipeActions(
+            leading = listOf(SwipeAction(label = "Pin", icon = AppIcons.Bookmark, onClick = {})),
+            trailing = listOf(
+                SwipeAction(label = "Archive", icon = AppIcons.Folder, onClick = {}),
+                SwipeAction(label = "Delete", icon = AppIcons.Trash, onClick = {}, destructive = true),
+            ),
+        ) {
+            AppRow(title = "Swipe me either way", subtitle = "Lunch on Friday?")
+        }
+        AppSwipeActions(trailing = listOf(SwipeAction(label = "Delete", icon = AppIcons.Trash, onClick = {})), enabled = false) {
+            AppRow(title = "Locked row")
+        }
+    }
+}

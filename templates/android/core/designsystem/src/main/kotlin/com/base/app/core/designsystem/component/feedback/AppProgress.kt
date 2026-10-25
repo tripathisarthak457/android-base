@@ -2,8 +2,13 @@ package com.base.app.core.designsystem.component.feedback
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.progressSemantics
 import androidx.compose.runtime.Composable
@@ -33,6 +38,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.foundation.layout.LocalTabVisible
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -46,7 +52,7 @@ import kotlin.math.roundToInt
 @Composable
 fun AppActivityIndicator(
     modifier: Modifier = Modifier,
-    size: Dp = 20.dp,
+    size: Dp = AppProgressDefaults.IndicatorSize,
     color: Color = AppTheme.colors.contentSecondary,
 ) {
     var head by remember { mutableIntStateOf(0) }
@@ -127,7 +133,7 @@ fun AppLinearProgress(
         snapshotFlow { current().coerceIn(0f, 1f) }.collectLatest { shown.animateTo(it, springs.layout.unit) }
     }
     val announced by remember { derivedStateOf { (current().coerceIn(0f, 1f) * AnnouncedSteps).roundToInt() / AnnouncedSteps } }
-    Canvas(modifier.fillMaxWidth().height(4.dp).progressSemantics(announced)) {
+    Canvas(modifier.fillMaxWidth().height(AppProgressDefaults.LinearHeight).progressSemantics(announced)) {
         val radius = CornerRadius(size.height / 2f)
         drawRoundRect(trackColor, cornerRadius = radius)
         val width = size.width * shown.value
@@ -140,3 +146,26 @@ fun AppLinearProgress(
 
 private const val AnnouncedSteps = 20f
 private const val StepMillis = 125L
+
+/** The progress indicators' sizes. */
+object AppProgressDefaults {
+    val IndicatorSize = 20.dp
+    val LinearHeight = 4.dp
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppProgressPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.lg)) {
+            AppActivityIndicator()
+            AppActivityIndicator(size = AppTheme.sizes.iconLarge, color = AppTheme.colors.accent)
+        }
+        AppLinearProgress(progress = { 0f })
+        AppLinearProgress(progress = { 0.4f })
+        AppLinearProgress(progress = { 1f }, color = AppTheme.colors.success.base)
+    }
+}

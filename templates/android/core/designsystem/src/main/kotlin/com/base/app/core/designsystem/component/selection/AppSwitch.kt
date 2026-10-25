@@ -2,10 +2,14 @@ package com.base.app.core.designsystem.component.selection
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.runtime.Composable
@@ -20,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.platform.LocalDensity
@@ -36,6 +39,7 @@ import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.collectHeld
 import com.base.app.core.designsystem.foundation.interaction.minimumTouchTarget
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.launch
 
@@ -58,7 +62,7 @@ fun AppSwitch(
     val onChange by rememberUpdatedState(onCheckedChange)
     val motion = remember { SwitchMotion(checked) }
     val springs = AppTheme.springs
-    val travel = with(LocalDensity.current) { (TrackWidth - ThumbSize - ThumbInset * 2).toPx() }
+    val travel = with(LocalDensity.current) { (AppSwitchDefaults.TrackWidth - AppSwitchDefaults.ThumbSize - AppSwitchDefaults.ThumbInset * 2).toPx() }
     val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
 
     fun toggle(on: Boolean) {
@@ -161,7 +165,7 @@ internal fun SwitchTrack(
     LaunchedEffect(checked) { motion.position.animateTo(if (checked) 1f else 0f, springs.thumb.unit) }
     val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
 
-    Canvas(modifier = modifier.size(width = TrackWidth, height = TrackHeight)) {
+    Canvas(modifier = modifier.size(width = AppSwitchDefaults.TrackWidth, height = AppSwitchDefaults.TrackHeight)) {
         val fraction = motion.drag ?: motion.position.value
         val visual = if (rtl) 1f - fraction else fraction
         val radius = CornerRadius(size.height / 2f)
@@ -174,30 +178,33 @@ internal fun SwitchTrack(
                 style = Stroke(width = 1.dp.toPx()),
             )
         }
-        val inset = ThumbInset.toPx()
-        val thumbHeight = ThumbSize.toPx()
-        val thumbWidth = thumbHeight + ThumbStretch.toPx() * widen.value
+        val inset = AppSwitchDefaults.ThumbInset.toPx()
+        val thumbHeight = AppSwitchDefaults.ThumbSize.toPx()
+        val thumbWidth = thumbHeight + AppSwitchDefaults.ThumbStretch.toPx() * widen.value
         val travel = size.width - inset * 2 - thumbWidth
         val left = inset + travel * visual
         val top = (size.height - thumbHeight) / 2f
         val thumbRadius = CornerRadius(thumbHeight / 2f)
         drawRoundRect(
-            color = Color.Black.copy(alpha = ThumbShadowAlpha),
+            color = colors.shade.copy(alpha = ThumbShadowAlpha),
             topLeft = Offset(left, top + 1.dp.toPx()),
             size = Size(thumbWidth, thumbHeight),
             cornerRadius = thumbRadius,
         )
-        drawRoundRect(color = Color.White, topLeft = Offset(left, top), size = Size(thumbWidth, thumbHeight), cornerRadius = thumbRadius)
+        drawRoundRect(color = colors.thumb, topLeft = Offset(left, top), size = Size(thumbWidth, thumbHeight), cornerRadius = thumbRadius)
     }
 }
 
-private val TrackWidth = 51.dp
-private val TrackHeight = 31.dp
-private val ThumbSize = 27.dp
-private val ThumbInset = 2.dp
+/** The switch's metrics, iOS's. */
+object AppSwitchDefaults {
+    val TrackWidth = 51.dp
+    val TrackHeight = 31.dp
+    val ThumbSize = 27.dp
+    val ThumbInset = 2.dp
+    // How much the thumb grows towards the middle while held, as iOS's does.
+    val ThumbStretch = 7.dp
+}
 
-// How much the thumb grows towards the middle while held, as iOS's does.
-private val ThumbStretch = 7.dp
 private const val ThumbShadowAlpha = 0.12f
 private const val CommitFraction = 0.7f
 private const val RevertFraction = 0.2f
@@ -205,3 +212,17 @@ private const val RevertFraction = 0.2f
 // How far ahead of the thumb a release looks for where it was thrown: iOS's projection for
 // controls that settle on a stop, 0.99 of the speed kept per millisecond.
 private const val ProjectionSeconds = 0.099f
+
+@AppComponentPreviews
+@Composable
+private fun AppSwitchPreview() {
+    Row(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppSwitch(checked = true, onCheckedChange = {})
+        AppSwitch(checked = false, onCheckedChange = {})
+        AppSwitch(checked = true, onCheckedChange = {}, enabled = false)
+        AppSwitch(checked = false, onCheckedChange = null, enabled = false)
+    }
+}

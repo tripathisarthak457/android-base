@@ -1,7 +1,11 @@
 package com.base.app.core.designsystem.component.datadisplay
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,6 +30,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Constraints
 import com.base.app.core.designsystem.component.text.TabularFigures
 import com.base.app.core.designsystem.foundation.content.rememberCurrentLocale
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import java.text.NumberFormat
 
@@ -159,5 +164,18 @@ private fun DrawScope.drawRoll(roll: CounterRoll) {
     for (j in leaving.indices) {
         val glyph = leaving[j] ?: continue
         drawText(glyph, topLeft = Offset(roll.leavingX[j], direction * p * height), alpha = (1f - p).coerceIn(0f, 1f))
+    }
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppAnimatedCounterPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppAnimatedCounter(count = 0)
+        AppAnimatedCounter(count = 1_204, style = AppTheme.typography.largeTitle)
+        AppAnimatedCounter(count = 9_876_543_210, color = AppTheme.colors.accentContent)
     }
 }

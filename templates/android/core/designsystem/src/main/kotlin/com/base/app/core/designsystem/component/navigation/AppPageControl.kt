@@ -1,9 +1,12 @@
 package com.base.app.core.designsystem.component.navigation
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,9 +34,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
+import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -103,8 +109,8 @@ fun AppPageControl(
 
     Canvas(
         modifier = modifier
-            .width(DotStep * pageCount + 16.dp)
-            .height(MinHeight)
+            .width(AppPageControlDefaults.DotStep * pageCount + AppPageControlDefaults.EdgePadding)
+            .height(AppPageControlDefaults.MinHeight)
             .semantics {
                 stateDescription = description
                 progressBarRangeInfo = ProgressBarRangeInfo(selected().toFloat(), 0f..(pageCount - 1).toFloat(), pageCount - 2)
@@ -132,8 +138,8 @@ fun AppPageControl(
                 },
             ),
     ) {
-        val step = DotStep.toPx()
-        val radius = DotSize.toPx() / 2f
+        val step = AppPageControlDefaults.DotStep.toPx()
+        val radius = AppPageControlDefaults.DotSize.toPx() / 2f
         val start = (size.width - step * pageCount) / 2f + step / 2f
         val current = selected()
         for (page in 0 until pageCount) {
@@ -147,6 +153,28 @@ fun AppPageControl(
     }
 }
 
-private val DotSize = 7.dp
-private val DotStep = 16.dp
-private val MinHeight = 28.dp
+/** The page dots' size, their spacing and the control's height. */
+object AppPageControlDefaults {
+    /** Room either side of the dots, as half a step. */
+    val EdgePadding = 16.dp
+    val DotSize = 7.dp
+    val DotStep = 16.dp
+    val MinHeight = 28.dp
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppPageControlPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppPager(pageCount = 3) { page ->
+            AppSurface(modifier = Modifier.fillMaxWidth().height(AppTheme.sizes.rowHeight * 2), color = AppTheme.colors.fill) {
+                AppText(text = "Page ${page + 1}", modifier = Modifier.padding(AppTheme.spacing.lg))
+            }
+        }
+        AppPageControl(pageCount = 5, selected = { 2 }, onSelect = {})
+        AppPageControl(pageCount = 12, selected = { 0 })
+    }
+}

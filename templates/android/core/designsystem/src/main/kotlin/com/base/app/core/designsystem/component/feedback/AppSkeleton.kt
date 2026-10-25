@@ -1,5 +1,6 @@
 package com.base.app.core.designsystem.component.feedback
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.foundation.draw.TextBones
 import com.base.app.core.designsystem.foundation.draw.lineSkeleton
 import com.base.app.core.designsystem.foundation.draw.skeleton
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -108,9 +110,9 @@ fun AppSkeletonListItem(modifier: Modifier = Modifier, showLeading: Boolean = tr
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
             // Its layout stays as it was until it is removed, fixed heights included.
             @Suppress("DEPRECATION")
-            AppSkeletonLine(widthFraction = 0.6f, height = 14.dp)
+            AppSkeletonLine(widthFraction = 0.6f, height = AppSkeletonDefaults.ListItemTitleHeight)
             @Suppress("DEPRECATION")
-            AppSkeletonLine(widthFraction = 0.9f, height = 12.dp)
+            AppSkeletonLine(widthFraction = 0.9f, height = AppSkeletonDefaults.ListItemSubtitleHeight)
         }
     }
 }
@@ -125,7 +127,28 @@ object AppSkeletonDefaults {
 
     /** The diameter of [AppSkeletonCircle]: an avatar's. */
     val CircleSize: Dp = 40.dp
+
+    /** The fixed line heights [AppSkeletonListItem] has always drawn. */
+    internal val ListItemTitleHeight: Dp = 14.dp
+    internal val ListItemSubtitleHeight: Dp = 12.dp
 }
 
 /** Capitals and descenders, so the measured line is as tall as any real one in the style. */
 private const val LineSample = "Hg"
+
+@AppComponentPreviews
+@Composable
+private fun AppSkeletonPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppSkeleton(modifier = Modifier.fillMaxWidth().height(AppTheme.sizes.buttonLarge))
+        AppSkeletonLine(widthFraction = 0.6f, style = AppTheme.typography.title3)
+        AppSkeletonLine(widthFraction = 0.9f)
+        AppSkeletonLine(height = AppTheme.sizes.iconSmall, widthFraction = 0.4f)
+        AppSkeletonCircle()
+        AppSkeletonListItem()
+        AppSkeletonListItem(showLeading = false)
+    }
+}

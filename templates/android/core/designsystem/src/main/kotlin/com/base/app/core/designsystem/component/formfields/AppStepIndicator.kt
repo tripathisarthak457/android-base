@@ -1,7 +1,7 @@
 package com.base.app.core.designsystem.component.formfields
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +26,7 @@ import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -67,7 +68,7 @@ fun AppStepIndicator(
                 }
                 AppText(
                     text = label,
-                    modifier = Modifier.padding(horizontal = 2.dp),
+                    modifier = Modifier.padding(horizontal = AppStepIndicatorDefaults.LabelInset),
                     style = AppTheme.typography.caption2,
                     color = if (index == current) AppTheme.colors.contentPrimary else AppTheme.colors.contentSecondary,
                     maxLines = 1,
@@ -95,10 +96,10 @@ private fun ConnectorHalf(visible: Boolean, done: Boolean, modifier: Modifier) {
             done -> AppTheme.colors.accent
             else -> AppTheme.colors.separator
         },
-        animationSpec = tween(AppTheme.springs.fadeSlow),
+        animationSpec = AppTheme.springs.slowFade(),
         label = "stepConnector",
     )
-    Box(modifier = modifier.height(2.dp).drawBehind { drawRect(colour.value) })
+    Box(modifier = modifier.height(AppStepIndicatorDefaults.ConnectorHeight).drawBehind { drawRect(colour.value) })
 }
 
 @Composable
@@ -106,19 +107,19 @@ private fun StepNode(number: Int, done: Boolean, active: Boolean) {
     val colors = AppTheme.colors
     val fill = animateColorAsState(
         targetValue = if (done) colors.accent else colors.surface,
-        animationSpec = tween(AppTheme.springs.fadeSlow),
+        animationSpec = AppTheme.springs.slowFade(),
         label = "stepFill",
     )
     val ring = animateColorAsState(
         targetValue = if (done || active) colors.accent else colors.outline,
-        animationSpec = tween(AppTheme.springs.fadeSlow),
+        animationSpec = AppTheme.springs.slowFade(),
         label = "stepRing",
     )
 
-    val ringWidth = if (active) 2.dp else 1.dp
+    val ringWidth = if (active) AppStepIndicatorDefaults.ActiveRingWidth else 1.dp
     Box(
         modifier = Modifier
-            .size(NodeSize)
+            .size(AppStepIndicatorDefaults.NodeSize)
             .drawBehind {
                 val stroke = ringWidth.toPx()
                 drawCircle(fill.value)
@@ -143,4 +144,23 @@ private fun StepNode(number: Int, done: Boolean, active: Boolean) {
     }
 }
 
-private val NodeSize = 26.dp
+/** The step indicator's nodes, labels and connectors. */
+object AppStepIndicatorDefaults {
+    val LabelInset = 2.dp
+    val ConnectorHeight = 2.dp
+    val ActiveRingWidth = 2.dp
+    val NodeSize = 26.dp
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppStepIndicatorPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppStepIndicator(steps = listOf("Cart", "Address", "Payment"), currentStep = 0)
+        AppStepIndicator(steps = listOf("Cart", "Address", "Payment"), currentStep = 1)
+        AppStepIndicator(steps = listOf("Your details", "Delivery address", "Payment method", "Review"), currentStep = 3)
+    }
+}

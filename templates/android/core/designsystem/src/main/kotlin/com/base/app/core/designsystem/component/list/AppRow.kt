@@ -1,5 +1,6 @@
 package com.base.app.core.designsystem.component.list
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -89,7 +91,7 @@ fun AppRow(
                     }
                     trailing?.invoke()
                     if (showChevron && !destructive) {
-                        AppIcon(AppIcons.ChevronRight, contentDescription = null, tint = colors.contentTertiary, size = ChevronSize)
+                        AppIcon(AppIcons.ChevronRight, contentDescription = null, tint = colors.contentTertiary, size = AppRowDefaults.ChevronSize)
                     }
                 }
             }
@@ -166,7 +168,7 @@ fun AppChoiceRow(
                 contentDescription = null,
                 modifier = Modifier.graphicsLayer { alpha = if (selected) 1f else 0f },
                 tint = colors.accentContent,
-                size = CheckSize,
+                size = AppRowDefaults.CheckSize,
             )
         },
     )
@@ -174,7 +176,7 @@ fun AppChoiceRow(
 
 @Composable
 private fun RowText(title: String, subtitle: String?, titleColor: Color) {
-    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(AppRowDefaults.TitleSpacing)) {
         AppText(
             text = title,
             style = AppTheme.typography.body,
@@ -223,7 +225,7 @@ private fun RowLayout(
             .then(inset),
     ) { (leadingSlot, textSlot, trailingSlot), constraints ->
         val horizontal = spacing.lg.roundToPx()
-        val vertical = RowVerticalPadding.roundToPx()
+        val vertical = AppRowDefaults.VerticalPadding.roundToPx()
         val gap = spacing.md.roundToPx()
         val inner = constraints.copy(minWidth = 0, minHeight = 0).offset(horizontal = -horizontal * 2, vertical = -vertical * 2)
 
@@ -256,6 +258,31 @@ private fun RowLayout(
     }
 }
 
-private val RowVerticalPadding = 11.dp
-private val ChevronSize = 16.dp
-private val CheckSize = 20.dp
+/** The row's metrics, iOS's. */
+object AppRowDefaults {
+    val TitleSpacing = 2.dp
+    val VerticalPadding = 11.dp
+    val ChevronSize = 16.dp
+    val CheckSize = 20.dp
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppRowPreview() {
+    Column(modifier = Modifier.background(AppTheme.colors.background)) {
+        AppRow(title = "Account", onClick = {}, leading = { AppIcon(AppIcons.User, contentDescription = null) })
+        AppRow(title = "Language", value = "English", onClick = {})
+        AppRow(title = "Storage", subtitle = "2.4 GB of 5 GB used")
+        AppRow(title = "Delete account", onClick = {}, destructive = true)
+        AppRow(title = "Export data", onClick = {}, enabled = false)
+        AppRow(
+            title = "Notifications for comments, mentions and replies on every post you follow",
+            subtitle = "Sent to this phone and to your email",
+            onClick = {},
+        )
+        AppToggleRow(title = "Dark mode", checked = true, onCheckedChange = {})
+        AppToggleRow(title = "Haptics", checked = false, onCheckedChange = {}, subtitle = "Taps and toggles", enabled = false)
+        AppChoiceRow(title = "Daily", selected = true, onSelect = {})
+        AppChoiceRow(title = "Weekly", selected = false, onSelect = {})
+    }
+}

@@ -2,6 +2,7 @@ package com.base.app.core.designsystem.component.list
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -27,6 +28,7 @@ import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -67,11 +69,11 @@ fun AppDisclosure(
                 .semantics { stateDescription = state }
                 .disabledAlpha(enabled)
                 .heightIn(min = AppTheme.sizes.rowHeight)
-                .padding(horizontal = AppTheme.spacing.lg, vertical = 11.dp),
+                .padding(horizontal = AppTheme.spacing.lg, vertical = AppDisclosureDefaults.VerticalPadding),
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(AppDisclosureDefaults.TitleSpacing)) {
                 AppText(text = title, style = AppTheme.typography.body, color = AppTheme.colors.contentPrimary)
                 subtitle?.let {
                     AppText(text = it, style = AppTheme.typography.subheadline, color = AppTheme.colors.contentSecondary)
@@ -81,13 +83,39 @@ fun AppDisclosure(
                 imageVector = AppIcons.ChevronRight,
                 contentDescription = null,
                 tint = AppTheme.colors.contentTertiary,
-                size = 16.dp,
+                size = AppDisclosureDefaults.ChevronSize,
                 modifier = Modifier.graphicsLayer { rotationZ = direction * turn.value },
             )
         }
 
         AnimatedVisibility(visible = expanded, enter = transitions.expandIn, exit = transitions.collapseOut) {
             Column(modifier = Modifier.padding(horizontal = AppTheme.spacing.lg).padding(bottom = AppTheme.spacing.md), content = content)
+        }
+    }
+}
+
+/** The disclosure row's metrics, a row's. */
+object AppDisclosureDefaults {
+    val VerticalPadding = 11.dp
+    val TitleSpacing = 2.dp
+    val ChevronSize = 16.dp
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppDisclosurePreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppDisclosure(title = "Shipping", expanded = false, onExpandedChange = {}, subtitle = "2 to 4 working days") {
+            AppText(text = "Free over 50.")
+        }
+        AppDisclosure(title = "Returns", expanded = true, onExpandedChange = {}) {
+            AppText(text = "Return anything within 30 days, in its original packaging.")
+        }
+        AppDisclosure(title = "Warranty", expanded = false, onExpandedChange = {}, enabled = false) {
+            AppText(text = "Two years.")
         }
     }
 }

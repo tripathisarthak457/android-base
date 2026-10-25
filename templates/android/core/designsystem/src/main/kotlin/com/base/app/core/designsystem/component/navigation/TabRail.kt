@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -29,6 +30,8 @@ import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
+import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -104,4 +107,29 @@ internal fun TabRail(
         }
         Box(Modifier.fillMaxHeight().width(1.dp).background(look.border))
     }
+}
+
+@AppComponentPreviews
+@Composable
+private fun TabRailPreview() {
+    val items = listOf(
+        TabItem(label = "Home", icon = AppIcons.Home),
+        TabItem(label = "Search", icon = AppIcons.Search),
+        TabItem(label = "Inbox", icon = AppIcons.Mail, badgeCount = 3),
+        TabItem(label = "Settings", icon = AppIcons.Settings),
+    )
+    val bounce = remember { TabBounce(items.size) }
+    val edges = remember { IndicatorEdges(selected = 1) }
+    TabRail(
+        items = items,
+        selected = 1,
+        edges = edges,
+        labels = TabLabels.Always,
+        look = barLook(AppTheme.style.bar),
+        bounce = bounce,
+        onTap = {},
+        header = null,
+        footer = null,
+        modifier = Modifier.background(AppTheme.colors.background).height(AppTheme.sizes.rowHeight * 7),
+    )
 }

@@ -2,7 +2,12 @@ package com.base.app.core.designsystem.component.datadisplay
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -16,6 +21,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /** A tiny chart, sized to sit inside a row or a stat tile. */
@@ -24,8 +30,8 @@ fun AppSparkline(
     values: List<Float>,
     modifier: Modifier = Modifier,
     color: Color = AppTheme.colors.accent,
-    strokeWidth: Dp = 2.dp,
-    height: Dp = 48.dp,
+    strokeWidth: Dp = AppSparklineDefaults.StrokeWidth,
+    height: Dp = AppSparklineDefaults.Height,
     fill: Boolean = true,
 ) {
     if (values.size < 2) return
@@ -90,3 +96,22 @@ fun AppSparkline(
 }
 
 private const val FillAlpha = 0.22f
+
+/** The sparkline's line and height. */
+object AppSparklineDefaults {
+    val StrokeWidth = 2.dp
+    val Height = 48.dp
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppSparklinePreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppSparkline(values = listOf(3f, 5f, 4f, 8f, 6f, 9f, 12f), modifier = Modifier.fillMaxWidth())
+        AppSparkline(values = listOf(9f, 7f, 8f, 4f, 2f), modifier = Modifier.fillMaxWidth(), color = AppTheme.colors.danger.base, fill = false)
+        AppSparkline(values = listOf(5f), modifier = Modifier.fillMaxWidth())
+    }
+}

@@ -1,6 +1,8 @@
 package com.base.app.core.designsystem.component.container
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,11 +14,13 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.foundation.draw.offsetShadow
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.CardTreatment
 
@@ -99,3 +103,23 @@ private fun Modifier.cardShadow(shape: Shape): Modifier =
     } else {
         this
     }
+
+@AppComponentPreviews
+@Composable
+private fun AppCardPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppCard {
+            AppText(text = "Weekly summary", style = AppTheme.typography.headline)
+            AppText(text = "Twelve orders, three returns.", color = AppTheme.colors.contentSecondary)
+        }
+        AppCard(onClick = {}) {
+            AppText(text = "Tap to open the order with the longest title anyone has ever given an order")
+        }
+        AppCard(onClick = {}, enabled = false) {
+            AppText(text = "Archived")
+        }
+    }
+}

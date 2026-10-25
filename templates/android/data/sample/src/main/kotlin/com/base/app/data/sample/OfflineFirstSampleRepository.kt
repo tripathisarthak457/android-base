@@ -13,10 +13,12 @@ import com.base.app.data.sample.remote.SampleApi
 import com.base.app.data.sample.remote.toDomain
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -35,18 +37,16 @@ internal class OfflineFirstSampleRepository @Inject constructor(
     private val dao: SampleDao,
 ) : SampleRepository {
 
-    private val readLock = Any()
-    private var readers = 0
-
-    // What the readers of [items] saw last, for [peek]. It goes with the last reader, so rows the
-    // database has dropped since (a sign-out empties it) are never answered from memory.
-    private var lastRead: List<SampleItem>? = null
+    // Who reads [items] and what they saw last, for [peek], changed as one value so readers on any
+    // thread keep the count and the list in step without a lock. The list goes with the last reader,
+    // so rows the database has dropped since (a sign-out empties it) are never answered from memory.
+    private val reads = MutableStateFlow(Reads())
 
     override val items: Flow<List<SampleItem>> = dao.observeAll()
         .map { rows -> rows.map { it.toDomain() } }
-        .onStart { synchronized(readLock) { readers++ } }
-        .onEach { read -> synchronized(readLock) { lastRead = read } }
-        .onCompletion { synchronized(readLock) { if (--readers == 0) lastRead = null } }
+        .onStart { reads.update { it.copy(readers = it.readers + 1) } }
+        .onEach { read -> reads.update { it.copy(lastRead = read) } }
+        .onCompletion { reads.update { if (it.readers == 1) Reads() else it.copy(readers = it.readers - 1) } }
 
     override suspend fun refresh(): AppResult<Unit> = when (val fetched = api.items()) {
         is AppResult.Success -> storing {
@@ -56,7 +56,7 @@ internal class OfflineFirstSampleRepository @Inject constructor(
         is AppResult.Failure -> fetched
     }
 
-    override fun peek(id: Int): SampleItem? = synchronized(readLock) { lastRead }?.firstOrNull { it.id == id }
+    override fun peek(id: Int): SampleItem? = reads.value.lastRead?.firstOrNull { it.id == id }
 
     override suspend fun item(id: Int): AppResult<SampleItem> {
         val saved = dao.byId(id)
@@ -72,5 +72,7 @@ internal class OfflineFirstSampleRepository @Inject constructor(
     } catch (failure: Exception) {
         AppResult.Failure(AppError.Storage(failure))
     }
+
+    private data class Reads(val readers: Int = 0, val lastRead: List<SampleItem>? = null)
 }
 // </opt:database>

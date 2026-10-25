@@ -178,6 +178,20 @@ class ResolveTest(unittest.TestCase):
                 self.assertGreaterEqual(spring["dampingRatio"], 1.0)
         self.assertGreater(calm["bounceBack"]["dampingRatio"], 1.0)
 
+    def test_the_components_white_and_black_stay_pure_in_every_tone_and_brand(self):
+        # The hues the components drew as Color.White and Color.Black before they read roles: iOS's
+        # thumbs, the glass's sheen, shadow ink and the media viewer. No tone or brand may tint them.
+        expected = {
+            "thumb": "#FFFFFFFF", "sheen": "#FFFFFFFF", "shade": "#FF000000",
+            "mediaBackdrop": "#FF000000", "onMedia": "#FFFFFFFF",
+        }
+        for brand_spec in (None, spec(accent_colour="#16A34A", secondary_colour="#C2410C")):
+            for tone, themes in tokens.resolve(brand_spec)["palette"]["tones"].items():
+                for theme, roles in themes.items():
+                    with self.subTest(brand=brand_spec is not None, tone=tone, theme=theme):
+                        self.assertEqual(expected, {name: roles[name] for name in expected})
+        self.assertEqual(set(), set(expected) - set(kotlin.COMPONENT_ROLES))
+
     def test_the_checkpoint_values(self):
         # decisions/CP1.md: iOS's push, its segmented thumb, the two-edge indicator and the dialog spring.
         standard = tokens.resolve()["motion"]["styles"]["Standard"]["springs"]
@@ -400,6 +414,84 @@ class EmitterTest(unittest.TestCase):
         self.assertEqual(set(tokens.load()["styles"]), set(catalogue["palette"]))
         for style in catalogue["palette"].values():
             self.assertEqual({"light", "dark"}, set(style))
+
+
+class SkeletonEmitterTest(unittest.TestCase):
+    """
+    The theme skeleton's tokens (a project without UI components): one value per slot AppTheme
+    provides, for the look the project was generated with, and nothing only a component reads.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.resolved = tokens.resolve(spec(accent_colour="#16A34A", ui_components=False), "android")
+        cls.kotlin = kotlin.emit_skeleton(cls.resolved, "com.acme.x")
+        cls.members = _token_members(cls.kotlin)
+
+    def test_it_holds_the_slots_and_no_section_of_a_component(self):
+        self.assertTrue(self.kotlin.startswith(kotlin.SKELETON_HEADER + "\n"))
+        self.assertIn("package com.acme.x.core.designsystem.theme.tokens\n", self.kotlin)
+        self.assertEqual(
+            {"Spacing", "Radii", "Sizes", "Elevation", "TypeRole", "Type", "Spring", "Motion", "Palette", "Defaults"},
+            set(self.members),
+        )
+        imported = set(re.findall(r"^import com\.acme\.x\.core\.designsystem\.theme\.(\w+)$", self.kotlin, re.M))
+        self.assertEqual({"AppColors", "StatusColors"}, imported)
+
+    def test_component_values_are_left_out(self):
+        self.assertEqual(set(), self.members["Sizes"] & set(kotlin.COMPONENT_SIZES))
+        self.assertTrue(self.members["Sizes"])
+        self.assertNotIn("sheet", self.members["Radii"])
+        self.assertEqual(set(), self.members["Motion"] & set(kotlin.COMPONENT_SPRINGS))
+        for name in ("rubberBand", "staggerStepMs", "pressScale", "navigationParallax", "tabRevealShift", "skeletonSweepMs"):
+            with self.subTest(name=name):
+                self.assertNotIn(name, self.members["Motion"])
+        for role in kotlin.COMPONENT_ROLES:
+            with self.subTest(role=role):
+                self.assertNotIn(f" {role} = Color(", self.kotlin)
+
+    def test_every_slot_value_is_there(self):
+        foundation = tokens.load()["foundation"]
+        self.assertEqual(set(foundation["spacing"]), self.members["Spacing"])
+        self.assertEqual(set(foundation["elevation"]), self.members["Elevation"])
+        self.assertEqual(set(foundation["sizes"]) - set(kotlin.COMPONENT_SIZES), self.members["Sizes"])
+        self.assertEqual({"none", "xs", "sm", "md", "lg", "xl"}, self.members["Radii"])
+        self.assertEqual(set(tokens.load()["typography"]["roles"]), self.members["Type"])
+        springs = set(tokens.load()["motion"]["springs"]) - set(kotlin.COMPONENT_SPRINGS)
+        self.assertEqual(
+            springs | {
+                "visibilityThreshold", "flingFriction", "pagingFriction", "fadeShortMs", "fadeLongMs",
+                "fadeEnterEasing", "fadeExitEasing",
+            },
+            self.members["Motion"],
+        )
+        self.assertEqual({"light", "dark"}, self.members["Palette"])
+        self.assertEqual({"hapticsEnabled", "fontName", "monoFontName"}, self.members["Defaults"])
+
+    def test_the_values_are_the_look_the_project_was_generated_with(self):
+        style = tokens.load()["styles"][self.resolved["defaults"]["designStyle"]]
+        accent = self.resolved["palette"]["tones"][style["surfaces"]]["dark"]["accent"]
+        self.assertIn(f"            accent = Color(0x{accent[1:]}),\n", self.kotlin)
+        self.assertIn(f"        val md: Dp = {kotlin._dp(style['radii']['md'])}\n", self.kotlin)
+        role = tokens.load()["typography"]["roles"]["largeTitle"]
+        self.assertIn(
+            f"        val largeTitle = TypeRole({kotlin._sp(role['size'])}, {kotlin._sp(role['lineHeight'])}, "
+            f"{kotlin._sp(role['tracking'])}, {role['weight'][style['voice']]})\n",
+            self.kotlin,
+        )
+        release = self.resolved["motion"]["styles"][self.resolved["defaults"]["motionStyle"]]["springs"]["release"]
+        self.assertIn(
+            f"        val release = Spring({kotlin._float(release['response'])}, {kotlin._float(release['bounce'])})\n",
+            self.kotlin,
+        )
+
+    def test_every_component_value_it_leaves_out_is_still_a_token(self):
+        # A renamed token would otherwise slip past the list and into every skeleton.
+        motion = tokens.load()["motion"]
+        self.assertEqual(set(), set(kotlin.COMPONENT_SPRINGS) - set(motion["springs"]))
+        self.assertEqual(set(), set(kotlin.COMPONENT_SIZES) - set(tokens.load()["foundation"]["sizes"]))
+        roles = set(tokens.load()["palette"]["roles"]["light"])
+        self.assertEqual(set(), set(kotlin.COMPONENT_ROLES) - roles)
 
 
 class KotlinDesignSystemTest(unittest.TestCase):

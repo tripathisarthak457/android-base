@@ -1,13 +1,18 @@
 package com.base.app.core.designsystem.component.input
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicSecureTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.TextObfuscationMode
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +30,7 @@ import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.button.FieldIconButton
 import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -82,4 +88,18 @@ fun AppSecureField(
             },
         ),
     )
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppSecureFieldPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppSecureField(state = rememberTextFieldState(), label = "Password", placeholder = "At least 8 characters")
+        AppSecureField(state = rememberTextFieldState("hunter22"), label = "Password", helper = "Use a phrase only you know")
+        AppSecureField(state = rememberTextFieldState("short"), label = "Password", error = "Use at least 8 characters")
+        AppSecureField(state = rememberTextFieldState("hunter22"), label = "Password", enabled = false)
+    }
 }

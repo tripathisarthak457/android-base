@@ -25,10 +25,20 @@ Everything visual reads the theme through one accessor, `AppTheme`, inside the o
 
 | Slot | Read it as | Holds |
 |---|---|---|
+<!-- <opt:ui_components> -->
+| Colour | `AppTheme.colors` (`AppColors`) | roles, never hues: `background`, `surface`, `surfaceElevated`, `fill`, `separator`, `outline`, `contentPrimary`/`contentSecondary`/`contentTertiary`/`contentDisabled`, `accent` with `onAccent` and `accentSubtle`, `secondary`, `tertiary`, status colours (`success`, `warning`, `danger`, `info`), `scrim`, `focusRing`, and the ink components paint with, pure white or black in every theme and brand (`thumb`, `sheen`, `shade`, `mediaBackdrop`, `onMedia`) |
+<!-- </opt:ui_components> -->
+<!-- <opt:!ui_components> -->
 | Colour | `AppTheme.colors` (`AppColors`) | roles, never hues: `background`, `surface`, `surfaceElevated`, `fill`, `separator`, `outline`, `contentPrimary`/`contentSecondary`/`contentTertiary`/`contentDisabled`, `accent` with `onAccent` and `accentSubtle`, `secondary`, `tertiary`, status colours (`success`, `warning`, `danger`, `info`), `scrim`, `focusRing` |
+<!-- </opt:!ui_components> -->
 | Type | `AppTheme.typography` (`AppTypography`) | `largeTitle`, `title1`-`title3`, `headline`, `body`, `callout`, `subheadline`, `footnote`, `caption1`, `caption2`, `mono` |
 | Spacing | `AppTheme.spacing` (`AppSpacing`) | `xxs` to `xxxl`, `section`, and `gutter`, the margin to the window's edge, which grows with the window |
+<!-- <opt:ui_components> -->
 | Shape | `AppTheme.shapes` (`AppShapes`) | `none`, `xs` to `xl`, `pill`, `sheet` |
+<!-- </opt:ui_components> -->
+<!-- <opt:!ui_components> -->
+| Shape | `AppTheme.shapes` (`AppShapes`) | `none`, `xs` to `xl`, `pill` |
+<!-- </opt:!ui_components> -->
 | Size | `AppTheme.sizes` (`AppSizes`) | `minTouchTarget` (48 dp), icon sizes, button and field heights, `rowHeight`, `topBarHeight` |
 | Elevation | `AppTheme.elevation` (`AppElevation`) | `raised`, `card`, `overlay`, `modal` |
 | Motion | `AppTheme.springs` (`AppSprings`), `AppTheme.reduceMotion` | springs as a response and a bounce (`press`, `release`, `thumb`, `screen`, `sheet`, `dialog`, `layout`, `emphasis`, `interactive`, `bounceBack`), decays for flings, and whether the person asked for less motion |
@@ -39,11 +49,20 @@ Everything visual reads the theme through one accessor, `AppTheme`, inside the o
 
 ### Where the values live, and how to change one
 
+<!-- <opt:ui_components> -->
 Every value is in `DesignTokens.kt` under `theme/tokens/`, written when the project was generated with your colours,
 font, design style and motion style: `DesignTokens.Palette` holds a light and a dark `AppColors` per surface tone,
 `DesignTokens.Spacing`, `Radii`, `Sizes`, `Elevation` and `Type` the metrics and the type scale, `DesignTokens.Motion`
 the springs per motion style, and `DesignTokens.Defaults` the style, motion and fonts the theme starts from. Edit the
 values there; every slot class reads them, so the whole app follows.
+<!-- </opt:ui_components> -->
+<!-- <opt:!ui_components> -->
+Every value is in `DesignTokens.kt` under `theme/tokens/`, written when the project was generated with your colours
+and font, and nothing else: `DesignTokens.Palette` holds the light and the dark `AppColors`, `DesignTokens.Spacing`,
+`Radii`, `Sizes`, `Elevation` and `Type` the metrics and the type scale, `DesignTokens.Motion` the springs, the fling
+decays and the fades, and `DesignTokens.Defaults` haptics and the fonts. Edit the values there; every slot class
+reads them, so the whole app follows.
+<!-- </opt:!ui_components> -->
 
 - **Change a colour:** edit it in both the light and the dark palette, then run `./gradlew :core:designsystem:test`:
   `PaletteContrastTest` checks every text colour against its background in both themes against WCAG AA.
@@ -58,10 +77,16 @@ values there; every slot class reads them, so the whole app follows.
 <!-- </opt:ui_components> -->
 <!-- <opt:!ui_components> -->
 
-`DesignTokens.kt` also holds values that only the template's components read, emitted so that one token pipeline
-serves every project: `DesignTokens.Sheet`, the tab bar's indicator and reveal values in `DesignTokens.Motion`,
-`segmentThumb` in the palettes, and the bar, card, field and sheet treatments of `DesignTokens.Styles`. Nothing here
-reads them. Use them when you build those components, or delete them along with their fields.
+**A component's own tokens.** The slots hold only what components share. A value one component needs (a switch's
+track width, a bar's height, the pill behind a selected tab, a sheet's corner) is a named constant in that component's
+`XDefaults`, built from the slots where it can be (`AppTheme.spacing.md`, `AppTheme.sizes.minTouchTarget`,
+`AppTheme.springs.thumb`), as the [component template](#templates) does. Promote it to the theme only when a second
+component needs the same value: add it to `DesignTokens.kt`, add a property that reads it to the slot's class
+(`AppSizes`, `AppShapes`, `AppSprings`), and read it through `AppTheme`. A colour is a role, never a hue: a new role
+is a value in both `DesignTokens.Palette.light` and `DesignTokens.Palette.dark` and a parameter of `AppColors`, and
+`PaletteContrastTest` gets the pairing it must keep (text on it at 4.5:1, a control against every surface at 3:1). A
+new spring is a `Spring(response, bounce)` in `DesignTokens.Motion` and a property of `AppSprings`, built once like
+the others; a full-screen move keeps a bounce of 0.
 <!-- </opt:!ui_components> -->
 
 ## The component contract
@@ -253,16 +278,7 @@ fun AppTag(
     }
 }
 
-<!-- <opt:ui_components> -->
-@Preview(name = "Light")
-@Preview(name = "Dark", uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
-@Preview(name = "Font 2x", fontScale = 2f)
-@Preview(name = "Right to left", locale = "ar")
-@PreviewWrapper(AppPreviewTheme::class)
-<!-- </opt:ui_components> -->
-<!-- <opt:!ui_components> -->
 @AppComponentPreviews
-<!-- </opt:!ui_components> -->
 @Composable
 private fun AppTagPreview() {
     var selected by remember { mutableStateOf(true) }
@@ -390,4 +406,9 @@ skeleton is rendered from the first build. `@AppComponentPreviews` gives a compo
 has to survive: light, dark, twice the font size, right to left and a 320 dp window, each inside `AppPreviewTheme`.
 Put it on each component's preview, as the template above does; a component without one fails `component-preview`.
 <!-- </opt:!ui_components> -->
+<!-- <opt:ui_components> -->
+Every component file in `:core:designsystem` ends with a private preview under `@AppComponentPreviews`, which renders
+it in light and dark, at twice the font size, right to left and in a 320 dp window, each inside `AppPreviewTheme`;
+give a component you add the same, in its own file.
+<!-- </opt:ui_components> -->
 Record and compare goldens with Roborazzi's Gradle tasks, and never re-record a golden to make a test pass.

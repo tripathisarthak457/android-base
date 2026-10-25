@@ -3,10 +3,13 @@ package com.base.app.core.designsystem.component.pickers
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.SnapLayoutInfoProvider
 import androidx.compose.foundation.gestures.snapping.snapFlingBehavior
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -34,6 +37,7 @@ import androidx.compose.ui.util.lerp
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.flow.drop
 import kotlin.math.PI
@@ -70,7 +74,7 @@ fun <T> AppWheelPicker(
     val haptics = rememberAppHaptics()
     val density = LocalDensity.current
     val style = AppTheme.typography.body
-    val rowHeight = if (itemHeight != Dp.Unspecified) itemHeight else maxOf(44.dp, with(density) { style.lineHeight.toDp() } + 16.dp)
+    val rowHeight = if (itemHeight != Dp.Unspecified) itemHeight else maxOf(AppWheelPickerDefaults.MinRowHeight, with(density) { style.lineHeight.toDp() } + AppWheelPickerDefaults.RowPadding)
     val current by rememberUpdatedState(selectedIndex)
     val onChange by rememberUpdatedState(onSelectedChange)
 
@@ -108,7 +112,7 @@ fun <T> AppWheelPicker(
     // The list is laid out flat over more rows than are visible; bending it onto the drum pulls the
     // outer rows in, so the extra rows are what fills the wheel's top and bottom edges.
     val laidOutRows = visibleCount * Squeeze
-    val cameraPx = with(density) { PerspectiveDistance.toPx() }
+    val cameraPx = with(density) { AppWheelPickerDefaults.PerspectiveDistance.toPx() }
 
     Box(
         modifier = modifier
@@ -191,9 +195,34 @@ private fun centreOffset(state: LazyListState, index: Int): Float {
 private const val DiameterRatio = 1.07f
 private const val Squeeze = 1.45f
 private const val OffCentreAlpha = 0.447f
-private val PerspectiveDistance = 333.dp
+
+/** The wheel's rows and the distance it is seen from. */
+object AppWheelPickerDefaults {
+    val MinRowHeight = 44.dp
+    val RowPadding = 16.dp
+    val PerspectiveDistance = 333.dp
+}
+
 private val MaxVisibleAngle = asin(1f / DiameterRatio)
 private const val HalfTurn = (PI / 2).toFloat()
 
 /** The unit `graphicsLayer`'s camera distance is given in: 72 pixels, as Skia's camera counts them. */
 private const val CameraUnitPx = 72f
+
+@AppComponentPreviews
+@Composable
+private fun AppWheelPickerPreview() {
+    Row(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppWheelPicker(items = (1..12).toList(), selectedIndex = 3, onSelectedChange = {}, modifier = Modifier.weight(1f)) { "$it" }
+        AppWheelPicker(
+            items = listOf("Small", "Medium", "Large", "Extra large for the whole family"),
+            selectedIndex = 1,
+            onSelectedChange = {},
+            modifier = Modifier.weight(2f),
+            visibleCount = 3,
+        ) { it }
+    }
+}

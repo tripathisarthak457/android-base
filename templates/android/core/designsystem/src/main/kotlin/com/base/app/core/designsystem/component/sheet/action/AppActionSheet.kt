@@ -1,11 +1,14 @@
 package com.base.app.core.designsystem.component.sheet.action
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -30,6 +33,7 @@ import com.base.app.core.designsystem.component.sheet.HostedSheet
 import com.base.app.core.designsystem.component.sheet.SheetContentInteraction
 import com.base.app.core.designsystem.component.sheet.SheetDetent
 import com.base.app.core.designsystem.component.sheet.SheetModality
+import com.base.app.core.designsystem.component.sheet.action.SheetAction
 import com.base.app.core.designsystem.component.sheet.content.SheetColumn
 import com.base.app.core.designsystem.component.sheet.content.sheetContentPadding
 import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
@@ -43,6 +47,7 @@ import com.base.app.core.designsystem.foundation.draw.hairline
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
 
@@ -123,7 +128,7 @@ internal fun ActionHeading(title: String?, message: String?) {
     Column(
         modifier = Modifier.fillMaxWidth().padding(AppTheme.spacing.md),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(2.dp),
+        verticalArrangement = Arrangement.spacedBy(AppActionSheetDefaults.HeadingSpacing),
     ) {
         val colors = AppTheme.colors
         title?.let {
@@ -193,3 +198,26 @@ private val ActionFit = SheetDetent.Custom("action-fit") {
 }
 
 private val ScrollingProperties = AppSheetProperties(contentInteraction = SheetContentInteraction.Scrolls)
+
+/** The action sheet's heading. */
+object AppActionSheetDefaults {
+    val HeadingSpacing = 2.dp
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppActionSheetPreview() {
+    Box(modifier = Modifier.background(AppTheme.colors.background).fillMaxWidth().height(AppTheme.sizes.rowHeight * 8)) {
+        AppActionSheet(
+            visible = true,
+            actions = listOf(
+                SheetAction(label = "Take photo", onClick = {}, icon = AppIcons.Camera),
+                SheetAction(label = "Choose from library", onClick = {}, icon = AppIcons.ImageIcon),
+                SheetAction(label = "Remove photo", onClick = {}, destructive = true),
+                SheetAction(label = "Use the photo from your account", onClick = {}, enabled = false),
+            ),
+            onDismissRequest = {},
+            title = "Profile photo",
+        )
+    }
+}

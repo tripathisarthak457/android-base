@@ -7,13 +7,16 @@ import com.base.app.core.database.sample.SampleDao
 import com.base.app.core.database.sample.SampleEntity
 import com.base.app.data.sample.remote.SampleApi
 import com.base.app.data.sample.remote.dto.SampleDto
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withContext
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -92,6 +95,18 @@ class OfflineFirstSampleRepositoryTest {
     }
 
     @Test
+    fun `readers on many threads at once leave peek empty once the last one stops`() = runTest {
+        val repository = repository()
+        repository.refresh()
+
+        withContext(Dispatchers.Default) {
+            repeat(READERS) { launch { repository.items.first() } }
+        }
+
+        assertNull(repository.peek(1))
+    }
+
+    @Test
     fun `an item is read from the database before the network`() = runTest {
         val repository = repository()
         repository.refresh()
@@ -101,6 +116,11 @@ class OfflineFirstSampleRepositoryTest {
 
         assertEquals("Alpha", (item as AppResult.Success).value.title)
         assertEquals(emptyList<String>(), client.paths)
+    }
+
+    private companion object {
+        /** Enough readers starting and stopping together that a count kept without care loses one. */
+        const val READERS = 2_000
     }
 
     private class FakeSampleDao : SampleDao {
