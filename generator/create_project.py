@@ -18,6 +18,7 @@ import argparse
 import json
 import sys
 from contextlib import redirect_stdout
+from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
@@ -71,8 +72,11 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         target = targets.get(args.target or spec_platform(args.spec) or "android")
+        options = {UI_COMPONENTS: False} if args.no_ui_components else {}
+        if options and UI_COMPONENTS not in target.manifest.options:
+            raise SpecError("No UI components is Android-only for now.", UI_COMPONENTS)
         if args.list_features:
-            list_features(target, as_json=args.json)
+            list_features(target, as_json=args.json, options=options)
             return EXIT_OK
         if args.preset is not None and args.preset not in target.manifest.presets:
             raise SpecError(
@@ -81,12 +85,8 @@ def main(argv: list[str] | None = None) -> int:
         if args.json and args.out is None and not args.dry_run:
             # Asking where to write would put a prompt on stdout, or wait on a script that cannot answer.
             raise SpecError("--json needs --out: the project's directory, or the .zip to write.", "out")
-        overrides = [parse_override(item) for item in args.set]
-        if args.no_ui_components:
-            if UI_COMPONENTS not in target.manifest.options:
-                raise SpecError("No UI components is Android-only for now.", UI_COMPONENTS)
-            overrides.append((UI_COMPONENTS, False))
-        raw = load_raw(args, target)
+        overrides = [parse_override(item) for item in args.set] + list(options.items())
+        raw = load_raw(args, target, options)
         parsed, warnings = pipeline.read_spec(raw, target, overrides)
     except SpecError as error:
         return fail(args.json, invalid(error), str(error), EXIT_INVALID)
@@ -202,12 +202,11 @@ def spec_platform(path: Path | None) -> str | None:
     return platform if isinstance(platform, str) else None
 
 
-def load_raw(args: argparse.Namespace, target) -> object:
+def load_raw(args: argparse.Namespace, target, options: dict[str, bool]) -> object:
     if args.spec is None:
         # With --json, stdout carries the result alone, so the questions go to stderr.
-        given = {UI_COMPONENTS: False} if args.no_ui_components else {}
         with redirect_stdout(sys.stderr if args.json else sys.stdout):
-            return prompts.run_wizard(target, select_all=args.all, preset=args.preset, options=given)
+            return prompts.run_wizard(target, select_all=args.all, preset=args.preset, options=options)
     try:
         raw = json.loads(args.spec.read_text(encoding="utf-8"))
     except FileNotFoundError:
@@ -232,13 +231,25 @@ def save_spec(spec, path: Path) -> None:
     print(prompts.dim(note), file=sys.stderr)
 
 
-def list_features(target, as_json: bool) -> None:
+def list_features(target, as_json: bool, options: dict[str, bool]) -> None:
+    """
+    Every feature as a project with these option values has it: none an option leaves out, and each
+    in the words of an option that is off where its own words name what such a project lacks.
+    """
+    manifest = target.manifest
+    values = manifest.option_values(options)
+    left_out = manifest.disabled_features(values)
     entry = next(item for item in catalogue.catalogue()["targets"] if item["key"] == target.key)
+    offered = [
+        {**feature, **asdict(manifest.feature_copy(manifest.features[feature["key"]], values))}
+        for feature in entry["features"]
+        if feature["key"] not in left_out
+    ]
     if as_json:
-        write_json(entry["features"])
+        write_json(offered)
         return
     for group in entry["groups"]:
-        features = [feature for feature in entry["features"] if feature["group"] == group["key"] and not feature["implied_only"]]
+        features = [feature for feature in offered if feature["group"] == group["key"] and not feature["implied_only"]]
         if not features:
             continue
         prompts.heading(group["title"])
@@ -254,11 +265,14 @@ def list_features(target, as_json: bool) -> None:
         print(prompts.dim(f"      {default} by default; --set {option['key']}={str(option['checkbox']['ticked_value']).lower()} to tick it"))
         for disabled in option["disables"]:
             print(prompts.dim(f"      leaves out {disabled['feature']}: {disabled['reason']}"))
+        if option["key"] == UI_COMPONENTS and option["feature_copy"] and values[UI_COMPONENTS]:
+            described = ", ".join(entry["feature"] for entry in option["feature_copy"])
+            print(prompts.dim(f"      describes {described} differently; --no-ui-components lists them that way"))
         if option["locked"]:
             print(prompts.yellow(f"      {option['locked']['note']}"))
     print()
     presets = ", ".join(preset["key"] for preset in entry["presets"])
-    print(prompts.dim(f"  {len(entry['features'])} features. Presets: {presets}."))
+    print(prompts.dim(f"  {len(offered)} features. Presets: {presets}."))
     print()
 
 

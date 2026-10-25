@@ -72,7 +72,7 @@ class AskFeaturesTest(unittest.TestCase):
         menu = str(len(manifest.presets) + 1)
         left_out = set(manifest.options["ui_components"].disables) if no_ui == "y" else set()
         asked = [feature.key for feature in manifest.selectable if feature.key not in left_out]
-        replies = iter([menu, no_ui] + [answers.get(key, "") for key in asked])
+        replies = iter([no_ui, menu] + [answers.get(key, "") for key in asked])
         with mock.patch("builtins.input", lambda _prompt: next(replies)), redirect_stdout(io.StringIO()):
             selected, values = prompts.ask_features(target, select_all=False, preset=None, options={})
         self.assertIsNone(next(replies, None), "the wizard asked fewer questions than expected")
@@ -92,6 +92,23 @@ class AskFeaturesTest(unittest.TestCase):
         selected = self.choose_individually({"devtools": "y"}, no_ui="y")
         self.assertIn("devtools", selected)
         self.assertFalse(selected & set(targets.get("android").manifest.options["ui_components"].disables))
+
+    def test_without_ui_components_presets_and_features_read_as_such_a_project_has_them(self):
+        target = targets.get("android")
+        manifest = target.manifest
+        option = manifest.options["ui_components"]
+        asked = [feature for feature in manifest.selectable if feature.key not in option.disables]
+        replies = iter(["y", str(len(manifest.presets) + 1)] + [""] * len(asked))
+        with mock.patch("builtins.input", lambda _prompt: next(replies)), redirect_stdout(io.StringIO()) as out:
+            prompts.ask_features(target, select_all=False, preset=None, options={})
+        shown = " ".join(out.getvalue().split())
+        self.assertIn(option.preset_copy["lean"], shown)
+        self.assertNotIn(manifest.presets["lean"].description, shown)
+        self.assertIn(option.feature_copy["performance"].description, shown)
+        self.assertNotIn(manifest.features["performance"].description, shown)
+        # A preset or feature the option does not describe reads as it always has.
+        self.assertIn(manifest.presets["standard"].description, shown)
+        self.assertIn(manifest.features["network"].description, shown)
 
     def test_a_preset_without_ui_components_loses_only_what_they_disable(self):
         target = targets.get("android")

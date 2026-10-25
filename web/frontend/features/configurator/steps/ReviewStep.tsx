@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { Button } from "../../../components/primitives.tsx";
 import { Spinner } from "../../../components/ui.tsx";
 import { selectableFeatures } from "../../catalogue/features.ts";
-import { hiddenFields, uiComponentsOption } from "../../catalogue/options.ts";
+import { featureCopy, hiddenFields, uiComponentsOption } from "../../catalogue/options.ts";
 import type { Catalogue } from "../../catalogue/types.ts";
 import { ScaledPreview } from "../../preview/AppPreview.tsx";
 import { useFamily } from "../../preview/fonts.ts";
@@ -85,7 +85,7 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
           </p>
           <ul className="flex flex-wrap gap-1.5">
             {chosen.map((feature) => (
-              <li key={feature.key} title={feature.description} className="rounded-md border border-ink-600 bg-ink-900 px-2 py-1 text-[12px] text-ink-300">
+              <li key={feature.key} title={featureCopy(target, state.uiComponents, feature).description} className="rounded-md border border-ink-600 bg-ink-900 px-2 py-1 text-[12px] text-ink-300">
                 {feature.title}
               </li>
             ))}

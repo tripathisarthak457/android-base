@@ -217,8 +217,9 @@ def ask_features(
     target: Target, select_all: bool, preset: str | None, options: dict[str, bool]
 ) -> tuple[set[str], dict[str, bool]]:
     """
-    The features asked for, and every option's value. The options are asked once the preset is
-    chosen, so an option that leaves features out is never followed by questions about them.
+    The features asked for, and every option's value. The options come first, as the website's box
+    sits above its presets: the presets and features are then described as the project will have
+    them, and a feature an option leaves out is never asked about.
     """
     manifest = target.manifest
     heading("Features")
@@ -228,15 +229,16 @@ def ask_features(
         chosen = {feature.key for feature in manifest.selectable} if select_all else manifest.preset_features(preset)
         return set(chosen) - set(manifest.disabled_features(values)), values
 
+    values = ask_options(target, options)
+    left_out = manifest.disabled_features(values)
+    print()
     print(dim("  Start from a preset, or answer for each feature."))
     print()
     presets = list(manifest.presets.values())
-    choices = [(preset.title, preset.description) for preset in presets]
+    choices = [(preset.title, manifest.preset_description(preset, values)) for preset in presets]
     choices.append(("Choose individually", "One question per feature."))
     default = next(index for index, preset in enumerate(presets, start=1) if preset.key == manifest.default_preset)
     choice = ask_choice("  Which", choices, default)
-    values = ask_options(target, options)
-    left_out = manifest.disabled_features(values)
     if choice < len(presets):
         return set(manifest.preset_features(presets[choice].key)) - set(left_out), values
 
@@ -248,7 +250,7 @@ def ask_features(
             continue
         print()
         print(f"  {bold(feature.title)}")
-        for line in wrap(feature.description, 74):
+        for line in wrap(manifest.feature_copy(feature, values).description, 74):
             print(dim(f"    {line}"))
         if feature.requires:
             print(dim(f"    Requires: {', '.join(feature.requires)}"))

@@ -31,6 +31,7 @@ _FEATURE_FIELDS = {
 _PRESET_FIELDS = {"title", "description", "features", "all"}
 _OPTION_FIELDS = {
     "key", "title", "label", "headline", "description", "default", "variant", "owns", "disables", "hides", "locked",
+    "feature_copy", "preset_copy",
 }
 _VARIANT_NAME = re.compile(r"[a-z][a-z0-9_-]*")
 
@@ -81,6 +82,14 @@ class Feature:
 
 
 @dataclass(frozen=True)
+class FeatureCopy:
+    """What a feature's card and question say about it."""
+
+    headline: str
+    description: str
+
+
+@dataclass(frozen=True)
 class OptionLock:
     """A deployment that serves only one value of an option, and what it tells whoever asks for the other."""
 
@@ -111,6 +120,11 @@ class Option:
     #: Spec field → why the website does not ask for it while the option is off.
     hides: dict[str, str]
     locked: OptionLock | None
+    #: Feature → how it reads while the option is off, for a kept feature whose own copy names what the
+    #: project then lacks; in catalogue order.
+    feature_copy: dict[str, FeatureCopy]
+    #: Preset → its description while the option is off, likewise.
+    preset_copy: dict[str, str]
 
 
 @dataclass(frozen=True)
@@ -172,8 +186,8 @@ class TemplateManifest:
 
         path_token = next((token.source for token in identity if token.boundary == "path"), "")
         features = _load_features(root, groups, path_token)
-        options = _load_options(root, features, path_token)
         presets, default_preset = _load_presets(root / "presets.toml", features)
+        options = _load_options(root, features, presets, path_token)
         removed = _load_removed(root / "removed.toml", features)
 
         return cls(
@@ -241,6 +255,20 @@ class TemplateManifest:
             if not values[key]
             for feature, reason in option.disables.items()
         }
+
+    def feature_copy(self, feature: Feature, values: dict[str, bool]) -> FeatureCopy:
+        """How `feature` reads for a project with these option values: an option that is off has the last word."""
+        for key, option in self.options.items():
+            if not values[key] and feature.key in option.feature_copy:
+                return option.feature_copy[feature.key]
+        return FeatureCopy(feature.headline, feature.description)
+
+    def preset_description(self, preset: Preset, values: dict[str, bool]) -> str:
+        """How `preset` reads for a project with these option values, likewise."""
+        for key, option in self.options.items():
+            if not values[key] and preset.key in option.preset_copy:
+                return option.preset_copy[preset.key]
+        return preset.description
 
     def owned_paths(self, enabled: frozenset[str]) -> list[str]:
         """Template-relative paths that belong to features and options which are off."""
@@ -386,7 +414,9 @@ def _load_features(root: Path, groups: tuple[str, ...], path_token: str) -> dict
     return features
 
 
-def _load_options(root: Path, features: dict[str, Feature], path_token: str) -> dict[str, Option]:
+def _load_options(
+    root: Path, features: dict[str, Feature], presets: dict[str, Preset], path_token: str
+) -> dict[str, Option]:
     options: dict[str, Option] = {}
     for source in sorted((root / "options").glob("*.toml")):
         data = _read_toml(source)
@@ -432,6 +462,9 @@ def _load_options(root: Path, features: dict[str, Feature], path_token: str) -> 
             if not (root / owned.format(pkg_path=path_token)).exists():
                 raise TemplateError(source, None, f"owns '{owned}', which is not in the template")
 
+        feature_copy = _feature_copy(source, data.get("feature_copy", {}), features, disables)
+        preset_copy = _preset_copy(source, data.get("preset_copy", {}), presets)
+
         options[key] = Option(
             key=key,
             title=data["title"],
@@ -444,8 +477,46 @@ def _load_options(root: Path, features: dict[str, Feature], path_token: str) -> 
             disables=disables,
             hides=hides,
             locked=_lock(source, data.get("locked")),
+            feature_copy=feature_copy,
+            preset_copy=preset_copy,
         )
     return options
+
+
+def _feature_copy(
+    source: Path, raw: object, features: dict[str, Feature], disables: dict[str, str]
+) -> dict[str, FeatureCopy]:
+    """`[feature_copy.<feature>]` tables, in catalogue order; a missing headline keeps the feature's own."""
+    if not isinstance(raw, dict):
+        raise TemplateError(source, None, "[feature_copy] must hold a table per feature")
+    for name, table in raw.items():
+        where = f"[feature_copy.{name}]"
+        if name not in features or features[name].implied_only:
+            raise TemplateError(source, None, f"{where} names a feature nobody can choose")
+        if name in disables:
+            raise TemplateError(source, None, f"{where} describes a feature [disables] leaves out")
+        if not isinstance(table, dict):
+            raise TemplateError(source, None, f"{where} must be a table")
+        _expect_keys(source, where, table, {"description"}, {"headline", "description"})
+        if not all(isinstance(value, str) and value.strip() for value in table.values()):
+            raise TemplateError(source, None, f"{where} needs words in its headline and description")
+    return {
+        name: FeatureCopy(
+            " ".join(raw[name].get("headline", feature.headline).split()), " ".join(raw[name]["description"].split())
+        )
+        for name, feature in features.items()
+        if name in raw
+    }
+
+
+def _preset_copy(source: Path, raw: object, presets: dict[str, Preset]) -> dict[str, str]:
+    """`[preset_copy]`: a description per preset, in the presets' order."""
+    if not isinstance(raw, dict) or not all(isinstance(text, str) and text.strip() for text in raw.values()):
+        raise TemplateError(source, None, "[preset_copy] must give each preset a description")
+    for name in raw:
+        if name not in presets:
+            raise TemplateError(source, None, f"[preset_copy] names '{name}', which is not a preset")
+    return {name: " ".join(raw[name].split()) for name in presets if name in raw}
 
 
 def _reasons(source: Path, data: dict[str, Any], table: str) -> dict[str, str]:

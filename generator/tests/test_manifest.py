@@ -9,7 +9,7 @@ import unittest
 from pathlib import Path
 
 from genkit.core.copy import SKIP_DIRS, is_under
-from genkit.core.manifest import LegacyKey, TemplateManifest
+from genkit.core.manifest import FeatureCopy, LegacyKey, TemplateManifest
 from genkit.core.markers import TemplateError
 from genkit.targets import REGISTRY
 
@@ -253,6 +253,20 @@ class OptionTest(unittest.TestCase):
             option.description,
         )
 
+    def test_an_option_that_is_off_describes_the_features_and_presets_it_changes(self):
+        off = self.manifest.option_values({"visuals": False})
+        on = self.manifest.option_values({})
+        ui = self.manifest.features["ui"]
+        self.assertEqual(
+            FeatureCopy("Show something", "Screens' state and their routes, undrawn."), self.manifest.feature_copy(ui, off)
+        )
+        self.assertEqual(FeatureCopy(ui.headline, ui.description), self.manifest.feature_copy(ui, on))
+        net = self.manifest.features["net"]
+        self.assertEqual(FeatureCopy(net.headline, net.description), self.manifest.feature_copy(net, off))
+        self.assertEqual("Everything that draws nothing.", self.manifest.preset_description(self.manifest.presets["all"], off))
+        self.assertEqual("Everything.", self.manifest.preset_description(self.manifest.presets["all"], on))
+        self.assertEqual("Networking only.", self.manifest.preset_description(self.manifest.presets["small"], off))
+
     def test_options_are_marker_keys_beside_the_features(self):
         self.assertEqual(frozenset({"net", "ui", "extra", "visuals"}), self.manifest.marker_keys)
 
@@ -367,6 +381,34 @@ class BrokenOptionTest(unittest.TestCase):
     def test_an_owned_path_that_is_not_there(self):
         self.edit('owns = ["assets"]', 'owns = ["missing"]')
         self.assertBroken("owns 'missing', which is not in the template")
+
+    def test_describing_a_feature_nobody_can_choose(self):
+        self.edit("[feature_copy.ui]", "[feature_copy.ghost]")
+        self.assertBroken("[feature_copy.ghost] names a feature nobody can choose")
+
+    def test_describing_a_feature_the_option_leaves_out(self):
+        self.edit("[feature_copy.ui]", "[feature_copy.extra]")
+        self.assertBroken("[feature_copy.extra] describes a feature [disables] leaves out")
+
+    def test_feature_copy_without_a_description(self):
+        self.edit('description = """\nScreens\' state and\ntheir routes, undrawn."""', 'headline = "Undrawn"')
+        self.assertBroken("[feature_copy.ui] is missing description")
+
+    def test_feature_copy_with_a_key_of_its_own(self):
+        self.edit("[feature_copy.ui]\n", '[feature_copy.ui]\ntitle = "Undrawn"\n')
+        self.assertBroken("[feature_copy.ui] has unknown key(s): title")
+
+    def test_feature_copy_that_is_blank(self):
+        self.edit("[feature_copy.ui]\n", '[feature_copy.ui]\nheadline = " "\n')
+        self.assertBroken("[feature_copy.ui] needs words in its headline and description")
+
+    def test_describing_a_preset_that_does_not_exist(self):
+        self.edit('all = "Everything that draws nothing."', 'most = "Most of it."')
+        self.assertBroken("[preset_copy] names 'most', which is not a preset")
+
+    def test_a_preset_description_that_is_blank(self):
+        self.edit('all = "Everything that draws nothing."', 'all = ""')
+        self.assertBroken("[preset_copy] must give each preset a description")
 
     def test_a_variant_that_is_not_a_directory_name(self):
         self.edit('variant = "bare"', 'variant = "../bare"')

@@ -100,6 +100,13 @@ export type Option = {
   disables: { feature: string; reason: string }[];
   /** Spec fields that mean nothing while the option is not at its default. */
   hides: { field: string; reason: string }[];
+  /**
+   * How kept features read while the option is not at its default, for those whose own copy names
+   * what such a project lacks (a tab, a component, the harness); the rest keep their own.
+   */
+  feature_copy: { feature: string; headline: string; description: string }[];
+  /** How presets read while the option is not at its default, likewise. */
+  preset_copy: { preset: string; description: string }[];
   locked: OptionLock | null;
 };
 

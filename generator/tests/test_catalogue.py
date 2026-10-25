@@ -55,7 +55,10 @@ class ShapeTest(unittest.TestCase):
         self.assertEqual([], by_target.get("ios", []))
         [option] = by_target["android"]
         self.assertEqual(
-            ["key", "title", "checkbox", "headline", "description", "default", "disables", "hides", "locked"],
+            [
+                "key", "title", "checkbox", "headline", "description", "default", "disables", "hides", "feature_copy",
+                "preset_copy", "locked",
+            ],
             list(option),
         )
         self.assertEqual("ui_components", option["key"])
@@ -70,6 +73,15 @@ class ShapeTest(unittest.TestCase):
         for entry in option["disables"] + option["hides"]:
             self.assertEqual(" ".join(entry["reason"].split()), entry["reason"])
             self.assertTrue(entry["reason"].endswith("."), entry)
+        self.assertIn("performance", [entry["feature"] for entry in option["feature_copy"]])
+        self.assertIn("lean", [entry["preset"] for entry in option["preset_copy"]])
+        for entry in option["feature_copy"]:
+            self.assertEqual(["feature", "headline", "description"], list(entry))
+        for entry in option["preset_copy"]:
+            self.assertEqual(["preset", "description"], list(entry))
+        for entry in option["feature_copy"] + option["preset_copy"]:
+            self.assertEqual(" ".join(entry["description"].split()), entry["description"])
+            self.assertTrue(entry["description"].endswith("."), entry)
 
     def test_an_option_disables_only_features_the_target_offers(self):
         for target in self.data["targets"]:
@@ -79,11 +91,17 @@ class ShapeTest(unittest.TestCase):
                 with self.subTest(target=target["key"], option=option["key"]):
                     self.assertTrue({entry["feature"] for entry in option["disables"]} <= selectable)
                     self.assertTrue({entry["field"] for entry in option["hides"]} <= fields)
+                    # A feature the option leaves out is greyed with its reason, never described.
+                    described = {entry["feature"] for entry in option["feature_copy"]}
+                    self.assertTrue(described <= selectable - {entry["feature"] for entry in option["disables"]})
+                    presets = {preset["key"] for preset in target["presets"]}
+                    self.assertTrue({entry["preset"] for entry in option["preset_copy"]} <= presets)
 
     def test_a_lock_reaches_the_catalogue_with_its_note(self):
         option = mock.Mock(
             key="ui_components", title="UI components", label="No UI components", headline="h", description="d",
-            default=True, disables={}, hides={}, locked=mock.Mock(value=False, note="Coming soon."),
+            default=True, disables={}, hides={}, feature_copy={}, preset_copy={},
+            locked=mock.Mock(value=False, note="Coming soon."),
         )
         self.assertEqual({"value": False, "note": "Coming soon."}, catalogue._option(option)["locked"])
 

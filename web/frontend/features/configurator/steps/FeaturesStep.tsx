@@ -5,7 +5,7 @@ import { useId, useRef } from "react";
 import { ChoiceCard } from "../../../components/primitives.tsx";
 import { Badge } from "../../../components/ui.tsx";
 import { selectableFeatures } from "../../catalogue/features.ts";
-import { disabledFeatures } from "../../catalogue/options.ts";
+import { disabledFeatures, featureCopy, presetDescription } from "../../catalogue/options.ts";
 import type { Catalogue, Target } from "../../catalogue/types.ts";
 import { dependentsOf } from "../resolve.ts";
 import type { ToggleHint } from "../state.ts";
@@ -117,7 +117,7 @@ export function FeaturesStep({ catalogue, model }: { catalogue: Catalogue; model
           return (
             <label
               key={option.key}
-              title={option.description}
+              title={presetDescription(target, state.uiComponents, option)}
               className={`cursor-pointer rounded-full border px-4 py-1.5 text-sm font-medium transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent ${
                 on ? "border-accent bg-accent-dim text-accent-bright ring-1 ring-accent" : "border-ink-600 bg-ink-900 text-ink-300 hover:border-ink-500"
               }`}
@@ -130,7 +130,9 @@ export function FeaturesStep({ catalogue, model }: { catalogue: Catalogue; model
         })}
         {!current && <Badge tone="accent">Your own · {visible(state.features).length}</Badge>}
       </fieldset>
-      <p className="mt-3 text-sm text-ink-400">{current?.description ?? "Your own selection. Ticking a feature also ticks what it needs."}</p>
+      <p className="mt-3 text-sm text-ink-400">
+        {current ? presetDescription(target, state.uiComponents, current) : "Your own selection. Ticking a feature also ticks what it needs."}
+      </p>
 
       {/* Re-keyed on each toggle so a new hint replaces the last one instead of stacking under it. */}
       <div aria-live="polite">
@@ -175,6 +177,7 @@ export function FeaturesStep({ catalogue, model }: { catalogue: Catalogue; model
                   const needed = on ? visible(dependentsOf(selected, feature.key, target)).map((key) => titleOf.get(key) ?? key) : [];
                   if (on && style?.requires.includes(feature.key)) needed.push(`the ${style.title} look`);
                   const card = featureCard(catalogue, target, state.uiComponents, feature.key);
+                  const copy = featureCopy(target, state.uiComponents, feature);
                   const why = `${reasonId}-${feature.key}`;
                   return (
                     <ChoiceCard
@@ -190,8 +193,8 @@ export function FeaturesStep({ catalogue, model }: { catalogue: Catalogue; model
                       <span className="flex items-start gap-3">
                         <Tick on={on} />
                         <span className="min-w-0">
-                          <span className="block text-sm font-semibold text-ink-100">{feature.headline}</span>
-                          <span className="mt-1 block text-xs leading-relaxed text-ink-400">{feature.description}</span>
+                          <span className="block text-sm font-semibold text-ink-100">{copy.headline}</span>
+                          <span className="mt-1 block text-xs leading-relaxed text-ink-400">{copy.description}</span>
                           {feature.requires.length > 0 && (
                             <span className="mt-2 block font-mono text-[11px] text-ink-400">needs {titles(feature.requires, titleOf)}</span>
                           )}

@@ -87,3 +87,67 @@ liquidglass = "Glass is drawn by components and the shell, which this project le
 [hides]
 design_style = "Your design system decides corners, surfaces and type voice; the theme starts from neutral values."
 motion_style = "Your components decide their motion; the theme keeps neutral springs and reduce-motion."
+
+# A kept feature whose own copy names a tab, a component or the harness this project leaves out:
+# what it brings here instead, shown by the website, the wizard and --list-features while the value
+# is false. Without `headline` the feature's own still holds.
+[feature_copy.coil]
+description = """
+Coil's image loader on the app's own HTTP client, sharing its connections and its certificate pins,
+ready for the image component your design system draws."""
+
+[feature_copy.deeplink]
+description = """
+A custom scheme plus verified App Links. Each feature maps its own links to a screen; a link is
+held until onboarding, sign-in and the startup checks are done, opens on the back stack, which
+survives process death, and is never replayed from Recents or after rotation."""
+
+[feature_copy.googlesignin]
+headline = "Sign in with a Google account"
+description = """
+Credential Manager's Google sign-in, ready for the control your sign-in screen draws to hand its
+ID token to the sign-in ViewModel. The token goes to your backend, which answers with its own
+tokens like any sign-in."""
+
+[feature_copy.licenses]
+description = """
+The real dependency list, generated from the resolved classpath at build time and loaded by its
+ViewModel behind a placeholder route. The build also fails on a licence the project has not
+allowed."""
+
+[feature_copy.paging]
+headline = "Paged loading for an endless feed"
+description = """
+The feed's data on Paging 3, behind its ViewModel and a placeholder route: pages load as the list
+asks for them, a failed page keeps what is already loaded and can be retried, and a refresh
+reloads from where the reader is. The list it pages into is yours to build."""
+
+[feature_copy.performance]
+headline = "Measure start-up on a real phone"
+description = """
+A macrobenchmark module for cold and warm start to the start screen, with and without the baseline
+profile, run against the dev flavour, and the baseline profile generator that records the profile
+every build ships. The journey benchmarks and the frame-time scripts come with the components they
+measure."""
+
+[feature_copy.profile]
+headline = "A profile with a photo, per user"
+description = """
+A name, a bio and an avatar, saved on the device per user, behind the profile's ViewModel and a
+placeholder route. With the media picker on, the avatar can be a photo."""
+
+[feature_copy.search]
+description = """
+Results as you type with a debounce, and recent searches kept per user, behind the search
+ViewModel and a placeholder route; its state holds the results, whether they are loading and
+why they failed."""
+
+# A preset's description, likewise.
+[preset_copy]
+lean = """
+The architecture, a theme skeleton and every build guard, with networking, image loading, your
+font, leak detection in debug builds, deep links and CI. The app opens on a blank start screen for
+your design system to build on."""
+everything = """
+Every feature that does not need UI components, working together: the template's own proof that
+they coexist without them. Delete what you do not need."""

@@ -179,6 +179,13 @@ def _option(option: Option) -> dict[str, Any]:
         "default": option.default,
         "disables": [{"feature": feature, "reason": reason} for feature, reason in option.disables.items()],
         "hides": [{"field": field, "reason": reason} for field, reason in option.hides.items()],
+        # Kept features and presets whose own copy names what the project then lacks: a client shows
+        # these words in place of theirs while the option is off.
+        "feature_copy": [
+            {"feature": feature, "headline": copy.headline, "description": copy.description}
+            for feature, copy in option.feature_copy.items()
+        ],
+        "preset_copy": [{"preset": preset, "description": text} for preset, text in option.preset_copy.items()],
         # The one value this deployment generates, when it serves only one; the API refuses the other.
         "locked": {"value": option.locked.value, "note": option.locked.note} if option.locked else None,
     }

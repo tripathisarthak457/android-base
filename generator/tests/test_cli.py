@@ -212,6 +212,25 @@ class CliTest(unittest.TestCase):
         self.assertIn("No UI components", result.stdout)
         self.assertIn("ui_components", result.stdout)
         self.assertIn("leaves out catalog: The catalog app shows", result.stdout)
+        self.assertIn("--no-ui-components lists them that way", result.stdout)
+
+    def test_list_features_without_ui_components_lists_them_as_such_a_project_has_them(self):
+        option = targets.get("android").manifest.options["ui_components"]
+        features = {feature["key"]: feature for feature in json.loads(run("--list-features", "--json", "--no-ui-components").stdout)}
+        self.assertFalse(set(option.disables) & set(features))
+        self.assertEqual(option.feature_copy["performance"].description, features["performance"]["description"])
+        self.assertEqual(option.feature_copy["performance"].headline, features["performance"]["headline"])
+        result = run("--list-features", "--no-ui-components")
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertIn(option.feature_copy["performance"].headline, result.stdout)
+        self.assertNotRegex(result.stdout, r"\n  (?:on |off) catalog ")
+        unticked = {feature["key"]: feature for feature in json.loads(run("--list-features", "--json").stdout)}
+        self.assertEqual(targets.get("android").manifest.features["performance"].description, unticked["performance"]["description"])
+
+    def test_list_features_without_ui_components_is_refused_for_a_target_without_them(self):
+        result = run("--list-features", "--target", "multiplatform", "--no-ui-components")
+        self.assertEqual(2, result.returncode)
+        self.assertIn("No UI components is Android-only for now.", result.stdout + result.stderr)
 
 
 class NoUiComponentsFlagTest(unittest.TestCase):

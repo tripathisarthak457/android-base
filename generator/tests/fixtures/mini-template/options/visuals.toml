@@ -14,3 +14,11 @@ extra = "Extra draws, and this project draws nothing."
 
 [hides]
 design_style = "Nothing is drawn, so there is no style to choose."
+
+[feature_copy.ui]
+description = """
+Screens' state and
+their routes, undrawn."""
+
+[preset_copy]
+all = "Everything that draws nothing."

@@ -1,4 +1,4 @@
-import type { Catalogue, Option, Target } from "./types.ts";
+import type { Catalogue, Feature, Option, Preset, Target } from "./types.ts";
 
 /** The spec field, option key and marker that leave a project's UI components out. */
 export const UI_COMPONENTS = "ui_components";
@@ -30,6 +30,20 @@ export function hiddenFields(target: Target, uiComponents: boolean): Map<string,
   const option = uiComponentsOption(target);
   if (!option || uiComponents) return new Map();
   return new Map(option.hides.map((entry) => [entry.field, entry.reason]));
+}
+
+/** How a feature reads for a project with or without UI components: the option's words where it has some. */
+export function featureCopy(target: Target, uiComponents: boolean, feature: Feature): { headline: string; description: string } {
+  const option = uiComponentsOption(target);
+  const own = option && !uiComponents ? option.feature_copy.find((entry) => entry.feature === feature.key) : undefined;
+  return own ? { headline: own.headline, description: own.description } : { headline: feature.headline, description: feature.description };
+}
+
+/** How a preset reads for a project with or without UI components, likewise. */
+export function presetDescription(target: Target, uiComponents: boolean, preset: Preset): string {
+  const option = uiComponentsOption(target);
+  const own = option && !uiComponents ? option.preset_copy.find((entry) => entry.preset === preset.key) : undefined;
+  return own?.description ?? preset.description;
 }
 
 /**
