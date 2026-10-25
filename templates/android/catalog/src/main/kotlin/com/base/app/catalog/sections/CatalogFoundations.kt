@@ -104,6 +104,15 @@ fun FoundationsSection() {
             "skeletonHighlight" to colors.skeletonHighlight,
         )
     }
+    CatalogGroup("Component ink", caption = "Pure white and black in both themes and every brand; each component applies its own alpha.") {
+        Swatches(
+            "thumb" to colors.thumb,
+            "sheen" to colors.sheen,
+            "shade" to colors.shade,
+            "mediaBackdrop" to colors.mediaBackdrop,
+            "onMedia" to colors.onMedia,
+        )
+    }
     CatalogGroup("Type", caption = "iOS's Dynamic Type sizes. A design style's voice changes weights only.") {
         val type = AppTheme.typography
         TypeRow("largeTitle", type.largeTitle)
