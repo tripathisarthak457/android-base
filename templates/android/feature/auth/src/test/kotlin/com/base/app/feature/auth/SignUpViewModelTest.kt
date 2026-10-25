@@ -85,6 +85,23 @@ class SignUpViewModelTest {
     }
 
     @Test
+    fun `a short name and a weak password are each reported on their own field`() = runTest {
+        val viewModel = watched().apply {
+            name.type("A")
+            email.type("ada@example.com")
+            password.type("letters only")
+            confirm.type("letters only")
+        }
+
+        viewModel.onEvent(SignUpEvent.Submit)
+        advanceUntilIdle()
+
+        assertEquals(UiText.plural(UiR.plurals.ui_validation_min_length, 2), viewModel.state.value.nameError)
+        assertEquals(UiText.of(UiR.string.ui_validation_password_digit), viewModel.state.value.passwordError)
+        assertEquals(emptyList<SignUpDetails>(), repository.signUps)
+    }
+
+    @Test
     fun `after a submit each error follows the text as it is corrected`() = runTest {
         val viewModel = filledIn(email = "not an address")
         viewModel.onEvent(SignUpEvent.Submit)
