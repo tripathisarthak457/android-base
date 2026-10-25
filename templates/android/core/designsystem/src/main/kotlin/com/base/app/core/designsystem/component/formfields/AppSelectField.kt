@@ -127,7 +127,7 @@ fun AppPhoneField(
             options = dialCodes,
             onSelect = onDialCodeChange,
             // The code and its chevron grow with the text, so a fixed box would cut the longest code.
-            modifier = Modifier.alignBy(FieldBoxTop).width(AppSelectFieldDefaults.DialCodeWidth.scaledLike(AppTheme.typography.body)),
+            modifier = Modifier.alignBy(FieldBoxTop).width(AppPhoneFieldDefaults.DialCodeWidth.scaledLike(AppTheme.typography.body)),
             label = dialCodeLabel,
             enabled = enabled,
         )
@@ -154,7 +154,7 @@ val DigitsOnly = InputTransformation {
 val DefaultDialCodes: List<String> = listOf("+1", "+44", "+61", "+65", "+91", "+971")
 
 /** The phone field's dialling-code column. */
-object AppSelectFieldDefaults {
+object AppPhoneFieldDefaults {
     val DialCodeWidth = 108.dp
 }
 
