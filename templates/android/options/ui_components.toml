@@ -75,6 +75,10 @@ owns = [
   "tools/perf",
   "tools/adaptive",
 ]
+# What a feature module the spec names brings here, for the wizard's and the website's module question.
+module_copy = """
+Each gets a :data module with its repository and a :feature module with list and detail ViewModels
+behind placeholder routes, their keys and navigation wiring, and a ViewModel test."""
 
 [disables]
 catalog = "The catalog app shows the design system's components, and this project has none."

@@ -179,9 +179,10 @@ The site shows the option as the "No UI components" box, first on the Features s
 `"ui_components": false` only when the box is ticked, so every other request is the one it always
 sent. Ticking it greys the disabled features with their reasons, hides design and motion style
 (the option's `hides`), and Review says what was skipped and why. The features and presets it keeps
-but whose own words name what such a project lacks (a tab, a component, the performance harness)
-read in the option's words instead: its `feature_copy` and `preset_copy`, which the wizard and
-`--list-features --no-ui-components` show too. Multiplatform and iOS have no such option yet; the
+but whose own words name what such a project lacks (a screen, a tab, a component, the performance
+harness) read in the option's words instead: its `feature_copy` and `preset_copy`, which the wizard
+and `--list-features --no-ui-components` show too, and the feature-modules hint reads its
+`module_copy`, as the wizard's module question does. Multiplatform and iOS have no such option yet; the
 site says so where the box would be.
 
 **The lock.** A deployment can generate setup-only projects and nothing else, until the Android

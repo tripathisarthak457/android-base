@@ -8,6 +8,9 @@ and a variant takes the place of the resources."""
 default = true
 variant = "bare"
 owns = ["assets"]
+module_copy = """
+Each module brings its state
+and its routes, undrawn."""
 
 [disables]
 extra = "Extra draws, and this project draws nothing."

@@ -4,6 +4,7 @@ import { useId, useMemo } from "react";
 import { Field, TextInput } from "../../../components/primitives.tsx";
 import { codePoints, listed } from "../../../lib/text.ts";
 import { MAX_RAIL_TABS, MAX_TABS, planTabs } from "../../preview/tabs.ts";
+import { moduleCopy } from "../../catalogue/options.ts";
 import type { Catalogue } from "../../catalogue/types.ts";
 import { deepLinkScheme } from "../request.ts";
 import { moduleNames } from "../state.ts";
@@ -19,6 +20,7 @@ export function IdentityStep({ catalogue, model }: { catalogue: Catalogue; model
   const derived = pascal || "MyApp";
   const modules = useMemo(() => moduleNames(state.modules), [state.modules]);
   const plan = useMemo(() => planTabs(new Set(state.features), modules), [state.features, modules]);
+  const noUiModules = moduleCopy(target, state.uiComponents);
   const displayMax = catalogue.rules.display_name_max;
   const languagesId = useId();
   const languagesError = errors.get("languages");
@@ -82,9 +84,11 @@ export function IdentityStep({ catalogue, model }: { catalogue: Catalogue; model
         <Field
           label="Feature modules (optional)"
           hint={
-            plan.overflow.length > 0
-              ? `Each gets a data and a feature module and a tab. A phone's bar holds ${MAX_TABS}, so ${listed(plan.overflow.map((tab) => tab.label))} go under More; ${plan.all.length <= MAX_RAIL_TABS ? "a wider window's rail" : "a large window's sidebar"} shows every tab.`
-              : "Comma-separated. Each gets a data and a feature module with a repository, ViewModel, screen and tests, and a tab."
+            noUiModules
+              ? `Comma-separated. ${noUiModules}`
+              : plan.overflow.length > 0
+                ? `Each gets a data and a feature module and a tab. A phone's bar holds ${MAX_TABS}, so ${listed(plan.overflow.map((tab) => tab.label))} go under More; ${plan.all.length <= MAX_RAIL_TABS ? "a wider window's rail" : "a large window's sidebar"} shows every tab.`
+                : "Comma-separated. Each gets a data and a feature module with a repository, ViewModel, screen and tests, and a tab."
           }
           error={errors.get("feature_modules")}
         >

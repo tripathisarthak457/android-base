@@ -277,6 +277,11 @@ class OptionTest(unittest.TestCase):
         self.assertIn("assets", self.manifest.owned_paths(frozenset({"net", "ui", "extra"})))
         self.assertNotIn("assets", self.manifest.owned_paths(frozenset({"net", "visuals"})))
 
+    def test_an_option_that_is_off_describes_feature_modules(self):
+        off = self.manifest.option_values({"visuals": False})
+        self.assertEqual("Each module brings its state and its routes, undrawn.", self.manifest.module_description(off))
+        self.assertIsNone(self.manifest.module_description(self.manifest.option_values({})))
+
     def test_an_option_that_is_off_hides_its_fields(self):
         off = self.manifest.option_values({"visuals": False})
         self.assertEqual(
@@ -416,6 +421,10 @@ class BrokenOptionTest(unittest.TestCase):
     def test_a_preset_description_that_is_blank(self):
         self.edit('all = "Everything that draws nothing."', 'all = ""')
         self.assertBroken("[preset_copy] must give each preset a description")
+
+    def test_module_copy_that_is_blank(self):
+        self.edit('module_copy = """\nEach module brings its state\nand its routes, undrawn."""', 'module_copy = " "')
+        self.assertBroken("module_copy needs words")
 
     def test_a_variant_that_is_not_a_directory_name(self):
         self.edit('variant = "bare"', 'variant = "../bare"')

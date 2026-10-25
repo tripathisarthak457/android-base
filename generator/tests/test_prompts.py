@@ -127,6 +127,25 @@ class AskFeaturesTest(unittest.TestCase):
         self.assertNotIn("catalog", selected)
 
 
+class AskFeatureModulesTest(unittest.TestCase):
+
+    def shown(self, values: dict[str, bool]) -> str:
+        replies = iter(["orders"])
+        with mock.patch("builtins.input", lambda _prompt: next(replies)), redirect_stdout(io.StringIO()) as out:
+            self.assertEqual(["orders"], prompts.ask_feature_modules(targets.get("android"), values))
+        return " ".join(out.getvalue().split())
+
+    def test_without_ui_components_a_module_reads_as_such_a_project_gets_it(self):
+        shown = self.shown({"ui_components": False})
+        self.assertIn(targets.get("android").manifest.options["ui_components"].module_copy, shown)
+        self.assertNotIn("working screen", shown)
+
+    def test_with_ui_components_a_module_still_brings_a_working_screen(self):
+        shown = self.shown({"ui_components": True})
+        self.assertIn("Each produces a working screen, its navigation wiring and a test.", shown)
+        self.assertNotIn(targets.get("android").manifest.options["ui_components"].module_copy, shown)
+
+
 class AskLookTest(unittest.TestCase):
 
     def test_a_hidden_field_is_not_asked_and_keeps_its_default(self):

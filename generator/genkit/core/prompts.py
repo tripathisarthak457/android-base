@@ -367,10 +367,18 @@ def ask_fonts(features: frozenset[str]) -> dict[str, str]:
     }
 
 
-def ask_feature_modules(target: Target) -> list[str]:
+def ask_feature_modules(target: Target, values: dict[str, bool]) -> list[str]:
+    """`values` are the option values chosen, which can change what a module brings."""
     heading("Feature modules")
-    print(dim("  Comma-separated, lowercase, e.g. home, orders. Each produces a working screen, its"))
-    print(dim("  navigation wiring and a test. Leave blank to add them later."))
+    described = target.manifest.module_description(values)
+    if described is None:
+        print(dim("  Comma-separated, lowercase, e.g. home, orders. Each produces a working screen, its"))
+        print(dim("  navigation wiring and a test. Leave blank to add them later."))
+    else:
+        print(dim("  Comma-separated, lowercase, e.g. home, orders."))
+        for line in wrap(described, 76):
+            print(dim(f"  {line}"))
+        print(dim("  Leave blank to add them later."))
     print()
     reserved = target.vocabulary().reserved_module_names
     while True:
@@ -602,7 +610,7 @@ def run_wizard(
         raw["ios"] = ask_ios(raw["package_name"])
     raw.update(ask_fonts(features))
     raw.update(ask_look(features, hidden))
-    raw["feature_modules"] = ask_feature_modules(target)
+    raw["feature_modules"] = ask_feature_modules(target, values)
     raw["languages"] = ask_languages(target)
     return raw
 

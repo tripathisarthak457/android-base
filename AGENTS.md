@@ -79,8 +79,10 @@ manifest, or a variant file under `generator/variants/`.
 `templates/android/options/<key>.toml`: its default, the features it `disables` and the spec fields
 it `hides` (each with a reason; the generator leaves them at their defaults, with a note when a spec
 gave another value), the paths it `owns` (absent while it is off), its `variant`
-directory, and `feature_copy` and `preset_copy` for kept features and presets whose usual words no
-longer hold. Its key is a marker key like a feature's, and the code with UI components is always
+directory, and `feature_copy`, `preset_copy` and `module_copy` for the kept features, presets and
+feature modules whose usual words no longer hold (`test_android_noui.py` names every kept feature
+whose UI the option takes and that still lacks its entry). Its key is a marker key like a feature's,
+and the code with UI components is always
 the live branch, so the raw template stays the project with components:
 
 ```kotlin

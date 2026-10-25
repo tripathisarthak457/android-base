@@ -31,7 +31,7 @@ _FEATURE_FIELDS = {
 _PRESET_FIELDS = {"title", "description", "features", "all"}
 _OPTION_FIELDS = {
     "key", "title", "label", "headline", "description", "default", "variant", "owns", "disables", "hides", "locked",
-    "feature_copy", "preset_copy",
+    "feature_copy", "preset_copy", "module_copy",
 }
 _VARIANT_NAME = re.compile(r"[a-z][a-z0-9_-]*")
 
@@ -125,6 +125,9 @@ class Option:
     feature_copy: dict[str, FeatureCopy]
     #: Preset → its description while the option is off, likewise.
     preset_copy: dict[str, str]
+    #: What a feature module the spec names brings while the option is off, when that is not what
+    #: the wizard and the website otherwise say. None: their own words hold.
+    module_copy: str | None
 
 
 @dataclass(frozen=True)
@@ -278,6 +281,13 @@ class TemplateManifest:
             if not values[key] and preset.key in option.preset_copy:
                 return option.preset_copy[preset.key]
         return preset.description
+
+    def module_description(self, values: dict[str, bool]) -> str | None:
+        """What a feature module brings to a project with these option values, or None for the clients' own words."""
+        for key, option in self.options.items():
+            if not values[key] and option.module_copy is not None:
+                return option.module_copy
+        return None
 
     def owned_paths(self, enabled: frozenset[str]) -> list[str]:
         """Template-relative paths that belong to features and options which are off."""
@@ -473,6 +483,9 @@ def _load_options(
 
         feature_copy = _feature_copy(source, data.get("feature_copy", {}), features, disables)
         preset_copy = _preset_copy(source, data.get("preset_copy", {}), presets)
+        module_copy = data.get("module_copy")
+        if module_copy is not None and not (isinstance(module_copy, str) and module_copy.strip()):
+            raise TemplateError(source, None, "module_copy needs words, or leave it out")
 
         options[key] = Option(
             key=key,
@@ -488,6 +501,7 @@ def _load_options(
             locked=_lock(source, data.get("locked")),
             feature_copy=feature_copy,
             preset_copy=preset_copy,
+            module_copy=" ".join(module_copy.split()) if module_copy is not None else None,
         )
     return options
 

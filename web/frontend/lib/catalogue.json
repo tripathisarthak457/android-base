@@ -1,5 +1,5 @@
 {
-  "generator_commit": "e5158930c22b",
+  "generator_commit": "1920b6829d67",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -1624,6 +1624,7 @@
           ],
           "key": "ui_components",
           "locked": null,
+          "module_copy": "Each gets a :data module with its repository and a :feature module with list and detail ViewModels behind placeholder routes, their keys and navigation wiring, and a ViewModel test.",
           "preset_copy": [
             {
               "description": "The architecture, a theme skeleton and every build guard, with networking, image loading, your font, leak detection in debug builds, deep links and CI. The app opens on a blank start screen for your design system to build on.",

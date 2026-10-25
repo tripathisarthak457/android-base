@@ -46,6 +46,12 @@ export function presetDescription(target: Target, uiComponents: boolean, preset:
   return own?.description ?? preset.description;
 }
 
+/** What a feature module brings to a project without UI components, or null where the site's own words hold. */
+export function moduleCopy(target: Target, uiComponents: boolean): string | null {
+  const option = uiComponentsOption(target);
+  return option && !uiComponents ? option.module_copy : null;
+}
+
 /**
  * Why this deployment generates only projects without UI components, in the lock's own words, or
  * null when it generates both.

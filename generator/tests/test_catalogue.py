@@ -57,10 +57,12 @@ class ShapeTest(unittest.TestCase):
         self.assertEqual(
             [
                 "key", "title", "checkbox", "headline", "description", "default", "disables", "hides", "feature_copy",
-                "preset_copy", "locked",
+                "preset_copy", "module_copy", "locked",
             ],
             list(option),
         )
+        self.assertEqual(" ".join(option["module_copy"].split()), option["module_copy"])
+        self.assertIn("placeholder route", option["module_copy"])
         self.assertEqual("ui_components", option["key"])
         self.assertEqual({"label": "No UI components", "ticked_value": False}, option["checkbox"])
         self.assertIs(True, option["default"])
@@ -100,7 +102,7 @@ class ShapeTest(unittest.TestCase):
     def test_a_lock_reaches_the_catalogue_with_its_note(self):
         option = mock.Mock(
             key="ui_components", title="UI components", label="No UI components", headline="h", description="d",
-            default=True, disables={}, hides={}, feature_copy={}, preset_copy={},
+            default=True, disables={}, hides={}, feature_copy={}, preset_copy={}, module_copy=None,
             locked=mock.Mock(value=False, note="Coming soon."),
         )
         self.assertEqual({"value": False, "note": "Coming soon."}, catalogue._option(option)["locked"])

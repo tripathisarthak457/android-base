@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { disabledFeatures, effectiveUiComponents, featureCopy, presetDescription, uiComponentsOption } from "./options.ts";
+import { disabledFeatures, effectiveUiComponents, featureCopy, moduleCopy, presetDescription, uiComponentsOption } from "./options.ts";
 import { androidTarget, loadCatalogue, lockedCatalogue } from "./testing.ts";
 import type { Target } from "./types.ts";
 
@@ -32,6 +32,7 @@ const MISSING = [
 function copyOf(target: Target, uiComponents: boolean): { name: string; text: string }[] {
   const disabled = disabledFeatures(target, uiComponents);
   return [
+    { name: "feature modules", text: moduleCopy(target, uiComponents) ?? "" },
     ...target.presets.map((preset) => ({ name: `preset ${preset.key}`, text: presetDescription(target, uiComponents, preset) })),
     ...target.features
       .filter((feature) => !feature.implied_only && !disabled.has(feature.key))
@@ -70,6 +71,17 @@ test("with the box unticked every preset and feature reads as the catalogue writ
   const performance = target.features.find((feature) => feature.key === "performance");
   assert.ok(performance);
   assert.match(performance.description, /tools\/perf/, "the harness is still promised where a project has it");
+});
+
+test("with the box ticked a feature module reads as such a project gets it; unticked the site keeps its own words", () => {
+  const target = androidTarget();
+  const option = uiComponentsOption(target);
+  assert.ok(option?.module_copy);
+  assert.equal(moduleCopy(target, false), option.module_copy);
+  assert.match(option.module_copy, /placeholder routes/);
+  assert.equal(moduleCopy(target, true), null);
+  const locked = androidTarget(lockedCatalogue());
+  assert.equal(moduleCopy(locked, effectiveUiComponents(locked, true)), option.module_copy);
 });
 
 test("the option describes only features it keeps, and presets the target has", () => {

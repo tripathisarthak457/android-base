@@ -107,6 +107,8 @@ export type Option = {
   feature_copy: { feature: string; headline: string; description: string }[];
   /** How presets read while the option is not at its default, likewise. */
   preset_copy: { preset: string; description: string }[];
+  /** What a feature module brings while the option is not at its default; null keeps the site's own words. */
+  module_copy: string | null;
   locked: OptionLock | null;
 };
 
