@@ -578,6 +578,12 @@ These run as part of `./gradlew build` and fail it:
 | `verify<Variant>CarriesNoDevTooling` | A shippable build (staging, prod and playstore releases) depends on no dev tooling module, directly or through another. |
 <!-- </opt:devtools> -->
 | `dependencyGuard` | The prod release's libraries, transitive ones included, match the list the first build writes under app/dependencies, which is committed. A deliberate change fails it until `./gradlew dependencyGuardBaseline` rewrites the list, reviewed and committed with the change. |
+<!-- <opt:formatting> -->
+| `spotlessCheck` | ktlint's Android Studio style over every Kotlin and Gradle file (`./gradlew spotlessApply` fixes it), and the Compose Rules for ktlint; `.editorconfig` names each rule turned off and why. |
+<!-- </opt:formatting> -->
+<!-- <opt:!formatting> -->
+| `spotlessCheck` | The Compose Rules for ktlint over every Kotlin file; `.editorconfig` names each rule turned off and why. |
+<!-- </opt:!formatting> -->
 
 Compose lint runs as errors in every Compose module; the ids are listed in `build-logic`'s `Compose.kt`.
 

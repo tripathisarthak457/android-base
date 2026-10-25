@@ -140,6 +140,27 @@ class EveryProjectToolsTest(unittest.TestCase):
     def tearDownClass(cls):
         cls.temp.cleanup()
 
+    def test_spotless_runs_the_compose_rules_and_ktlints_own_rules_only_with_formatting(self):
+        for (formatting, ui), project in self.projects.items():
+            with self.subTest(formatting=formatting, ui=ui):
+                build = (project / "build.gradle.kts").read_text(encoding="utf-8")
+                catalog = (project / "gradle/libs.versions.toml").read_text(encoding="utf-8")
+                editorconfig = (project / ".editorconfig").read_text(encoding="utf-8")
+                self.assertIn("alias(libs.plugins.spotless)", build)
+                self.assertIn(".customRuleSets(listOf(libs.compose.rules.ktlint.get().toString()))", build)
+                self.assertIn('group = "io.nlopez.compose.rules", name = "ktlint"', catalog)
+                self.assertEqual(not formatting, "ktlint_standard = disabled" in editorconfig.splitlines())
+                self.assertEqual(formatting, "kotlinGradle {" in build)
+
+    def test_a_rule_left_off_for_the_components_is_on_without_them(self):
+        for formatting in (True, False):
+            with self.subTest(formatting=formatting):
+                ui = (self.projects[formatting, True] / ".editorconfig").read_text(encoding="utf-8")
+                noui = (self.projects[formatting, False] / ".editorconfig").read_text(encoding="utf-8")
+                self.assertIn("ktlint_compose_param-order-check = disabled", ui)
+                self.assertNotIn("ktlint_compose_param-order-check", noui)
+                self.assertIn("ktlint_compose_vm-forwarding-check = disabled", noui)
+
     def test_the_release_build_guards_its_dependencies(self):
         for (formatting, ui), project in self.projects.items():
             with self.subTest(formatting=formatting, ui=ui):

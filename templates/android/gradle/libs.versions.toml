@@ -71,6 +71,8 @@ kover = "0.9.11"
 dependencyAnalysis = "3.19.2"
 spotless = "8.10.4"
 ktlint = "1.8.0"
+# Compose Rules for ktlint; each release names the ktlint it is built against, which must be the one above.
+composeRules = "0.6.8"
 # The prod release's dependency list, compared on every build.
 dependencyGuard = "0.5.0"
 profileinstaller = "1.4.1"
@@ -201,6 +203,9 @@ firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "fir
 room3-gradlePlugin = { group = "androidx.room3", name = "room3-gradle-plugin", version.ref = "room3" }
 dependency-guard-gradlePlugin = { group = "com.dropbox.dependency-guard", name = "dependency-guard", version.ref = "dependencyGuard" }
 
+# ── Run by Spotless, never on a module's classpath ───────────────────────────
+compose-rules-ktlint = { group = "io.nlopez.compose.rules", name = "ktlint", version.ref = "composeRules" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
@@ -222,7 +227,5 @@ kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 # <opt:depsanalysis>
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysis" }
 # </opt:depsanalysis>
-# <opt:formatting>
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
-# </opt:formatting>
 dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuard" }

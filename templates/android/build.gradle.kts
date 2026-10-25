@@ -34,35 +34,38 @@ plugins {
     // <opt:depsanalysis>
     alias(libs.plugins.dependency.analysis)
     // </opt:depsanalysis>
-    // <opt:formatting>
     alias(libs.plugins.spotless)
-    // </opt:formatting>
     alias(libs.plugins.dependency.guard) apply false
 }
 
-// <opt:formatting>
 /*
- * Formatting: `./gradlew spotlessApply` fixes it and `check` fails on what it would change. The
- * rules are ktlint's Android Studio style, read from .editorconfig, so the IDE formats the same way.
+ * Spotless runs ktlint over every Kotlin source with the Compose Rules ruleset: the checks on how
+ * a composable takes and uses its parameters that a pattern cannot make. `check` runs
+ * `spotlessCheck`, which fails on a finding; .editorconfig says which rules run and why the others
+ * do not.
  */
 spotless {
     // <generated:formatting-check>
-    // The template's own sources move to this style in one mechanical commit once the UI work has
-    // merged; until then its check leaves formatting out. Generated projects always enforce it.
+    // The template's own sources move to ktlint's style in one mechanical commit once the UI work
+    // has merged; until then its check is not part of `check`. Generated projects enforce it.
     isEnforceCheck = false
     // </generated:formatting-check>
     kotlin {
         target("**/src/**/*.kt")
         targetExclude("**/build/**")
         ktlint(libs.versions.ktlint.get())
+            .customRuleSets(listOf(libs.compose.rules.ktlint.get().toString()))
     }
+    // <opt:formatting>
+    // Formatting: ktlint's Android Studio style over the Gradle files too, read from .editorconfig
+    // so the IDE formats the same way. `./gradlew spotlessApply` fixes what `check` fails on.
     kotlinGradle {
         target("*.gradle.kts", "*/**/*.gradle.kts")
         targetExclude("**/build/**")
         ktlint(libs.versions.ktlint.get())
     }
+    // </opt:formatting>
 }
-// </opt:formatting>
 
 // <opt:coverage>
 /*
