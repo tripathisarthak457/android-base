@@ -16,7 +16,7 @@ from pathlib import Path
 from unittest import mock
 
 from genkit.core import pipeline
-from genkit.core.copy import is_verbatim
+from genkit.core.copy import is_verbatim, template_files
 from genkit.core.markers import Expression
 from genkit.core.record import RECORD_NAME
 from genkit.targets import get
@@ -102,18 +102,14 @@ def ui_the_option_takes() -> dict[str, str]:
     kept = {key for key, feature in manifest.features.items() if not feature.implied_only} - set(OPTION.disables)
     owned = [path.format(pkg_path=token) for path in OPTION.owns]
     taken: dict[str, str] = {}
-    for path in sorted(manifest.root.rglob("*")):
-        relative = path.relative_to(manifest.root).as_posix()
-        if (
-            not path.is_file()
-            or is_verbatim(relative, manifest.verbatim)
-            or path.suffix.lower() in manifest.binary_suffixes
-            or {"build", ".gradle"} & set(path.relative_to(manifest.root).parts)
-        ):
+    # The files a project is made from, so build output and caches beside the template are not read.
+    for source in template_files(manifest.root, [], {}, manifest.verbatim):
+        relative = source.relative
+        if is_verbatim(relative, manifest.verbatim) or source.source.suffix.lower() in manifest.binary_suffixes:
             continue
         in_owned = any(relative == root or relative.startswith(root + "/") for root in owned)
-        for text in _MARKER.findall(path.read_text(encoding="utf-8")):
-            for term in Expression.parse(text, manifest.marker_keys, path, 1).terms:
+        for text in _MARKER.findall(source.source.read_text(encoding="utf-8")):
+            for term in Expression.parse(text, manifest.marker_keys, source.source, 1).terms:
                 on = {key for key, negated in term if not negated}
                 if in_owned or OPTION.key in on:
                     for feature in sorted(on & kept):
