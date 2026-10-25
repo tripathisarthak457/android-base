@@ -335,6 +335,19 @@ class CodeRulesTest {
         assertEquals(listOf("raw-dp"), findings.map { it.rule })
     }
 
+    @Test
+    fun `a feature's build file cannot opt in to the navigation host's API either`() {
+        val optIn = "kotlin {\n    compilerOptions {\n        optIn.add(\"com.acme.core.navigation.NavigationHostApi\")\n    }\n}"
+
+        assertEquals(
+            listOf(3 to "navigation-host-api"),
+            CodeRules.check("feature/orders/impl/build.gradle.kts", optIn).map { it.line to it.rule },
+        )
+        assertEquals(emptyList<Finding>(), CodeRules.check("core/navigation/shell/build.gradle.kts", optIn))
+        // Only the rules a build file can break read it.
+        assertEquals(emptyList<Finding>(), CodeRules.check("feature/orders/build.gradle.kts", "val p = 16.dp\nval io = Dispatchers.IO"))
+    }
+
     private fun allowed(code: String, rule: String): String = code.lines().flatMap { line ->
         if ("/*!*/" in line) {
             listOf(line.takeWhile(Char::isWhitespace) + "// allow($rule): the fixture needs it", line)

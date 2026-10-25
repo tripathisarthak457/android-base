@@ -36,7 +36,8 @@ internal fun Project.verifyCodeRules() {
     val task = tasks.register<VerifyCodeRulesTask>("verifyCodeRules") {
         group = "verification"
         description = "Fails on forbidden patterns: ripple, composed, raw tweens, Dispatchers.IO and the rest."
-        sources.from(fileTree("src") { include("**/*.kt") })
+        // The build file too: a compiler option there can do what an annotation does in a source file.
+        sources.from(fileTree("src") { include("**/*.kt") }, projectDirectory.file("build.gradle.kts"))
         moduleDirectory.set(projectDirectory)
         modulePath.set(relative)
         // Resolved lazily: the convention plugins apply the Compose compiler after this runs.
@@ -120,9 +121,16 @@ internal object CodeRules {
 
     data class Finding(val line: Int, val rule: String, val message: String)
 
-    /** Where a file sits: `feature/orders/impl/src/main/kotlin/…` → module `feature/orders/impl`, set `main`. */
+    /**
+     * Where a file sits: `feature/orders/impl/src/main/kotlin/…` → module `feature/orders/impl`, set `main`.
+     * A module's build file, `feature/orders/build.gradle.kts`, has the module and no source set.
+     */
     class Location(val path: String) {
-        val module: String = path.substringBefore("/src/", missingDelimiterValue = "")
+        val isBuildFile: Boolean = path.endsWith(".gradle.kts")
+        val module: String = when {
+            isBuildFile -> path.substringBeforeLast('/', missingDelimiterValue = "")
+            else -> path.substringBefore("/src/", missingDelimiterValue = "")
+        }
         val sourceSet: String = path.substringAfter("/src/", missingDelimiterValue = "").substringBefore('/')
         val fileName: String = path.substringAfterLast('/')
 
@@ -153,6 +161,8 @@ internal object CodeRules {
         val lines: (KotlinSource, Location) -> List<Int>,
         /** The page under `.agents/skills/` that explains the rule and its fix, for whoever has to make it. */
         val reference: String? = null,
+        /** Whether a module's build file can break it too; every other rule reads Kotlin sources only. */
+        val buildFiles: Boolean = false,
     ) {
         val message: String = if (reference == null) advice else "$advice (read .agents/skills/$reference)"
     }
@@ -180,10 +190,10 @@ internal object CodeRules {
         val location = Location(path)
         val source = KotlinSource(text)
 
-        val found = ALL.filter { it.applies(location) }
+        val found = ALL.filter { (it.buildFiles || !location.isBuildFile) && it.applies(location) }
             .flatMap { rule -> rule.lines(source, location).map { Finding(it, rule.id, rule.message) } }
             .toMutableList()
-        if (!composeCompilerApplied) {
+        if (!composeCompilerApplied && !location.isBuildFile) {
             source.codeLines.indexOfFirst { "@Composable" in it }.takeIf { it >= 0 }?.let {
                 found += Finding(it + 1, COMPOSE_COMPILER, COMPOSE_COMPILER_ADVICE)
             }

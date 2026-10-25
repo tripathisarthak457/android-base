@@ -16,6 +16,7 @@ internal object StructureRules {
             """\bmutable(?:List|Map|Set)Of\s*\(""",
     )
     private val PACKAGE = Regex("""^\s*package\s+([\w.]+)""")
+    private val HOST_API = Regex("""\bNavigationHostApi\b""")
     private val LAYER_NAMES = setOf(
         "ui", "viewmodel", "presentation", "screens", "util", "utils", "helper", "helpers", "misc", "base", "common",
     )
@@ -51,13 +52,19 @@ internal object StructureRules {
             lines = CodeRules.pattern(Regex("""${MUTABLE.pattern}|\bArray<|\b(?:Int|Long|Short|Byte|Char|Float|Double|Boolean)Array\b""")),
         ),
         // The navigation host's own API crosses into the runtime behind an opt-in so the app and the
-        // shell can call it; a feature that opts in can reach back-stack internals it must not touch.
+        // shell can call it; a feature that opts in can reach back-stack internals it must not touch,
+        // whether by an annotation or by its build file's compiler option.
         Rule(
             id = "navigation-host-api",
             advice = "a feature never opts in to the navigation host's API; it navigates through " +
                 "AppNavigator and registers its screens with entry<Key>",
             applies = { it.inFeature },
-            lines = CodeRules.pattern(Regex("""\bNavigationHostApi\b""")),
+            lines = { source, location ->
+                // A build file names the annotation in a string: optIn.add("….NavigationHostApi").
+                val lines = if (location.isBuildFile) source.codeAndStringLines else source.codeLines
+                lines.mapIndexedNotNull { index, line -> if (HOST_API.containsMatchIn(line)) index + 1 else null }
+            },
+            buildFiles = true,
         ),
         Rule(
             id = "hardcoded-copy",

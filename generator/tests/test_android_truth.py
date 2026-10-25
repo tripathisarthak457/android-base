@@ -129,7 +129,7 @@ class ProfileTest(unittest.TestCase):
         known = classes_of(project)
         profiles = {
             module: (project / module / "src/main/baseline-prof.txt").read_text(encoding="utf-8").splitlines()
-            for module in ("app", "core/navigation", "core/designsystem", "core/ui")
+            for module in ("app", "core/navigation", "core/navigation/shell", "core/designsystem", "core/ui")
         }
         for module, profile in profiles.items():
             with self.subTest(module=module):
