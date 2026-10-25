@@ -28,9 +28,10 @@ _IMPLICIT = {
 
 
 #: What a project without UI components must never reach: the design system's components and
-#: primitives, and the navigation shell.
+#: primitives, and the navigation shell (its module, and its classes by name).
 NO_UI_FORBIDDEN = re.compile(
     r"\bcore\.designsystem\.(?:component|foundation\.(?:content|draw|glass|interaction|layout|scroll)|animation|icon)\b"
+    r"|\bcore\.navigation\.shell\b|:core:navigation:shell\b"
     r"|\b(?:AppShell|ShellState|StackHost)\b"
 )
 

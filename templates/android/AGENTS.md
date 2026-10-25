@@ -36,7 +36,8 @@ fails `verifyModuleDependencies`: shared code goes to `core/`, or to a `data/` m
   boolean beside a nullable, and a screen that loads draws loading, empty, error with retry, and offline.
 - A destination is a `@Serializable` key implementing `AppNavKey`, registered once with `@Provides @IntoSet`:
   `navGraph { entry<Key> { … } }`, which also records the key's serializer, so the back stack holding it survives
-  process death (`NavKeyRegistrationTest` checks every key). Navigate through `AppNavigator`, never a back stack.
+  process death (`NavKeyRegistrationTest` checks every key). Navigate through `AppNavigator`, never a back stack;
+  `@NavigationHostApi` is for a navigation host, never a feature.
 
 **Look, copy and windows.**
 - No Material (`material`, `ripple`). Every colour, type style, spacing, shape and motion comes from `AppTheme`

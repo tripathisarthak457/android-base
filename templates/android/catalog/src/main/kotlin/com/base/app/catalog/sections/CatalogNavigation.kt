@@ -44,14 +44,14 @@ import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.BarTreatment
 import com.base.app.core.navigation.AppNavigator
-import com.base.app.core.navigation.AppShell
 import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.NavKeySerialization
 import com.base.app.core.navigation.NavRegistry
 import com.base.app.core.navigation.Presentation
-import com.base.app.core.navigation.ShellTab
 import com.base.app.core.navigation.navGraph
-import com.base.app.core.navigation.rememberShellState
+import com.base.app.core.navigation.shell.AppShell
+import com.base.app.core.navigation.shell.ShellTab
+import com.base.app.core.navigation.shell.rememberShellState
 import kotlinx.serialization.Serializable
 
 /** The tab bar in every variant, and the app's own shell running push, pop, cover and back. */

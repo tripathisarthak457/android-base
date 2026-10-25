@@ -54,6 +54,9 @@ include(":core:mvi")
 include(":core:datastore")
 include(":core:designsystem")
 include(":core:navigation")
+// <opt:ui_components>
+include(":core:navigation:shell")
+// </opt:ui_components>
 include(":core:ui")
 include(":core:testing")
 include(":core:testing:compose")

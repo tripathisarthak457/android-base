@@ -35,7 +35,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 // <opt:ui_components>
-import com.base.app.core.navigation.ShellConfig
+import com.base.app.core.navigation.shell.ShellConfig
 import com.base.app.startup.ShellConfigOverride
 import com.base.app.startup.ShellObserver
 // </opt:ui_components>

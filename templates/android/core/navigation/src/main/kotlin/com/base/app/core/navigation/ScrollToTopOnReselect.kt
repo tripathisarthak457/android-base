@@ -6,10 +6,14 @@ import androidx.compose.runtime.IntState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.snapshotFlow
-import com.base.app.core.designsystem.foundation.scroll.animateScrollToTop
 import kotlinx.coroutines.flow.drop
 
-internal val LocalTabReselections = compositionLocalOf<IntState?> { null }
+/**
+ * The reselections ([TabStacks.reselections]) of the tab a screen is in, which a tab host provides
+ * around each tab's screens; null outside a tab.
+ */
+@NavigationHostApi
+val LocalTabReselections = compositionLocalOf<IntState?> { null }
 
 /**
  * Scrolls [state] back to the top when the tab of this screen is tapped while it is already at its
@@ -19,6 +23,18 @@ internal val LocalTabReselections = compositionLocalOf<IntState?> { null }
 fun ScrollToTopOnReselect(state: LazyListState) {
     val reselections = LocalTabReselections.current ?: return
     LaunchedEffect(reselections, state) {
-        snapshotFlow { reselections.intValue }.drop(1).collect { state.animateScrollToTop() }
+        snapshotFlow { reselections.intValue }.drop(1).collect { state.scrollToTop() }
     }
 }
+
+/**
+ * Jumps to two screens from the top first, then animates the rest: from deep in a long list, an
+ * animation over every row would compose each of them on the way up.
+ */
+private suspend fun LazyListState.scrollToTop() {
+    val approach = layoutInfo.visibleItemsInfo.size.coerceAtLeast(1) * APPROACH_SCREENS
+    if (firstVisibleItemIndex > approach) scrollToItem(approach)
+    animateScrollToItem(0)
+}
+
+private const val APPROACH_SCREENS = 2

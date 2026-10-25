@@ -10,9 +10,8 @@ placeholder route over its ViewModel, and the app opens on a blank start screen.
 overlay and LeakCanary stay."""
 default = true
 variant = "noui"
-# What only a project with UI components has. In core:navigation a main file stays when it imports
-# nothing from core.designsystem and nothing from shell, stack, presentation or transition, directly
-# or through another navigation file; everything else is the shell, and is listed here.
+# What only a project with UI components has. The navigation shell is a module of its own
+# (core/navigation/shell); the runtime in core/navigation stays, with the host's No-UI variant.
 owns = [
   "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/component",
   "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/foundation/content",
@@ -29,34 +28,7 @@ owns = [
   "core/designsystem/src/test/kotlin/{pkg_path}/core/designsystem/foundation/interaction",
   "core/designsystem/src/test/kotlin/{pkg_path}/core/designsystem/foundation/scroll",
   "core/designsystem/src/test/kotlin/{pkg_path}/core/designsystem/RecompositionJourneysTest.kt",
-  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/AppShell.kt",
-  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/HostCrossfade.kt",
-  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/NavigationChrome.kt",
-  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/ScrollToTopOnReselect.kt",
-  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/ShellState.kt",
-  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/back/BackCard.kt",
-  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/back/BackHandlerEffect.kt",
-  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/back/GateSettle.kt",
-  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/back/ShellRootBack.kt",
-  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/back/StackBackHandler.kt",
-  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/presentation",
-  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/shell",
-  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/stack",
-  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/transition",
-  "core/navigation/src/main/res/values/strings.xml",
-  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/HostCrossfadeTest.kt",
-  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/LayerProbe.kt",
-  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/RestoreTest.kt",
-  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/ShellStateTest.kt",
-  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/back/BackCardDrawingTest.kt",
-  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/back/BackCardDuringPushDrawingTest.kt",
-  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/back/BackCardStateTest.kt",
-  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/back/BackCardTest.kt",
-  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/back/RapidBackTest.kt",
-  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/presentation",
-  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/recomposition",
-  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/shell",
-  "core/navigation/src/test/kotlin/{pkg_path}/core/navigation/stack",
+  "core/navigation/shell",
   "core/ui/src/main/kotlin/{pkg_path}/core/ui/AppNetworkImage.kt",
   "core/ui/src/main/kotlin/{pkg_path}/core/ui/paging",
   "app/src/dev/kotlin/{pkg_path}/perf",

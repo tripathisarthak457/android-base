@@ -7,7 +7,7 @@ import com.base.app.core.datastore.settings.AppSettings
 import com.base.app.core.datastore.settings.AppSettingsStore
 import com.base.app.core.designsystem.component.navigation.BarMinimize
 import com.base.app.core.designsystem.component.navigation.TabLabels
-import com.base.app.core.navigation.ShellConfig
+import com.base.app.core.navigation.shell.ShellConfig
 import com.base.app.startup.LaunchHook
 import com.base.app.startup.ShellConfigOverride
 import com.base.app.startup.ShellObserver

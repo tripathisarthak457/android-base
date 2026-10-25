@@ -334,7 +334,7 @@ class UiProjectTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             project = generate(Path(directory), "ui", features=sorted(ANDROID.manifest.preset_features("lean")))
             self.assertNotIn("ui_components", json.loads((project / RECORD_NAME).read_text(encoding="utf-8")))
-            self.assertTrue((project / f"core/navigation/src/main/kotlin/{PKG}/core/navigation/AppShell.kt").is_file())
+            self.assertTrue((project / f"core/navigation/shell/src/main/kotlin/{PKG}/core/navigation/shell/AppShell.kt").is_file())
             self.assertFalse((project / f"app/src/main/kotlin/{PKG}/ui/start").exists())
             self.assertTrue((project / "feature/home").is_dir())
 

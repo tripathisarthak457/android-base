@@ -3,6 +3,7 @@ package com.base.app.core.navigation
 import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -27,7 +28,7 @@ class NavDisplayHostTest {
     @get:Rule
     val rule = createAndroidComposeRule<ComponentActivity>()
 
-    private val registry = testRegistry()
+    private val registry = NavRegistry(testGraphs())
     private val navigator = AppNavigator()
     private val pending = PendingDeepLink(
         routes = setOf(
@@ -143,4 +144,8 @@ class NavDisplayHostTest {
         back()
         assertEquals(listOf<AppNavKey>(FeedTab), stack!!.keys)
     }
+}
+
+private fun ComposeTestRule.onNodeWithTagExists(key: AppNavKey) {
+    onNodeWithTag(key.toString(), useUnmergedTree = true).assertExists()
 }

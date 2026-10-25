@@ -23,14 +23,14 @@ import com.base.app.core.navigation.back.StackChange
  * counts a reselection, which [ScrollToTopOnReselect] turns into a scroll to the top.
  */
 @Stable
-class TabStacks internal constructor(
+class TabStacks(
     /** Each tab's root destination, in tab order. A root is also its tab's identity. */
     val roots: List<AppNavKey>,
     stacks: List<List<AppNavKey>>,
     selected: Int,
 ) {
     /** Every tab at its root, the first in front. */
-    internal constructor(roots: List<AppNavKey>) : this(roots, roots.map(::listOf), selected = 0)
+    constructor(roots: List<AppNavKey>) : this(roots, roots.map(::listOf), selected = 0)
 
     init {
         require(roots.isNotEmpty()) { "TabStacks needs at least one tab." }

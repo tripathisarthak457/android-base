@@ -39,7 +39,9 @@ class NavGraphEntry internal constructor(
     internal val keys: SerializersModule,
 )
 
-internal class Destination(
+/** What a key renders and how: the registration a host reads through [NavRegistry.destinationFor]. */
+@NavigationHostApi
+class Destination internal constructor(
     val transition: NavTransitionStyle,
     val pane: NavPane,
     val presentation: Presentation?,
@@ -112,16 +114,19 @@ class NavRegistry(graphs: Set<NavGraphEntry>) {
         }
     }
 
-    internal fun destinationFor(key: AppNavKey): Destination =
+    @NavigationHostApi
+    fun destinationFor(key: AppNavKey): Destination =
         destinations[key::class] ?: error(
             "No destination registered for ${key::class.simpleName}. Add it to the feature's " +
                 "navGraph { } block and contribute that with @Provides @IntoSet.",
         )
 
-    internal fun presentationOf(key: AppNavKey): Presentation? = destinations[key::class]?.presentation
+    @NavigationHostApi
+    fun presentationOf(key: AppNavKey): Presentation? = destinations[key::class]?.presentation
 
     /** Whether [a] and [b] were registered by the same feature's graph. */
-    internal fun sameGraph(a: AppNavKey, b: AppNavKey): Boolean {
+    @NavigationHostApi
+    fun sameGraph(a: AppNavKey, b: AppNavKey): Boolean {
         val graph = graphOf[a::class]
         return graph != null && graph == graphOf[b::class]
     }

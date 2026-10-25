@@ -33,6 +33,7 @@ dependencies {
     implementation(project(":core:designsystem"))
     // The Navigation section runs the app's own shell, transitions and back handling.
     implementation(project(":core:navigation"))
+    implementation(project(":core:navigation:shell"))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.navigationevent.compose)
     // lifecycleScope, which holds the first frame until the fonts are in.

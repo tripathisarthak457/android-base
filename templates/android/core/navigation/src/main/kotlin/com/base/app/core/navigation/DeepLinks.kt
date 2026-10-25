@@ -1,22 +1,15 @@
 package com.base.app.core.navigation
 
 import android.net.Uri
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import com.base.app.core.common.navigation.AppNavKey
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.getAndUpdate
 import java.util.Optional
 import javax.inject.Inject
 import kotlin.jvm.optionals.getOrNull
-// <opt:ui_components>
-import androidx.compose.runtime.snapshotFlow
-import kotlinx.coroutines.flow.first
-// </opt:ui_components>
 
 /**
  * A link, normalised: `baseapp://items/12` and `https://baseapp.example.com/items/12` both read as
@@ -119,33 +112,3 @@ class PendingDeepLink @Inject constructor(
     /** The waiting link, handed out once. */
     fun take(): AppNavKey? = link.getAndUpdate { null }
 }
-
-// <opt:ui_components>
-/**
- * Opens waiting links in the signed-in shell: a tab's root selects that tab; another key selects the
- * tab whose feature registered it and is pushed there, or presented above it.
- */
-@Composable
-fun OpenDeepLinks(state: ShellState, pending: PendingDeepLink) {
-    LaunchedEffect(state, pending) {
-        pending.waiting.filterNotNull().collect {
-            snapshotFlow { state.moving }.first { !it }
-            pending.take()?.let(state::open)
-        }
-    }
-}
-// </opt:ui_components>
-// <opt-else:ui_components>
-//~ /**
-//~  * Opens waiting links on [stack]: the key a link names is pushed over the screen on display, so
-//~  * Back returns to it. A link to the screen already on top opens nothing new.
-//~  */
-//~ @Composable
-//~ fun OpenDeepLinks(stack: AppBackStack, pending: PendingDeepLink) {
-//~     LaunchedEffect(stack, pending) {
-//~         pending.waiting.filterNotNull().collect {
-//~             pending.take()?.let { key -> stack.applyNow(NavCommand.Navigate(key)) }
-//~         }
-//~     }
-//~ }
-// </opt-else:ui_components>
