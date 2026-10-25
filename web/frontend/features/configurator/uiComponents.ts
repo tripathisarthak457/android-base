@@ -1,6 +1,7 @@
 import { COMING_WITH_RELEASE, androidOnlyNote, disabledFeatures, hiddenFields, isSetupOnly, uiComponentsOption } from "../catalogue/options.ts";
 import type { Catalogue, Target } from "../catalogue/types.ts";
-import type { ConfigState } from "./state.ts";
+import { planTabs } from "../preview/tabs.ts";
+import { type ConfigState, moduleNames } from "./state.ts";
 
 // What the steps say about the "No UI components" box, worked out here so the wording is tested
 // without rendering a step.
@@ -66,4 +67,16 @@ export function reviewSkipped(target: Target, state: ConfigState): { title: stri
     reason,
   }));
   return [...features, ...fields];
+}
+
+/**
+ * The last line of the Project step's "What that produces": the tabs a project with UI components
+ * gets, a scaffolded home module among them when nothing else gives one. A project without them
+ * has no shell, so no tab bar and no home module; it opens on its blank start screen.
+ */
+export function producesNote(state: ConfigState): string {
+  if (!state.uiComponents) return "The app opens on a blank start screen, for your design system to build on.";
+  const plan = planTabs(new Set(state.features), moduleNames(state.modules));
+  const tabs = `Tabs: ${plan.tabs.map((tab) => tab.label).join(" · ")}`;
+  return plan.scaffoldedHome ? `${tabs}. Nothing you picked provides a tab, so the project gets a home module with an empty screen to build from.` : tabs;
 }

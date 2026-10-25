@@ -8,6 +8,7 @@ import { moduleCopy } from "../../catalogue/options.ts";
 import type { Catalogue } from "../../catalogue/types.ts";
 import { deepLinkScheme } from "../request.ts";
 import { moduleNames } from "../state.ts";
+import { producesNote } from "../uiComponents.ts";
 import type { ConfiguratorModel } from "../useConfigurator.ts";
 
 export function IdentityStep({ catalogue, model }: { catalogue: Catalogue; model: ConfiguratorModel }) {
@@ -155,10 +156,7 @@ export function IdentityStep({ catalogue, model }: { catalogue: Catalogue; model
             </div>
           ))}
         </dl>
-        <p className="mt-5 border-t border-ink-700 pt-4 text-xs leading-relaxed text-ink-400">
-          Tabs: {plan.tabs.map((tab) => tab.label).join(" · ")}
-          {plan.scaffoldedHome && ". Nothing you picked provides a tab, so the project gets a home module with an empty screen to build from."}
-        </p>
+        <p className="mt-5 border-t border-ink-700 pt-4 text-xs leading-relaxed text-ink-400">{producesNote(state)}</p>
       </div>
     </div>
   );

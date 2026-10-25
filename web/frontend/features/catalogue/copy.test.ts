@@ -1,16 +1,19 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { type Action, type ConfigState, initialState, reducer } from "../configurator/state.ts";
+import { producesNote } from "../configurator/uiComponents.ts";
 import { disabledFeatures, effectiveUiComponents, featureCopy, moduleCopy, presetDescription, uiComponentsOption } from "./options.ts";
 import { androidTarget, loadCatalogue, lockedCatalogue } from "./testing.ts";
-import type { Target } from "./types.ts";
+import type { Catalogue, Target } from "./types.ts";
 
 /**
  * What a project without UI components lacks: the harness the option owns, a tab bar and its tabs,
- * the navigation shell, a home screen, core/ui's list component, drawn screens and their rows, the
- * onboarding pages and the permission prompt at their end, and entry gates a link waits behind. A
- * browser's Custom Tab and the inspector's own tabs are no such promise: "a Performance tab in the
- * inspector" stays. The generator's test_android_noui finds which features need the option's words;
- * this list keeps those words, and every text left as it is, from promising these again.
+ * the navigation shell, a home screen or a scaffolded home module, core/ui's list component, drawn
+ * screens and their rows, the onboarding pages and the permission prompt at their end, and entry
+ * gates a link waits behind. A browser's Custom Tab and the inspector's own tabs are no such
+ * promise: "a Performance tab in the inspector" stays. The generator's test_android_noui finds which
+ * features need the option's words; this list keeps those words, and every text left as it is, from
+ * promising these again.
  */
 const MISSING = [
   /tools\/perf/,
@@ -18,6 +21,7 @@ const MISSING = [
   /\b(?<!(?:Custom|Performance) )tabs?\b/i,
   /navigation shell/i,
   /home screen/i,
+  /home module/i,
   /list component/i,
   /\bscreens\b/i,
   /\brows?\b/i,
@@ -97,4 +101,36 @@ test("the option describes only features it keeps, and presets the target has", 
   for (const { preset } of option.preset_copy) {
     assert.ok(presets.has(preset), preset);
   }
+});
+
+function run(source: Catalogue, state: ConfigState, ...actions: Action[]): ConfigState {
+  return actions.reduce((current, action) => reducer(current, action, source), state);
+}
+
+test("on a setup-only site the Project step's summary names no tab and no home module, whatever was picked", () => {
+  const locked = lockedCatalogue();
+  const fresh = initialState(locked, "android");
+  assert.equal(fresh.uiComponents, false);
+  const states: Record<string, ConfigState> = {
+    "the default answers": fresh,
+    "the lean preset": run(locked, fresh, { type: "preset", key: "lean" }),
+    "every feature and two modules": run(locked, fresh, { type: "preset", key: "everything" }, { type: "modules", value: "orders, wallet" }),
+    "six modules": run(locked, fresh, { type: "modules", value: "a, b, c, d, e, f" }),
+  };
+  for (const [name, state] of Object.entries(states)) {
+    const note = producesNote(state);
+    assert.match(note, /blank start screen/, name);
+    for (const missing of MISSING) assert.doesNotMatch(note, missing, name);
+  }
+});
+
+test("with UI components the summary still lists the tabs, and the home module scaffolded when nothing gives one", () => {
+  const catalogue = loadCatalogue();
+  const standard = initialState(catalogue, "android");
+  assert.equal(standard.uiComponents, true);
+  assert.equal(producesNote(standard), "Tabs: Home · Settings");
+  assert.equal(
+    producesNote(run(catalogue, standard, { type: "preset", key: "lean" })),
+    "Tabs: Home. Nothing you picked provides a tab, so the project gets a home module with an empty screen to build from.",
+  );
 });
