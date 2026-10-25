@@ -3,14 +3,12 @@ package com.base.app.data.auth
 import com.base.app.core.common.result.AppError
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.common.time.AppClock
-import com.base.app.core.datastore.session.AuthTokenStore
 import com.base.app.core.datastore.session.AuthTokens
+import com.base.app.core.datastore.session.FakeAuthTokenStore
 import com.base.app.core.network.client.NetworkClient
 import com.base.app.core.network.client.NetworkJson
 import com.base.app.core.network.model.NetworkRequest
 import com.base.app.core.network.model.NetworkResponse
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.DeserializationStrategy
 import org.junit.Assert.assertEquals
@@ -22,7 +20,7 @@ import kotlin.time.Instant
 
 class DefaultAuthRepositoryTest {
 
-    private val store = MemoryTokenStore()
+    private val store = FakeAuthTokenStore()
     private val client = ScriptedClient()
     private val repository = DefaultAuthRepository(client, store, AppClock { Instant.fromEpochSeconds(1_000) })
 
@@ -33,7 +31,7 @@ class DefaultAuthRepositoryTest {
         val result = repository.signIn("ada@example.com", "secret")
 
         assertEquals(AppResult.Success(Unit), result)
-        assertEquals(AuthTokens("A1", "R1", expiresAtEpochMillis = 1_060_000, owner = "u42"), store.saved)
+        assertEquals(AuthTokens("A1", "R1", expiresAtEpochMillis = 1_060_000, owner = "u42"), store.stored)
         assertTrue(client.requests.single().carriesCredentials)
     }
 
@@ -43,7 +41,7 @@ class DefaultAuthRepositoryTest {
 
         repository.signIn("ada@example.com", "secret")
 
-        assertTrue(store.saved?.owner.orEmpty().isNotBlank())
+        assertTrue(store.stored?.owner.orEmpty().isNotBlank())
     }
 
     @Test
@@ -51,9 +49,9 @@ class DefaultAuthRepositoryTest {
         client.answer = """{"access_token":"A1","refresh_token":"R1"}"""
 
         repository.signIn("ada@example.com", "secret")
-        val first = store.saved?.owner.orEmpty()
+        val first = store.stored?.owner.orEmpty()
         repository.signIn("ada@example.com", "secret")
-        val second = store.saved?.owner.orEmpty()
+        val second = store.stored?.owner.orEmpty()
 
         assertTrue(first, RandomUuid.matches(first))
         assertTrue(second, RandomUuid.matches(second))
@@ -63,7 +61,7 @@ class DefaultAuthRepositoryTest {
     @Test
     fun `tokens the store cannot keep fail the sign-in as storage`() = runTest {
         client.answer = """{"access_token":"A1","refresh_token":"R1"}"""
-        store.refuse = true
+        store.refuseSaves = true
 
         val result = repository.signIn("ada@example.com", "secret")
 
@@ -77,7 +75,7 @@ class DefaultAuthRepositoryTest {
         val result = repository.signIn("ada@example.com", "wrong")
 
         assertEquals(AppResult.Failure(AppError.Http(status = 401)), result)
-        assertNull(store.saved)
+        assertNull(store.stored)
     }
 
     private class ScriptedClient : NetworkClient {
@@ -95,25 +93,6 @@ class DefaultAuthRepositoryTest {
                 is AppResult.Success -> AppResult.Success(NetworkJson.decodeFromString(deserializer, result.value.body))
                 is AppResult.Failure -> result
             }
-    }
-
-    private class MemoryTokenStore : AuthTokenStore {
-        private val state = MutableStateFlow<AuthTokens?>(null)
-        var refuse = false
-        val saved: AuthTokens? get() = state.value
-
-        override val tokens: Flow<AuthTokens?> = state
-
-        override suspend fun save(tokens: AuthTokens) {
-            check(!refuse) { "Keystore unavailable" }
-            state.value = tokens
-        }
-
-        override suspend fun replace(expected: AuthTokens, replacement: AuthTokens?): Boolean = false
-
-        override suspend fun clear() {
-            state.value = null
-        }
     }
 
     private companion object {
