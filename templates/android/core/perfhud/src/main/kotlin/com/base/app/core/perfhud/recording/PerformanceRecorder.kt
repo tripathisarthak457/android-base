@@ -43,7 +43,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
-// <opt:ui_components>
+// <opt:performance&ui_components>
 /**
  * Starts and stops everything the overlay records, and holds what it has recorded.
  *
@@ -59,8 +59,8 @@ import javax.inject.Singleton
  * activity-lifecycle callback, a DataStore and one read of the stored choice, whose file I/O runs
  * on the I/O dispatcher.
  */
-// </opt:ui_components>
-// <opt-else:ui_components>
+// </opt:performance&ui_components>
+// <opt-else:performance&ui_components>
 //~ /**
 //~  * Starts and stops everything the overlay records, and holds what it has recorded.
 //~  *
@@ -76,7 +76,7 @@ import javax.inject.Singleton
 //~  * activity-lifecycle callback, a DataStore and one read of the stored choice, whose file I/O runs
 //~  * on the I/O dispatcher.
 //~  */
-// </opt-else:ui_components>
+// </opt-else:performance&ui_components>
 @Singleton
 internal class PerformanceRecorder @Inject constructor(
     @ApplicationContext context: Context,

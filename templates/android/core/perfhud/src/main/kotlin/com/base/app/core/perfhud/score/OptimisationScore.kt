@@ -8,7 +8,7 @@ import com.base.app.core.perfhud.memory.MemorySummary
 import com.base.app.core.perfhud.startup.StartupSummary
 import kotlin.math.roundToInt
 
-// <opt:ui_components>
+// <opt:performance&ui_components>
 /**
  * A score from 0 to 100 for how well the app runs, out of a grade per [Metric] against the
  * template's own targets: the device gates in `tools/perf/gates.toml`, the smoothness target of
@@ -18,8 +18,8 @@ import kotlin.math.roundToInt
  * out of the total rather than counted as lost. The frames are what the score is about, so there
  * is no score until they are graded: the build checks alone would rate an app nobody has used.
  */
-// </opt:ui_components>
-// <opt-else:ui_components>
+// </opt:performance&ui_components>
+// <opt-else:performance&ui_components>
 //~ /**
 //~  * A score from 0 to 100 for how well the app runs, out of a grade per [Metric] against the
 //~  * template's own targets: the start-up and memory ceilings it holds on its reference phone, the
@@ -29,7 +29,7 @@ import kotlin.math.roundToInt
 //~  * out of the total rather than counted as lost. The frames are what the score is about, so there
 //~  * is no score until they are graded: the build checks alone would rate an app nobody has used.
 //~  */
-// </opt-else:ui_components>
+// </opt-else:performance&ui_components>
 internal data class OptimisationScore(
     /** Null until [Metric.MIN_FRAMES] frames have been recorded. */
     val total: Int?,
@@ -114,7 +114,7 @@ internal class Limits(val a: Float, val b: Float, val c: Float, val d: Float) {
     }
 }
 
-// <opt:ui_components>
+// <opt:performance&ui_components>
 /**
  * Each metric, its weight in the score and how it is graded. The limits come from
  * `tools/perf/gates.toml` where it has one (cold start 380 ms, the app's own PSS 58.4 MB, the
@@ -132,8 +132,8 @@ internal class Limits(val a: Float, val b: Float, val c: Float, val d: Float) {
  * A check is 1 when it passes and 0 when it fails; a baseline profile waiting for compilation is
  * 0.5, a C.
  */
-// </opt:ui_components>
-// <opt-else:ui_components>
+// </opt:performance&ui_components>
+// <opt-else:performance&ui_components>
 //~ /**
 //~  * Each metric, its weight in the score and how it is graded. The limits are the template's own
 //~  * ceilings on its reference phone where it has one (cold start 380 ms, the app's own PSS 58.4 MB,
@@ -152,7 +152,7 @@ internal class Limits(val a: Float, val b: Float, val c: Float, val d: Float) {
 //~  * A check is 1 when it passes and 0 when it fails; a baseline profile waiting for compilation is
 //~  * 0.5, a C.
 //~  */
-// </opt-else:ui_components>
+// </opt-else:performance&ui_components>
 internal enum class Metric(val weight: Int, val unit: MetricUnit, val limits: Limits?) {
     JankyFrames(25, MetricUnit.Percent, Limits(0.5f, 1f, 2f, 4f)) {
         override fun valueOf(inputs: ScoreInputs) = inputs.ofFrames { it.overall.jankyPercent }
