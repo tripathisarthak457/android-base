@@ -223,11 +223,17 @@ private fun UnlockScreen(lock: AppLock) {
     // <opt-else:ui_components>
     //~ // The cover takes every tap, so none reaches the app underneath; one asks again, as Unlock
     //~ // would. The system's reason a try failed (a lockout, say) is what a screen reader announces.
+    //~ // It takes focus on a touch screen too, where a clickable alone cannot: a field underneath
+    //~ // would otherwise keep it, and the keyboard with it. Focus sits inside a group it cannot
+    //~ // leave, as Unlock does inside the drawn cover, so neither Tab nor a screen clearing focus
+    //~ // can take it away.
     //~ val unlock = stringResource(R.string.applock_action)
     //~ PlaceholderScreen(
     //~     title = R.string.applock_title,
     //~     modifier = Modifier
     //~         .focusProperties { onExit = { cancelFocusChange() } }
+    //~         .focusGroup()
+    //~         .focusProperties { canFocus = true }
     //~         .focusRequester(focus)
     //~         .semantics { problem?.let { stateDescription = it } }
     //~         .clickable(onClickLabel = unlock) { prompt.authenticate(info) },
