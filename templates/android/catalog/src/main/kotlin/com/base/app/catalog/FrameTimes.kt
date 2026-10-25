@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.text.AppFiguresText
 import com.base.app.core.designsystem.theme.AppTheme
 
+// <opt:performance>
 /**
  * How long recent frames took, from the platform's frame metrics: the median and the 90th
  * percentile over the last couple of seconds, and the share that missed the display's deadline.
@@ -30,6 +31,17 @@ import com.base.app.core.designsystem.theme.AppTheme
  *
  * The readout redraws only after several new frames, so it never keeps an idle screen drawing.
  */
+// </opt:performance>
+// <opt-else:performance>
+//~ /**
+//~  * How long recent frames took, from the platform's frame metrics: the median and the 90th
+//~  * percentile over the last couple of seconds, and the share that missed the display's deadline.
+//~  * A rough check while tuning a component on a device; the numbers that count come from a release
+//~  * build on a phone (docs/PERFORMANCE.md, "Measuring").
+//~  *
+//~  * The readout redraws only after several new frames, so it never keeps an idle screen drawing.
+//~  */
+// </opt-else:performance>
 @Stable
 class FrameTimes(private val activity: Activity) {
     var summary by mutableStateOf<String?>(null)

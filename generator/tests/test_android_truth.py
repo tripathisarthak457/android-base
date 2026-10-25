@@ -68,19 +68,8 @@ PUSH_WORDS = {
 }
 
 
-#: Where a reader is sent to the harness `performance` owns.
-HARNESS = re.compile(r"tools/perf|tools/adaptive|perf\.sh|gates\.toml")
-#: Files that still send a reader to the harness in a project without `performance`, each outside this lane's files
-#: and asked of the integrator in handoff/NOUI-FINAL.md's cross-lane requests. A file leaves the list when its text is
-#: fenced, and the test fails while a listed file no longer names the harness.
-HARNESS_PENDING = {
-    f"app/src/dev/kotlin/{PKG}/perf/DevLaunchOptions.kt",
-    f"app/src/dev/kotlin/{PKG}/perf/ShellLog.kt",
-    f"app/src/main/kotlin/{PKG}/ui/AppRoot.kt",
-    f"catalog/src/main/kotlin/{PKG}/catalog/FrameTimes.kt",
-    f"catalog/src/main/kotlin/{PKG}/catalog/sections/sheets/CatalogSheets.kt",
-    f"core/perfhud/src/test/kotlin/{PKG}/core/perfhud/recording/PerformanceRecorderTest.kt",
-}
+#: Where a reader is sent to the harness `performance` owns. `perf.shell`, the dev build's log tag, is not it.
+HARNESS = re.compile(r"tools/perf|tools/adaptive|perf\.sh\b|gates\.toml")
 
 
 def generate(directory: Path, name: str, **fields) -> Path:
@@ -224,8 +213,7 @@ class HarnessAdviceTest(unittest.TestCase):
                     for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
                         if HARNESS.search(line):
                             named.setdefault(relative, []).append(f"{relative}:{number}")
-                self.assertEqual([], [line for path, lines in named.items() if path not in HARNESS_PENDING for line in lines])
-                self.assertEqual(set(), {path for path in HARNESS_PENDING if (project / path).is_file()} - set(named))
+                self.assertEqual({}, named)
 
     def test_the_overlay_advises_measurements_the_project_can_take(self):
         strings = "core/perfhud/src/main/res/values/donottranslate.xml"

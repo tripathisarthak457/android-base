@@ -10,6 +10,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
+// <opt:performance>
 /**
  * One line per change of the shell's state, which tools/perf reads back: `nav_stress` checks the
  * stack invariants on every line, and `restore` compares the state before and after process death.
@@ -20,6 +21,19 @@ import kotlin.math.roundToInt
  * window shows, and `window` and `class` the window it was chosen for, which tools/adaptive checks
  * across resizes.
  */
+// </opt:performance>
+// <opt-else:performance>
+//~ /**
+//~  * One line per change of the shell's state, which a scripted run can read back to check the stack
+//~  * invariants on every line, or compare the state before and after process death.
+//~  *
+//~  *     perf.shell: generation=1 tab=0 stacks=[["HomeKey","DetailKey(id=3)"],["FeedKey"]] presented=[] roots=["HomeKey","FeedKey"] more=false chrome=Bar window=411x891dp class=CompactxExpanded
+//~  *
+//~  * `more` is whether the More list is in front of the tab, `chrome` the bar, rail or sidebar the
+//~  * window shows, and `window` and `class` the window it was chosen for, which a resize check can
+//~  * read.
+//~  */
+// </opt-else:performance>
 class ShellLog @Inject constructor() : ShellObserver {
 
     override suspend fun observe(state: ShellState) {

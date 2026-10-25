@@ -30,7 +30,7 @@ import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.annotation.Config
 
-// <opt:ui_components>
+// <opt:performance&ui_components>
 /**
  * Whether the overlay records decides whether the perf gates measure the app with it or without
  * it: release-like builds must start without it, and the launch extra `perf.sh` passes must win
@@ -40,8 +40,8 @@ import org.robolectric.annotation.Config
  * Activities are only created, never started: the launch extra is read on creation, and a started
  * one would also start the memory sampler, which is not under test here.
  */
-// </opt:ui_components>
-// <opt-else:ui_components>
+// </opt:performance&ui_components>
+// <opt-else:performance&ui_components>
 //~ /**
 //~  * Whether the overlay records decides whether a measurement takes the app with it or without it:
 //~  * release-like builds must start without it, and the launch extra a scripted run passes must win
@@ -51,7 +51,7 @@ import org.robolectric.annotation.Config
 //~  * Activities are only created, never started: the launch extra is read on creation, and a started
 //~  * one would also start the memory sampler, which is not under test here.
 //~  */
-// </opt-else:ui_components>
+// </opt-else:performance&ui_components>
 @RunWith(AndroidJUnit4::class)
 @Config(sdk = [ROBOLECTRIC_SDK])
 class PerformanceRecorderTest {

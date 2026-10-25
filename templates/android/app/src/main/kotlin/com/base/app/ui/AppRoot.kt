@@ -83,7 +83,13 @@ fun AppRoot(
     val themeMode = settings.themeMode()
 
     val screens: @Composable () -> Unit = {
+        // <opt:performance>
         // Test tags become resource ids, which is how benchmarks and tools/perf find tabs and lists.
+        // </opt:performance>
+        // <opt-else:performance>
+        //~ // Test tags become resource ids, which is how UI Automator and Macrobenchmark find tabs
+        //~ // and lists.
+        // </opt-else:performance>
         Box(modifier = Modifier.fillMaxSize().semantics { testTagsAsResourceId = true }) {
             CompositionLocalProvider(LocalAppShortcuts provides shortcuts) {
                 EntryHost(

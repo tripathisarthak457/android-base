@@ -39,7 +39,12 @@ fun SheetsSection() {
     PresetDemos()
 }
 
+// <opt:performance>
 /** A button that opens the demo [id]: its test tag is what `record.sh` and `perf.sh` tap. */
+// </opt:performance>
+// <opt-else:performance>
+//~ /** A button that opens the demo [id]: its test tag is what a UI Automator script taps. */
+// </opt-else:performance>
 @Composable
 internal fun DemoTrigger(id: String, label: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     AppButton(
