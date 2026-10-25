@@ -69,11 +69,11 @@ fun AppDisclosure(
                 .semantics { stateDescription = state }
                 .disabledAlpha(enabled)
                 .heightIn(min = AppTheme.sizes.rowHeight)
-                .padding(horizontal = AppTheme.spacing.lg, vertical = 11.dp),
+                .padding(horizontal = AppTheme.spacing.lg, vertical = AppDisclosureDefaults.VerticalPadding),
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(AppDisclosureDefaults.TitleSpacing)) {
                 AppText(text = title, style = AppTheme.typography.body, color = AppTheme.colors.contentPrimary)
                 subtitle?.let {
                     AppText(text = it, style = AppTheme.typography.subheadline, color = AppTheme.colors.contentSecondary)
@@ -83,7 +83,7 @@ fun AppDisclosure(
                 imageVector = AppIcons.ChevronRight,
                 contentDescription = null,
                 tint = AppTheme.colors.contentTertiary,
-                size = 16.dp,
+                size = AppDisclosureDefaults.ChevronSize,
                 modifier = Modifier.graphicsLayer { rotationZ = direction * turn.value },
             )
         }
@@ -92,6 +92,13 @@ fun AppDisclosure(
             Column(modifier = Modifier.padding(horizontal = AppTheme.spacing.lg).padding(bottom = AppTheme.spacing.md), content = content)
         }
     }
+}
+
+/** The disclosure row's metrics, a row's. */
+object AppDisclosureDefaults {
+    val VerticalPadding = 11.dp
+    val TitleSpacing = 2.dp
+    val ChevronSize = 16.dp
 }
 
 @AppComponentPreviews

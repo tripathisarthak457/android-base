@@ -91,7 +91,7 @@ fun AppRow(
                     }
                     trailing?.invoke()
                     if (showChevron && !destructive) {
-                        AppIcon(AppIcons.ChevronRight, contentDescription = null, tint = colors.contentTertiary, size = ChevronSize)
+                        AppIcon(AppIcons.ChevronRight, contentDescription = null, tint = colors.contentTertiary, size = AppRowDefaults.ChevronSize)
                     }
                 }
             }
@@ -168,7 +168,7 @@ fun AppChoiceRow(
                 contentDescription = null,
                 modifier = Modifier.graphicsLayer { alpha = if (selected) 1f else 0f },
                 tint = colors.accentContent,
-                size = CheckSize,
+                size = AppRowDefaults.CheckSize,
             )
         },
     )
@@ -176,7 +176,7 @@ fun AppChoiceRow(
 
 @Composable
 private fun RowText(title: String, subtitle: String?, titleColor: Color) {
-    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(AppRowDefaults.TitleSpacing)) {
         AppText(
             text = title,
             style = AppTheme.typography.body,
@@ -225,7 +225,7 @@ private fun RowLayout(
             .then(inset),
     ) { (leadingSlot, textSlot, trailingSlot), constraints ->
         val horizontal = spacing.lg.roundToPx()
-        val vertical = RowVerticalPadding.roundToPx()
+        val vertical = AppRowDefaults.VerticalPadding.roundToPx()
         val gap = spacing.md.roundToPx()
         val inner = constraints.copy(minWidth = 0, minHeight = 0).offset(horizontal = -horizontal * 2, vertical = -vertical * 2)
 
@@ -258,9 +258,13 @@ private fun RowLayout(
     }
 }
 
-private val RowVerticalPadding = 11.dp
-private val ChevronSize = 16.dp
-private val CheckSize = 20.dp
+/** The row's metrics, iOS's. */
+object AppRowDefaults {
+    val TitleSpacing = 2.dp
+    val VerticalPadding = 11.dp
+    val ChevronSize = 16.dp
+    val CheckSize = 20.dp
+}
 
 @AppComponentPreviews
 @Composable

@@ -115,7 +115,7 @@ fun AppSearchField(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .heightIn(min = SearchHeight)
+                                .heightIn(min = AppSearchFieldDefaults.Height)
                                 .padding(start = spacing.sm),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(spacing.xs),
@@ -194,7 +194,10 @@ private class CancelRoom {
     var width = 0f
 }
 
-private val SearchHeight = 36.dp
+/** The search field's metrics, iOS's. */
+object AppSearchFieldDefaults {
+    val Height = 36.dp
+}
 
 @AppComponentPreviews
 @Composable

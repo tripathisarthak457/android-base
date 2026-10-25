@@ -2,7 +2,6 @@ package com.base.app.core.designsystem.component.input
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
@@ -188,7 +187,7 @@ internal fun fieldDecorator(
             treatment == FieldTreatment.Filled -> Color.Transparent
             else -> colors.outline
         },
-        animationSpec = tween(AppTheme.springs.fadeQuick),
+        animationSpec = AppTheme.springs.quickFade(),
         label = "fieldEdge",
     )
     val fill = when {
