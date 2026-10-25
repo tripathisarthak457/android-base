@@ -7,9 +7,9 @@ Add a component to the design system of an Android project that already exists.
     py add_component.py Tag --project ../MyApp --dry-run        # what it would write, writing nothing
 
 The component and its test are the two templates in the project's own docs/DESIGN-SYSTEM.md, renamed. That page is
-where a component is learned, and the build's rules hold both templates to themselves (DesignSystemDocTest), so the
-page, this scaffold and the guard cannot disagree. Projects with and without UI components get the same component,
-each with the previews its own page shows.
+where a component is learned, and in a project without UI components the build's rules hold both templates to
+themselves (DesignSystemDocTest), so the page, this scaffold and the guard cannot disagree. Projects with and without
+UI components get the same component, each with the previews its own page shows.
 """
 
 from __future__ import annotations

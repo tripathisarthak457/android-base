@@ -491,10 +491,11 @@ py add_component.py SearchBar --project ../MyApp --dry-run
 It writes `AppTag` into `:core:designsystem`, in a package of its own under `component` (or the
 one `--group` names), and `AppTagTest` beside it in the module's tests. Both come from the two
 templates in the project's own `docs/DESIGN-SYSTEM.md`, renamed, with the imports they need: that
-page is where a component is learned and the build's rules check both templates, so the page, the
-scaffold and the guard cannot disagree. It works the same with or without UI components, each
-project getting the previews its own page shows. It refuses a name that is not PascalCase, one the
-design system already has, and a project without `:core:designsystem`.
+page is where a component is learned, and in a project without UI components the build's rules
+check both templates, so the page, the scaffold and the guard cannot disagree. It works the same
+with or without UI components, each project getting the previews its own page shows. It refuses a
+name that is not PascalCase, one the design system already has, and a project without
+`:core:designsystem`.
 
 ---
 
