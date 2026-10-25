@@ -61,6 +61,10 @@ EXAMPLE_NAMES = frozenset({
 STALE_NAMES: dict[str, set[str]] = {}
 #: Backticked hyphenated tokens that are neither rule ids, skills nor folders: Android tools' own words.
 OTHER_HYPHENATED = frozenset({"run-as", "speed-profile"})
+#: Modules a page names that a project with UI components may not have. README's "Only `:app` and `:catalog` carry
+#: flavours" is untrue of one without the catalog (lean, none); fencing it on `catalog` would change those projects'
+#: bytes, which is the UI release's decision. A project without UI components gets no exception.
+UI_STALE_MODULES = frozenset({("README.md", ":catalog")})
 #: Projects generated for the per-project checks: the presets at both ends, both architectures, every language, and
 #: the same without UI components.
 LANGUAGES = ["de", "es", "fr", "hi", "pt-BR"]
@@ -263,9 +267,11 @@ class GeneratedDocsTest(unittest.TestCase):
     def test_every_module_the_docs_name_is_in_the_build(self):
         for name, project in self.projects.items():
             modules = included_modules(project)
+            ui = CASES[name][3]
             for page, text in self.pages(project).items():
                 for token in backticked(prose(text)):
-                    if not re.fullmatch(r":[a-z][\w-]*(?::[\w-]+)+", token):
+                    # Root modules too: `:app`, `:catalog` and `:benchmark` come and go with features and the option.
+                    if not re.fullmatch(r":[a-z][\w-]*(?::[\w-]+)*", token) or (ui and (page, token) in UI_STALE_MODULES):
                         continue
                     with self.subTest(case=name, page=page, module=token):
                         # A modular project includes `:feature:auth:impl`; `:feature:auth` names the pair.
