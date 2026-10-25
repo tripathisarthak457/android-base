@@ -145,6 +145,7 @@ class SignInViewModelTest {
             viewModel.onEvent(SignInEvent.GoogleIdTokenReceived("id-token"))
             assertEquals(SignInEffect.SignedIn, awaitItem())
         }
+        assertEquals(listOf("id-token"), repository.googleSignIns)
         assertEquals(false, viewModel.state.value.submitting)
     }
 

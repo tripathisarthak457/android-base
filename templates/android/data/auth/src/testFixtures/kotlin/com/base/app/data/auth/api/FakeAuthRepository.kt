@@ -22,6 +22,11 @@ class FakeAuthRepository : AuthRepository {
 
     /** The address of each password-reset request. */
     val resetRequests = mutableListOf<String>()
+    // <opt:googlesignin>
+
+    /** The ID token each Google sign-in sent. */
+    val googleSignIns = mutableListOf<String>()
+    // </opt:googlesignin>
 
     override val isSignedIn = MutableStateFlow(false)
 
@@ -41,7 +46,10 @@ class FakeAuthRepository : AuthRepository {
     }
     // <opt:googlesignin>
 
-    override suspend fun signInWithGoogle(idToken: String): AppResult<Unit> = answer()
+    override suspend fun signInWithGoogle(idToken: String): AppResult<Unit> {
+        googleSignIns += idToken
+        return answer()
+    }
     // </opt:googlesignin>
 
     private suspend fun answer(): AppResult<Unit> {
