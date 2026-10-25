@@ -106,6 +106,82 @@ class SignInViewModelTest {
     }
 
     @Test
+    fun `the form is busy while a sign-in is in flight`() = runTest {
+        val answer = CompletableDeferred<Unit>()
+        repository.gate = answer
+        val viewModel = filledIn()
+
+        viewModel.onEvent(SignInEvent.Submit)
+        advanceUntilIdle()
+        assertEquals(true, viewModel.state.value.submitting)
+
+        answer.complete(Unit)
+        advanceUntilIdle()
+        assertEquals(false, viewModel.state.value.submitting)
+    }
+
+    @Test
+    fun `a sign-in that throws leaves the form usable`() = runTest {
+        repository.thrown = IllegalStateException("A bug in the repository")
+        val viewModel = filledIn()
+
+        viewModel.onEvent(SignInEvent.Submit)
+        advanceUntilIdle()
+        assertEquals(false, viewModel.state.value.submitting)
+
+        repository.thrown = null
+        viewModel.effects.test {
+            viewModel.onEvent(SignInEvent.Submit)
+            assertEquals(SignInEffect.SignedIn, awaitItem())
+        }
+    }
+    // <opt:googlesignin>
+
+    @Test
+    fun `a Google ID token signs in`() = runTest {
+        val viewModel = SignInViewModel(repository, SavedStateHandle())
+
+        viewModel.effects.test {
+            viewModel.onEvent(SignInEvent.GoogleIdTokenReceived("id-token"))
+            assertEquals(SignInEffect.SignedIn, awaitItem())
+        }
+        assertEquals(false, viewModel.state.value.submitting)
+    }
+
+    @Test
+    fun `a Google sign-in the server refuses goes in the banner`() = runTest {
+        repository.result = AppResult.Failure(AppError.Http(status = 500))
+        val viewModel = SignInViewModel(repository, SavedStateHandle())
+
+        viewModel.onEvent(SignInEvent.GoogleIdTokenReceived("id-token"))
+        advanceUntilIdle()
+
+        assertEquals(UiText.of(R.string.auth_google_sign_in_failed), viewModel.state.value.error)
+        assertEquals(false, viewModel.state.value.submitting)
+    }
+
+    @Test
+    fun `a Google sign-in that throws leaves the form usable`() = runTest {
+        repository.thrown = IllegalStateException("A bug in the repository")
+        val viewModel = SignInViewModel(repository, SavedStateHandle())
+
+        viewModel.onEvent(SignInEvent.GoogleIdTokenReceived("id-token"))
+        advanceUntilIdle()
+
+        assertEquals(false, viewModel.state.value.submitting)
+    }
+
+    @Test
+    fun `Credential Manager failing says so in the banner`() = runTest {
+        val viewModel = SignInViewModel(repository, SavedStateHandle())
+
+        viewModel.onEvent(SignInEvent.GoogleFailed)
+
+        assertEquals(UiText.of(R.string.auth_google_failed), viewModel.state.value.error)
+    }
+    // </opt:googlesignin>
+
+    @Test
     fun `an invalid email is reported on the field and nothing is sent`() = runTest {
         val viewModel = SignInViewModel(repository, SavedStateHandle())
         viewModel.state.launchIn(backgroundScope)

@@ -131,10 +131,8 @@ internal class SignInViewModel @Inject constructor(
         setState { copy(emailError = emailError, passwordError = passwordError, error = null) }
         if (emailError != null || passwordError != null) return
 
-        launchExclusive(SUBMIT) {
-            setState { copy(submitting = true) }
+        launchExclusive(SUBMIT, busy = { copy(submitting = it) }) {
             val result = authRepository.signIn(email = email.text.toString(), password = password.text.toString())
-            setState { copy(submitting = false) }
             when (result) {
                 is AppResult.Success -> emit(SignInEffect.SignedIn)
                 is AppResult.Failure -> showFailure(result.error, R.string.auth_sign_in_failed)
@@ -145,10 +143,8 @@ internal class SignInViewModel @Inject constructor(
 
     private fun signInWithGoogle(idToken: String) {
         setState { copy(error = null) }
-        launchExclusive(SUBMIT) {
-            setState { copy(submitting = true) }
+        launchExclusive(SUBMIT, busy = { copy(submitting = it) }) {
             val result = authRepository.signInWithGoogle(idToken)
-            setState { copy(submitting = false) }
             when (result) {
                 is AppResult.Success -> emit(SignInEffect.SignedIn)
                 is AppResult.Failure -> showFailure(result.error, R.string.auth_google_sign_in_failed)

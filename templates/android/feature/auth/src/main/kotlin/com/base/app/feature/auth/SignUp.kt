@@ -141,8 +141,7 @@ internal class SignUpViewModel @Inject constructor(
         }
         if (nameError != null || emailError != null || passwordError != null || confirmError != null) return
 
-        launchExclusive(SUBMIT) {
-            setState { copy(submitting = true) }
+        launchExclusive(SUBMIT, busy = { copy(submitting = it) }) {
             val result = authRepository.signUp(
                 SignUpDetails(
                     name = name.text.toString(),
@@ -150,7 +149,6 @@ internal class SignUpViewModel @Inject constructor(
                     password = password.text.toString(),
                 ),
             )
-            setState { copy(submitting = false) }
             when (result) {
                 is AppResult.Success -> emit(SignUpEffect.SignedUp)
                 is AppResult.Failure -> showFailure(result.error, R.string.auth_sign_up_failed)

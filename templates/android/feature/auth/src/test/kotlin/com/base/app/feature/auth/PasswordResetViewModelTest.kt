@@ -136,6 +136,21 @@ class PasswordResetViewModelTest {
     }
 
     @Test
+    fun `a request that throws leaves the form usable`() = runTest {
+        repository.thrown = IllegalStateException("A bug in the repository")
+        val viewModel = filledIn("ada@example.com")
+
+        viewModel.onEvent(PasswordResetEvent.Submit)
+        advanceUntilIdle()
+        assertFalse(viewModel.state.value.submitting)
+
+        repository.thrown = null
+        viewModel.onEvent(PasswordResetEvent.Submit)
+        advanceUntilIdle()
+        assertTrue(viewModel.state.value.sent)
+    }
+
+    @Test
     fun `back asks to leave the screen`() = runTest {
         val viewModel = PasswordResetViewModel(repository, SavedStateHandle())
 

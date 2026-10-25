@@ -101,11 +101,8 @@ internal class PasswordResetViewModel @Inject constructor(
         setState { copy(emailError = emailError, error = null) }
         if (emailError != null) return
 
-        launchExclusive(SUBMIT) {
-            setState { copy(submitting = true) }
-            val result = authRepository.requestPasswordReset(email.text.toString())
-            setState { copy(submitting = false) }
-            when (result) {
+        launchExclusive(SUBMIT, busy = { copy(submitting = it) }) {
+            when (val result = authRepository.requestPasswordReset(email.text.toString())) {
                 is AppResult.Success -> setState { copy(sent = true) }
                 is AppResult.Failure -> {
                     val fieldError = result.error.fieldError(EMAIL)

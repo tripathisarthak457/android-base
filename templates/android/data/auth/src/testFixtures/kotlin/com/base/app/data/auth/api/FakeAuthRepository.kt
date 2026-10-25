@@ -7,12 +7,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 /**
  * An [AuthRepository] whose server answers every request with [result], recording what each
  * request sent. While [gate] is set, every answer waits for it, so a test can act while a request
- * is in flight.
+ * is in flight. While [thrown] is set, every request throws it instead, as a repository with a bug
+ * would.
  */
 class FakeAuthRepository : AuthRepository {
 
     var result: AppResult<Unit> = AppResult.Success(Unit)
     var gate: CompletableDeferred<Unit>? = null
+    var thrown: Throwable? = null
 
     /** Each sign-in, as the email and password it sent. */
     val signIns = mutableListOf<Pair<String, String>>()
@@ -44,6 +46,7 @@ class FakeAuthRepository : AuthRepository {
 
     private suspend fun answer(): AppResult<Unit> {
         gate?.await()
+        thrown?.let { throw it }
         return result
     }
 }

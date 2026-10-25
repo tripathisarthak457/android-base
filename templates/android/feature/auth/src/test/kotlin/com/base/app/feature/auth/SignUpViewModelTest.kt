@@ -191,6 +191,22 @@ class SignUpViewModelTest {
     }
 
     @Test
+    fun `a request that throws leaves the form usable`() = runTest {
+        repository.thrown = IllegalStateException("A bug in the repository")
+        val viewModel = filledIn()
+
+        viewModel.onEvent(SignUpEvent.Submit)
+        advanceUntilIdle()
+        assertFalse(viewModel.state.value.submitting)
+
+        repository.thrown = null
+        viewModel.effects.test {
+            viewModel.onEvent(SignUpEvent.Submit)
+            assertEquals(SignUpEffect.SignedUp, awaitItem())
+        }
+    }
+
+    @Test
     fun `back asks to leave the screen`() = runTest {
         val viewModel = SignUpViewModel(repository, SavedStateHandle())
 
