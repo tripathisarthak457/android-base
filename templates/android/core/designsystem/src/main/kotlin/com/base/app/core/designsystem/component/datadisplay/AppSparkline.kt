@@ -30,8 +30,8 @@ fun AppSparkline(
     values: List<Float>,
     modifier: Modifier = Modifier,
     color: Color = AppTheme.colors.accent,
-    strokeWidth: Dp = 2.dp,
-    height: Dp = 48.dp,
+    strokeWidth: Dp = AppSparklineDefaults.StrokeWidth,
+    height: Dp = AppSparklineDefaults.Height,
     fill: Boolean = true,
 ) {
     if (values.size < 2) return
@@ -96,6 +96,12 @@ fun AppSparkline(
 }
 
 private const val FillAlpha = 0.22f
+
+/** The sparkline's line and height. */
+object AppSparklineDefaults {
+    val StrokeWidth = 2.dp
+    val Height = 48.dp
+}
 
 @AppComponentPreviews
 @Composable

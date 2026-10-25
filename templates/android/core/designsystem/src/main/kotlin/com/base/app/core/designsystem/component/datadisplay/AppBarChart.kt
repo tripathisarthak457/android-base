@@ -31,7 +31,7 @@ fun AppBarChart(
     modifier: Modifier = Modifier,
     barColor: Color = AppTheme.colors.accent,
     trackColor: Color = AppTheme.colors.fill,
-    barHeight: Dp = 10.dp,
+    barHeight: Dp = AppBarChartDefaults.BarHeight,
     valueLabel: (Float) -> String = { it.toInt().toString() },
 ) {
     if (entries.isEmpty()) return
@@ -90,6 +90,11 @@ fun AppBarChart(
             }
         }
     }
+}
+
+/** The bar chart's bars. */
+object AppBarChartDefaults {
+    val BarHeight = 10.dp
 }
 
 @AppComponentPreviews

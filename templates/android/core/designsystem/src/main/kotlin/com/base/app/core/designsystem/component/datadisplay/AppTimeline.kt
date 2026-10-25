@@ -61,27 +61,27 @@ fun AppTimeline(
                 modifier = Modifier
                     .fillMaxWidth()
                     .drawWithCache {
-                        val column = NodeColumn.toPx()
+                        val column = AppTimelineDefaults.NodeColumn.toPx()
                         val x = if (layoutDirection == LayoutDirection.Ltr) column / 2f else size.width - column / 2f
-                        val top = (if (active) NodeActive else NodeSize).toPx() + NodeGap.toPx()
-                        val stroke = ConnectorWidth.toPx()
+                        val top = (if (active) AppTimelineDefaults.NodeActive else AppTimelineDefaults.NodeSize).toPx() + AppTimelineDefaults.NodeGap.toPx()
+                        val stroke = AppTimelineDefaults.ConnectorWidth.toPx()
                         val dashes = if (done) null else PathEffect.dashPathEffect(floatArrayOf(stroke * 2f, stroke * 2f))
                         onDrawBehind {
                             if (!last) drawLine(connector, Offset(x, top), Offset(x, size.height), strokeWidth = stroke, pathEffect = dashes)
                         }
                     },
             ) {
-                Box(modifier = Modifier.width(NodeColumn), contentAlignment = Alignment.TopCenter) {
+                Box(modifier = Modifier.width(AppTimelineDefaults.NodeColumn), contentAlignment = Alignment.TopCenter) {
                     Box(
-                        modifier = Modifier.size(if (active) NodeActive else NodeSize).background(node, AppTheme.shapes.pill),
+                        modifier = Modifier.size(if (active) AppTimelineDefaults.NodeActive else AppTimelineDefaults.NodeSize).background(node, AppTheme.shapes.pill),
                         contentAlignment = Alignment.Center,
                     ) {
-                        if (done) AppIcon(AppIcons.Check, contentDescription = null, tint = colors.success.on, size = 10.dp)
+                        if (done) AppIcon(AppIcons.Check, contentDescription = null, tint = colors.success.on, size = AppTimelineDefaults.CheckSize)
                     }
                 }
                 Column(
                     modifier = Modifier.weight(1f).padding(start = AppTheme.spacing.md, bottom = AppTheme.spacing.lg),
-                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                    verticalArrangement = Arrangement.spacedBy(AppTimelineDefaults.TextSpacing),
                 ) {
                     AppText(
                         text = step.title,
@@ -100,11 +100,16 @@ fun AppTimeline(
     }
 }
 
-private val NodeColumn = 24.dp
-private val NodeSize = 12.dp
-private val NodeActive = 16.dp
-private val NodeGap = 4.dp
-private val ConnectorWidth = 2.dp
+/** The timeline's nodes and connectors. */
+object AppTimelineDefaults {
+    val CheckSize = 10.dp
+    val TextSpacing = 2.dp
+    val NodeColumn = 24.dp
+    val NodeSize = 12.dp
+    val NodeActive = 16.dp
+    val NodeGap = 4.dp
+    val ConnectorWidth = 2.dp
+}
 
 @AppComponentPreviews
 @Composable

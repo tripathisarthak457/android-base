@@ -85,7 +85,7 @@ fun <T> AppReorderableList(
                     haptics.perform(AppHaptic.Threshold)
                     drag.autoScroll = scope.launch {
                         while (true) {
-                            val speed = drag.edgeSpeed(AutoScrollEdge.toPx(), MaxScroll.toPx())
+                            val speed = drag.edgeSpeed(AppReorderableListDefaults.AutoScrollEdge.toPx(), AppReorderableListDefaults.MaxScroll.toPx())
                             withFrameMillis { }
                             if (speed != 0f) state.scrollBy(speed)
                         }
@@ -112,7 +112,7 @@ fun <T> AppReorderableList(
                             translationY = drag.translation()
                             scaleX = LiftScale
                             scaleY = LiftScale
-                            shadowElevation = LiftElevation.toPx()
+                            shadowElevation = AppReorderableListDefaults.LiftElevation.toPx()
                         }
                     }
                     .semantics {
@@ -195,9 +195,13 @@ private class ReorderDrag(private val list: LazyListState) {
     }
 }
 
-private val AutoScrollEdge = 56.dp
-private val MaxScroll = 14.dp
-private val LiftElevation = 8.dp
+/** Where a lifted row starts scrolling the list, how fast, and how high it lifts. */
+object AppReorderableListDefaults {
+    val AutoScrollEdge = 56.dp
+    val MaxScroll = 14.dp
+    val LiftElevation = 8.dp
+}
+
 private const val LiftScale = 1.02f
 
 @AppComponentPreviews

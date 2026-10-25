@@ -56,7 +56,7 @@ fun AppStatTile(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 icon?.let {
-                    AppIcon(it, contentDescription = null, tint = colors.contentTertiary, size = 16.dp)
+                    AppIcon(it, contentDescription = null, tint = colors.contentTertiary, size = AppStatTileDefaults.IconSize)
                 }
                 AppText(
                     text = label,
@@ -76,7 +76,7 @@ fun AppStatTile(
 
             delta?.let {
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(2.dp),
+                    horizontalArrangement = Arrangement.spacedBy(AppStatTileDefaults.DeltaSpacing),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     AppIcon(
@@ -85,7 +85,7 @@ fun AppStatTile(
                             if (deltaIsPositive) R.string.designsystem_trend_up else R.string.designsystem_trend_down,
                         ),
                         tint = deltaColors.content,
-                        size = 14.dp,
+                        size = AppStatTileDefaults.DeltaIconSize,
                     )
                     AppText(
                         text = it,
@@ -96,6 +96,13 @@ fun AppStatTile(
             }
         }
     }
+}
+
+/** The stat tile's glyphs. */
+object AppStatTileDefaults {
+    val IconSize = 16.dp
+    val DeltaSpacing = 2.dp
+    val DeltaIconSize = 14.dp
 }
 
 @AppComponentPreviews

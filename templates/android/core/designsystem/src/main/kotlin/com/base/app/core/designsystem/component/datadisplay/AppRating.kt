@@ -30,7 +30,7 @@ fun AppRating(
     rating: Float,
     modifier: Modifier = Modifier,
     max: Int = 5,
-    starSize: Dp = 18.dp,
+    starSize: Dp = AppRatingDefaults.StarSize,
     onRatingChange: ((Int) -> Unit)? = null,
 ) {
     val colors = AppTheme.colors
@@ -39,7 +39,7 @@ fun AppRating(
 
     Row(
         modifier = modifier.semantics { contentDescription = description },
-        horizontalArrangement = Arrangement.spacedBy(2.dp),
+        horizontalArrangement = Arrangement.spacedBy(AppRatingDefaults.StarSpacing),
     ) {
         repeat(max) { index ->
             val fill = (rating - index).coerceIn(0f, 1f)
@@ -80,6 +80,12 @@ fun AppRating(
 /** Above this much of a star is filled, it reads as whole; above half, as a half. */
 private const val FullStar = 0.75f
 private const val HalfStar = 0.25f
+
+/** The rating's stars. */
+object AppRatingDefaults {
+    val StarSize = 18.dp
+    val StarSpacing = 2.dp
+}
 
 @AppComponentPreviews
 @Composable

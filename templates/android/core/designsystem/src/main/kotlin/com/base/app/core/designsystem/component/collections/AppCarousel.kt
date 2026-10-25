@@ -41,7 +41,7 @@ fun AppCarousel(
     pageCount: Int,
     modifier: Modifier = Modifier,
     state: PagerState = rememberPagerState { pageCount },
-    peek: Dp = 32.dp,
+    peek: Dp = AppCarouselDefaults.Peek,
     pageSpacing: Dp = AppTheme.spacing.md,
     showPageControl: Boolean = true,
     content: @Composable (page: Int) -> Unit,
@@ -94,6 +94,11 @@ fun AppCarousel(
 }
 
 private const val SideScale = 0.92f
+
+/** How much of the next slide shows. */
+object AppCarouselDefaults {
+    val Peek = 32.dp
+}
 
 @AppComponentPreviews
 @Composable
