@@ -13,6 +13,7 @@ import tempfile
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
+from unittest import mock
 
 from genkit.core import pipeline
 from genkit.core.copy import is_verbatim
@@ -353,6 +354,43 @@ class ProjectScriptsTest(unittest.TestCase):
             self.assertEqual(0, remove(["orders", "--dry-run", "--project", str(project)]))
         for tier in ("data", "feature"):
             self.assertIn(f"{tier}/  (no module left in it)", plan.getvalue())
+        with redirect_stdout(io.StringIO()):
+            self.assertEqual(0, remove(["orders", "--yes", "--project", str(project)]))
+        self.assertEqual(before, snapshot(project))
+
+    def test_a_folder_that_cannot_be_deleted_is_already_out_of_the_build_and_goes_next_time(self):
+        import remove_feature
+
+        project = self.copy()
+        before = snapshot(project)
+        self.assertEqual(0, self.add("orders", "--project", str(project))[0])
+        delete = shutil.rmtree
+
+        # A Gradle daemon on Windows can hold the module's build output open, so the folder stays.
+        def rmtree(path, *arguments, **keywords):
+            if Path(path).parts[-2:] != ("feature", "orders") and Path(path).name != "feature":
+                delete(path, *arguments, **keywords)
+
+        with mock.patch.object(remove_feature.shutil, "rmtree", rmtree), redirect_stdout(io.StringIO()) as out:
+            self.assertEqual(1, remove_feature.main(["orders", "--yes", "--project", str(project)]))
+        self.assertIn("could not all be deleted:\n    feature/orders/\n    feature/\n", out.getvalue())
+        self.assertFalse((project / "data").exists())
+        self.assertNotIn(":orders", (project / "settings.gradle.kts").read_text(encoding="utf-8"))
+        self.assertNotIn(":feature:orders", (project / "app/build.gradle.kts").read_text(encoding="utf-8"))
+
+        with redirect_stdout(io.StringIO()):
+            self.assertEqual(0, remove_feature.main(["orders", "--yes", "--project", str(project)]))
+        self.assertEqual(before, snapshot(project))
+
+    def test_a_removal_cut_short_is_finished_by_the_next(self):
+        from remove_feature import main as remove
+
+        project = self.copy()
+        before = snapshot(project)
+        self.assertEqual(0, self.add("orders", "--project", str(project))[0])
+        # Where a run stopped by a held file left it: one module gone, its tier's build output still there.
+        shutil.rmtree(project / "data/orders")
+        (project / "data/build").mkdir()
         with redirect_stdout(io.StringIO()):
             self.assertEqual(0, remove(["orders", "--yes", "--project", str(project)]))
         self.assertEqual(before, snapshot(project))

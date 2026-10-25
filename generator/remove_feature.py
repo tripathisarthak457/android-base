@@ -67,7 +67,7 @@ def main(argv: list[str] | None = None) -> int:
         print(prompts.dim("  Nothing was changed. Check the name, or the --project path."))
         return 1
 
-    tiers = emptied_tiers(present)
+    tiers = emptied_tiers(directories)
     report_plan(project, present, tiers)
 
     if args.dry_run:
@@ -81,15 +81,29 @@ def main(argv: list[str] | None = None) -> int:
         print("Cancelled.")
         return 0
 
-    for path in [*present, *tiers]:
-        shutil.rmtree(path)
-
+    # The edits come first, so a folder that cannot be deleted is already out of the build: on
+    # Windows a Gradle daemon or the IDE can hold the build output's files open after a build.
     unregister_modules(project, names)
     unregister_dependencies(project, names)
     unregister_tabs(project, package_name, names)
 
+    kept = delete([*present, *tiers])
+    if kept:
+        report_kept(project, kept)
+        return 1
+
     report_done(names)
     return 0
+
+
+def delete(folders: list[Path]) -> list[Path]:
+    """
+    Deletes each folder with everything in it that can go, past a file something holds open, and
+    returns the folders that are still there.
+    """
+    for folder in folders:
+        shutil.rmtree(folder, ignore_errors=True)
+    return [folder for folder in folders if folder.exists()]
 
 
 def emptied_tiers(removed: list[Path]) -> list[Path]:
@@ -97,12 +111,14 @@ def emptied_tiers(removed: list[Path]) -> list[Path]:
     The tiers (`data/`, `feature/`) that removing these modules leaves with no module, which go too,
     as they were before the first module was added. All a tier can hold besides its modules is the
     build output Gradle wrote for the tier's own project (coverage and dependency analysis build
-    every project, the tier's too), and once no module is left no project owns it.
+    every project, the tier's too), and once no module is left no project owns it. A module already
+    gone counts as removed, so a run that could not finish is finished by the next.
     """
     return sorted(
         tier
         for tier in {path.parent for path in removed}
-        if all(entry in removed or (entry.name == "build" and entry.is_dir()) for entry in tier.iterdir())
+        if tier.is_dir()
+        and all(entry in removed or (entry.name == "build" and entry.is_dir()) for entry in tier.iterdir())
     )
 
 
@@ -158,6 +174,16 @@ def report_plan(project: Path, present: list[Path], tiers: list[Path]) -> None:
     print()
     print(prompts.dim("  and the lines naming them in:"))
     print(prompts.dim("    settings.gradle.kts, app/build.gradle.kts, ui/AppDestinations.kt"))
+    print()
+
+
+def report_kept(project: Path, kept: list[Path]) -> None:
+    print()
+    print(prompts.red("  The modules are out of the build, but these folders could not all be deleted:"))
+    for folder in kept:
+        print(f"    {folder.relative_to(project).as_posix()}/")
+    print(prompts.dim("  Something still holds files in them open, usually the Gradle daemon (./gradlew --stop)"))
+    print(prompts.dim("  or the IDE. Delete them once it lets go."))
     print()
 
 
