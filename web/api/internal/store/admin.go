@@ -26,7 +26,20 @@ type Filter struct {
 	Country     string
 	DeviceClass string
 	Source      string
+	// UIComponents is one of UIComponentsValues: whether the generation's spec asked for them.
+	UIComponents string
 }
+
+// UIComponentsValues are what uiComponents says of a generation that has a spec.
+var UIComponentsValues = []string{"with", "without"}
+
+// uiComponents says whether generation `g` was made with UI components. The stored spec is the
+// request as sent, and a request without the field gets them, so only an explicit false is
+// "without"; a row with no spec, refused before it was read, is "", which no filter value matches.
+// It is read from the spec rather than a column because the admin is its only reader, and a column
+// would cost a migration and a writer change for one chart.
+const uiComponents = `CASE WHEN g.spec IS NULL THEN '' ` +
+	`WHEN g.spec -> 'ui_components' = 'false'::jsonb THEN 'without' ELSE 'with' END`
 
 // params numbers query arguments as they are added.
 type params struct{ args []any }
@@ -52,6 +65,9 @@ func (f Filter) generations(p *params) (from, where string) {
 			conditions = append(conditions, c.column+" = "+p.add(c.value))
 		}
 	}
+	if f.UIComponents != "" {
+		conditions = append(conditions, "("+uiComponents+") = "+p.add(f.UIComponents))
+	}
 	if f.Source != "" {
 		from += " JOIN visits v ON v.session_id = g.session_id"
 		conditions = append(conditions, "v.source = "+p.add(f.Source))
@@ -59,8 +75,8 @@ func (f Filter) generations(p *params) (from, where string) {
 	return from, strings.Join(conditions, " AND ")
 }
 
-// sessions returns conditions selecting visits `v` in the window. Preset and outcome describe
-// generations, not visits, and do not apply. withSession leaves out the rows of the legacy
+// sessions returns conditions selecting visits `v` in the window. Preset, outcome and UI components
+// describe generations, not visits, and do not apply. withSession leaves out the rows of the legacy
 // /api/track alias, which have no session.
 func (f Filter) sessions(p *params, withSession bool) string {
 	conditions := []string{"v.at >= " + p.add(f.From), "v.at < " + p.add(f.To)}
@@ -82,6 +98,10 @@ func (f Filter) sessions(p *params, withSession bool) string {
 }
 
 func (f Filter) visitFiltered() bool { return f.Country != "" || f.DeviceClass != "" || f.Source != "" }
+
+// rollupCovers says whether the daily rollup can answer f. It keeps no session to find a source by,
+// and no spec to read ui_components from.
+func (f Filter) rollupCovers() bool { return f.Source == "" && f.UIComponents == "" }
 
 func (s *Store) query(ctx context.Context, sql string, args []any, scan func(pgx.Rows) error) error {
 	if !s.Ready() {
@@ -237,8 +257,8 @@ type SeriesDay struct {
 }
 
 // Series returns one point per day of the window, zeros included: a chart with the quiet days left
-// out shows a quiet week as a busy one. Generations come from the daily rollup unless the source
-// filter needs each generation's session.
+// out shows a quiet week as a busy one. Generations come from the daily rollup unless a filter
+// needs each generation's own row.
 func (s *Store) Series(ctx context.Context, f Filter) ([]SeriesDay, error) {
 	days := map[string]*SeriesDay{}
 	var series []SeriesDay
@@ -254,7 +274,7 @@ func (s *Store) Series(ctx context.Context, f Filter) ([]SeriesDay, error) {
 
 	var p params
 	var sql string
-	if f.Source == "" {
+	if f.rollupCovers() {
 		conditions := []string{"r.day >= " + p.add(f.From) + "::date", "r.day < " + p.add(f.To) + "::date"}
 		for _, c := range []struct{ column, value string }{
 			{"r.target", f.Target}, {"r.preset", f.Preset}, {"r.outcome", f.Outcome},
@@ -321,7 +341,7 @@ type Count struct {
 type Week struct {
 	Week  string `json:"week"`
 	Total int64  `json:"total"`
-	// Values holds, per dimension (features, presets, architectures, design_styles,
+	// Values holds, per dimension (features, presets, ui_components, architectures, design_styles,
 	// motion_styles, languages), the number of projects with each value that week.
 	Values map[string]map[string]int64 `json:"values"`
 }
@@ -334,7 +354,23 @@ type Adoption struct {
 }
 
 // AdoptionDimensions are the scalar and list columns adoption breaks down, besides features.
-var AdoptionDimensions = []string{"presets", "architectures", "design_styles", "motion_styles", "languages"}
+var AdoptionDimensions = []string{
+	"presets", "ui_components", "architectures", "design_styles", "motion_styles", "languages",
+}
+
+// weeklyAdoption follows the generations CTE `g`: per week, the projects with each value of every
+// dimension, and the week's total.
+const weeklyAdoption = `, d AS (
+		SELECT date_trunc('week', created_at)::date AS week, 'total' AS dim, '' AS key FROM g
+		UNION ALL SELECT date_trunc('week', created_at)::date, 'presets', COALESCE(preset, '') FROM g
+		UNION ALL SELECT date_trunc('week', g.created_at)::date, 'ui_components', ` + uiComponents + ` FROM g
+		UNION ALL SELECT date_trunc('week', created_at)::date, 'architectures', COALESCE(architecture, '') FROM g
+		UNION ALL SELECT date_trunc('week', created_at)::date, 'design_styles', COALESCE(design_style, '') FROM g
+		UNION ALL SELECT date_trunc('week', created_at)::date, 'motion_styles', COALESCE(motion_style, '') FROM g
+		UNION ALL SELECT date_trunc('week', g.created_at)::date, 'languages', l FROM g, unnest(g.languages) AS l
+		UNION ALL SELECT date_trunc('week', g.created_at)::date, 'features', x FROM g, unnest(g.features) AS x
+	)
+	SELECT week::text, dim, key, count(*) FROM d GROUP BY 1, 2, 3 ORDER BY 1`
 
 // Adoption counts what successful projects contained. featureKeys is the target's catalogue, so a
 // feature nobody picked shows as a zero instead of being missing.
@@ -367,16 +403,7 @@ func (s *Store) Adoption(ctx context.Context, f Filter, featureKeys []string) (A
 	}
 
 	p = params{}
-	sql = base(&p) + `, d AS (
-			SELECT date_trunc('week', created_at)::date AS week, 'total' AS dim, '' AS key FROM g
-			UNION ALL SELECT date_trunc('week', created_at)::date, 'presets', COALESCE(preset, '') FROM g
-			UNION ALL SELECT date_trunc('week', created_at)::date, 'architectures', COALESCE(architecture, '') FROM g
-			UNION ALL SELECT date_trunc('week', created_at)::date, 'design_styles', COALESCE(design_style, '') FROM g
-			UNION ALL SELECT date_trunc('week', created_at)::date, 'motion_styles', COALESCE(motion_style, '') FROM g
-			UNION ALL SELECT date_trunc('week', g.created_at)::date, 'languages', l FROM g, unnest(g.languages) AS l
-			UNION ALL SELECT date_trunc('week', g.created_at)::date, 'features', x FROM g, unnest(g.features) AS x
-		)
-		SELECT week::text, dim, key, count(*) FROM d GROUP BY 1, 2, 3 ORDER BY 1`
+	sql = base(&p) + weeklyAdoption
 	weeks := map[string]*Week{}
 	var order []string
 	totals := map[string]map[string]int64{}
@@ -825,6 +852,7 @@ type GenerationRow struct {
 	MinSDK          *int            `json:"min_sdk"`
 	TargetSDK       *int            `json:"target_sdk"`
 	Glass           *bool           `json:"glass"`
+	UIComponents    string          `json:"ui_components"`
 	DurationMs      int             `json:"duration_ms"`
 	QueueMs         *int            `json:"queue_ms"`
 	PythonMs        *int            `json:"python_ms"`
@@ -856,8 +884,8 @@ func (s *Store) Generations(ctx context.Context, f Filter, before int64, limit i
 		SELECT g.id, g.created_at, g.target, g.outcome, COALESCE(g.app_name, ''), COALESCE(g.package_name, ''),
 		       COALESCE(g.preset, ''), g.features, g.added, g.removed, g.feature_modules,
 		       COALESCE(g.architecture, ''), COALESCE(g.design_style, ''), COALESCE(g.motion_style, ''),
-		       g.languages, g.min_sdk, g.target_sdk, g.glass, g.duration_ms, g.queue_ms, g.python_ms,
-		       g.stream_ms, g.config_ms, g.zip_bytes, g.cold_start, COALESCE(g.client, ''),
+		       g.languages, g.min_sdk, g.target_sdk, g.glass, ` + uiComponents + `, g.duration_ms, g.queue_ms,
+		       g.python_ms, g.stream_ms, g.config_ms, g.zip_bytes, g.cold_start, COALESCE(g.client, ''),
 		       COALESCE(g.country, ''), COALESCE(g.device_class, ''), COALESCE(g.failure_reason, ''),
 		       COALESCE(g.failure_field, ''), COALESCE(g.generator_commit, ''), g.notes, g.ignored_fields,
 		       g.warnings, COALESCE(g.spec, 'null'::jsonb)
@@ -870,8 +898,8 @@ func (s *Store) Generations(ctx context.Context, f Filter, before int64, limit i
 		var spec []byte
 		if err := r.Scan(&g.ID, &g.At, &g.Target, &g.Outcome, &g.AppName, &g.PackageName, &g.Preset,
 			&g.Features, &g.Added, &g.Removed, &g.FeatureModules, &g.Architecture, &g.DesignStyle,
-			&g.MotionStyle, &g.Languages, &g.MinSDK, &g.TargetSDK, &g.Glass, &g.DurationMs, &g.QueueMs,
-			&g.PythonMs, &g.StreamMs, &g.ConfigMs, &g.ZipBytes, &g.ColdStart, &g.Client, &g.Country,
+			&g.MotionStyle, &g.Languages, &g.MinSDK, &g.TargetSDK, &g.Glass, &g.UIComponents, &g.DurationMs,
+			&g.QueueMs, &g.PythonMs, &g.StreamMs, &g.ConfigMs, &g.ZipBytes, &g.ColdStart, &g.Client, &g.Country,
 			&g.DeviceClass, &g.FailureReason, &g.FailureField, &g.GeneratorCommit, &g.Notes, &g.IgnoredFields,
 			&g.Warnings, &spec); err != nil {
 			return err

@@ -73,14 +73,15 @@ func parseFilter(r *http.Request, now time.Time) (store.Filter, error) {
 	}
 
 	f := store.Filter{
-		From:        first,
-		To:          last.AddDate(0, 0, 1),
-		Target:      q.Get("target"),
-		Preset:      q.Get("preset"),
-		Outcome:     q.Get("outcome"),
-		Country:     strings.ToUpper(q.Get("country")),
-		DeviceClass: q.Get("device_class"),
-		Source:      strings.ToLower(strings.TrimSpace(q.Get("source"))),
+		From:         first,
+		To:           last.AddDate(0, 0, 1),
+		Target:       q.Get("target"),
+		Preset:       q.Get("preset"),
+		Outcome:      q.Get("outcome"),
+		Country:      strings.ToUpper(q.Get("country")),
+		DeviceClass:  q.Get("device_class"),
+		Source:       strings.ToLower(strings.TrimSpace(q.Get("source"))),
+		UIComponents: q.Get("ui_components"),
 	}
 	switch {
 	case f.Target != "" && !targetParam.MatchString(f.Target):
@@ -95,6 +96,8 @@ func parseFilter(r *http.Request, now time.Time) (store.Filter, error) {
 		return f, &badParam{"device_class", "Unknown device class."}
 	case len(f.Source) > 100 || strings.IndexFunc(f.Source, unicode.IsControl) >= 0:
 		return f, &badParam{"source", "That is not a source."}
+	case f.UIComponents != "" && !slices.Contains(store.UIComponentsValues, f.UIComponents):
+		return f, &badParam{"ui_components", "ui_components is with or without."}
 	}
 	return f, nil
 }
@@ -347,8 +350,8 @@ func (s *Server) readGenerations(r *http.Request, f store.Filter) (any, error) {
 var csvColumns = []string{
 	"id", "at", "target", "outcome", "preset", "added", "removed", "features", "feature_count",
 	"architecture", "design_style", "motion_style", "languages", "feature_modules", "min_sdk", "target_sdk",
-	"glass", "duration_ms", "queue_ms", "python_ms", "stream_ms", "config_ms", "zip_bytes", "cold_start",
-	"client", "country", "device_class", "failure_field", "failure_reason", "generator_commit",
+	"glass", "ui_components", "duration_ms", "queue_ms", "python_ms", "stream_ms", "config_ms", "zip_bytes",
+	"cold_start", "client", "country", "device_class", "failure_field", "failure_reason", "generator_commit",
 	"notes", "ignored_fields", "warnings", "app_name", "package_name",
 }
 
@@ -370,17 +373,7 @@ func (s *Server) handleGenerationsCSV(w http.ResponseWriter, r *http.Request) {
 	writer := csv.NewWriter(&out)
 	_ = writer.Write(csvColumns)
 	for _, g := range rows {
-		_ = writer.Write(formulaSafe([]string{
-			strconv.FormatInt(g.ID, 10), g.At.UTC().Format(time.RFC3339), g.Target, g.Outcome, g.Preset,
-			strings.Join(g.Added, " "), strings.Join(g.Removed, " "), strings.Join(g.Features, " "),
-			strconv.Itoa(len(g.Features)), g.Architecture, g.DesignStyle, g.MotionStyle,
-			strings.Join(g.Languages, " "), strings.Join(g.FeatureModules, " "), optional(g.MinSDK),
-			optional(g.TargetSDK), optional(g.Glass), strconv.Itoa(g.DurationMs), optional(g.QueueMs),
-			optional(g.PythonMs), optional(g.StreamMs), optional(g.ConfigMs), optional(g.ZipBytes),
-			optional(g.ColdStart), g.Client, g.Country, g.DeviceClass, g.FailureField, g.FailureReason,
-			g.GeneratorCommit, strings.Join(g.Notes, "\n"), strings.Join(g.IgnoredFields, " "),
-			strings.Join(g.Warnings, "\n"), g.AppName, g.PackageName,
-		}))
+		_ = writer.Write(formulaSafe(csvRow(g)))
 	}
 	writer.Flush()
 
@@ -393,6 +386,21 @@ func (s *Server) handleGenerationsCSV(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Length", strconv.Itoa(out.Len()))
 	w.WriteHeader(http.StatusOK)
 	_, _ = out.WriteTo(w)
+}
+
+// csvRow is g's cells in the order of csvColumns.
+func csvRow(g store.GenerationRow) []string {
+	return []string{
+		strconv.FormatInt(g.ID, 10), g.At.UTC().Format(time.RFC3339), g.Target, g.Outcome, g.Preset,
+		strings.Join(g.Added, " "), strings.Join(g.Removed, " "), strings.Join(g.Features, " "),
+		strconv.Itoa(len(g.Features)), g.Architecture, g.DesignStyle, g.MotionStyle,
+		strings.Join(g.Languages, " "), strings.Join(g.FeatureModules, " "), optional(g.MinSDK),
+		optional(g.TargetSDK), optional(g.Glass), g.UIComponents, strconv.Itoa(g.DurationMs),
+		optional(g.QueueMs), optional(g.PythonMs), optional(g.StreamMs), optional(g.ConfigMs), optional(g.ZipBytes),
+		optional(g.ColdStart), g.Client, g.Country, g.DeviceClass, g.FailureField, g.FailureReason,
+		g.GeneratorCommit, strings.Join(g.Notes, "\n"), strings.Join(g.IgnoredFields, " "),
+		strings.Join(g.Warnings, "\n"), g.AppName, g.PackageName,
+	}
 }
 
 // formulaSafe stops a spreadsheet from running a cell as a formula: app names and failure messages

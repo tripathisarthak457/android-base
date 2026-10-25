@@ -238,6 +238,9 @@ func seed(t *testing.T, s *Store) {
 			Notes: []string{`Moved min_sdk under "android".`}, IgnoredFields: []string{"theme"},
 			Warnings: []string{"Keystore 'release' could not be created: keytool error"},
 		}
+		if i == 4 {
+			g.Spec = []byte(`{"app_name": "App", "package_name": "com.example.app", "ui_components": false}`)
+		}
 		if i == 5 {
 			// As the API records a generator bug: described from the spec and the catalogue, with no
 			// zip and nothing the generator said about the spec.
@@ -336,6 +339,26 @@ func TestIntegrationAdminQueriesReadWhatWasRecorded(t *testing.T) {
 	if len(adoption.Weekly) == 0 || adoption.Dimensions["languages"][0] != (Count{Key: "hi", N: 5}) {
 		t.Fatalf("adoption dimensions %+v weekly %+v", adoption.Dimensions, adoption.Weekly)
 	}
+	if got := adoption.Dimensions["ui_components"]; !slices.Equal(got, []Count{{Key: "with", N: 4}, {Key: "without", N: 1}}) ||
+		adoption.Weekly[len(adoption.Weekly)-1].Values["ui_components"]["without"] != 1 {
+		t.Fatalf("ui_components %+v weekly %+v", got, adoption.Weekly)
+	}
+
+	// Rows with no spec (refused before it was read) match neither value.
+	without, with := android, android
+	without.UIComponents, with.UIComponents = "without", "with"
+	if overview, err := s.Overview(ctx, without); err != nil || overview.Generations != 1 || overview.Outcomes["ok"] != 1 {
+		t.Fatalf("without UI components: %+v %v", overview, err)
+	}
+	if overview, err := s.Overview(ctx, with); err != nil || overview.Generations != 5 || overview.Outcomes["internal_error"] != 1 {
+		t.Fatalf("with UI components: %+v %v", overview, err)
+	}
+	if series, err := s.Series(ctx, without); err != nil || series[len(series)-1].Outcomes["ok"] != 1 {
+		t.Fatalf("the series ignores the filter: %+v %v", series, err)
+	}
+	if rows, err := s.Generations(ctx, without, 0, 50); err != nil || len(rows) != 1 || rows[0].UIComponents != "without" {
+		t.Fatalf("generations without UI components: %+v %v", rows, err)
+	}
 
 	failures, err := s.Failures(ctx, android, keys)
 	if err != nil {
@@ -400,8 +423,11 @@ func TestIntegrationAdminQueriesReadWhatWasRecorded(t *testing.T) {
 		t.Fatalf("pages of %d and %d", len(page), len(next))
 	}
 	if g := next[len(next)-1]; g.AppName != "App 0" || !slices.Equal(g.IgnoredFields, []string{"theme"}) ||
-		len(g.Notes) != 1 || len(g.Warnings) != 1 {
+		len(g.Notes) != 1 || len(g.Warnings) != 1 || g.UIComponents != "with" {
 		t.Fatalf("what the generator said was not read back: %+v", g)
+	}
+	if g := page[0]; g.Outcome != "rate_limited" || g.UIComponents != "" {
+		t.Fatalf("a row without a spec: %+v", g)
 	}
 
 	errs, err := s.Errors(ctx, f, false, 10)
@@ -422,7 +448,7 @@ func TestIntegrationAdminQueriesReadWhatWasRecorded(t *testing.T) {
 
 	// Every filter at once must still be valid SQL.
 	all := Filter{From: f.From, To: f.To, Target: "android", Preset: "standard", Outcome: "ok", Country: "IN",
-		DeviceClass: "mobile", Source: "hn"}
+		DeviceClass: "mobile", Source: "hn", UIComponents: "with"}
 	if _, err := s.Overview(ctx, all); err != nil {
 		t.Fatal(err)
 	}
@@ -441,7 +467,7 @@ func TestIntegrationAdminQueriesReadWhatWasRecorded(t *testing.T) {
 	if _, err := s.Durations(ctx, all); err != nil {
 		t.Fatal(err)
 	}
-	if rows, err := s.Generations(ctx, all, 0, 50); err != nil || len(rows) != 5 {
+	if rows, err := s.Generations(ctx, all, 0, 50); err != nil || len(rows) != 4 {
 		t.Fatalf("filtered generations %d %v", len(rows), err)
 	}
 	all.Source = ""
