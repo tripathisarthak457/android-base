@@ -3,6 +3,7 @@ package com.base.app.buildlogic.guard
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.Project
+import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
@@ -32,11 +33,14 @@ import org.gradle.kotlin.dsl.register
  *   :data:x:api             → :core:common
  *   :data:x:impl            → :data:x:api, :core:*
  *   :domain:x               → :data:*:api, :core:common
+ *   :core:designsystem      → :core:testing:*, and only Compose and the libraries listed below
+ *   :core:navigation        → :core:*, except the shell built on it
  *   :core:x                 → :core:*
  * ```
  *
- * `:core:common`, every `:api` module and every `:domain:` module are pure Kotlin, and applying an
- * Android or Compose plugin to one fails the same check.
+ * Only `:app` and the catalog compose `:core:navigation:shell`. `:core:common`, every `:api` module
+ * and every `:domain:` module are pure Kotlin, and applying an Android or Compose plugin to one fails
+ * the same check.
  *
  * The sibling rules are the load-bearing ones. A single `:feature:cart → :feature:catalog` edge is
  * harmless on the day it is added and, eighteen months later, is the reason nothing can be built or
@@ -46,26 +50,35 @@ import org.gradle.kotlin.dsl.register
  */
 internal fun Project.verifyModuleDependencies() {
     val projectPath = path
-    if (ModuleShape.of(projectPath) == null) return
+    val shape = ModuleShape.of(projectPath) ?: return
+
+    // Read when the task's inputs are, once every build file and plugin has declared its
+    // dependencies, rather than in an afterEvaluate that holds the project open for it.
+    val declared = provider {
+        configurations
+            .filter { configuration -> CHECKED_CONFIGURATIONS.any { configuration.name.endsWith(it, ignoreCase = true) } }
+            .flatMap { configuration -> configuration.dependencies }
+    }
 
     val task = tasks.register<VerifyModuleDependenciesTask>("verifyModuleDependencies") {
         group = "verification"
         description = "Fails if this module depends on one it is not allowed to see."
         modulePath.set(projectPath)
+        dependencies.set(
+            declared.map { all -> all.filterIsInstance<ProjectDependency>().map { it.path }.distinct().sorted() },
+        )
+        libraries.set(
+            declared.map { all ->
+                if (shape.libraries == null) {
+                    emptyList()
+                } else {
+                    all.filterIsInstance<ExternalModuleDependency>().map { "${it.group}:${it.name}" }.distinct().sorted()
+                }
+            },
+        )
         // Resolved lazily: the convention plugins apply Compose after this one runs.
         androidPlugins.set(provider { ANDROID_PLUGINS.filter(pluginManager::hasPlugin) })
         marker.set(layout.buildDirectory.file("guards/verifyModuleDependencies.ok"))
-    }
-
-    afterEvaluate {
-        val declared = configurations
-            .filter { configuration -> CHECKED_CONFIGURATIONS.any { configuration.name.endsWith(it, ignoreCase = true) } }
-            .flatMap { configuration -> configuration.dependencies.withType(ProjectDependency::class.java) }
-            .map { it.path }
-            .distinct()
-            .sorted()
-
-        task.configure { dependencies.set(declared) }
     }
 
     hookIntoBuild(task.name)
@@ -108,6 +121,8 @@ private val ANDROID_PLUGINS = listOf(
 internal enum class ModuleKind(val pure: Boolean) {
     CORE(pure = false),
     CORE_COMMON(pure = true),
+    DESIGN_SYSTEM(pure = false),
+    NAVIGATION(pure = false),
     FEATURE(pure = false),
     FEATURE_API(pure = true),
     FEATURE_IMPL(pure = false),
@@ -120,14 +135,26 @@ internal enum class ModuleKind(val pure: Boolean) {
 /** Where a module sits in the graph, recognised by its path. [name] is the `x` of `:data:x:impl`. */
 internal data class ModuleShape(val kind: ModuleKind, val name: String) {
 
+    /** The libraries this module may use, as `group:name` globs, or null when they are not checked. */
+    val libraries: List<String>? get() = if (kind == ModuleKind.DESIGN_SYSTEM) DESIGN_SYSTEM_LIBRARIES else null
+
     /** The dependencies this module may not have, as `from -> to` edges. */
     fun violations(self: String, dependencies: List<String>): List<String> =
         dependencies.filter { it != self && !allows(it) }.map { "$self -> $it" }
 
+    /** The libraries, as `group:name`, this module may not use, as `from -> to` edges. */
+    fun libraryViolations(self: String, libraries: List<String>): List<String> {
+        val allowed = this.libraries?.map(::glob) ?: return emptyList()
+        return libraries.filter { library -> allowed.none { it.matches(library) } }.map { "$self -> $it" }
+    }
+
     private fun allows(dependency: String): Boolean {
         val other = of(dependency)?.kind
+        if (dependency == SHELL && kind in SHELL_BLIND) return false
         return when (kind) {
             ModuleKind.CORE, ModuleKind.CORE_COMMON -> other.isCore()
+            ModuleKind.DESIGN_SYSTEM -> dependency == TESTING || dependency.startsWith("$TESTING:")
+            ModuleKind.NAVIGATION -> other.isCore() && dependency !in NAVIGATION_HIDDEN
             ModuleKind.FEATURE -> other.isCore() || other == ModuleKind.DATA
             ModuleKind.FEATURE_API, ModuleKind.DATA_API -> other == ModuleKind.CORE_COMMON
             ModuleKind.FEATURE_IMPL -> other.isCore() ||
@@ -143,10 +170,26 @@ internal data class ModuleShape(val kind: ModuleKind, val name: String) {
             "A core module may depend only on other :core: modules. If it needs something from a " +
                 "data or feature module, invert it: declare the interface in core and bind the " +
                 "implementation from the module that has it."
+        ModuleKind.DESIGN_SYSTEM ->
+            "The design system may depend on no other module but :core:testing in its tests, and on " +
+                "no library but Compose and the few build-logic's ModuleGraph.kt lists: every screen " +
+                "uses it, and a component that cannot reach data, DI or the network cannot fetch, " +
+                "inject or hold state behind its caller's back. Take values and callbacks instead."
+        ModuleKind.NAVIGATION ->
+            // <opt:ui_components>
+            "The navigation runtime may depend on other :core: modules, never on :core:navigation:shell, " +
+                "which is built on it."
+            // </opt:ui_components>
+            // <opt-else:ui_components>
+            //~ "The navigation runtime may depend on other :core: modules, never on :core:designsystem or " +
+            //~     ":core:navigation:shell: every feature sees the runtime, so what it sees they see. Drawing " +
+            //~     "belongs in the shell."
+            // </opt-else:ui_components>
         ModuleKind.FEATURE ->
-            "A feature may depend on :core:* and :data:*, never on another feature. A screen another " +
-                "feature opens gets its key in core/navigation/src/main/kotlin/<package path>/feature/" +
-                "<owner>/api/, in the owner's api package, where both features can reach it."
+            "A feature may depend on :core:* and :data:*, never on another feature or on " +
+                ":core:navigation:shell. A screen another feature opens gets its key in " +
+                "core/navigation/src/main/kotlin/<package path>/feature/<owner>/api/, in the owner's " +
+                "api package, where both features can reach it."
         ModuleKind.FEATURE_API, ModuleKind.DATA_API ->
             "An :api module holds keys, interfaces and models, and may depend only on :core:common."
         ModuleKind.FEATURE_IMPL ->
@@ -168,6 +211,8 @@ internal data class ModuleShape(val kind: ModuleKind, val name: String) {
             val name = parts.getOrElse(1) { "" }
             val kind = when {
                 path == ":core:common" -> ModuleKind.CORE_COMMON
+                path == DESIGN_SYSTEM -> ModuleKind.DESIGN_SYSTEM
+                path == NAVIGATION -> ModuleKind.NAVIGATION
                 parts[0] == "core" && parts.size >= 2 -> ModuleKind.CORE
                 parts.size == 2 && parts[0] == "feature" -> ModuleKind.FEATURE
                 parts.size == 3 && parts[0] == "feature" && parts[2] == "api" -> ModuleKind.FEATURE_API
@@ -183,7 +228,60 @@ internal data class ModuleShape(val kind: ModuleKind, val name: String) {
     }
 }
 
-private fun ModuleKind?.isCore() = this == ModuleKind.CORE || this == ModuleKind.CORE_COMMON
+private fun ModuleKind?.isCore() =
+    this == ModuleKind.CORE || this == ModuleKind.CORE_COMMON || this == ModuleKind.DESIGN_SYSTEM ||
+        this == ModuleKind.NAVIGATION
+
+private const val DESIGN_SYSTEM = ":core:designsystem"
+private const val NAVIGATION = ":core:navigation"
+private const val SHELL = ":core:navigation:shell"
+private const val TESTING = ":core:testing"
+
+/** What the navigation runtime may not see: every feature sees the runtime, so it would see this too. */
+private val NAVIGATION_HIDDEN = setOf(
+    SHELL,
+    // <opt:!ui_components>
+    DESIGN_SYSTEM,
+    // </opt:!ui_components>
+)
+
+/** Modules that never compose the shell: it is the app's, assembled in :app and the catalog. */
+private val SHELL_BLIND = setOf(
+    ModuleKind.FEATURE, ModuleKind.FEATURE_API, ModuleKind.FEATURE_IMPL,
+    ModuleKind.DATA, ModuleKind.DATA_API, ModuleKind.DATA_IMPL, ModuleKind.DOMAIN,
+)
+
+/**
+ * The libraries `:core:designsystem` may declare, in any configuration, its tests' included.
+ * Compose is the design system's whole toolkit; each other line is a reason, not a convenience.
+ */
+private val DESIGN_SYSTEM_LIBRARIES = listOf(
+    // Compose, from its BOM, with its tooling and test rule, Google Fonts among them.
+    "androidx.compose*:*",
+    // Android's own window size classes, so breakpoints match every other app on the device.
+    "androidx.window:*",
+    // Back and predictive back for sheets and overlays, and the lifecycle a timed message counts against.
+    "androidx.navigationevent:*",
+    "androidx.lifecycle:lifecycle-runtime-compose",
+    // A test activity that owns a back dispatcher, as every app's activity does.
+    "androidx.activity:activity-compose",
+    // Liquid glass on floating chrome, and its continuous corners.
+    "io.github.kyant0:*",
+    // Added by the Kotlin plugin.
+    "org.jetbrains.kotlin:kotlin-stdlib*",
+    // The tests the screenshots convention generates from previews, with Google's accessibility
+    // checks, and the device-test runner the conventions add to a module that has device tests.
+    "junit:junit",
+    "org.robolectric:*",
+    "io.github.takahirom.roborazzi:*",
+    "io.github.sergio-sastre.ComposablePreviewScanner:*",
+    "com.google.android.apps.common.testing.accessibility.framework:*",
+    "androidx.test*:*",
+)
+
+/** `androidx.compose*:*` as a regex over `group:name`, where `*` is any run of characters. */
+private fun glob(pattern: String): Regex =
+    Regex(pattern.split('*').joinToString(".*") { Regex.escape(it) })
 
 @CacheableTask
 internal abstract class VerifyModuleDependenciesTask : DefaultTask() {
@@ -193,6 +291,9 @@ internal abstract class VerifyModuleDependenciesTask : DefaultTask() {
 
     @get:Input
     abstract val dependencies: ListProperty<String>
+
+    @get:Input
+    abstract val libraries: ListProperty<String>
 
     /** The Android or Compose plugins this module applies, which a pure module may not. */
     @get:Input
@@ -214,7 +315,7 @@ internal abstract class VerifyModuleDependenciesTask : DefaultTask() {
             )
         }
 
-        val violations = shape.violations(self, dependencies.get())
+        val violations = shape.violations(self, dependencies.get()) + shape.libraryViolations(self, libraries.get())
         if (violations.isNotEmpty()) {
             throw GradleException(
                 buildString {
