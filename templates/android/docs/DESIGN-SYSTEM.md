@@ -191,7 +191,8 @@ A `@Composable` in a module without the Compose compiler fails as `compose-compi
 
 ## Templates
 
-A component, in a package of its own under the design system's `component` package:
+A component, in a package of its own under the design system's `component` package (the generator's
+`add_component.py <Name> --project <this project>` writes it and the test below, renamed to `App<Name>`):
 
 ```kotlin component-template
 @Immutable
