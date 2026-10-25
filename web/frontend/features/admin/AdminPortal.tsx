@@ -6,7 +6,7 @@ import { Spinner } from "../../components/ui.tsx";
 import { ApiError } from "../../lib/api.ts";
 import { adminGet, useFilterChoices } from "./api.ts";
 import { PanelFailures } from "./Panel.tsx";
-import { DEVICE_CLASSES, type Filters, OUTCOMES, type Range, defaultFilters, query, windowProblem } from "./filters.ts";
+import { DEVICE_CLASSES, type Filters, OUTCOMES, type Range, UI_COMPONENTS, defaultFilters, query, windowProblem } from "./filters.ts";
 import { Adoption } from "./panels/Adoption.tsx";
 import { Audience } from "./panels/Audience.tsx";
 import { Durations } from "./panels/Durations.tsx";
@@ -242,6 +242,13 @@ function Dashboard({ token, onSignOut }: { token: string; onSignOut: () => void 
         <Select label="Preset" value={filters.preset} options={presets} onChange={(value) => set({ preset: value })} />
         <Select label="Outcome" value={filters.outcome} options={[...OUTCOMES]} onChange={(value) => set({ outcome: value })} />
         <Select label="Device" value={filters.device_class} options={[...DEVICE_CLASSES]} onChange={(value) => set({ device_class: value })} />
+        <Select
+          label="UI components"
+          value={filters.ui_components}
+          options={Object.keys(UI_COMPONENTS).filter(Boolean)}
+          labels={UI_COMPONENTS}
+          onChange={(value) => set({ ui_components: value })}
+        />
         <input
           aria-label="Country"
           placeholder="Country"
@@ -288,13 +295,26 @@ function Dashboard({ token, onSignOut }: { token: string; onSignOut: () => void 
   );
 }
 
-function Select({ label, value, options, onChange }: { label: string; value: string; options: string[]; onChange: (value: string) => void }) {
+/** A filter's choices; `labels` names a value, `""` included, when the value alone would not say what it keeps. */
+function Select({
+  label,
+  value,
+  options,
+  labels = {},
+  onChange,
+}: {
+  label: string;
+  value: string;
+  options: string[];
+  labels?: Readonly<Record<string, string>>;
+  onChange: (value: string) => void;
+}) {
   return (
     <select aria-label={label} value={value} onChange={(event) => onChange(event.target.value)} className={CONTROL}>
-      <option value="">{`Any ${label.toLowerCase()}`}</option>
+      <option value="">{labels[""] ?? `Any ${label.toLowerCase()}`}</option>
       {options.map((option) => (
         <option key={option} value={option}>
-          {option}
+          {labels[option] ?? option}
         </option>
       ))}
     </select>

@@ -3,17 +3,8 @@
 import { useId, useState } from "react";
 import { type Adoption as AdoptionData, useAdminQuery } from "../api.ts";
 import { BarList, Heatmap, percent } from "../charts.tsx";
+import { ADOPTION_DIMENSIONS, WEEKLY_DIMENSIONS } from "../dimensions.ts";
 import { Panel, type PanelProps, Table } from "../Panel.tsx";
-
-const DIMENSIONS: [string, string][] = [
-  ["presets", "Nearest preset"],
-  ["architectures", "Architecture"],
-  ["design_styles", "Design style"],
-  ["motion_styles", "Motion style"],
-  ["languages", "Languages"],
-];
-
-const WEEKLY: [string, string][] = [["features", "Features"], ...DIMENSIONS];
 
 /**
  * Every feature of the catalogue, zeros included, from the projects that were generated: how
@@ -38,7 +29,7 @@ export function Adoption({ token, query, version, onUnauthorized }: PanelProps) 
           const all = total.get(week) ?? 0;
           return all ? count(row, week) / all : 0;
         };
-        const dimensionLabel = WEEKLY.find(([key]) => key === dimension)?.[1] ?? dimension;
+        const dimensionLabel = WEEKLY_DIMENSIONS.find(([key]) => key === dimension)?.[1] ?? dimension;
         const rows =
           dimension === "features"
             ? features.map((feature) => ({ key: feature.key, label: feature.title || feature.key }))
@@ -80,7 +71,7 @@ export function Adoption({ token, query, version, onUnauthorized }: PanelProps) 
                 ))}
               </Table>
               <div className="space-y-5">
-                {DIMENSIONS.map(([key, label]) => (
+                {ADOPTION_DIMENSIONS.map(([key, label]) => (
                   <div key={key}>
                     <h3 className="mb-2 text-xs font-medium text-ink-300">{label}</h3>
                     <BarList rows={(target.dimensions[key] ?? []).map((row) => ({ key: row.key, label: row.key || "none", value: row.n }))} />
@@ -97,7 +88,7 @@ export function Adoption({ token, query, version, onUnauthorized }: PanelProps) 
                   onChange={(event) => setDimension(event.target.value)}
                   className="h-7 rounded-md border border-ink-500 bg-ink-900 px-2 text-xs text-ink-100"
                 >
-                  {WEEKLY.map(([key, label]) => (
+                  {WEEKLY_DIMENSIONS.map(([key, label]) => (
                     <option key={key} value={key}>
                       {label}
                     </option>

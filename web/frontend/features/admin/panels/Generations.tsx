@@ -4,6 +4,7 @@ import { Fragment, useState } from "react";
 import { Button } from "../../../components/primitives.tsx";
 import { type Generation, type Generations as GenerationsData, downloadCsv, useAdminAction, useAdminQuery } from "../api.ts";
 import { OUTCOME_COLOUR, seconds } from "../charts.tsx";
+import { GENERATION_COLUMNS, uiComponentsCell } from "../columns.ts";
 import { Panel, type PanelProps } from "../Panel.tsx";
 
 const PAGE = 50;
@@ -34,10 +35,10 @@ export function Generations({ token, query, version, onUnauthorized }: PanelProp
         <>
           {csv.problem && <p className="mb-3 text-xs text-rose">{csv.problem}</p>}
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[760px] text-left text-xs">
+            <table className="w-full min-w-[840px] text-left text-xs">
               <thead>
                 <tr className="text-ink-400">
-                  {["When", "Outcome", "App", "Target", "Preset", "Features", "Style", "SDK", "Time", "Where"].map((cell) => (
+                  {GENERATION_COLUMNS.map((cell) => (
                     <th key={cell} scope="col" className="pb-2 pr-3 font-medium">
                       {cell}
                     </th>
@@ -47,7 +48,7 @@ export function Generations({ token, query, version, onUnauthorized }: PanelProp
               <tbody className="divide-y divide-ink-800">
                 {data.items.length === 0 && (
                   <tr>
-                    <td colSpan={10} className="py-3 text-ink-400">
+                    <td colSpan={GENERATION_COLUMNS.length} className="py-3 text-ink-400">
                       Nothing in this window.
                     </td>
                   </tr>
@@ -85,6 +86,7 @@ export function Generations({ token, query, version, onUnauthorized }: PanelProp
                           </span>
                         )}
                       </td>
+                      <td className="py-2 pr-3">{uiComponentsCell(row.ui_components)}</td>
                       <td className="py-2 pr-3 font-mono">{row.features.length}</td>
                       <td className="py-2 pr-3 whitespace-nowrap">
                         {row.design_style} · {row.motion_style}
@@ -98,7 +100,7 @@ export function Generations({ token, query, version, onUnauthorized }: PanelProp
                     </tr>
                     {open === row.id && (
                       <tr>
-                        <td colSpan={10} className="bg-ink-900 p-3">
+                        <td colSpan={GENERATION_COLUMNS.length} className="bg-ink-900 p-3">
                           {row.failure_reason && (
                             <p className="mb-2 text-xs text-rose">
                               {row.failure_field && <span className="font-mono">{row.failure_field}: </span>}

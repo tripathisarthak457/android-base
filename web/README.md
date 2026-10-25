@@ -156,6 +156,11 @@ Admin routes live under `/api` like everything else the service owns — the sit
 rather than accounts, because there is one administrator and a login system for one person is a
 login system whose password reset flow nobody ever tests.
 
+Adoption also counts projects by UI components (`without` when the stored spec sent
+`"ui_components": false`, `with` otherwise), read from each generation's spec rather than a column,
+so it took no migration; every admin read takes `ui_components=with` or `without` as a filter, and
+the generations list and its CSV show the value per row.
+
 ```bash
 curl -X POST https://android-base.vercel.app/api/generate \
   -H 'Content-Type: application/json' \

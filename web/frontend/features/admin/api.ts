@@ -91,6 +91,8 @@ export type Generation = {
   min_sdk: number | null;
   target_sdk: number | null;
   glass: boolean | null;
+  // As the stored spec asked; empty when the request was refused before its spec was read.
+  ui_components: "with" | "without" | "";
   duration_ms: number;
   queue_ms: number | null;
   python_ms: number | null;
