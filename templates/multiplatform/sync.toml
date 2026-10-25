@@ -16,6 +16,24 @@ reason = """
 The build facts the Android app's BuildConfig states, for its dev tooling (the devtools feature),
 which only the Android template has."""
 
+[[pair.difference]]
+file = "navigation/AppNavKey.kt"
+reason = """
+The Android template registers a key's serializer in the same step as its screen, with entry<K>
+(decisions/LOG.md, Oct 25). This template's features still register their keys in a navKeys block;
+they move in the multiplatform work after the Android release (REQUIREMENTS 59 (j)), and this
+allowance goes with them."""
+android = [
+  " *    being serialised whole, and a key no feature registers with `entry<K>` cannot be restored:",
+  " *    the stack falls back to the start destination, which the user experiences as the app",
+  " *    forgetting where they were.",
+]
+multiplatform = [
+  " *    being serialised whole, and a key that is not registered in its feature's `navKeys` block",
+  " *    cannot be restored: the stack falls back to the start destination, which the user experiences",
+  " *    as the app forgetting where they were.",
+]
+
 [[pair]]
 name = "core/mvi"
 android = "core/mvi/src/main/kotlin/com/base/app/core/mvi"

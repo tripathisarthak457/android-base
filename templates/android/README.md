@@ -214,17 +214,17 @@ shows how to send each identity to its own start once you have onboarding and si
 
 ## Adding a feature
 
-A feature needs three things, all inside its own module:
+A feature needs two things, both inside its own module:
 
 1. A `@Serializable` key implementing `AppNavKey`.
 2. A `navGraph { entry<YourKey> { YourRoute() } }` contribution, `@Provides @IntoSet`.
-3. A `navKeys { subclass(YourKey::class, YourKey.serializer()) }` contribution, also `@IntoSet`.
 
 Nothing in `:app` or `:core:navigation` is edited — that is the point of the decentralised
 registry, and it is why two people adding screens in the same week do not conflict.
 
-Step 3 is the one worth not forgetting. Without it the app works perfectly until it is killed in
-the background, and then comes back at the start destination instead of where the user was.
+`entry<YourKey>` also records the key's serializer, so a key that can be opened can be saved: the
+back stack comes back where the user was after the app is killed in the background.
+`NavKeyRegistrationTest` still checks every key.
 
 The generator will scaffold all of that for you, including a matching `:data:` module and its
 tests:

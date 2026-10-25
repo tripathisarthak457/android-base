@@ -4,9 +4,9 @@ package com.base.app.core.common.navigation
  * A navigable destination. Deliberately *not* `androidx.navigation3.runtime.NavKey`.
  *
  * 1. **Annotate it `@Serializable` and register it.** The back stack survives process death by
- *    being serialised whole, and a key that is not registered in its feature's `navKeys` block
- *    cannot be restored: the stack falls back to the start destination, which the user experiences
- *    as the app forgetting where they were.
+ *    being serialised whole, and a key no feature registers with `entry<K>` cannot be restored:
+ *    the stack falls back to the start destination, which the user experiences as the app
+ *    forgetting where they were.
  *
  * 2. **Carry ids, not payloads.** A destination takes the id of the thing it shows and fetches it
  *    itself. Parameters that look like content, such as a name or an image URL, are acceptable only
