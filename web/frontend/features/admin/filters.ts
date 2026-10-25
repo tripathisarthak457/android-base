@@ -13,6 +13,7 @@ export type Filters = {
   country: string;
   device_class: string;
   source: string;
+  ui_components: string;
 };
 
 export const OUTCOMES = [
@@ -28,6 +29,13 @@ export const OUTCOMES = [
 
 export const DEVICE_CLASSES = ["mobile", "tablet", "desktop", "unknown"] as const;
 
+/** The values the API filters UI components by (`""` for either), each with what the filter bar calls it. */
+export const UI_COMPONENTS: Readonly<Record<string, string>> = {
+  "": "With or without UI components",
+  with: "With UI components",
+  without: "Without UI components",
+};
+
 /** The API's longest window. */
 const MAX_DAYS = 400;
 
@@ -38,7 +46,7 @@ function utcDate(date: Date): string {
 }
 
 export function defaultFilters(): Filters {
-  return { range: "30d", from: "", to: "", target: "", preset: "", outcome: "", country: "", device_class: "", source: "" };
+  return { range: "30d", from: "", to: "", target: "", preset: "", outcome: "", country: "", device_class: "", source: "", ui_components: "" };
 }
 
 /** The inclusive window a range covers, ending today (UTC) unless it is custom. */
@@ -65,7 +73,7 @@ export function windowProblem(filters: Filters): string | null {
 /** The query string every admin read takes: the window plus whichever filters are set. */
 export function query(filters: Filters, now: Date, extra: Record<string, string | number | boolean> = {}): string {
   const params = new URLSearchParams(windowOf(filters, now));
-  for (const key of ["target", "preset", "outcome", "country", "device_class", "source"] as const) {
+  for (const key of ["target", "preset", "outcome", "country", "device_class", "source", "ui_components"] as const) {
     const value = filters[key].trim();
     if (value) params.set(key, key === "country" ? value.toUpperCase() : value);
   }
