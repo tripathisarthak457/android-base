@@ -3,6 +3,7 @@
 package com.base.app.core.testing.compose.preview
 
 import androidx.activity.compose.setContent
+import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import com.github.takahirom.roborazzi.AndroidComposePreviewTester
@@ -97,8 +98,7 @@ private class AuditingCapturer(
 }
 
 /**
- * Audits every window the preview put on screen, a dialog's or a popup's included. It runs once the
- * composition is idle and before the image is taken, so a verify that fails on pixels never hides
+ * Runs the audit when the image is about to be taken, so a verify that fails on pixels never hides
  * an accessibility error.
  */
 private class AccessibilityAudit(
@@ -106,14 +106,22 @@ private class AccessibilityAudit(
     private val roborazziOptions: RoborazziOptions,
 ) : RoborazziComposeCaptureOption {
 
-    override fun beforeCapture() {
-        val roots = rule.onAllNodes(isRoot())
-        for (index in roots.fetchSemanticsNodes().indices) {
-            roots[index].checkRoboAccessibility(CHECKS, roborazziOptions)
-        }
-    }
+    override fun beforeCapture() = rule.auditAccessibility(roborazziOptions)
 
     override fun afterCapture() = Unit
+}
+
+/**
+ * Audits every window on screen, a dialog's or a popup's included, once the composition is idle,
+ * and throws ATF's `AccessibilityViewCheckException` when it finds an error.
+ */
+internal fun SemanticsNodeInteractionsProvider.auditAccessibility(
+    roborazziOptions: RoborazziOptions,
+) {
+    val roots = onAllNodes(isRoot())
+    for (index in roots.fetchSemanticsNodes().indices) {
+        roots[index].checkRoboAccessibility(CHECKS, roborazziOptions)
+    }
 }
 
 /**
