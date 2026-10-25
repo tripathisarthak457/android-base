@@ -39,6 +39,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
 
     testImplementation(project(":core:testing"))
+    // MviScreen and MviViewModel, only for the test where a screen's first load meets tab warm-up.
+    testImplementation(project(":core:ui"))
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
