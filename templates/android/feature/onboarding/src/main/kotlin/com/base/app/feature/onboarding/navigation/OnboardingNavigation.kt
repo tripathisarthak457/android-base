@@ -1,7 +1,8 @@
-package com.base.app.feature.onboarding
+package com.base.app.feature.onboarding.navigation
 
 import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.navGraph
+import com.base.app.feature.onboarding.OnboardingRoute
 import com.base.app.feature.onboarding.api.OnboardingKey
 import dagger.Module
 import dagger.Provides
@@ -15,7 +16,7 @@ import dagger.multibindings.IntoSet
  */
 @Module
 @InstallIn(ActivityRetainedComponent::class)
-internal object OnboardingNavModule {
+internal object OnboardingNavigation {
 
     @Provides
     @IntoSet

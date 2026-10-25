@@ -1,8 +1,12 @@
-package com.base.app.feature.settings
+package com.base.app.feature.settings.navigation
 
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.navGraph
+// <opt:licenses>
+import com.base.app.feature.settings.LicensesRoute
+// </opt:licenses>
+import com.base.app.feature.settings.SettingsRoute
 // <opt:licenses>
 import com.base.app.feature.settings.api.LicensesKey
 // </opt:licenses>
@@ -15,7 +19,7 @@ import dagger.multibindings.IntoSet
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
-internal object SettingsNavModule {
+internal object SettingsNavigation {
 
     @Provides
     @IntoSet

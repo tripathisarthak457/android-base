@@ -1,4 +1,4 @@
-package com.base.app.feature.search.di
+package com.base.app.feature.search.navigation
 
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.NavGraphEntry
@@ -16,7 +16,7 @@ import dagger.multibindings.IntoSet
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
-internal object SearchNavModule {
+internal object SearchNavigation {
 
     @Provides
     @IntoSet

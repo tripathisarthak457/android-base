@@ -1,9 +1,9 @@
-package com.base.app.feature.feed.di
+package com.base.app.feature.profile.navigation
 
 import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.navGraph
-import com.base.app.feature.feed.FeedRoute
-import com.base.app.feature.feed.api.FeedKey
+import com.base.app.feature.profile.ProfileRoute
+import com.base.app.feature.profile.api.ProfileKey
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,11 +12,11 @@ import dagger.multibindings.IntoSet
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
-internal object FeedNavModule {
+internal object ProfileNavigation {
 
     @Provides
     @IntoSet
-    fun feedNavGraph(): NavGraphEntry = navGraph {
-        entry<FeedKey> { FeedRoute() }
+    fun profileNavGraph(): NavGraphEntry = navGraph {
+        entry<ProfileKey> { ProfileRoute() }
     }
 }
