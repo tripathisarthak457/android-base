@@ -1,11 +1,13 @@
 package com.base.app.core.mvi
 
-import java.util.concurrent.atomic.AtomicLong
+import kotlin.uuid.Uuid
 
 /**
  * A transient message: the snackbar channel, separate from both state and effects. [id] makes every
  * showing distinct, so "Saved" emitted twice is shown twice instead of being swallowed as an equal
- * value that neither changes the host's state nor restarts its timer.
+ * value that neither changes the host's state nor restarts its timer. It is random rather than
+ * counted so that a message made on any thread needs no shared counter: the standard library's
+ * atomics are still experimental.
  */
 data class UiMessage(
     val text: UiText,
@@ -13,11 +15,10 @@ data class UiMessage(
     val kind: MessageKind = MessageKind.Info,
     val durationMillis: Long = DEFAULT_DURATION_MILLIS,
     val action: MessageAction? = null,
-    val id: Long = ids.incrementAndGet(),
+    val id: Uuid = Uuid.random(),
 ) {
     companion object {
         const val DEFAULT_DURATION_MILLIS = 3_500L
-        private val ids = AtomicLong()
     }
 }
 
