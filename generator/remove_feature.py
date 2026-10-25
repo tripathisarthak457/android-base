@@ -67,7 +67,8 @@ def main(argv: list[str] | None = None) -> int:
         print(prompts.dim("  Nothing was changed. Check the name, or the --project path."))
         return 1
 
-    report_plan(project, present)
+    tiers = emptied_tiers(present)
+    report_plan(project, present, tiers)
 
     if args.dry_run:
         print(prompts.dim("  Nothing was deleted. Drop --dry-run to do it."))
@@ -80,13 +81,8 @@ def main(argv: list[str] | None = None) -> int:
         print("Cancelled.")
         return 0
 
-    for path in present:
+    for path in [*present, *tiers]:
         shutil.rmtree(path)
-    # A tier left with no module is gone too, as it was before the first one was added: the
-    # project's tests read an existing `feature/` as "this project has feature modules".
-    for tier in {path.parent for path in present}:
-        if not any(tier.iterdir()):
-            tier.rmdir()
 
     unregister_modules(project, names)
     unregister_dependencies(project, names)
@@ -94,6 +90,20 @@ def main(argv: list[str] | None = None) -> int:
 
     report_done(names)
     return 0
+
+
+def emptied_tiers(removed: list[Path]) -> list[Path]:
+    """
+    The tiers (`data/`, `feature/`) that removing these modules leaves with no module, which go too,
+    as they were before the first module was added. All a tier can hold besides its modules is the
+    build output Gradle wrote for the tier's own project (coverage and dependency analysis build
+    every project, the tier's too), and once no module is left no project owns it.
+    """
+    return sorted(
+        tier
+        for tier in {path.parent for path in removed}
+        if all(entry in removed or (entry.name == "build" and entry.is_dir()) for entry in tier.iterdir())
+    )
 
 
 def unregister_modules(project: Path, names: tuple[str, ...]) -> None:
@@ -139,10 +149,12 @@ def _drop_lines(path: Path, matches) -> None:
         write_text(path, "".join(kept))
 
 
-def report_plan(project: Path, present: list[Path]) -> None:
+def report_plan(project: Path, present: list[Path], tiers: list[Path]) -> None:
     prompts.heading("Removing")
     for path in present:
         print(f"  {prompts.red('delete')}  {path.relative_to(project).as_posix()}/")
+    for tier in tiers:
+        print(f"  {prompts.red('delete')}  {tier.relative_to(project).as_posix()}/  {prompts.dim('(no module left in it)')}")
     print()
     print(prompts.dim("  and the lines naming them in:"))
     print(prompts.dim("    settings.gradle.kts, app/build.gradle.kts, ui/AppDestinations.kt"))

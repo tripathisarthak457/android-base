@@ -338,6 +338,35 @@ class ProjectScriptsTest(unittest.TestCase):
             self.assertEqual(0, remove(["orders", "--yes", "--project", str(project)]))
         self.assertEqual(before, snapshot(project))
 
+    def test_a_tier_left_with_only_its_build_output_goes_with_its_last_module(self):
+        from remove_feature import main as remove
+
+        project = self.copy()
+        before = snapshot(project)
+        self.assertEqual(0, self.add("orders", "--project", str(project))[0])
+        # What a build with coverage or dependency analysis leaves: the tier projects' own output.
+        for tier in ("data", "feature"):
+            artifact = project / tier / "build/kover/.artifact"
+            artifact.parent.mkdir(parents=True)
+            artifact.write_text("", encoding="utf-8")
+        with redirect_stdout(io.StringIO()) as plan:
+            self.assertEqual(0, remove(["orders", "--dry-run", "--project", str(project)]))
+        for tier in ("data", "feature"):
+            self.assertIn(f"{tier}/  (no module left in it)", plan.getvalue())
+        with redirect_stdout(io.StringIO()):
+            self.assertEqual(0, remove(["orders", "--yes", "--project", str(project)]))
+        self.assertEqual(before, snapshot(project))
+
+    def test_a_tier_keeps_its_other_modules_and_their_build_output(self):
+        from remove_feature import main as remove
+
+        project = self.copy()
+        self.assertEqual(0, self.add("orders", "billing", "--project", str(project))[0])
+        (project / "feature/build").mkdir()
+        with redirect_stdout(io.StringIO()):
+            self.assertEqual(0, remove(["orders", "--yes", "--project", str(project)]))
+        self.assertEqual(["billing", "build"], sorted(path.name for path in (project / "feature").iterdir()))
+
     def test_without_a_record_the_project_is_read_from_what_it_holds(self):
         project = self.copy()
         (project / RECORD_NAME).unlink()

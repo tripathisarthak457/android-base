@@ -35,10 +35,11 @@ class SharedDestinationsTest {
 
     @Test
     fun `the scan sees the features' keys and graphs`() {
-        // <opt:!ui_components>        // Without UI components a project can start with no feature module;
-        // <opt:!ui_components>        // the first one brings its keys, and from then on the scan must see them.
-        // <opt:!ui_components>        val features = File("../feature").listFiles(File::isDirectory).orEmpty()
-        // <opt:!ui_components>        assumeTrue("No feature module yet", features.isNotEmpty())
+        // <opt:!ui_components>        // Without UI components a project can start with no feature module; the first one
+        // <opt:!ui_components>        // brings its keys, and from then on the scan must see them. A module is what the
+        // <opt:!ui_components>        // settings include, not a folder: a removed one can leave build output in feature/.
+        // <opt:!ui_components>        val settings = File("../settings.gradle.kts").readText()
+        // <opt:!ui_components>        assumeTrue("No feature module yet", FEATURE_INCLUDE.containsMatchIn(settings))
         // A source tree the scan cannot read would pass the next test with nothing checked.
         assertTrue("No keys found in any feature's api package", owners.isNotEmpty())
         assertTrue("No entry<…> registrations found", registrations.isNotEmpty())
@@ -65,5 +66,6 @@ class SharedDestinationsTest {
         // does not make its class a key.
         val KEY_DECLARATION = Regex("""(?:object|class)\s+(\w+)(?:\s*\([^)]*\))?\s*:\s*(?:AppNavKey|FullScreenKey)\b""")
         val ENTRY = Regex("""\bentry<\s*(\w+)\s*>""")
+        // <opt:!ui_components>        val FEATURE_INCLUDE = Regex("""^\s*include\(":feature:""", RegexOption.MULTILINE)
     }
 }
