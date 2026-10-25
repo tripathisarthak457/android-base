@@ -81,7 +81,7 @@ class ShapeTest(unittest.TestCase):
             self.assertEqual(["feature", "headline", "description"], list(entry))
         for entry in option["preset_copy"]:
             self.assertEqual(["preset", "description"], list(entry))
-        self.assertEqual(["haptics_enabled"], [entry["field"] for entry in option["field_copy"]])
+        self.assertEqual(["haptics_enabled", "languages"], [entry["field"] for entry in option["field_copy"]])
         for entry in option["field_copy"]:
             self.assertEqual(["field", "description"], list(entry))
         for entry in option["feature_copy"] + option["preset_copy"] + option["field_copy"]:
