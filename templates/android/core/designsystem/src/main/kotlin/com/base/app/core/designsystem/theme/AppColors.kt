@@ -87,6 +87,22 @@ data class AppColors(
     val skeleton: Color,
     /** The sweep across a skeleton, a visible step lighter than [skeleton] in both themes. */
     val skeletonHighlight: Color,
+
+    /** A switch's or a slider's thumb: white in both themes, as iOS draws it, set off by its shadow. */
+    val thumb: Color,
+
+    /** The light glass and dark-theme rims catch, drawn with an alpha of the component's own. */
+    val sheen: Color,
+
+    /**
+     * The ink of the shadows and faint outlines a component paints itself, drawn with an alpha of
+     * its own. A `Shadow` spec leaves its colour at Compose's default, the same black.
+     */
+    val shade: Color,
+
+    /** Behind a photo or a video shown full screen, and [onMedia] for the controls over it, in both themes. */
+    val mediaBackdrop: Color,
+    val onMedia: Color,
     // </opt:ui_components>
 
     /** Drives the decisions that cannot be expressed as a token, such as shadows. */

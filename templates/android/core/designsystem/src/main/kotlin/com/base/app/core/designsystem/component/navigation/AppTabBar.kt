@@ -280,8 +280,10 @@ object AppTabBarDefaults {
     internal val AccessoryGap = 8.dp
     internal val ToolbarInset = 6.dp
     internal val ActionSize = 52.dp
-    internal val BarShadow = Shadow(radius = 16.dp, color = Color.Black, offset = DpOffset(0.dp, 4.dp), alpha = 0.10f)
-    internal val DarkOutline = Color.White.copy(alpha = 0.07f)
+    internal val BarShadow = Shadow(radius = 16.dp, offset = DpOffset(0.dp, 4.dp), alpha = 0.10f)
+
+    /** A floating bar's edge in dark theme, where its shadow would not show. */
+    internal const val DarkOutlineAlpha = 0.07f
 
     /** The surface a docked bar, the rail and the sidebar are drawn on. */
     @Composable
@@ -337,7 +339,7 @@ private fun barLookFor(
     return BarLook(
         floating = floating,
         surface = if (treatment == BarTreatment.Translucent) surface.copy(alpha = TranslucentAlpha) else surface,
-        border = if (raisedInDark) AppTabBarDefaults.DarkOutline else colors.separator,
+        border = if (raisedInDark) colors.sheen.copy(alpha = AppTabBarDefaults.DarkOutlineAlpha) else colors.separator,
         shadow = floating && colors.isLight,
         shape = shape,
         indicator = if (solid) colors.barIndicator else colors.accentSubtle,

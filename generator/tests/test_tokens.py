@@ -178,6 +178,20 @@ class ResolveTest(unittest.TestCase):
                 self.assertGreaterEqual(spring["dampingRatio"], 1.0)
         self.assertGreater(calm["bounceBack"]["dampingRatio"], 1.0)
 
+    def test_the_components_white_and_black_stay_pure_in_every_tone_and_brand(self):
+        # The hues the components drew as Color.White and Color.Black before they read roles: iOS's
+        # thumbs, the glass's sheen, shadow ink and the media viewer. No tone or brand may tint them.
+        expected = {
+            "thumb": "#FFFFFFFF", "sheen": "#FFFFFFFF", "shade": "#FF000000",
+            "mediaBackdrop": "#FF000000", "onMedia": "#FFFFFFFF",
+        }
+        for brand_spec in (None, spec(accent_colour="#16A34A", secondary_colour="#C2410C")):
+            for tone, themes in tokens.resolve(brand_spec)["palette"]["tones"].items():
+                for theme, roles in themes.items():
+                    with self.subTest(brand=brand_spec is not None, tone=tone, theme=theme):
+                        self.assertEqual(expected, {name: roles[name] for name in expected})
+        self.assertEqual(set(), set(expected) - set(kotlin.COMPONENT_ROLES))
+
     def test_the_checkpoint_values(self):
         # decisions/CP1.md: iOS's push, its segmented thumb, the two-edge indicator and the dialog spring.
         standard = tokens.resolve()["motion"]["styles"]["Standard"]["springs"]
@@ -434,7 +448,7 @@ class SkeletonEmitterTest(unittest.TestCase):
                 self.assertNotIn(name, self.members["Motion"])
         for role in kotlin.COMPONENT_ROLES:
             with self.subTest(role=role):
-                self.assertNotIn(f" {role} = ", self.kotlin)
+                self.assertNotIn(f" {role} = Color(", self.kotlin)
 
     def test_every_slot_value_is_there(self):
         foundation = tokens.load()["foundation"]

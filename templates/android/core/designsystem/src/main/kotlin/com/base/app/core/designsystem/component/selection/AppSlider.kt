@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.shadow.Shadow
@@ -159,8 +158,13 @@ fun AppSlider(
         translate(left = x - inset, top = y - inset) {
             with(thumbShadow) { draw(Size(thumb, thumb)) }
         }
-        drawCircle(Color.White, radius = inset, center = Offset(x, y))
-        drawCircle(AppSliderDefaults.ThumbRing, radius = inset, center = Offset(x, y), style = Stroke(AppSliderDefaults.RingWidth.toPx()))
+        drawCircle(colors.thumb, radius = inset, center = Offset(x, y))
+        drawCircle(
+            colors.shade.copy(alpha = AppSliderDefaults.ThumbRingAlpha),
+            radius = inset,
+            center = Offset(x, y),
+            style = Stroke(AppSliderDefaults.RingWidth.toPx()),
+        )
     }
 }
 
@@ -169,7 +173,7 @@ object AppSliderDefaults {
     // iOS's thumb: a soft blur that lifts it off a white page, and a faint ring that still outlines
     // it where the blur is too light to see.
     val ThumbShadow = Shadow(radius = 2.dp, alpha = 0.15f, offset = DpOffset(0.dp, 1.dp))
-    val ThumbRing = Color.Black.copy(alpha = 0.04f)
+    const val ThumbRingAlpha = 0.04f
     val ThumbSize = 28.dp
     val TrackHeight = 4.dp
     /** Room above and below the thumb for its shadow and the finger. */

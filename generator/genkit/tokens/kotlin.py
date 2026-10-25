@@ -32,12 +32,15 @@ SKELETON_HEADER = (
 RELATIVE_PATH = "core/designsystem/src/main/kotlin/{package_path}/core/designsystem/theme/tokens/DesignTokens.kt"
 
 #: What only the template's components read, which a theme skeleton leaves out: the tab bar's sizes,
-#: the springs of its indicator and of a glyph's bounce, and the colours of the bar's selection and
-#: the loading skeleton. The rest of what is left out is a whole section. The segmented thumb stays:
-#: the developer panel's switches and segmented control draw with it.
+#: the springs of its indicator and of a glyph's bounce, and the colours of the bar's selection, the
+#: loading skeleton, the thumbs, the glass's sheen, shadow ink and the media viewer. The rest of what
+#: is left out is a whole section. The segmented thumb stays: the developer panel's switches and
+#: segmented control draw with it.
 COMPONENT_SIZES: tuple[str, ...] = ("tabBarHeight", "tabBarSideMargin", "tabBarLift", "tabBarMaxWidth")
 COMPONENT_SPRINGS: tuple[str, ...] = ("indicatorLead", "indicatorTrail", "iconBounceDown", "iconBounceUp")
-COMPONENT_ROLES: tuple[str, ...] = ("barIndicator", "skeleton", "skeletonHighlight")
+COMPONENT_ROLES: tuple[str, ...] = (
+    "barIndicator", "skeleton", "skeletonHighlight", "thumb", "sheen", "shade", "mediaBackdrop", "onMedia",
+)
 
 
 def emit(tokens: dict[str, Any], package: str, header: str = HEADER) -> str:

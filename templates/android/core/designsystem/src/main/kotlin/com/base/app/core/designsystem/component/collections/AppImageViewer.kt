@@ -31,7 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.isCtrlPressed
@@ -109,10 +108,11 @@ fun AppImageViewer(
 
     OverlayBackHandler(enabled = true) { dismiss() }
 
+    val colors = AppTheme.colors
     Box(
         modifier = modifier
             .fillMaxSize()
-            .drawBehind { drawRect(Color.Black, alpha = 1f - (abs(pull) / DismissFade).coerceIn(0f, MaxFade)) },
+            .drawBehind { drawRect(colors.mediaBackdrop, alpha = 1f - (abs(pull) / DismissFade).coerceIn(0f, MaxFade)) },
     ) {
         Box(
             modifier = Modifier
@@ -203,9 +203,9 @@ fun AppImageViewer(
                     },
                 )
                 .padding(AppTheme.spacing.sm)
-                .background(Color.Black.copy(alpha = CloseBackingAlpha), CircleShape),
+                .background(colors.mediaBackdrop.copy(alpha = CloseBackingAlpha), CircleShape),
             variant = ButtonVariant.Plain,
-            colors = AppButtonDefaults.iconButtonColors(content = Color.White),
+            colors = AppButtonDefaults.iconButtonColors(content = colors.onMedia),
         )
     }
 }

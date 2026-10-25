@@ -176,8 +176,8 @@ fun AppRangeSlider(
                     size = Size(abs(endX - startX), trackHeight),
                     cornerRadius = radius,
                 )
-                drawThumb(Offset(startX, centerY), startRadius, Color.White, colors.outline)
-                drawThumb(Offset(endX, centerY), endRadius, Color.White, colors.outline)
+                drawThumb(Offset(startX, centerY), startRadius, colors.thumb, colors.outline)
+                drawThumb(Offset(endX, centerY), endRadius, colors.thumb, colors.outline)
             },
     ) {
         ThumbControl(
