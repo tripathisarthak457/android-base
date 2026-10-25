@@ -110,7 +110,7 @@ internal fun LabelledControl(
  * The checkbox's metrics, iOS's 22 dp control. [Size] is the radio button's too, so the two line up
  * in a form.
  */
-internal object AppCheckboxDefaults {
+object AppCheckboxDefaults {
     val Size = 22.dp
     val Corner = 6.dp
     val RingWidth = 1.5.dp

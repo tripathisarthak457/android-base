@@ -54,7 +54,7 @@ fun AppRadio(
 }
 
 /** The radio button's ring; its size is [AppCheckboxDefaults.Size]. */
-internal object AppRadioDefaults {
+object AppRadioDefaults {
     val RingWidth = 1.5.dp
 }
 

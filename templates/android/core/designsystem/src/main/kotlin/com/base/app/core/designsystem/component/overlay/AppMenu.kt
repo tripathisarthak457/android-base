@@ -260,7 +260,7 @@ private class MenuPosition(private val margin: Int, private val gap: Int) : Popu
  * The menu's width, its distance from the window's edges and from its anchor, and the gap between
  * its groups.
  */
-internal object AppMenuDefaults {
+object AppMenuDefaults {
     val WindowMargin = 16.dp
     val AnchorGap = 6.dp
     val MinWidth = 200.dp
