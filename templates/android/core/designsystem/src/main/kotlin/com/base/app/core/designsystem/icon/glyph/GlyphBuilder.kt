@@ -10,6 +10,11 @@ import androidx.compose.ui.graphics.vector.PathBuilder
 import androidx.compose.ui.graphics.vector.PathData
 import androidx.compose.ui.unit.dp
 
+/** Every glyph is drawn on a 24 dp grid, the size the stroke widths are chosen for. */
+internal object GlyphDefaults {
+    val Size = 24.dp
+}
+
 internal const val StrokeWidth = 1.8f
 internal const val BoldStrokeWidth = 2.6f
 
@@ -28,8 +33,8 @@ internal fun icon(
 ): Lazy<ImageVector> = lazy(LazyThreadSafetyMode.NONE) {
     ImageVector.Builder(
         name = name,
-        defaultWidth = 24.dp,
-        defaultHeight = 24.dp,
+        defaultWidth = GlyphDefaults.Size,
+        defaultHeight = GlyphDefaults.Size,
         viewportWidth = 24f,
         viewportHeight = 24f,
         autoMirror = autoMirror,

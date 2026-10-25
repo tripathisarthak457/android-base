@@ -34,7 +34,7 @@ fun Modifier.edgeProtection(
     val solid = color()
     val topEdge = top().toPx().coerceIn(0f, size.height)
     val bottomEdge = bottom().toPx().coerceIn(0f, size.height)
-    val tail = FadeTail.toPx()
+    val tail = ScrollEdgeDefaults.FadeTail.toPx()
     val topEnd = (topEdge + tail).coerceAtMost(size.height)
     val bottomEnd = (bottomEdge + tail).coerceAtMost(size.height)
     val topBrush = protection(solid, topEdge, topEnd, startY = 0f, endY = topEnd)
@@ -71,7 +71,7 @@ private fun protection(color: Color, edge: Float, end: Float, startY: Float, end
 fun Modifier.scrollEdgeFade(edge: () -> Dp): Modifier = drawWithCache {
     val edgePx = edge().toPx().coerceIn(0f, size.height)
     if (edgePx <= 0f) return@drawWithCache onDrawWithContent { drawContent() }
-    val end = (edgePx + FadeTail.toPx()).coerceAtMost(size.height)
+    val end = (edgePx + ScrollEdgeDefaults.FadeTail.toPx()).coerceAtMost(size.height)
     val content = obtainGraphicsLayer()
     val strip = obtainGraphicsLayer().apply { compositingStrategy = CompositingStrategy.Offscreen }
     val mask = Brush.verticalGradient(
@@ -100,7 +100,7 @@ fun Modifier.scrollEdgeFade(edge: () -> Dp): Modifier = drawWithCache {
  * rows of different colours.
  */
 internal fun Modifier.bottomEdgeFade(more: () -> Boolean): Modifier = drawWithCache {
-    val tail = FadeTail.toPx().coerceAtMost(size.height)
+    val tail = ScrollEdgeDefaults.FadeTail.toPx().coerceAtMost(size.height)
     val start = size.height - tail
     val content = obtainGraphicsLayer()
     val strip = obtainGraphicsLayer().apply { compositingStrategy = CompositingStrategy.Offscreen }
@@ -120,8 +120,10 @@ internal fun Modifier.bottomEdgeFade(more: () -> Boolean): Modifier = drawWithCa
     }
 }
 
-/** How far from the edge content takes to fade in completely. */
-private val FadeTail = 32.dp
+internal object ScrollEdgeDefaults {
+    /** How far from the edge content takes to fade in completely. */
+    val FadeTail = 32.dp
+}
 
 // Content starts to show this far down the bar, and only faintly by its end.
 private const val FadeFrom = 0.7f

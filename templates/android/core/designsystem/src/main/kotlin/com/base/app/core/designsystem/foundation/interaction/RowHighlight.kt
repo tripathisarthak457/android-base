@@ -1,7 +1,6 @@
 package com.base.app.core.designsystem.foundation.interaction
 
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.IndicationNodeFactory
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
@@ -45,8 +44,8 @@ private class RowHighlightNode(
                 if (presses > 0) {
                     alpha.snapTo(1f)
                 } else {
-                    val fade = currentValueOf(LocalAppSprings).highlightFadeOut
-                    launch { alpha.animateTo(0f, tween(fade)) }
+                    val fade = currentValueOf(LocalAppSprings).highlightFade<Float>()
+                    launch { alpha.animateTo(0f, fade) }
                 }
             }
         }

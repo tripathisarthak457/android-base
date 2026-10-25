@@ -35,7 +35,7 @@ private object MinimumTouchTargetElement : ModifierNodeElement<MinimumTouchTarge
 private class MinimumTouchTargetNode : Modifier.Node(), LayoutModifierNode {
     override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
         val placeable = measurable.measure(constraints)
-        val target = MinTouchTarget.roundToPx()
+        val target = MinimumTouchTargetDefaults.Size.roundToPx()
         val width = constraints.constrainWidth(maxOf(placeable.width, target))
         val height = constraints.constrainHeight(maxOf(placeable.height, target))
         return layout(width, height) {
@@ -44,4 +44,7 @@ private class MinimumTouchTargetNode : Modifier.Node(), LayoutModifierNode {
     }
 }
 
-internal val MinTouchTarget = 48.dp
+/** The smallest target a finger can hit reliably, as Android's accessibility guidance sets it. */
+internal object MinimumTouchTargetDefaults {
+    val Size = 48.dp
+}

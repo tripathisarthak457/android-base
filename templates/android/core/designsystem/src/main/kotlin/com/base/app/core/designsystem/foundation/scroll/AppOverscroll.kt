@@ -4,7 +4,6 @@ import androidx.compose.animation.core.AnimationState
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.animateTo
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.OverscrollEffect
 import androidx.compose.foundation.OverscrollFactory
 import androidx.compose.runtime.getValue
@@ -25,9 +24,9 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
-import com.base.app.core.designsystem.theme.AppSpring
 import com.base.app.core.designsystem.theme.AppSprings
 import com.base.app.core.designsystem.theme.LocalAppSprings
+import com.base.app.core.designsystem.theme.forPixelOffset
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
@@ -103,10 +102,10 @@ private class RubberBandOverscroll : OverscrollEffect {
                 velocity.y * slope(pull.y, placement.size.height),
             )
             if (abs(moving.x) < minimum && abs(moving.y) < minimum) {
-                settle(from = shown, initialVelocity = moving, spec = springs.overscrollRelease.forOffset())
+                settle(from = shown, initialVelocity = moving, spec = springs.overscrollRelease.forPixelOffset())
                 return
             }
-            val spec = springs.bounceBack.offsetSpec()
+            val spec = springs.bounceBack.forPixelOffset()
             val outward = moving.x * shown.x + moving.y * shown.y >= 0f
             if (outward) {
                 settle(from = shown, initialVelocity = moving, spec = spec)
@@ -125,7 +124,7 @@ private class RubberBandOverscroll : OverscrollEffect {
         val left = fling - performFling(fling)
         val carried = Offset(left.x.orNoneBelow(minimum), left.y.orNoneBelow(minimum))
         if (carried != Offset.Zero) {
-            settle(from = released, initialVelocity = carried.capped(), spec = springs.bounceBack.offsetSpec())
+            settle(from = released, initialVelocity = carried.capped(), spec = springs.bounceBack.forPixelOffset())
         }
     }
 
@@ -207,11 +206,6 @@ private fun slope(distance: Float, dimension: Int): Float {
     return Resistance / (stretch * stretch)
 }
 
-private fun SpringSpec<Float>.forOffset(): SpringSpec<Offset> = spring(dampingRatio, stiffness, OffsetThreshold)
-
-private fun AppSpring.offsetSpec(): SpringSpec<Offset> =
-    spring(dampingRatio, stiffness, OffsetThreshold)
-
 private class RubberBandNode(private val effect: RubberBandOverscroll) :
     Modifier.Node(), LayoutModifierNode, CompositionLocalConsumerModifierNode {
     var size = IntSize.Zero
@@ -219,7 +213,7 @@ private class RubberBandNode(private val effect: RubberBandOverscroll) :
 
     fun springs(): AppSprings = currentValueOf(LocalAppSprings)
 
-    fun minimumReleaseVelocity(): Float = with(currentValueOf(LocalDensity)) { MinimumReleaseVelocity.toPx() }
+    fun minimumReleaseVelocity(): Float = with(currentValueOf(LocalDensity)) { AppOverscrollDefaults.MinimumReleaseVelocity.toPx() }
 
     override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
         val placeable = measurable.measure(constraints)
@@ -234,15 +228,16 @@ private class RubberBandNode(private val effect: RubberBandOverscroll) :
 }
 
 private val Resistance = DesignTokens.Motion.rubberBand
-private val OffsetThreshold = Offset(0.5f, 0.5f)
 
-/**
- * The slowest movement that counts as one, in each axis. A release slower than this is a let-go, not a
- * throw: the band decays back instead of carrying a speed in. Slower than this, what is left of a fling
- * at the end, or of a throw when the band comes back to rest, is the fling's resting speed or near
- * enough, and moves nothing further.
- */
-private val MinimumReleaseVelocity = 50.dp
+internal object AppOverscrollDefaults {
+    /**
+     * The slowest movement that counts as one, in each axis. A release slower than this is a
+     * let-go, not a throw: the band decays back instead of carrying a speed in. Slower than this,
+     * what is left of a fling at the end, or of a throw when the band comes back to rest, is the
+     * fling's resting speed or near enough, and moves nothing further.
+     */
+    val MinimumReleaseVelocity = 50.dp
+}
 
 /**
  * The most of a fling's leftover speed that carries past the end, in pixels a second. Faster than

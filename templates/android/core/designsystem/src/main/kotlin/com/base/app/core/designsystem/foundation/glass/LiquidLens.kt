@@ -70,11 +70,15 @@ internal fun Modifier.liquidLens(
 
 private val LensEffects: BackdropEffectScope.() -> Unit = {
     vibrancy()
-    blur(LensBlur.toPx())
-    lens(LensRefractionHeight.toPx(), LensRefractionAmount.toPx())
+    blur(LiquidLensDefaults.Blur.toPx())
+    lens(LiquidLensDefaults.RefractionHeight.toPx(), LiquidLensDefaults.RefractionAmount.toPx())
 }
 
 private const val LensMagnification = 0.12f
-private val LensBlur = 2.dp
-private val LensRefractionHeight = 12.dp
-private val LensRefractionAmount = 20.dp
+
+/** How much the lens blurs, and how deep and strong its refraction is at the rim. */
+internal object LiquidLensDefaults {
+    val Blur = 2.dp
+    val RefractionHeight = 12.dp
+    val RefractionAmount = 20.dp
+}

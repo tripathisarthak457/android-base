@@ -4,8 +4,6 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -67,14 +65,14 @@ class AppTransitions internal constructor(
         get() = if (reduceMotion) {
             EnterTransition.None
         } else {
-            expandVertically(springs.layout.size) + fadeIn(tween(springs.fadeQuick))
+            expandVertically(springs.layout.size) + fadeIn(springs.quickFade())
         }
 
     val collapseOut: ExitTransition
         get() = if (reduceMotion) {
             ExitTransition.None
         } else {
-            shrinkVertically(springs.layout.size) + fadeOut(tween(springs.fadeQuick))
+            shrinkVertically(springs.layout.size) + fadeOut(springs.quickFade())
         }
 
     /** For something arriving from the bottom edge: a banner, a bar. */
@@ -89,14 +87,14 @@ class AppTransitions internal constructor(
         get() = if (reduceMotion) {
             EnterTransition.None
         } else {
-            scaleIn(springs.emphasis.unit, initialScale = PopScale) + fadeIn(tween(springs.fadeQuick))
+            scaleIn(springs.emphasis.unit, initialScale = PopScale) + fadeIn(springs.quickFade())
         }
 
     val popOut: ExitTransition
         get() = if (reduceMotion) {
             ExitTransition.None
         } else {
-            scaleOut(springs.press.unit, targetScale = PopScale) + fadeOut(tween(springs.fadeQuick))
+            scaleOut(springs.press.unit, targetScale = PopScale) + fadeOut(springs.quickFade())
         }
 
     /** A lateral move inside one screen: step 2 of a form replacing step 1. */
@@ -153,9 +151,9 @@ fun LazyItemScope.appAnimateItem(modifier: Modifier = Modifier): Modifier {
     if (AppTheme.reduceMotion) return modifier
     val springs = AppTheme.springs
     return modifier.animateItem(
-        fadeInSpec = tween(springs.fadeSlow, easing = springs.enterEasing),
+        fadeInSpec = springs.fadeIn(),
         placementSpec = springs.layout.offset,
-        fadeOutSpec = tween(springs.fadeQuick, easing = springs.exitEasing),
+        fadeOutSpec = springs.fadeOut(),
     )
 }
 
@@ -211,7 +209,7 @@ private fun rememberAppearProgress(
     LaunchedEffect(Unit) {
         if (progress.value < 1f) {
             if (delayMillis > 0) delay(delayMillis)
-            progress.animateTo(1f, tween(durationMillis, easing = if (linear) LinearEasing else springs.enterEasing))
+            progress.animateTo(1f, springs.arrival(durationMillis, linear))
         }
         shown = true
     }
