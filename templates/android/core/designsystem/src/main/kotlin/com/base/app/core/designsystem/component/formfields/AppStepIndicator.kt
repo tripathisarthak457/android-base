@@ -1,7 +1,6 @@
 package com.base.app.core.designsystem.component.formfields
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -69,7 +68,7 @@ fun AppStepIndicator(
                 }
                 AppText(
                     text = label,
-                    modifier = Modifier.padding(horizontal = 2.dp),
+                    modifier = Modifier.padding(horizontal = AppStepIndicatorDefaults.LabelInset),
                     style = AppTheme.typography.caption2,
                     color = if (index == current) AppTheme.colors.contentPrimary else AppTheme.colors.contentSecondary,
                     maxLines = 1,
@@ -97,10 +96,10 @@ private fun ConnectorHalf(visible: Boolean, done: Boolean, modifier: Modifier) {
             done -> AppTheme.colors.accent
             else -> AppTheme.colors.separator
         },
-        animationSpec = tween(AppTheme.springs.fadeSlow),
+        animationSpec = AppTheme.springs.slowFade(),
         label = "stepConnector",
     )
-    Box(modifier = modifier.height(2.dp).drawBehind { drawRect(colour.value) })
+    Box(modifier = modifier.height(AppStepIndicatorDefaults.ConnectorHeight).drawBehind { drawRect(colour.value) })
 }
 
 @Composable
@@ -108,19 +107,19 @@ private fun StepNode(number: Int, done: Boolean, active: Boolean) {
     val colors = AppTheme.colors
     val fill = animateColorAsState(
         targetValue = if (done) colors.accent else colors.surface,
-        animationSpec = tween(AppTheme.springs.fadeSlow),
+        animationSpec = AppTheme.springs.slowFade(),
         label = "stepFill",
     )
     val ring = animateColorAsState(
         targetValue = if (done || active) colors.accent else colors.outline,
-        animationSpec = tween(AppTheme.springs.fadeSlow),
+        animationSpec = AppTheme.springs.slowFade(),
         label = "stepRing",
     )
 
-    val ringWidth = if (active) 2.dp else 1.dp
+    val ringWidth = if (active) AppStepIndicatorDefaults.ActiveRingWidth else 1.dp
     Box(
         modifier = Modifier
-            .size(NodeSize)
+            .size(AppStepIndicatorDefaults.NodeSize)
             .drawBehind {
                 val stroke = ringWidth.toPx()
                 drawCircle(fill.value)
@@ -145,7 +144,13 @@ private fun StepNode(number: Int, done: Boolean, active: Boolean) {
     }
 }
 
-private val NodeSize = 26.dp
+/** The step indicator's nodes, labels and connectors. */
+object AppStepIndicatorDefaults {
+    val LabelInset = 2.dp
+    val ConnectorHeight = 2.dp
+    val ActiveRingWidth = 2.dp
+    val NodeSize = 26.dp
+}
 
 @AppComponentPreviews
 @Composable

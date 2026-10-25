@@ -87,7 +87,7 @@ fun AppStepper(
         )
         AppFiguresText(
             text = value.toString(),
-            modifier = Modifier.widthIn(min = 32.dp),
+            modifier = Modifier.widthIn(min = AppStepperDefaults.ValueMinWidth),
             style = AppTheme.typography.headline,
             color = AppTheme.colors.contentPrimary,
             textAlign = TextAlign.Center,
@@ -139,6 +139,11 @@ private const val RepeatDelayMillis = 500L
 private const val RepeatStartMillis = 150L
 private const val RepeatFastestMillis = 40L
 private const val RepeatAcceleration = 0.85f
+
+/** The stepper's value column, wide enough for two digits. */
+object AppStepperDefaults {
+    val ValueMinWidth = 32.dp
+}
 
 @AppComponentPreviews
 @Composable

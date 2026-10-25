@@ -1,11 +1,7 @@
 package com.base.app.core.designsystem.component.formfields
 
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -115,7 +111,7 @@ fun AppOtpField(
                             Box(
                                 modifier = Modifier
                                     .weight(1f)
-                                    .heightIn(min = BoxHeight)
+                                    .heightIn(min = AppOtpFieldDefaults.BoxHeight)
                                     .background(if (enabled) colors.surface else colors.fill, AppTheme.shapes.sm)
                                     .border(
                                         width = if (next || isError) AppTheme.style.borderWidthStrong else AppTheme.style.borderWidth,
@@ -155,7 +151,7 @@ private fun Caret() {
         rememberInfiniteTransition(label = "otpCaret").animateFloat(
             initialValue = 1f,
             targetValue = 0f,
-            animationSpec = infiniteRepeatable(tween(CaretMillis, easing = LinearEasing), RepeatMode.Reverse),
+            animationSpec = AppTheme.springs.caretBlink(),
             label = "otpCaretAlpha",
         )
     } else {
@@ -163,15 +159,20 @@ private fun Caret() {
     }
     Box(
         Modifier
-            .width(2.dp)
-            .height(24.dp)
+            .width(AppOtpFieldDefaults.CaretWidth)
+            .height(AppOtpFieldDefaults.CaretHeight)
             .graphicsLayer { this.alpha = alpha?.value ?: 1f }
             .background(AppTheme.colors.accent),
     )
 }
 
-private val BoxHeight = 48.dp
-private const val CaretMillis = 550
+/** The code field's boxes and caret. */
+object AppOtpFieldDefaults {
+    val CaretWidth = 2.dp
+    val CaretHeight = 24.dp
+    val BoxHeight = 48.dp
+}
+
 
 @AppComponentPreviews
 @Composable

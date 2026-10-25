@@ -159,7 +159,7 @@ fun AppRangeSlider(
             }
             .drawBehind {
                 val centerY = size.height / 2f
-                val trackHeight = TrackHeight.toPx()
+                val trackHeight = AppRangeSliderDefaults.TrackHeight.toPx()
                 val radius = CornerRadius(trackHeight / 2f)
                 val startX = thumbX(startFraction)
                 val endX = thumbX(endFraction)
@@ -240,7 +240,7 @@ private fun ThumbControl(
 
 private fun DrawScope.drawThumb(center: Offset, radius: Float, fill: Color, ring: Color) {
     drawCircle(color = fill, radius = radius.dp.toPx(), center = center)
-    drawCircle(color = ring, radius = radius.dp.toPx(), center = center, style = Stroke(width = 2.5.dp.toPx()))
+    drawCircle(color = ring, radius = radius.dp.toPx(), center = center, style = Stroke(width = AppRangeSliderDefaults.ThumbRingWidth.toPx()))
 }
 
 private const val NoThumb = -1
@@ -248,7 +248,12 @@ private const val StartThumb = 0
 private const val EndThumb = 1
 private const val ThumbRadius = 10f
 private const val ThumbRadiusDragged = 12f
-private val TrackHeight = 6.dp
+
+/** The range slider's track and the ring around its thumbs. */
+object AppRangeSliderDefaults {
+    val ThumbRingWidth = 2.5.dp
+    val TrackHeight = 6.dp
+}
 
 @AppComponentPreviews
 @Composable
