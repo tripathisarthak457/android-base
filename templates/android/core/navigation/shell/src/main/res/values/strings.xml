@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="navigation_more">More</string>
-    <string name="navigation_back">Back</string>
-    <string name="navigation_show_sidebar">Show sidebar</string>
-    <string name="navigation_hide_sidebar">Hide sidebar</string>
+    <string name="shell_more">More</string>
+    <string name="shell_back">Back</string>
+    <string name="shell_show_sidebar">Show sidebar</string>
+    <string name="shell_hide_sidebar">Hide sidebar</string>
 </resources>

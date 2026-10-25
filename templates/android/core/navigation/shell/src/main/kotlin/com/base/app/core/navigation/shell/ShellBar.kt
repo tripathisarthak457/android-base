@@ -66,7 +66,7 @@ internal fun ShellBar(
     val shown = chrome.tabsShown(tabs.size)
     val hasMore = shown < tabs.size
     val sections = tabs.map { tab -> tab.section?.let { stringResource(it) } }
-    val moreLabel = stringResource(R.string.navigation_more)
+    val moreLabel = stringResource(R.string.shell_more)
     val items = remember(tabs, labels, sections, shown, moreLabel) {
         val visible = tabs.take(shown).mapIndexed { index, tab ->
             TabItem(labels[index], tab.icon, tab.selectedIcon, tab.badgeCount, sections[index])
@@ -85,7 +85,7 @@ internal fun ShellBar(
         } else {
             {
                 if (onToggleSidebar != null) {
-                    val label = if (chrome == NavigationChrome.Sidebar) R.string.navigation_hide_sidebar else R.string.navigation_show_sidebar
+                    val label = if (chrome == NavigationChrome.Sidebar) R.string.shell_hide_sidebar else R.string.shell_show_sidebar
                     Action(AppIcons.Menu, stringResource(label), onToggleSidebar, tag = "sidebar_toggle")
                 }
                 trailingAction?.invoke(this)

@@ -1,6 +1,6 @@
 {
-  "navigation_more": "Más",
-  "navigation_back": "Atrás",
-  "navigation_show_sidebar": "Mostrar barra lateral",
-  "navigation_hide_sidebar": "Ocultar barra lateral"
+  "shell_more": "Más",
+  "shell_back": "Atrás",
+  "shell_show_sidebar": "Mostrar barra lateral",
+  "shell_hide_sidebar": "Ocultar barra lateral"
 }

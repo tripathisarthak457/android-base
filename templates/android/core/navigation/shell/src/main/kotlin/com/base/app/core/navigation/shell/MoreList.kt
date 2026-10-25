@@ -32,7 +32,7 @@ internal fun MoreList(tabs: List<ShellTab>, labels: List<String>, from: Int, onS
     val chevron = if (LocalLayoutDirection.current == LayoutDirection.Rtl) AppIcons.ChevronLeft else AppIcons.ChevronRight
     AppScaffold(
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
-        topBar = { AppTopBar(title = stringResource(R.string.navigation_more)) },
+        topBar = { AppTopBar(title = stringResource(R.string.shell_more)) },
     ) {
         val scroll = rememberScrollState()
         ReportScrollEdge(scroll)

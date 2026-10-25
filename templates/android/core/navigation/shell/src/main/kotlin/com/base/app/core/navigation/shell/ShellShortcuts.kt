@@ -20,7 +20,7 @@ internal fun ShellShortcuts(labels: List<String>, state: ShellState, onToggleSid
     }
     val back = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     if (back != null) {
-        val label = stringResource(R.string.navigation_back)
+        val label = stringResource(R.string.shell_back)
         val bracket = remember(label) { Shortcut(Key.LeftBracket, label, ctrl = true) }
         val arrow = remember(label) { Shortcut(Key.DirectionLeft, label, alt = true) }
         ShortcutEffect(bracket) { back.onBackPressed() }
@@ -28,7 +28,7 @@ internal fun ShellShortcuts(labels: List<String>, state: ShellState, onToggleSid
     }
     if (onToggleSidebar != null) {
         val label = stringResource(
-            if (state.chrome == NavigationChrome.Sidebar) R.string.navigation_hide_sidebar else R.string.navigation_show_sidebar,
+            if (state.chrome == NavigationChrome.Sidebar) R.string.shell_hide_sidebar else R.string.shell_show_sidebar,
         )
         val sidebar = remember(label) { Shortcut(Key.S, label, ctrl = true, shift = true) }
         ShortcutEffect(sidebar, onToggleSidebar)
