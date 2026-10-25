@@ -18,8 +18,14 @@ internal fun SignInRoute(
         viewModel = viewModel,
         onEffect = { effect ->
             when (effect) {
+                // <opt:ui_components>
                 // The new session moves the app to the signed-in shell; navigating as well would open
                 // the next screen twice, once in each host.
+                // </opt:ui_components>
+                // <opt-else:ui_components>
+                //~ // The new session starts the app's back stack afresh, which AppRoot keys on who the
+                //~ // app is for; navigating as well would push onto the stack it replaces.
+                // </opt-else:ui_components>
                 SignInEffect.SignedIn -> Unit
                 SignInEffect.OpenSignUp -> navigator.navigate(SignUpKey)
                 SignInEffect.OpenPasswordReset -> navigator.navigate(PasswordResetKey)

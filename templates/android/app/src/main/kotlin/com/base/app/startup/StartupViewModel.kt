@@ -24,17 +24,31 @@ data class Startup(
     val identity: EntryIdentity,
 )
 
+// <opt:ui_components>
 /**
  * Which app the person is in. Each is its own host, and moving between them is a host swap, never a
  * navigation: nothing pushes the sign-in screen into a tab, and signing in does not push the tabs
  * onto the sign-in stack.
  */
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ /**
+//~  * Who the app is for: a first launch, nobody signed in, or a session. The app's one back stack is
+//~  * keyed on it, so a change starts a fresh stack rather than navigating: signing in does not push
+//~  * the start screen onto the sign-in stack.
+//~  */
+// </opt-else:ui_components>
 sealed interface EntryIdentity {
     data object Onboarding : EntryIdentity
 
     data object SignedOut : EntryIdentity
 
+    // <opt:ui_components>
     /** [generation] changes with every new session, so the next person starts with fresh tabs. */
+    // </opt:ui_components>
+    // <opt-else:ui_components>
+    //~ /** [generation] changes with every new session, so the next person starts with a fresh stack. */
+    // </opt-else:ui_components>
     data class SignedIn(val generation: Int) : EntryIdentity
 }
 
@@ -54,8 +68,14 @@ class StartupViewModel @Inject constructor(
     private val hooked = CompletableDeferred<Unit>()
     private var launching = false
 
+    // <opt:ui_components>
     // Saved, so a process restored from the background keeps the generation its saved shell state
     // was keyed on.
+    // </opt:ui_components>
+    // <opt-else:ui_components>
+    //~ // Saved, so a process restored from the background keeps the generation its saved back stack
+    //~ // was keyed on.
+    // </opt-else:ui_components>
     private var generation: Int = savedState[GENERATION] ?: 0
     private var signedIn: Boolean = savedState[SIGNED_IN] ?: false
 

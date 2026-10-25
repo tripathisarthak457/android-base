@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import com.base.app.core.designsystem.theme.AppTheme
 
+// <opt:ui_components>
 /**
  * Opens web pages in a Custom Tab coloured like the app, instead of throwing the user out to the
  * browser. For terms, privacy, help articles — pages that belong to the app but live on the web.
@@ -21,6 +22,19 @@ import com.base.app.core.designsystem.theme.AppTheme
  * AppRow(title = "Privacy policy", onClick = { openInApp("https://…") })
  * ```
  */
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ /**
+//~  * Opens web pages in a Custom Tab coloured like the app, instead of throwing the user out to the
+//~  * browser. For terms, privacy, help articles — pages that belong to the app but live on the web.
+//~  *
+//~  * ```
+//~  * val openInApp = rememberInAppBrowser()
+//~  * // A row of your design system's, on the settings screen you build:
+//~  * PolicyRow(onClick = { openInApp("https://…") })
+//~  * ```
+//~  */
+// </opt-else:ui_components>
 @Composable
 fun rememberInAppBrowser(): (String) -> Unit {
     val context = LocalContext.current

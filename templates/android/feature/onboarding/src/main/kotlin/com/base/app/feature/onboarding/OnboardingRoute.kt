@@ -20,8 +20,14 @@ internal fun OnboardingRoute(viewModel: OnboardingViewModel = hiltViewModel()) {
         viewModel = viewModel,
         onEffect = { effect ->
             when (effect) {
+                // <opt:ui_components>
                 // The completed flag moves the app on to sign-in or the tabs; navigating as well
                 // would open that screen twice, once in each host.
+                // </opt:ui_components>
+                // <opt-else:ui_components>
+                //~ // The completed flag starts the app's back stack afresh, which AppRoot keys on who
+                //~ // the app is for; navigating as well would push onto the stack it replaces.
+                // </opt-else:ui_components>
                 OnboardingEffect.Finished -> Unit
             }
         },

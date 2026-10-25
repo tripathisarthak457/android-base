@@ -15,10 +15,18 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.multibindings.IntoSet
 
+// <opt:ui_components>
 /**
  * Nothing here navigates on success: the saved session swaps the app to the signed-in shell, which
  * starts on its own stack, so Back can never return to these screens.
  */
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ /**
+//~  * Nothing here navigates on success: the saved session starts the app's back stack afresh, so Back
+//~  * can never return to these screens.
+//~  */
+// </opt-else:ui_components>
 @Module
 @InstallIn(ActivityRetainedComponent::class)
 internal object AuthNavigation {

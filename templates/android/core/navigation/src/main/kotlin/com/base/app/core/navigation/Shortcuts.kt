@@ -30,12 +30,22 @@ class Shortcut(
             (if (alt) KeyEvent.META_ALT_ON else 0)
 }
 
+// <opt:ui_components>
 /**
  * One window's keyboard shortcuts: the shell's (Ctrl+1…9 for the tabs, Ctrl+[ and Alt+← for Back,
  * Ctrl+Shift+S for the sidebar) and those of the screen in front, which registers its own with
  * [ShortcutEffect]. The activity hands every key press here first, so a shortcut works whatever has
  * focus, and lists them for the Shortcuts Helper.
  */
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ /**
+//~  * One window's keyboard shortcuts: those of the screen in front, which registers its own with
+//~  * [ShortcutEffect], and any a navigation host of yours adds (Ctrl+1…9 for a tab bar's tabs, say).
+//~  * The activity hands every key press here first, so a shortcut works whatever has focus, and lists
+//~  * them for the Shortcuts Helper.
+//~  */
+// </opt-else:ui_components>
 @Stable
 class AppShortcuts {
 
