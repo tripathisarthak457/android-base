@@ -23,4 +23,8 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.messaging)
     implementation(libs.kotlinx.coroutines.play.services)
+
+    // The push store in memory, and a real NotificationManager and permission check under Robolectric.
+    testImplementation(testFixtures(project(":core:datastore")))
+    testImplementation(libs.robolectric)
 }

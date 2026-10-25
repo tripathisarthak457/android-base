@@ -11,4 +11,6 @@ dependencies {
     // <opt:media>
     implementation(project(":core:media"))
     // </opt:media>
+
+    testImplementation(testFixtures(project(":data:profile")))
 }

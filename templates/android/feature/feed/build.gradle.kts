@@ -8,4 +8,6 @@ android {
 
 dependencies {
     implementation(project(":data:feed"))
+
+    testImplementation(testFixtures(project(":data:feed")))
 }
