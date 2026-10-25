@@ -40,10 +40,10 @@ fun AppBadge(
     val redacted = if (bone) Modifier.skeleton(AppTheme.shapes.pill) else Modifier
     Box(
         modifier = modifier
-            .defaultMinSize(minWidth = 18.dp, minHeight = 18.dp)
+            .defaultMinSize(minWidth = AppBadgeDefaults.MinSize, minHeight = AppBadgeDefaults.MinSize)
             .then(redacted)
             .background(danger.base, AppTheme.shapes.pill)
-            .padding(horizontal = 5.dp),
+            .padding(horizontal = AppBadgeDefaults.HorizontalPadding),
         contentAlignment = Alignment.Center,
     ) {
         ContentUnderBone(bone) {
@@ -73,7 +73,7 @@ fun AppBadgedBox(
             visible = count > 0,
             enter = transitions.popIn,
             exit = transitions.popOut,
-            modifier = Modifier.align(Alignment.TopEnd).offset(x = 8.dp, y = (-6).dp),
+            modifier = Modifier.align(Alignment.TopEnd).offset(x = AppBadgeDefaults.CountOffsetX, y = AppBadgeDefaults.CountOffsetY),
         ) {
             AppBadge(count = count, maxCount = maxCount)
         }
@@ -94,9 +94,9 @@ fun AppDotBadge(
             visible = visible,
             enter = transitions.popIn,
             exit = transitions.popOut,
-            modifier = Modifier.align(Alignment.TopEnd).offset(x = 2.dp, y = (-2).dp),
+            modifier = Modifier.align(Alignment.TopEnd).offset(x = AppBadgeDefaults.DotOffsetX, y = AppBadgeDefaults.DotOffsetY),
         ) {
-            Box(Modifier.size(8.dp).background(AppTheme.colors.danger.base, AppTheme.shapes.pill).clearAndSetSemantics {})
+            Box(Modifier.size(AppBadgeDefaults.DotSize).background(AppTheme.colors.danger.base, AppTheme.shapes.pill).clearAndSetSemantics {})
         }
     }
 }
@@ -115,15 +115,30 @@ fun AppStatusPill(
         modifier = modifier
             .then(redacted)
             .background(status.subtle, AppTheme.shapes.pill)
-            .padding(horizontal = 10.dp, vertical = 4.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
+            .padding(horizontal = AppBadgeDefaults.PillHorizontalPadding, vertical = AppBadgeDefaults.PillVerticalPadding),
+        horizontalArrangement = Arrangement.spacedBy(AppBadgeDefaults.PillIconSpacing),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         ContentUnderBone(bone) {
-            icon?.let { AppIcon(it, contentDescription = null, tint = status.content, size = 14.dp) }
+            icon?.let { AppIcon(it, contentDescription = null, tint = status.content, size = AppBadgeDefaults.PillIconSize) }
             AppText(text = text, style = AppTheme.typography.caption1, color = status.content, maxLines = 1)
         }
     }
+}
+
+/** The badges' and the status pill's metrics. */
+object AppBadgeDefaults {
+    val MinSize = 18.dp
+    val HorizontalPadding = 5.dp
+    val CountOffsetX = 8.dp
+    val CountOffsetY = (-6).dp
+    val DotSize = 8.dp
+    val DotOffsetX = 2.dp
+    val DotOffsetY = (-2).dp
+    val PillHorizontalPadding = 10.dp
+    val PillVerticalPadding = 4.dp
+    val PillIconSpacing = 4.dp
+    val PillIconSize = 14.dp
 }
 
 @AppComponentPreviews

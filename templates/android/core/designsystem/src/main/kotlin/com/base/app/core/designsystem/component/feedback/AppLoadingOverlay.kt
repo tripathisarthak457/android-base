@@ -74,13 +74,13 @@ fun AppLoadingOverlay(
             ) {
                 Column(
                     modifier = Modifier
-                        .widthIn(max = 240.dp)
+                        .widthIn(max = AppLoadingOverlayDefaults.MaxPanelWidth)
                         .padding(AppTheme.spacing.xl)
                         .semantics(mergeDescendants = true) { liveRegion = LiveRegionMode.Polite },
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
                 ) {
-                    AppActivityIndicator(size = 28.dp)
+                    AppActivityIndicator(size = AppLoadingOverlayDefaults.IndicatorSize)
                     label?.let {
                         AppText(text = it, style = AppTheme.typography.subheadline, color = AppTheme.colors.contentSecondary, textAlign = TextAlign.Center)
                     }
@@ -88,6 +88,12 @@ fun AppLoadingOverlay(
             }
         }
     }
+}
+
+/** The loading overlay's panel. */
+object AppLoadingOverlayDefaults {
+    val MaxPanelWidth = 240.dp
+    val IndicatorSize = 28.dp
 }
 
 @AppComponentPreviews

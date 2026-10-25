@@ -110,9 +110,9 @@ fun AppSkeletonListItem(modifier: Modifier = Modifier, showLeading: Boolean = tr
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
             // Its layout stays as it was until it is removed, fixed heights included.
             @Suppress("DEPRECATION")
-            AppSkeletonLine(widthFraction = 0.6f, height = 14.dp)
+            AppSkeletonLine(widthFraction = 0.6f, height = AppSkeletonDefaults.ListItemTitleHeight)
             @Suppress("DEPRECATION")
-            AppSkeletonLine(widthFraction = 0.9f, height = 12.dp)
+            AppSkeletonLine(widthFraction = 0.9f, height = AppSkeletonDefaults.ListItemSubtitleHeight)
         }
     }
 }
@@ -127,6 +127,10 @@ object AppSkeletonDefaults {
 
     /** The diameter of [AppSkeletonCircle]: an avatar's. */
     val CircleSize: Dp = 40.dp
+
+    /** The fixed line heights [AppSkeletonListItem] has always drawn. */
+    internal val ListItemTitleHeight: Dp = 14.dp
+    internal val ListItemSubtitleHeight: Dp = 12.dp
 }
 
 /** Capitals and descenders, so the measured line is as tall as any real one in the style. */

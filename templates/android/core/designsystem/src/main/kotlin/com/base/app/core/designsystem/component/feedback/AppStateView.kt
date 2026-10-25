@@ -85,12 +85,12 @@ fun AppStateView(
             when {
                 illustration != null -> illustration()
                 glyph != null -> AppSurface(
-                    modifier = Modifier.size(64.dp),
+                    modifier = Modifier.size(AppStateViewDefaults.GlyphBackingSize),
                     shape = AppTheme.shapes.pill,
                     color = if (kind == StateKind.Empty) colors.accentSubtle else colors.fill,
                 ) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        AppIcon(glyph, contentDescription = null, tint = if (kind == StateKind.Empty) colors.accentContent else colors.contentSecondary, size = 28.dp)
+                        AppIcon(glyph, contentDescription = null, tint = if (kind == StateKind.Empty) colors.accentContent else colors.contentSecondary, size = AppStateViewDefaults.GlyphSize)
                     }
                 }
             }
@@ -100,7 +100,7 @@ fun AppStateView(
             message?.let {
                 AppText(
                     text = it,
-                    modifier = Modifier.widthIn(max = 320.dp),
+                    modifier = Modifier.widthIn(max = AppStateViewDefaults.MaxTextWidth),
                     style = AppTheme.typography.callout,
                     color = colors.contentSecondary,
                     textAlign = TextAlign.Center,
@@ -116,6 +116,13 @@ fun AppStateView(
             }
         }
     }
+}
+
+/** The state view's glyph and the measure of its text. */
+object AppStateViewDefaults {
+    val GlyphBackingSize = 64.dp
+    val GlyphSize = 28.dp
+    val MaxTextWidth = 320.dp
 }
 
 @AppComponentPreviews

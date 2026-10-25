@@ -52,7 +52,7 @@ import kotlin.math.roundToInt
 @Composable
 fun AppActivityIndicator(
     modifier: Modifier = Modifier,
-    size: Dp = 20.dp,
+    size: Dp = AppProgressDefaults.IndicatorSize,
     color: Color = AppTheme.colors.contentSecondary,
 ) {
     var head by remember { mutableIntStateOf(0) }
@@ -133,7 +133,7 @@ fun AppLinearProgress(
         snapshotFlow { current().coerceIn(0f, 1f) }.collectLatest { shown.animateTo(it, springs.layout.unit) }
     }
     val announced by remember { derivedStateOf { (current().coerceIn(0f, 1f) * AnnouncedSteps).roundToInt() / AnnouncedSteps } }
-    Canvas(modifier.fillMaxWidth().height(4.dp).progressSemantics(announced)) {
+    Canvas(modifier.fillMaxWidth().height(AppProgressDefaults.LinearHeight).progressSemantics(announced)) {
         val radius = CornerRadius(size.height / 2f)
         drawRoundRect(trackColor, cornerRadius = radius)
         val width = size.width * shown.value
@@ -146,6 +146,12 @@ fun AppLinearProgress(
 
 private const val AnnouncedSteps = 20f
 private const val StepMillis = 125L
+
+/** The progress indicators' sizes. */
+object AppProgressDefaults {
+    val IndicatorSize = 20.dp
+    val LinearHeight = 4.dp
+}
 
 @AppComponentPreviews
 @Composable

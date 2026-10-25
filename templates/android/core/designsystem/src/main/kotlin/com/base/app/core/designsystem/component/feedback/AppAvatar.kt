@@ -42,7 +42,7 @@ import kotlin.math.absoluteValue
 fun AppAvatar(
     name: String,
     modifier: Modifier = Modifier,
-    size: Dp = 40.dp,
+    size: Dp = AppAvatarDefaults.Size,
     content: (@Composable () -> Unit)? = null,
 ) {
     val colors = AppTheme.colors
@@ -85,14 +85,14 @@ fun AppAvatar(
 fun AppAvatarGroup(
     names: List<String>,
     modifier: Modifier = Modifier,
-    size: Dp = 32.dp,
+    size: Dp = AppAvatarDefaults.GroupSize,
     maxShown: Int = 4,
 ) {
     val colors = AppTheme.colors
     val shown = names.take(maxShown)
     val hidden = names.size - shown.size
     val description = pluralStringResource(R.plurals.designsystem_people_count, names.size, names.size)
-    val ring = 2.dp
+    val ring = AppAvatarDefaults.GroupRing
     Layout(
         modifier = modifier.clearAndSetSemantics { contentDescription = description },
         content = {
@@ -156,6 +156,13 @@ private fun avatarTint(name: String, colors: AppColors): Color {
 private const val OverlapStep = 0.7f
 private const val InitialsFraction = 0.4f
 private const val DarkTintFraction = 0.42f
+
+/** The avatar's sizes, and the ring that parts the avatars of a group. */
+object AppAvatarDefaults {
+    val Size = 40.dp
+    val GroupSize = 32.dp
+    val GroupRing = 2.dp
+}
 
 @AppComponentPreviews
 @Composable

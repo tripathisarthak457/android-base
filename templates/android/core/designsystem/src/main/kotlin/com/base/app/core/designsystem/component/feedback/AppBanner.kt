@@ -41,12 +41,17 @@ fun AppBanner(
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        AppIcon(icon ?: tone.icon, contentDescription = null, tint = status.content, size = 16.dp)
+        AppIcon(icon ?: tone.icon, contentDescription = null, tint = status.content, size = AppBannerDefaults.IconSize)
         AppText(text = text, modifier = Modifier.weight(1f), style = AppTheme.typography.footnote, color = AppTheme.colors.contentPrimary)
         if (actionLabel != null && onAction != null) {
             AppLinkButton(text = actionLabel, onClick = onAction, style = AppTheme.typography.footnote)
         }
     }
+}
+
+/** The banner's metrics. */
+object AppBannerDefaults {
+    val IconSize = 16.dp
 }
 
 @AppComponentPreviews
