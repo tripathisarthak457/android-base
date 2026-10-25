@@ -455,13 +455,16 @@ private fun TabCellsPreview() {
     )
     val look = barLook(AppTheme.style.bar)
     val bounce = remember { TabBounce(items.size) }
-    val measure = remember { TabMeasure(vertical = false, state = null, selected = { 1 }, slots = mutableStateOf(PillSlots.Empty)) }
+    // One measure per bar, as each bar has: two base layers writing their pill slots into one
+    // measure would remeasure each other forever.
+    val labelled = remember { TabMeasure(vertical = false, state = null, selected = { 1 }, slots = mutableStateOf(PillSlots.Empty)) }
+    val iconsOnly = remember { TabMeasure(vertical = false, state = null, selected = { 1 }, slots = mutableStateOf(PillSlots.Empty)) }
     Column(
         modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
     ) {
-        TabCells(items, 1, TabLayer.Base, TabLabels.Always, look, bounce, measure, onTap = {})
-        TabCells(items, 1, TabLayer.Selected, TabLabels.Always, look, bounce, measure, onTap = null)
-        TabCells(items, 1, TabLayer.Base, TabLabels.Never, look, bounce, measure, onTap = {})
+        TabCells(items, 1, TabLayer.Base, TabLabels.Always, look, bounce, labelled, onTap = {})
+        TabCells(items, 1, TabLayer.Selected, TabLabels.Always, look, bounce, labelled, onTap = null)
+        TabCells(items, 1, TabLayer.Base, TabLabels.Never, look, bounce, iconsOnly, onTap = {})
     }
 }
