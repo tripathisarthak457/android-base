@@ -90,9 +90,11 @@ fun interface DeepLinkRoute {
 // <opt-else:ui_components>
 //~ /**
 //~  * A link waiting for the app to be able to open it. It is held, not navigated to, when it arrives,
-//~  * and the app's stack takes it once, after the gates (the app lock, the API status) are past. One
-//~  * per window, kept across its configuration changes, so a rotation in between keeps it and a link
-//~  * opens in the window it was sent to.
+//~  * and the app's stack takes it once, as soon as the root is composed after start-up has read the
+//~  * settings and the session: beneath the app lock's and the API status's covers if they are up,
+//~  * and whether or not anyone is signed in, since the stack has no entry gates until the project
+//~  * adds its own. One per window, kept across its configuration changes, so a rotation in between
+//~  * keeps it and a link opens in the window it was sent to.
 //~  */
 // </opt-else:ui_components>
 @ActivityRetainedScoped
