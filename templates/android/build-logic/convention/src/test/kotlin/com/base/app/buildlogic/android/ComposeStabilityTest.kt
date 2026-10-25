@@ -1,7 +1,10 @@
 package com.base.app.buildlogic.android
 
+import org.gradle.api.GradleException
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
@@ -56,6 +59,60 @@ class ComposeStabilityTest {
 
         assertEquals(setOf("com.acme.ds.Foo(items)", "com.acme.ds.Bar(key)"), baseline.accepted)
         assertEquals(listOf("com.acme.ds.Bar(key)"), baseline.unexplained)
+    }
+
+    @Test
+    fun `an entry for a declaration of this module that the report no longer flags is stale`() {
+        val baseline = ComposeStability.baseline(
+            """
+            com.acme.ds.Foo(items)  # callers pass the row's own list
+            com.acme.ds.list.AppPicker(options)  # fixed since
+            com.acme.ds.Stuck: not skippable  # fixed since
+            com.acme.ds.Sheet.Content(state)  # a member, fixed since
+            com.acme.ds.rememberRow(key)  # fixed since
+            com.acme.nav.BackEffect(handler)  # another module's
+            """.trimIndent(),
+        )
+
+        assertEquals(
+            listOf(
+                "com.acme.ds.Sheet.Content(state)",
+                "com.acme.ds.Stuck: not skippable",
+                "com.acme.ds.list.AppPicker(options)",
+                "com.acme.ds.rememberRow(key)",
+            ),
+            ComposeStability.stale(baseline, listOf("com.acme.ds.Foo(items)"), setOf("com.acme.ds", "com.acme.ds.list")),
+        )
+    }
+
+    @Test
+    fun `the check fails on a stale entry and names it`() {
+        val root = ProjectBuilder.builder().withProjectDir(folder.root).build()
+        val report = folder.newFile("designsystem-composables.txt").apply {
+            writeText(
+                """
+                restartable skippable fun com.acme.ds.Foo(
+                  unstable items: MutableList<String>
+                )
+                """.trimIndent(),
+            )
+        }
+        val source = folder.newFile("Foo.kt").apply { writeText("package com.acme.ds\n\n@Composable fun Foo(items: MutableList<String>) {}\n") }
+        val baseline = folder.newFile("compose-stability-baseline.txt").apply {
+            writeText("com.acme.ds.Foo(items)  # callers pass the row's own list\ncom.acme.ds.Bar(key)  # fixed since\n")
+        }
+        val check = root.tasks.register("checkComposeStability", CheckComposeStabilityTask::class.java).get().apply {
+            reports.from(report)
+            sources.from(source)
+            baselineFile.set(baseline)
+            modulePath.set(":core:designsystem")
+            marker.set(folder.root.resolve("ok"))
+        }
+
+        val error = assertThrows(GradleException::class.java) { check.verify() }
+
+        assertTrue(error.message!!, "  com.acme.ds.Bar(key)" in error.message!!.lines())
+        assertTrue(error.message!!, "com.acme.ds.Foo(items)" !in error.message!!)
     }
 
     @Test

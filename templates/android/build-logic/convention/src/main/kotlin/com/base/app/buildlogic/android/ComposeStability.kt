@@ -40,12 +40,14 @@ internal fun Project.configureComposeStability() {
     val written = fileTree(reportsDir) {
         include("**/*-composables.txt")
     }
-    val baseline = rootProject.layout.projectDirectory.file(ComposeStability.BASELINE)
+    val baseline = isolated.rootProject.projectDirectory.file(ComposeStability.BASELINE)
 
     val check = tasks.register<CheckComposeStabilityTask>("checkComposeStability") {
         group = "verification"
         description = "Fails on a composable parameter the compiler compares by identity."
         reports.setFrom(written)
+        // Which baseline entries are this module's, so one it no longer needs can be named.
+        sources.from(fileTree("src/main") { include("**/*.kt") })
         if (baseline.asFile.exists()) baselineFile.set(baseline)
         modulePath.set(path)
         marker.set(layout.buildDirectory.file("guards/checkComposeStability.ok"))
@@ -113,6 +115,32 @@ internal object ComposeStability {
 
     class Baseline(val accepted: Set<String>, val unexplained: List<String>)
 
+    /**
+     * The entries of [baseline] that belong to a module declaring [packages] and match none of its
+     * [problems]: the parameter was fixed or the composable went, so the line only waits to accept
+     * the next one. An entry belongs to the module whose package holds its function, or the class
+     * the function is a member of.
+     */
+    fun stale(baseline: Baseline, problems: List<String>, packages: Set<String>): List<String> =
+        baseline.accepted
+            .filter { entry -> owner(entry) in packages && entry !in problems }
+            .sorted()
+
+    /** `com.acme.ds.Sheet.Content(state)` → `com.acme.ds`: the function's package, past any class. */
+    private fun owner(entry: String): String {
+        var owner = entry.substringBefore('(').substringBefore(':').substringBeforeLast('.')
+        while (owner.substringAfterLast('.').firstOrNull()?.isUpperCase() == true) {
+            owner = owner.substringBeforeLast('.', missingDelimiterValue = "")
+        }
+        return owner
+    }
+
+    private val PACKAGE = Regex("""^\s*package\s+([\w.]+)""", RegexOption.MULTILINE)
+
+    /** The packages [sources] declare. */
+    fun packages(sources: List<String>): Set<String> =
+        sources.mapNotNull { PACKAGE.find(it)?.groupValues?.get(1) }.toSet()
+
     /** Entries are `fqName(parameter)  # reason`; an entry without a reason is listed as unexplained. */
     fun baseline(text: String): Baseline {
         val entries = text.lines().map { it.trim() }.filter { it.isNotEmpty() && !it.startsWith("#") }
@@ -129,6 +157,10 @@ internal abstract class CheckComposeStabilityTask : DefaultTask() {
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val reports: ConfigurableFileCollection
+
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val sources: ConfigurableFileCollection
 
     @get:InputFile
     @get:Optional
@@ -160,7 +192,18 @@ internal abstract class CheckComposeStabilityTask : DefaultTask() {
             )
         }
 
-        val fresh = ComposeStability.problems(present.sortedBy { it.path }.map(File::readText)) - baseline.accepted
+        val problems = ComposeStability.problems(present.sortedBy { it.path }.map(File::readText))
+        val packages = ComposeStability.packages(sources.files.filter { it.isFile }.map(File::readText))
+        val stale = ComposeStability.stale(baseline, problems, packages)
+        if (stale.isNotEmpty()) {
+            throw GradleException(
+                "${modulePath.get()}: ${ComposeStability.BASELINE} accepts parameters this module no longer " +
+                    "compares by identity. Delete these lines, so the next such parameter is reported:\n\n" +
+                    stale.joinToString("\n") { "  $it" },
+            )
+        }
+
+        val fresh = problems - baseline.accepted
         if (fresh.isEmpty()) {
             marker.get().asFile.writeText("ok")
             return
