@@ -9,7 +9,7 @@ default = false
 requires = ["settings"]
 implied_only = false
 owns = [
-  "feature/settings/src/main/kotlin/{pkg_path}/feature/settings/Licenses.kt",
+  "feature/settings/src/main/kotlin/{pkg_path}/feature/settings/licenses",
   "build-logic/convention/src/main/kotlin/AndroidLicensesConventionPlugin.kt",
   "build-logic/convention/src/main/kotlin/{pkg_path}/buildlogic/licenses/BundleLicensesTask.kt",
 ]
