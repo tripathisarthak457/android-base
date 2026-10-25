@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.setValue
+import com.base.app.core.navigation.NavigationHostApi
 
 /**
  * Back presses that arrive while a host's screens are moving.
@@ -21,8 +22,9 @@ import androidx.compose.runtime.setValue
  * One gate per host (each kept tab, the presentation host, a single-stack host). It holds no
  * reference to Compose UI, so its rules are tested without a screen.
  */
+@NavigationHostApi
 @Stable
-internal class BackGate(private val maxCoalesced: Int = MAX_COALESCED) {
+class BackGate(private val maxCoalesced: Int = MAX_COALESCED) {
 
     private val reporters = mutableStateSetOf<Any>()
 
@@ -34,7 +36,7 @@ internal class BackGate(private val maxCoalesced: Int = MAX_COALESCED) {
     private var awaitingMotion by mutableStateOf(false)
 
     /** Changes with every stack change the host makes, so the host can watch for its motion. */
-    internal var changes by mutableIntStateOf(0)
+    var changes by mutableIntStateOf(0)
         private set
 
     /** True from a stack change until its transition has all but arrived ([SETTLED_ENOUGH]). */
@@ -44,11 +46,11 @@ internal class BackGate(private val maxCoalesced: Int = MAX_COALESCED) {
     internal var counted = 0
         private set
 
-    internal var lastChange: StackChange? by mutableStateOf(null)
+    var lastChange: StackChange? by mutableStateOf(null)
         private set
 
     /** A Back press: pops one entry now, or counts it while the screens move. */
-    internal fun onBack(pop: (Int) -> Int) {
+    fun onBack(pop: (Int) -> Int) {
         if (moving) {
             counted = (counted + 1).coerceAtMost(maxCoalesced)
         } else if (pop(1) > 0) {
@@ -57,14 +59,14 @@ internal class BackGate(private val maxCoalesced: Int = MAX_COALESCED) {
     }
 
     /** The host changed its stack; the transition for it starts on the next frame, if at all. */
-    internal fun changed(change: StackChange) {
+    fun changed(change: StackChange) {
         lastChange = change
         awaitingMotion = true
         changes++
     }
 
     /** A screen of this host reports whether its transition is still short of settled. */
-    internal fun report(reporter: Any, isMoving: Boolean) {
+    fun report(reporter: Any, isMoving: Boolean) {
         if (isMoving) {
             reporters += reporter
             awaitingMotion = false
@@ -74,7 +76,7 @@ internal class BackGate(private val maxCoalesced: Int = MAX_COALESCED) {
     }
 
     /** No transition followed the last change: reduce motion, or a change nothing animates. */
-    internal fun noMotion() {
+    fun noMotion() {
         awaitingMotion = false
     }
 
@@ -82,7 +84,7 @@ internal class BackGate(private val maxCoalesced: Int = MAX_COALESCED) {
      * Holds the gate for [block], as a running transition does: presses meanwhile are counted, and
      * applied once it returns. The back card's commit runs inside it.
      */
-    internal suspend fun hold(block: suspend () -> Unit) {
+    suspend fun hold(block: suspend () -> Unit) {
         val holder = Any()
         report(holder, true)
         try {
@@ -93,14 +95,14 @@ internal class BackGate(private val maxCoalesced: Int = MAX_COALESCED) {
     }
 
     /** The screens have stopped: the presses counted meanwhile become one pop. */
-    internal fun settle(pop: (Int) -> Int) {
+    fun settle(pop: (Int) -> Int) {
         if (counted == 0) return
         val presses = counted
         counted = 0
         if (pop(presses) > 0) changed(StackChange.Pop)
     }
 
-    internal companion object {
+    companion object {
         /**
          * The share of its travel after which a transition no longer holds Back: the arriving
          * screen is within a few pixels of its place, about 70 % of the way through the settle.
@@ -111,4 +113,5 @@ internal class BackGate(private val maxCoalesced: Int = MAX_COALESCED) {
 }
 
 /** What the last stack change was. A [GesturePop] has been shown by the back card, so it slides nothing. */
-internal enum class StackChange { Push, Pop, Replace, GesturePop }
+@NavigationHostApi
+enum class StackChange { Push, Pop, Replace, GesturePop }

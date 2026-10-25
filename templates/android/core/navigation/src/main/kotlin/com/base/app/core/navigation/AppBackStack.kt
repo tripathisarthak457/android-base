@@ -19,11 +19,12 @@ import kotlinx.serialization.builtins.ListSerializer
  * how many entries Back never pops: the root, or none for the presentation stack.
  */
 @Stable
-class AppBackStack internal constructor(
-    internal val entries: SnapshotStateList<AppNavKey>,
+class AppBackStack @NavigationHostApi constructor(
+    @property:NavigationHostApi val entries: SnapshotStateList<AppNavKey>,
     private val floor: Int = 1,
 ) {
-    internal val gate = BackGate()
+    @NavigationHostApi
+    val gate = BackGate()
 
     val current: AppNavKey get() = entries.last()
 
@@ -37,6 +38,7 @@ class AppBackStack internal constructor(
     fun contains(key: AppNavKey): Boolean = entries.contains(key)
 
     /** Applies one command, without regard to motion: the shell decides when (see [guard]). */
+    @NavigationHostApi
     fun apply(command: NavCommand) {
         when (command) {
             is NavCommand.Navigate -> {
@@ -59,13 +61,15 @@ class AppBackStack internal constructor(
     }
 
     /** Pops up to [count] entries, never below the floor, and returns how many it popped. */
-    internal fun pop(count: Int): Int {
+    @NavigationHostApi
+    fun pop(count: Int): Int {
         val popped = count.coerceAtMost(entries.size - floor).coerceAtLeast(0)
         if (popped > 0) entries.removeRange(entries.size - popped, entries.size)
         return popped
     }
 
-    internal fun change(command: NavCommand): StackChange = when (command) {
+    @NavigationHostApi
+    fun change(command: NavCommand): StackChange = when (command) {
         is NavCommand.Navigate -> if (command.popUpTo == null) StackChange.Push else StackChange.Replace
         NavCommand.Up, is NavCommand.PopTo -> StackChange.Pop
         is NavCommand.ResetTo -> StackChange.Replace
@@ -118,16 +122,19 @@ private fun backStackSaver(
 private val stackSerializer = ListSerializer(PolymorphicSerializer(AppNavKey::class))
 
 /**
- * The stack as saved state, or null when a key cannot be encoded. A key missing from its feature's
- * navKeys block loses the whole stack with it, so the failure is logged: the gap shows up in
- * development rather than as an app that forgets where it was.
+ * The stack as saved state, or null when a key cannot be encoded: one no nav graph registers, which
+ * only a key pushed without a destination can be. The whole stack is lost with it, so the failure
+ * is logged: the gap shows up in development rather than as an app that forgets where it was.
  */
-internal fun NavKeySerialization.encodeStack(keys: List<AppNavKey>): String? =
+@NavigationHostApi
+fun NavKeySerialization.encodeStack(keys: List<AppNavKey>): String? =
     runCatching { json.encodeToString(stackSerializer, keys) }
         .onFailure { Log.e("Back stack not saved", it, NAV_LOG_TAG) }
         .getOrNull()
 
-internal fun NavKeySerialization.decodeStack(encoded: String): List<AppNavKey>? =
+/** A stack [encodeStack] wrote, or null when it cannot be read back. */
+@NavigationHostApi
+fun NavKeySerialization.decodeStack(encoded: String): List<AppNavKey>? =
     runCatching { json.decodeFromString(stackSerializer, encoded) }
         .onFailure { Log.e("Back stack not restored", it, NAV_LOG_TAG) }
         .getOrNull()

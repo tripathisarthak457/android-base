@@ -1,17 +1,18 @@
 """Splits a generated baseline profile into the checked-in per-module profiles.
 
     split_profile.py [--project .] [--generated app/src/main/generated/baselineProfiles]
-                     [--module core/navigation --module core/designsystem --module core/ui] [--app app]
+                     [--module core/navigation --module core/navigation/shell --module core/designsystem
+                      --module core/ui] [--app app]
 
 `:app:generateBaselineProfile` records one profile for the whole app from the benchmark journeys. Every
 preset ships these rules, including presets without the benchmark module, so they are copied into
-`src/main/baseline-prof.txt` of the modules they belong to: a listed library module's rules (shell,
-design system, shared UI) go into that library, and the app module gets the rest of the project's own
-code (the app's classes, the features' screens, the data layer), whichever module declares it, since an
-app's profile applies to every class in its APK. A rule belongs to the module whose sources declare its
-class's package. Wildcard rules already
-in a module's profile are written by hand (the safety net that covers code no journey reaches), so a
-split keeps them at the top and adds the generated rules under them.
+`src/main/baseline-prof.txt` of the modules they belong to: a listed library module's rules (navigation
+runtime and shell, design system, shared UI) go into that library, and the app module gets the rest of
+the project's own code (the app's classes, the features' screens, the data layer), whichever module
+declares it, since an app's profile applies to every class in its APK. A rule belongs to the module
+whose sources declare its class's package. Wildcard rules already in a module's profile are written by
+hand (the safety net that covers code no journey reaches), so a split keeps them at the top and adds
+the generated rules under them.
 """
 
 import argparse
@@ -19,7 +20,7 @@ import os
 import re
 import sys
 
-DEFAULT_MODULES = ["core/navigation", "core/designsystem", "core/ui"]
+DEFAULT_MODULES = ["core/navigation", "core/navigation/shell", "core/designsystem", "core/ui"]
 _CLASS = re.compile(r"L([\w/$]+);")
 
 

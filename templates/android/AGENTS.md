@@ -35,9 +35,10 @@ fails `verifyModuleDependencies`: shared code goes to `core/`, or to a `data/` m
   them only while the screen watches. The first load: `onFirstObserved { load() }` in `init`, never a `LaunchedEffect`.
 - State is read-only: `val`s and `List`, `Set`, `Map` (`uistate-mutable`). Loading is a sealed `LoadState`, never a
   boolean beside a nullable, and a screen that loads draws loading, empty, error with retry, and offline.
-- A destination is a `@Serializable` key implementing `AppNavKey`, registered twice with `@Provides @IntoSet`:
-  `navGraph { entry<Key> { … } }` and `navKeys { subclass(…) }`. Without the second the app works until the process is
-  killed in the background; `NavKeyRegistrationTest` catches it. Navigate through `AppNavigator`, never a back stack.
+- A destination is a `@Serializable` key implementing `AppNavKey`, registered once with `@Provides @IntoSet`:
+  `navGraph { entry<Key> { … } }`, which also records the key's serializer, so the back stack holding it survives
+  process death (`NavKeyRegistrationTest` checks every key). Navigate through `AppNavigator`, never a back stack;
+  `@NavigationHostApi` is for a navigation host, never a feature.
 
 **Look, copy and windows.**
 - No Material (`material`, `ripple`). Every colour, type style, spacing, shape and motion comes from `AppTheme`

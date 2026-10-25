@@ -19,8 +19,8 @@ Lcom/base/app/core/navigation/AppShortcuts;
 Lcom/base/app/core/navigation/DeepLink$Companion;
 Lcom/base/app/core/navigation/DeepLink;
 Lcom/base/app/core/navigation/DeepLinkRoute;
-Lcom/base/app/core/navigation/DeepLinksKt$OpenDeepLinks$1$1$1;
-Lcom/base/app/core/navigation/DeepLinksKt$OpenDeepLinks$1$1;
+Lcom/base/app/core/navigation/OpenDeepLinksKt$OpenDeepLinks$1$1$1;
+Lcom/base/app/core/navigation/OpenDeepLinksKt$OpenDeepLinks$1$1;
 Lcom/base/app/core/navigation/DeepLinksKt;
 Lcom/base/app/core/navigation/Destination;
 Lcom/base/app/core/navigation/LinkOrigin;
@@ -91,11 +91,11 @@ SPLcom/base/app/core/navigation/DeepLink$Companion;-><init>()V
 SPLcom/base/app/core/navigation/DeepLink$Companion;-><init>(Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 SPLcom/base/app/core/navigation/DeepLink$Companion;->from(Landroid/net/Uri;Lcom/base/app/core/navigation/LinkOrigin;)Lcom/base/app/core/navigation/DeepLink;
 SPLcom/base/app/core/navigation/DeepLink;-><clinit>()V
-SPLcom/base/app/core/navigation/DeepLinksKt$OpenDeepLinks$1$1$1;-><init>(Lcom/base/app/core/navigation/PendingDeepLink;Lcom/base/app/core/navigation/AppBackStack;)V
-SPLcom/base/app/core/navigation/DeepLinksKt$OpenDeepLinks$1$1;-><init>(Lcom/base/app/core/navigation/PendingDeepLink;Lcom/base/app/core/navigation/AppBackStack;Lkotlin/coroutines/Continuation;)V
-SPLcom/base/app/core/navigation/DeepLinksKt$OpenDeepLinks$1$1;->create(Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Lkotlin/coroutines/Continuation;
-SPLcom/base/app/core/navigation/DeepLinksKt$OpenDeepLinks$1$1;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
-SPLcom/base/app/core/navigation/DeepLinksKt;->OpenDeepLinks(Lcom/base/app/core/navigation/AppBackStack;Lcom/base/app/core/navigation/PendingDeepLink;Landroidx/compose/runtime/Composer;I)V
+SPLcom/base/app/core/navigation/OpenDeepLinksKt$OpenDeepLinks$1$1$1;-><init>(Lcom/base/app/core/navigation/PendingDeepLink;Lcom/base/app/core/navigation/AppBackStack;)V
+SPLcom/base/app/core/navigation/OpenDeepLinksKt$OpenDeepLinks$1$1;-><init>(Lcom/base/app/core/navigation/PendingDeepLink;Lcom/base/app/core/navigation/AppBackStack;Lkotlin/coroutines/Continuation;)V
+SPLcom/base/app/core/navigation/OpenDeepLinksKt$OpenDeepLinks$1$1;->create(Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Lkotlin/coroutines/Continuation;
+SPLcom/base/app/core/navigation/OpenDeepLinksKt$OpenDeepLinks$1$1;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+SPLcom/base/app/core/navigation/OpenDeepLinksKt;->OpenDeepLinks(Lcom/base/app/core/navigation/AppBackStack;Lcom/base/app/core/navigation/PendingDeepLink;Landroidx/compose/runtime/Composer;I)V
 SPLcom/base/app/core/navigation/Destination;-><clinit>()V
 SPLcom/base/app/core/navigation/Destination;-><init>(Lcom/base/app/core/navigation/NavTransitionStyle;Lcom/base/app/core/navigation/NavPane;Lcom/base/app/core/navigation/Presentation;Lkotlin/jvm/functions/Function3;)V
 SPLcom/base/app/core/navigation/Destination;->getContent()Lkotlin/jvm/functions/Function3;
@@ -115,7 +115,6 @@ SPLcom/base/app/core/navigation/NavKeySerialization;-><clinit>()V
 SPLcom/base/app/core/navigation/NavKeySerialization;-><init>(Ljava/util/Set;)V
 SPLcom/base/app/core/navigation/NavKeySerialization;->getJson()Lkotlinx/serialization/json/Json;
 SPLcom/base/app/core/navigation/NavKeySerialization;->json$lambda$0(Ljava/util/Set;Lkotlinx/serialization/json/JsonBuilder;)Lkotlin/Unit;
-SPLcom/base/app/core/navigation/NavKeySerializationKt;->navKeys(Lkotlin/jvm/functions/Function1;)Lkotlinx/serialization/modules/SerializersModule;
 SPLcom/base/app/core/navigation/NavPane;->$values()[Lcom/base/app/core/navigation/NavPane;
 SPLcom/base/app/core/navigation/NavPane;-><clinit>()V
 SPLcom/base/app/core/navigation/NavPane;-><init>(Ljava/lang/String;I)V

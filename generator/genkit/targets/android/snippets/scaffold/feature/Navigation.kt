@@ -4,7 +4,6 @@ import __PKG__.core.navigation.AppNavigator
 import __PKG__.core.navigation.NavGraphEntry
 import __PKG__.core.navigation.NavPane
 import __PKG__.core.navigation.navGraph
-import __PKG__.core.navigation.navKeys
 import __PKG__.feature.__NAME__.api.__P__DetailKey
 import __PKG__.feature.__NAME__.api.__P__ListKey
 import __PKG__.feature.__NAME__.detail.__P__DetailRoute
@@ -14,11 +13,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.multibindings.IntoSet
-import kotlinx.serialization.modules.SerializersModule
 
 /**
- * How this feature joins the navigation graph: what renders each key, and how the keys are saved.
- * On a wide window the detail opens beside the list, because the two declare their panes.
+ * How this feature joins the navigation graph: what renders each key, which also lets the back
+ * stack save the key. On a wide window the detail opens beside the list, because the two declare
+ * their panes.
  */
 @Module
 @InstallIn(ActivityRetainedComponent::class)
@@ -33,26 +32,5 @@ internal object __P__Navigation {
         entry<__P__DetailKey>(pane = NavPane.Detail) { key ->
             __P__DetailRoute(id = key.id, navigator = navigator)
         }
-    }
-
-    @Provides
-    @IntoSet
-    fun __CAMEL__NavKeys(): SerializersModule = navKeys {
-__FIT__
-        subclass(__P__ListKey::class, __P__ListKey.serializer())
-__ELSE__
-        subclass(
-            __P__ListKey::class,
-            __P__ListKey.serializer(),
-        )
-__END_FIT__
-__FIT__
-        subclass(__P__DetailKey::class, __P__DetailKey.serializer())
-__ELSE__
-        subclass(
-            __P__DetailKey::class,
-            __P__DetailKey.serializer(),
-        )
-__END_FIT__
     }
 }

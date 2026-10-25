@@ -3,7 +3,7 @@ package com.base.app.ui
 import com.base.app.R
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.icon.AppIcons
-import com.base.app.core.navigation.ShellTab
+import com.base.app.core.navigation.shell.ShellTab
 // <generated:start-destination-import>
 // <opt:sample>
 import com.base.app.feature.sample.api.SampleListKey

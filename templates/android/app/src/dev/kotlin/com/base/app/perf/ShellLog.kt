@@ -3,7 +3,7 @@ package com.base.app.perf
 import android.util.Log
 import androidx.compose.runtime.snapshotFlow
 import com.base.app.core.common.navigation.AppNavKey
-import com.base.app.core.navigation.ShellState
+import com.base.app.core.navigation.shell.ShellState
 import com.base.app.startup.ShellObserver
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonPrimitive

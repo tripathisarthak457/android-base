@@ -12,25 +12,30 @@ android {
     testOptions.unitTests.isIncludeAndroidResources = true
 }
 
+kotlin {
+    compilerOptions {
+        // The host API is this module's own; only a host in another module has to opt in to it.
+        optIn.add("com.base.app.core.navigation.NavigationHostApi")
+    }
+}
+
 dependencies {
     // AppNavKey is in every signature of this module's API.
     api(project(":core:common"))
-    // <opt:ui_components>
-    implementation(project(":core:designsystem"))
-    // </opt:ui_components>
-
-    // Only this module sees androidx.navigation3; features depend on AppNavKey and NavGraphEntry.
-    implementation(libs.androidx.navigation3.runtime)
-    implementation(libs.androidx.navigation3.ui)
-    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
-    implementation(libs.androidx.navigationevent.compose)
-    implementation(libs.androidx.activity.compose)
 
     api(libs.kotlinx.serialization.json)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.animation)
     implementation(libs.androidx.lifecycle.runtime.compose)
+    // <opt:!ui_components>
+
+    // The host draws the stack with Navigation 3's NavDisplay. Features never see androidx.navigation3:
+    // they depend on AppNavKey and NavGraphEntry.
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+    implementation(libs.androidx.compose.animation)
+    // </opt:!ui_components>
 
     testImplementation(project(":core:testing"))
     testImplementation(libs.robolectric)

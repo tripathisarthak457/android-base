@@ -6,8 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.Multibinds
 // <opt:ui_components>
-import com.base.app.core.navigation.ShellConfig
-import com.base.app.core.navigation.ShellState
+import com.base.app.core.navigation.shell.ShellConfig
+import com.base.app.core.navigation.shell.ShellState
 // </opt:ui_components>
 
 // <opt:ui_components>

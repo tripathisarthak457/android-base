@@ -1,41 +1,21 @@
 package com.base.app.core.navigation
 
-import com.base.app.core.common.navigation.AppNavKey
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.EmptySerializersModule
-import kotlinx.serialization.modules.PolymorphicModuleBuilder
-import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.plus
-import kotlinx.serialization.modules.polymorphic
 import javax.inject.Inject
 
 /**
- * Declares a feature's navigation keys so the back stack can be restored after process death.
- *
- * ```
- * @Provides
- * @IntoSet
- * fun sampleNavKeys(): SerializersModule = navKeys {
- *     subclass(SampleListKey::class, SampleListKey.serializer())
- *     subclass(SampleDetailKey::class, SampleDetailKey.serializer())
- * }
- * ```
+ * The [Json] the back stacks are written with: every key that a feature's [NavGraphEntry] registers
+ * with `entry<K>`, and only those, survives the process being killed in the background.
  */
-fun navKeys(builder: PolymorphicModuleBuilder<AppNavKey>.() -> Unit): SerializersModule =
-    SerializersModule {
-        polymorphic(AppNavKey::class, builderAction = builder)
-    }
-
-/** The [Json] the back stack is written with, assembled from every feature's [navKeys]. */
 @ActivityRetainedScoped
 class NavKeySerialization @Inject constructor(
-    modules: Set<@JvmSuppressWildcards SerializersModule>,
+    graphs: Set<@JvmSuppressWildcards NavGraphEntry>,
 ) {
     val json: Json = Json {
-        serializersModule = modules.fold(EmptySerializersModule()) { accumulated, module ->
-            accumulated + module
-        }
+        serializersModule = graphs.fold(EmptySerializersModule()) { accumulated, graph -> accumulated + graph.keys }
         ignoreUnknownKeys = true
         encodeDefaults = true
         // Not a name a key's own property could have: a key with a `key` property made the whole

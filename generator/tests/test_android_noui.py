@@ -246,7 +246,7 @@ class ProjectShapeTest(unittest.TestCase):
                 start = project / f"app/src/main/kotlin/{PKG}/ui/start"
                 navigation = (start / "StartNavigation.kt").read_text(encoding="utf-8")
                 self.assertIn("entry<StartKey> { StartScreen() }", navigation)
-                self.assertIn("subclass(StartKey::class, StartKey.serializer())", navigation)
+                self.assertNotIn("navKeys", navigation)
                 self.assertIn('.testTag("start")', (start / "StartScreen.kt").read_text(encoding="utf-8"))
                 destinations = (project / f"app/src/main/kotlin/{PKG}/ui/AppDestinations.kt").read_text(encoding="utf-8")
                 self.assertIn("val start: AppNavKey = StartKey", destinations)
@@ -362,7 +362,7 @@ class UiProjectTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             project = generate(Path(directory), "ui", features=sorted(ANDROID.manifest.preset_features("lean")))
             self.assertNotIn("ui_components", json.loads((project / RECORD_NAME).read_text(encoding="utf-8")))
-            self.assertTrue((project / f"core/navigation/src/main/kotlin/{PKG}/core/navigation/AppShell.kt").is_file())
+            self.assertTrue((project / f"core/navigation/shell/src/main/kotlin/{PKG}/core/navigation/shell/AppShell.kt").is_file())
             self.assertFalse((project / f"app/src/main/kotlin/{PKG}/ui/start").exists())
             self.assertTrue((project / "feature/home").is_dir())
             emitted = (project / kotlin.RELATIVE_PATH.format(package_path=PKG)).read_text(encoding="utf-8")

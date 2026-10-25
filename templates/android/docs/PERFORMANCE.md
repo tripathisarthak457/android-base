@@ -244,8 +244,8 @@ badge resting at 0.85 caused most of a traced journey's waits for a free buffer 
 
 **Enforced by.** `layer-alpha-fill` (features and the design system).
 <!-- <opt:ui_components> -->
-The shell has two bounded exceptions in `:core:navigation`, outside the rule: the back card's texture, rendered once
-per gesture ([Navigation and back](#navigation-and-back)), and `HostCrossfade`, a 200 ms fade between whole hosts
+The shell has two bounded exceptions in `:core:navigation:shell`, outside the rule: the back card's texture, rendered
+once per gesture ([Navigation and back](#navigation-and-back)), and `HostCrossfade`, a 200 ms fade between whole hosts
 that runs only when the session changes, never during navigation.
 <!-- </opt:ui_components> -->
 

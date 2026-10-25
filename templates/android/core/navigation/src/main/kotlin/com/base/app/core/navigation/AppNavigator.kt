@@ -111,6 +111,7 @@ class AppNavigator @Inject constructor() {
  * not finished when its caller was cancelled (the host left composition) was meant for that host,
  * and is dropped with it rather than applied to the host that replaces it.
  */
+@NavigationHostApi
 suspend fun AppNavigator.applyWhileStarted(lifecycle: Lifecycle, apply: suspend (NavCommand) -> Unit) {
     val host = currentCoroutineContext().job
     lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {

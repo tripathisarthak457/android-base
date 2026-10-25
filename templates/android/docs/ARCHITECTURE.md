@@ -86,7 +86,13 @@ on the home screen reads the cart repository, not the cart feature. In a data mo
 | `:core:datastore` | The settings and session stores, the token store and the Keystore cipher. |
 | `:core:designsystem` | The theme (`AppTheme` and its tokens), window size classes and previews; [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md). No Material. |
 | `:core:ui` | What screens share beyond the theme: `MviScreen`, message delivery, `UiText` resolution, `AppError.toUiText`, locales. |
-| `:core:navigation` | The destination registry, `AppNavigator`, the back stack, deep links and the navigation host. |
+<!-- <opt:ui_components> -->
+| `:core:navigation` | The navigation runtime: the destination registry, `AppNavigator`, the back stacks and `TabStacks`, deep links and process-death restore. No design system. |
+| `:core:navigation:shell` | The shell that draws it: the tab bar, rail and sidebar, the stack host and its slides, the back card, sheets and covers. Only `:app` and `:catalog` depend on it. |
+<!-- </opt:ui_components> -->
+<!-- <opt:!ui_components> -->
+| `:core:navigation` | The navigation runtime: the destination registry, `AppNavigator`, the back stack and `TabStacks`, deep links, process-death restore and the `NavDisplay` host. No design system. |
+<!-- </opt:!ui_components> -->
 | `:core:testing`, `:core:testing:compose` | `MainDispatcherRule`, `testDispatchers()`, `FakeNetworkMonitor`, `FakeSessionController`, the Compose test helpers and `RecompositionCounter`. |
 <!-- <opt:network> -->
 | `:core:network` | The HTTP client and everything around it. The only module that names Ktor. |
@@ -226,8 +232,8 @@ holds each typed field as `savedStateHandle.saveable(KEY, saver = TextFieldState
 ## Navigation
 
 Feature modules never import a navigation library. A destination is a `@Serializable` key implementing `AppNavKey`
-in the feature's `api` package, and the feature contributes two things through Hilt `@IntoSet`: what each key shows
-(`navGraph { }`) and the key serializers (`navKeys { }`).
+in the feature's `api` package, and the feature contributes what each key shows through Hilt `@IntoSet`
+(`navGraph { }`). That one registration also records the key's serializer, which the saved back stack is written with.
 
 ```kotlin
 @Serializable
@@ -236,11 +242,6 @@ data class OrderKey(val orderId: Long) : AppNavKey
 @Provides @IntoSet
 fun ordersNavGraph(): NavGraphEntry = navGraph {
     entry<OrderKey> { key -> OrderRoute(key.orderId) }
-}
-
-@Provides @IntoSet
-fun ordersNavKeys(): SerializersModule = navKeys {
-    subclass(OrderKey::class, OrderKey.serializer())
 }
 ```
 
@@ -251,6 +252,18 @@ ViewModels navigate through `AppNavigator` and never touch a back stack. It send
 `ResetTo`, `PopTo`) that the host applies while the activity is started, so a ViewModel navigates without holding
 anything from the composition and a test asserts on the commands.
 
+### The runtime and what draws it
+
+`:core:navigation` is the runtime a feature sees: keys, `navGraph { }`, `AppNavigator`, deep links, the back stacks,
+`TabStacks` and their restore after process death, as the `navigation-3` skill's modular recipe keeps its navigator
+in a common module. It draws nothing and does not depend on `:core:designsystem`.
+<!-- <opt:ui_components> -->
+`:core:navigation:shell` draws it: the tab bar, rail and sidebar, the stack host, the back card, sheets and covers.
+Only `:app` and `:catalog` depend on the shell, so a feature cannot reach a shell API by accident.
+<!-- </opt:ui_components> -->
+What only a host uses (a stack's entries and its back gate, the rules a command is applied by, the content a key
+renders) is marked `@NavigationHostApi`, an opt-in a host makes for its whole module and a feature never makes.
+
 ### Keys carry ids, not models
 
 A key is written into the saved-state bundle. A key holding a whole object makes the bundle larger and goes stale in
@@ -258,10 +271,12 @@ the background. The id reaches the ViewModel through Hilt assisted injection, at
 ViewModel store, so each open screen has its own ViewModel and Retry works from the injected id even when the first
 load failed.
 
-### Registering the serializer is easy to forget
+### A key is registered in one step
 
-Without `navKeys { }` the app works until the system kills it in the background; then it reopens at the start
-destination instead of where the person was. `NavKeyRegistrationTest` fails on a key with no serializer.
+A key whose serializer is missing works until the system kills the app in the background; then the app reopens at the
+start destination instead of where the person was. So there is no second list to forget: `entry<K>` records K's
+serializer, `NavKeySerialization` is built from the graphs, and a key that can be opened can be saved.
+`NavKeyRegistrationTest` still fails on a key in the app that no graph registers.
 
 <!-- <opt:ui_components> -->
 ### The entry point is derived, not navigated to
@@ -283,8 +298,9 @@ arriving host takes navigator commands. Sign-out runs the other way: `SessionCoo
 
 ### Each tab keeps its own back stack
 
-`ShellState` holds one stack per tab. Back inside a tab pops that tab; Back at a tab's root is the shell's. Each tab's
-entries stay decorated (saved state and a ViewModel store per entry) while another tab shows, because Navigation 3
+`TabStacks` holds one stack per tab and the tab in front, and `ShellState` composes it with the presentation stack
+and the chrome. Back inside a tab pops that tab; Back at a tab's root is the shell's. Each tab's entries stay
+decorated (saved state and a ViewModel store per entry) while another tab shows, because Navigation 3
 treats an entry that leaves the list it was given as popped and discards its state: leaving a tab only hides it.
 A tab switch does not slide, which would read as forward navigation that Back cannot undo; the incoming tab springs
 in from 12 dp and the tab being left is parked at once ([PERFORMANCE.md](PERFORMANCE.md#navigation-and-back)).
@@ -359,9 +375,12 @@ appears over the last person's data.
 `NavPane` and `Presentation` are still recorded for each entry (`entry<K>(pane = NavPane.List)`), so features are
 ready for a shell. To build one:
 
-- **Tabs:** one `AppBackStack` per tab, each kept decorated while hidden (an entry that leaves the list `NavDisplay`
-  is given is treated as popped and its state discarded), with a bar from your design system that switches which
-  stack is shown. Re-tapping the active tab pops it to its root.
+- **Tabs:** `rememberTabStacks(roots, serialization)` holds one `AppBackStack` per tab and the tab in front, kept
+  through process death; `select(index)` switches tabs, and on the tab in front pops it to its root or counts a
+  reselection, which `ScrollToTopOnReselect` follows once your host provides `LocalTabReselections` around each tab.
+  Keep each tab's entries decorated while hidden (an entry that leaves the list `NavDisplay` is given is treated as
+  popped and its state discarded), with a bar from your design system that calls `select`. The host's module opts in
+  to `@NavigationHostApi`.
 - **List and detail, sheets, dialogs:** a `SceneStrategy` passed to `NavDisplay` that reads each entry's pane or
   presentation metadata; the `navigation-3` skill has list-detail, dialog and bottom-sheet recipes.
 - **Transitions:** `NavDisplay`'s `transitionSpec`, `popTransitionSpec` and `predictivePopTransitionSpec`, set in
@@ -679,8 +698,8 @@ layer is yours to build on the theme skeleton. In order:
    preview that becomes its render test.
 4. **Screens** in place of each `PlaceholderScreen`: a stateless `XScreen(state, onEvent)` the route calls, drawing
    every `LoadState`.
-5. **A shell** if the app has sections: tab stacks, a `SceneStrategy` for list-detail and sheets, transitions in
-   `:core:navigation` ([Adding a shell](#adding-a-shell-tabs-panes-and-sheets)).
+5. **A shell** if the app has sections: a bar over `TabStacks`, a `SceneStrategy` for list-detail and sheets,
+   transitions in `:core:navigation` ([Adding a shell](#adding-a-shell-tabs-panes-and-sheets)).
 6. **The start destination and the entry gates** once those screens exist
    ([The entry identity](#the-entry-identity-is-wired-the-gates-are-yours)).
 

@@ -52,6 +52,9 @@ dependencies {
     implementation(project(":core:datastore"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:navigation"))
+    // <opt:ui_components>
+    implementation(project(":core:navigation:shell"))
+    // </opt:ui_components>
     implementation(project(":core:ui"))
     // <opt:network>
     implementation(project(":core:network"))

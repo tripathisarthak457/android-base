@@ -12,7 +12,6 @@ import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.Multibinds
-import kotlinx.serialization.modules.SerializersModule
 
 /**
  * Navigation lives in the activity-retained component, as in the Navigation 3 Hilt recipe: each
@@ -38,9 +37,6 @@ interface NavigationMultibindings {
 
     @Multibinds
     fun navGraphs(): Set<NavGraphEntry>
-
-    @Multibinds
-    fun navKeySerializers(): Set<SerializersModule>
 
     @Multibinds
     fun deepLinkRoutes(): Set<DeepLinkRoute>
