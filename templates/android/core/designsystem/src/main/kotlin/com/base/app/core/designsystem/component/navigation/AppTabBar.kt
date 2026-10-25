@@ -162,7 +162,7 @@ fun AppTabBar(
             .onSizeChanged { state.onMeasured(it.height) }
             .then(
                 if (look.floating) {
-                    Modifier.navigationBarsPadding().padding(start = BarMargin, end = BarMargin, bottom = BarLift)
+                    Modifier.navigationBarsPadding().padding(start = AppTabBarDefaults.BarMargin, end = AppTabBarDefaults.BarMargin, bottom = AppTabBarDefaults.BarLift)
                 } else {
                     Modifier
                 },
@@ -170,22 +170,22 @@ fun AppTabBar(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         if (accessory != null) {
-            Box(Modifier.widthIn(max = BarMaxWidth).fillMaxWidth().vanishing(state)) {
-                BarSurface(look, Modifier.fillMaxWidth().padding(bottom = AccessoryGap)) { accessory() }
+            Box(Modifier.widthIn(max = AppTabBarDefaults.BarMaxWidth).fillMaxWidth().vanishing(state)) {
+                BarSurface(look, Modifier.fillMaxWidth().padding(bottom = AppTabBarDefaults.AccessoryGap)) { accessory() }
             }
         }
         if (look.floating) {
-            Box(Modifier.widthIn(max = BarMaxWidth).fillMaxWidth()) {
+            Box(Modifier.widthIn(max = AppTabBarDefaults.BarMaxWidth).fillMaxWidth()) {
                 BarSurface(
                     look = look,
                     modifier = Modifier
                         .align(Alignment.CenterStart)
-                        .padding(end = if (trailingAction != null) BarHeight + AccessoryGap else 0.dp),
+                        .padding(end = if (trailingAction != null) AppTabBarDefaults.Height + AppTabBarDefaults.AccessoryGap else 0.dp),
                 ) {
                     TabRow(items, selected, edges, labels, look, state, bounce, onTap)
                 }
                 if (trailingAction != null) {
-                    BarSurface(look, Modifier.align(Alignment.CenterEnd).size(BarHeight)) {
+                    BarSurface(look, Modifier.align(Alignment.CenterEnd).size(AppTabBarDefaults.Height)) {
                         BarActions(look).trailingAction()
                     }
                 }
@@ -202,7 +202,7 @@ fun AppTabBar(
                         }
                     }
                     .navigationBarsPadding()
-                    .padding(horizontal = DockedInset),
+                    .padding(horizontal = AppTabBarDefaults.DockedInset),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(Modifier.weight(1f)) { TabRow(items, selected, edges, labels, look, state, bounce, onTap) }
@@ -223,10 +223,10 @@ fun AppFloatingToolbar(
     actions: @Composable BarActionScope.() -> Unit,
 ) {
     val look = barLook(treatment)
-    BarSurface(look = look, modifier = modifier.navigationBarsPadding().padding(bottom = BarLift)) {
+    BarSurface(look = look, modifier = modifier.navigationBarsPadding().padding(bottom = AppTabBarDefaults.BarLift)) {
         Row(
-            modifier = Modifier.height(BarHeight).padding(horizontal = ToolbarInset),
-            horizontalArrangement = Arrangement.spacedBy(ToolbarInset),
+            modifier = Modifier.height(AppTabBarDefaults.Height).padding(horizontal = AppTabBarDefaults.ToolbarInset),
+            horizontalArrangement = Arrangement.spacedBy(AppTabBarDefaults.ToolbarInset),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             BarActions(look).actions()
@@ -238,10 +238,50 @@ fun AppFloatingToolbar(
 object AppTabBarDefaults {
 
     /** The floating bar's own height, without its margins or the navigation bar. */
-    val Height: Dp = BarHeight
+    val Height: Dp = 64.dp
 
     /** The rail's width, cutout padding aside. */
     val RailWidth: Dp = 88.dp
+
+    internal val MinimizedWidth = 72.dp
+    internal val IconSize = 24.dp
+    internal val LabelGap = 2.dp
+
+    /** The pill: 44 dp in the 64 dp bar, so it never crowds the capsule's edges. */
+    internal val PillHeight = 44.dp
+    internal val MinPillWidth = 52.dp
+    internal val MaxPillWidth = 72.dp
+
+    /** Between a pill and its slot's edge, so two neighbouring pills never touch. */
+    internal val SlotGap = 4.dp
+
+    /**
+     * Inside the pill on each side of the label; it gives way to [LabelPaddingMin] in a narrow
+     * slot.
+     */
+    internal val LabelPadding = 10.dp
+    internal val LabelPaddingMin = 4.dp
+
+    internal val RailItemHeight = 68.dp
+    internal val RailItemMinHeight = 56.dp
+    internal val RailPillWidth = 64.dp
+    internal val RailPillInset = 4.dp
+    internal val RuleHeight = 2.dp
+
+    internal val BarMargin = 20.dp
+
+    /**
+     * Between a docked bar's outer tabs and the screen's edges. Labels may fill their slots at the
+     * largest text size, and this keeps the outermost ones off the edge as they sit at the default.
+     */
+    internal val DockedInset = 8.dp
+    internal val BarLift = 12.dp
+    internal val BarMaxWidth = 480.dp
+    internal val AccessoryGap = 8.dp
+    internal val ToolbarInset = 6.dp
+    internal val ActionSize = 52.dp
+    internal val BarShadow = Shadow(radius = 16.dp, color = Color.Black, offset = DpOffset(0.dp, 4.dp), alpha = 0.10f)
+    internal val DarkOutline = Color.White.copy(alpha = 0.07f)
 
     /** The surface a docked bar, the rail and the sidebar are drawn on. */
     @Composable
@@ -297,7 +337,7 @@ private fun barLookFor(
     return BarLook(
         floating = floating,
         surface = if (treatment == BarTreatment.Translucent) surface.copy(alpha = TranslucentAlpha) else surface,
-        border = if (raisedInDark) DarkOutline else colors.separator,
+        border = if (raisedInDark) AppTabBarDefaults.DarkOutline else colors.separator,
         shadow = floating && colors.isLight,
         shape = shape,
         indicator = if (solid) colors.barIndicator else colors.accentSubtle,
@@ -315,7 +355,7 @@ private const val TranslucentAlpha = 0.88f
 internal fun BarSurface(look: BarLook, modifier: Modifier, content: @Composable () -> Unit) {
     val surface = if (look.floating) {
         modifier
-            .then(if (look.shadow) Modifier.dropShadow(look.shape, BarShadow) else Modifier)
+            .then(if (look.shadow) Modifier.dropShadow(look.shape, AppTabBarDefaults.BarShadow) else Modifier)
             .clip(look.shape)
             .background(look.surface)
             .border(AppTheme.style.borderWidth, look.border, look.shape)
@@ -345,7 +385,7 @@ private fun Modifier.vanishing(state: AppTabBarState): Modifier = layout { measu
 private fun Modifier.shrinking(state: AppTabBarState): Modifier = layout { measurable, constraints ->
     val collapse = state.collapse
     val placeable = measurable.measure(constraints)
-    val width = lerp(placeable.width.toFloat(), MinimizedWidth.toPx(), collapse).roundToInt()
+    val width = lerp(placeable.width.toFloat(), AppTabBarDefaults.MinimizedWidth.toPx(), collapse).roundToInt()
     layout(width.coerceAtMost(placeable.width), placeable.height) { placeable.placeRelative(0, 0) }
 }
 
@@ -401,11 +441,11 @@ internal fun DrawScope.drawIndicator(
         path.setPill(
             measure.slots.value, from, to, size.width, size.height, vertical,
             rtl = layoutDirection == LayoutDirection.Rtl, collapse = collapse,
-            minimizedWidth = MinimizedWidth.toPx(), rule = look.rule,
+            minimizedWidth = AppTabBarDefaults.MinimizedWidth.toPx(), rule = look.rule,
         )
     }
     if (look.rule) {
-        clipPath(path) { drawRect(look.indicator, size = Size(size.width, RuleHeight.toPx())) }
+        clipPath(path) { drawRect(look.indicator, size = Size(size.width, AppTabBarDefaults.RuleHeight.toPx())) }
     } else {
         drawPath(path, look.indicator)
     }
@@ -425,7 +465,7 @@ internal fun Modifier.clipToPill(
         path.setPill(
             measure.slots.value, from, to, size.width, size.height, vertical,
             rtl = layoutDirection == LayoutDirection.Rtl, collapse = collapse(),
-            minimizedWidth = MinimizedWidth.toPx(), rule = look.rule,
+            minimizedWidth = AppTabBarDefaults.MinimizedWidth.toPx(), rule = look.rule,
         )
     }
     clipPath(path, if (outside) ClipOp.Difference else ClipOp.Intersect) { this@drawWithContent.drawContent() }
@@ -437,7 +477,7 @@ internal class BarActions(private val look: BarLook) : BarActionScope {
         val filter = remember(look) { ColorFilter.tint(look.content) }
         Box(
             modifier = Modifier
-                .size(ActionSize)
+                .size(AppTabBarDefaults.ActionSize)
                 .then(if (tag != null) Modifier.testTag(tag) else Modifier)
                 .pressable(
                     onClick = onClick,
@@ -448,48 +488,10 @@ internal class BarActions(private val look: BarLook) : BarActionScope {
                 .semantics { this.contentDescription = contentDescription },
             contentAlignment = Alignment.Center,
         ) {
-            Image(rememberVectorPainter(icon), contentDescription = null, colorFilter = filter, modifier = Modifier.size(IconSize))
+            Image(rememberVectorPainter(icon), contentDescription = null, colorFilter = filter, modifier = Modifier.size(AppTabBarDefaults.IconSize))
         }
     }
 }
-
-internal val BarHeight = 64.dp
-internal val MinimizedWidth = 72.dp
-internal val IconSize = 24.dp
-internal val LabelGap = 2.dp
-
-/** The pill: 44 dp in the 64 dp bar, so it never crowds the capsule's edges. */
-internal val PillHeight = 44.dp
-internal val MinPillWidth = 52.dp
-internal val MaxPillWidth = 72.dp
-
-/** Between a pill and its slot's edge, so two neighbouring pills never touch. */
-internal val SlotGap = 4.dp
-
-/** Inside the pill on each side of the label; it gives way to [LabelPaddingMin] in a narrow slot. */
-internal val LabelPadding = 10.dp
-internal val LabelPaddingMin = 4.dp
-
-internal val RailItemHeight = 68.dp
-internal val RailItemMinHeight = 56.dp
-internal val RailPillWidth = 64.dp
-internal val RailPillInset = 4.dp
-private val RuleHeight = 2.dp
-
-private val BarMargin = 20.dp
-
-/**
- * Between a docked bar's outer tabs and the screen's edges. Labels may fill their slots at the
- * largest text size, and this keeps the outermost ones off the edge as they sit at the default.
- */
-private val DockedInset = 8.dp
-private val BarLift = 12.dp
-private val BarMaxWidth = 480.dp
-private val AccessoryGap = 8.dp
-private val ToolbarInset = 6.dp
-private val ActionSize = 52.dp
-private val BarShadow = Shadow(radius = 16.dp, color = Color.Black, offset = DpOffset(0.dp, 4.dp), alpha = 0.10f)
-private val DarkOutline = Color.White.copy(alpha = 0.07f)
 
 @AppComponentPreviews
 @Composable

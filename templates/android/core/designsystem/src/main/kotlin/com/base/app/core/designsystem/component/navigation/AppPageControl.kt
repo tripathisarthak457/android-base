@@ -109,8 +109,8 @@ fun AppPageControl(
 
     Canvas(
         modifier = modifier
-            .width(DotStep * pageCount + 16.dp)
-            .height(MinHeight)
+            .width(AppPageControlDefaults.DotStep * pageCount + AppPageControlDefaults.EdgePadding)
+            .height(AppPageControlDefaults.MinHeight)
             .semantics {
                 stateDescription = description
                 progressBarRangeInfo = ProgressBarRangeInfo(selected().toFloat(), 0f..(pageCount - 1).toFloat(), pageCount - 2)
@@ -138,8 +138,8 @@ fun AppPageControl(
                 },
             ),
     ) {
-        val step = DotStep.toPx()
-        val radius = DotSize.toPx() / 2f
+        val step = AppPageControlDefaults.DotStep.toPx()
+        val radius = AppPageControlDefaults.DotSize.toPx() / 2f
         val start = (size.width - step * pageCount) / 2f + step / 2f
         val current = selected()
         for (page in 0 until pageCount) {
@@ -153,9 +153,14 @@ fun AppPageControl(
     }
 }
 
-private val DotSize = 7.dp
-private val DotStep = 16.dp
-private val MinHeight = 28.dp
+/** The page dots' size, their spacing and the control's height. */
+object AppPageControlDefaults {
+    /** Room either side of the dots, as half a step. */
+    val EdgePadding = 16.dp
+    val DotSize = 7.dp
+    val DotStep = 16.dp
+    val MinHeight = 28.dp
+}
 
 @AppComponentPreviews
 @Composable

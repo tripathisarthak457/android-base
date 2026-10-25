@@ -1,7 +1,6 @@
 package com.base.app.core.designsystem.component.navigation
 
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -95,7 +94,7 @@ fun AppTopBar(
 ) {
     val colors = AppTheme.colors
     val topChrome = LocalTopChrome.current
-    val fadeDistance = ScrollFadeDistance
+    val fadeDistance = AppTopBarDefaults.ScrollFadeDistance
     val fill = LocalSheetSurface.current?.container ?: colors.surface
     Box(
         modifier = modifier
@@ -149,16 +148,16 @@ fun AppLargeTitleTopBar(
     // How far the content scrolls before the large title and the accessory have gone: their height.
     var collapseDistance by remember { mutableIntStateOf(0) }
     val inlineTitle = remember { Animatable(if (large) 0f else 1f) }
-    val fade = AppTheme.springs.fadeQuick
+    val springs = AppTheme.springs
     val currentScrolled by rememberUpdatedState(scrolled)
     // The scroll position is read here, in the effect, and never in composition: a read there,
     // even through derivedStateOf, sends this bar's composition through a recompose pass in every
     // frame of a scroll.
-    LaunchedEffect(large, fade) {
+    LaunchedEffect(large, springs) {
         snapshotFlow { !large || (collapseDistance > 0 && currentScrolled() >= collapseDistance) }
-            .collectLatest { collapsed -> inlineTitle.animateTo(if (collapsed) 1f else 0f, tween(fade)) }
+            .collectLatest { collapsed -> inlineTitle.animateTo(if (collapsed) 1f else 0f, springs.quickFade()) }
     }
-    val surfaceFade = SurfaceFadeDistance
+    val surfaceFade = AppTopBarDefaults.SurfaceFadeDistance
     val screen = LocalScaffoldBackground.current.takeOrElse { colors.background }
     val fill = LocalSheetSurface.current?.container ?: colors.surface
 
@@ -214,7 +213,7 @@ fun AppLargeTitleTopBar(
                 if (large) {
                     Column(
                         modifier = Modifier
-                            .heightIn(min = LargeTitleArea)
+                            .heightIn(min = AppTopBarDefaults.LargeTitleArea)
                             .padding(horizontal = AppTheme.spacing.gutter)
                             .padding(bottom = AppTheme.spacing.sm),
                         verticalArrangement = Arrangement.Bottom,
@@ -316,7 +315,7 @@ private fun InlineBar(
         val leadingWidth = leading?.width ?: 0
         val trailingWidth = trailing?.width ?: 0
         val width = constraints.maxWidth
-        val gap = 4.dp.roundToPx()
+        val gap = AppTopBarDefaults.TitleGap.roundToPx()
         val side = maxOf(leadingWidth, trailingWidth)
         val centredRoom = width - side * 2 - gap * 2
         val titleConstraints = Constraints(maxWidth = (if (centerTitle && centredRoom > 0) centredRoom else width - leadingWidth - trailingWidth - gap * 2).coerceAtLeast(0))
@@ -335,17 +334,19 @@ private fun InlineBar(
     }
 }
 
-/** How far content scrolls under a clear bar before the bar is fully solid. */
-private val ScrollFadeDistance = 24.dp
+/** The top bars' scroll-driven fades, the large title's room and the gap around the title. */
+object AppTopBarDefaults {
+    val TitleGap = 4.dp
+    /** How far content scrolls under a clear bar before the bar is fully solid. */
+    val ScrollFadeDistance = 24.dp
+    /** The room the large title takes under the small bar. */
+    val LargeTitleArea = 52.dp
+    /** How much scroll the large-title bar's surface takes to fade in once the title has gone. */
+    val SurfaceFadeDistance = 10.dp
+}
 
 /** How far the large title grows with the font scale: as iOS's, 44 pt of 34 at the first accessibility size. */
 private const val LargeTitleMaxScale = 1.3f
-
-/** The room the large title takes under the small bar. */
-private val LargeTitleArea = 52.dp
-
-/** How much scroll the large-title bar's surface takes to fade in once the title has gone. */
-private val SurfaceFadeDistance = 10.dp
 
 @AppComponentPreviews
 @Composable

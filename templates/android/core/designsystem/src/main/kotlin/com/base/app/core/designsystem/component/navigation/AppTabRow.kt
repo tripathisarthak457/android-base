@@ -2,7 +2,6 @@ package com.base.app.core.designsystem.component.navigation
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -71,12 +70,12 @@ fun AppTabRow(
         val widths = weights.map { total * it / weights.sum() }
         val starts = widths.runningFold(0f) { start, width -> start + width }
 
-        Row(Modifier.fillMaxWidth().heightIn(min = TabHeight).selectableGroup()) {
+        Row(Modifier.fillMaxWidth().heightIn(min = AppTabRowDefaults.Height).selectableGroup()) {
             tabs.forEachIndexed { index, tab ->
                 val isSelected = index == selected
                 val content = animateColorAsState(
                     targetValue = if (isSelected) colors.accentContent else colors.contentSecondary,
-                    animationSpec = tween(AppTheme.springs.fadeQuick),
+                    animationSpec = AppTheme.springs.quickFade(),
                     label = "tabContent",
                 )
                 Box(
@@ -127,14 +126,18 @@ fun AppTabRow(
                         placeable.placeRelative((tabStart + (tabWidth - indicatorWidth) / 2f).roundToInt(), 0)
                     }
                 }
-                .height(IndicatorHeight)
+                .height(AppTabRowDefaults.IndicatorHeight)
                 .background(colors.accentContent, AppTheme.shapes.pill),
         )
     }
 }
 
-private val TabHeight = 44.dp
-private val IndicatorHeight = 3.dp
+/** The tab row's height and the rule under the selected tab. */
+object AppTabRowDefaults {
+    val Height = 44.dp
+    val IndicatorHeight = 3.dp
+}
+
 private const val IndicatorWidthFraction = 0.6f
 
 @AppComponentPreviews

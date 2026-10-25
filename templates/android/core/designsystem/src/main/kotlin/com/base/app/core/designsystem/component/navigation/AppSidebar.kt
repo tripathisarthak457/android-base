@@ -1,7 +1,6 @@
 package com.base.app.core.designsystem.component.navigation
 
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusGroup
@@ -56,6 +55,7 @@ import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.BarTreatment
+import com.base.app.core.designsystem.theme.TabBarSprings
 import kotlin.math.ceil
 import kotlin.math.floor
 
@@ -121,7 +121,7 @@ fun AppSidebar(
                                 color = look.indicator,
                                 topLeft = Offset(0f, top),
                                 size = Size(size.width, bottom - top),
-                                cornerRadius = CornerRadius(HighlightCorner.toPx()),
+                                cornerRadius = CornerRadius(AppSidebarDefaults.HighlightCorner.toPx()),
                             )
                         }
                     },
@@ -176,6 +176,9 @@ object AppSidebarDefaults {
 
     /** On an extra-large one, where the extra width reads as breathing room. */
     val WideWidth: Dp = 304.dp
+
+    internal val RowHeight = 48.dp
+    internal val HighlightCorner = 10.dp
 }
 
 @Composable
@@ -185,7 +188,7 @@ private fun SidebarRow(item: TabItem, selected: Boolean, look: BarLook, modifier
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = RowHeight)
+            .heightIn(min = AppSidebarDefaults.RowHeight)
             .selectable(selected = selected, onClick = onClick, role = Role.Tab, interactionSource = null, indication = null)
             .padding(horizontal = AppTheme.spacing.md),
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
@@ -196,7 +199,7 @@ private fun SidebarRow(item: TabItem, selected: Boolean, look: BarLook, modifier
                 painter = rememberVectorPainter(if (selected) item.selectedIcon else item.icon),
                 contentDescription = null,
                 colorFilter = filter,
-                modifier = Modifier.size(IconSize),
+                modifier = Modifier.size(AppTabBarDefaults.IconSize),
             )
         }
         BasicText(
@@ -224,7 +227,7 @@ private class SidebarHighlight(count: Int, selected: Int) {
     }
 
     suspend fun moveTo(index: Int, animate: Boolean) {
-        if (animate) position.animateTo(index.toFloat(), HighlightSpring) else position.snapTo(index.toFloat())
+        if (animate) position.animateTo(index.toFloat(), TabBarSprings.Selection) else position.snapTo(index.toFloat())
     }
 
     inline fun bounds(block: (top: Float, bottom: Float) -> Unit) {
@@ -238,11 +241,6 @@ private class SidebarHighlight(count: Int, selected: Int) {
     }
 }
 
-private val RowHeight = 48.dp
-private val HighlightCorner = 10.dp
-
-/** iOS's segmented-thumb spring, as the bar's other selection motion: response 0.28 s, no bounce. */
-private val HighlightSpring = spring(dampingRatio = 1f, stiffness = 503.5f, visibilityThreshold = 0.001f)
 
 @AppComponentPreviews
 @Composable
