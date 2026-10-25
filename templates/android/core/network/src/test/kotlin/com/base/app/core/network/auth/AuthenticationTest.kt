@@ -1,6 +1,6 @@
 package com.base.app.core.network.auth
 
-import com.base.app.core.network.MemoryTokenStore
+import com.base.app.core.datastore.session.FakeAuthTokenStore
 import com.base.app.core.network.client.SkipAuthAttribute
 import com.base.app.core.network.tokens
 import io.ktor.client.HttpClient
@@ -17,7 +17,7 @@ import org.junit.Test
 
 class AuthenticationTest {
 
-    private val store = MemoryTokenStore(tokens())
+    private val store = FakeAuthTokenStore(tokens())
     private val refresher = TokenRefresher { TokenRefreshResult.Success("A2", "R2", expiresAtEpochMillis = null) }
     private val seen = mutableListOf<HttpRequestData>()
 

@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.job
@@ -30,8 +31,8 @@ import kotlin.time.Duration.Companion.seconds
  *
  * Events are handled on the main thread and [handleEvent] cannot suspend, so a read of [current]
  * followed by [setState] is never interleaved with another handler, and nothing a handler starts can
- * make Back or a keystroke wait. Slow work goes through [launchLatest] or [launchExclusive], and
- * repository flows through [observe].
+ * make Back or a keystroke wait. Slow work goes through [launchLatest] or [launchExclusive],
+ * repository flows through [observe], and the first load through [onFirstObserved].
  */
 abstract class MviViewModel<S : UiState, E : UiEvent, F : UiEffect>(initial: S) : ViewModel() {
 
@@ -84,10 +85,29 @@ abstract class MviViewModel<S : UiState, E : UiEvent, F : UiEffect>(initial: S) 
         }
     }
 
-    /** Exclusive: ignored while a run under [key] is active (submit, pay, save). */
-    protected fun launchExclusive(key: Any, block: suspend CoroutineScope.() -> Unit): Job? {
+    /**
+     * Exclusive: ignored while a run under [key] is active (submit, pay, save).
+     *
+     * With [busy], the run sets its flag through that reducer as it starts and clears it however it
+     * ends: done, failed, thrown (before [onUnexpected] hears of it) or cancelled. A flag set and
+     * cleared by hand around the work stays set when the work throws, and the button it disables
+     * never comes back.
+     */
+    protected fun launchExclusive(
+        key: Any,
+        busy: (S.(Boolean) -> S)? = null,
+        block: suspend CoroutineScope.() -> Unit,
+    ): Job? {
         if (jobs[key]?.isActive == true) return null
-        return launchKeyed(key, block)
+        if (busy == null) return launchKeyed(key, block)
+        return launchKeyed(key) {
+            setState { busy(true) }
+            try {
+                block()
+            } finally {
+                setState { busy(false) }
+            }
+        }
     }
 
     protected fun cancel(key: Any) {
@@ -106,6 +126,23 @@ abstract class MviViewModel<S : UiState, E : UiEvent, F : UiEffect>(initial: S) 
                     guarded { flow.collect { value -> _state.update { it.reduce(value) } } }
                 }
             }
+        }
+    }
+
+    /**
+     * Runs [block] once, the first time the UI collects [state]: when the screen is first started,
+     * since a route collects with `collectAsStateWithLifecycle`. Call it from `init` with the
+     * screen's first load.
+     *
+     * Not at construction, which would fetch for every instance built (a test, a restored back
+     * stack entry, a screen prepared before anyone opens it), and not from the route's
+     * `LaunchedEffect`, which runs in composition: a screen composed ahead of time with its
+     * lifecycle held at CREATED would load before it is seen, while collection waits for STARTED.
+     */
+    protected fun onFirstObserved(block: () -> Unit) {
+        viewModelScope.launch {
+            _state.subscriptionCount.first { it > 0 }
+            guarded(block)
         }
     }
 

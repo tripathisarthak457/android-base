@@ -5,23 +5,20 @@ import androidx.compose.runtime.snapshots.Snapshot
 import androidx.lifecycle.SavedStateHandle
 import com.base.app.core.mvi.MessageKind
 import com.base.app.core.testing.MainDispatcherRule
+import com.base.app.data.profile.api.FakeProfileRepository
 import com.base.app.data.profile.api.model.Profile
 import com.base.app.data.profile.api.ProfileRepository
-// <opt:media>
-import com.base.app.core.common.result.AppResult
-// </opt:media>
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import java.io.IOException
 
 class ProfileViewModelTest {
 
@@ -29,8 +26,18 @@ class ProfileViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
+    fun `the fields wait for the screen before they read the store`() = runTest {
+        val viewModel = ProfileViewModel(FakeProfileRepository(Profile(name = "Ada")), SavedStateHandle())
+
+        advanceUntilIdle()
+
+        assertEquals("", viewModel.name.text.toString())
+        assertFalse(viewModel.state.value.loaded)
+    }
+
+    @Test
     fun `fields start from the stored profile`() = runTest {
-        val viewModel = appeared(FakeProfileRepository(Profile(name = "Ada", bio = "Engines")))
+        val viewModel = shown(FakeProfileRepository(Profile(name = "Ada", bio = "Engines")))
 
         assertEquals("Ada", viewModel.name.text.toString())
         assertTrue(viewModel.state.value.loaded)
@@ -43,55 +50,58 @@ class ProfileViewModelTest {
         val viewModel = ProfileViewModel(FakeProfileRepository(Profile(name = "Ada")), SavedStateHandle(mapOf("filled" to true)))
         viewModel.name.type("Ada Lovelace")
 
-        viewModel.onEvent(ProfileEvent.Appeared)
+        viewModel.state.launchIn(backgroundScope)
+        runCurrent()
         advanceUntilIdle()
 
+        assertTrue(viewModel.state.value.loaded)
         assertEquals("Ada Lovelace", viewModel.name.text.toString())
     }
 
     @Test
     fun `a blank name is refused and nothing is written`() = runTest {
         val repository = FakeProfileRepository(Profile(name = "Ada"))
-        val viewModel = appeared(repository)
+        val viewModel = shown(repository)
 
         viewModel.name.type("  ")
         viewModel.onEvent(ProfileEvent.Save)
         advanceUntilIdle()
 
         assertTrue(viewModel.state.value.nameError)
-        assertEquals("Ada", repository.state.value.name)
+        assertEquals("Ada", repository.stored.name)
     }
 
     @Test
     fun `saving writes the trimmed values`() = runTest {
         val repository = FakeProfileRepository(Profile())
-        val viewModel = appeared(repository)
+        val viewModel = shown(repository)
 
         viewModel.name.type(" Grace ")
         viewModel.onEvent(ProfileEvent.Save)
         advanceUntilIdle()
 
-        assertEquals("Grace", repository.state.value.name)
+        assertEquals("Grace", repository.stored.name)
         assertFalse(viewModel.state.value.isDirty)
     }
 
     @Test
     fun `a save the store refuses is reported`() = runTest {
         val repository = FakeProfileRepository(Profile(name = "Ada"), refuseWrites = true)
-        val viewModel = appeared(repository)
+        val viewModel = shown(repository)
 
         viewModel.name.type("Grace")
         viewModel.onEvent(ProfileEvent.Save)
         advanceUntilIdle()
 
         assertEquals(MessageKind.Error, viewModel.messages.first().kind)
-        assertEquals("Ada", repository.state.value.name)
+        assertEquals("Ada", repository.stored.name)
     }
 
-    private fun TestScope.appeared(repository: ProfileRepository): ProfileViewModel =
+    /** A profile screen on show: its route collects the state once it is started. */
+    private fun TestScope.shown(repository: ProfileRepository): ProfileViewModel =
         ProfileViewModel(repository, SavedStateHandle()).also {
             it.state.launchIn(backgroundScope)
-            it.onEvent(ProfileEvent.Appeared)
+            runCurrent()
             advanceUntilIdle()
         }
 }
@@ -100,25 +110,4 @@ class ProfileViewModelTest {
 private fun TextFieldState.type(text: String) {
     edit { replace(0, length, text) }
     Snapshot.sendApplyNotifications()
-}
-
-private class FakeProfileRepository(
-    initial: Profile,
-    private val refuseWrites: Boolean = false,
-) : ProfileRepository {
-    val state = MutableStateFlow(initial)
-    override val profile = state
-
-    override suspend fun save(name: String, bio: String) {
-        if (refuseWrites) throw IOException("No space left on device")
-        state.value = state.value.copy(name = name.trim(), bio = bio.trim())
-    }
-
-    // <opt:media>
-
-    override suspend fun setPhoto(picked: String?): AppResult<Unit> {
-        state.value = state.value.copy(photoUri = picked)
-        return AppResult.Success(Unit)
-    }
-    // </opt:media>
 }

@@ -33,12 +33,12 @@ __END_FIT__
         fun create(id: String): __P__DetailViewModel
     }
 
+    init {
+        onFirstObserved { load() }
+    }
+
     override fun handleEvent(event: __P__DetailEvent) {
         when (event) {
-            __P__DetailEvent.Appeared -> {
-                if (current.loadState == LoadState.Idle) load()
-            }
-
             __P__DetailEvent.Retry -> load()
 
             __P__DetailEvent.BackClicked -> {

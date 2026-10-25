@@ -17,6 +17,7 @@ dependencies {
     implementation(libs.googleid)
     // </opt:googlesignin>
 
+    testImplementation(testFixtures(project(":data:auth")))
     // A real Bundle, for the process-death test of the sign-in form.
     testImplementation(libs.robolectric)
 }

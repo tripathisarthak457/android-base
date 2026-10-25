@@ -8,6 +8,10 @@ plugins {
 
 android {
     namespace = "com.base.app.core.notification"
+
+    // The channel and notification tests read this module's strings under Robolectric, which
+    // needs the merged manifest and resources.
+    testOptions.unitTests.isIncludeAndroidResources = true
 }
 
 dependencies {
@@ -23,4 +27,8 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.messaging)
     implementation(libs.kotlinx.coroutines.play.services)
+
+    // The push store in memory, and a real NotificationManager and permission check under Robolectric.
+    testImplementation(testFixtures(project(":core:datastore")))
+    testImplementation(libs.robolectric)
 }

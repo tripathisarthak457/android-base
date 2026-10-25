@@ -1,8 +1,6 @@
 package com.base.app.feature.auth
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.runtime.snapshots.Snapshot
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.base.app.core.common.result.AppError
@@ -10,10 +8,8 @@ import com.base.app.core.common.result.AppResult
 import com.base.app.core.mvi.UiText
 import com.base.app.core.testing.MainDispatcherRule
 import com.base.app.core.ui.R as UiR
-import com.base.app.data.auth.api.AuthRepository
-import com.base.app.data.auth.api.SignUpDetails
+import com.base.app.data.auth.api.FakeAuthRepository
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -110,6 +106,83 @@ class SignInViewModelTest {
     }
 
     @Test
+    fun `the form is busy while a sign-in is in flight`() = runTest {
+        val answer = CompletableDeferred<Unit>()
+        repository.gate = answer
+        val viewModel = filledIn()
+
+        viewModel.onEvent(SignInEvent.Submit)
+        advanceUntilIdle()
+        assertEquals(true, viewModel.state.value.submitting)
+
+        answer.complete(Unit)
+        advanceUntilIdle()
+        assertEquals(false, viewModel.state.value.submitting)
+    }
+
+    @Test
+    fun `a sign-in that throws leaves the form usable`() = runTest {
+        repository.thrown = IllegalStateException("A bug in the repository")
+        val viewModel = filledIn()
+
+        viewModel.onEvent(SignInEvent.Submit)
+        advanceUntilIdle()
+        assertEquals(false, viewModel.state.value.submitting)
+
+        repository.thrown = null
+        viewModel.effects.test {
+            viewModel.onEvent(SignInEvent.Submit)
+            assertEquals(SignInEffect.SignedIn, awaitItem())
+        }
+    }
+    // <opt:googlesignin>
+
+    @Test
+    fun `a Google ID token signs in`() = runTest {
+        val viewModel = SignInViewModel(repository, SavedStateHandle())
+
+        viewModel.effects.test {
+            viewModel.onEvent(SignInEvent.GoogleIdTokenReceived("id-token"))
+            assertEquals(SignInEffect.SignedIn, awaitItem())
+        }
+        assertEquals(listOf("id-token"), repository.googleSignIns)
+        assertEquals(false, viewModel.state.value.submitting)
+    }
+
+    @Test
+    fun `a Google sign-in the server refuses goes in the banner`() = runTest {
+        repository.result = AppResult.Failure(AppError.Http(status = 500))
+        val viewModel = SignInViewModel(repository, SavedStateHandle())
+
+        viewModel.onEvent(SignInEvent.GoogleIdTokenReceived("id-token"))
+        advanceUntilIdle()
+
+        assertEquals(UiText.of(R.string.auth_google_sign_in_failed), viewModel.state.value.error)
+        assertEquals(false, viewModel.state.value.submitting)
+    }
+
+    @Test
+    fun `a Google sign-in that throws leaves the form usable`() = runTest {
+        repository.thrown = IllegalStateException("A bug in the repository")
+        val viewModel = SignInViewModel(repository, SavedStateHandle())
+
+        viewModel.onEvent(SignInEvent.GoogleIdTokenReceived("id-token"))
+        advanceUntilIdle()
+
+        assertEquals(false, viewModel.state.value.submitting)
+    }
+
+    @Test
+    fun `Credential Manager failing says so in the banner`() = runTest {
+        val viewModel = SignInViewModel(repository, SavedStateHandle())
+
+        viewModel.onEvent(SignInEvent.GoogleFailed)
+
+        assertEquals(UiText.of(R.string.auth_google_failed), viewModel.state.value.error)
+    }
+    // </opt:googlesignin>
+
+    @Test
     fun `an invalid email is reported on the field and nothing is sent`() = runTest {
         val viewModel = SignInViewModel(repository, SavedStateHandle())
         viewModel.state.launchIn(backgroundScope)
@@ -153,35 +226,4 @@ class SignInProcessDeathTest {
         assertEquals("ada@example.com", restored.email.text.toString())
         assertEquals("", restored.password.text.toString())
     }
-}
-
-// Robolectric refuses SDK 36 and above on a Java 17 toolchain, which is what this project builds with.
-private const val ROBOLECTRIC_SDK = 35
-
-/** What a keyboard does to the field, plus the frame tick that tells snapshot observers about it. */
-private fun TextFieldState.type(text: String) {
-    edit { replace(0, length, text) }
-    Snapshot.sendApplyNotifications()
-}
-
-private class FakeAuthRepository : AuthRepository {
-    var result: AppResult<Unit> = AppResult.Success(Unit)
-    var gate: CompletableDeferred<Unit>? = null
-    val signIns = mutableListOf<Pair<String, String>>()
-
-    override val isSignedIn = MutableStateFlow(false)
-
-    override suspend fun signIn(email: String, password: String): AppResult<Unit> {
-        signIns += email to password
-        gate?.await()
-        return result
-    }
-
-    override suspend fun signUp(details: SignUpDetails): AppResult<Unit> = result
-
-    override suspend fun requestPasswordReset(email: String): AppResult<Unit> = result
-    // <opt:googlesignin>
-
-    override suspend fun signInWithGoogle(idToken: String): AppResult<Unit> = result
-    // </opt:googlesignin>
 }

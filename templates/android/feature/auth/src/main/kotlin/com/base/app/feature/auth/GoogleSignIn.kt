@@ -51,12 +51,15 @@ internal fun GoogleSignInButton(
             }
             scope.launch {
                 busy = true
-                when (val outcome = requestGoogleIdToken(context, serverClientId)) {
-                    is GoogleOutcome.Token -> onIdToken(outcome.idToken)
-                    GoogleOutcome.Cancelled -> Unit
-                    GoogleOutcome.Failed -> onFailure()
+                try {
+                    when (val outcome = requestGoogleIdToken(context, serverClientId)) {
+                        is GoogleOutcome.Token -> onIdToken(outcome.idToken)
+                        GoogleOutcome.Cancelled -> Unit
+                        GoogleOutcome.Failed -> onFailure()
+                    }
+                } finally {
+                    busy = false
                 }
-                busy = false
             }
         },
         modifier = modifier.fillMaxWidth(),

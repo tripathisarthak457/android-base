@@ -12,6 +12,7 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -64,6 +65,76 @@ class MviViewModelTest {
         advanceUntilIdle()
 
         assertEquals(2, submits)
+    }
+
+    @Test
+    fun `the busy flag is up while an exclusive run works and down once it is done`() = runTest {
+        val answer = CompletableDeferred<String>()
+        val viewModel = TestViewModel(submit = { answer.await() })
+
+        viewModel.onEvent(TestEvent.Submit)
+        runCurrent()
+        assertTrue(viewModel.state.value.busy)
+        viewModel.onEvent(TestEvent.Submit)
+        runCurrent()
+        assertTrue(viewModel.state.value.busy)
+
+        answer.complete("done")
+        advanceUntilIdle()
+        assertFalse(viewModel.state.value.busy)
+    }
+
+    @Test
+    fun `an unexpected throw takes the busy flag down before onUnexpected hears of it`() = runTest {
+        var fail = true
+        val viewModel = TestViewModel(submit = { if (fail) error("boom") else "recovered" })
+
+        viewModel.onEvent(TestEvent.Submit)
+        advanceUntilIdle()
+
+        assertFalse(viewModel.state.value.busy)
+        assertEquals(listOf(false), viewModel.busyWhenUnexpected)
+
+        fail = false
+        viewModel.onEvent(TestEvent.Submit)
+        advanceUntilIdle()
+        assertEquals("recovered", viewModel.state.value.text)
+    }
+
+    @Test
+    fun `a cancelled exclusive run takes the busy flag down`() = runTest {
+        val viewModel = TestViewModel(submit = { CompletableDeferred<String>().await() })
+
+        viewModel.onEvent(TestEvent.Submit)
+        runCurrent()
+        viewModel.onEvent(TestEvent.CancelSubmit)
+        runCurrent()
+
+        assertFalse(viewModel.state.value.busy)
+    }
+
+    @Test
+    fun `nothing first-observed runs before the state is collected, then it runs once`() = runTest {
+        val viewModel = TestViewModel()
+        advanceUntilIdle()
+        // Reading the state is not observing it.
+        assertEquals(TestState(), viewModel.state.value)
+        assertEquals(0, viewModel.firstObservations)
+
+        val screen = viewModel.state.launchIn(backgroundScope)
+        runCurrent()
+        assertEquals(1, viewModel.firstObservations)
+
+        val second = viewModel.state.launchIn(backgroundScope)
+        runCurrent()
+        screen.cancel()
+        second.cancel()
+        // Past the grace period, as when the screen comes back from the background.
+        advanceTimeBy(6.seconds)
+        viewModel.state.launchIn(backgroundScope)
+        runCurrent()
+
+        assertEquals(1, viewModel.firstObservations)
     }
 
     @Test
@@ -156,12 +227,13 @@ class MviViewModelTest {
         }
     }
 
-    private data class TestState(val text: String = "") : UiState
+    private data class TestState(val text: String = "", val busy: Boolean = false) : UiState
 
     private sealed interface TestEvent : UiEvent {
         data object Load : TestEvent
         data object CancelLoad : TestEvent
         data object Submit : TestEvent
+        data object CancelSubmit : TestEvent
         data object Back : TestEvent
         data object Saved : TestEvent
     }
@@ -177,9 +249,13 @@ class MviViewModelTest {
     ) : MviViewModel<TestState, TestEvent, TestEffect>(TestState()) {
 
         val unexpected = mutableListOf<AppError.Unexpected>()
+        val busyWhenUnexpected = mutableListOf<Boolean>()
+        var firstObservations = 0
+            private set
 
         init {
             observed?.let { observe(it) { value -> copy(text = value) } }
+            onFirstObserved { firstObservations++ }
         }
 
         override fun handleEvent(event: TestEvent) {
@@ -189,10 +265,11 @@ class MviViewModelTest {
                     setState { copy(text = text) }
                 }
                 TestEvent.CancelLoad -> cancel("load")
-                TestEvent.Submit -> launchExclusive("submit") {
+                TestEvent.Submit -> launchExclusive("submit", busy = { copy(busy = it) }) {
                     val text = submit()
                     setState { copy(text = text) }
                 }
+                TestEvent.CancelSubmit -> cancel("submit")
                 TestEvent.Back -> emit(TestEffect.NavigateBack)
                 TestEvent.Saved -> showMessage(UiText.Dynamic("Saved"))
             }
@@ -200,6 +277,7 @@ class MviViewModelTest {
 
         override fun onUnexpected(error: AppError.Unexpected) {
             unexpected += error
+            busyWhenUnexpected += current.busy
         }
     }
 }

@@ -22,6 +22,64 @@ android = "core/mvi/src/main/kotlin/com/base/app/core/mvi"
 multiplatform = "core/mvi/src/commonMain/kotlin/com/base/app/core/mvi"
 
 [[pair.difference]]
+file = "MviViewModel.kt"
+reason = """
+The Android template's screens load on their first observation and raise their busy flags through
+launchExclusive's busy reducer (decisions/LOG.md, Oct 25). This template's screens still load from
+their Appeared events and set their flags by hand; they move to both together in the multiplatform
+work after the Android release (REQUIREMENTS 59 (j)), and this allowance goes with them."""
+android = [
+  " * make Back or a keystroke wait. Slow work goes through [launchLatest] or [launchExclusive],",
+  " * repository flows through [observe], and the first load through [onFirstObserved].",
+  "    /**",
+  "     * Exclusive: ignored while a run under [key] is active (submit, pay, save).",
+  "     *",
+  "     * With [busy], the run sets its flag through that reducer as it starts and clears it however it",
+  "     * ends: done, failed, thrown (before [onUnexpected] hears of it) or cancelled. A flag set and",
+  "     * cleared by hand around the work stays set when the work throws, and the button it disables",
+  "     * never comes back.",
+  "     */",
+  "    protected fun launchExclusive(",
+  "        key: Any,",
+  "        busy: (S.(Boolean) -> S)? = null,",
+  "        block: suspend CoroutineScope.() -> Unit,",
+  "    ): Job? {",
+  "        if (busy == null) return launchKeyed(key, block)",
+  "        return launchKeyed(key) {",
+  "            setState { busy(true) }",
+  "            try {",
+  "                block()",
+  "            } finally {",
+  "                setState { busy(false) }",
+  "            }",
+  "        }",
+  "        }",
+  "    }",
+  "",
+  "    /**",
+  "     * Runs [block] once, the first time the UI collects [state]: when the screen is first started,",
+  "     * since a route collects with `collectAsStateWithLifecycle`. Call it from `init` with the",
+  "     * screen's first load.",
+  "     *",
+  "     * Not at construction, which would fetch for every instance built (a test, a restored back",
+  "     * stack entry, a screen prepared before anyone opens it), and not from the route's",
+  "     * `LaunchedEffect`, which runs in composition: a screen composed ahead of time with its",
+  "     * lifecycle held at CREATED would load before it is seen, while collection waits for STARTED.",
+  "     */",
+  "    protected fun onFirstObserved(block: () -> Unit) {",
+  "        viewModelScope.launch {",
+  "            _state.subscriptionCount.first { it > 0 }",
+  "            guarded(block)",
+]
+multiplatform = [
+  " * make Back or a keystroke wait. Slow work goes through [launchLatest] or [launchExclusive], and",
+  " * repository flows through [observe].",
+  "    /** Exclusive: ignored while a run under [key] is active (submit, pay, save). */",
+  "    protected fun launchExclusive(key: Any, block: suspend CoroutineScope.() -> Unit): Job? {",
+  "        return launchKeyed(key, block)",
+]
+
+[[pair.difference]]
 file = "UiText.kt"
 reason = """
 Strings are Compose resources here, typed StringResource and PluralStringResource rather than

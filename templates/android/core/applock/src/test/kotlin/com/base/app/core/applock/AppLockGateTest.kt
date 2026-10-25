@@ -25,20 +25,16 @@ import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performTouchInput
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.emptyPreferences
 import androidx.fragment.app.FragmentActivity
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.base.app.core.common.coroutines.ApplicationScope
+import com.base.app.core.datastore.FakePreferencesDataStore
 import com.base.app.core.datastore.settings.AppSettingsStore
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -350,7 +346,7 @@ class AppLockGateTest {
     }
 
     private fun lockedApp(): AppLock {
-        val settings = AppSettingsStore(MemoryPreferences(), ApplicationScope(scope))
+        val settings = AppSettingsStore(FakePreferencesDataStore(), ApplicationScope(scope))
         scope.launch { settings.setAppLockEnabled(true) }
         check(settings.current?.appLockEnabled == true) { "The lock setting must be in place before the app starts." }
         return AppLock(settings, deviceCanAuthenticate = { true }, clock = { now }, scope = ApplicationScope(scope))
@@ -384,15 +380,6 @@ class AppLockGateTest {
         }
         compose.waitForIdle()
     }
-}
-
-private class MemoryPreferences : DataStore<Preferences> {
-    private val state = MutableStateFlow(emptyPreferences())
-
-    override val data: Flow<Preferences> = state
-
-    override suspend fun updateData(transform: suspend (t: Preferences) -> Preferences): Preferences =
-        transform(state.value).also { state.value = it }
 }
 
 private const val ContentTag = "locked_content"

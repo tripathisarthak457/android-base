@@ -87,6 +87,8 @@ class PlaceholderModuleTest(unittest.TestCase):
                 self.assertIn("MviScreen(", text)
                 self.assertNotIn("Screen(state = state", text)
                 self.assertNotIn("designsystem", text)
+                # The ViewModel loads when the route first collects its state, never from composition.
+                self.assertNotIn("LaunchedEffect", text)
         strings = (self.project / "feature/order_history/src/main/res/values/strings.xml").read_text(encoding="utf-8")
         self.assertIn('<string name="order_history_title">Order history</string>', strings)
 
@@ -182,6 +184,14 @@ class GeneratedModuleTest(unittest.TestCase):
         navigation = (self.online / f"feature/orders/src/main/kotlin/{PKG}/feature/orders/navigation/OrdersNavigation.kt").read_text()
         self.assertIn("entry<OrdersListKey>(pane = NavPane.List)", navigation)
         self.assertIn("entry<OrdersDetailKey>(pane = NavPane.Detail)", navigation)
+
+    def test_each_screen_loads_on_its_first_observation_and_not_from_composition(self):
+        screens = self.online / f"feature/orders/src/main/kotlin/{PKG}/feature/orders"
+        for half in ("list/OrdersList", "detail/OrdersDetail"):
+            with self.subTest(screen=half):
+                self.assertIn("onFirstObserved { load(", (screens / f"{half}ViewModel.kt").read_text())
+                self.assertNotIn("Appeared", (screens / f"{half}Contract.kt").read_text())
+                self.assertNotIn("LaunchedEffect", (screens / f"{half}Route.kt").read_text())
 
     def test_scrolling_content_clears_the_chrome_and_placeholders_take_the_rows_height(self):
         screens = self.online / f"feature/orders/src/main/kotlin/{PKG}/feature/orders"

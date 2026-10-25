@@ -15,7 +15,6 @@ internal data class SampleDetailState(
 ) : UiState
 
 internal sealed interface SampleDetailEvent : UiEvent {
-    data object Appeared : SampleDetailEvent
     data object Retry : SampleDetailEvent
     data object BackClicked : SampleDetailEvent
     data class RelatedClicked(val id: Int) : SampleDetailEvent

@@ -1,20 +1,26 @@
-package com.base.app.core.network
+package com.base.app.core.datastore.session
 
-import com.base.app.core.datastore.session.AuthTokenStore
-import com.base.app.core.datastore.session.AuthTokens
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
-/** An [AuthTokenStore] in memory, for tests that need a session without a Keystore. */
-internal class MemoryTokenStore(initial: AuthTokens? = null) : AuthTokenStore {
+/**
+ * An [AuthTokenStore] in memory, for a test that needs a session without a Keystore. Signing in is
+ * [save] and signing out is [clear]; `isAuthenticated` follows [tokens], as in the real store.
+ */
+class FakeAuthTokenStore(initial: AuthTokens? = null) : AuthTokenStore {
 
     private val state = MutableStateFlow(initial)
 
+    /** What is stored now, read without suspending. */
     val stored: AuthTokens? get() = state.value
+
+    /** While set, [save] throws, as a Keystore that cannot be reached does. */
+    var refuseSaves = false
 
     override val tokens: Flow<AuthTokens?> = state
 
     override suspend fun save(tokens: AuthTokens) {
+        check(!refuseSaves) { "Keystore unavailable" }
         state.value = tokens
     }
 
@@ -28,6 +34,3 @@ internal class MemoryTokenStore(initial: AuthTokens? = null) : AuthTokenStore {
         state.value = null
     }
 }
-
-internal fun tokens(access: String = "A1", refresh: String = "R1", owner: String = "ada") =
-    AuthTokens(accessToken = access, refreshToken = refresh, owner = owner)

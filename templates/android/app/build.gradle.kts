@@ -144,6 +144,9 @@ dependencies {
     // <opt:leakcanary>
     debugImplementation(libs.leakcanary)
     // </opt:leakcanary>
+
+    // The token store and preferences in memory, for the session and start-up tests.
+    testImplementation(testFixtures(project(":core:datastore")))
 }
 
 // <opt:licenses>

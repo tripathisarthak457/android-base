@@ -6,11 +6,9 @@ import androidx.lifecycle.SavedStateHandle
 import com.base.app.core.common.LoadState
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.testing.MainDispatcherRule
+import com.base.app.data.search.api.FakeSearchRepository
 import com.base.app.data.search.api.SearchRepository
-import com.base.app.data.search.api.model.SearchResult
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -28,7 +26,7 @@ class SearchViewModelTest {
     @Test
     fun `typing quickly sends one search for the final query`() = runTest {
         val repository = FakeSearchRepository()
-        val viewModel = appeared(repository)
+        val viewModel = shown(repository)
 
         listOf("w", "we", "wea", "weather").forEach {
             viewModel.query.type(it)
@@ -40,9 +38,25 @@ class SearchViewModelTest {
         assertEquals(LoadState.Success, viewModel.state.value.loadState)
     }
 
+    // A query restored after process death is searched again, but only once the screen is shown.
+    @Test
+    fun `typing is searched from the first look at the screen, not before`() = runTest {
+        val repository = FakeSearchRepository()
+        val viewModel = SearchViewModel(repository, SavedStateHandle())
+        viewModel.query.type("cats")
+        advanceUntilIdle()
+        assertEquals(emptyList<String>(), repository.searched)
+
+        viewModel.state.launchIn(backgroundScope)
+        runCurrent()
+        advanceUntilIdle()
+
+        assertEquals(listOf("cats"), repository.searched)
+    }
+
     @Test
     fun `no results is Empty`() = runTest {
-        val viewModel = appeared(FakeSearchRepository(results = emptyList()))
+        val viewModel = shown(FakeSearchRepository(results = emptyList()))
 
         viewModel.query.type("zzz")
         advanceUntilIdle()
@@ -53,11 +67,11 @@ class SearchViewModelTest {
     @Test
     fun `a query is remembered on submit, not while typing`() = runTest {
         val repository = FakeSearchRepository()
-        val viewModel = appeared(repository)
+        val viewModel = shown(repository)
 
         viewModel.query.type("cats")
         advanceUntilIdle()
-        assertEquals(emptyList<String>(), repository.recentFlow.value)
+        assertEquals(emptyList<String>(), repository.recent.value)
 
         viewModel.onEvent(SearchEvent.Submit)
         advanceUntilIdle()
@@ -67,7 +81,7 @@ class SearchViewModelTest {
     @Test
     fun `a tapped recent search runs at once and only once`() = runTest {
         val repository = FakeSearchRepository()
-        val viewModel = appeared(repository)
+        val viewModel = shown(repository)
 
         viewModel.onEvent(SearchEvent.RecentClicked("cats"))
         Snapshot.sendApplyNotifications()
@@ -80,7 +94,7 @@ class SearchViewModelTest {
     @Test
     fun `clearing the query returns to the start without searching`() = runTest {
         val repository = FakeSearchRepository()
-        val viewModel = appeared(repository)
+        val viewModel = shown(repository)
 
         viewModel.query.type("cats")
         runCurrent()
@@ -96,7 +110,7 @@ class SearchViewModelTest {
         val repository = FakeSearchRepository(recent = listOf("cats", "dogs", "owls"))
         val disk = CompletableDeferred<Unit>()
         repository.writes = disk
-        val viewModel = appeared(repository)
+        val viewModel = shown(repository)
 
         viewModel.onEvent(SearchEvent.RecentRemoved("cats"))
         runCurrent()
@@ -105,7 +119,7 @@ class SearchViewModelTest {
         disk.complete(Unit)
         advanceUntilIdle()
 
-        assertEquals(listOf("owls"), repository.recentFlow.value)
+        assertEquals(listOf("owls"), repository.recent.value)
     }
 
     @Test
@@ -113,7 +127,7 @@ class SearchViewModelTest {
         val repository = FakeSearchRepository()
         val disk = CompletableDeferred<Unit>()
         repository.writes = disk
-        val viewModel = appeared(repository)
+        val viewModel = shown(repository)
 
         viewModel.query.type("cats")
         viewModel.onEvent(SearchEvent.Submit)
@@ -123,13 +137,13 @@ class SearchViewModelTest {
         disk.complete(Unit)
         advanceUntilIdle()
 
-        assertEquals(setOf("cats", "dogs"), repository.recentFlow.value.toSet())
+        assertEquals(setOf("cats", "dogs"), repository.recent.value.toSet())
     }
 
-    private fun TestScope.appeared(repository: SearchRepository): SearchViewModel =
+    /** A search screen on show: its route collects the state once it is started. */
+    private fun TestScope.shown(repository: SearchRepository): SearchViewModel =
         SearchViewModel(repository, SavedStateHandle()).also {
             it.state.launchIn(backgroundScope)
-            it.onEvent(SearchEvent.Appeared)
             runCurrent()
         }
 }
@@ -138,38 +152,4 @@ class SearchViewModelTest {
 private fun TextFieldState.type(text: String) {
     edit { replace(0, length, text) }
     Snapshot.sendApplyNotifications()
-}
-
-private class FakeSearchRepository(
-    private val results: List<SearchResult> = listOf(SearchResult(1, "A title", "A snippet")),
-    recent: List<String> = emptyList(),
-) : SearchRepository {
-    val searched = mutableListOf<String>()
-    val recentFlow = MutableStateFlow(recent)
-
-    /** When set, recent-search writes wait for it, as a DataStore edit waits for the disk. */
-    var writes: CompletableDeferred<Unit>? = null
-    override val recent: StateFlow<List<String>> = recentFlow
-
-    override suspend fun search(query: String): AppResult<List<SearchResult>> {
-        searched += query
-        return AppResult.Success(results)
-    }
-
-    override suspend fun result(id: Int): AppResult<SearchResult> = AppResult.Success(results.first())
-
-    override suspend fun remember(query: String) {
-        writes?.await()
-        recentFlow.value = listOf(query) + recentFlow.value
-    }
-
-    override suspend fun forget(query: String) {
-        writes?.await()
-        recentFlow.value = recentFlow.value - query
-    }
-
-    override suspend fun clearRecent() {
-        writes?.await()
-        recentFlow.value = emptyList()
-    }
 }

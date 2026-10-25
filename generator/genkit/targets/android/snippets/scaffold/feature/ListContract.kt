@@ -14,7 +14,6 @@ internal data class __P__ListState(
 ) : UiState
 
 internal sealed interface __P__ListEvent : UiEvent {
-    data object Appeared : __P__ListEvent
     data object Refresh : __P__ListEvent
     data object Retry : __P__ListEvent
     data class ItemClicked(val id: String) : __P__ListEvent

@@ -33,12 +33,12 @@ internal class __P__ListViewModel @Inject constructor(
 ) {
 __END_FIT__
 
+    init {
+        onFirstObserved { load(refreshing = false) }
+    }
+
     override fun handleEvent(event: __P__ListEvent) {
         when (event) {
-            __P__ListEvent.Appeared -> {
-                if (current.loadState == LoadState.Idle) load(refreshing = false)
-            }
-
             __P__ListEvent.Refresh -> load(refreshing = true)
 
             __P__ListEvent.Retry -> load(refreshing = false)

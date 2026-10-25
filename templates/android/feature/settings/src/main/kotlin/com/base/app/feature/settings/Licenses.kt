@@ -2,7 +2,6 @@ package com.base.app.feature.settings
 
 import android.content.Context
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.base.app.core.common.LoadState
 import com.base.app.core.common.coroutines.AppDispatchers
@@ -55,7 +54,6 @@ internal data class LicensesState(
 ) : UiState
 
 internal sealed interface LicensesEvent : UiEvent {
-    data object Appeared : LicensesEvent
     data object BackClicked : LicensesEvent
 }
 
@@ -70,9 +68,12 @@ internal class LicensesViewModel @Inject constructor(
     private val dispatchers: AppDispatchers,
 ) : MviViewModel<LicensesState, LicensesEvent, LicensesEffect>(LicensesState()) {
 
+    init {
+        onFirstObserved { load() }
+    }
+
     override fun handleEvent(event: LicensesEvent) {
         when (event) {
-            LicensesEvent.Appeared -> if (current.loadState == LoadState.Idle) load()
             LicensesEvent.BackClicked -> emit(LicensesEffect.NavigateBack)
         }
     }
@@ -123,8 +124,6 @@ internal fun LicensesRoute(
     navigator: AppNavigator,
     viewModel: LicensesViewModel = hiltViewModel(),
 ) {
-    LaunchedEffect(Unit) { viewModel.onEvent(LicensesEvent.Appeared) }
-
     MviScreen(
         viewModel = viewModel,
         onEffect = { effect ->

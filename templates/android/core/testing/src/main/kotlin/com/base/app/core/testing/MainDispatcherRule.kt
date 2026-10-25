@@ -9,7 +9,9 @@ import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
 /**
- * Swaps `Dispatchers.Main` for a test dispatcher around each test.
+ * Swaps `Dispatchers.Main` for a test dispatcher around each test. `runTest` then runs on this
+ * dispatcher's scheduler, and so does [testDispatchers] inside it, so `viewModelScope` and the
+ * `AppDispatchers` a class is given share one virtual clock.
  *
  * ```
  * @get:Rule

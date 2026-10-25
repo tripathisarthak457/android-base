@@ -87,7 +87,7 @@ on the home screen reads the cart repository, not the cart feature. In a data mo
 | `:core:designsystem` | The theme (`AppTheme` and its tokens), window size classes and previews; [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md). No Material. |
 | `:core:ui` | What screens share beyond the theme: `MviScreen`, message delivery, `UiText` resolution, `AppError.toUiText`, locales. |
 | `:core:navigation` | The destination registry, `AppNavigator`, the back stack, deep links and the navigation host. |
-| `:core:testing`, `:core:testing:compose` | `MainDispatcherRule`, `FakeNetworkMonitor`, the Compose test helpers and `RecompositionCounter`. |
+| `:core:testing`, `:core:testing:compose` | `MainDispatcherRule`, `testDispatchers()`, `FakeNetworkMonitor`, `FakeSessionController`, the Compose test helpers and `RecompositionCounter`. |
 <!-- <opt:network> -->
 | `:core:network` | The HTTP client and everything around it. The only module that names Ktor. |
 <!-- </opt:network> -->
@@ -161,16 +161,26 @@ since no handler waits, nothing an event starts can make Back or a keystroke wai
 
 Slow work goes through the keyed launchers. `launchLatest(key, debounce)` cancels the previous run under the same key,
 for work where only the newest request matters (search as you type, reload, paging); `debounce` is a `Duration`.
-`launchExclusive(key)` ignores a new request while one runs (submit, pay, save). Repository flows go through
-`observe(flow) { value -> copy(…) }`, which collects them only while the screen observes the state, with a five-second
-grace period so a rotation does not restart them.
+`launchExclusive(key)` ignores a new request while one runs (submit, pay, save); with
+`busy = { copy(submitting = it) }` it raises the screen's flag as the run starts and lowers it however the run ends,
+an unexpected throw and a cancellation included, so a button it disables always comes back. Repository flows go
+through `observe(flow) { value -> copy(…) }`, which collects them only while the screen observes the state, with a
+five-second grace period so a rotation does not restart them.
 
 ### The first load
 
-A screen loads from an event the route sends when it first appears, from `LaunchedEffect(Unit)`, and the ViewModel
-loads only while the state is still `LoadState.Idle`, so a return to the screen does not load again.
+A screen loads when it is first started: the ViewModel calls `onFirstObserved { load() }` in `init`, and the block runs
+once, the first time the route collects the state (`MviScreen` collects with `collectAsStateWithLifecycle`, so only
+while the screen is started). A second collector, a rotation or a return from the background does not load again;
+a refresh or a retry is an event. Not at construction, which would fetch for every ViewModel built, a test's or a
+restored back stack entry's included, and not from a `LaunchedEffect` in the route, which runs in composition, so
+also for a screen composed before anyone sees it.
+<!-- <opt:ui_components> -->
+The shell's tab warm-up is such a case: it composes unseen tabs with their lifecycle held at CREATED, so a screen that
+loads when started does not load early.
+<!-- </opt:ui_components> -->
 <!-- <opt:sample> -->
-The reference screens do this with their `Appeared` events.
+The reference screens load this way.
 <!-- </opt:sample> -->
 A screen whose data may already be in memory starts its state from it instead, so its first frame shows content
 ([PERFORMANCE.md](PERFORMANCE.md#navigation-and-back)).
@@ -625,9 +635,17 @@ compares against them, and without them a schema change cannot be reviewed.
 ## Testing
 
 - Dispatchers are injected and no class uses `Dispatchers.IO` directly, so `runTest` controls the clock and no test
-  waits in real time. `MainDispatcherRule` replaces `Dispatchers.Main`; without it a ViewModel test hangs.
+  waits in real time. `MainDispatcherRule` replaces `Dispatchers.Main`; without it a ViewModel test hangs. Inside
+  `runTest`, `testDispatchers()` gives the class under test its `AppDispatchers` on the same clock.
 - Repositories are interfaces, so a ViewModel test injects a fake and never opens a socket; `FakeNetworkMonitor`
-  switches between online and offline.
+  switches between online and offline. Each fake lives once. A fake other modules' tests use sits in the
+  `src/testFixtures` of the module that owns its interface (a data module's beside the interface in its `api` package;
+  `FakeAuthTokenStore` and `FakePreferencesDataStore` in `:core:datastore`), and a test reaches it with
+  `testImplementation(testFixtures(project(":data:x")))`; the modular layout moves a domain's fixtures to its `:api`
+  module with the interface. A double scripted for one module's tests, such as a network client that answers that
+  module's endpoints, stays in those tests. Fakes, never mocks.
+- Unit tests run against the real Android stubs, which throw rather than return defaults: code that needs Android runs
+  under Robolectric, and everything else sits behind a seam such as `Log`'s `AppLogger`.
 <!-- <opt:ui_components> -->
 - Compose tests run on the JVM with Robolectric. Every `@Preview` becomes a screenshot test through Roborazzi, and
   `RecompositionCounter` with `framesUntilIdle` proves a journey composes nothing while it moves

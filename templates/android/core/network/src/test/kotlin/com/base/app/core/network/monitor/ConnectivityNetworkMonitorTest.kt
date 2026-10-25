@@ -1,12 +1,11 @@
 package com.base.app.core.network.monitor
 
 import android.net.ConnectivityManager
-import com.base.app.core.common.coroutines.AppDispatchers
 import com.base.app.core.common.coroutines.ApplicationScope
+import com.base.app.core.testing.testDispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -25,10 +24,9 @@ class ConnectivityNetworkMonitorTest {
     fun `every request shares one connectivity registration`() = runTest {
         val context = RuntimeEnvironment.getApplication()
         val connectivity = context.getSystemService(ConnectivityManager::class.java)
-        val dispatcher = StandardTestDispatcher(testScheduler)
         val monitor = ConnectivityNetworkMonitor(
             context = context,
-            dispatchers = AppDispatchers(io = dispatcher, default = dispatcher, main = dispatcher),
+            dispatchers = testDispatchers(),
             scope = ApplicationScope(backgroundScope),
         )
 

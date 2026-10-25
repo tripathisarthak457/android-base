@@ -2,7 +2,6 @@ package com.base.app.feature.search
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.base.app.core.common.LoadState
 import com.base.app.core.common.result.AppResult
@@ -53,7 +52,6 @@ internal data class SearchResultState(
 ) : UiState
 
 internal sealed interface SearchResultEvent : UiEvent {
-    data object Appeared : SearchResultEvent
     data object Retry : SearchResultEvent
 }
 
@@ -70,9 +68,12 @@ internal class SearchResultViewModel @AssistedInject constructor(
         fun create(id: Int): SearchResultViewModel
     }
 
+    init {
+        onFirstObserved { load() }
+    }
+
     override fun handleEvent(event: SearchResultEvent) {
         when (event) {
-            SearchResultEvent.Appeared -> if (current.loadState == LoadState.Idle) load()
             SearchResultEvent.Retry -> load()
         }
     }
@@ -100,8 +101,6 @@ internal fun SearchResultRoute(
         creationCallback = { factory -> factory.create(id) },
     ),
 ) {
-    LaunchedEffect(Unit) { viewModel.onEvent(SearchResultEvent.Appeared) }
-
     // <opt:ui_components>
     MviScreen(viewModel = viewModel) { state, onEvent ->
         AppScaffold(

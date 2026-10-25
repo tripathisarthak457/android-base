@@ -6,7 +6,10 @@ import __PKG__.core.common.result.AppResult
 import __PKG__.core.testing.MainDispatcherRule
 import __PKG__.data.__NAME__.api.Fake__P__Repository
 import __PKG__.data.__NAME__.api.__P__Item
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -23,13 +26,14 @@ class __P__ListViewModelTest {
     )
 
     @Test
-    fun `appearing loads once and lands in Success`() = runTest {
+    fun `nothing loads until the screen collects the state, then it loads once`() = runTest {
         val repository = Fake__P__Repository(AppResult.Success(items))
         val viewModel = __P__ListViewModel(repository)
-
-        viewModel.onEvent(__P__ListEvent.Appeared)
         advanceUntilIdle()
-        viewModel.onEvent(__P__ListEvent.Appeared)
+        assertEquals(0, repository.loads)
+
+        shown(viewModel)
+        shown(viewModel)
         advanceUntilIdle()
 
         assertEquals(LoadState.Success, viewModel.state.value.loadState)
@@ -47,7 +51,7 @@ __ELSE__
 __END_FIT__
         val viewModel = __P__ListViewModel(repository)
 
-        viewModel.onEvent(__P__ListEvent.Appeared)
+        shown(viewModel)
         advanceUntilIdle()
 
         assertEquals(LoadState.Empty, viewModel.state.value.loadState)
@@ -57,7 +61,7 @@ __END_FIT__
     fun `a failed refresh keeps the rows on screen`() = runTest {
         val repository = Fake__P__Repository(AppResult.Success(items))
         val viewModel = __P__ListViewModel(repository)
-        viewModel.onEvent(__P__ListEvent.Appeared)
+        shown(viewModel)
         advanceUntilIdle()
 
         repository.result = AppResult.Failure(AppError.Offline)
@@ -78,7 +82,7 @@ __ELSE__
 __END_FIT__
         val viewModel = __P__ListViewModel(repository)
 
-        viewModel.onEvent(__P__ListEvent.Appeared)
+        shown(viewModel)
         advanceUntilIdle()
         assertEquals(LoadState.Error(AppError.Offline), viewModel.state.value.loadState)
 
@@ -86,5 +90,11 @@ __END_FIT__
         viewModel.onEvent(__P__ListEvent.Retry)
         advanceUntilIdle()
         assertEquals(LoadState.Success, viewModel.state.value.loadState)
+    }
+
+    /** The screen collecting the state, as its route does once it is started. */
+    private fun TestScope.shown(viewModel: __P__ListViewModel) {
+        viewModel.state.launchIn(backgroundScope)
+        runCurrent()
     }
 }

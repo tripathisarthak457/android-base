@@ -1,7 +1,6 @@
 package com.base.app.feature.search
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.base.app.core.ui.MviScreen
 // <opt:ui_components>
@@ -62,8 +61,6 @@ internal fun SearchRoute(
     onOpenResult: (Int) -> Unit,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
-    LaunchedEffect(Unit) { viewModel.onEvent(SearchEvent.Appeared) }
-
     MviScreen(
         viewModel = viewModel,
         onEffect = { effect ->

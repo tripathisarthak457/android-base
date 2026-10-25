@@ -32,5 +32,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
 
     testImplementation(project(":core:testing"))
+    testImplementation(testFixtures(project(":core:datastore")))
     testImplementation(project(":core:testing:compose"))
 }

@@ -8,4 +8,6 @@ android {
 
 dependencies {
     implementation(project(":data:search"))
+
+    testImplementation(testFixtures(project(":data:search")))
 }

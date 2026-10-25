@@ -1,21 +1,16 @@
 package com.base.app.startup
 
 import android.content.Intent
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.emptyPreferences
 import androidx.lifecycle.SavedStateHandle
 import com.base.app.core.common.coroutines.ApplicationScope
-import com.base.app.core.datastore.session.AuthTokenStore
+import com.base.app.core.datastore.FakePreferencesDataStore
 import com.base.app.core.datastore.session.AuthTokens
+import com.base.app.core.datastore.session.FakeAuthTokenStore
 import com.base.app.core.datastore.settings.AppSettingsStore
 import com.base.app.core.testing.MainDispatcherRule
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -30,8 +25,8 @@ class StartupViewModelTest {
     @get:Rule
     val main = MainDispatcherRule(UnconfinedTestDispatcher())
 
-    private val settings = AppSettingsStore(FakePreferences(), ApplicationScope(CoroutineScope(main.testDispatcher)))
-    private val tokens = FakeTokens()
+    private val settings = AppSettingsStore(FakePreferencesDataStore(), ApplicationScope(CoroutineScope(main.testDispatcher)))
+    private val tokens = FakeAuthTokenStore(SESSION)
 
     private fun startup(
         saved: SavedStateHandle = SavedStateHandle(),
@@ -60,9 +55,9 @@ class StartupViewModelTest {
         val viewModel = startup()
 
         assertEquals(EntryIdentity.SignedIn(1), viewModel.startup.value?.identity)
-        tokens.isAuthenticated.value = false
+        tokens.clear()
         assertEquals(EntryIdentity.SignedOut, viewModel.startup.value?.identity)
-        tokens.isAuthenticated.value = true
+        tokens.save(SESSION)
         assertEquals(EntryIdentity.SignedIn(2), viewModel.startup.value?.identity)
     }
 
@@ -71,8 +66,8 @@ class StartupViewModelTest {
         settings.setOnboardingCompleted(true)
         val saved = SavedStateHandle()
         startup(saved)
-        tokens.isAuthenticated.value = false
-        tokens.isAuthenticated.value = true
+        tokens.clear()
+        tokens.save(SESSION)
 
         val restored = startup(SavedStateHandle(saved.keys().associateWith { saved.get<Any>(it) }))
 
@@ -81,23 +76,4 @@ class StartupViewModelTest {
     // </opt:auth>
 }
 
-private class FakePreferences : DataStore<Preferences> {
-    private val state = MutableStateFlow(emptyPreferences())
-    override val data: Flow<Preferences> = state
-
-    override suspend fun updateData(transform: suspend (t: Preferences) -> Preferences): Preferences =
-        transform(state.value).also { state.value = it }
-}
-
-private class FakeTokens : AuthTokenStore {
-    override val isAuthenticated = MutableStateFlow(true)
-
-    // The launch decides on isAuthenticated alone and never reads the tokens themselves.
-    override val tokens: Flow<AuthTokens?> = flowOf(null)
-
-    override suspend fun save(tokens: AuthTokens) = Unit
-
-    override suspend fun replace(expected: AuthTokens, replacement: AuthTokens?): Boolean = false
-
-    override suspend fun clear() = Unit
-}
+private val SESSION = AuthTokens(accessToken = "a", refreshToken = "r", owner = "ada")
