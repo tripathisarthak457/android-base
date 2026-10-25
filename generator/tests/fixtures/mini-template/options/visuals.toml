@@ -18,6 +18,11 @@ extra = "Extra draws, and this project draws nothing."
 [hides]
 design_style = "Nothing is drawn, so there is no style to choose."
 
+[field_copy]
+haptics_enabled = """
+The default your own controls read;
+nothing here plays a tick."""
+
 [feature_copy.ui]
 description = """
 Screens' state and

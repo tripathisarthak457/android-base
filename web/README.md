@@ -182,10 +182,10 @@ sent. Ticking it greys the disabled features with their reasons, hides design an
 but whose own words name what such a project lacks (a screen, a tab, a component, the performance
 harness) read in the option's words instead: its `feature_copy` and `preset_copy`, which the wizard
 and `--list-features --no-ui-components` show too, and the feature-modules hint reads its
-`module_copy`, as the wizard's module question does. The Project step's summary lists the tabs only
-for a project with components; one without them has no tab bar and opens on its blank start
-screen, and the summary says that instead. Multiplatform and iOS have no such option yet; the site
-says so where the box would be.
+`module_copy`, as the wizard's module question does, and the haptics toggle its `field_copy`, as the
+wizard's haptics question does. The Project step's summary lists the tabs only for a project with
+components; one without them has no tab bar and opens on its blank start screen, and the summary says
+that instead. Multiplatform and iOS have no such option yet; the site says so where the box would be.
 
 **The lock.** A deployment can generate setup-only projects and nothing else, until the Android
 release brings the components. The switch is a `[locked]` table in the option file:

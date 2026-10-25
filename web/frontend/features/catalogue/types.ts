@@ -109,6 +109,8 @@ export type Option = {
   preset_copy: { preset: string; description: string }[];
   /** What a feature module brings while the option is not at its default; null keeps the site's own words. */
   module_copy: string | null;
+  /** What a spec field still asked for does while the option is not at its default, where the site's own words promise what such a project lacks. */
+  field_copy: { field: string; description: string }[];
   locked: OptionLock | null;
 };
 

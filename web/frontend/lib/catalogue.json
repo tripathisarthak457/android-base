@@ -1,5 +1,5 @@
 {
-  "generator_commit": "1920b6829d67",
+  "generator_commit": "7610744f6281",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -1609,6 +1609,12 @@
               "description": "A macrobenchmark module for cold and warm start to the start screen, with and without the baseline profile, run against the dev flavour, and the baseline profile generator that records the profile every build ships. The journey benchmarks and the frame-time scripts come with the components they measure.",
               "feature": "performance",
               "headline": "Measure start-up on a real phone"
+            }
+          ],
+          "field_copy": [
+            {
+              "description": "The default behind AppTheme.hapticsEnabled, which the components you build read before they play a tick: nothing in the project plays one yet. A person who turns haptics off in the preference store turns it off too, and the phone's own setting still applies on top.",
+              "field": "haptics_enabled"
             }
           ],
           "headline": "Setup only: the architecture, every build guard and a theme skeleton, without UI components",

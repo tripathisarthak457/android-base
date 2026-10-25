@@ -1,4 +1,4 @@
-import { COMING_WITH_RELEASE, androidOnlyNote, disabledFeatures, hiddenFields, isSetupOnly, uiComponentsOption } from "../catalogue/options.ts";
+import { COMING_WITH_RELEASE, androidOnlyNote, disabledFeatures, fieldCopy, hiddenFields, isSetupOnly, uiComponentsOption } from "../catalogue/options.ts";
 import type { Catalogue, Target } from "../catalogue/types.ts";
 import { planTabs } from "../preview/tabs.ts";
 import { type ConfigState, moduleNames } from "./state.ts";
@@ -67,6 +67,16 @@ export function reviewSkipped(target: Target, state: ConfigState): { title: stri
     reason,
   }));
   return [...features, ...fields];
+}
+
+/** The haptics toggle's words where a project has controls that play a tick. */
+const HAPTICS_HINT =
+  "A light tick when a selection changes, a switch flips or a pull reaches its threshold, as iOS does; never on an ordinary tap. " +
+  "The phone's own setting still applies on top.";
+
+/** What the Motion step's haptics toggle sets: the option's words in a project with no control to play a tick. */
+export function hapticsHint(target: Target, uiComponents: boolean): string {
+  return fieldCopy(target, uiComponents, "haptics_enabled") ?? HAPTICS_HINT;
 }
 
 /**

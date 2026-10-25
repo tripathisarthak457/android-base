@@ -188,6 +188,8 @@ def _option(option: Option) -> dict[str, Any]:
         "preset_copy": [{"preset": preset, "description": text} for preset, text in option.preset_copy.items()],
         # What a feature module the spec names brings while the option is off; null keeps the client's words.
         "module_copy": option.module_copy,
+        # What a spec field still asked does while the option is off, where the client's words promise more.
+        "field_copy": [{"field": field, "description": text} for field, text in option.field_copy.items()],
         # The one value this deployment generates, when it serves only one; the API refuses the other.
         "locked": {"value": option.locked.value, "note": option.locked.note} if option.locked else None,
     }

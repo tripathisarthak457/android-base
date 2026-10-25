@@ -288,6 +288,14 @@ class OptionTest(unittest.TestCase):
             {"design_style": "Nothing is drawn, so there is no style to choose."}, self.manifest.hidden_fields(off)
         )
 
+    def test_an_option_that_is_off_describes_the_fields_it_still_asks(self):
+        off = self.manifest.option_values({"visuals": False})
+        self.assertEqual(
+            {"haptics_enabled": "The default your own controls read; nothing here plays a tick."},
+            self.manifest.field_descriptions(off),
+        )
+        self.assertEqual({}, self.manifest.field_descriptions(self.manifest.option_values({})))
+
     def test_an_option_left_out_of_a_spec_takes_its_default(self):
         self.assertEqual({"visuals": True}, self.manifest.option_values({}))
         self.assertEqual({}, self.manifest.disabled_features({"visuals": True}))
@@ -425,6 +433,18 @@ class BrokenOptionTest(unittest.TestCase):
     def test_module_copy_that_is_blank(self):
         self.edit('module_copy = """\nEach module brings its state\nand its routes, undrawn."""', 'module_copy = " "')
         self.assertBroken("module_copy needs words")
+
+    def test_describing_a_field_the_spec_does_not_have(self):
+        self.edit("haptics_enabled = ", "colour_scheme = ")
+        self.assertBroken("[field_copy] names 'colour_scheme', which is not a spec field")
+
+    def test_describing_a_field_the_option_hides(self):
+        self.edit("haptics_enabled = ", "design_style = ")
+        self.assertBroken("[field_copy] describes 'design_style', which [hides] leaves unasked")
+
+    def test_field_copy_that_is_blank(self):
+        self.edit('haptics_enabled = """\nThe default your own controls read;\nnothing here plays a tick."""', 'haptics_enabled = " "')
+        self.assertBroken("[field_copy] must give each field a description")
 
     def test_a_variant_that_is_not_a_directory_name(self):
         self.edit('variant = "bare"', 'variant = "../bare"')

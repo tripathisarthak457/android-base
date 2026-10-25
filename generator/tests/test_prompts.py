@@ -156,6 +156,29 @@ class AskLookTest(unittest.TestCase):
         self.assertIsNone(next(replies, None))
         self.assertEqual(("Utility", "Standard"), (look["design_style"], look["motion_style"]))
 
+    def shown(self, described: dict[str, str]) -> str:
+        # Primary, secondary and tertiary colours, then haptics.
+        replies = iter(["", "", "", ""])
+        with mock.patch("builtins.input", lambda _prompt: next(replies)), redirect_stdout(io.StringIO()) as out:
+            prompts.ask_look(frozenset(), frozenset({"design_style", "motion_style"}), described)
+        return " ".join(out.getvalue().split())
+
+    def test_without_ui_components_haptics_read_as_what_the_value_sets(self):
+        manifest = targets.get("android").manifest
+        described = manifest.field_descriptions(manifest.option_values({"ui_components": False}))
+        shown = self.shown(described)
+        self.assertIn(described["haptics_enabled"], shown)
+        self.assertNotIn("when a control responds", shown)
+
+    def test_with_ui_components_haptics_keep_their_words(self):
+        manifest = targets.get("android").manifest
+        described = manifest.field_descriptions(manifest.option_values({}))
+        self.assertEqual({}, described)
+        self.assertIn(
+            "Haptics are a light vibration when a control responds. The device's own setting always applies on top.",
+            self.shown(described),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

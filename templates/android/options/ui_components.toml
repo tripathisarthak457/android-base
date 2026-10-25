@@ -92,6 +92,14 @@ liquidglass = "Glass is drawn by components and the shell, which this project le
 design_style = "Your design system decides corners, surfaces and type voice; the theme starts from neutral values."
 motion_style = "Your components decide their motion; the theme keeps neutral springs and reduce-motion."
 
+# What a field still asked does here, where the wizard's and the website's own words describe the
+# components that use it.
+[field_copy]
+haptics_enabled = """
+The default behind AppTheme.hapticsEnabled, which the components you build read before they play a
+tick: nothing in the project plays one yet. A person who turns haptics off in the preference store
+turns it off too, and the phone's own setting still applies on top."""
+
 # A kept feature whose own copy describes a screen, a row, a prompt, a tab, a component or the
 # harness this project leaves out: what it brings here instead, shown by the website, the wizard and
 # --list-features while the value is false. Without `headline` the feature's own still holds.

@@ -52,6 +52,13 @@ export function moduleCopy(target: Target, uiComponents: boolean): string | null
   return option && !uiComponents ? option.module_copy : null;
 }
 
+/** What a spec field the site still asks for does in a project without UI components, or null where its own words hold. */
+export function fieldCopy(target: Target, uiComponents: boolean, field: string): string | null {
+  const option = uiComponentsOption(target);
+  if (!option || uiComponents) return null;
+  return option.field_copy.find((entry) => entry.field === field)?.description ?? null;
+}
+
 /**
  * Why this deployment generates only projects without UI components, in the lock's own words, or
  * null when it generates both.

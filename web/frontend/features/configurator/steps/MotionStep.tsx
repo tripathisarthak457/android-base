@@ -9,6 +9,7 @@ import { MotionPreview } from "../../preview/MotionPreview.tsx";
 import { ThemeSlotsPreview } from "../../preview/ThemeSlots.tsx";
 import { type PreviewInput, usePreviewTheme } from "../../preview/usePreviewTheme.ts";
 import { HiddenChoice } from "../HiddenChoice.tsx";
+import { hapticsHint } from "../uiComponents.ts";
 import type { ConfiguratorModel } from "../useConfigurator.ts";
 import { usePreviewInput } from "../usePreviewInput.ts";
 
@@ -117,10 +118,7 @@ export function MotionStep({
           <Toggle checked={state.hapticsEnabled} onChange={(value) => dispatch({ type: "haptics", value })} label="Haptics on by default" />
           <div>
             <p className="text-sm font-medium text-ink-100">Haptics on by default</p>
-            <p className="mt-0.5 text-xs leading-relaxed text-ink-400">
-              A light tick when a selection changes, a switch flips or a pull reaches its threshold, as iOS does; never on an
-              ordinary tap. The phone&apos;s own setting still applies on top.
-            </p>
+            <p className="mt-0.5 text-xs leading-relaxed text-ink-400">{hapticsHint(target, state.uiComponents)}</p>
           </div>
         </div>
       </div>
