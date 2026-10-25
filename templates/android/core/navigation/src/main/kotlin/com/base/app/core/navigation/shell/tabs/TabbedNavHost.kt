@@ -53,7 +53,7 @@ internal fun TabbedNavHost(
                 MoreList(tabs = tabs, labels = labels, from = state.overflowFrom, onSelect = state::select)
             }
         } else {
-            CompositionLocalProvider(LocalTabReselections provides state.reselections[index]) {
+            CompositionLocalProvider(LocalTabReselections provides state.tabStacks.reselections(index)) {
                 StackHost(
                     stack = state.tabs[index],
                     registry = registry,

@@ -37,7 +37,7 @@ class ShellStateTest {
 
         state.select(0)
 
-        assertEquals(1, state.reselections[0].intValue)
+        assertEquals(1, state.tabStacks.reselections(0).intValue)
     }
 
     @Test

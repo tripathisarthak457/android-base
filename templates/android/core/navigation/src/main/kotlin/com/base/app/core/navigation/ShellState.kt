@@ -2,7 +2,6 @@ package com.base.app.core.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -43,9 +42,10 @@ data class ShellTab(
 )
 
 /**
- * The signed-in shell's navigation state: one back stack per tab, the tab in front, and the
- * presentation stack of sheets and covers shown above the tab bar. When the chrome has no room for
- * every tab, the rest are listed under More, whose list can be in front instead of a tab.
+ * The signed-in shell's navigation state: the tabs' stacks and the tab in front ([TabStacks]), the
+ * presentation stack of sheets and covers shown above the tab bar, and the chrome the window shows.
+ * When the chrome has no room for every tab, the rest are listed under More, whose list can be in
+ * front instead of a tab.
  *
  * Every change goes through here, so the same rules hold whoever asks: a root key selects its
  * tab instead of being pushed, a presented key goes to the presentation stack, and a command that
@@ -53,10 +53,9 @@ data class ShellTab(
  */
 @Stable
 class ShellState internal constructor(
-    internal val rootKeys: List<AppNavKey>,
-    internal val tabs: List<AppBackStack>,
+    /** Every tab's stack and the tab in front. */
+    val tabStacks: TabStacks,
     internal val presented: AppBackStack,
-    initialTab: Int,
     initialMore: Boolean = false,
     initialSidebar: Boolean? = null,
     /** Changes with every session: the shell keyed on it starts empty for the next person. */
@@ -64,9 +63,12 @@ class ShellState internal constructor(
     private val isPresented: (AppNavKey) -> Boolean,
     private val sameGraph: (AppNavKey, AppNavKey) -> Boolean,
 ) {
+    internal val rootKeys: List<AppNavKey> get() = tabStacks.roots
+
+    internal val tabs: List<AppBackStack> get() = tabStacks.stacks
+
     /** The selected tab, by its place in the list of tabs; the More list may be in front of it ([moreShown]). */
-    var selectedIndex by mutableIntStateOf(initialTab)
-        private set
+    val selectedIndex: Int get() = tabStacks.selectedIndex
 
     /** Whether the More list is in front, in place of the tab at [selectedIndex]. */
     var moreShown by mutableStateOf(initialMore)
@@ -102,9 +104,6 @@ class ShellState internal constructor(
     internal var revealSwitch = false
         private set
 
-    /** Counts reselections of each tab at its root, which scroll its primary list to the top. */
-    internal val reselections: List<MutableIntState> = List(tabs.size) { mutableIntStateOf(0) }
-
     internal val anchors: List<BarAnchor> = List(tabs.size) { BarAnchor() }
 
     /** The More list never hides the bar. */
@@ -127,7 +126,7 @@ class ShellState internal constructor(
         get() = if (moreShown) moreScreen else screens[selectedIndex][current.keys.lastContentKey()]
 
     /** The selected tab's stack. */
-    val current: AppBackStack get() = tabs[selectedIndex]
+    val current: AppBackStack get() = tabStacks.current
 
     /** Where Back and an unaddressed command go: the presentation stack while anything is presented. */
     internal val front: AppBackStack get() = if (presented.size > 0) presented else current
@@ -145,24 +144,19 @@ class ShellState internal constructor(
     val roots: List<AppNavKey> get() = rootKeys
 
     /**
-     * A tap on a tab. Another tab is shown at once, as `UITabBarController` does. The selected tab
-     * pops to its root in one animated pop, or, already there, asks its list to scroll to the top. A
-     * tap while that tab is moving is ignored.
+     * A tap on a tab. Another tab is shown at once, as `UITabBarController` does, and so is a tab the
+     * More list is in front of. The selected tab pops to its root in one animated pop, or, already
+     * there, asks its list to scroll to the top; a tap while that tab is moving is ignored
+     * ([TabStacks.select]).
      */
     fun select(index: Int) {
         if (index !in tabs.indices) return
-        if (index != selectedIndex || moreShown) {
+        if (moreShown) {
             revealSwitch = true
             moreShown = false
-            selectedIndex = index
-            return
-        }
-        val tab = tabs[index]
-        if (tab.gate.moving) return
-        if (tab.pop(tab.size) > 0) {
-            tab.gate.changed(StackChange.Pop)
-        } else {
-            reselections[index].intValue++
+            tabStacks.show(index)
+        } else if (tabStacks.select(index)) {
+            revealSwitch = true
         }
     }
 
@@ -221,7 +215,7 @@ class ShellState internal constructor(
         }
         revealSwitch = false
         moreShown = false
-        selectedIndex = rootKeys.indexOfFirst { sameGraph(it, key) }.takeIf { it >= 0 } ?: selectedIndex
+        tabStacks.show(rootKeys.indexOfFirst { sameGraph(it, key) })
         val host = if (isPresented(key)) presented else current
         if (host.entries.lastOrNull() == key) return
         host.entries += key
@@ -243,7 +237,7 @@ class ShellState internal constructor(
             moreShown = true
         } else {
             moreShown = false
-            selectedIndex = 0
+            tabStacks.show(0)
         }
         return true
     }
@@ -254,7 +248,7 @@ class ShellState internal constructor(
             stack.pop(stack.size)
             revealSwitch = false
             moreShown = false
-            selectedIndex = tab
+            tabStacks.show(tab)
             return Verdict.Apply
         }
         if (stack.gate.moving) return Verdict.Wait
@@ -293,27 +287,20 @@ fun rememberShellState(
         shellSaver(rootKeys, registry, serialization, generation)
     }
     return rememberSaveable(rootKeys, generation, saver = saver) {
-        newShellState(
-            rootKeys, registry, generation, selected = 0, more = false, sidebar = null,
-            stacks = rootKeys.map(::listOf), presented = emptyList(),
-        )
+        newShellState(TabStacks(rootKeys), registry, generation, more = false, sidebar = null, presented = emptyList())
     }
 }
 
 internal fun newShellState(
-    rootKeys: List<AppNavKey>,
+    tabStacks: TabStacks,
     registry: NavRegistry,
     generation: Int,
-    selected: Int,
     more: Boolean,
     sidebar: Boolean?,
-    stacks: List<List<AppNavKey>>,
     presented: List<AppNavKey>,
 ): ShellState = ShellState(
-    rootKeys = rootKeys,
-    tabs = stacks.map { AppBackStack(mutableStateListOf<AppNavKey>().apply { addAll(it) }) },
+    tabStacks = tabStacks,
     presented = AppBackStack(mutableStateListOf<AppNavKey>().apply { addAll(presented) }, floor = 0),
-    initialTab = selected,
     initialMore = more,
     initialSidebar = sidebar,
     generation = generation,
@@ -322,39 +309,40 @@ internal fun newShellState(
 )
 
 /**
- * Saved as `[flags, selected root, presented, stack…]`: the flags say whether the More list is in
- * front and what the person last did with the sidebar, then each part is one encoded stack.
+ * Saved as `[flags, presented, tabs…]`: the flags say whether the More list is in front and what the
+ * person last did with the sidebar, the presentation stack is one encoded stack, and the tabs are
+ * what [TabStacks.saver] writes.
  */
 private fun shellSaver(
     rootKeys: List<AppNavKey>,
     registry: NavRegistry,
     serialization: NavKeySerialization,
     generation: Int,
-): Saver<ShellState, ArrayList<String>> = Saver(
-    save = { state ->
-        val parts = listOf(listOf(state.rootKeys[state.selectedIndex]), state.presentedKeys) + state.stacks
-        val encoded = parts.map { serialization.encodeStack(it) ?: return@Saver null }
-        val flags = listOfNotNull(
-            MORE_SHOWN.takeIf { state.moreShown },
-            state.sidebarOpen?.let { if (it) SIDEBAR_OPEN else SIDEBAR_FOLDED },
-        )
-        (listOf(flags.joinToString(",")) + encoded).toCollection(ArrayList())
-    },
-    restore = { saved ->
-        val decoded = saved.drop(1).map { serialization.decodeStack(it) }
-        val savedStacks = decoded.drop(2).filterNotNull().filter { it.isNotEmpty() }
-        val stacks = rootKeys.map { root -> savedStacks.firstOrNull { it.first() == root } ?: listOf(root) }
-        val selected = decoded.firstOrNull()?.firstOrNull()?.let(rootKeys::indexOf)?.takeIf { it >= 0 } ?: 0
-        val flags = saved.firstOrNull().orEmpty().split(",")
-        val sidebar = when {
-            SIDEBAR_OPEN in flags -> true
-            SIDEBAR_FOLDED in flags -> false
-            else -> null
-        }
-        val presented = decoded.getOrNull(1).orEmpty()
-        newShellState(rootKeys, registry, generation, selected, MORE_SHOWN in flags, sidebar, stacks, presented)
-    },
-)
+): Saver<ShellState, ArrayList<String>> {
+    val tabsSaver = TabStacks.saver(rootKeys, serialization)
+    return Saver(
+        save = { state ->
+            val presented = serialization.encodeStack(state.presentedKeys) ?: return@Saver null
+            val tabs = with(tabsSaver) { save(state.tabStacks) } ?: return@Saver null
+            val flags = listOfNotNull(
+                MORE_SHOWN.takeIf { state.moreShown },
+                state.sidebarOpen?.let { if (it) SIDEBAR_OPEN else SIDEBAR_FOLDED },
+            )
+            (listOf(flags.joinToString(","), presented) + tabs).toCollection(ArrayList())
+        },
+        restore = { saved ->
+            val flags = saved.firstOrNull().orEmpty().split(",")
+            val sidebar = when {
+                SIDEBAR_OPEN in flags -> true
+                SIDEBAR_FOLDED in flags -> false
+                else -> null
+            }
+            val presented = saved.getOrNull(1)?.let(serialization::decodeStack).orEmpty()
+            val tabs = tabsSaver.restore(ArrayList(saved.drop(2))) ?: TabStacks(rootKeys)
+            newShellState(tabs, registry, generation, MORE_SHOWN in flags, sidebar, presented)
+        },
+    )
+}
 
 private const val MORE_SHOWN = "more"
 private const val SIDEBAR_OPEN = "sidebar"

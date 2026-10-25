@@ -29,10 +29,8 @@ internal fun shell(
     stacks: List<List<AppNavKey>> = listOf(listOf(FeedTab), listOf(ProfileTab)),
     presentedKeys: Set<AppNavKey> = setOf(Compose),
 ): ShellState = ShellState(
-    rootKeys = stacks.map { it.first() },
-    tabs = stacks.map { stack -> AppBackStack(mutableStateListOf<AppNavKey>().apply { addAll(stack) }) },
+    tabStacks = TabStacks(roots = stacks.map { it.first() }, stacks = stacks, selected = selected),
     presented = AppBackStack(mutableStateListOf(), floor = 0),
-    initialTab = selected,
     generation = 1,
     isPresented = { it in presentedKeys },
     sameGraph = { a, b -> setOf(a, b).all { it == FeedTab || it is Post } },
