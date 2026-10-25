@@ -1,11 +1,18 @@
 package com.base.app.core.designsystem.component.overlay
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.base.app.core.designsystem.R
+import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
+import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.component.sheet.action.AppActionSheet as SheetActionSheet
 import com.base.app.core.designsystem.component.sheet.action.SheetAction as ActionSheetAction
 
@@ -56,4 +63,22 @@ fun AppActionSheet(
         message = message,
         cancelLabel = cancelLabel ?: stringResource(R.string.designsystem_cancel),
     )
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppActionSheetPreview() {
+    Box(modifier = Modifier.background(AppTheme.colors.background).fillMaxWidth().height(AppTheme.sizes.rowHeight * 8)) {
+        AppActionSheet(
+            actions = listOf(
+                SheetAction(label = "Share", onClick = {}),
+                SheetAction(label = "Move to a folder with a long name", onClick = {}),
+                SheetAction(label = "Archive", onClick = {}, enabled = false),
+                SheetAction(label = "Delete", onClick = {}, icon = AppIcons.Trash, isDestructive = true),
+            ),
+            onDismissRequest = {},
+            title = "Photo",
+            message = "Choose what to do with the selected photo.",
+        )
+    }
 }

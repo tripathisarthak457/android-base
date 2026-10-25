@@ -4,8 +4,10 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,6 +31,7 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.minimumTouchTarget
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlin.math.roundToInt
 
@@ -133,3 +136,20 @@ fun AppTabRow(
 private val TabHeight = 44.dp
 private val IndicatorHeight = 3.dp
 private const val IndicatorWidthFraction = 0.6f
+
+@AppComponentPreviews
+@Composable
+private fun AppTabRowPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppTabRow(tabs = listOf("Overview", "Activity", "Files"), selected = 0, onSelect = {})
+        AppTabRow(tabs = listOf("Following", "For you"), selected = 1, onSelect = {})
+        AppTabRow(
+            tabs = listOf("Everything", "Unread conversations", "Mentions and replies", "Archived"),
+            selected = 2,
+            onSelect = {},
+        )
+    }
+}

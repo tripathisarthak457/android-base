@@ -2,6 +2,7 @@ package com.base.app.core.designsystem.component.navigation
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,6 +52,7 @@ import com.base.app.core.designsystem.foundation.draw.drawHairline
 import com.base.app.core.designsystem.foundation.layout.ChromeInset
 import com.base.app.core.designsystem.foundation.layout.LocalTopChrome
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.flow.collectLatest
 
@@ -344,3 +346,19 @@ private val LargeTitleArea = 52.dp
 
 /** How much scroll the large-title bar's surface takes to fade in once the title has gone. */
 private val SurfaceFadeDistance = 10.dp
+
+@AppComponentPreviews
+@Composable
+private fun AppTopBarPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppTopBar(title = "Orders")
+        AppTopBar(title = "Order #4021", subtitle = "Shipped", onBack = {}) {
+            AppIconButton(icon = AppIcons.Share, contentDescription = "Share", onClick = {})
+        }
+        AppTopBar(title = "A conversation with a very long name that cannot fit", onBack = {}, centerTitle = false)
+        AppLargeTitleTopBar(title = "Inbox", scrolled = { 0 })
+    }
+}

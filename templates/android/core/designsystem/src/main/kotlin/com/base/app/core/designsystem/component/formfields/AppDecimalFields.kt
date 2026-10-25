@@ -1,5 +1,9 @@
 package com.base.app.core.designsystem.component.formfields
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.OutputTransformation
@@ -19,6 +23,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import com.base.app.core.designsystem.component.input.AppTextField
 import com.base.app.core.designsystem.foundation.content.rememberCurrentLocale
+import com.base.app.core.designsystem.preview.AppComponentPreviews
+import com.base.app.core.designsystem.theme.AppTheme
 import java.text.DecimalFormatSymbols
 import java.util.Currency
 import java.util.Locale
@@ -196,3 +202,18 @@ private class LocaleDecimalOutput(locale: Locale, private val grouping: Boolean)
 }
 
 private const val MoneyIntegerDigits = 12
+
+@AppComponentPreviews
+@Composable
+private fun AppDecimalFieldsPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppDecimalField(state = rememberTextFieldState("1234.5"), label = "Weight", unit = "kg")
+        AppDecimalField(state = rememberTextFieldState(), label = "Distance", placeholder = "0.0", unit = "km", helper = "Up to two decimals")
+        AppDecimalField(state = rememberTextFieldState("12.345"), label = "Rate", error = "At most two decimals")
+        AppMoneyField(minorUnits = 120450, onMinorUnitsChange = {}, label = "Amount")
+        AppMoneyField(minorUnits = null, onMinorUnitsChange = {}, label = "Tip", enabled = false)
+    }
+}

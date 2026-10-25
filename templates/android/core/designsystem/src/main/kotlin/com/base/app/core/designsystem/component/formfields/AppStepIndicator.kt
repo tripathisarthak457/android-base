@@ -2,6 +2,7 @@ package com.base.app.core.designsystem.component.formfields
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,7 @@ import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -144,3 +146,16 @@ private fun StepNode(number: Int, done: Boolean, active: Boolean) {
 }
 
 private val NodeSize = 26.dp
+
+@AppComponentPreviews
+@Composable
+private fun AppStepIndicatorPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppStepIndicator(steps = listOf("Cart", "Address", "Payment"), currentStep = 0)
+        AppStepIndicator(steps = listOf("Cart", "Address", "Payment"), currentStep = 1)
+        AppStepIndicator(steps = listOf("Your details", "Delivery address", "Payment method", "Review"), currentStep = 3)
+    }
+}

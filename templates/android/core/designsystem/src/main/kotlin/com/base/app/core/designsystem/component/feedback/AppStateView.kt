@@ -1,5 +1,6 @@
 package com.base.app.core.designsystem.component.feedback
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -29,6 +30,7 @@ import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /** Why a screen is showing a state instead of its content. */
@@ -113,5 +115,22 @@ fun AppStateView(
                 )
             }
         }
+    }
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppStateViewPreview() {
+    Column(modifier = Modifier.background(AppTheme.colors.background)) {
+        AppStateView(
+            title = "No orders yet",
+            message = "Orders you place appear here, newest first.",
+            icon = AppIcons.Cart,
+            actionLabel = "Browse the shop",
+            onAction = {},
+            contentPadding = PaddingValues(AppTheme.spacing.lg),
+        )
+        AppStateView(kind = StateKind.Error, onAction = {}, contentPadding = PaddingValues(AppTheme.spacing.lg))
+        AppStateView(kind = StateKind.Offline, onAction = {}, contentPadding = PaddingValues(AppTheme.spacing.lg))
     }
 }

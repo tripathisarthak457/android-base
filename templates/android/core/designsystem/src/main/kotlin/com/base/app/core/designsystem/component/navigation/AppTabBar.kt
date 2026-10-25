@@ -56,6 +56,8 @@ import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppColors
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.BarIndicator
@@ -488,3 +490,33 @@ private val ToolbarInset = 6.dp
 private val ActionSize = 52.dp
 private val BarShadow = Shadow(radius = 16.dp, color = Color.Black, offset = DpOffset(0.dp, 4.dp), alpha = 0.10f)
 private val DarkOutline = Color.White.copy(alpha = 0.07f)
+
+@AppComponentPreviews
+@Composable
+private fun AppTabBarPreview() {
+    val items = listOf(
+        TabItem(label = "Home", icon = AppIcons.Home),
+        TabItem(label = "Search", icon = AppIcons.Search),
+        TabItem(label = "Inbox", icon = AppIcons.Mail, badgeCount = 3),
+        TabItem(label = "Settings", icon = AppIcons.Settings),
+    )
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppTabBar(items = items, selected = 0, onSelect = {}, onReselect = {})
+        AppTabBar(items = items, selected = 2, onSelect = {}, onReselect = {}, labels = TabLabels.Selected)
+        AppTabBar(
+            items = items.take(3),
+            selected = 1,
+            onSelect = {},
+            onReselect = {},
+            trailingAction = { Action(icon = AppIcons.Plus, contentDescription = "New", onClick = {}) },
+        )
+        AppFloatingToolbar {
+            Action(icon = AppIcons.Share, contentDescription = "Share", onClick = {})
+            Action(icon = AppIcons.Heart, contentDescription = "Like", onClick = {})
+            Action(icon = AppIcons.Trash, contentDescription = "Delete", onClick = {})
+        }
+    }
+}

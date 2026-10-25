@@ -3,6 +3,7 @@ package com.base.app.core.designsystem.component.overlay
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.rememberTransition
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,6 +39,8 @@ import com.base.app.core.designsystem.foundation.draw.HairlineEdge
 import com.base.app.core.designsystem.foundation.draw.hairline
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
+import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -156,3 +159,21 @@ private fun AlertAction(label: String, color: Color, bold: Boolean, onClick: () 
 private val AlertWidth = 300.dp
 private val ActionHeight = 44.dp
 private const val EnterScale = 0.3f
+
+@AppComponentPreviews
+@Composable
+private fun AppAlertPreview() {
+    Box(modifier = Modifier.background(AppTheme.colors.background).fillMaxWidth().height(AppTheme.sizes.rowHeight * 7)) {
+        AppAlert(
+            visible = true,
+            title = "Delete this conversation?",
+            message = "Everyone in it keeps their copy. This cannot be undone.",
+            confirmLabel = "Delete",
+            onConfirm = {},
+            onDismissRequest = {},
+            dismissLabel = "Cancel",
+            destructive = true,
+            icon = AppIcons.Trash,
+        )
+    }
+}

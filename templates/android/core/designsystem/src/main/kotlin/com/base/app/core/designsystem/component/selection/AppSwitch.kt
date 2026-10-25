@@ -2,10 +2,14 @@ package com.base.app.core.designsystem.component.selection
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.runtime.Composable
@@ -36,6 +40,7 @@ import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.collectHeld
 import com.base.app.core.designsystem.foundation.interaction.minimumTouchTarget
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.launch
 
@@ -205,3 +210,17 @@ private const val RevertFraction = 0.2f
 // How far ahead of the thumb a release looks for where it was thrown: iOS's projection for
 // controls that settle on a stop, 0.99 of the speed kept per millisecond.
 private const val ProjectionSeconds = 0.099f
+
+@AppComponentPreviews
+@Composable
+private fun AppSwitchPreview() {
+    Row(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppSwitch(checked = true, onCheckedChange = {})
+        AppSwitch(checked = false, onCheckedChange = {})
+        AppSwitch(checked = true, onCheckedChange = {}, enabled = false)
+        AppSwitch(checked = false, onCheckedChange = null, enabled = false)
+    }
+}

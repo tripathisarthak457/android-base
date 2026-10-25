@@ -1,6 +1,9 @@
 package com.base.app.core.designsystem.component.sheet.chrome
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -17,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
 
@@ -64,3 +68,11 @@ private val PillSize = DpSize(DesignTokens.Sheet.Grabber.width, DesignTokens.She
 private val ContrastFill = Color.White.copy(alpha = DesignTokens.Sheet.Grabber.contrastAlpha)
 private val ContrastEdge = Color.Black.copy(alpha = 0.2f)
 private val EdgeWidth = 1.dp
+
+@AppComponentPreviews
+@Composable
+private fun AppSheetGrabberPreview() {
+    Column(modifier = Modifier.background(AppTheme.colors.surfaceElevated).padding(AppTheme.spacing.lg)) {
+        AppSheetGrabber()
+    }
+}

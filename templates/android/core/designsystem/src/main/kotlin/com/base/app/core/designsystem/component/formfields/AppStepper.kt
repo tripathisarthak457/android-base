@@ -1,10 +1,13 @@
 package com.base.app.core.designsystem.component.formfields
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,6 +31,7 @@ import com.base.app.core.designsystem.component.text.AppFiguresText
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
@@ -135,3 +139,17 @@ private const val RepeatDelayMillis = 500L
 private const val RepeatStartMillis = 150L
 private const val RepeatFastestMillis = 40L
 private const val RepeatAcceleration = 0.85f
+
+@AppComponentPreviews
+@Composable
+private fun AppStepperPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppStepper(value = 1, onValueChange = {})
+        AppStepper(value = 0, onValueChange = {}, range = 0..10)
+        AppStepper(value = 99, onValueChange = {})
+        AppStepper(value = 3, onValueChange = {}, enabled = false)
+    }
+}

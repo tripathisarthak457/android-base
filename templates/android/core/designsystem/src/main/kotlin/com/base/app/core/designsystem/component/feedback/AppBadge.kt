@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.offset
@@ -22,6 +23,8 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.draw.ContentUnderBone
 import com.base.app.core.designsystem.foundation.draw.LocalRedacted
 import com.base.app.core.designsystem.foundation.draw.skeleton
+import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.StatusColors
 
@@ -119,6 +122,27 @@ fun AppStatusPill(
         ContentUnderBone(bone) {
             icon?.let { AppIcon(it, contentDescription = null, tint = status.content, size = 14.dp) }
             AppText(text = text, style = AppTheme.typography.caption1, color = status.content, maxLines = 1)
+        }
+    }
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppBadgePreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.lg)) {
+            AppBadge(count = 3)
+            AppBadge(count = 120)
+            AppBadgedBox(count = 8) { AppIcon(AppIcons.Bell, contentDescription = "Notifications") }
+            AppDotBadge(visible = true) { AppIcon(AppIcons.Message, contentDescription = "Messages") }
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
+            AppStatusPill(text = "Paid", status = AppTheme.colors.success, icon = AppIcons.Check)
+            AppStatusPill(text = "Overdue", status = AppTheme.colors.danger)
+            AppStatusPill(text = "Pending review", status = AppTheme.colors.warning)
         }
     }
 }

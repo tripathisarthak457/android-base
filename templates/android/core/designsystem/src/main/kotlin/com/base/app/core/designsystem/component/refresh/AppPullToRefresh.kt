@@ -3,9 +3,13 @@ package com.base.app.core.designsystem.component.refresh
 import android.os.SystemClock
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animate
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -54,11 +58,13 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.feedback.ActivitySpokes
 import com.base.app.core.designsystem.component.feedback.drawActivitySpokes
+import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.LocalHapticsEnabled
 import com.base.app.core.designsystem.foundation.interaction.constant
 import com.base.app.core.designsystem.foundation.layout.ChromeInset
 import com.base.app.core.designsystem.foundation.layout.LocalTopChrome
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.LocalAppSprings
 import com.base.app.core.designsystem.theme.LocalReduceMotion
@@ -490,3 +496,22 @@ private val Trigger = 100.dp
 private val Rest = 60.dp
 private val SpinnerRadius = 14.dp
 private val SpinnerTop = 16.dp
+
+@AppComponentPreviews
+@Composable
+private fun AppPullToRefreshPreview() {
+    Row(modifier = Modifier.background(AppTheme.colors.background).height(AppTheme.sizes.rowHeight * 4)) {
+        AppPullToRefresh(isRefreshing = true, onRefresh = {}, modifier = Modifier.weight(1f)) {
+            Column {
+                AppRow(title = "Refreshing")
+                AppRow(title = "Inbox")
+            }
+        }
+        AppPullToRefresh(isRefreshing = false, onRefresh = {}, modifier = Modifier.weight(1f)) {
+            Column {
+                AppRow(title = "Settled")
+                AppRow(title = "Inbox")
+            }
+        }
+    }
+}

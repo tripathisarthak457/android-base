@@ -10,6 +10,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -56,6 +57,7 @@ import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.foundation.layout.ChromeInset
 import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
@@ -303,3 +305,18 @@ private const val Resisted = 12f
 private val ToastGap = 12.dp
 private val HudSize = 140.dp
 private const val HudStartScale = 0.9f
+
+@AppComponentPreviews
+@Composable
+private fun AppToastPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppToast(message = ToastMessage(text = "Saved"))
+        AppToast(message = ToastMessage(text = "Payment received", title = "Order #4021", tone = AppTone.Success))
+        AppToast(message = ToastMessage(text = "Could not send the message", tone = AppTone.Error, actionLabel = "Retry", onAction = {}))
+        AppToast(message = ToastMessage(text = "Copied", hud = true))
+        AppToast(message = ToastMessage(text = "You are offline. Messages you send now go out as soon as you reconnect.", tone = AppTone.Warning))
+    }
+}

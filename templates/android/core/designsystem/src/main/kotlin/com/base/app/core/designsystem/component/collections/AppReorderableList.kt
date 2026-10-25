@@ -2,10 +2,13 @@ package com.base.app.core.designsystem.component.collections
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.animate
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListState
@@ -31,10 +34,12 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.base.app.core.designsystem.R
+import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.foundation.scroll.appScrollIndicator
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -194,3 +199,18 @@ private val AutoScrollEdge = 56.dp
 private val MaxScroll = 14.dp
 private val LiftElevation = 8.dp
 private const val LiftScale = 1.02f
+
+@AppComponentPreviews
+@Composable
+private fun AppReorderableListPreview() {
+    Column(modifier = Modifier.background(AppTheme.colors.background)) {
+        AppReorderableList(
+            items = listOf("Breakfast", "Groceries", "Pick up the parcel from the post office before it closes"),
+            key = { it },
+            onMove = { _, _ -> },
+            modifier = Modifier.height(AppTheme.sizes.rowHeight * 4),
+        ) { item, lifted ->
+            AppRow(title = item, subtitle = if (lifted) "Moving" else null)
+        }
+    }
+}

@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /** One point on an [AppTimeline]. */
@@ -104,3 +105,22 @@ private val NodeSize = 12.dp
 private val NodeActive = 16.dp
 private val NodeGap = 4.dp
 private val ConnectorWidth = 2.dp
+
+@AppComponentPreviews
+@Composable
+private fun AppTimelinePreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppTimeline(
+            steps = listOf(
+                TimelineStep(title = "Ordered", timestamp = "Mon 09:12"),
+                TimelineStep(title = "Shipped", description = "Handed to the courier", timestamp = "Tue 16:40"),
+                TimelineStep(title = "Out for delivery"),
+                TimelineStep(title = "Delivered to the safe place you chose at checkout, behind the side gate"),
+            ),
+            currentIndex = 1,
+        )
+    }
+}

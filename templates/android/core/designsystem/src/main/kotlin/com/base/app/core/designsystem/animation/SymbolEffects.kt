@@ -7,6 +7,10 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,6 +27,8 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.foundation.content.LocalContentColor
+import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.LocalAppSprings
 import com.base.app.core.designsystem.theme.LocalReduceMotion
@@ -107,3 +113,16 @@ private class SymbolBounceNode(private var trigger: Any?) :
 
 /** How small the outgoing glyph gets and the incoming one starts. */
 private const val ReplacedScale = 0.5f
+
+@AppComponentPreviews
+@Composable
+private fun AppSymbolReplacePreview() {
+    Row(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppSymbolReplace(icon = AppIcons.Heart, contentDescription = "Like")
+        AppSymbolReplace(icon = AppIcons.StarFilled, contentDescription = "Starred", tint = AppTheme.colors.warning.base)
+        AppSymbolReplace(icon = AppIcons.Check, contentDescription = "Done", size = AppTheme.sizes.iconLarge)
+    }
+}

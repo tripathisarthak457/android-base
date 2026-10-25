@@ -2,8 +2,13 @@ package com.base.app.core.designsystem.component.feedback
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.progressSemantics
 import androidx.compose.runtime.Composable
@@ -33,6 +38,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.foundation.layout.LocalTabVisible
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -140,3 +146,20 @@ fun AppLinearProgress(
 
 private const val AnnouncedSteps = 20f
 private const val StepMillis = 125L
+
+@AppComponentPreviews
+@Composable
+private fun AppProgressPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.lg)) {
+            AppActivityIndicator()
+            AppActivityIndicator(size = AppTheme.sizes.iconLarge, color = AppTheme.colors.accent)
+        }
+        AppLinearProgress(progress = { 0f })
+        AppLinearProgress(progress = { 0.4f })
+        AppLinearProgress(progress = { 1f }, color = AppTheme.colors.success.base)
+    }
+}

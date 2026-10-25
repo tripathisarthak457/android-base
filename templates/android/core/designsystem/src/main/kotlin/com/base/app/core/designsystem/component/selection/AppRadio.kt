@@ -2,6 +2,10 @@ package com.base.app.core.designsystem.component.selection
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.runtime.Composable
@@ -15,6 +19,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /** A radio button, with an optional [label] that is part of the same target. */
@@ -45,5 +50,20 @@ fun AppRadio(
             drawCircle(lerp(colors.outline, colors.accent, p.coerceIn(0f, 1f)), radius - 0.75.dp.toPx(), style = Stroke(1.5.dp.toPx()))
             if (p > 0f) drawCircle(colors.accent, radius * 0.5f * p, Offset(size.width / 2f, size.height / 2f))
         }
+    }
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppRadioPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppRadio(selected = true, onClick = {}, label = "Standard delivery")
+        AppRadio(selected = false, onClick = {}, label = "Express delivery")
+        AppRadio(selected = false, onClick = {}, label = "Collect in store", enabled = false)
+        AppRadio(selected = true, onClick = null)
+        AppRadio(selected = false, onClick = {}, label = "Leave it with a neighbour if nobody answers the door")
     }
 }

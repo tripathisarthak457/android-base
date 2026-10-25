@@ -1,8 +1,13 @@
 package com.base.app.core.designsystem.component.feedback
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
@@ -24,6 +29,7 @@ import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.foundation.draw.ContentUnderBone
 import com.base.app.core.designsystem.foundation.draw.LocalRedacted
 import com.base.app.core.designsystem.foundation.draw.skeleton
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppColors
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlin.math.absoluteValue
@@ -150,3 +156,20 @@ private fun avatarTint(name: String, colors: AppColors): Color {
 private const val OverlapStep = 0.7f
 private const val InitialsFraction = 0.4f
 private const val DarkTintFraction = 0.42f
+
+@AppComponentPreviews
+@Composable
+private fun AppAvatarPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
+            AppAvatar(name = "Ada Lovelace")
+            AppAvatar(name = "grace")
+            AppAvatar(name = "Maximiliana Kowalczyk-Brzęczyszczykiewicz", size = AppTheme.sizes.buttonLarge)
+        }
+        AppAvatarGroup(names = listOf("Ada Lovelace", "Grace Hopper", "Alan Turing"))
+        AppAvatarGroup(names = listOf("Ada", "Grace", "Alan", "Edsger", "Barbara", "Donald"), maxShown = 3)
+    }
+}

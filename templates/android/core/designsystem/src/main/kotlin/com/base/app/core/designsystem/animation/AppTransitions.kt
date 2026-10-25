@@ -16,9 +16,15 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,6 +41,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.semantics
+import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppSprings
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.delay
@@ -229,3 +237,20 @@ fun Modifier.busyOverlay(busy: Boolean): Modifier {
 }
 
 private const val BusyAlpha = 0.4f
+
+@AppComponentPreviews
+@Composable
+private fun AppTransitionsPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppAppear { AppText(text = "Appears once composed") }
+        AppStaggeredColumn(itemCount = 3) { index -> AppText(text = "Staggered row ${index + 1}") }
+        LazyColumn(modifier = Modifier.height(AppTheme.sizes.rowHeight * 2)) {
+            items(listOf("Placed in a list", "Moves when the list changes"), key = { it }) { item ->
+                AppText(text = item, modifier = Modifier.appAnimateItem())
+            }
+        }
+    }
+}

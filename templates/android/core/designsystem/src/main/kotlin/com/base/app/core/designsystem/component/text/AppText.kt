@@ -1,5 +1,9 @@
 package com.base.app.core.designsystem.component.text
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.runtime.Composable
@@ -18,6 +22,7 @@ import com.base.app.core.designsystem.foundation.content.LocalTextStyle
 import com.base.app.core.designsystem.foundation.draw.LocalRedacted
 import com.base.app.core.designsystem.foundation.draw.TextBones
 import com.base.app.core.designsystem.foundation.draw.textSkeleton
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -207,3 +212,24 @@ fun AppFiguresText(
 }
 
 internal const val TabularFigures = "tnum"
+
+@AppComponentPreviews
+@Composable
+private fun AppTextPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
+    ) {
+        AppText(text = "Large title", style = AppTheme.typography.largeTitle)
+        AppText(text = "Headline", style = AppTheme.typography.headline)
+        AppText(text = "Body text in the primary colour, the style everything inherits.")
+        AppText(text = "Secondary footnote", style = AppTheme.typography.footnote, color = AppTheme.colors.contentSecondary)
+        AppText(
+            text = "A label far too long for its line is cut short with an ellipsis rather than wrapping",
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
+        AppMonoText(text = "build 1.4.2 (4021)")
+        AppFiguresText(text = "1,204.50")
+    }
+}

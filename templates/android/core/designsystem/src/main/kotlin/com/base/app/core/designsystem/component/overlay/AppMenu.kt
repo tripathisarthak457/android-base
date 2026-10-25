@@ -46,6 +46,8 @@ import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.foundation.draw.drawHairline
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
+import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -258,3 +260,17 @@ internal val MenuMinWidth = 200.dp
 internal val MenuMaxWidth = 280.dp
 internal const val MenuStartScale = 0.85f
 private val GroupGapHeight = 8.dp
+
+@AppComponentPreviews
+@Composable
+private fun AppMenuPreview() {
+    Box(modifier = Modifier.background(AppTheme.colors.background).fillMaxWidth().height(AppTheme.sizes.rowHeight * 7)) {
+        AppMenu(expanded = true, onDismissRequest = {}) {
+            AppMenuItem(text = "Edit", onClick = {}, icon = AppIcons.Edit)
+            AppMenuItem(text = "Duplicate to another workspace", onClick = {}, icon = AppIcons.Copy)
+            AppMenuItem(text = "Export", onClick = {}, enabled = false)
+            AppMenuDivider()
+            AppMenuItem(text = "Delete", onClick = {}, icon = AppIcons.Trash, destructive = true)
+        }
+    }
+}

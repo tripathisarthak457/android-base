@@ -1,8 +1,12 @@
 package com.base.app.core.designsystem.component.collections
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -18,7 +22,10 @@ import androidx.compose.ui.unit.constrainWidth
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.base.app.core.designsystem.component.navigation.AppPageControl
+import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -87,3 +94,19 @@ fun AppCarousel(
 }
 
 private const val SideScale = 0.92f
+
+@AppComponentPreviews
+@Composable
+private fun AppCarouselPreview() {
+    Column(modifier = Modifier.background(AppTheme.colors.background).padding(vertical = AppTheme.spacing.lg)) {
+        AppCarousel(pageCount = 3) { page ->
+            AppSurface(
+                modifier = Modifier.fillMaxWidth().height(AppTheme.sizes.rowHeight * 3),
+                color = AppTheme.colors.accentSubtle,
+                shape = AppTheme.shapes.lg,
+            ) {
+                AppText(text = "Slide ${page + 1}", modifier = Modifier.padding(AppTheme.spacing.lg))
+            }
+        }
+    }
+}

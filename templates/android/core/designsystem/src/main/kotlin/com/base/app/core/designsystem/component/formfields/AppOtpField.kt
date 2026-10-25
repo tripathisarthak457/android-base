@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
@@ -24,6 +25,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.maxLength
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.input.then
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -49,6 +51,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.layout.LocalTabVisible
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -169,3 +172,17 @@ private fun Caret() {
 
 private val BoxHeight = 48.dp
 private const val CaretMillis = 550
+
+@AppComponentPreviews
+@Composable
+private fun AppOtpFieldPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppOtpField(state = rememberTextFieldState(), label = "Code", supporting = "Sent to +44 7700 900123", autoFocus = false)
+        AppOtpField(state = rememberTextFieldState("4821"), autoFocus = false)
+        AppOtpField(state = rememberTextFieldState("482199"), isError = true, supporting = "That code has expired", autoFocus = false)
+        AppOtpField(state = rememberTextFieldState("12"), length = 4, enabled = false, autoFocus = false)
+    }
+}

@@ -1,9 +1,12 @@
 package com.base.app.core.designsystem.component.selection
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.runtime.Composable
@@ -26,6 +29,7 @@ import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.minimumTouchTarget
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -104,3 +108,22 @@ internal fun LabelledControl(
 
 internal val BoxSize = 22.dp
 private val BoxCorner = 6.dp
+
+@AppComponentPreviews
+@Composable
+private fun AppCheckboxPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppCheckbox(checked = true, onCheckedChange = {}, label = "Email me receipts")
+        AppCheckbox(checked = false, onCheckedChange = {}, label = "Share anonymous usage data")
+        AppCheckbox(checked = true, onCheckedChange = {}, label = "Required by your organisation", enabled = false)
+        AppCheckbox(checked = false, onCheckedChange = null)
+        AppCheckbox(
+            checked = false,
+            onCheckedChange = {},
+            label = "I have read the terms of service and the privacy policy, and I agree to both of them",
+        )
+    }
+}

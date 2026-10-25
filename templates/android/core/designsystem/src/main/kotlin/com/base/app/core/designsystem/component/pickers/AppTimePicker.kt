@@ -1,6 +1,7 @@
 package com.base.app.core.designsystem.component.pickers
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.animation.rememberAppTransitions
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.content.rememberCurrentLocale
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import java.text.DateFormatSymbols
 import java.time.LocalTime
@@ -120,4 +122,17 @@ private fun Locale.uses24HourClock(): Boolean {
     // 13:00 renders as "1:00 PM" on a twelve-hour locale and "13:00" on a twenty-four-hour one;
     // any letter is the period marker, whatever language it is in.
     return sample.none { it.isLetter() }
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppTimePickerPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppTimePicker(time = LocalTime.of(9, 30), onTimeChange = {})
+        AppTimePicker(time = LocalTime.of(18, 45), onTimeChange = {}, minuteStep = 15)
+        AppTimePill(time = LocalTime.of(7, 5), onTimeChange = {})
+    }
 }

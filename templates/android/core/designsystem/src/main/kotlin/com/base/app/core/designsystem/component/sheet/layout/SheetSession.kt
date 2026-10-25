@@ -1,7 +1,11 @@
 package com.base.app.core.designsystem.component.sheet.layout
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.displayCutout
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.tappableElement
@@ -19,6 +23,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import com.base.app.core.designsystem.component.list.AppRow
+import com.base.app.core.designsystem.component.sheet.AppSheetDefaults
 import com.base.app.core.designsystem.component.sheet.AppSheetProperties
 import com.base.app.core.designsystem.component.sheet.AppSheetScope
 import com.base.app.core.designsystem.component.sheet.AppSheetState
@@ -32,9 +38,12 @@ import com.base.app.core.designsystem.component.sheet.SheetPlacement
 import com.base.app.core.designsystem.component.sheet.SheetSurface
 import com.base.app.core.designsystem.component.sheet.back.SheetBack
 import com.base.app.core.designsystem.component.sheet.back.SheetFocusEffect
+import com.base.app.core.designsystem.component.sheet.chrome.AppSheetHeader
 import com.base.app.core.designsystem.component.sheet.content.LocalSheetContentWidth
 import com.base.app.core.designsystem.component.sheet.content.LocalSheetSlots
+import com.base.app.core.designsystem.component.sheet.content.SheetColumn
 import com.base.app.core.designsystem.component.sheet.content.sheetOwnerVisibility
+import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
 import com.base.app.core.designsystem.component.sheet.stack.LocalSheetStack
 import com.base.app.core.designsystem.foundation.adaptive.AppLayout
 import com.base.app.core.designsystem.foundation.adaptive.LocalWindowMetrics
@@ -44,6 +53,7 @@ import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.foundation.layout.LocalBarFrame
 import com.base.app.core.designsystem.foundation.layout.LocalPaneBounds
 import com.base.app.core.designsystem.foundation.layout.LocalPresentationLevel
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.SheetMaterial
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
@@ -186,5 +196,30 @@ internal fun SheetSession(
         LocalSheetSurfaceProvider provides surface,
     ) {
         SheetLayout(controller, modifier, modal, placement, paneTitle, grabber, header, footer, content)
+    }
+}
+
+@AppComponentPreviews
+@Composable
+private fun SheetSessionPreview() {
+    Box(modifier = Modifier.background(AppTheme.colors.background).fillMaxWidth().height(AppTheme.sizes.rowHeight * 8)) {
+        SheetSession(
+            state = rememberAppSheetState(),
+            onDismissRequest = {},
+            modifier = Modifier,
+            modality = SheetModality.Modal,
+            dismissible = true,
+            properties = AppSheetProperties(),
+            style = AppSheetDefaults.style(),
+            paneTitle = null,
+            onDetentChange = null,
+            onHidden = null,
+            callerShows = null,
+            grabber = AppSheetDefaults.Grabber,
+            header = { AppSheetHeader(title = "Session") },
+            footer = null,
+            content = { SheetColumn { AppRow(title = "One presentation of a sheet, from show to hide") } },
+            destination = true,
+        )
     }
 }

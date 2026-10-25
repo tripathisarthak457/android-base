@@ -3,10 +3,13 @@ package com.base.app.core.designsystem.component.pickers
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.SnapLayoutInfoProvider
 import androidx.compose.foundation.gestures.snapping.snapFlingBehavior
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -34,6 +37,7 @@ import androidx.compose.ui.util.lerp
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.flow.drop
 import kotlin.math.PI
@@ -197,3 +201,21 @@ private const val HalfTurn = (PI / 2).toFloat()
 
 /** The unit `graphicsLayer`'s camera distance is given in: 72 pixels, as Skia's camera counts them. */
 private const val CameraUnitPx = 72f
+
+@AppComponentPreviews
+@Composable
+private fun AppWheelPickerPreview() {
+    Row(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppWheelPicker(items = (1..12).toList(), selectedIndex = 3, onSelectedChange = {}, modifier = Modifier.weight(1f)) { "$it" }
+        AppWheelPicker(
+            items = listOf("Small", "Medium", "Large", "Extra large for the whole family"),
+            selectedIndex = 1,
+            onSelectedChange = {},
+            modifier = Modifier.weight(2f),
+            visibleCount = 3,
+        ) { it }
+    }
+}

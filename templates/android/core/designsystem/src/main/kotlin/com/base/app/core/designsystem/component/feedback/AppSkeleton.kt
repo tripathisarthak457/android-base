@@ -1,5 +1,6 @@
 package com.base.app.core.designsystem.component.feedback
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.foundation.draw.TextBones
 import com.base.app.core.designsystem.foundation.draw.lineSkeleton
 import com.base.app.core.designsystem.foundation.draw.skeleton
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -129,3 +131,20 @@ object AppSkeletonDefaults {
 
 /** Capitals and descenders, so the measured line is as tall as any real one in the style. */
 private const val LineSample = "Hg"
+
+@AppComponentPreviews
+@Composable
+private fun AppSkeletonPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppSkeleton(modifier = Modifier.fillMaxWidth().height(AppTheme.sizes.buttonLarge))
+        AppSkeletonLine(widthFraction = 0.6f, style = AppTheme.typography.title3)
+        AppSkeletonLine(widthFraction = 0.9f)
+        AppSkeletonLine(height = AppTheme.sizes.iconSmall, widthFraction = 0.4f)
+        AppSkeletonCircle()
+        AppSkeletonListItem()
+        AppSkeletonListItem(showLeading = false)
+    }
+}

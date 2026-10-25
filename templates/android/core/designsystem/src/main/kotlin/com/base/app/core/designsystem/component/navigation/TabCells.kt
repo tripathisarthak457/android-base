@@ -5,6 +5,10 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.BasicText
@@ -16,6 +20,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -44,6 +49,8 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import com.base.app.core.designsystem.component.feedback.AppBadgedBox
+import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -442,3 +449,25 @@ private val LabelSizeStep = 0.25.sp
 
 private val LeadSpring = spring(dampingRatio = 0.85f, stiffness = 815.6f, visibilityThreshold = 0.001f)
 private val TrailSpring = spring(dampingRatio = 1f, stiffness = 385.5f, visibilityThreshold = 0.001f)
+
+@AppComponentPreviews
+@Composable
+private fun TabCellsPreview() {
+    val items = listOf(
+        TabItem(label = "Home", icon = AppIcons.Home),
+        TabItem(label = "Search", icon = AppIcons.Search),
+        TabItem(label = "Inbox", icon = AppIcons.Mail, badgeCount = 3),
+        TabItem(label = "Settings", icon = AppIcons.Settings),
+    )
+    val look = barLook(AppTheme.style.bar)
+    val bounce = remember { TabBounce(items.size) }
+    val measure = remember { TabMeasure(vertical = false, state = null, selected = { 1 }, slots = mutableStateOf(PillSlots.Empty)) }
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        TabCells(items, 1, TabLayer.Base, TabLabels.Always, look, bounce, measure, onTap = {})
+        TabCells(items, 1, TabLayer.Selected, TabLabels.Always, look, bounce, measure, onTap = null)
+        TabCells(items, 1, TabLayer.Base, TabLabels.Never, look, bounce, measure, onTap = {})
+    }
+}

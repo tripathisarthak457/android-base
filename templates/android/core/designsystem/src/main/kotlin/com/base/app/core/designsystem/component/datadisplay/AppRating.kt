@@ -1,8 +1,11 @@
 package com.base.app.core.designsystem.component.datadisplay
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -18,6 +21,7 @@ import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /** A star rating, with real half stars. */
@@ -76,3 +80,17 @@ fun AppRating(
 /** Above this much of a star is filled, it reads as whole; above half, as a half. */
 private const val FullStar = 0.75f
 private const val HalfStar = 0.25f
+
+@AppComponentPreviews
+@Composable
+private fun AppRatingPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppRating(rating = 0f)
+        AppRating(rating = 3.5f)
+        AppRating(rating = 4f, onRatingChange = {})
+        AppRating(rating = 7f, max = 10, starSize = AppTheme.sizes.iconSmall)
+    }
+}

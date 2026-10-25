@@ -6,8 +6,10 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -44,6 +46,7 @@ import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.collectHeld
 import com.base.app.core.designsystem.foundation.interaction.minimumTouchTarget
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlin.math.roundToInt
 import kotlinx.coroutines.launch
@@ -195,3 +198,16 @@ private const val PressedThumbScale = 0.95f
 
 // How far ahead a release looks for where the thumb was thrown (iOS's 0.99 projection).
 private const val ProjectionSeconds = 0.099f
+
+@AppComponentPreviews
+@Composable
+private fun AppSegmentedControlPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppSegmentedControl(options = listOf("Day", "Week", "Month"), selected = 1, onSelect = {})
+        AppSegmentedControl(options = listOf("List", "Map"), selected = 0, onSelect = {}, enabled = false)
+        AppSegmentedControl(options = listOf("Everything", "Unread messages", "Mentions"), selected = 2, onSelect = {})
+    }
+}

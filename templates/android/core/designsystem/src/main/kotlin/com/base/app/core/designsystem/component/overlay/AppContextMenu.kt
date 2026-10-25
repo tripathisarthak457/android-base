@@ -1,10 +1,12 @@
 package com.base.app.core.designsystem.component.overlay
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
@@ -44,11 +46,14 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.base.app.core.designsystem.R
+import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.ContainerActions
 import com.base.app.core.designsystem.foundation.interaction.LocalContainerActions
 import com.base.app.core.designsystem.foundation.interaction.containerActionsSemantics
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -350,3 +355,21 @@ private const val ScrimFraction = 0.5f
 private val PreviewShadow = 16.dp
 private val Margin = 16.dp
 private val Gap = 8.dp
+
+@AppComponentPreviews
+@Composable
+private fun AppContextMenuPreview() {
+    Column(modifier = Modifier.background(AppTheme.colors.background)) {
+        AppContextMenu(
+            menu = {
+                AppMenuItem(text = "Copy", onClick = {}, icon = AppIcons.Copy)
+                AppMenuItem(text = "Delete", onClick = {}, icon = AppIcons.Trash, destructive = true)
+            },
+        ) {
+            AppRow(title = "Press and hold for actions", subtitle = "A context menu at rest")
+        }
+        AppContextMenu(menu = {}, enabled = false) {
+            AppRow(title = "No actions here")
+        }
+    }
+}

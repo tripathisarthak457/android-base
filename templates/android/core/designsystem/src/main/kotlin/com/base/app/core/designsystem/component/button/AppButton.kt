@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.heightIn
@@ -40,6 +41,8 @@ import com.base.app.core.designsystem.foundation.draw.skeleton
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.inlinePressable
 import com.base.app.core.designsystem.foundation.interaction.pressable
+import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -371,3 +374,27 @@ object AppButtonDefaults {
 
 /** Uppercase labels need air between the letters, or they read as a single block. */
 private val UppercaseTracking = 0.08.em
+
+@AppComponentPreviews
+@Composable
+private fun AppButtonPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppButton(text = "Continue", onClick = {})
+        AppButton(text = "Save as draft", onClick = {}, variant = ButtonVariant.Tinted, leadingIcon = AppIcons.Edit)
+        AppButton(text = "Skip", onClick = {}, variant = ButtonVariant.Plain, size = ButtonSize.Small)
+        AppButton(text = "Delete account", onClick = {}, variant = ButtonVariant.Destructive, size = ButtonSize.Large)
+        AppButton(text = "Continue", onClick = {}, enabled = false)
+        AppButton(text = "Paying", onClick = {}, loading = true)
+        AppButton(text = "Send the invitation to every member of the team at once", onClick = {}, trailingIcon = AppIcons.Send)
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
+            AppIconButton(icon = AppIcons.Share, contentDescription = "Share", onClick = {})
+            AppIconButton(icon = AppIcons.Plus, contentDescription = "Add", onClick = {}, variant = ButtonVariant.Filled)
+            AppIconButton(icon = AppIcons.Trash, contentDescription = "Delete", onClick = {}, enabled = false)
+        }
+        AppLinkButton(text = "Forgot password?", onClick = {})
+        AppLinkButton(text = "Terms of service", onClick = {}, enabled = false)
+    }
+}

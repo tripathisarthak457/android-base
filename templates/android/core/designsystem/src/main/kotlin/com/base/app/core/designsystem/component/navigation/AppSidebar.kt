@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
@@ -51,6 +52,8 @@ import com.base.app.core.designsystem.component.feedback.AppBadgedBox
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
+import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.BarTreatment
 import kotlin.math.ceil
@@ -240,3 +243,21 @@ private val HighlightCorner = 10.dp
 
 /** iOS's segmented-thumb spring, as the bar's other selection motion: response 0.28 s, no bounce. */
 private val HighlightSpring = spring(dampingRatio = 1f, stiffness = 503.5f, visibilityThreshold = 0.001f)
+
+@AppComponentPreviews
+@Composable
+private fun AppSidebarPreview() {
+    val items = listOf(
+        TabItem(label = "Home", icon = AppIcons.Home),
+        TabItem(label = "Search", icon = AppIcons.Search),
+        TabItem(label = "Inbox", icon = AppIcons.Mail, badgeCount = 3),
+        TabItem(label = "Settings", icon = AppIcons.Settings),
+    )
+    AppSidebar(
+        items = items,
+        selected = 1,
+        onSelect = {},
+        onReselect = {},
+        modifier = Modifier.height(AppTheme.sizes.rowHeight * 7),
+    )
+}

@@ -10,6 +10,7 @@ import androidx.compose.foundation.gestures.calculateZoom
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -47,7 +48,9 @@ import com.base.app.core.designsystem.component.button.AppIconButton
 import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.overlay.OverlayBackHandler
 import com.base.app.core.designsystem.foundation.adaptive.WindowPosture
+import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -217,3 +220,17 @@ private const val CloseBackingAlpha = 0.5f
 
 /** How far ahead a release is projected: the distance a flick at this speed would still travel. */
 private const val ProjectionSeconds = 0.1f
+
+@AppComponentPreviews
+@Composable
+private fun AppImageViewerPreview() {
+    Box(modifier = Modifier.fillMaxWidth().height(AppTheme.sizes.rowHeight * 8)) {
+        AppImageViewer(onDismiss = {}) {
+            AppSurface(
+                modifier = Modifier.fillMaxWidth().aspectRatio(4f / 3f),
+                color = AppTheme.colors.accent,
+                shape = AppTheme.shapes.none,
+            ) {}
+        }
+    }
+}

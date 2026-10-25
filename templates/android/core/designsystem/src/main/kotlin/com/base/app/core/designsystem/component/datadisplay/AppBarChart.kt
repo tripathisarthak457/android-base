@@ -2,11 +2,13 @@ package com.base.app.core.designsystem.component.datadisplay
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -19,6 +21,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /** A horizontal bar chart, one row per value. */
@@ -86,5 +89,20 @@ fun AppBarChart(
                 }
             }
         }
+    }
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppBarChartPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppBarChart(entries = listOf("Mon" to 4f, "Tue" to 9f, "Wed" to 0f, "Thu" to 12f, "Fri" to 7f))
+        AppBarChart(
+            entries = listOf("Organic search" to 1_840f, "Newsletters and referral partners" to 620f),
+            barColor = AppTheme.colors.secondary,
+        )
     }
 }

@@ -41,6 +41,7 @@ import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
@@ -267,3 +268,23 @@ private const val MaxRows = 6
 
 /** How far the calendar pages either way from the month it opened on: a century. */
 private const val MonthsEachWay = 1200
+
+@AppComponentPreviews
+@Composable
+private fun AppDatePickerPreview() {
+    // A fixed day, so the screenshots do not change with the calendar.
+    val today = LocalDate.of(2026, 10, 25)
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppDatePicker(
+            selectedDate = today.plusDays(3),
+            onDateSelected = {},
+            today = today,
+            minDate = today,
+            isDateEnabled = { it.dayOfWeek != DayOfWeek.SUNDAY },
+        )
+        AppDatePill(date = today, onDateChange = {})
+    }
+}

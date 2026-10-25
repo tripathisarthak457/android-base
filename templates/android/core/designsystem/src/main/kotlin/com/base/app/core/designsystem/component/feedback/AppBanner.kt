@@ -2,6 +2,7 @@ package com.base.app.core.designsystem.component.feedback
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.button.AppLinkButton
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -43,5 +46,20 @@ fun AppBanner(
         if (actionLabel != null && onAction != null) {
             AppLinkButton(text = actionLabel, onClick = onAction, style = AppTheme.typography.footnote)
         }
+    }
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppBannerPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppBanner(text = "You are offline. Changes will sync when you reconnect.", icon = AppIcons.AlertTriangle)
+        AppBanner(text = "Payment received.", tone = AppTone.Success, icon = AppIcons.CheckCircle)
+        AppBanner(text = "The card was declined.", tone = AppTone.Error, actionLabel = "Try again", onAction = {})
+        AppBanner(text = "A new version is ready to install.", tone = AppTone.Info, actionLabel = "Restart", onAction = {})
+        AppBanner(text = "Maintenance tonight from 01:00 to 03:00.", tone = AppTone.Neutral)
     }
 }

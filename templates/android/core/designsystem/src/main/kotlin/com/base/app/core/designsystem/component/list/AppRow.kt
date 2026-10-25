@@ -1,5 +1,6 @@
 package com.base.app.core.designsystem.component.list
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -259,3 +261,24 @@ private fun RowLayout(
 private val RowVerticalPadding = 11.dp
 private val ChevronSize = 16.dp
 private val CheckSize = 20.dp
+
+@AppComponentPreviews
+@Composable
+private fun AppRowPreview() {
+    Column(modifier = Modifier.background(AppTheme.colors.background)) {
+        AppRow(title = "Account", onClick = {}, leading = { AppIcon(AppIcons.User, contentDescription = null) })
+        AppRow(title = "Language", value = "English", onClick = {})
+        AppRow(title = "Storage", subtitle = "2.4 GB of 5 GB used")
+        AppRow(title = "Delete account", onClick = {}, destructive = true)
+        AppRow(title = "Export data", onClick = {}, enabled = false)
+        AppRow(
+            title = "Notifications for comments, mentions and replies on every post you follow",
+            subtitle = "Sent to this phone and to your email",
+            onClick = {},
+        )
+        AppToggleRow(title = "Dark mode", checked = true, onCheckedChange = {})
+        AppToggleRow(title = "Haptics", checked = false, onCheckedChange = {}, subtitle = "Taps and toggles", enabled = false)
+        AppChoiceRow(title = "Daily", selected = true, onSelect = {})
+        AppChoiceRow(title = "Weekly", selected = false, onSelect = {})
+    }
+}

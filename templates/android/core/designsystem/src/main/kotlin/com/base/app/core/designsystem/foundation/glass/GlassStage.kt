@@ -1,18 +1,29 @@
 package com.base.app.core.designsystem.foundation.glass
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.testTag
+import com.base.app.core.designsystem.component.list.AppRow
+import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.content.AppSurface
+import com.base.app.core.designsystem.preview.AppComponentPreviews
+import com.base.app.core.designsystem.theme.AppTheme
 
 /**
  * The stage liquid glass is drawn on: [content] is recorded once per frame into the scene that
@@ -58,3 +69,27 @@ fun GlassStage(
 internal val LocalGlassScene = staticCompositionLocalOf<SceneBackdrop?> { null }
 
 private const val StageTag = "glass_stage"
+
+@AppComponentPreviews
+@Composable
+private fun GlassStagePreview() {
+    GlassStage(
+        background = AppTheme.colors.background,
+        modifier = Modifier.fillMaxWidth().height(AppTheme.sizes.rowHeight * 5),
+        chrome = {
+            AppSurface(
+                modifier = Modifier.align(Alignment.BottomCenter).padding(AppTheme.spacing.lg),
+                shape = AppTheme.shapes.pill,
+                color = AppTheme.colors.surfaceElevated,
+            ) {
+                AppText(text = "Floating chrome", modifier = Modifier.padding(AppTheme.spacing.md))
+            }
+        },
+    ) {
+        Column {
+            AppRow(title = "Content runs under the chrome")
+            AppRow(title = "Second row")
+            AppRow(title = "Third row")
+        }
+    }
+}

@@ -2,13 +2,17 @@ package com.base.app.core.designsystem.component.selection
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.awaitHorizontalTouchSlopOrCancellation
 import androidx.compose.foundation.gestures.horizontalDrag
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.progressSemantics
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
@@ -37,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlin.math.roundToInt
 
@@ -166,3 +171,16 @@ private val ThumbRing = Color.Black.copy(alpha = 0.04f)
 
 private val ThumbSize = 28.dp
 private val TrackHeight = 4.dp
+
+@AppComponentPreviews
+@Composable
+private fun AppSliderPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppSlider(value = 0.3f, onValueChange = {})
+        AppSlider(value = 40f, onValueChange = {}, valueRange = 0f..100f, steps = 9)
+        AppSlider(value = 0.7f, onValueChange = {}, enabled = false)
+    }
+}

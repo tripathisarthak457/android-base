@@ -1,13 +1,17 @@
 package com.base.app.core.designsystem.component.formfields
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +36,7 @@ import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -150,3 +155,19 @@ val DefaultDialCodes: List<String> = listOf("+1", "+44", "+61", "+65", "+91", "+
 
 private val DialCodeWidth = 108.dp
 private const val MaxNumberLength = 15
+
+@AppComponentPreviews
+@Composable
+private fun AppSelectFieldPreview() {
+    Column(
+        modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
+        AppSelectField(value = null, options = listOf("Small", "Medium", "Large"), onSelect = {}, label = "Size")
+        AppSelectField(value = "Medium", options = listOf("Small", "Medium", "Large"), onSelect = {}, label = "Size", helper = "Fits true to size")
+        AppSelectField(value = null, options = listOf("UK", "France"), onSelect = {}, label = "Country", error = "Choose where to ship")
+        AppSelectField(value = "Large", options = listOf("Large"), onSelect = {}, label = "Size", enabled = false)
+        AppPhoneField(dialCode = "+44", onDialCodeChange = {}, number = rememberTextFieldState("7700 900123"))
+        AppPhoneField(dialCode = "+1", onDialCodeChange = {}, number = rememberTextFieldState("555"), error = "Enter the full number")
+    }
+}

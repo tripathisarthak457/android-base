@@ -1,9 +1,14 @@
 package com.base.app.core.designsystem.component.overlay
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.sheet.AppSheet
 import com.base.app.core.designsystem.component.sheet.AppSheetDefaults
 import com.base.app.core.designsystem.component.sheet.AppSheetProperties
@@ -11,6 +16,8 @@ import com.base.app.core.designsystem.component.sheet.SheetDetent
 import com.base.app.core.designsystem.component.sheet.chrome.AppSheetHeader
 import com.base.app.core.designsystem.component.sheet.content.SheetColumn
 import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
+import com.base.app.core.designsystem.preview.AppComponentPreviews
+import com.base.app.core.designsystem.theme.AppTheme
 
 /**
  * The earlier bottom sheet, shown for as long as it is composed. It is now an [AppSheet] that fits
@@ -48,5 +55,16 @@ fun AppBottomSheet(
         header = title?.let { text -> { AppSheetHeader(title = text) } },
     ) {
         SheetColumn(content = content)
+    }
+}
+
+@AppComponentPreviews
+@Composable
+private fun AppBottomSheetPreview() {
+    Box(modifier = Modifier.background(AppTheme.colors.background).fillMaxWidth().height(AppTheme.sizes.rowHeight * 8)) {
+        AppBottomSheet(onDismissRequest = {}, title = "Sort by") {
+            AppRow(title = "Newest first", onClick = {})
+            AppRow(title = "Price, lowest first", onClick = {})
+        }
     }
 }
