@@ -37,6 +37,7 @@ plugins {
     // <opt:formatting>
     alias(libs.plugins.spotless)
     // </opt:formatting>
+    alias(libs.plugins.dependency.guard) apply false
 }
 
 // <opt:formatting>

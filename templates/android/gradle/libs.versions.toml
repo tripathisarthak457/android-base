@@ -71,6 +71,8 @@ kover = "0.9.11"
 dependencyAnalysis = "3.19.2"
 spotless = "8.10.4"
 ktlint = "1.8.0"
+# The prod release's dependency list, compared on every build.
+dependencyGuard = "0.5.0"
 profileinstaller = "1.4.1"
 uiautomator = "2.4.0"
 # <opt:liquidglass>
@@ -197,6 +199,7 @@ roborazzi-gradlePlugin = { group = "io.github.takahirom.roborazzi", name = "robo
 google-services-gradlePlugin = { group = "com.google.gms", name = "google-services", version.ref = "googleServices" }
 firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "crashlyticsPlugin" }
 room3-gradlePlugin = { group = "androidx.room3", name = "room3-gradle-plugin", version.ref = "room3" }
+dependency-guard-gradlePlugin = { group = "com.dropbox.dependency-guard", name = "dependency-guard", version.ref = "dependencyGuard" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -222,3 +225,4 @@ dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.r
 # <opt:formatting>
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 # </opt:formatting>
+dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuard" }

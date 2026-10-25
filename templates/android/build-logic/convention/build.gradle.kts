@@ -34,6 +34,7 @@ dependencies {
     compileOnly(libs.room3.gradlePlugin)
     // </opt:database>
     compileOnly(libs.roborazzi.gradlePlugin)
+    compileOnly(libs.dependency.guard.gradlePlugin)
 
     testImplementation(libs.junit)
 }

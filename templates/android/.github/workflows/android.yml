@@ -1,6 +1,7 @@
 # Builds, tests and lints every push and pull request: `check` runs the unit tests, Android Lint,
-# the code rules, the module graph and the Compose stability gate, then both shippable builds are
-# assembled so a release-only failure (R8, resource shrinking) shows up before a release.
+# the code rules, the module graph, the Compose stability gate, the Compose Rules for ktlint and the
+# release's dependency list, then both shippable builds are assembled so a release-only failure
+# (R8, resource shrinking) shows up before a release.
 name: Android
 
 on:
@@ -29,6 +30,14 @@ jobs:
           java-version: 17
 
       - uses: gradle/actions/setup-gradle@v4
+
+      # The first build writes the prod release's dependency list, which guards nothing until it is
+      # committed; from then on `check` fails on a library that arrives, leaves or changes version.
+      - name: Dependency list
+        run: |
+          if ! git ls-files --error-unmatch app/dependencies/prodReleaseRuntimeClasspath.txt > /dev/null 2>&1; then
+            echo "::warning::No dependency list yet. This build writes app/dependencies/prodReleaseRuntimeClasspath.txt; commit it."
+          fi
 
       - name: Check and assemble
         run: ./gradlew check assembleDevDebug assembleProdRelease --continue

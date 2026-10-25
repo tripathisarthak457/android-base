@@ -121,5 +121,36 @@ class GuardConfigurationTest(unittest.TestCase):
         self.assertGreater(len(active_advice(ui, PKG)), 40)
 
 
+class EveryProjectToolsTest(unittest.TestCase):
+    """The checks every project carries, whatever its features: the Compose Rules and the release's dependency list."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.temp = tempfile.TemporaryDirectory()
+        cls.projects = {
+            (formatting, ui): generate(
+                Path(cls.temp.name), f"{'formatting' if formatting else 'plain'}-{'ui' if ui else 'noui'}",
+                features=["formatting"] if formatting else [], **({} if ui else {"ui_components": False}),
+            )
+            for formatting in (True, False)
+            for ui in (True, False)
+        }
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.temp.cleanup()
+
+    def test_the_release_build_guards_its_dependencies(self):
+        for (formatting, ui), project in self.projects.items():
+            with self.subTest(formatting=formatting, ui=ui):
+                convention = project / "build-logic/convention/src/main/kotlin"
+                flavors = (convention / "AndroidApplicationFlavorsConventionPlugin.kt").read_text(encoding="utf-8")
+                guard = (convention / PKG / "buildlogic/guard/DependencyGuard.kt").read_text(encoding="utf-8")
+                self.assertIn("guardReleaseDependencies()", flavors)
+                self.assertIn('configuration(GUARDED_CLASSPATH)', guard)
+                self.assertIn('const val GUARDED_CLASSPATH = "prodReleaseRuntimeClasspath"', guard)
+                self.assertIn('dependsOn("dependencyGuard")', guard)
+
+
 if __name__ == "__main__":
     unittest.main()
