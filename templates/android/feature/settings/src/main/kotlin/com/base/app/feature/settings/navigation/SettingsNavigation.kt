@@ -3,14 +3,14 @@ package com.base.app.feature.settings.navigation
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.navGraph
-// <opt:licenses>
-import com.base.app.feature.settings.LicensesRoute
-// </opt:licenses>
 import com.base.app.feature.settings.SettingsRoute
 // <opt:licenses>
 import com.base.app.feature.settings.api.LicensesKey
 // </opt:licenses>
 import com.base.app.feature.settings.api.SettingsKey
+// <opt:licenses>
+import com.base.app.feature.settings.licenses.LicensesRoute
+// </opt:licenses>
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

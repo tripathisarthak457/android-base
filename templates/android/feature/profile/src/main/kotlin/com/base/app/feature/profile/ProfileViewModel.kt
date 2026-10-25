@@ -2,46 +2,23 @@ package com.base.app.feature.profile
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import com.base.app.core.common.result.AppError
-// <opt:media>
-import com.base.app.core.common.result.errorOrNull
-// </opt:media>
 import com.base.app.core.mvi.MessageKind
 import com.base.app.core.mvi.MviViewModel
-import com.base.app.core.mvi.UiEffect
-import com.base.app.core.mvi.UiEvent
-import com.base.app.core.mvi.UiState
 import com.base.app.core.mvi.UiText
 import com.base.app.core.ui.toUiText
-import com.base.app.data.profile.api.model.Profile
 import com.base.app.data.profile.api.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
-
-/** The fields' text is not here: it lives in the ViewModel's `TextFieldState`s. */
-@Immutable
-internal data class ProfileState(
-    val saved: Profile = Profile(),
-    val nameError: Boolean = false,
-    val isDirty: Boolean = false,
-    val loaded: Boolean = false,
-) : UiState
-
-internal sealed interface ProfileEvent : UiEvent {
-    data object Save : ProfileEvent
-    // <opt:media>
-    data class PhotoPicked(val uri: String?) : ProfileEvent
-    // </opt:media>
-}
-
-internal sealed interface ProfileEffect : UiEffect
+// <opt:media>
+import com.base.app.core.common.result.errorOrNull
+// </opt:media>
 
 /**
  * The fields are edited here and only written on Save, so typing never races the store and a

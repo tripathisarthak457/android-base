@@ -3,12 +3,12 @@ package com.base.app.feature.auth.navigation
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.navGraph
-import com.base.app.feature.auth.PasswordResetRoute
-import com.base.app.feature.auth.SignInRoute
-import com.base.app.feature.auth.SignUpRoute
 import com.base.app.feature.auth.api.PasswordResetKey
 import com.base.app.feature.auth.api.SignInKey
 import com.base.app.feature.auth.api.SignUpKey
+import com.base.app.feature.auth.passwordreset.PasswordResetRoute
+import com.base.app.feature.auth.signin.SignInRoute
+import com.base.app.feature.auth.signup.SignUpRoute
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

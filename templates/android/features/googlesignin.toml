@@ -10,5 +10,6 @@ requires = ["auth"]
 implied_only = false
 owns = [
   "feature/auth/src/main/kotlin/{pkg_path}/feature/auth/signin/GoogleSignIn.kt",
+  "feature/auth/src/main/kotlin/{pkg_path}/feature/auth/signin/GoogleSignInButton.kt",
 ]
 legacy = []

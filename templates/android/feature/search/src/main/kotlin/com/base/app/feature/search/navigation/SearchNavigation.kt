@@ -4,10 +4,10 @@ import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.NavPane
 import com.base.app.core.navigation.navGraph
-import com.base.app.feature.search.SearchResultRoute
 import com.base.app.feature.search.SearchRoute
 import com.base.app.feature.search.api.SearchKey
 import com.base.app.feature.search.api.SearchResultKey
+import com.base.app.feature.search.result.SearchResultRoute
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

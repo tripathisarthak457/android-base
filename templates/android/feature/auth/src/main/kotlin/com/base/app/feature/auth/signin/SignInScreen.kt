@@ -1,42 +1,14 @@
-package com.base.app.feature.auth
+package com.base.app.feature.auth.signin
 
-import androidx.annotation.StringRes
-import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.snapshotFlow
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
-import androidx.lifecycle.viewmodel.compose.saveable
-import com.base.app.core.common.result.AppError
-import com.base.app.core.common.result.AppResult
-import com.base.app.core.common.validation.Validators
-import com.base.app.core.common.validation.and
-// <opt:googlesignin&ui_components>
-import com.base.app.core.designsystem.component.container.AppDivider
-// </opt:googlesignin&ui_components>
-import com.base.app.core.mvi.MviViewModel
-import com.base.app.core.mvi.UiEffect
-import com.base.app.core.mvi.UiEvent
-import com.base.app.core.mvi.UiState
-import com.base.app.core.mvi.UiText
-import com.base.app.core.navigation.AppNavigator
-import com.base.app.core.ui.MviScreen
-import com.base.app.data.auth.api.AuthRepository
-import com.base.app.feature.auth.api.PasswordResetKey
-import com.base.app.feature.auth.api.SignUpKey
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.drop
-import javax.inject.Inject
-// <opt:ui_components>
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -53,158 +25,11 @@ import com.base.app.core.designsystem.component.input.AppTextField
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.asString
-// </opt:ui_components>
-// <opt-else:ui_components>
-//~ import com.base.app.core.ui.PlaceholderScreen
-// </opt-else:ui_components>
-
-/** The fields' text is not here: it lives in the ViewModel's `TextFieldState`s. */
-@Immutable
-internal data class SignInState(
-    val emailError: UiText? = null,
-    val passwordError: UiText? = null,
-    val canSubmit: Boolean = false,
-    val submitting: Boolean = false,
-    val error: UiText? = null,
-) : UiState
-
-internal sealed interface SignInEvent : UiEvent {
-    data object Submit : SignInEvent
-    data object CreateAccountClicked : SignInEvent
-    data object ForgotPasswordClicked : SignInEvent
-    // <opt:googlesignin>
-    data class GoogleIdTokenReceived(val idToken: String) : SignInEvent
-    data object GoogleFailed : SignInEvent
-    // </opt:googlesignin>
-}
-
-internal sealed interface SignInEffect : UiEffect {
-    data object SignedIn : SignInEffect
-    data object OpenSignUp : SignInEffect
-    data object OpenPasswordReset : SignInEffect
-}
-
-@HiltViewModel
-internal class SignInViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
-    savedStateHandle: SavedStateHandle,
-) : MviViewModel<SignInState, SignInEvent, SignInEffect>(SignInState()) {
-
-    @OptIn(SavedStateHandleSaveableApi::class)
-    val email: TextFieldState = savedStateHandle.saveable(EMAIL, saver = TextFieldState.Saver) { TextFieldState() }
-
-    // Not saved: a password does not belong in the bundle the system writes to disk on process death.
-    val password = TextFieldState()
-
-    // Errors stay quiet until the first submit, then follow the text as it is corrected.
-    private var showErrors = false
-
-    init {
-        // A rule runs only when its text changes. A collection restarted after the screen was away
-        // starts with the text already judged, and judging it again would replace the error the
-        // server returned for it.
-        observe(snapshotFlow { email.text.toString() }.drop(1)) {
-            copy(emailError = emailRule.errorFor(it, showErrors))
-        }
-        observe(snapshotFlow { password.text.toString() }.drop(1)) {
-            copy(passwordError = passwordRule.errorFor(it, showErrors))
-        }
-        observe(snapshotFlow { email.text.isNotBlank() && password.text.isNotEmpty() }) { copy(canSubmit = it) }
-    }
-
-    override fun handleEvent(event: SignInEvent) {
-        when (event) {
-            SignInEvent.Submit -> submit()
-            SignInEvent.CreateAccountClicked -> emit(SignInEffect.OpenSignUp)
-            SignInEvent.ForgotPasswordClicked -> emit(SignInEffect.OpenPasswordReset)
-            // <opt:googlesignin>
-            is SignInEvent.GoogleIdTokenReceived -> signInWithGoogle(event.idToken)
-            SignInEvent.GoogleFailed -> setState { copy(error = UiText.of(R.string.auth_google_failed)) }
-            // </opt:googlesignin>
-        }
-    }
-
-    private fun submit() {
-        showErrors = true
-        val emailError = emailRule.errorFor(email.text, showErrors)
-        val passwordError = passwordRule.errorFor(password.text, showErrors)
-        setState { copy(emailError = emailError, passwordError = passwordError, error = null) }
-        if (emailError != null || passwordError != null) return
-
-        launchExclusive(SUBMIT, busy = { copy(submitting = it) }) {
-            val result = authRepository.signIn(email = email.text.toString(), password = password.text.toString())
-            when (result) {
-                is AppResult.Success -> emit(SignInEffect.SignedIn)
-                is AppResult.Failure -> showFailure(result.error, R.string.auth_sign_in_failed)
-            }
-        }
-    }
-    // <opt:googlesignin>
-
-    private fun signInWithGoogle(idToken: String) {
-        setState { copy(error = null) }
-        launchExclusive(SUBMIT, busy = { copy(submitting = it) }) {
-            val result = authRepository.signInWithGoogle(idToken)
-            when (result) {
-                is AppResult.Success -> emit(SignInEffect.SignedIn)
-                is AppResult.Failure -> showFailure(result.error, R.string.auth_google_sign_in_failed)
-            }
-        }
-    }
-    // </opt:googlesignin>
-
-    /** A validation response lands on the fields it names; anything else goes in the banner. */
-    private fun showFailure(error: AppError, @StringRes fallback: Int) {
-        val emailError = error.fieldError(EMAIL)
-        val passwordError = error.fieldError(PASSWORD)
-        setState {
-            if (emailError == null && passwordError == null) {
-                copy(error = error.authMessage(fallback))
-            } else {
-                copy(emailError = emailError, passwordError = passwordError)
-            }
-        }
-    }
-
-    private companion object {
-        // The names the server's validation errors use, and the saved-state key for the email.
-        const val EMAIL = "email"
-        const val PASSWORD = "password"
-        const val SUBMIT = "submit"
-
-        val emailRule = Validators.required() and Validators.email()
-        val passwordRule = Validators.required()
-    }
-}
-
-@Composable
-internal fun SignInRoute(
-    navigator: AppNavigator,
-    viewModel: SignInViewModel = hiltViewModel(),
-) {
-    MviScreen(
-        viewModel = viewModel,
-        onEffect = { effect ->
-            when (effect) {
-                // The new session moves the app to the signed-in shell; navigating as well would open
-                // the next screen twice, once in each host.
-                SignInEffect.SignedIn -> Unit
-                SignInEffect.OpenSignUp -> navigator.navigate(SignUpKey)
-                SignInEffect.OpenPasswordReset -> navigator.navigate(PasswordResetKey)
-            }
-        },
-    // <opt:ui_components>
-    ) { state, onEvent ->
-        SignInScreen(state = state, email = viewModel.email, password = viewModel.password, onEvent = onEvent)
-    }
-    // </opt:ui_components>
-    // <opt-else:ui_components>
-    //~ ) { _, _ ->
-    //~     PlaceholderScreen(title = R.string.auth_sign_in)
-    //~ }
-    // </opt-else:ui_components>
-}
-// <opt:ui_components>
+import com.base.app.feature.auth.AuthFrame
+import com.base.app.feature.auth.R
+// <opt:googlesignin>
+import com.base.app.core.designsystem.component.container.AppDivider
+// </opt:googlesignin>
 
 /**
  * The design-system fields take a String, so each field's text is read from the ViewModel's
@@ -319,4 +144,3 @@ private fun SignInPreview() {
         )
     }
 }
-// </opt:ui_components>

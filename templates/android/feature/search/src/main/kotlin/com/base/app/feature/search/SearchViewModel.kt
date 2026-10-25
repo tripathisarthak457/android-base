@@ -2,7 +2,6 @@ package com.base.app.feature.search
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
@@ -10,38 +9,11 @@ import androidx.lifecycle.viewmodel.compose.saveable
 import com.base.app.core.common.LoadState
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.mvi.MviViewModel
-import com.base.app.core.mvi.UiEffect
-import com.base.app.core.mvi.UiEvent
-import com.base.app.core.mvi.UiState
 import com.base.app.data.search.api.SearchRepository
-import com.base.app.data.search.api.model.SearchResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
-
-/** The field's text is not here: it lives in the ViewModel's `query`. */
-@Immutable
-internal data class SearchState(
-    /** The query the results answer. It trails the field by the debounce. */
-    val searchedFor: String = "",
-    val loadState: LoadState = LoadState.Idle,
-    val results: List<SearchResult> = emptyList(),
-    val recent: List<String> = emptyList(),
-) : UiState
-
-internal sealed interface SearchEvent : UiEvent {
-    data object Submit : SearchEvent
-    data object Retry : SearchEvent
-    data class RecentClicked(val query: String) : SearchEvent
-    data class RecentRemoved(val query: String) : SearchEvent
-    data object ClearRecent : SearchEvent
-    data class ResultClicked(val result: SearchResult) : SearchEvent
-}
-
-internal sealed interface SearchEffect : UiEffect {
-    data class OpenResult(val id: Int) : SearchEffect
-}
 
 @HiltViewModel
 internal class SearchViewModel @Inject constructor(

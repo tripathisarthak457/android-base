@@ -1,9 +1,5 @@
 package com.base.app.feature.profile
 
-import androidx.compose.runtime.Composable
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.base.app.core.ui.MviScreen
-// <opt:ui_components>
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,6 +10,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -30,34 +27,15 @@ import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
-// </opt:ui_components>
-// <opt-else:ui_components>
-//~ import com.base.app.core.ui.PlaceholderScreen
-// </opt-else:ui_components>
-// <opt:coil&ui_components>
+// <opt:coil>
 import com.base.app.core.ui.AppNetworkImage
-// </opt:coil&ui_components>
-// <opt:media&ui_components>
+// </opt:coil>
+// <opt:media>
 import androidx.compose.foundation.layout.Row
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.media.picker.rememberMediaPicker
-// </opt:media&ui_components>
-
-@Composable
-internal fun ProfileRoute(viewModel: ProfileViewModel = hiltViewModel()) {
-    // <opt:ui_components>
-    MviScreen(viewModel = viewModel) { state, onEvent ->
-        ProfileScreen(state = state, name = viewModel.name, bio = viewModel.bio, onEvent = onEvent)
-    }
-    // </opt:ui_components>
-    // <opt-else:ui_components>
-    //~ MviScreen(viewModel = viewModel) { _, _ ->
-    //~     PlaceholderScreen(title = R.string.profile_title)
-    //~ }
-    // </opt-else:ui_components>
-}
-// <opt:ui_components>
+// </opt:media>
 
 /**
  * The design-system fields take a String, so each field's text is read from the ViewModel's
@@ -170,4 +148,3 @@ private fun PhotoActions(hasPhoto: Boolean, onEvent: (ProfileEvent) -> Unit) {
 // </opt:media>
 
 private val AvatarSize = 88.dp
-// </opt:ui_components>

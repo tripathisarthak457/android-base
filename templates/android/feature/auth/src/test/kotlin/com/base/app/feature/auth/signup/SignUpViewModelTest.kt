@@ -1,4 +1,4 @@
-package com.base.app.feature.auth
+package com.base.app.feature.auth.signup
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.SavedStateHandle
@@ -10,6 +10,9 @@ import com.base.app.core.testing.MainDispatcherRule
 import com.base.app.core.ui.R as UiR
 import com.base.app.data.auth.api.FakeAuthRepository
 import com.base.app.data.auth.api.SignUpDetails
+import com.base.app.feature.auth.R
+import com.base.app.feature.auth.ROBOLECTRIC_SDK
+import com.base.app.feature.auth.type
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.test.TestScope

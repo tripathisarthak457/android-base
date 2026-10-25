@@ -1,5 +1,6 @@
-package com.base.app.feature.search
+package com.base.app.feature.search.result
 
+import app.cash.turbine.test
 import com.base.app.core.common.LoadState
 import com.base.app.core.testing.MainDispatcherRule
 import com.base.app.data.search.api.FakeSearchRepository
@@ -33,5 +34,15 @@ class SearchResultViewModelTest {
 
         assertEquals(LoadState.Success, viewModel.state.value.loadState)
         assertEquals(result, viewModel.state.value.result)
+    }
+
+    @Test
+    fun `back asks the route to go back`() = runTest {
+        val viewModel = SearchResultViewModel(FakeSearchRepository(results = listOf(result)), id = 3)
+
+        viewModel.effects.test {
+            viewModel.onEvent(SearchResultEvent.BackClicked)
+            assertEquals(SearchResultEffect.NavigateBack, awaitItem())
+        }
     }
 }

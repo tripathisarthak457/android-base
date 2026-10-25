@@ -9,7 +9,7 @@ feature/auth/src/main/kotlin/com/base/app/feature/auth/AuthFrame.kt adaptive-box
 feature/auth/src/main/kotlin/com/base/app/feature/auth/AuthFrame.kt scroll-chrome 1
 feature/auth/src/main/kotlin/com/base/app/feature/auth/passwordreset/PasswordResetScreen.kt adaptive-preview 1
 feature/auth/src/main/kotlin/com/base/app/feature/auth/signin/SignInScreen.kt adaptive-preview 1
-feature/auth/src/main/kotlin/com/base/app/feature/auth/signup/SignUpViewModel.kt adaptive-preview 1
+feature/auth/src/main/kotlin/com/base/app/feature/auth/signup/SignUpScreen.kt adaptive-preview 1
 # </opt:auth&ui_components>
 # <opt:paging&ui_components>
 feature/feed/src/main/kotlin/com/base/app/feature/feed/FeedScreen.kt adaptive-preview 1
@@ -29,7 +29,7 @@ feature/sample/src/main/kotlin/com/base/app/feature/sample/detail/SampleDetailSc
 feature/search/src/main/kotlin/com/base/app/feature/search/SearchScreen.kt adaptive-preview 1
 # </opt:search&ui_components>
 # <opt:licenses&ui_components>
-feature/settings/src/main/kotlin/com/base/app/feature/settings/licenses/LicensesViewModel.kt adaptive-preview 1
+feature/settings/src/main/kotlin/com/base/app/feature/settings/licenses/LicensesScreen.kt adaptive-preview 1
 # </opt:licenses&ui_components>
 # <opt:settings&ui_components>
 feature/settings/src/main/kotlin/com/base/app/feature/settings/SettingsScreen.kt adaptive-preview 1

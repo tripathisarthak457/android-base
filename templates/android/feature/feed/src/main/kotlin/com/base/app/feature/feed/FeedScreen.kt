@@ -1,10 +1,5 @@
 package com.base.app.feature.feed
 
-import androidx.compose.runtime.Composable
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-
-import com.base.app.core.ui.MviScreen
-// <opt:ui_components>
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,7 +17,6 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
 import com.base.app.core.common.result.AppError
 import com.base.app.core.designsystem.R as DesignSystemR
 import com.base.app.core.designsystem.component.button.AppButton
@@ -44,26 +39,6 @@ import com.base.app.core.ui.paging.AppPagingList
 import com.base.app.core.ui.text
 import com.base.app.data.feed.api.FeedLoadException
 import com.base.app.data.feed.api.model.FeedPost
-// </opt:ui_components>
-// <opt-else:ui_components>
-//~ import com.base.app.core.ui.PlaceholderScreen
-// </opt-else:ui_components>
-
-@Composable
-internal fun FeedRoute(viewModel: FeedViewModel = hiltViewModel()) {
-    // <opt:ui_components>
-    val posts = viewModel.posts.collectAsLazyPagingItems()
-    MviScreen(viewModel = viewModel, onEffect = {}) { state, onEvent ->
-        FeedScreen(state = state, posts = posts, onEvent = onEvent)
-    }
-    // </opt:ui_components>
-    // <opt-else:ui_components>
-    //~ MviScreen(viewModel = viewModel, onEffect = {}) { _, _ ->
-    //~     PlaceholderScreen(title = R.string.feed_title)
-    //~ }
-    // </opt-else:ui_components>
-}
-// <opt:ui_components>
 
 @Composable
 internal fun FeedScreen(
@@ -196,4 +171,3 @@ private val FeedPlaceholder = FeedPost(
     "The body of a post is clamped to two lines until it is expanded, and this one runs past them.",
     "The body of a post is clamped to two lines until it is expanded, and this one runs past them.",
 )
-// </opt:ui_components>

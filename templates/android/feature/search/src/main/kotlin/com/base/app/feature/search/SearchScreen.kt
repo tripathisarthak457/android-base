@@ -1,9 +1,5 @@
 package com.base.app.feature.search
 
-import androidx.compose.runtime.Composable
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.base.app.core.ui.MviScreen
-// <opt:ui_components>
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,35 +48,6 @@ import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.text
 import com.base.app.data.search.api.model.SearchResult
-// </opt:ui_components>
-// <opt-else:ui_components>
-//~ import com.base.app.core.ui.PlaceholderScreen
-// </opt-else:ui_components>
-
-@Composable
-internal fun SearchRoute(
-    onOpenResult: (Int) -> Unit,
-    viewModel: SearchViewModel = hiltViewModel(),
-) {
-    MviScreen(
-        viewModel = viewModel,
-        onEffect = { effect ->
-            when (effect) {
-                is SearchEffect.OpenResult -> onOpenResult(effect.id)
-            }
-        },
-    // <opt:ui_components>
-    ) { state, onEvent ->
-        SearchScreen(state = state, query = viewModel.query, onEvent = onEvent)
-    }
-    // </opt:ui_components>
-    // <opt-else:ui_components>
-    //~ ) { _, _ ->
-    //~     PlaceholderScreen(title = R.string.search_title)
-    //~ }
-    // </opt-else:ui_components>
-}
-// <opt:ui_components>
 
 /** The field edits the ViewModel's `query` directly, so nothing is copied into the state. */
 @Composable
@@ -275,4 +243,3 @@ private val ResultPlaceholder = SearchResult(
     "Placeholder result title",
     "A result's snippet is clamped to two lines, and this one runs to them so its card is as tall.",
 )
-// </opt:ui_components>

@@ -1,31 +1,10 @@
-package com.base.app.feature.auth
+package com.base.app.feature.auth.passwordreset
 
-import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.snapshotFlow
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
-import androidx.lifecycle.viewmodel.compose.saveable
-import com.base.app.core.common.result.AppResult
-import com.base.app.core.common.validation.Validators
-import com.base.app.core.common.validation.and
-import com.base.app.core.mvi.MviViewModel
-import com.base.app.core.mvi.UiEffect
-import com.base.app.core.mvi.UiEvent
-import com.base.app.core.mvi.UiState
-import com.base.app.core.mvi.UiText
-import com.base.app.core.navigation.AppNavigator
-import com.base.app.core.ui.MviScreen
-import com.base.app.data.auth.api.AuthRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.drop
-import javax.inject.Inject
-// <opt:ui_components>
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -39,118 +18,8 @@ import com.base.app.core.designsystem.component.navigation.AppTopBar
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.asString
-// </opt:ui_components>
-// <opt-else:ui_components>
-//~ import com.base.app.core.ui.PlaceholderScreen
-// </opt-else:ui_components>
-
-@Immutable
-internal data class PasswordResetState(
-    val emailError: UiText? = null,
-    val canSubmit: Boolean = false,
-    val submitting: Boolean = false,
-    val error: UiText? = null,
-    val sent: Boolean = false,
-) : UiState
-
-internal sealed interface PasswordResetEvent : UiEvent {
-    data object Submit : PasswordResetEvent
-    data object BackClicked : PasswordResetEvent
-}
-
-internal sealed interface PasswordResetEffect : UiEffect {
-    data object NavigateBack : PasswordResetEffect
-}
-
-/**
- * Request a password-reset link. Success says a link *has been sent if the address is registered*,
- * never whether it was.
- */
-@HiltViewModel
-internal class PasswordResetViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
-    savedStateHandle: SavedStateHandle,
-) : MviViewModel<PasswordResetState, PasswordResetEvent, PasswordResetEffect>(PasswordResetState()) {
-
-    @OptIn(SavedStateHandleSaveableApi::class)
-    val email: TextFieldState = savedStateHandle.saveable(EMAIL, saver = TextFieldState.Saver) { TextFieldState() }
-
-    // Errors stay quiet until the first submit, then follow the text as it is corrected.
-    private var showErrors = false
-
-    init {
-        // The rule runs only when the text changes. A collection restarted after the screen was away
-        // starts with the text already judged, and judging it again would replace the error the
-        // server returned for it.
-        observe(snapshotFlow { email.text.toString() }.drop(1)) {
-            copy(emailError = emailRule.errorFor(it, showErrors))
-        }
-        observe(snapshotFlow { email.text.isNotBlank() }) { copy(canSubmit = it) }
-    }
-
-    override fun handleEvent(event: PasswordResetEvent) {
-        when (event) {
-            PasswordResetEvent.Submit -> submit()
-            PasswordResetEvent.BackClicked -> emit(PasswordResetEffect.NavigateBack)
-        }
-    }
-
-    private fun submit() {
-        showErrors = true
-        val emailError = emailRule.errorFor(email.text, showErrors)
-        setState { copy(emailError = emailError, error = null) }
-        if (emailError != null) return
-
-        launchExclusive(SUBMIT, busy = { copy(submitting = it) }) {
-            when (val result = authRepository.requestPasswordReset(email.text.toString())) {
-                is AppResult.Success -> setState { copy(sent = true) }
-                is AppResult.Failure -> {
-                    val fieldError = result.error.fieldError(EMAIL)
-                    setState {
-                        if (fieldError != null) {
-                            copy(emailError = fieldError)
-                        } else {
-                            copy(error = result.error.authMessage(R.string.auth_reset_failed))
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private companion object {
-        // The name the server's validation errors use, and the saved-state key.
-        const val EMAIL = "email"
-        const val SUBMIT = "submit"
-
-        val emailRule = Validators.required() and Validators.email()
-    }
-}
-
-@Composable
-internal fun PasswordResetRoute(
-    navigator: AppNavigator,
-    viewModel: PasswordResetViewModel = hiltViewModel(),
-) {
-    MviScreen(
-        viewModel = viewModel,
-        onEffect = { effect ->
-            when (effect) {
-                PasswordResetEffect.NavigateBack -> navigator.navigateUp()
-            }
-        },
-    // <opt:ui_components>
-    ) { state, onEvent ->
-        PasswordResetScreen(state = state, email = viewModel.email, onEvent = onEvent)
-    }
-    // </opt:ui_components>
-    // <opt-else:ui_components>
-    //~ ) { _, _ ->
-    //~     PlaceholderScreen(title = R.string.auth_reset_password)
-    //~ }
-    // </opt-else:ui_components>
-}
-// <opt:ui_components>
+import com.base.app.feature.auth.AuthFrame
+import com.base.app.feature.auth.R
 
 @Composable
 internal fun PasswordResetScreen(
@@ -218,4 +87,3 @@ private fun PasswordResetPreview() {
         )
     }
 }
-// </opt:ui_components>

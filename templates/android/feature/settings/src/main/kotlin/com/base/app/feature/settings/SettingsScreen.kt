@@ -1,31 +1,5 @@
 package com.base.app.feature.settings
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.base.app.core.common.session.SessionController
-import com.base.app.core.datastore.settings.AppSettings
-import com.base.app.core.datastore.settings.AppSettingsStore
-import com.base.app.core.mvi.MviViewModel
-import com.base.app.core.mvi.UiEffect
-import com.base.app.core.mvi.UiEvent
-import com.base.app.core.mvi.UiState
-import com.base.app.core.navigation.AppNavigator
-import com.base.app.core.ui.MviScreen
-// <opt:licenses>
-import com.base.app.feature.settings.api.LicensesKey
-// </opt:licenses>
-import com.base.app.feature.settings.api.SettingsAppInfo
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
-// <opt:language>
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.platform.LocalContext
-import com.base.app.core.ui.locale.AppLocales
-// </opt:language>
-// <opt:ui_components>
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,12 +7,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.base.app.core.datastore.settings.AppSettings
 import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.container.AppDivider
 import com.base.app.core.designsystem.component.container.AppScaffold
@@ -56,149 +34,14 @@ import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
-// </opt:ui_components>
-// <opt-else:ui_components>
-//~ import com.base.app.core.ui.PlaceholderScreen
-// </opt-else:ui_components>
-// <opt:language&ui_components>
+// <opt:language>
 import com.base.app.core.designsystem.component.sheet.action.AppActionSheet
 import com.base.app.core.designsystem.component.sheet.action.SheetAction
-// </opt:language&ui_components>
-// <opt:browser&ui_components>
+import com.base.app.core.ui.locale.AppLocales
+// </opt:language>
+// <opt:browser>
 import com.base.app.core.ui.browser.rememberInAppBrowser
-// </opt:browser&ui_components>
-
-@Immutable
-internal data class SettingsState(
-    val appVersion: String,
-    val settings: AppSettings = AppSettings(),
-    // <opt:language>
-    /** Null while the app follows the phone's language. */
-    val languageTag: String? = null,
-    // </opt:language>
-) : UiState
-
-internal sealed interface SettingsEvent : UiEvent {
-    /** [mode] is one of the `AppSettings.THEME_*` values. */
-    data class ThemeSelected(val mode: String) : SettingsEvent
-    data class AnalyticsToggled(val enabled: Boolean) : SettingsEvent
-    data class HapticsToggled(val enabled: Boolean) : SettingsEvent
-
-    // <opt:applock>
-    data class AppLockToggled(val enabled: Boolean) : SettingsEvent
-    // </opt:applock>
-
-    data object SignOutConfirmed : SettingsEvent
-
-    // <opt:language>
-    /** The language lives in the platform rather than the store, so the route reads it. */
-    data class LanguageRead(val tag: String?) : SettingsEvent
-    data class LanguagePicked(val tag: String?) : SettingsEvent
-    // </opt:language>
-
-    // <opt:licenses>
-    data object LicensesClicked : SettingsEvent
-    // </opt:licenses>
-}
-
-internal sealed interface SettingsEffect : UiEffect {
-    // <opt:language>
-    data class ApplyLanguage(val tag: String?) : SettingsEffect
-    // </opt:language>
-
-    // <opt:licenses>
-    data object OpenLicenses : SettingsEffect
-    // </opt:licenses>
-}
-
-/** Settings, reading and writing the store the rest of the app already uses. */
-@HiltViewModel
-internal class SettingsViewModel @Inject constructor(
-    private val settingsStore: AppSettingsStore,
-    private val sessionController: SessionController,
-    appInfo: SettingsAppInfo,
-) : MviViewModel<SettingsState, SettingsEvent, SettingsEffect>(SettingsState(appVersion = appInfo.versionName)) {
-
-    init {
-        observe(settingsStore.settings) { copy(settings = it) }
-    }
-
-    // Each write sets an absolute value, so a newer tap cancelling an older write loses nothing.
-    override fun handleEvent(event: SettingsEvent) {
-        when (event) {
-            is SettingsEvent.ThemeSelected -> launchLatest(THEME) { settingsStore.setThemeMode(event.mode) }
-
-            is SettingsEvent.AnalyticsToggled -> launchLatest(ANALYTICS) { settingsStore.setAnalyticsEnabled(event.enabled) }
-
-            is SettingsEvent.HapticsToggled -> launchLatest(HAPTICS) { settingsStore.setHapticsEnabled(event.enabled) }
-
-            // <opt:applock>
-            is SettingsEvent.AppLockToggled -> launchLatest(APP_LOCK) { settingsStore.setAppLockEnabled(event.enabled) }
-            // </opt:applock>
-
-            SettingsEvent.SignOutConfirmed -> sessionController.signOut()
-
-            // <opt:language>
-            is SettingsEvent.LanguageRead -> setState { copy(languageTag = event.tag) }
-
-            is SettingsEvent.LanguagePicked -> {
-                setState { copy(languageTag = event.tag) }
-                emit(SettingsEffect.ApplyLanguage(event.tag))
-            }
-            // </opt:language>
-
-            // <opt:licenses>
-            SettingsEvent.LicensesClicked -> emit(SettingsEffect.OpenLicenses)
-            // </opt:licenses>
-        }
-    }
-
-    private companion object {
-        const val THEME = "theme"
-        const val ANALYTICS = "analytics"
-        const val HAPTICS = "haptics"
-        // <opt:applock>
-        const val APP_LOCK = "appLock"
-        // </opt:applock>
-    }
-}
-
-@Composable
-internal fun SettingsRoute(
-    navigator: AppNavigator,
-    viewModel: SettingsViewModel = hiltViewModel(),
-) {
-    // <opt:language>
-    val context = LocalContext.current
-    LaunchedEffect(Unit) { viewModel.onEvent(SettingsEvent.LanguageRead(AppLocales.current(context))) }
-    // </opt:language>
-
-    MviScreen(
-        viewModel = viewModel,
-        // <opt:language|licenses>
-        onEffect = { effect ->
-            when (effect) {
-                // <opt:language>
-                is SettingsEffect.ApplyLanguage -> AppLocales.set(context, effect.tag)
-                // </opt:language>
-                // <opt:licenses>
-                SettingsEffect.OpenLicenses -> navigator.navigate(LicensesKey)
-                // </opt:licenses>
-            }
-        },
-        // </opt:language|licenses>
-    // <opt:ui_components>
-    ) { state, onEvent ->
-        SettingsScreen(state = state, onEvent = onEvent)
-    }
-    // </opt:ui_components>
-    // <opt-else:ui_components>
-    //~ ) { _, _ ->
-    //~     PlaceholderScreen(title = R.string.settings_title)
-    //~ }
-    // </opt-else:ui_components>
-}
-// <opt:ui_components>
+// </opt:browser>
 
 @Composable
 internal fun SettingsScreen(
@@ -460,4 +303,3 @@ private fun SettingsPreview() {
         )
     }
 }
-// </opt:ui_components>
