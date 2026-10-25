@@ -48,18 +48,19 @@ ktlint_compose_unstable-collections = disabled
 ktlint_compose_preview-naming = disabled
 # Off until the code they find is fixed, in every project: AppRoot takes no modifier, the developer
 # panel and the overlay's detail sections emit more than one root, and AdaptiveLayout calls one
-# slot from two branches.
+# slot from two branches and gives a private part's modifier no default.
 ktlint_compose_modifier-missing-check = disabled
 ktlint_compose_multiple-emitters-check = disabled
 ktlint_compose_content-slot-reused = disabled
+ktlint_compose_modifier-without-default-check = disabled
 # <opt:ui_components>
 # Off until the components, the shell and the catalog are fixed where these find something: a
-# modifier applied below the root, a modifier parameter without a default, parameter order and
-# naming, a required event lambda last, a lambda an effect keeps, and State as a parameter.
+# modifier applied below the root, parameter order and naming, a content slot or a required event
+# lambda last, a lambda an effect keeps, and State as a parameter.
 ktlint_compose_modifier-not-used-at-root = disabled
-ktlint_compose_modifier-without-default-check = disabled
 ktlint_compose_modifier-naming = disabled
 ktlint_compose_param-order-check = disabled
+ktlint_compose_content-trailing-lambda = disabled
 ktlint_compose_parameter-naming = disabled
 ktlint_compose_lambda-param-event-trailing = disabled
 ktlint_compose_lambda-param-in-effect = disabled
