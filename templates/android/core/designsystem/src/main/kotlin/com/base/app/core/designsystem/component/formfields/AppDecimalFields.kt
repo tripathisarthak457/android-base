@@ -1,5 +1,6 @@
 package com.base.app.core.designsystem.component.formfields
 
+import android.icu.util.ULocale
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -86,7 +87,7 @@ fun AppMoneyField(
     minorUnits: Long?,
     onMinorUnitsChange: (Long?) -> Unit,
     modifier: Modifier = Modifier,
-    currency: Currency = Currency.getInstance(rememberCurrentLocale()),
+    currency: Currency = AppMoneyFieldDefaults.currency(),
     label: String? = null,
     placeholder: String? = null,
     helper: String? = null,
@@ -202,6 +203,33 @@ private class LocaleDecimalOutput(locale: Locale, private val grouping: Boolean)
 }
 
 private const val MoneyIntegerDigits = 12
+
+/** The money field's defaults. */
+object AppMoneyFieldDefaults {
+    /**
+     * The currency of the person's region. A locale that names only a language (a per-app language
+     * such as `de` often does) has no region to ask, so the region likeliest for that language
+     * stands in, as ICU fills it; a region with no currency of its own gets ISO 4217's "no
+     * currency".
+     */
+    @Composable
+    fun currency(): Currency {
+        val locale = rememberCurrentLocale()
+        return remember(locale) { regionCurrency(locale) }
+    }
+}
+
+private fun regionCurrency(locale: Locale): Currency {
+    val region = locale.country.ifEmpty { ULocale.addLikelySubtags(ULocale.forLocale(locale)).country }
+    val currency = try {
+        Currency.getInstance(Locale.Builder().setRegion(region).build())
+    } catch (notARegion: IllegalArgumentException) {
+        null
+    }
+    return currency ?: Currency.getInstance(NoCurrency)
+}
+
+private const val NoCurrency = "XXX"
 
 @AppComponentPreviews
 @Composable
