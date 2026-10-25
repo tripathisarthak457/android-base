@@ -1,44 +1,24 @@
 package com.base.app.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
-// <opt:ui_components>
 import androidx.compose.ui.graphics.compositeOver
-// </opt:ui_components>
 import androidx.compose.ui.graphics.luminance
 import org.junit.Assert.assertTrue
 import org.junit.Test
-// <opt:ui_components>
 import kotlin.math.abs
-// </opt:ui_components>
 
-// <opt:ui_components>
 /**
  * Every pairing the components draw, in every design style and both themes: text at WCAG AA (4.5:1)
  * on every background, controls that must be seen at 3:1, the tab bar's selection, and skeleton
  * bones that show on every surface with a band that lifts them by the same step in both themes.
  */
-// </opt:ui_components>
-// <opt-else:ui_components>
-//~ /**
-//~  * Every pairing the palette promises, in both themes: text at WCAG AA (4.5:1) on every background,
-//~  * text on the brand and status fills, controls that must be seen at 3:1, and a segmented thumb on
-//~  * its track. A colour a component adds to `AppColors` brings its own pairing here.
-//~  */
-// </opt-else:ui_components>
 class PaletteContrastTest {
 
-    // <opt:ui_components>
     private val palettes: List<Pair<String, AppColors>> = AppDesignStyle.entries.flatMap { design ->
         listOf(false, true).map { dark ->
             "${design.name} ${if (dark) "dark" else "light"}" to design.style().surfaces.colors(dark)
         }
     }
-    // </opt:ui_components>
-    // <opt-else:ui_components>
-    //~ private val palettes: List<Pair<String, AppColors>> = listOf(false, true).map { dark ->
-    //~     (if (dark) "dark" else "light") to appColors(dark)
-    //~ }
-    // </opt-else:ui_components>
 
     @Test
     fun `text roles read on every background`() = palettes.forEach { (name, colors) ->
@@ -94,7 +74,6 @@ class PaletteContrastTest {
         assertAtLeast("$name label on the thumb", colors.contentPrimary, colors.segmentThumb, AaText)
     }
 
-    // <opt:ui_components>
     @Test
     fun `the tab bar shows its selection without relying on a faint pill`() {
         AppDesignStyle.entries.forEach { design ->
@@ -148,7 +127,6 @@ class PaletteContrastTest {
         BarTreatment.Translucent -> colors.surface.copy(alpha = 0.88f).compositeOver(colors.background)
         BarTreatment.Docked -> colors.surface
     }
-    // </opt:ui_components>
 
     private fun assertAtLeast(what: String, foreground: Color, background: Color, minimum: Float) {
         val ratio = wcagContrast(foreground, background)
@@ -171,24 +149,20 @@ class PaletteContrastTest {
         return (maxOf(first, second) + 0.05) / (minOf(first, second) + 0.05)
     }
 
-    // <opt:ui_components>
     /** CIELAB L*, the lightness steps the skeleton's colours are specified in. */
     private fun lightness(color: Color): Double {
         val y = color.luminance().toDouble()
         val f = if (y > LabEpsilon) Math.cbrt(y) else (LabKappa * y + 16) / 116
         return 116 * f - 16
     }
-    // </opt:ui_components>
 
     private companion object {
-        // <opt:ui_components>
         const val BoneStep = 7.0
         const val MinLift = 4.5
         const val MaxLift = 6.0
         const val HighlightStep = 3.0
         const val LabEpsilon = 216.0 / 24389
         const val LabKappa = 24389.0 / 27
-        // </opt:ui_components>
         const val AaText = 4.5f
         const val AaNonText = 3f
         const val ThumbOnTrack = 1.5f
