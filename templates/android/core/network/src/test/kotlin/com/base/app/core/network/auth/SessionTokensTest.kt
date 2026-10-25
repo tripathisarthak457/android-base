@@ -1,6 +1,6 @@
 package com.base.app.core.network.auth
 
-import com.base.app.core.network.MemoryTokenStore
+import com.base.app.core.datastore.session.FakeAuthTokenStore
 import com.base.app.core.network.tokens
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.async
@@ -14,7 +14,7 @@ import org.junit.Test
 
 class SessionTokensTest {
 
-    private val store = MemoryTokenStore(tokens())
+    private val store = FakeAuthTokenStore(tokens())
     private val refresher = ScriptedRefresher()
     private val events = SessionEvents()
     private val sessionTokens = SessionTokens(store, refresher, events)

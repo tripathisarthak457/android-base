@@ -11,11 +11,10 @@ import org.junit.rules.TemporaryFolder
 import java.io.File
 // <opt:media>
 import androidx.core.net.toUri
-import com.base.app.core.common.coroutines.AppDispatchers
 import com.base.app.core.common.result.AppError
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.media.compress.ImageCompressor
-import kotlinx.coroutines.test.StandardTestDispatcher
+import com.base.app.core.testing.testDispatchers
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.runner.RunWith
@@ -42,8 +41,7 @@ class DefaultProfileRepositoryTest {
             File(folder.root, "profile.preferences_pb")
         }
         // <opt:media>
-        val dispatcher = StandardTestDispatcher(testScheduler)
-        val dispatchers = AppDispatchers(io = dispatcher, default = dispatcher, main = dispatcher)
+        val dispatchers = testDispatchers()
         // </opt:media>
         return DefaultProfileRepository(
             store,

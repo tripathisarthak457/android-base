@@ -3,7 +3,7 @@ package com.base.app.core.perfhud.checks
 import android.os.Looper
 import android.os.StrictMode
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.base.app.core.common.coroutines.AppDispatchers
+import com.base.app.core.testing.testDispatchers
 import kotlinx.coroutines.Dispatchers
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -20,9 +20,7 @@ import org.robolectric.annotation.Config
 class StrictModeWatchTest {
 
     // Counts on the thread that reports, so a violation is counted by the time the looper is idle.
-    private val watch = StrictModeWatch(
-        AppDispatchers(io = Dispatchers.Unconfined, default = Dispatchers.Unconfined, main = Dispatchers.Unconfined),
-    )
+    private val watch = StrictModeWatch(testDispatchers(Dispatchers.Unconfined))
     private lateinit var appPolicy: StrictMode.ThreadPolicy
 
     @Before

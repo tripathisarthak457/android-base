@@ -2,27 +2,21 @@ package com.base.app.core.playstore
 
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.emptyPreferences
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.base.app.core.common.coroutines.AppDispatchers
 import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.common.time.AppClock
+import com.base.app.core.datastore.FakePreferencesDataStore
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.playstore.review.ReviewPrompt
 import com.base.app.core.playstore.update.AppUpdates
+import com.base.app.core.testing.testDispatchers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -46,13 +40,9 @@ class PlayStorePromptsTest {
 
     // Unconfined, so a check that starts runs on the test thread at once and is counted at once.
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
-    private val dispatchers = AppDispatchers(
-        io = Dispatchers.Unconfined,
-        default = Dispatchers.Unconfined,
-        main = Dispatchers.Unconfined,
-    )
-    private val updateStore = CountingPreferences()
-    private val reviewStore = CountingPreferences()
+    private val dispatchers = testDispatchers(Dispatchers.Unconfined)
+    private val updateStore = FakePreferencesDataStore()
+    private val reviewStore = FakePreferencesDataStore()
     private val lifecycle = TestLifecycle()
 
     @After
@@ -108,27 +98,6 @@ class PlayStorePromptsTest {
             currentState = Lifecycle.State.RESUMED
         }
         override val lifecycle: Lifecycle get() = registry
-    }
-}
-
-/** Preferences in memory that count how often they are read and written. */
-private class CountingPreferences : DataStore<Preferences> {
-    private val state = MutableStateFlow(emptyPreferences())
-    var reads = 0
-        private set
-    var writes = 0
-        private set
-
-    override val data: Flow<Preferences> = flow {
-        reads++
-        emitAll(state)
-    }
-
-    override suspend fun updateData(
-        transform: suspend (t: Preferences) -> Preferences,
-    ): Preferences = transform(state.value).also {
-        writes++
-        state.value = it
     }
 }
 

@@ -12,4 +12,6 @@ dependencies {
     // <opt:push>
     implementation(project(":core:notification"))
     // </opt:push>
+
+    testImplementation(testFixtures(project(":core:datastore")))
 }

@@ -1,8 +1,6 @@
 package com.base.app.feature.auth
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.runtime.snapshots.Snapshot
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.base.app.core.common.result.AppError
@@ -10,10 +8,8 @@ import com.base.app.core.common.result.AppResult
 import com.base.app.core.mvi.UiText
 import com.base.app.core.testing.MainDispatcherRule
 import com.base.app.core.ui.R as UiR
-import com.base.app.data.auth.api.AuthRepository
-import com.base.app.data.auth.api.SignUpDetails
+import com.base.app.data.auth.api.FakeAuthRepository
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -153,35 +149,4 @@ class SignInProcessDeathTest {
         assertEquals("ada@example.com", restored.email.text.toString())
         assertEquals("", restored.password.text.toString())
     }
-}
-
-// Robolectric refuses SDK 36 and above on a Java 17 toolchain, which is what this project builds with.
-private const val ROBOLECTRIC_SDK = 35
-
-/** What a keyboard does to the field, plus the frame tick that tells snapshot observers about it. */
-private fun TextFieldState.type(text: String) {
-    edit { replace(0, length, text) }
-    Snapshot.sendApplyNotifications()
-}
-
-private class FakeAuthRepository : AuthRepository {
-    var result: AppResult<Unit> = AppResult.Success(Unit)
-    var gate: CompletableDeferred<Unit>? = null
-    val signIns = mutableListOf<Pair<String, String>>()
-
-    override val isSignedIn = MutableStateFlow(false)
-
-    override suspend fun signIn(email: String, password: String): AppResult<Unit> {
-        signIns += email to password
-        gate?.await()
-        return result
-    }
-
-    override suspend fun signUp(details: SignUpDetails): AppResult<Unit> = result
-
-    override suspend fun requestPasswordReset(email: String): AppResult<Unit> = result
-    // <opt:googlesignin>
-
-    override suspend fun signInWithGoogle(idToken: String): AppResult<Unit> = result
-    // </opt:googlesignin>
 }

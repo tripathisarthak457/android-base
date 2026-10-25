@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.base.app.core.common.coroutines.AppDispatchers
 import com.base.app.core.datastore.crypto.ValueCipher
+import com.base.app.core.testing.testDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -51,7 +52,7 @@ class AuthTokenStoreTest {
     @Test
     fun `tokens that cannot be decrypted read as signed out, and the first read deletes them`() = runTest {
         val dataStore = PreferenceDataStoreFactory.create(scope = backgroundScope) { File(folder.root, "tokens.preferences_pb") }
-        val store = DataStoreAuthTokenStore(dataStore, PrefixCipher(), dispatchers())
+        val store = DataStoreAuthTokenStore(dataStore, PrefixCipher(), testDispatchers())
 
         dataStore.edit { it[stringPreferencesKey("tokens")] = "sealed with a key this device lost" }
         assertTrue(store.isAuthenticated.first())
@@ -90,7 +91,7 @@ class AuthTokenStoreTest {
                 uses++
             },
         )
-        val store = store(cipher, dispatchers(io = io))
+        val store = store(cipher, ioOn(io))
 
         store.save(ada)
         store.current()
@@ -99,16 +100,17 @@ class AuthTokenStoreTest {
         assertEquals(4, uses)
     }
 
-    private fun TestScope.store(cipher: ValueCipher = PrefixCipher(), dispatchers: AppDispatchers = dispatchers()) =
+    private fun TestScope.store(cipher: ValueCipher = PrefixCipher(), dispatchers: AppDispatchers = testDispatchers()) =
         DataStoreAuthTokenStore(
             PreferenceDataStoreFactory.create(scope = backgroundScope) { File(folder.root, "tokens.preferences_pb") },
             cipher,
             dispatchers,
         )
 
-    private fun TestScope.dispatchers(io: CoroutineDispatcher = StandardTestDispatcher(testScheduler)): AppDispatchers {
-        val dispatcher = StandardTestDispatcher(testScheduler)
-        return AppDispatchers(io = io, default = dispatcher, main = dispatcher)
+    /** Only `io` is [io], so a test can tell whether work ran there or on one of the other roles. */
+    private fun TestScope.ioOn(io: CoroutineDispatcher): AppDispatchers {
+        val elsewhere = StandardTestDispatcher(testScheduler)
+        return AppDispatchers(io = io, default = elsewhere, main = elsewhere)
     }
 
     /** Reversible, and refuses what it did not seal, as a Keystore cipher refuses another key's output. */

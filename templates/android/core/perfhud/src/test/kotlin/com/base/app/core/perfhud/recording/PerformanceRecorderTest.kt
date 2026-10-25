@@ -5,7 +5,6 @@ import android.app.Application
 import android.content.Intent
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.base.app.core.common.coroutines.AppDispatchers
 import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.common.environment.AppEnvironment
 import com.base.app.core.datastore.DataStoreFiles
@@ -18,7 +17,7 @@ import com.base.app.core.perfhud.frame.frameFeed
 import com.base.app.core.perfhud.log.PerfLogcat
 import com.base.app.core.perfhud.memory.MemorySampler
 import com.base.app.core.perfhud.startup.StartupTimes
-import kotlinx.coroutines.test.StandardTestDispatcher
+import com.base.app.core.testing.testDispatchers
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
@@ -179,8 +178,7 @@ class PerformanceRecorderTest {
      * Its stored choice is read at the test's next `runCurrent`.
      */
     private suspend fun TestScope.launch(debugBuild: Boolean, stored: Boolean? = null): PerformanceRecorder {
-        val dispatcher = StandardTestDispatcher(testScheduler)
-        val dispatchers = AppDispatchers(io = dispatcher, default = dispatcher, main = dispatcher)
+        val dispatchers = testDispatchers()
         val scope = ApplicationScope(backgroundScope)
         if (!::settings.isInitialized) {
             settings = RecordingSettings(DataStoreFiles(application, scope, dispatchers))

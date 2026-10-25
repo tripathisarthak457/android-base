@@ -36,6 +36,7 @@ dependencies {
     api(libs.kotlinx.serialization.json)
 
     testImplementation(project(":core:testing"))
+    testImplementation(testFixtures(project(":core:datastore")))
     testImplementation(libs.ktor.client.mock)
     testImplementation(libs.robolectric)
 }

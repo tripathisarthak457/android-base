@@ -8,10 +8,8 @@ import com.base.app.core.common.LoadState
 import com.base.app.core.common.result.AppError
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.testing.MainDispatcherRule
+import com.base.app.data.sample.api.FakeSampleRepository
 import com.base.app.data.sample.api.model.SampleItem
-import com.base.app.data.sample.api.SampleRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -132,30 +130,4 @@ class SampleListViewModelTest {
 private fun TextFieldState.type(text: String) {
     edit { replace(0, length, text) }
     Snapshot.sendApplyNotifications()
-}
-
-private class FakeSampleRepository(
-    var result: AppResult<List<SampleItem>>,
-) : SampleRepository {
-    var loads = 0
-    private val stored = MutableStateFlow<List<SampleItem>>(emptyList())
-
-    override val items: Flow<List<SampleItem>> = stored
-
-    override suspend fun refresh(): AppResult<Unit> {
-        loads++
-        return when (val current = result) {
-            is AppResult.Success -> {
-                stored.value = current.value
-                AppResult.Success(Unit)
-            }
-
-            is AppResult.Failure -> current
-        }
-    }
-
-    override fun peek(id: Int): SampleItem? = stored.value.firstOrNull { it.id == id }
-
-    override suspend fun item(id: Int): AppResult<SampleItem> =
-        peek(id)?.let { AppResult.Success(it) } ?: AppResult.Failure(AppError.Http(status = 404))
 }

@@ -31,9 +31,6 @@ internal fun Project.configureAndroidCommon(extension: CommonExtension) {
         isCoreLibraryDesugaringEnabled = AppConfig.NEEDS_CORE_LIBRARY_DESUGARING
     }
 
-    // android.util.Log throws "not mocked" in unit tests; defaults make it a no-op instead.
-    extension.testOptions.unitTests.isReturnDefaultValues = true
-
     // Robolectric runs unit tests against the merged manifest and resources, so a module whose
     // tests use it gets them; every other module's unit tests skip that merge.
     onRobolectricTests {

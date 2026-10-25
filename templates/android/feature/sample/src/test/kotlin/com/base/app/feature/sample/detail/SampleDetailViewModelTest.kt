@@ -4,10 +4,8 @@ import com.base.app.core.common.LoadState
 import com.base.app.core.common.result.AppError
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.testing.MainDispatcherRule
+import com.base.app.data.sample.api.FakeSampleRepository
 import com.base.app.data.sample.api.model.SampleItem
-import com.base.app.data.sample.api.SampleRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -23,7 +21,7 @@ class SampleDetailViewModelTest {
 
     @Test
     fun `related rows are the items that follow, wrapping at the end`() = runTest {
-        val viewModel = SampleDetailViewModel(FakeSampleRepository(items), itemId = 4)
+        val viewModel = SampleDetailViewModel(FakeSampleRepository(AppResult.Success(items)), itemId = 4)
 
         viewModel.onEvent(SampleDetailEvent.Appeared)
         advanceUntilIdle()
@@ -34,7 +32,7 @@ class SampleDetailViewModelTest {
 
     @Test
     fun `a failed load shows the error and no related rows`() = runTest {
-        val viewModel = SampleDetailViewModel(FakeSampleRepository(items, failing = true), itemId = 1)
+        val viewModel = SampleDetailViewModel(FakeSampleRepository(AppResult.Failure(AppError.Offline)), itemId = 1)
 
         viewModel.onEvent(SampleDetailEvent.Appeared)
         advanceUntilIdle()
@@ -42,19 +40,4 @@ class SampleDetailViewModelTest {
         assertEquals(LoadState.Error(AppError.Offline), viewModel.state.value.loadState)
         assertEquals(emptyList<SampleItem>(), viewModel.state.value.related)
     }
-}
-
-private class FakeSampleRepository(
-    private val all: List<SampleItem>,
-    private val failing: Boolean = false,
-) : SampleRepository {
-
-    override val items: Flow<List<SampleItem>> = MutableStateFlow(all)
-
-    override suspend fun refresh(): AppResult<Unit> = AppResult.Success(Unit)
-
-    override fun peek(id: Int): SampleItem? = all.firstOrNull { it.id == id }
-
-    override suspend fun item(id: Int): AppResult<SampleItem> =
-        if (failing) AppResult.Failure(AppError.Offline) else AppResult.Success(all.first { it.id == id })
 }

@@ -1,6 +1,5 @@
 package com.base.app.core.network.client
 
-import com.base.app.core.common.coroutines.AppDispatchers
 import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.common.result.AppError
 import com.base.app.core.common.result.AppResult
@@ -11,6 +10,7 @@ import com.base.app.core.network.model.NetworkRequest
 import com.base.app.core.network.model.RequestBody
 import com.base.app.core.network.response.PassthroughUnwrapper
 import com.base.app.core.testing.FakeNetworkMonitor
+import com.base.app.core.testing.testDispatchers
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.MockRequestHandleScope
@@ -22,7 +22,6 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.Serializable
@@ -64,7 +63,6 @@ class KtorNetworkClientTest {
             seen += request
             replies[minOf(call++, replies.lastIndex)](request)
         }
-        val dispatcher = StandardTestDispatcher(testScheduler)
         return KtorNetworkClient(
             client = HttpClient(engine) { expectSuccess = false },
             config = config,
@@ -72,7 +70,7 @@ class KtorNetworkClientTest {
             unwrapper = PassthroughUnwrapper(),
             retryPolicy = RetryPolicy(random = Random(1)),
             inFlight = InFlightRequests(ApplicationScope(backgroundScope)),
-            dispatchers = AppDispatchers(io = dispatcher, default = dispatcher, main = dispatcher),
+            dispatchers = testDispatchers(),
             clock = AppClock { Instant.fromEpochSeconds(NOW_SECONDS) },
             // <opt:appstatus>
             signals = signals,

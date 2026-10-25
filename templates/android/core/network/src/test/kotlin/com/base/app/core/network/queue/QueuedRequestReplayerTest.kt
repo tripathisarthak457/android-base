@@ -5,7 +5,7 @@ import com.base.app.core.common.result.AppResult
 import com.base.app.core.common.time.AppClock
 import com.base.app.core.database.queue.QueuedRequestDao
 import com.base.app.core.database.queue.QueuedRequestEntity
-import com.base.app.core.network.MemoryTokenStore
+import com.base.app.core.datastore.session.FakeAuthTokenStore
 import com.base.app.core.network.client.NetworkClient
 import com.base.app.core.network.model.NetworkRequest
 import com.base.app.core.network.model.NetworkResponse
@@ -26,7 +26,7 @@ class QueuedRequestReplayerTest {
 
     private var now = Instant.fromEpochSeconds(1_000_000)
     private val dao = FakeQueueDao()
-    private val store = MemoryTokenStore(tokens(owner = "ada"))
+    private val store = FakeAuthTokenStore(tokens(owner = "ada"))
     private val client = ScriptedClient()
     private val replayer = QueuedRequestReplayer(dao, client, store, AppClock { now })
 
