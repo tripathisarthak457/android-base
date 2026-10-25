@@ -2,6 +2,6 @@
 # `fqName(parameter)  # why it has to stay`. Deleting a line records a fix, and a line that matches
 # nothing fails the check, so the list only shrinks; the check fails again if the parameter comes back.
 # <opt:ui_components>
-com.base.app.core.navigation.back.BackHandlerEffect(handler)  # added to and removed from the dispatcher by identity, so identity is the comparison it needs; every caller remembers its handler
-com.base.app.core.navigation.stack.rememberEntryLifecycle(key)  # returns a value, so it is never skipped; the key is only an effect key, which effects compare with equals
+com.base.app.core.navigation.shell.back.BackHandlerEffect(handler)  # added to and removed from the dispatcher by identity, so identity is the comparison it needs; every caller remembers its handler
+com.base.app.core.navigation.shell.stack.rememberEntryLifecycle(key)  # returns a value, so it is never skipped; the key is only an effect key, which effects compare with equals
 # </opt:ui_components>

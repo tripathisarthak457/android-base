@@ -130,7 +130,13 @@ tests ([below](#prove-it-with-a-recomposition-test)).
   — `state-param`
 - **Parameters are stable.** Under strong skipping an unstable parameter is compared with `===`, so the composable
   reruns whenever its caller passes a new, equal instance. `checkComposeStability` reads the compiler's reports for
+<!-- <opt:ui_components> -->
+  `:core:designsystem`, `:core:ui`, `:core:navigation`, `:core:navigation:shell` and every feature module and fails on
+  such a parameter; fix it
+<!-- </opt:ui_components> -->
+<!-- <opt:!ui_components> -->
   `:core:designsystem`, `:core:ui`, `:core:navigation` and every feature module and fails on such a parameter; fix it
+<!-- </opt:!ui_components> -->
   with a stable type, an entry in `config/compose-stability.conf` for a type that really is immutable, or a provider.
   An accepted exception goes in `config/compose-stability-baseline.txt` with a `# reason`. `List`, `Set` and `Map`
   are configured stable, so never `ImmutableList`, and never `@Immutable` on a model that carries a large list into

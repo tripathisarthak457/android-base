@@ -49,12 +49,14 @@ core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/datad
 # <opt:formfields>
 core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/formfields/AppRangeSlider.kt animated-delegate 2
 # </opt:formfields>
+# <opt:ui_components>
 core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/tokens/DesignTokens.kt file-length 1
+# </opt:ui_components>
 
 # Navigation shell
 # <opt:ui_components>
-core/navigation/src/main/kotlin/com/base/app/core/navigation/presentation/PresentationCard.kt layer-package 1
-core/navigation/src/main/kotlin/com/base/app/core/navigation/presentation/PresentationHost.kt layer-package 1
-core/navigation/src/main/kotlin/com/base/app/core/navigation/shell/ShellShortcuts.kt legacy-back 1
-core/navigation/src/test/kotlin/com/base/app/core/navigation/presentation/PresentationCardTest.kt layer-package 1
+core/navigation/shell/src/main/kotlin/com/base/app/core/navigation/shell/presentation/PresentationCard.kt layer-package 1
+core/navigation/shell/src/main/kotlin/com/base/app/core/navigation/shell/presentation/PresentationHost.kt layer-package 1
+core/navigation/shell/src/main/kotlin/com/base/app/core/navigation/shell/ShellShortcuts.kt legacy-back 1
+core/navigation/shell/src/test/kotlin/com/base/app/core/navigation/shell/presentation/PresentationCardTest.kt layer-package 1
 # </opt:ui_components>

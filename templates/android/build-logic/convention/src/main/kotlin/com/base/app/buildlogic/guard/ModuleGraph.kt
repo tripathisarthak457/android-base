@@ -176,15 +176,9 @@ internal data class ModuleShape(val kind: ModuleKind, val name: String) {
                 "uses it, and a component that cannot reach data, DI or the network cannot fetch, " +
                 "inject or hold state behind its caller's back. Take values and callbacks instead."
         ModuleKind.NAVIGATION ->
-            // <opt:ui_components>
-            "The navigation runtime may depend on other :core: modules, never on :core:navigation:shell, " +
-                "which is built on it."
-            // </opt:ui_components>
-            // <opt-else:ui_components>
-            //~ "The navigation runtime may depend on other :core: modules, never on :core:designsystem or " +
-            //~     ":core:navigation:shell: every feature sees the runtime, so what it sees they see. Drawing " +
-            //~     "belongs in the shell."
-            // </opt-else:ui_components>
+            "The navigation runtime may depend on other :core: modules, never on :core:designsystem or " +
+                ":core:navigation:shell: every feature sees the runtime, so what it sees they see. Drawing " +
+                "belongs in the shell."
         ModuleKind.FEATURE ->
             "A feature may depend on :core:* and :data:*, never on another feature or on " +
                 ":core:navigation:shell. A screen another feature opens gets its key in " +
@@ -238,12 +232,7 @@ private const val SHELL = ":core:navigation:shell"
 private const val TESTING = ":core:testing"
 
 /** What the navigation runtime may not see: every feature sees the runtime, so it would see this too. */
-private val NAVIGATION_HIDDEN = setOf(
-    SHELL,
-    // <opt:!ui_components>
-    DESIGN_SYSTEM,
-    // </opt:!ui_components>
-)
+private val NAVIGATION_HIDDEN = setOf(SHELL, DESIGN_SYSTEM)
 
 /** Modules that never compose the shell: it is the app's, assembled in :app and the catalog. */
 private val SHELL_BLIND = setOf(

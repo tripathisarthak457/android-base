@@ -153,7 +153,6 @@ class ModuleGraphTest {
         )
     }
 
-    // <opt:!ui_components>
     @Test
     fun `the navigation runtime never sees the design system, so a feature does not either`() {
         assertEquals(
@@ -162,7 +161,6 @@ class ModuleGraphTest {
         )
     }
 
-    // </opt:!ui_components>
     @Test
     fun `the composition roots are not checked`() {
         assertNull(ModuleShape.of(":app"))
