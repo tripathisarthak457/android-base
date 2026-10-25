@@ -1,5 +1,5 @@
 {
-  "generator_commit": "1920b6829d67",
+  "generator_commit": "1e0077a2293e",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -3457,6 +3457,7 @@
             "on": "#FF06101F",
             "subtle": "#FF10203A"
           },
+          "mediaBackdrop": "#FF000000",
           "neutral": {
             "base": "#FFB4BCCA",
             "content": "#FFB4BCCA",
@@ -3464,6 +3465,7 @@
             "subtle": "#FF1D232E"
           },
           "onAccent": "#FF06101F",
+          "onMedia": "#FFFFFFFF",
           "onSecondary": "#FF06101F",
           "onTertiary": "#FF06101F",
           "outline": "#FF7A7164",
@@ -3473,7 +3475,9 @@
           "secondarySubtle": "#FF171F31",
           "segmentThumb": "#FF414957",
           "separator": "#FF34302A",
+          "shade": "#FF000000",
           "shadow": "#66000000",
+          "sheen": "#FFFFFFFF",
           "skeleton": "#FF37332E",
           "skeletonHighlight": "#FF443F3A",
           "success": {
@@ -3489,6 +3493,7 @@
           "tertiary": "#FFBE60EB",
           "tertiaryPressed": "#FFCB89EC",
           "tertiarySubtle": "#FF221438",
+          "thumb": "#FFFFFFFF",
           "warning": {
             "base": "#FFE9A23B",
             "content": "#FFE9A23B",
@@ -3524,6 +3529,7 @@
             "on": "#FFFFFFFF",
             "subtle": "#FFE7F0FD"
           },
+          "mediaBackdrop": "#FF000000",
           "neutral": {
             "base": "#FF5A6472",
             "content": "#FF5A6472",
@@ -3531,6 +3537,7 @@
             "subtle": "#FFEFF1F5"
           },
           "onAccent": "#FFFFFFFF",
+          "onMedia": "#FFFFFFFF",
           "onSecondary": "#FF0B0E14",
           "onTertiary": "#FFFFFFFF",
           "outline": "#FF8C8273",
@@ -3540,7 +3547,9 @@
           "secondarySubtle": "#FFEFF2F8",
           "segmentThumb": "#FFFFFFFF",
           "separator": "#FFE2DBCF",
+          "shade": "#FF000000",
           "shadow": "#240B0F1A",
+          "sheen": "#FFFFFFFF",
           "skeleton": "#FFDAD4CA",
           "skeletonHighlight": "#FFE8E2D8",
           "success": {
@@ -3556,6 +3565,7 @@
           "tertiary": "#FFAE2CED",
           "tertiaryPressed": "#FF8E11CA",
           "tertiarySubtle": "#FFF7EAFD",
+          "thumb": "#FFFFFFFF",
           "warning": {
             "base": "#FFA35B00",
             "content": "#FF985400",
@@ -3593,6 +3603,7 @@
             "on": "#FF06101F",
             "subtle": "#FF10203A"
           },
+          "mediaBackdrop": "#FF000000",
           "neutral": {
             "base": "#FFB4BCCA",
             "content": "#FFB4BCCA",
@@ -3600,6 +3611,7 @@
             "subtle": "#FF1D232E"
           },
           "onAccent": "#FF06101F",
+          "onMedia": "#FFFFFFFF",
           "onSecondary": "#FF06101F",
           "onTertiary": "#FF06101F",
           "outline": "#FF7E715A",
@@ -3609,7 +3621,9 @@
           "secondarySubtle": "#FF171F31",
           "segmentThumb": "#FF414957",
           "separator": "#FF3A3224",
+          "shade": "#FF000000",
           "shadow": "#66000000",
+          "sheen": "#FFFFFFFF",
           "skeleton": "#FF3B3427",
           "skeletonHighlight": "#FF484033",
           "success": {
@@ -3625,6 +3639,7 @@
           "tertiary": "#FFBE60EB",
           "tertiaryPressed": "#FFCB89EC",
           "tertiarySubtle": "#FF221438",
+          "thumb": "#FFFFFFFF",
           "warning": {
             "base": "#FFE9A23B",
             "content": "#FFE9A23B",
@@ -3660,6 +3675,7 @@
             "on": "#FFFFFFFF",
             "subtle": "#FFE7F0FD"
           },
+          "mediaBackdrop": "#FF000000",
           "neutral": {
             "base": "#FF5A6472",
             "content": "#FF5A6472",
@@ -3667,6 +3683,7 @@
             "subtle": "#FFEFF1F5"
           },
           "onAccent": "#FFFFFFFF",
+          "onMedia": "#FFFFFFFF",
           "onSecondary": "#FF0B0E14",
           "onTertiary": "#FFFFFFFF",
           "outline": "#FF94855F",
@@ -3676,7 +3693,9 @@
           "secondarySubtle": "#FFEFF2F8",
           "segmentThumb": "#FFFFFFFF",
           "separator": "#FFF0DFC2",
+          "shade": "#FF000000",
           "shadow": "#240B0F1A",
+          "sheen": "#FFFFFFFF",
           "skeleton": "#FFE6D8C1",
           "skeletonHighlight": "#FFF5E7CF",
           "success": {
@@ -3692,6 +3711,7 @@
           "tertiary": "#FFAE2CED",
           "tertiaryPressed": "#FF8E11CA",
           "tertiarySubtle": "#FFF7EAFD",
+          "thumb": "#FFFFFFFF",
           "warning": {
             "base": "#FFA35B00",
             "content": "#FFA35B00",
@@ -3729,6 +3749,7 @@
             "on": "#FF06101F",
             "subtle": "#FF10203A"
           },
+          "mediaBackdrop": "#FF000000",
           "neutral": {
             "base": "#FFB4BCCA",
             "content": "#FFB4BCCA",
@@ -3736,6 +3757,7 @@
             "subtle": "#FF1D232E"
           },
           "onAccent": "#FF06101F",
+          "onMedia": "#FFFFFFFF",
           "onSecondary": "#FF06101F",
           "onTertiary": "#FF06101F",
           "outline": "#FF687183",
@@ -3745,7 +3767,9 @@
           "secondarySubtle": "#FF171F31",
           "segmentThumb": "#FF49515F",
           "separator": "#FF2B364A",
+          "shade": "#FF000000",
           "shadow": "#66000000",
+          "sheen": "#FFFFFFFF",
           "skeleton": "#FF313A4B",
           "skeletonHighlight": "#FF3C4557",
           "success": {
@@ -3761,6 +3785,7 @@
           "tertiary": "#FFBE60EB",
           "tertiaryPressed": "#FFCB89EC",
           "tertiarySubtle": "#FF221438",
+          "thumb": "#FFFFFFFF",
           "warning": {
             "base": "#FFE9A23B",
             "content": "#FFE9A23B",
@@ -3796,6 +3821,7 @@
             "on": "#FFFFFFFF",
             "subtle": "#FFE7F0FD"
           },
+          "mediaBackdrop": "#FF000000",
           "neutral": {
             "base": "#FF5A6472",
             "content": "#FF5A6472",
@@ -3803,6 +3829,7 @@
             "subtle": "#FFEFF1F5"
           },
           "onAccent": "#FFFFFFFF",
+          "onMedia": "#FFFFFFFF",
           "onSecondary": "#FF0B0E14",
           "onTertiary": "#FFFFFFFF",
           "outline": "#FF7A818F",
@@ -3812,7 +3839,9 @@
           "secondarySubtle": "#FFEFF2F8",
           "segmentThumb": "#FFFFFFFF",
           "separator": "#FFD0DBEE",
+          "shade": "#FF000000",
           "shadow": "#240B0F1A",
+          "sheen": "#FFFFFFFF",
           "skeleton": "#FFC9D2E1",
           "skeletonHighlight": "#FFD7E0EF",
           "success": {
@@ -3828,6 +3857,7 @@
           "tertiary": "#FFAE2CED",
           "tertiaryPressed": "#FF8E11CA",
           "tertiarySubtle": "#FFF7EAFD",
+          "thumb": "#FFFFFFFF",
           "warning": {
             "base": "#FFA35B00",
             "content": "#FF985400",
@@ -3865,6 +3895,7 @@
             "on": "#FF06101F",
             "subtle": "#FF10203A"
           },
+          "mediaBackdrop": "#FF000000",
           "neutral": {
             "base": "#FFB4BCCA",
             "content": "#FFB4BCCA",
@@ -3872,6 +3903,7 @@
             "subtle": "#FF1D232E"
           },
           "onAccent": "#FF06101F",
+          "onMedia": "#FFFFFFFF",
           "onSecondary": "#FF06101F",
           "onTertiary": "#FF06101F",
           "outline": "#FF687183",
@@ -3881,7 +3913,9 @@
           "secondarySubtle": "#FF171F31",
           "segmentThumb": "#FF414957",
           "separator": "#FF262D3A",
+          "shade": "#FF000000",
           "shadow": "#66000000",
+          "sheen": "#FFFFFFFF",
           "skeleton": "#FF2D333E",
           "skeletonHighlight": "#FF393F4B",
           "success": {
@@ -3897,6 +3931,7 @@
           "tertiary": "#FFBE60EB",
           "tertiaryPressed": "#FFCB89EC",
           "tertiarySubtle": "#FF221438",
+          "thumb": "#FFFFFFFF",
           "warning": {
             "base": "#FFE9A23B",
             "content": "#FFE9A23B",
@@ -3932,6 +3967,7 @@
             "on": "#FFFFFFFF",
             "subtle": "#FFE7F0FD"
           },
+          "mediaBackdrop": "#FF000000",
           "neutral": {
             "base": "#FF5A6472",
             "content": "#FF5A6472",
@@ -3939,6 +3975,7 @@
             "subtle": "#FFEFF1F5"
           },
           "onAccent": "#FFFFFFFF",
+          "onMedia": "#FFFFFFFF",
           "onSecondary": "#FF0B0E14",
           "onTertiary": "#FFFFFFFF",
           "outline": "#FF838B99",
@@ -3948,7 +3985,9 @@
           "secondarySubtle": "#FFEFF2F8",
           "segmentThumb": "#FFFFFFFF",
           "separator": "#FFE3E6EC",
+          "shade": "#FF000000",
           "shadow": "#240B0F1A",
+          "sheen": "#FFFFFFFF",
           "skeleton": "#FFD7DADF",
           "skeletonHighlight": "#FFE5E8ED",
           "success": {
@@ -3964,6 +4003,7 @@
           "tertiary": "#FFAE2CED",
           "tertiaryPressed": "#FF8E11CA",
           "tertiarySubtle": "#FFF7EAFD",
+          "thumb": "#FFFFFFFF",
           "warning": {
             "base": "#FFA35B00",
             "content": "#FFA35B00",
