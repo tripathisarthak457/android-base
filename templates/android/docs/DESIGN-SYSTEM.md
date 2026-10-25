@@ -213,9 +213,7 @@ Each rule's message names the reference page in `.agents/skills/` where one appl
 | `empty-description` | nothing hidden from screen readers by accident | `null` for decoration, or a string resource that says what it shows |
 | `navigation-host-api` | features stay out of the navigation host | navigate through `AppNavigator`, register with `entry<Key>` |
 | `feature-primitive` | features arrange, the design system draws | draw it once in `:core:designsystem` |
-<!-- <opt:!ui_components> -->
 | `component-preview` | every component rendered and tested | `@AppComponentPreviews` on the component's preview |
-<!-- </opt:!ui_components> -->
 | `offscreen-layer` | no texture per frame without a reason | draw without the layer (`CompositingStrategy.ModulateAlpha` for alpha), or say why in the marker |
 
 A `@Composable` in a module without the Compose compiler fails as `compose-compiler`: apply the Compose convention.
@@ -337,7 +335,6 @@ class AppTagTest {
     }
 }
 ```
-<!-- <opt:!ui_components> -->
 
 What the build refuses in a component, each line marked with the rule that reports it. `DesignSystemDocTest` runs
 the rules over both templates (no finding) and over this one (exactly these), so this page and the guard agree:
@@ -366,7 +363,6 @@ private fun AppBadgePreview() {
     AppBadge(count = remember { mutableIntStateOf(3) }, updates = emptyFlow())
 }
 ```
-<!-- </opt:!ui_components> -->
 
 ## First things to build
 

@@ -143,7 +143,7 @@ class CodeRulesTest {
             }
             """.trimIndent(),
         ),
-        Fixture("sheet-shadow", SHEET, "private fun Modifier.card() = this.shadow(8.dp) /*!*/"),
+        Fixture("sheet-shadow", SHEET, "private fun Modifier.card(elevation: Dp) = this.shadow(elevation) /*!*/"),
         Fixture("sheet-raw-delta", SHEET, "fun drag(s: AnchoredDraggableState<Int>) = s.dispatchRawDelta(1f) /*!*/"),
         Fixture("sheet-window", SHEET, "@Composable fun Card() { Popup(onDismissRequest = {}) { } } /*!*/"),
         Fixture(
@@ -193,14 +193,12 @@ class CodeRulesTest {
             """.trimIndent(),
         ),
         // </opt:ui_components>
-        // <opt-else:ui_components>
-        //~ Fixture(
-        //~     "component-preview",
-        //~     DESIGN_SYSTEM,
-        //~     "package com.acme.core.designsystem.component /*!*/\n@Composable fun Tag(modifier: Modifier) = Box(modifier)",
-        //~ ),
-        // </opt-else:ui_components>
         Fixture("feature-primitive", FEATURE, "private fun f(m: Modifier) = m.border(border) /*!*/"),
+        Fixture(
+            "component-preview",
+            DESIGN_SYSTEM,
+            "package com.acme.core.designsystem.component /*!*/\n@Composable fun Tag(modifier: Modifier) = Box(modifier)",
+        ),
         Fixture(
             "offscreen-layer",
             DESIGN_SYSTEM,
@@ -314,14 +312,9 @@ class CodeRulesTest {
     @Test
     fun `rules hold only in their scope`() {
         assertEquals(emptyList<Finding>(), CodeRules.check(CORE_UI, "val p = 16.dp"))
-        // <opt:ui_components>
-        assertEquals(emptyList<Finding>(), CodeRules.check(DESIGN_SYSTEM, "val c = Color(0xFF000000)"))
-        // </opt:ui_components>
-        // <opt-else:ui_components>
-        //~ // The tokens are where the hues are written; components read them.
-        //~ val theme = "core/designsystem/src/main/kotlin/com/acme/core/designsystem/theme/A.kt"
-        //~ assertEquals(emptyList<Finding>(), CodeRules.check(theme, "val c = Color(0xFF000000)"))
-        // </opt-else:ui_components>
+        // The tokens are where the hues are written; components read them.
+        val theme = "core/designsystem/src/main/kotlin/com/acme/core/designsystem/theme/A.kt"
+        assertEquals(emptyList<Finding>(), CodeRules.check(theme, "val c = Color(0xFF000000)"))
         assertEquals(emptyList<Finding>(), CodeRules.check("app/src/main/kotlin/com/acme/di/CoroutinesModule.kt", "val io = Dispatchers.IO"))
         assertEquals(emptyList<Finding>(), CodeRules.check("data/orders/src/test/kotlin/A.kt", "val v = runBlocking { 1 }"))
         assertEquals(emptyList<Finding>(), CodeRules.check("feature/orders/src/test/kotlin/A.kt", "val c = Color(0xFF000000)"))

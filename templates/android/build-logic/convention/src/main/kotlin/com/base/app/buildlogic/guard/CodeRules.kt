@@ -167,16 +167,14 @@ internal object CodeRules {
         val message: String = if (reference == null) advice else "$advice (read .agents/skills/$reference)"
     }
 
-    // <opt:ui_components>
+    // The same rules with and without UI components, but for the sheet's: they guard how AppSheet
+    // is used and built, and come with it.
     val ALL: List<Rule> =
-        ComposeRules.ALL + KotlinRules.ALL + StructureRules.ALL + AdaptiveRules.ALL + SheetRules.ALL +
+        ComposeRules.ALL + KotlinRules.ALL + StructureRules.ALL + AdaptiveRules.ALL +
+            // <opt:ui_components>
+            SheetRules.ALL +
+            // </opt:ui_components>
             ScrollRules.ALL + ComponentRules.ALL
-    // </opt:ui_components>
-    // <opt-else:ui_components>
-    //~ val ALL: List<Rule> =
-    //~     ComposeRules.ALL + KotlinRules.ALL + StructureRules.ALL + AdaptiveRules.ALL + ScrollRules.ALL +
-    //~         ComponentRules.ALL
-    // </opt-else:ui_components>
 
     /** Not a source pattern: a `@Composable` built without the Compose compiler crashes when first called. */
     private const val COMPOSE_COMPILER = "compose-compiler"

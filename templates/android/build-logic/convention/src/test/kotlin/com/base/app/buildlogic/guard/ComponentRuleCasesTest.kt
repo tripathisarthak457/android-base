@@ -88,7 +88,6 @@ class ComponentRuleCasesTest {
         assertEquals(listOf("1 raw-type", "2 raw-type"), rules(CORE_UI, source))
     }
 
-    // <opt:!ui_components>
     @Test
     fun `a component writes its metrics in its Defaults object, the rest comes from the theme`() {
         val source = """
@@ -109,7 +108,6 @@ class ComponentRuleCasesTest {
         )
     }
 
-    // </opt:!ui_components>
     @Test
     fun `the theme is where the raw values are written`() {
         val source = """
@@ -134,7 +132,6 @@ class ComponentRuleCasesTest {
         assertEquals(listOf("1 feature-primitive", "4 feature-primitive"), rules(FEATURE, source))
     }
 
-    // <opt:!ui_components>
     @Test
     fun `a component comes with a preview, a private helper and the plumbing need none`() {
         val unpreviewed = """
@@ -162,7 +159,6 @@ class ComponentRuleCasesTest {
         assertEquals(emptyList<String>(), rules(ADAPTIVE, unpreviewed))
     }
 
-    // </opt:!ui_components>
     @Test
     fun `an offscreen layer carries the reason it is worth a texture`() {
         val source = """
@@ -282,9 +278,7 @@ class ComponentRuleCasesTest {
         const val COMPONENT = "$DESIGN/component/Tag.kt"
         const val COMPONENT_HELPER = "$DESIGN/component/TagParts.kt"
         const val THEME = "$DESIGN/theme/Tokens.kt"
-        // <opt:!ui_components>
         const val ADAPTIVE = "$DESIGN/foundation/adaptive/Panes.kt"
-        // </opt:!ui_components>
         const val NAVIGATION = "core/navigation/shell/src/main/kotlin/com/acme/core/navigation/shell/Card.kt"
         const val CORE_UI = "core/ui/src/main/kotlin/com/acme/core/ui/Rows.kt"
         const val FEATURE = "feature/orders/src/main/kotlin/com/acme/feature/orders/Orders.kt"

@@ -59,43 +59,27 @@ internal object ComposeRules {
         Rule(
             id = "raw-tween",
             advice = "use a spring from AppTheme.springs, which follows the motion style and reduce motion",
-            // <opt:ui_components>
-            applies = uiCode,
-            // </opt:ui_components>
-            // <opt-else:ui_components>
-            //~ applies = { uiCode(it) || ComponentRules.inDesignComponents(it) },
-            // </opt-else:ui_components>
+            applies = { uiCode(it) || ComponentRules.inDesignComponents(it) },
             lines = pattern(Regex("""(?<![\w.])(tween|spring)\s*(<[^>]*>)?\s*\(""")),
         ),
         Rule(
             id = "raw-color",
             advice = "use a colour role from AppTheme.colors, which follows dark mode and the brand",
-            // <opt:ui_components>
-            applies = uiCode,
-            // </opt:ui_components>
-            // <opt-else:ui_components>
-            //~ applies = { uiCode(it) || ComponentRules.inDesignComponents(it) },
-            // </opt-else:ui_components>
+            applies = { uiCode(it) || ComponentRules.inDesignComponents(it) },
             lines = pattern(Regex("""\bColor\s*\(\s*0[xX]""")),
         ),
         Rule(
             id = "raw-dp",
             advice = "use AppTheme.spacing or a size token; only 0.dp and 1.dp are written raw",
-            // <opt:ui_components>
-            applies = { it.inFeature && it.isProduction },
-            lines = { source, _ -> rawDpLines(source) },
-            // </opt:ui_components>
-            // <opt-else:ui_components>
-            //~ applies = { (it.inFeature && it.isProduction) || ComponentRules.inDesignComponents(it) },
-            //~ // A component's metrics are written once, in its …Defaults object.
-            //~ lines = { source, location ->
-            //~     if (ComponentRules.inDesignComponents(location)) {
-            //~         ComponentRules.rawDpOutsideDefaults(source)
-            //~     } else {
-            //~         rawDpLines(source)
-            //~     }
-            //~ },
-            // </opt-else:ui_components>
+            applies = { (it.inFeature && it.isProduction) || ComponentRules.inDesignComponents(it) },
+            // A component's metrics are written once, in its …Defaults object.
+            lines = { source, location ->
+                if (ComponentRules.inDesignComponents(location)) {
+                    ComponentRules.rawDpOutsideDefaults(source)
+                } else {
+                    rawDpLines(source)
+                }
+            },
         ),
         Rule(
             id = "subcompose-image",

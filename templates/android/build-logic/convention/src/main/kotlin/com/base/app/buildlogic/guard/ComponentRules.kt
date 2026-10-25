@@ -2,9 +2,7 @@ package com.base.app.buildlogic.guard
 
 import com.base.app.buildlogic.guard.CodeRules.Location
 import com.base.app.buildlogic.guard.CodeRules.Rule
-// <opt:!ui_components>
 import com.base.app.buildlogic.guard.CodeRules.packageLine
-// </opt:!ui_components>
 import com.base.app.buildlogic.guard.CodeRules.pattern
 
 /**
@@ -16,7 +14,6 @@ import com.base.app.buildlogic.guard.CodeRules.pattern
  */
 internal object ComponentRules {
 
-    // <opt:!ui_components>
     /**
      * The design system's components and primitives: its production code outside the theme (the
      * tokens), the window classes and the preview plumbing the project starts with.
@@ -26,7 +23,6 @@ internal object ComponentRules {
             KEPT_PLUMBING.none { it in location.path }
     }
 
-    // </opt:!ui_components>
     private val designedCode: (Location) -> Boolean =
         { (it.inFeature || it.inDesignSystem) && it.isProduction }
     private val composeApi: (Location) -> Boolean =
@@ -62,14 +58,9 @@ internal object ComponentRules {
         Rule(
             id = "raw-type",
             advice = "use a role from AppTheme.typography, with .copy() for a one-off",
-            // <opt:ui_components>
-            applies = { (it.inFeature || it.inCoreUi) && it.isProduction },
-            // </opt:ui_components>
-            // <opt-else:ui_components>
-            //~ applies = {
-            //~     ((it.inFeature || it.inCoreUi) && it.isProduction) || inDesignComponents(it)
-            //~ },
-            // </opt-else:ui_components>
+            applies = {
+                ((it.inFeature || it.inCoreUi) && it.isProduction) || inDesignComponents(it)
+            },
             lines = pattern(
                 Regex("""(?<![\w.])\d+(?:\.\d+)?[fF]?\s*\.\s*sp\b|(?<![\w.])TextStyle\s*\("""),
             ),
@@ -116,7 +107,6 @@ internal object ComponentRules {
                 ),
             ),
         ),
-        // <opt:!ui_components>
         Rule(
             id = "component-preview",
             advice = "give the component a preview with @AppComponentPreviews, which the " +
@@ -125,7 +115,6 @@ internal object ComponentRules {
             applies = inDesignComponents,
             lines = { source, _ -> unpreviewedComponents(source) },
         ),
-        // </opt:!ui_components>
         // An offscreen layer is sometimes the right tool (a mask, a blur behind floating chrome),
         // so the fix the rule asks for is a written reason, not a ban.
         Rule(
@@ -138,7 +127,6 @@ internal object ComponentRules {
             reference = "jetpack-compose-performance/references/animation.md",
         ),
     )
-    // <opt:!ui_components>
 
     /** Raw dp outside a `…Defaults` object, where a component's metrics belong; never 0 or 1. */
     fun rawDpOutsideDefaults(source: KotlinSource): List<Int> {
@@ -151,7 +139,6 @@ internal object ComponentRules {
             if (raw && defaults.none { index + 1 in it }) index + 1 else null
         }
     }
-    // </opt:!ui_components>
 
     /** Imports of anything but Compose, the platform's drawing and the design system itself. */
     private fun foreignImports(source: KotlinSource, location: Location): List<Int> {
@@ -207,7 +194,6 @@ internal object ComponentRules {
                 source.lineOf(parameter.offset)
             }
         }.distinct().sorted()
-    // <opt:!ui_components>
 
     /** A file declaring a component and no preview of it, reported on its package line. */
     private fun unpreviewedComponents(source: KotlinSource): List<Int> {
@@ -228,7 +214,6 @@ internal object ComponentRules {
             "/designsystem/foundation/adaptive/",
             "/designsystem/preview/",
         )
-    // </opt:!ui_components>
     private val IMPORT = Regex("""^\s*import\s+([\w.]+)""")
     private val FORBIDDEN_IMPORTS = Regex(
         listOf(
@@ -252,7 +237,6 @@ internal object ComponentRules {
 
     /** `modifier` read: anything but the name of a call's named argument, `modifier = …`. */
     private val MODIFIER_READ = Regex("""(?<![\w.])modifier\b(?!\s*=(?!=))""")
-    // <opt:!ui_components>
     private val RAW_DP = Regex("""(?<![\w.])(\d+(?:\.\d+)?)[fF]?\s*\.\s*dp\b""")
     private val DEFAULTS_OBJECT = Regex("""\bobject\s+\w+Defaults\s*\{""")
     private val PREVIEW = Regex("""@(Preview|AppComponentPreviews|AppScreenPreviews)\b""")
@@ -260,5 +244,4 @@ internal object ComponentRules {
 
     /** How far before a composable's name its modifiers are looked for. */
     private const val HEAD_LENGTH = 80
-    // </opt:!ui_components>
 }

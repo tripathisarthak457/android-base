@@ -39,13 +39,11 @@ dependencies {
     testImplementation(libs.junit)
 }
 
-// <opt:!ui_components>
 // DesignSystemDocTest holds docs/DESIGN-SYSTEM.md to the rules: an edit of the page reruns it.
 tasks.test {
     inputs.file("../../docs/DESIGN-SYSTEM.md").withPathSensitivity(PathSensitivity.NONE)
 }
 
-// </opt:!ui_components>
 tasks.validatePlugins {
     enableStricterValidation = true
     failOnWarning = true
