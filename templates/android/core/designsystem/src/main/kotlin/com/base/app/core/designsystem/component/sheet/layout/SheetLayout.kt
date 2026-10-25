@@ -177,7 +177,7 @@ private fun SheetLayoutPreview() {
             visible = true,
             onDismissRequest = {},
             header = { AppSheetHeader(title = "Grabber, header, content and footer") },
-            footer = { AppButton(text = "Done", onClick = {}, modifier = Modifier.fillMaxWidth()) },
+            footer = { PreviewFooterButton("Done") },
         ) {
             SheetColumn {
                 AppRow(title = "The content scrolls between the header and the footer")
@@ -185,4 +185,10 @@ private fun SheetLayoutPreview() {
             }
         }
     }
+}
+
+// Outside the AppSheet call: sheet-modifier reads any modifier in the call's text as the sheet's.
+@Composable
+private fun PreviewFooterButton(text: String) {
+    AppButton(text = text, onClick = {}, modifier = Modifier.fillMaxWidth())
 }
