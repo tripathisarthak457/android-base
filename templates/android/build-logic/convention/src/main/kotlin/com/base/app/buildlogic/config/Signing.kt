@@ -2,6 +2,7 @@ package com.base.app.buildlogic.config
 
 import com.android.build.api.dsl.ApplicationExtension
 import org.gradle.api.Project
+import java.io.File
 import java.util.Properties
 
 /**
@@ -22,7 +23,7 @@ internal data class KeystoreEntry(
 )
 
 internal fun Project.loadKeystoreEntries(): Map<String, KeystoreEntry> {
-    val propertiesFile = rootProject.file("keystore.properties")
+    val propertiesFile = rootDirectory().resolve("keystore.properties")
     if (!propertiesFile.exists()) return emptyMap()
 
     val properties = Properties().apply {
@@ -41,7 +42,7 @@ internal fun Project.loadKeystoreEntries(): Map<String, KeystoreEntry> {
             if (store == null || storePassword == null || keyAlias == null || keyPassword == null) {
                 return@mapNotNull null
             }
-            if (!rootProject.file(store).exists()) {
+            if (!rootDirectory().resolve(store).exists()) {
                 logger.warn(
                     "[signing] keystore.properties points '$name' at $store, which does not " +
                         "exist. Falling back to the debug key for that environment.",
@@ -62,7 +63,7 @@ internal fun Project.configureSigning(extension: ApplicationExtension) {
 
     entries.forEach { (name, entry) ->
         extension.signingConfigs.create(name).apply {
-            storeFile = rootProject.file(entry.storeFile)
+            storeFile = rootDirectory().resolve(entry.storeFile)
             storePassword = entry.storePassword
             keyAlias = entry.keyAlias
             keyPassword = entry.keyPassword
@@ -96,3 +97,6 @@ internal fun Project.configureSigning(extension: ApplicationExtension) {
         )
     }
 }
+
+/** The root project's directory, read without touching the root project itself. */
+private fun Project.rootDirectory(): File = isolated.rootProject.projectDirectory.asFile

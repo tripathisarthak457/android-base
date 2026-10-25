@@ -4,33 +4,57 @@
 # never goes here; fix it, or put a reasoned `// allow(<rule>): <why>` on the line above.
 
 # Screens
+# <opt:auth&ui_components>
 feature/auth/src/main/kotlin/com/base/app/feature/auth/AuthFrame.kt adaptive-box-constraints 1
 feature/auth/src/main/kotlin/com/base/app/feature/auth/AuthFrame.kt scroll-chrome 1
-# <opt:ui_components>
 feature/auth/src/main/kotlin/com/base/app/feature/auth/PasswordReset.kt adaptive-preview 1
 feature/auth/src/main/kotlin/com/base/app/feature/auth/SignIn.kt adaptive-preview 1
 feature/auth/src/main/kotlin/com/base/app/feature/auth/SignUp.kt adaptive-preview 1
+# </opt:auth&ui_components>
+# <opt:paging&ui_components>
 feature/feed/src/main/kotlin/com/base/app/feature/feed/FeedScreen.kt adaptive-preview 1
+# </opt:paging&ui_components>
+# <opt:onboarding&ui_components>
 feature/onboarding/src/main/kotlin/com/base/app/feature/onboarding/Onboarding.kt adaptive-preview 1
 feature/onboarding/src/main/kotlin/com/base/app/feature/onboarding/Onboarding.kt raw-dp 2
+# </opt:onboarding&ui_components>
+# <opt:profile&ui_components>
 feature/profile/src/main/kotlin/com/base/app/feature/profile/ProfileScreen.kt adaptive-preview 1
 feature/profile/src/main/kotlin/com/base/app/feature/profile/ProfileScreen.kt raw-dp 1
+# </opt:profile&ui_components>
+# <opt:sample&ui_components>
 feature/sample/src/main/kotlin/com/base/app/feature/sample/detail/SampleDetailScreen.kt adaptive-preview 1
+# </opt:sample&ui_components>
+# <opt:search&ui_components>
 feature/search/src/main/kotlin/com/base/app/feature/search/SearchScreen.kt adaptive-preview 1
+# </opt:search&ui_components>
+# <opt:licenses&ui_components>
 feature/settings/src/main/kotlin/com/base/app/feature/settings/Licenses.kt adaptive-preview 1
+# </opt:licenses&ui_components>
+# <opt:settings&ui_components>
 feature/settings/src/main/kotlin/com/base/app/feature/settings/Settings.kt adaptive-preview 1
-# </opt:ui_components>
+# </opt:settings&ui_components>
 
 # Design system and catalog
+# <opt:catalog>
 catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogAdaptive.kt adaptive-screen-metrics 1
+# </opt:catalog>
+# <opt:ui_components>
 core/designsystem/src/main/kotlin/com/base/app/core/designsystem/animation/Emphasis.kt animated-delegate 1
+# </opt:ui_components>
+# <opt:datadisplay>
 core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/datadisplay/AppBarChart.kt animated-delegate 1
 core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/datadisplay/AppSparkline.kt animated-delegate 1
+# </opt:datadisplay>
+# <opt:formfields>
 core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/formfields/AppRangeSlider.kt animated-delegate 2
+# </opt:formfields>
 core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/tokens/DesignTokens.kt file-length 1
 
 # Navigation shell
+# <opt:ui_components>
 core/navigation/src/main/kotlin/com/base/app/core/navigation/presentation/PresentationCard.kt layer-package 1
 core/navigation/src/main/kotlin/com/base/app/core/navigation/presentation/PresentationHost.kt layer-package 1
 core/navigation/src/main/kotlin/com/base/app/core/navigation/shell/ShellShortcuts.kt legacy-back 1
 core/navigation/src/test/kotlin/com/base/app/core/navigation/presentation/PresentationCardTest.kt layer-package 1
+# </opt:ui_components>

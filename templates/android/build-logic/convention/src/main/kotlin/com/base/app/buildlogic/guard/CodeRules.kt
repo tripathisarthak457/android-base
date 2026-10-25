@@ -31,7 +31,7 @@ import org.gradle.kotlin.dsl.register
 internal fun Project.verifyCodeRules() {
     val projectDirectory = layout.projectDirectory
     val relative = rootDir.toPath().relativize(projectDir.toPath()).toString().replace('\\', '/')
-    val accepted = rootProject.layout.projectDirectory.file(CodeRulesBaseline.FILE)
+    val accepted = isolated.rootProject.projectDirectory.file(CodeRulesBaseline.FILE)
 
     val task = tasks.register<VerifyCodeRulesTask>("verifyCodeRules") {
         group = "verification"
@@ -44,8 +44,13 @@ internal fun Project.verifyCodeRules() {
         if (accepted.asFile.exists()) baseline.set(accepted)
         marker.set(layout.buildDirectory.file("guards/verifyCodeRules.ok"))
     }
-    tasks.named { it == "check" }.configureEach { dependsOn(task) }
+    // The design system's rules also run before it builds, so a component that breaks one fails an
+    // Android Studio run, not only CI.
+    val hooked = if (path == DESIGN_SYSTEM) setOf("check", "preBuild") else setOf("check")
+    tasks.named { it in hooked }.configureEach { dependsOn(task) }
 }
+
+private const val DESIGN_SYSTEM = ":core:designsystem"
 
 @CacheableTask
 internal abstract class VerifyCodeRulesTask : DefaultTask() {
@@ -131,7 +136,8 @@ internal object CodeRules {
         val inData: Boolean = inTier("data")
         val inCoreUi: Boolean = module == "core/ui"
         val inDesignSystem: Boolean = module == "core/designsystem"
-        val inNavigation: Boolean = module == "core/navigation"
+        /** The navigation runtime and the shell nested in it. */
+        val inNavigation: Boolean = inTier("core/navigation")
         val inApp: Boolean = module == "app"
 
         /** The part of the path inside the module's source set, `kotlin/com/acme/…/File.kt`. */
@@ -152,7 +158,9 @@ internal object CodeRules {
     }
 
     // <opt:ui_components>
-    val ALL: List<Rule> = ComposeRules.ALL + KotlinRules.ALL + StructureRules.ALL + AdaptiveRules.ALL + SheetRules.ALL + ScrollRules.ALL
+    val ALL: List<Rule> =
+        ComposeRules.ALL + KotlinRules.ALL + StructureRules.ALL + AdaptiveRules.ALL + SheetRules.ALL +
+            ScrollRules.ALL + ComponentRules.ALL
     // </opt:ui_components>
     // <opt-else:ui_components>
     //~ val ALL: List<Rule> =

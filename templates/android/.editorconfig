@@ -1,6 +1,6 @@
-# Formatting, read by Android Studio, by most other editors without a plugin, and by ktlint when
-# the project has the formatting feature: one set of rules, so a file reformatted in the IDE
-# passes the check unchanged.
+# Formatting, read by Android Studio, by most other editors without a plugin, and by ktlint, which
+# Spotless runs on every build: one set of rules, so a file reformatted in the IDE passes the check
+# unchanged.
 
 root = true
 
@@ -17,12 +17,55 @@ max_line_length = 100
 ktlint_code_style = android_studio
 # Composables are nouns in PascalCase, which ktlint's function-naming rule would otherwise reject.
 ktlint_function_naming_ignore_when_annotated_with = Composable
+# <opt:!formatting># ktlint's own rules are the formatting feature's; without it only the Compose rules below run.
+# <opt:!formatting>ktlint_standard = disabled
 ij_kotlin_code_style_defaults = KOTLIN_OFFICIAL
 ij_kotlin_allow_trailing_comma = true
 ij_kotlin_allow_trailing_comma_on_call_site = true
 ij_kotlin_imports_layout = *
 ij_kotlin_name_count_to_use_star_import = 2147483647
 ij_kotlin_name_count_to_use_star_import_for_members = 2147483647
+
+# Compose Rules (io.nlopez.compose.rules), which Spotless runs in every project. A rule not named
+# here runs. Each one turned off says why: a check of the build's own already guards it (a
+# verifyCodeRules id from docs/DESIGN-SYSTEM.md, or a Compose lint check raised to an error), or
+# this project differs on purpose.
+# vm-forwarding: only a route takes the ViewModel, and it hands it to MviScreen.
+ktlint_compose_vm-forwarding-check = disabled
+# feature-composition-local keeps them out of features and core:ui; the theme, the navigation host
+# and the developer tools provide theirs to the whole tree on purpose.
+ktlint_compose_compositionlocal-allowlist = disabled
+# composed, and lint's UnnecessaryComposedModifier.
+ktlint_compose_modifier-composed-check = disabled
+# lint's AutoboxingStateCreation, an error here.
+ktlint_compose_mutable-state-autoboxing = disabled
+# The previews are AppComponentPreviews and AppScreenPreviews, the names the rules and docs use.
+ktlint_compose_preview-annotation-naming = disabled
+# Not wanted here: material refuses every Material import, not only Material 2; List, Set and Map
+# are stable through config/compose-stability.conf; preview names are the project's to choose.
+ktlint_compose_material-two = disabled
+ktlint_compose_unstable-collections = disabled
+ktlint_compose_preview-naming = disabled
+# Off until the code they find is fixed, in every project: AppRoot takes no modifier, the developer
+# panel and the overlay's detail sections emit more than one root, and AdaptiveLayout calls one
+# slot from two branches and gives a private part's modifier no default.
+ktlint_compose_modifier-missing-check = disabled
+ktlint_compose_multiple-emitters-check = disabled
+ktlint_compose_content-slot-reused = disabled
+ktlint_compose_modifier-without-default-check = disabled
+# <opt:ui_components>
+# Off until the components, the shell and the catalog are fixed where these find something: a
+# modifier applied below the root, parameter order and naming, a content slot or a required event
+# lambda last, a lambda an effect keeps, and State as a parameter.
+ktlint_compose_modifier-not-used-at-root = disabled
+ktlint_compose_modifier-naming = disabled
+ktlint_compose_param-order-check = disabled
+ktlint_compose_content-trailing-lambda = disabled
+ktlint_compose_parameter-naming = disabled
+ktlint_compose_lambda-param-event-trailing = disabled
+ktlint_compose_lambda-param-in-effect = disabled
+ktlint_compose_state-param-check = disabled
+# </opt:ui_components>
 
 [*.{xml,json,yml,yaml,toml}]
 indent_size = 4

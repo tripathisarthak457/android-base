@@ -610,10 +610,17 @@ These run as part of `./gradlew build` and fail it:
 | `verifyApiPurity` | A compact project's `api` packages stay splittable into modules of their own. |
 | `verifyCodeRules` | The forbidden patterns, one rule each in `build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/`; [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md#the-rule-index) lists them with their fixes. A justified exception is `// allow(<rule-id>): <reason>` on the line above; a marker with no reason, or that silences nothing, fails too. |
 | `verifyManifestRules` | No orientation or size lock, the configuration changes handled in place, Back through `OnBackInvokedCallback`. |
-| `checkComposeStability` | No composable parameter in `:core:designsystem`, `:core:ui` or `:core:navigation` is compared by identity, beyond `config/compose-stability-baseline.txt`, where each entry carries its reason. |
+| `checkComposeStability` | No composable parameter in `:core:designsystem`, `:core:ui`, `:core:navigation` or a feature module is compared by identity, beyond `config/compose-stability-baseline.txt`, where each entry carries its reason. |
 <!-- <opt:devtools> -->
 | `verify<Variant>CarriesNoDevTooling` | A shippable build (staging, prod and playstore releases) depends on no dev tooling module, directly or through another. |
 <!-- </opt:devtools> -->
+| `dependencyGuard` | The prod release's libraries, transitive ones included, match the list the first build writes under app/dependencies, which is committed. A deliberate change fails it until `./gradlew dependencyGuardBaseline` rewrites the list, reviewed and committed with the change. |
+<!-- <opt:formatting> -->
+| `spotlessCheck` | ktlint's Android Studio style over every Kotlin and Gradle file (`./gradlew spotlessApply` fixes it), and the Compose Rules for ktlint; `.editorconfig` names each rule turned off and why. |
+<!-- </opt:formatting> -->
+<!-- <opt:!formatting> -->
+| `spotlessCheck` | The Compose Rules for ktlint over every Kotlin file; `.editorconfig` names each rule turned off and why. |
+<!-- </opt:!formatting> -->
 
 Compose lint runs as errors in every Compose module; the ids are listed in `build-logic`'s `Compose.kt`.
 

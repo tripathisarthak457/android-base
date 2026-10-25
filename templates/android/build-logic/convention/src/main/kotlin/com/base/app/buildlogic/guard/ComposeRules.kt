@@ -52,7 +52,7 @@ internal object ComposeRules {
         Rule(
             id = "collect-as-state",
             advice = "collectAsState keeps collecting in the background; use collectAsStateWithLifecycle()",
-            applies = uiCode,
+            applies = composeApi,
             lines = pattern(Regex("""\bcollectAsState\s*\(""")),
             reference = "jetpack-compose-performance/references/effects-and-threading.md",
         ),
@@ -100,7 +100,7 @@ internal object ComposeRules {
         Rule(
             id = "subcompose-image",
             advice = "SubcomposeAsyncImage composes per load state and stutters in lists; use AsyncImage",
-            applies = uiCode,
+            applies = composeApi,
             lines = pattern(Regex("""\bSubcomposeAsyncImage\b""")),
             reference = "jetpack-compose-performance/references/layouts.md",
         ),
@@ -119,14 +119,14 @@ internal object ComposeRules {
         Rule(
             id = "lazy-key",
             advice = "give lazy rows a stable key = { … } so they keep their state and the scroll position",
-            applies = uiCode,
+            applies = composeApi,
             lines = { source, _ -> LazyScopes.unkeyed(source) },
             reference = "jetpack-compose-performance/references/lazy-layouts.md",
         ),
         Rule(
             id = "lazy-content-type",
             advice = "a lazy scope with more than one kind of item gives each a contentType, so rows are reused by kind",
-            applies = uiCode,
+            applies = composeApi,
             lines = { source, _ -> LazyScopes.untyped(source) },
             reference = "jetpack-compose-performance/references/lazy-layouts.md",
         ),

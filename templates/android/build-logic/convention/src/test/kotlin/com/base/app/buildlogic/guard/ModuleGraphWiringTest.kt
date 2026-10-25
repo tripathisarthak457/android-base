@@ -45,6 +45,41 @@ class ModuleGraphWiringTest {
     }
 
     @Test
+    fun `the design system's libraries are collected from every checked configuration and judged`() {
+        val root = ProjectBuilder.builder().withProjectDir(folder.root).build()
+        val designSystem = module(root, "core", "designsystem")
+        val libraries = mapOf(
+            "api" to "androidx.compose.foundation:foundation:1.12.0",
+            "implementation" to "io.ktor:ktor-client-core:3.6.0",
+            "testImplementation" to "junit:junit:4.13.2",
+            "lintChecks" to "com.example:lint-rules:1.0.0",
+        )
+        libraries.forEach { (configuration, library) ->
+            designSystem.configurations.create(configuration)
+            designSystem.dependencies.add(configuration, library)
+        }
+
+        val guard = guardOf(designSystem)
+
+        assertEquals(
+            listOf("androidx.compose.foundation:foundation", "io.ktor:ktor-client-core", "junit:junit"),
+            guard.libraries.get(),
+        )
+        val error = assertThrows(GradleException::class.java) { guard.verify() }
+        assertTrue(error.message!!, error.message!!.contains("  :core:designsystem -> io.ktor:ktor-client-core\n"))
+    }
+
+    @Test
+    fun `a module without a library allowlist collects no libraries`() {
+        val root = ProjectBuilder.builder().withProjectDir(folder.root).build()
+        val ui = module(root, "core", "ui")
+        ui.configurations.create("implementation")
+        ui.dependencies.add("implementation", "io.ktor:ktor-client-core:3.6.0")
+
+        assertEquals(emptyList<String>(), guardOf(ui).libraries.get())
+    }
+
+    @Test
     fun `a pure module that applies an Android or Compose plugin fails`() {
         val root = ProjectBuilder.builder().withProjectDir(folder.root).build()
         val guard = guardOf(module(root, "feature", "orders", "api"))
