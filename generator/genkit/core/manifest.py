@@ -117,7 +117,7 @@ class Option:
     owns: tuple[str, ...]
     #: Feature → why it cannot be had while the option is off, in catalogue order.
     disables: dict[str, str]
-    #: Spec field → why the website does not ask for it while the option is off.
+    #: Spec field → why it is not asked for while the option is off, when the project gets its default.
     hides: dict[str, str]
     locked: OptionLock | None
     #: Feature → how it reads while the option is off, for a kept feature whose own copy names what the
@@ -254,6 +254,15 @@ class TemplateManifest:
             for key, option in self.options.items()
             if not values[key]
             for feature, reason in option.disables.items()
+        }
+
+    def hidden_fields(self, values: dict[str, bool]) -> dict[str, str]:
+        """Spec field → why it stays at its default, for every option `values` turns off."""
+        return {
+            field: reason
+            for key, option in self.options.items()
+            if not values[key]
+            for field, reason in option.hides.items()
         }
 
     def feature_copy(self, feature: Feature, values: dict[str, bool]) -> FeatureCopy:

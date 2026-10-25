@@ -593,7 +593,7 @@ def run_wizard(
     features = manifest.resolve(requested)
     raw["features"] = sorted(requested)
     raw.update({key: value for key, value in values.items() if value != manifest.options[key].default})
-    hidden = frozenset(field for key, option in manifest.options.items() if not values[key] for field in option.hides)
+    hidden = frozenset(manifest.hidden_fields(values))
     raw["architecture"] = ask_architecture(target)
     if target.key == "android":
         raw["android"] = ask_android(features, raw["app_name"])

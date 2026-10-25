@@ -277,9 +277,16 @@ class OptionTest(unittest.TestCase):
         self.assertIn("assets", self.manifest.owned_paths(frozenset({"net", "ui", "extra"})))
         self.assertNotIn("assets", self.manifest.owned_paths(frozenset({"net", "visuals"})))
 
+    def test_an_option_that_is_off_hides_its_fields(self):
+        off = self.manifest.option_values({"visuals": False})
+        self.assertEqual(
+            {"design_style": "Nothing is drawn, so there is no style to choose."}, self.manifest.hidden_fields(off)
+        )
+
     def test_an_option_left_out_of_a_spec_takes_its_default(self):
         self.assertEqual({"visuals": True}, self.manifest.option_values({}))
         self.assertEqual({}, self.manifest.disabled_features({"visuals": True}))
+        self.assertEqual({}, self.manifest.hidden_fields({"visuals": True}))
 
     def test_the_android_template_declares_ui_components(self):
         target = REGISTRY["android"]

@@ -172,7 +172,8 @@ A spec that leaves it out, or sets it to `true`, gets a project with the design 
 exactly as before the option existed. `"ui_components": false` gets a setup-only project: the
 architecture, the theme skeleton and every build guard, without components. The generator drops the
 features that need components (the catalogue's `disables`, each with a reason) with a note each,
-rather than refusing a preset that lists them.
+rather than refusing a preset that lists them, and leaves the fields the option `hides` at their
+defaults the same way, so a request that sends another design or motion style gets the defaults.
 
 The site shows the option as the "No UI components" box, first on the Features step. It sends
 `"ui_components": false` only when the box is ticked, so every other request is the one it always
