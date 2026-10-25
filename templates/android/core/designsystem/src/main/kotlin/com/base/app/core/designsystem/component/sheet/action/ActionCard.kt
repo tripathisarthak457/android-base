@@ -141,7 +141,7 @@ internal fun ActionCard(
                 .drawBehind { if (anchor == null) drawRect(colors.scrim, alpha = shown.value.coerceIn(0f, 1f)) }
                 .pointerInput(Unit) { detectTapGestures { if (presence.targetState) dismiss() } },
         ) { measurables, constraints ->
-            val margin = Margin.roundToPx()
+            val margin = ActionCardDefaults.Margin.roundToPx()
             val width = minOf(DesignTokens.Sheet.ActionSheet.cardWidth.roundToPx(), constraints.maxWidth - 2 * margin)
             val card = measurables.first().measure(Constraints(maxWidth = width, maxHeight = constraints.maxHeight - 2 * margin))
             layout(constraints.maxWidth, constraints.maxHeight) {
@@ -170,7 +170,11 @@ internal fun ActionCard(
 
 /** The card arrives from this scale, as iOS 26's menus and popovers grow from their source. */
 private const val CardScale = 0.94f
-private val Margin = 8.dp
+
+/** How far the card keeps from the window's edges. */
+internal object ActionCardDefaults {
+    val Margin = 8.dp
+}
 
 @AppComponentPreviews
 @Composable

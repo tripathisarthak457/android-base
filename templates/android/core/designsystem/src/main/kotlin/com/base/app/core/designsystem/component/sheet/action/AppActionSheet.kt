@@ -128,7 +128,7 @@ internal fun ActionHeading(title: String?, message: String?) {
     Column(
         modifier = Modifier.fillMaxWidth().padding(AppTheme.spacing.md),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(2.dp),
+        verticalArrangement = Arrangement.spacedBy(AppActionSheetDefaults.HeadingSpacing),
     ) {
         val colors = AppTheme.colors
         title?.let {
@@ -198,6 +198,11 @@ private val ActionFit = SheetDetent.Custom("action-fit") {
 }
 
 private val ScrollingProperties = AppSheetProperties(contentInteraction = SheetContentInteraction.Scrolls)
+
+/** The action sheet's heading. */
+object AppActionSheetDefaults {
+    val HeadingSpacing = 2.dp
+}
 
 @AppComponentPreviews
 @Composable

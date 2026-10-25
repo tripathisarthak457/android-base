@@ -82,7 +82,7 @@ fun AppMenu(
 
     val density = LocalDensity.current
     val position = remember(density) {
-        MenuPosition(margin = with(density) { 16.dp.roundToPx() }, gap = with(density) { 6.dp.roundToPx() })
+        MenuPosition(margin = with(density) { AppMenuDefaults.WindowMargin.roundToPx() }, gap = with(density) { AppMenuDefaults.AnchorGap.roundToPx() })
     }
     val springs = AppTheme.springs
     val dismiss by rememberUpdatedState(onDismissRequest)
@@ -158,7 +158,7 @@ fun AppMenuDivider(modifier: Modifier = Modifier) {
         modifier = modifier
             .then(GroupGap)
             .fillMaxWidth()
-            .height(GroupGapHeight)
+            .height(AppMenuDefaults.GroupGapHeight)
             .background(AppTheme.colors.fill),
     )
 }
@@ -174,7 +174,7 @@ internal fun MenuPanel(
     content: @Composable () -> Unit,
 ) {
     AppSurface(
-        modifier = modifier.widthIn(min = MenuMinWidth, max = MenuMaxWidth),
+        modifier = modifier.widthIn(min = AppMenuDefaults.MinWidth, max = AppMenuDefaults.MaxWidth),
         shape = AppTheme.shapes.md,
         color = AppTheme.colors.surfaceElevated,
         elevation = AppTheme.elevation.overlay,
@@ -256,10 +256,19 @@ private class MenuPosition(private val margin: Int, private val gap: Int) : Popu
     }
 }
 
-internal val MenuMinWidth = 200.dp
-internal val MenuMaxWidth = 280.dp
+/**
+ * The menu's width, its distance from the window's edges and from its anchor, and the gap between
+ * its groups.
+ */
+internal object AppMenuDefaults {
+    val WindowMargin = 16.dp
+    val AnchorGap = 6.dp
+    val MinWidth = 200.dp
+    val MaxWidth = 280.dp
+    val GroupGapHeight = 8.dp
+}
+
 internal const val MenuStartScale = 0.85f
-private val GroupGapHeight = 8.dp
 
 @AppComponentPreviews
 @Composable

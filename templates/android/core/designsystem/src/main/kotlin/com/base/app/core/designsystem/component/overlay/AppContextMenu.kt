@@ -222,7 +222,7 @@ private fun ContextMenuOverlay(state: ContextMenuState, drawing: GraphicsLayer, 
                                 val p = lift.value
                                 scaleX = lerp(1f, liftScale, p)
                                 scaleY = scaleX
-                                shadowElevation = PreviewShadow.toPx() * p.coerceIn(0f, 1f)
+                                shadowElevation = AppContextMenuDefaults.PreviewShadow.toPx() * p.coerceIn(0f, 1f)
                                 shape = previewShape
                                 clip = true
                                 ambientShadowColor = colors.shadow
@@ -256,8 +256,8 @@ private fun ContextMenuOverlay(state: ContextMenuState, drawing: GraphicsLayer, 
             val menuPlaceable = measurables.last().measure(Constraints(maxWidth = constraints.maxWidth, maxHeight = constraints.maxHeight))
             val width = constraints.maxWidth
             val height = constraints.maxHeight
-            val margin = Margin.roundToPx()
-            val gap = Gap.roundToPx()
+            val margin = AppContextMenuDefaults.Margin.roundToPx()
+            val gap = AppContextMenuDefaults.Gap.roundToPx()
             val top = maxOf(insets.getTop(this), margin)
             val bottom = height - maxOf(insets.getBottom(this), margin)
             val menuWidth = menuPlaceable.width
@@ -352,9 +352,16 @@ private const val LiftScale = 1.03f
 
 /** The window dims to half the scrim an alert uses: the page stays readable around the menu. */
 private const val ScrimFraction = 0.5f
-private val PreviewShadow = 16.dp
-private val Margin = 16.dp
-private val Gap = 8.dp
+
+/**
+ * The lifted preview's shadow, and how far the menu keeps from the window's edges and from the
+ * preview.
+ */
+object AppContextMenuDefaults {
+    val PreviewShadow = 16.dp
+    val Margin = 16.dp
+    val Gap = 8.dp
+}
 
 @AppComponentPreviews
 @Composable

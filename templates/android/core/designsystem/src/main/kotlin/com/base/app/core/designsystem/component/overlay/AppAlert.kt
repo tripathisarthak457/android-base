@@ -91,7 +91,7 @@ fun AppAlert(
             AppSurface(
                 modifier = modifier
                     .padding(AppTheme.spacing.xl)
-                    .widthIn(max = AlertWidth)
+                    .widthIn(max = AppAlertDefaults.Width)
                     .graphicsLayer {
                         // Arrives from larger as it fades in, as iOS's does; leaves by fading alone.
                         // The layer is the card's size, so its alpha costs a card, not a screen.
@@ -112,7 +112,7 @@ fun AppAlert(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.xs),
                     ) {
-                        icon?.let { AppIcon(it, contentDescription = null, tint = if (destructive) AppTheme.colors.danger.content else AppTheme.colors.accentContent, size = 28.dp) }
+                        icon?.let { AppIcon(it, contentDescription = null, tint = if (destructive) AppTheme.colors.danger.content else AppTheme.colors.accentContent, size = AppAlertDefaults.IconSize) }
                         AppText(text = title, style = AppTheme.typography.headline, color = AppTheme.colors.contentPrimary, textAlign = TextAlign.Center)
                         message?.let {
                             AppText(text = it, style = AppTheme.typography.footnote, color = AppTheme.colors.contentPrimary, textAlign = TextAlign.Center)
@@ -142,7 +142,7 @@ private fun AlertAction(label: String, color: Color, bold: Boolean, onClick: () 
     Box(
         modifier = modifier
             .pressable(onClick = onClick, feedback = PressFeedback.Highlight)
-            .heightIn(min = ActionHeight)
+            .heightIn(min = AppAlertDefaults.ActionHeight)
             .padding(horizontal = AppTheme.spacing.sm),
         contentAlignment = Alignment.Center,
     ) {
@@ -156,8 +156,13 @@ private fun AlertAction(label: String, color: Color, bold: Boolean, onClick: () 
     }
 }
 
-private val AlertWidth = 300.dp
-private val ActionHeight = 44.dp
+/** The alert's width, its buttons and its glyph, iOS's. */
+object AppAlertDefaults {
+    val IconSize = 28.dp
+    val Width = 300.dp
+    val ActionHeight = 44.dp
+}
+
 private const val EnterScale = 0.3f
 
 @AppComponentPreviews

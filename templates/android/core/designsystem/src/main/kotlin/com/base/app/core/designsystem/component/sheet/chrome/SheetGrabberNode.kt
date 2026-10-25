@@ -104,8 +104,8 @@ internal fun SheetGrabberHost(controller: SheetController, grabber: (@Composable
             }
             .drawBehind {
                 if (focused) {
-                    val ringWidth = RingWidth.toPx()
-                    val ringSize = Size(size.width, RingHeight.toPx())
+                    val ringWidth = SheetGrabberHostDefaults.RingWidth.toPx()
+                    val ringSize = Size(size.width, SheetGrabberHostDefaults.RingHeight.toPx())
                     drawRoundRect(
                         color = ring,
                         topLeft = Offset(0f, (size.height - ringSize.height) / 2f),
@@ -209,5 +209,9 @@ internal fun rememberSheetLabels(): SheetLabels {
 
 internal const val GrabberTag = "sheet_grabber"
 private val Target = DesignTokens.Sheet.Grabber.touchTarget
-private val RingWidth = 2.dp
-private val RingHeight = 24.dp
+
+/** The focus ring a keyboard user sees around the grabber. */
+internal object SheetGrabberHostDefaults {
+    val RingWidth = 2.dp
+    val RingHeight = 24.dp
+}

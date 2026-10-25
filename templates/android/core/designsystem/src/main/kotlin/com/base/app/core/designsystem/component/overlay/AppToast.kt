@@ -129,7 +129,7 @@ fun AppToast(
     val tone = message.tone.colors
     if (message.hud) {
         AppSurface(
-            modifier = modifier.size(HudSize),
+            modifier = modifier.size(AppToastDefaults.HudSize),
             shape = AppTheme.shapes.lg,
             color = colors.surfaceElevated,
             elevation = AppTheme.elevation.overlay,
@@ -139,7 +139,7 @@ fun AppToast(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm, Alignment.CenterVertically),
             ) {
-                AppIcon(message.tone.icon, contentDescription = null, tint = tone.content, size = 40.dp)
+                AppIcon(message.tone.icon, contentDescription = null, tint = tone.content, size = AppToastDefaults.HudIconSize)
                 AppText(text = message.text, style = AppTheme.typography.subheadline, color = colors.contentPrimary, maxLines = 2)
             }
         }
@@ -157,7 +157,7 @@ fun AppToast(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             if (message.tone != AppTone.Neutral) AppIcon(message.tone.icon, contentDescription = null, tint = tone.content)
-            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(AppToastDefaults.TextSpacing)) {
                 message.title?.let { AppText(text = it, style = AppTheme.typography.headline, color = colors.contentPrimary) }
                 AppText(text = message.text, style = AppTheme.typography.subheadline, color = colors.contentPrimary)
             }
@@ -262,7 +262,7 @@ internal fun ToastLayer(queue: ToastQueue, held: () -> Boolean) {
 private fun Modifier.aboveBottomChrome(chrome: ChromeInset, navigationBars: WindowInsets): Modifier =
     layout { measurable, constraints ->
         val placeable = measurable.measure(constraints)
-        val lift = maxOf(chrome.value.roundToPx(), navigationBars.getBottom(this)) + ToastGap.roundToPx()
+        val lift = maxOf(chrome.value.roundToPx(), navigationBars.getBottom(this)) + AppToastDefaults.Gap.roundToPx()
         layout(placeable.width, placeable.height + lift) { placeable.place(0, 0) }
     }
 
@@ -276,7 +276,7 @@ private fun SwipeAway(onGone: () -> Unit, modifier: Modifier = Modifier, content
     val scope = rememberCoroutineScope()
     var drag by remember { mutableFloatStateOf(0f) }
     val spring = AppTheme.springs.sheet.pixels
-    val dismissAt = with(LocalDensity.current) { DismissDistance.toPx() }
+    val dismissAt = with(LocalDensity.current) { AppToastDefaults.DismissDistance.toPx() }
     Box(
         modifier = modifier
             .graphicsLayer { translationY = drag.coerceAtLeast(0f) }
@@ -297,13 +297,19 @@ private fun SwipeAway(onGone: () -> Unit, modifier: Modifier = Modifier, content
 }
 
 private const val Tick = 100L
-private val DismissDistance = 48.dp
+
+/** How far a toast is thrown to dismiss, the gap above what it rests on, and the HUD's size. */
+object AppToastDefaults {
+    val HudIconSize = 40.dp
+    val TextSpacing = 2.dp
+    val DismissDistance = 48.dp
+    val Gap = 12.dp
+    val HudSize = 140.dp
+}
 
 // How far ahead of the toast a release looks for where it was thrown (iOS's 0.99 projection).
 private const val ProjectionSeconds = 0.099f
 private const val Resisted = 12f
-private val ToastGap = 12.dp
-private val HudSize = 140.dp
 private const val HudStartScale = 0.9f
 
 @AppComponentPreviews
