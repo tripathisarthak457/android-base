@@ -25,7 +25,12 @@ Everything visual reads the theme through one accessor, `AppTheme`, inside the o
 
 | Slot | Read it as | Holds |
 |---|---|---|
+<!-- <opt:ui_components> -->
+| Colour | `AppTheme.colors` (`AppColors`) | roles, never hues: `background`, `surface`, `surfaceElevated`, `fill`, `separator`, `outline`, `contentPrimary`/`contentSecondary`/`contentTertiary`/`contentDisabled`, `accent` with `onAccent` and `accentSubtle`, `secondary`, `tertiary`, status colours (`success`, `warning`, `danger`, `info`), `scrim`, `focusRing`, and the ink components paint with, pure white or black in every theme and brand (`thumb`, `sheen`, `shade`, `mediaBackdrop`, `onMedia`) |
+<!-- </opt:ui_components> -->
+<!-- <opt:!ui_components> -->
 | Colour | `AppTheme.colors` (`AppColors`) | roles, never hues: `background`, `surface`, `surfaceElevated`, `fill`, `separator`, `outline`, `contentPrimary`/`contentSecondary`/`contentTertiary`/`contentDisabled`, `accent` with `onAccent` and `accentSubtle`, `secondary`, `tertiary`, status colours (`success`, `warning`, `danger`, `info`), `scrim`, `focusRing` |
+<!-- </opt:!ui_components> -->
 | Type | `AppTheme.typography` (`AppTypography`) | `largeTitle`, `title1`-`title3`, `headline`, `body`, `callout`, `subheadline`, `footnote`, `caption1`, `caption2`, `mono` |
 | Spacing | `AppTheme.spacing` (`AppSpacing`) | `xxs` to `xxxl`, `section`, and `gutter`, the margin to the window's edge, which grows with the window |
 <!-- <opt:ui_components> -->
