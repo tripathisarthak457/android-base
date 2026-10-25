@@ -27,7 +27,6 @@ class ComponentRuleCasesTest {
         )
     }
 
-    // <opt:!ui_components>
     @Test
     fun `a component reaches no storage, network, intent, toast or log`() {
         val source = """
@@ -43,7 +42,6 @@ class ComponentRuleCasesTest {
         assertEquals((2..7).map { "$it designsystem-imports" }, rules(COMPONENT, source))
     }
 
-    // </opt:!ui_components>
     @Test
     fun `a component takes values and callbacks, never a ViewModel, data or a Flow`() {
         val source = """
@@ -124,7 +122,6 @@ class ComponentRuleCasesTest {
         assertEquals(emptyList<String>(), rules(THEME, source))
     }
 
-    // <opt:!ui_components>
     @Test
     fun `a feature arranges components and draws nothing of its own`() {
         val source = """
@@ -137,6 +134,7 @@ class ComponentRuleCasesTest {
         assertEquals(listOf("1 feature-primitive", "4 feature-primitive"), rules(FEATURE, source))
     }
 
+    // <opt:!ui_components>
     @Test
     fun `a component comes with a preview, a private helper and the plumbing need none`() {
         val unpreviewed = """
@@ -164,6 +162,7 @@ class ComponentRuleCasesTest {
         assertEquals(emptyList<String>(), rules(ADAPTIVE, unpreviewed))
     }
 
+    // </opt:!ui_components>
     @Test
     fun `an offscreen layer carries the reason it is worth a texture`() {
         val source = """
@@ -185,7 +184,6 @@ class ComponentRuleCasesTest {
         assertEquals(emptyList<String>(), rules(FEATURE_TEST, shell))
     }
 
-    // </opt:!ui_components>
     @Test
     fun `the modifier a composable takes is used`() {
         val source = """
@@ -286,8 +284,8 @@ class ComponentRuleCasesTest {
         const val THEME = "$DESIGN/theme/Tokens.kt"
         // <opt:!ui_components>
         const val ADAPTIVE = "$DESIGN/foundation/adaptive/Panes.kt"
-        const val NAVIGATION = "core/navigation/shell/src/main/kotlin/com/acme/core/navigation/shell/Card.kt"
         // </opt:!ui_components>
+        const val NAVIGATION = "core/navigation/shell/src/main/kotlin/com/acme/core/navigation/shell/Card.kt"
         const val CORE_UI = "core/ui/src/main/kotlin/com/acme/core/ui/Rows.kt"
         const val FEATURE = "feature/orders/src/main/kotlin/com/acme/feature/orders/Orders.kt"
         const val FEATURE_TEST = "feature/orders/src/test/kotlin/com/acme/feature/orders/OrdersTest.kt"

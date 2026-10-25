@@ -212,11 +212,11 @@ Each rule's message names the reference page in `.agents/skills/` where one appl
 | `feature-composition-local` | configuration a reader can follow | pass it as a parameter; a value the whole tree reads is a theme token |
 | `empty-description` | nothing hidden from screen readers by accident | `null` for decoration, or a string resource that says what it shows |
 | `navigation-host-api` | features stay out of the navigation host | navigate through `AppNavigator`, register with `entry<Key>` |
-<!-- <opt:!ui_components> -->
 | `feature-primitive` | features arrange, the design system draws | draw it once in `:core:designsystem` |
+<!-- <opt:!ui_components> -->
 | `component-preview` | every component rendered and tested | `@AppComponentPreviews` on the component's preview |
-| `offscreen-layer` | no texture per frame without a reason | draw without the layer (`CompositingStrategy.ModulateAlpha` for alpha), or say why in the marker |
 <!-- </opt:!ui_components> -->
+| `offscreen-layer` | no texture per frame without a reason | draw without the layer (`CompositingStrategy.ModulateAlpha` for alpha), or say why in the marker |
 
 A `@Composable` in a module without the Compose compiler fails as `compose-compiler`: apply the Compose convention.
 

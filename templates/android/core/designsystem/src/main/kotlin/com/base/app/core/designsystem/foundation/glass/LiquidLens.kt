@@ -70,6 +70,7 @@ internal fun Modifier.liquidLens(
 
 private val LensEffects: BackdropEffectScope.() -> Unit = {
     vibrancy()
+    // allow(offscreen-layer): the lens blurs the content under the moving pill and nowhere else
     blur(LiquidLensDefaults.Blur.toPx())
     lens(LiquidLensDefaults.RefractionHeight.toPx(), LiquidLensDefaults.RefractionAmount.toPx())
 }

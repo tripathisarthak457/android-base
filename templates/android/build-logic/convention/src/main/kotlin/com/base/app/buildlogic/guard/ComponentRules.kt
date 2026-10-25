@@ -40,11 +40,9 @@ internal object ComponentRules {
         """(?<![\w.])(compositionLocalOf|staticCompositionLocalOf|compositionLocalWithComputedDefaultOf)\s*[(<{]""",
     )
     private val EMPTY_DESCRIPTION = Regex("""\bcontentDescription\s*=\s*""(?!")""")
-    // <opt:!ui_components>
     private val OFFSCREEN = Regex(
         """\bCompositingStrategy\s*\.\s*Offscreen\b|(?<![\w.])BlurEffect\s*\(|\bRenderEffect\b|(?<!\w)blur\s*\(""",
     )
-    // </opt:!ui_components>
 
     val ALL: List<Rule> = listOf(
         Rule(
@@ -105,7 +103,6 @@ internal object ComponentRules {
             applies = { it.isProduction },
             lines = pattern(EMPTY_DESCRIPTION),
         ),
-        // <opt:!ui_components>
         Rule(
             id = "feature-primitive",
             advice = "a feature arranges design-system components; draw it once, as a component " +
@@ -119,6 +116,7 @@ internal object ComponentRules {
                 ),
             ),
         ),
+        // <opt:!ui_components>
         Rule(
             id = "component-preview",
             advice = "give the component a preview with @AppComponentPreviews, which the " +
@@ -127,6 +125,7 @@ internal object ComponentRules {
             applies = inDesignComponents,
             lines = { source, _ -> unpreviewedComponents(source) },
         ),
+        // </opt:!ui_components>
         // An offscreen layer is sometimes the right tool (a mask, a blur behind floating chrome),
         // so the fix the rule asks for is a written reason, not a ban.
         Rule(
@@ -138,7 +137,6 @@ internal object ComponentRules {
             lines = pattern(OFFSCREEN),
             reference = "jetpack-compose-performance/references/animation.md",
         ),
-        // </opt:!ui_components>
     )
     // <opt:!ui_components>
 
@@ -239,11 +237,9 @@ internal object ComponentRules {
             """androidx\.room""", """androidx\.datastore""", """androidx\.paging""",
             """androidx\.work""", """coil3?\.""",
             """kotlinx\.coroutines\.flow\.(Mutable)?(State|Shared)Flow$""",
-            // <opt:!ui_components>
             """android\.content\.SharedPreferences$""", """java\.io\.File$""",
             """java\.net\.""", """android\.content\.Intent$""",
             """android\.widget\.Toast$""", """android\.util\.Log$""",
-            // </opt:!ui_components>
         ).joinToString("|", prefix = "^(", postfix = ")"),
     )
     private val STATEFUL_TYPE = Regex(

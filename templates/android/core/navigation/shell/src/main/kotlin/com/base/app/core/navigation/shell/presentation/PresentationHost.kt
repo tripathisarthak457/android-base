@@ -195,6 +195,7 @@ private fun PresentedFrame(
                 .fillMaxSize()
                 .graphicsLayer { if (card.active && card.subject == key) with(card) { applyCard() } }
                 // The cover's own layer: under the back card, a texture the card's pose moves and fades.
+                // allow(offscreen-layer): the back card's subject only, while its gesture lasts
                 .graphicsLayer { compositingStrategy = if (card.textures(key)) CompositingStrategy.Offscreen else CompositingStrategy.Auto }
                 .background(background),
         ) {

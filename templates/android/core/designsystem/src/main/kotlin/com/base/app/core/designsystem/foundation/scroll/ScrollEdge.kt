@@ -73,6 +73,7 @@ fun Modifier.scrollEdgeFade(edge: () -> Dp): Modifier = drawWithCache {
     if (edgePx <= 0f) return@drawWithCache onDrawWithContent { drawContent() }
     val end = (edgePx + ScrollEdgeDefaults.FadeTail.toPx()).coerceAtMost(size.height)
     val content = obtainGraphicsLayer()
+    // allow(offscreen-layer): DstIn masks only this strip under the bar, in a buffer of its own
     val strip = obtainGraphicsLayer().apply { compositingStrategy = CompositingStrategy.Offscreen }
     val mask = Brush.verticalGradient(
         0f to Color.Transparent,
@@ -103,6 +104,7 @@ internal fun Modifier.bottomEdgeFade(more: () -> Boolean): Modifier = drawWithCa
     val tail = ScrollEdgeDefaults.FadeTail.toPx().coerceAtMost(size.height)
     val start = size.height - tail
     val content = obtainGraphicsLayer()
+    // allow(offscreen-layer): DstIn masks only this strip at the bottom, in a buffer of its own
     val strip = obtainGraphicsLayer().apply { compositingStrategy = CompositingStrategy.Offscreen }
     val mask = Brush.verticalGradient(0f to Color.Black, 1f to Color.Transparent, endY = tail)
     onDrawWithContent {

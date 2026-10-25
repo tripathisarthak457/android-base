@@ -50,5 +50,6 @@ internal fun rememberGlassChrome(shape: Shape = GlassDefaults.ChromeShape): Modi
  */
 private val ChromeEffects: BackdropEffectScope.() -> Unit = {
     vibrancy()
+    // allow(offscreen-layer): glass is floating chrome's blur of what is behind it, nowhere else
     blur(GlassDefaults.ChromeBlur.toPx())
 }

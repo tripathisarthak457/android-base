@@ -194,18 +194,18 @@ class CodeRulesTest {
         ),
         // </opt:ui_components>
         // <opt-else:ui_components>
-        //~ Fixture("feature-primitive", FEATURE, "private fun f(m: Modifier) = m.border(border) /*!*/"),
         //~ Fixture(
         //~     "component-preview",
         //~     DESIGN_SYSTEM,
         //~     "package com.acme.core.designsystem.component /*!*/\n@Composable fun Tag(modifier: Modifier) = Box(modifier)",
         //~ ),
-        //~ Fixture(
-        //~     "offscreen-layer",
-        //~     DESIGN_SYSTEM,
-        //~     "fun Modifier.frost() = graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen } /*!*/",
-        //~ ),
         // </opt-else:ui_components>
+        Fixture("feature-primitive", FEATURE, "private fun f(m: Modifier) = m.border(border) /*!*/"),
+        Fixture(
+            "offscreen-layer",
+            DESIGN_SYSTEM,
+            "fun Modifier.frost() = graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen } /*!*/",
+        ),
         Fixture("designsystem-imports", DESIGN_SYSTEM, "import androidx.room.Dao /*!*/"),
         Fixture("stateless-params", DESIGN_SYSTEM, "@Composable fun Tag(rows: Flow<List<Row>>) {} /*!*/"),
         Fixture("raw-type", FEATURE, "private val s = 14.sp /*!*/"),

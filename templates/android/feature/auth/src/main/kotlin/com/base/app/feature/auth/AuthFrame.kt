@@ -1,6 +1,5 @@
 package com.base.app.feature.auth
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -26,12 +25,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
 import com.base.app.core.designsystem.foundation.adaptive.shouldUseTwoPanes
+import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 
@@ -100,20 +101,22 @@ private fun BrandPanel(modifier: Modifier) {
     // The launcher label, so the panel always names the app it is in without a string of its own.
     val appName = remember(context) { context.applicationInfo.loadLabel(context.packageManager).toString() }
 
-    Box(
-        modifier = modifier
-            .background(AppTheme.colors.accent)
-            .windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Start))
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .padding(AppTheme.spacing.xxl),
-        contentAlignment = Alignment.BottomStart,
-    ) {
-        AppText(
-            text = appName,
-            style = AppTheme.typography.title1,
-            color = AppTheme.colors.onAccent,
-        )
+    AppSurface(modifier = modifier, shape = RectangleShape, color = AppTheme.colors.accent) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Start))
+                .statusBarsPadding()
+                .navigationBarsPadding()
+                .padding(AppTheme.spacing.xxl),
+            contentAlignment = Alignment.BottomStart,
+        ) {
+            AppText(
+                text = appName,
+                style = AppTheme.typography.title1,
+                color = AppTheme.colors.onAccent,
+            )
+        }
     }
 }
 

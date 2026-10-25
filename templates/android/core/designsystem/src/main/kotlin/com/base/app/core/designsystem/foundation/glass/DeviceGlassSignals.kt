@@ -3,6 +3,7 @@ package com.base.app.core.designsystem.foundation.glass
 import android.app.ActivityManager
 import android.content.BroadcastReceiver
 import android.content.Context
+// allow(designsystem-imports): battery saver's broadcast arrives as an Intent; only glass reads it
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
