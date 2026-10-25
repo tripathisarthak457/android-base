@@ -94,7 +94,17 @@ py create_project.py --out ../MyApp --no-zip
 
 # Record the answers so you can regenerate the same project later.
 py create_project.py --save-spec myapp.json
+
+# The architecture, a theme skeleton and every build guard, without UI components (Android).
+py create_project.py --preset lean --no-ui-components
 ```
+
+`--no-ui-components` is for a team that brings its own design system. It leaves out the
+components, the navigation shell's visuals and the catalog app, and keeps the rest: the modules,
+MVI, Navigation 3 with deep links, data, DI, tests and every build guard. `:core:designsystem` is a
+theme skeleton, each screen a placeholder route over its ViewModel, and the app opens on a blank
+start screen. It combines with any preset, `--all` or a spec (`"ui_components": false`); a feature
+that needs components is left out with a note saying why.
 
 The three presets:
 
@@ -419,6 +429,10 @@ py create_project.py --spec myapp.json --dry-run --json
 py create_project.py --spec myapp.json --out ../MyApp --no-zip --json
 ```
 
+`--list-features --no-ui-components` lists the features as a project without UI components has
+them: without the ones it leaves out, and in its own words where a feature's usual description
+names a tab, a component or the performance harness.
+
 `--dry-run` is worth the two seconds before a long build: it names the features that were turned
 on which nobody ticked. Asking for push notifications quietly brings Firebase and both seams it
 binds, which is correct and is also the kind of thing better learned before the build than during
@@ -442,6 +456,10 @@ with `--tab` — the bottom-navigation tab list. It reads the project's own pack
 `app/build.gradle.kts` rather than asking, so running it in the wrong directory fails immediately
 instead of writing files into the wrong namespace.
 
+In a project generated without UI components, a module brings its ViewModel and a placeholder
+route in place of its screens, and says so; `--tab` is refused before anything is written, since
+there is no tab bar to add to.
+
 Multiple at once:
 
 ```bash
@@ -456,7 +474,7 @@ py remove_feature.py orders --project ../MyApp             # ask, then do it
 ```
 
 It deletes `:data:orders` and `:feature:orders` and takes their lines back out of all three
-files. The one people forget by hand is the Gradle include, which fails the next sync with an
+files; a `data/` or `feature/` folder left with no module goes too, build output and all. The one people forget by hand is the Gradle include, which fails the next sync with an
 error about a missing project rather than about the directory they deleted. It refuses a module
 the template itself ships: those are removed by generating without them, not by deleting a
 directory that half the app still references.

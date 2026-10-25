@@ -46,6 +46,13 @@ A spec is plain JSON. Only `app_name` and `package_name` are required:
   itself in the app's language picker. Adding one means adding it to `generator/translations/`.
 - `feature_modules` scaffolds a `:data:x` and `:feature:x` pair each. Names the template already
   uses (`auth`, `feed`, `profile`, `search` and so on) are refused.
+- `"ui_components": false` (Android only; the CLI flag is `--no-ui-components`) is for a user who
+  brings their own design system: the architecture, a theme skeleton in `:core:designsystem`, a
+  placeholder route over each screen's ViewModel and every build guard, without components. The
+  features that need components (`catalog`, `collections`, `datadisplay`, `formfields`, `pickers`,
+  `liquidglass`) are left out with a note each, and the theme does not use `design_style` or
+  `motion_style`. Leave the field out for a project with components.
+  `--list-features --json --no-ui-components` lists the features as such a project has them.
 - Then build it (`./gradlew :app:assembleDevDebug`) before you tell the user it is ready.
 
 After that, work in the generated project and follow its `AGENTS.md`. Its base components are a
@@ -66,6 +73,29 @@ repository proves it works. Optional code is fenced with markers the generator s
 In XML the same markers go in comments on their own line, **between** elements. A comment inside
 a tag is not valid XML, so an optional attribute needs another route: a Gradle setting, a library
 manifest, or a variant file under `generator/variants/`.
+
+**Options.** A spec-level switch such as `ui_components` lives in
+`templates/android/options/<key>.toml`: its default, the features it `disables` and the spec fields
+it `hides` (each with a reason), the paths it `owns` (absent while it is off), its `variant`
+directory, and `feature_copy` and `preset_copy` for kept features and presets whose usual words no
+longer hold. Its key is a marker key like a feature's, and the code with UI components is always
+the live branch, so the raw template stays the project with components:
+
+```kotlin
+// <opt:ui_components>    …    // </opt:ui_components>    kept with UI components
+// <opt-else:ui_components>                               directly after that block's end
+//~ placeholder()                                         emitted without them, minus the `//~ `
+// </opt-else:ui_components>
+```
+
+What only a project without components has is that `//~` fallback, or a whole file under
+`generator/variants/noui/` at the template's path, which replaces or adds that file. A file only a
+project with components has goes in `owns`. A file you add that reaches a component, a foundation
+primitive or the navigation shell needs one of these three, or every project without components
+stops compiling. `generator/tests/test_android_noui.py` checks what those projects hold and lack,
+the consistency matrix generates its `noui-*` shapes in both its quick and its full run, and
+`python3 tools/compare_generations.py --before <a checkout from before> --after .` proves that the
+projects with components did not change by a byte.
 
 A new optional feature needs all of:
 
