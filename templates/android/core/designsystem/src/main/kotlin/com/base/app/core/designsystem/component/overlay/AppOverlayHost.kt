@@ -120,6 +120,7 @@ internal class OverlayEntry(
 val LocalOverlayHost = staticCompositionLocalOf<OverlayHostState?> { null }
 
 /** Installed by the outermost `AppTheme` around everything the app draws. */
+@Suppress("ktlint:compose:content-slot-reused") // Drawn once; entry.content is an overlay's.
 @Composable
 internal fun AppOverlayHost(content: @Composable () -> Unit) {
     val state = remember { OverlayHostState() }
@@ -176,6 +177,7 @@ internal fun AppOverlayHost(content: @Composable () -> Unit) {
  * around them, as `rememberSaveable` does. [onRemoved] runs in the frame the call site leaves
  * composition, for what must not wait the frame the host takes to compose the overlay out.
  */
+@Suppress("ktlint:compose:parameter-naming") // onRemoved: once the call site has left.
 @Composable
 internal fun HostedOverlay(modal: () -> Boolean, onRemoved: (() -> Unit)? = null, content: @Composable () -> Unit) {
     val host = LocalOverlayHost.current

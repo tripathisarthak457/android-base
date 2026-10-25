@@ -288,7 +288,7 @@ object AppTabBarDefaults {
 }
 
 @Composable
-internal fun BarSurface(look: BarLook, modifier: Modifier, content: @Composable () -> Unit) {
+internal fun BarSurface(look: BarLook, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     val surface = if (look.floating) {
         modifier
             .then(if (look.shadow) Modifier.dropShadow(look.shape, AppTabBarDefaults.BarShadow) else Modifier)

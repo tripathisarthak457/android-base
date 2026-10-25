@@ -19,7 +19,7 @@ import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 
 @Composable
-fun ButtonsSection() {
+internal fun ButtonsSection() {
     CatalogGroup("Variants", caption = "Filled for the one action a screen exists for; tinted for a real alternative; plain for the rest. Destructive is red on a red tint, readable in dark theme.") {
         ButtonVariant.entries.forEach { variant ->
             Wrap {

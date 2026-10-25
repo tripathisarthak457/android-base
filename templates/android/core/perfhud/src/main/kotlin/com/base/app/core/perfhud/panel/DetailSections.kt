@@ -40,7 +40,7 @@ import com.base.app.core.designsystem.component.text.AppText
 // </opt-else:ui_components>
 
 @Composable
-internal fun MemorySection(recorder: PerformanceRecorder, memory: MemorySummary?, version: () -> Int) {
+internal fun ColumnScope.MemorySection(recorder: PerformanceRecorder, memory: MemorySummary?, version: () -> Int) {
     Section(title = R.string.perfhud_memory, caption = R.string.perfhud_memory_caption) {
         MemoryGraph(memory = recorder.memory, version = version)
         Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md)) {

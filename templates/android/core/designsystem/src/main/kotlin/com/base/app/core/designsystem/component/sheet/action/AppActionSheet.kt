@@ -69,7 +69,7 @@ fun AppActionSheet(
     anchor: SheetAnchor? = null,
 ) {
     if (AppTheme.windowClass.width >= WindowWidth.Medium) {
-        ActionCard(visible, actions, onDismissRequest, modifier, title, message, anchor)
+        ActionCard(visible, actions, onDismissRequest, title, message, anchor, modifier)
         return
     }
     val state = rememberAppSheetState(listOf(ActionFit))

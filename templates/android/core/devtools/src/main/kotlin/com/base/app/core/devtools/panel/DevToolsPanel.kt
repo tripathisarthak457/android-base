@@ -5,6 +5,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -115,7 +116,7 @@ internal fun DevToolsPanel(devTools: DevTools, initialTab: String?, onClose: () 
 }
 
 @Composable
-private fun PanelContent(devTools: DevTools, initialTab: String?, onClose: () -> Unit) {
+private fun ColumnScope.PanelContent(devTools: DevTools, initialTab: String?, onClose: () -> Unit) {
     val exchanges by devTools.log.exchanges.collectAsStateWithLifecycle()
     val pages = devTools.pages
     val tabKeys = remember(pages) { PanelTab.entries.map { it.name } + pages.map { it.key } }

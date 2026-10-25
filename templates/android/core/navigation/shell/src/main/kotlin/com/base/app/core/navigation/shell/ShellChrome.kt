@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
  */
 @Composable
 internal fun ShellChrome(
-    modifier: Modifier,
     chrome: @Composable BoxScope.() -> Unit,
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
     Box(modifier) {

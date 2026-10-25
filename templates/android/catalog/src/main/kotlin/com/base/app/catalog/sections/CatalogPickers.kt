@@ -16,10 +16,10 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 @Composable
-fun PickersSection() {
+internal fun PickersSection() {
     CatalogGroup("Calendar", caption = "Swipe sideways or use the arrows; the week starts on the locale's first day.") {
         var date by remember { mutableStateOf(LocalDate.of(2026, 10, 9)) }
-        AppDatePicker(selectedDate = date, onDateSelected = { date = it }, today = LocalDate.of(2026, 10, 9), minDate = LocalDate.of(2026, 1, 1))
+        AppDatePicker(selectedDate = date, onDateChange = { date = it }, today = LocalDate.of(2026, 10, 9), minDate = LocalDate.of(2026, 1, 1))
     }
     CatalogGroup("Time", caption = "Wheels that read each other's current value when they settle, so changing the hour keeps the minutes.") {
         var time by remember { mutableStateOf(LocalTime.of(9, 30)) }

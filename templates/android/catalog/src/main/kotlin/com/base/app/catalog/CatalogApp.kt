@@ -65,7 +65,7 @@ import com.base.app.core.designsystem.theme.ThemeMode
  * pushed screen does in the app, and Back returns.
  */
 @Composable
-fun CatalogApp(initialSection: CatalogSection?, initialEnvironment: CatalogEnvironment, frames: FrameTimes) {
+internal fun CatalogApp(initialSection: CatalogSection?, initialEnvironment: CatalogEnvironment, frames: FrameTimes) {
     var environment by rememberSaveable(stateSaver = CatalogEnvironment.Saver) { mutableStateOf(initialEnvironment) }
     var section by rememberSaveable { mutableStateOf(initialSection) }
 

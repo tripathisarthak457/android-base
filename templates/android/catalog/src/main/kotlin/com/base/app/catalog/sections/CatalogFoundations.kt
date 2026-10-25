@@ -44,7 +44,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 @Composable
-fun FoundationsSection() {
+internal fun FoundationsSection() {
     val colors = AppTheme.colors
     CatalogGroup("Surfaces", caption = "Grouped lists sit on backgroundGrouped; floating chrome on surfaceElevated, lifted in dark.") {
         Swatches(

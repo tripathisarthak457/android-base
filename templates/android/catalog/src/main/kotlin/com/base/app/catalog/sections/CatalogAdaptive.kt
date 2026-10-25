@@ -57,7 +57,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 import kotlin.math.roundToInt
 
 @Composable
-fun AdaptiveSection() {
+internal fun AdaptiveSection() {
     CatalogGroup(
         "A pane of any width",
         caption = "The pane is laid out at the slider's width and shrunk to fit. What is in it reads the pane's size class, " +

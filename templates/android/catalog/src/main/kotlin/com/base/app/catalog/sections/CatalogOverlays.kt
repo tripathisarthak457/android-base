@@ -27,7 +27,7 @@ import com.base.app.core.designsystem.icon.AppIcons
 import kotlinx.coroutines.delay
 
 @Composable
-fun OverlaysSection() {
+internal fun OverlaysSection() {
     CatalogGroup("Alert", caption = "Over everything, the tab bar included. A tap outside does nothing; Back cancels.") {
         var plain by remember { mutableStateOf(false) }
         var destructive by remember { mutableStateOf(false) }

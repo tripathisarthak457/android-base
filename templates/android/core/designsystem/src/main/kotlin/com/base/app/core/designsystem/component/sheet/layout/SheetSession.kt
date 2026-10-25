@@ -63,11 +63,11 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens
  * focus, parking and host-motion effects; its place in the window's stack; and its layout. Both
  * AppSheet overloads and AppSheetLayout draw through this.
  */
+@Suppress("ktlint:compose:parameter-naming") // onHidden: once the sheet is gone.
 @Composable
 internal fun SheetSession(
     state: AppSheetState,
     onDismissRequest: () -> Unit,
-    modifier: Modifier,
     modality: SheetModality,
     dismissible: Boolean,
     properties: AppSheetProperties,
@@ -79,9 +79,10 @@ internal fun SheetSession(
     grabber: (@Composable AppSheetScope.() -> Unit)?,
     header: (@Composable AppSheetScope.() -> Unit)?,
     footer: (@Composable AppSheetScope.() -> Unit)?,
-    content: @Composable AppSheetScope.() -> Unit,
+    modifier: Modifier = Modifier,
     asDialog: Boolean = false,
     destination: Boolean = false,
+    content: @Composable AppSheetScope.() -> Unit,
 ) {
     val upThrough = (modality as? SheetModality.NonModal)?.upThrough
     require(upThrough == null || upThrough in state.detents) { "upThrough $upThrough is not one of ${state.detents}" }
@@ -195,7 +196,7 @@ internal fun SheetSession(
         LocalSheetContentWidth provides contentWidth,
         LocalSheetSurfaceProvider provides surface,
     ) {
-        SheetLayout(controller, modifier, modal, placement, paneTitle, grabber, header, footer, content)
+        SheetLayout(controller, modal, placement, paneTitle, grabber, header, footer, modifier, content)
     }
 }
 

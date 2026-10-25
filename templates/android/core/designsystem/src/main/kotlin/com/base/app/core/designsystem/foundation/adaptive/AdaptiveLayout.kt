@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,10 +66,16 @@ fun AppTwoPane(
     sideBySide: Boolean = shouldUseTwoPanes,
     spacing: Dp = AppTheme.spacing.xl,
 ) {
+    // Movable, so a fold, an unfold or a resize that moves the halves to another arrangement keeps
+    // what they hold (text typed, a scroll position) instead of composing them anew.
+    val firstHalf by rememberUpdatedState(first)
+    val secondHalf by rememberUpdatedState(second)
+    val firstContent = remember { movableContentOf { firstHalf() } }
+    val secondContent = remember { movableContentOf { secondHalf() } }
     val posture = AppTheme.posture
     val hinge = posture.hinge
     if (hinge != null && posture.kind != WindowPosture.Kind.Flat) {
-        HingeSplit(first, second, hinge, vertical = posture.kind == WindowPosture.Kind.Book, modifier)
+        HingeSplit(firstContent, secondContent, hinge, vertical = posture.kind == WindowPosture.Kind.Book, modifier)
         return
     }
     if (sideBySide) {
@@ -76,13 +84,13 @@ fun AppTwoPane(
             horizontalArrangement = Arrangement.spacedBy(spacing),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Box(modifier = Modifier.weight(firstWeight)) { first() }
-            Box(modifier = Modifier.weight(1f - firstWeight)) { second() }
+            Box(modifier = Modifier.weight(firstWeight)) { firstContent() }
+            Box(modifier = Modifier.weight(1f - firstWeight)) { secondContent() }
         }
     } else {
         Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(spacing)) {
-            first()
-            second()
+            firstContent()
+            secondContent()
         }
     }
 }
@@ -93,13 +101,14 @@ fun AppTwoPane(
  * layout and a scroll across the hinge costs nothing. A hinge that misses the pane leaves the
  * halves meeting in its middle.
  */
+@Suppress("ktlint:compose:content-slot-reused") // Each half is one of the Layout's contents.
 @Composable
 private fun HingeSplit(
     first: @Composable () -> Unit,
     second: @Composable () -> Unit,
     hinge: Rect,
     vertical: Boolean,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     var origin by remember { mutableFloatStateOf(0f) }
     Layout(

@@ -30,7 +30,7 @@ import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 
 @Composable
-fun ContainersSection() {
+internal fun ContainersSection() {
     CatalogGroup("Card", caption = "The style decides the treatment: outlined, raised on the elevated surface, or offset.") {
         AppCard(modifier = Modifier.fillMaxWidth()) {
             AppText(text = "A static card", style = AppTheme.typography.headline)

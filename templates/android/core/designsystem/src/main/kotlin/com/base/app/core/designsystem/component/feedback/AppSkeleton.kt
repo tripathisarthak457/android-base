@@ -77,9 +77,9 @@ fun AppSkeletonLine(
 )
 @Composable
 fun AppSkeletonLine(
+    height: Dp,
     modifier: Modifier = Modifier,
     widthFraction: Float = 1f,
-    height: Dp,
 ) {
     AppSkeleton(modifier = modifier.fillMaxWidth(widthFraction).height(height), shape = AppTheme.shapes.xs)
 }

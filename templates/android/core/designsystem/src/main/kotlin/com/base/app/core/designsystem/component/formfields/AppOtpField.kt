@@ -55,6 +55,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * autofill all land at once. A screen reader hears the field by its [label], not six unnamed boxes.
  * [onFilled] runs when the last digit arrives.
  */
+@Suppress("ktlint:compose:parameter-naming") // onFilled runs once, when it is full.
 @Composable
 fun AppOtpField(
     state: TextFieldState,

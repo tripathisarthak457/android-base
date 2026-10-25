@@ -39,7 +39,7 @@ import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 
 @Composable
-fun BarsSection() {
+internal fun BarsSection() {
     CatalogGroup("Inline top bar", caption = "The title takes what the buttons leave, so it never runs under a second action.") {
         AppTopBar(title = "Messages", onBack = {}, windowInsets = WindowInsets(0)) {
             AppIconButton(AppIcons.Search, contentDescription = "Search", onClick = {})

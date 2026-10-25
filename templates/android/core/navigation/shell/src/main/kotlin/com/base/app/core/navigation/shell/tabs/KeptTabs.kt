@@ -8,7 +8,6 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidedValue
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -96,7 +95,7 @@ internal fun KeptTabs(
         // lambda leaves its composition alone, and a warmed tab is taken over as it was built.
         val tabs = remember { HashMap<Int, @Composable () -> Unit>() }
         val tab = { index: Int ->
-            tabs.getOrPut(index) { { KeptTab(index, selection, reveal, warming) { latest.value(index) } } }
+            tabs.getOrPut(index) { { KeptTab(index, { selection.value() }, reveal, warming) { latest.value(index) } } }
         }
         WarmUpTabs(warming, warmUp, opened, tab)
 
@@ -119,14 +118,14 @@ internal fun KeptTabs(
 @Composable
 private fun KeptTab(
     index: Int,
-    selection: State<() -> Int>,
+    selected: () -> Int,
     reveal: TabReveal,
     warming: TabWarmUp,
     content: @Composable () -> Unit,
 ) {
     // Derived, so a switch recomposes only the two tabs it changes.
-    val active by remember { derivedStateOf { selection.value() == index } }
-    val visibility = remember { TabVisibility { selection.value() == index } }
+    val active by remember { derivedStateOf { selected() == index } }
+    val visibility = remember { TabVisibility { selected() == index } }
     val focusManager = LocalFocusManager.current
     val focus = remember { TabFocus() }
     SideEffect(active) { if (!active && focus.within) focusManager.clearFocus() }
@@ -139,7 +138,7 @@ private fun KeptTab(
             Modifier
                 .keptTab(parked = !active, reveal = reveal, warming = warming, index = index)
                 .onFocusChanged { focus.within = it.hasFocus }
-                .focusProperties { onEnter = { if (selection.value() != index) cancelFocusChange() } }
+                .focusProperties { onEnter = { if (selected() != index) cancelFocusChange() } }
                 .focusGroup(),
         ) {
             content()

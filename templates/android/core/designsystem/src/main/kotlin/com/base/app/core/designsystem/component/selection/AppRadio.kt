@@ -43,7 +43,7 @@ fun AppRadio(
         Modifier.semantics { this.selected = selected }
     }
 
-    LabelledControl(modifier.then(interaction), label, enabled) {
+    LabelledControl(label = label, enabled = enabled, modifier = modifier.then(interaction)) {
         Canvas(Modifier.size(AppCheckboxDefaults.Size)) {
             val radius = size.minDimension / 2f
             val p = dot.value

@@ -56,7 +56,7 @@ import com.base.app.core.playstore.update.AppUpdates
 
 /** Everything above the navigation hosts: the theme, the system bars, and which app is showing. */
 @Composable
-fun AppRoot(
+internal fun AppRoot(
     startup: Startup,
     navigator: AppNavigator,
     registry: NavRegistry,

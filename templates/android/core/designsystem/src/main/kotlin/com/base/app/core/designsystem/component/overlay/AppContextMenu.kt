@@ -235,7 +235,7 @@ private fun ContextMenuOverlay(state: ContextMenuState, drawing: GraphicsLayer, 
                     )
                 }
                 MenuPanel(
-                    onItemChosen = ::close,
+                    onChoose = ::close,
                     modifier = Modifier.graphicsLayer {
                         val p = shown.value
                         alpha = p.coerceIn(0f, 1f)

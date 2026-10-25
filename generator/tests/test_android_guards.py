@@ -152,14 +152,20 @@ class EveryProjectToolsTest(unittest.TestCase):
                 self.assertEqual(not formatting, "ktlint_standard = disabled" in editorconfig.splitlines())
                 self.assertEqual(formatting, "kotlinGradle {" in build)
 
-    def test_a_rule_left_off_for_the_components_is_on_without_them(self):
+    def test_the_compose_rules_are_the_same_with_and_without_components(self):
+        # A rule is off only where the build's own checks cover it or the design differs on purpose,
+        # never until the components' code is fixed, so both modes run the same rules.
+        def off(project):
+            lines = (project / ".editorconfig").read_text(encoding="utf-8").splitlines()
+            return {line for line in lines if line.startswith("ktlint_compose_") and line.endswith("= disabled")}
+
         for formatting in (True, False):
             with self.subTest(formatting=formatting):
-                ui = (self.projects[formatting, True] / ".editorconfig").read_text(encoding="utf-8")
-                noui = (self.projects[formatting, False] / ".editorconfig").read_text(encoding="utf-8")
-                self.assertIn("ktlint_compose_param-order-check = disabled", ui)
-                self.assertNotIn("ktlint_compose_param-order-check", noui)
-                self.assertIn("ktlint_compose_vm-forwarding-check = disabled", noui)
+                ui, noui = off(self.projects[formatting, True]), off(self.projects[formatting, False])
+                self.assertEqual(ui, noui)
+                self.assertIn("ktlint_compose_vm-forwarding-check = disabled", ui)
+                self.assertNotIn("ktlint_compose_param-order-check = disabled", ui)
+                self.assertNotIn("ktlint_compose_modifier-missing-check = disabled", ui)
 
     def test_the_release_build_guards_its_dependencies(self):
         for (formatting, ui), project in self.projects.items():

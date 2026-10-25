@@ -6,6 +6,7 @@ import androidx.compose.foundation.LocalOverscrollFactory
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.ScrollScope
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -54,7 +55,7 @@ import kotlin.math.ln
 import kotlin.math.roundToInt
 
 @Composable
-fun MotionSection() {
+internal fun MotionSection() {
     CatalogGroup("Transitions", caption = "Anything that moves rides a spring, so it can be interrupted; only opacity fades.") {
         val transitions = rememberAppTransitions()
         var shown by remember { mutableStateOf(true) }
@@ -141,15 +142,18 @@ private fun DecelerationLab() {
     var last by remember { mutableStateOf<FlingRun?>(null) }
     val base = AppScrollDefaults.flingBehavior()
     val fling = remember(base) { MeasuredFling(base) { last = it } }
-    LazyColumn(Modifier.fillMaxWidth().height(320.dp).testTag("fling_lab"), flingBehavior = fling) {
-        items(DecelerationRows, key = { it }) { AppRow(title = "Row ${it + 1}") }
-    }
     val density = LocalDensity.current.density
-    AppFiguresText(
-        text = last?.describe(density) ?: "Flick the list.",
-        modifier = Modifier.testTag("fling_readout"),
-        style = AppTheme.typography.footnote,
-    )
+    // The group's own spacing, so the list and its readout sit as they would as its children.
+    Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md)) {
+        LazyColumn(Modifier.fillMaxWidth().height(320.dp).testTag("fling_lab"), flingBehavior = fling) {
+            items(DecelerationRows, key = { it }) { AppRow(title = "Row ${it + 1}") }
+        }
+        AppFiguresText(
+            text = last?.describe(density) ?: "Flick the list.",
+            modifier = Modifier.testTag("fling_readout"),
+            style = AppTheme.typography.footnote,
+        )
+    }
 }
 
 /** One fling: its release speed in pixels a second, the pixels it travelled and how long it took. */

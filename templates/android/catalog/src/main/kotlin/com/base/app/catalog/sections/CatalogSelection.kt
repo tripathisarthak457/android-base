@@ -19,7 +19,7 @@ import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 
 @Composable
-fun SelectionSection() {
+internal fun SelectionSection() {
     CatalogGroup("Switch", caption = "The thumb widens while held and can be dragged across.") {
         var on by remember { mutableStateOf(true) }
         Wrap {

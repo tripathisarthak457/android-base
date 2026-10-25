@@ -44,6 +44,7 @@ internal class SheetTestScreen(
     lateinit var sheetScope: AppSheetScope
         private set
 
+    @Suppress("ktlint:compose:modifier-missing-check") // The test's window: nothing places it.
     @Composable
     fun Content() {
         AppTheme(mode = ThemeMode.Light, reduceMotion = false) {

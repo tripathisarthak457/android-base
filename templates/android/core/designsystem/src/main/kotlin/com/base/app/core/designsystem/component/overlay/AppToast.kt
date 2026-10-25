@@ -35,6 +35,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -188,9 +189,10 @@ internal fun ToastLayer(queue: ToastQueue, held: () -> Boolean) {
     val haptics = rememberAppHaptics()
     val springs = AppTheme.springs
     val message = queue.current
+    val holding = rememberUpdatedState(held)
 
     LaunchedEffect(message) {
-        snapshotFlow(held).first { !it }
+        snapshotFlow { holding.value() }.first { !it }
         when (message?.tone) {
             AppTone.Success -> haptics.perform(AppHaptic.Confirm)
             AppTone.Error -> haptics.perform(AppHaptic.Reject)
@@ -202,7 +204,7 @@ internal fun ToastLayer(queue: ToastQueue, held: () -> Boolean) {
         var left = showing.durationMillis
         while (left > 0) {
             lifecycle.currentStateFlow.first { it.isAtLeast(Lifecycle.State.STARTED) }
-            snapshotFlow(held).first { !it }
+            snapshotFlow { holding.value() }.first { !it }
             delay(Tick)
             left -= Tick
         }
@@ -235,7 +237,7 @@ internal fun ToastLayer(queue: ToastQueue, held: () -> Boolean) {
         } else {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
                 SwipeAway(
-                    onGone = queue::dismiss,
+                    onDismiss = queue::dismiss,
                     modifier = Modifier.animateEnterExit(
                         enter = slideInVertically(springs.sheet.offset) { it } + fadeIn(springs.fadeIn()),
                         exit = slideOutVertically(springs.sheet.offset) { it } + fadeOut(springs.fadeOut()),
@@ -272,7 +274,7 @@ private fun Modifier.aboveBottomChrome(chrome: ChromeInset, navigationBars: Wind
  * the finger's speed.
  */
 @Composable
-private fun SwipeAway(onGone: () -> Unit, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+private fun SwipeAway(onDismiss: () -> Unit, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     val scope = rememberCoroutineScope()
     var drag by remember { mutableFloatStateOf(0f) }
     val spring = AppTheme.springs.sheet.pixels
@@ -285,7 +287,7 @@ private fun SwipeAway(onGone: () -> Unit, modifier: Modifier = Modifier, content
                 orientation = Orientation.Vertical,
                 onDragStopped = { velocity ->
                     if (drag + velocity * ProjectionSeconds > dismissAt) {
-                        onGone()
+                        onDismiss()
                     } else {
                         scope.launch { animate(drag, 0f, velocity, spring) { value, _ -> drag = value } }
                     }

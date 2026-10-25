@@ -223,7 +223,7 @@ private fun TabCell(
     showLabel: Boolean,
     uppercase: Boolean,
     scale: () -> Float,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     Layout(
         modifier = modifier,

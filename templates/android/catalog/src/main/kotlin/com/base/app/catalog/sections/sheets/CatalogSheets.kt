@@ -3,6 +3,7 @@ package com.base.app.catalog.sections.sheets
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,7 +29,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * stack and the translucent materials have something to read against.
  */
 @Composable
-fun SheetsSection() {
+internal fun SheetsSection() {
     CatalogGroup("Backdrop", caption = "Colour behind the sheets: the dim, the receding page and the frosted materials read against it.") {
         Backdrop()
     }
@@ -74,21 +75,24 @@ internal fun LazyListScope.sampleRows(count: Int, prefix: String = "Row") {
 
 @Composable
 private fun Backdrop() {
-    Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
-        BackdropColours.forEach { (from, to) ->
-            Box(
-                Modifier
-                    .size(56.dp)
-                    .background(Brush.linearGradient(listOf(from, to)), AppTheme.shapes.md),
-            )
+    // The group's own spacing, so the swatches and the band sit as they would as its children.
+    Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
+            BackdropColours.forEach { (from, to) ->
+                Box(
+                    Modifier
+                        .size(56.dp)
+                        .background(Brush.linearGradient(listOf(from, to)), AppTheme.shapes.md),
+                )
+            }
         }
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .height(96.dp)
+                .background(Brush.horizontalGradient(BackdropColours.map { it.first }), AppTheme.shapes.lg),
+        )
     }
-    Box(
-        Modifier
-            .fillMaxWidth()
-            .height(96.dp)
-            .background(Brush.horizontalGradient(BackdropColours.map { it.first }), AppTheme.shapes.lg),
-    )
 }
 
 private val BackdropColours = listOf(

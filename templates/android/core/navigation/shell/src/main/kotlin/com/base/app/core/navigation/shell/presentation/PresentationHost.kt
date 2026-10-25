@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
@@ -177,10 +178,12 @@ private fun PresentedFrame(
     content: @Composable () -> Unit,
 ) {
     val transition = LocalNavAnimatedContentScope.current.transition
-    ReportMotion(transition, transition.arrival(motion), gate)
+    val arrival = transition.arrival(motion)
+    ReportMotion(transition, { arrival.value }, gate)
+    val live by rememberUpdatedState(onLive)
     DisposableEffect(Unit) {
-        onLive(1)
-        onDispose { onLive(-1) }
+        live(1)
+        onDispose { live(-1) }
     }
     val screen = rememberScreenChrome(screens, contentKey)
     val background = AppTheme.colors.background

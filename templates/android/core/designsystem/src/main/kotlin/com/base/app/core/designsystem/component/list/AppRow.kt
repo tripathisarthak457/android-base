@@ -57,7 +57,7 @@ fun AppRow(
     val colors = AppTheme.colors
     RowLayout(
         modifier = modifier,
-        interaction = Modifier
+        interactionModifier = Modifier
             .then(
                 if (onClick != null) {
                     Modifier.pressable(onClick = onClick, feedback = PressFeedback.Highlight, enabled = enabled)
@@ -119,7 +119,7 @@ fun AppToggleRow(
     val interactionSource = remember { MutableInteractionSource() }
     RowLayout(
         modifier = modifier,
-        interaction = Modifier
+        interactionModifier = Modifier
             .toggleable(
                 value = checked,
                 interactionSource = interactionSource,
@@ -156,7 +156,7 @@ fun AppChoiceRow(
     val colors = AppTheme.colors
     RowLayout(
         modifier = modifier,
-        interaction = Modifier
+        interactionModifier = Modifier
             .semantics { this.selected = selected }
             .pressable(onClick = onSelect, feedback = PressFeedback.Highlight, enabled = enabled, role = Role.RadioButton)
             .disabledAlpha(enabled),
@@ -207,11 +207,11 @@ private fun RowText(title: String, subtitle: String?, titleColor: Color) {
  */
 @Composable
 private fun RowLayout(
-    modifier: Modifier,
-    interaction: Modifier,
     leading: (@Composable () -> Unit)?,
     text: @Composable () -> Unit,
     trailing: (@Composable () -> Unit)?,
+    modifier: Modifier = Modifier,
+    interactionModifier: Modifier = Modifier,
 ) {
     val inset = remember { SeparatorInset() }
     val spacing = AppTheme.spacing
@@ -221,7 +221,7 @@ private fun RowLayout(
         contents = listOf(leading ?: {}, text, trailing ?: {}),
         modifier = modifier
             .then(if (readable.isFinite) Modifier.centeredMaxWidth(readable) else Modifier)
-            .then(interaction)
+            .then(interactionModifier)
             .then(inset),
     ) { (leadingSlot, textSlot, trailingSlot), constraints ->
         val horizontal = spacing.lg.roundToPx()

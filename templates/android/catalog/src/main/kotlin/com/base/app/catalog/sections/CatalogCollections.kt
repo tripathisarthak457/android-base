@@ -28,7 +28,7 @@ import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 
 @Composable
-fun CollectionsSection() {
+internal fun CollectionsSection() {
     CatalogGroup("Carousel", caption = "Cards snap one at a time with the next one peeking in.") {
         AppCarousel(pageCount = 5, modifier = Modifier.height(180.dp)) { page ->
             AppCard(modifier = Modifier.fillMaxSize()) { AppText(text = "Card ${page + 1}", style = AppTheme.typography.title3) }

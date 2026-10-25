@@ -89,7 +89,7 @@ private fun Connectors(hasBefore: Boolean, hasAfter: Boolean, beforeDone: Boolea
 }
 
 @Composable
-private fun ConnectorHalf(visible: Boolean, done: Boolean, modifier: Modifier) {
+private fun ConnectorHalf(visible: Boolean, done: Boolean, modifier: Modifier = Modifier) {
     val colour = animateColorAsState(
         targetValue = when {
             !visible -> Color.Transparent

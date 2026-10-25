@@ -27,7 +27,7 @@ import com.base.app.core.designsystem.component.datadisplay.AppTimeline
 import com.base.app.core.designsystem.component.datadisplay.TimelineStep
 
 @Composable
-fun DataSection() {
+internal fun DataSection() {
     CatalogGroup("Stats and charts") {
         AppStatTile(label = "Revenue", value = "$12,480", delta = "+8.2%")
         AppSparkline(values = listOf(3f, 5f, 4f, 8f, 6f, 9f, 12f), modifier = Modifier.fillMaxWidth())

@@ -14,7 +14,7 @@ import com.base.app.core.designsystem.component.input.AppTextField
 import com.base.app.core.designsystem.icon.AppIcons
 
 @Composable
-fun InputsSection() {
+internal fun InputsSection() {
     CatalogGroup("Text field", caption = "Each field reads and writes a TextFieldState; in an app the ViewModel owns it.") {
         AppTextField(state = rememberTextFieldState(), label = "Full name", placeholder = "Ada Lovelace", helper = "As it appears on your card")
         AppTextField(state = rememberTextFieldState("not-an-email"), label = "Email", leadingIcon = AppIcons.Mail, error = "Enter a valid email address")

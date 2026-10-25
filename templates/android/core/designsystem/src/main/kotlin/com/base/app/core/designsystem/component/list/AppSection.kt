@@ -112,7 +112,7 @@ internal class SeparatorInset : ParentDataModifier {
 
 /** Children stacked top to bottom, with a hairline between each pair drawn by the column itself. */
 @Composable
-private fun SeparatedColumn(modifier: Modifier, content: @Composable () -> Unit) {
+private fun SeparatedColumn(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     val lines = remember { SeparatorLines() }
     val color = AppTheme.colors.separator
     val defaultInset = AppTheme.spacing.lg

@@ -57,7 +57,7 @@ fun AppCheckbox(
         Modifier.semantics { toggleableState = ToggleableState(checked) }
     }
 
-    LabelledControl(modifier.then(interaction), label, enabled) {
+    LabelledControl(label = label, enabled = enabled, modifier = modifier.then(interaction)) {
         Spacer(
             Modifier
                 .size(AppCheckboxDefaults.Size)
@@ -91,9 +91,9 @@ fun AppCheckbox(
 /** The control and its label, one 48dp target. */
 @Composable
 internal fun LabelledControl(
-    modifier: Modifier,
     label: String?,
     enabled: Boolean,
+    modifier: Modifier = Modifier,
     control: @Composable () -> Unit,
 ) {
     Row(

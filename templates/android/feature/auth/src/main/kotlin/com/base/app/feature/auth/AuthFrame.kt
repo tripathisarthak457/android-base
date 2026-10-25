@@ -96,7 +96,7 @@ internal fun AuthFrame(
 }
 
 @Composable
-private fun BrandPanel(modifier: Modifier) {
+private fun BrandPanel(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     // The launcher label, so the panel always names the app it is in without a string of its own.
     val appName = remember(context) { context.applicationInfo.loadLabel(context.packageManager).toString() }

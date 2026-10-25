@@ -65,6 +65,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * @param footer pinned at the visible bottom, above the navigation bar and the keyboard. Content can
  *   replace it with [com.base.app.core.designsystem.component.sheet.content.ProvideSheetFooter].
  */
+@Suppress("ktlint:compose:parameter-naming") // onHidden: once the sheet is gone.
 @Composable
 fun AppSheet(
     visible: Boolean,
@@ -106,11 +107,11 @@ fun AppSheet(
  * The `visible` sheet, hosted in the window's overlay layer: what [AppSheet] and the presets draw
  * through. [asDialog] makes it arrive on the dialog spring, as alerts and action sheets do.
  */
+@Suppress("ktlint:compose:parameter-naming") // onHidden: once the sheet is gone.
 @Composable
 internal fun HostedSheet(
     visible: Boolean,
     onDismissRequest: () -> Unit,
-    modifier: Modifier,
     state: AppSheetState,
     modality: SheetModality,
     dismissible: Boolean,
@@ -122,8 +123,9 @@ internal fun HostedSheet(
     grabber: (@Composable AppSheetScope.() -> Unit)?,
     header: (@Composable AppSheetScope.() -> Unit)?,
     footer: (@Composable AppSheetScope.() -> Unit)?,
-    content: @Composable AppSheetScope.() -> Unit,
+    modifier: Modifier = Modifier,
     asDialog: Boolean = false,
+    content: @Composable AppSheetScope.() -> Unit,
 ) {
     LaunchedEffect(state, visible) {
         if (visible) {
@@ -161,6 +163,7 @@ internal fun HostedSheet(
  * composed during the exit. A different item while one is shown closes the sheet, then presents
  * the new one: one sheet at a time, as the HIG asks.
  */
+@Suppress("ktlint:compose:parameter-naming") // onHidden: once the sheet is gone.
 @Composable
 fun <T : Any> AppSheet(
     item: T?,

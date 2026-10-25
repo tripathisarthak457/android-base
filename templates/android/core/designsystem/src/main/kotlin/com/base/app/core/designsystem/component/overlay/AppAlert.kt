@@ -53,6 +53,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * [onDismissRequest]; a tap outside does nothing, as on iOS, so a choice is never lost to a stray
  * touch.
  */
+@Suppress("ktlint:compose:modifier-not-used-at-root") // The modifier is the card's.
 @Composable
 fun AppAlert(
     visible: Boolean,
@@ -138,7 +139,7 @@ fun AppAlert(
 }
 
 @Composable
-private fun AlertAction(label: String, color: Color, bold: Boolean, onClick: () -> Unit, modifier: Modifier) {
+private fun AlertAction(label: String, color: Color, bold: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .pressable(onClick = onClick, feedback = PressFeedback.Highlight)

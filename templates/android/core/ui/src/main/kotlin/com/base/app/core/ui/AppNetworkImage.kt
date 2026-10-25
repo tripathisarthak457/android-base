@@ -46,7 +46,7 @@ fun AppNetworkImage(
         return
     }
     if (url.isNullOrBlank()) {
-        ImageFallback(modifier, errorIcon)
+        ImageFallback(errorIcon, modifier)
         return
     }
 
@@ -68,7 +68,7 @@ fun AppNetworkImage(
 }
 
 @Composable
-private fun ImageFallback(modifier: Modifier, icon: ImageVector) {
+private fun ImageFallback(icon: ImageVector, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.background(AppTheme.colors.fill),
         contentAlignment = Alignment.Center,

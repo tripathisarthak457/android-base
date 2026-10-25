@@ -50,7 +50,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 
 /** Press feedback, selection and motion side by side; the page checkpoint recordings are made from. */
 @Composable
-fun FeelSection() {
+internal fun FeelSection() {
     CatalogGroup("Press feedback", caption = "Filled, tinted and destructive buttons shrink; plain ones dim; rows highlight. Nothing flashes grey.") {
         FlowRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
             AppButton(text = "Filled", onClick = {}, modifier = Modifier.testTag("cp1_filled"))

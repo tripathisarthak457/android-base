@@ -56,7 +56,7 @@ import kotlinx.serialization.Serializable
 
 /** The tab bar in every variant, and the app's own shell running push, pop, cover and back. */
 @Composable
-fun NavigationSection() {
+internal fun NavigationSection() {
     CatalogGroup(
         title = "Shell",
         caption = "The app's own shell, transitions and back handling. Push a row, swipe back from the " +

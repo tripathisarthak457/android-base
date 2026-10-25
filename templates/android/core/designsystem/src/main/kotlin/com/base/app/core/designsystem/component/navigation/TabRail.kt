@@ -51,7 +51,7 @@ internal fun TabRail(
     onTap: (Int) -> Unit,
     header: (@Composable BarActionScope.() -> Unit)?,
     footer: (@Composable () -> Unit)?,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     val current = rememberUpdatedState(selected)
     val measure = remember { TabMeasure(vertical = true, state = null, { current.value }, mutableStateOf(PillSlots.Empty)) }

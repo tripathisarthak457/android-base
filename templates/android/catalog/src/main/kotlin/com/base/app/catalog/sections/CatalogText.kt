@@ -32,7 +32,7 @@ import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 
 @Composable
-fun TextSection() {
+internal fun TextSection() {
     CatalogGroup("AppText", caption = "Everything inherits body. autoSize shrinks a line to fit its box.") {
         AppText(text = "Body text, the default style", style = AppTheme.typography.body)
         AppText(

@@ -6,6 +6,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.withFrameNanos
@@ -68,13 +69,14 @@ internal fun WarmUpTabs(
     content: (index: Int) -> @Composable () -> Unit,
 ) {
     val view = LocalView.current
+    val tabContent by rememberUpdatedState(content)
     LaunchedEffect(warming, tabs) {
         if (tabs.none { it !in opened }) return@LaunchedEffect
         // The launch's own first frames, and the first content its tab loads, come first.
         delay(SETTLE_MILLIS)
         for (index in tabs) {
             if (index in opened) continue
-            warming.warm(index, content(index), view) { if (index !in opened) opened += index }
+            warming.warm(index, tabContent(index), view) { if (index !in opened) opened += index }
         }
     }
 }

@@ -19,6 +19,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * it a second time, and its own report to the shell ([ScreenChromes]). A screen that hides the tab
  * bar gets no bottom chrome.
  */
+@Suppress("ktlint:compose:content-slot-reused") // An entry's hidesBar never changes.
 @Composable
 internal fun EntryFrame(
     contentKey: String,

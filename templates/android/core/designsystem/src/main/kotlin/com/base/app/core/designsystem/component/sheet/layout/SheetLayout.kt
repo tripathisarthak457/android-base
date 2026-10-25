@@ -59,16 +59,17 @@ import kotlin.math.roundToInt
  * controller, which takes them only after that composition: read from there, the first frame would
  * drag along the wrong axis and compose a second time.
  */
+@Suppress("ktlint:compose:modifier-not-used-at-root") // The modifier is the sheet's.
 @Composable
 internal fun SheetLayout(
     controller: SheetController,
-    modifier: Modifier,
     modal: Boolean,
     placement: SheetPlacement,
     paneTitle: String?,
     grabber: (@Composable AppSheetScope.() -> Unit)?,
     header: (@Composable AppSheetScope.() -> Unit)?,
     footer: (@Composable AppSheetScope.() -> Unit)?,
+    modifier: Modifier = Modifier,
     content: @Composable AppSheetScope.() -> Unit,
 ) {
     val state = controller.sheetState

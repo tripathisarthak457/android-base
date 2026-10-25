@@ -43,7 +43,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * separate placeholder list, with a list state of its own, as the feature screens do.
  */
 @Composable
-fun LoadingScreen(onBack: (() -> Unit)?) {
+internal fun LoadingScreen(onBack: (() -> Unit)?) {
     var loaded by rememberSaveable { mutableStateOf(false) }
     val list = rememberLazyListState()
     AppScaffold(

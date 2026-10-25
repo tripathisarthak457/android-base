@@ -45,7 +45,7 @@ import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 
 @Composable
-fun FeedbackSection() {
+internal fun FeedbackSection() {
     CatalogGroup("State view", caption = "Empty, error and offline, each with its action. It scrolls when the window is too short for it.") {
         // Inside the page, not the page itself: clear of the chrome already, so only a margin.
         val padding = PaddingValues(AppTheme.spacing.xl)

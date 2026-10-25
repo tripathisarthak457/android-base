@@ -318,6 +318,7 @@ class SheetScreenshotTest {
     }
 
     /** The screen as the shell would give it to a sheet: receding into a card while one is up. */
+    @Suppress("ktlint:compose:content-slot-reused") // The stack is there throughout or never.
     @Composable
     private fun Presenter(content: @Composable () -> Unit) {
         val stack = LocalSheetStack.current ?: return content()

@@ -8,6 +8,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import com.base.app.core.navigation.back.BackGate
 
@@ -32,11 +33,12 @@ internal fun Transition<EnterExitState>.arrival(motion: ScreenMotion): State<Flo
  * the pop that the counted presses start next cannot be told from one that waited for the end.
  */
 @Composable
-internal fun ReportMotion(transition: Transition<EnterExitState>, arrival: State<Float>, gate: BackGate) {
+internal fun ReportMotion(transition: Transition<EnterExitState>, arrival: () -> Float, gate: BackGate) {
     val reporter = remember { Any() }
-    LaunchedEffect(transition, arrival, gate) {
+    val arrived = rememberUpdatedState(arrival)
+    LaunchedEffect(transition, gate) {
         snapshotFlow {
-            val travelled = if (transition.targetState == EnterExitState.Visible) arrival.value else 1f - arrival.value
+            val travelled = arrived.value().let { if (transition.targetState == EnterExitState.Visible) it else 1f - it }
             transition.isRunning && travelled < BackGate.SETTLED_ENOUGH
         }.collect { gate.report(reporter, it) }
     }

@@ -41,7 +41,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.delay
 
 @Composable
-fun ListsSection() {
+internal fun ListsSection() {
     CatalogGroup("Inset-grouped section", caption = "Rows share one rounded group; each hairline starts where the next row's text does.") {
         Box(Modifier.background(AppTheme.colors.backgroundGrouped, AppTheme.shapes.lg).padding(bottom = AppTheme.spacing.lg)) {
             var wifi by remember { mutableStateOf(true) }

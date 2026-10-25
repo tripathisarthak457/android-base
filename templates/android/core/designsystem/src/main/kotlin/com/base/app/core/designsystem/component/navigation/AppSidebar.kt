@@ -182,7 +182,7 @@ object AppSidebarDefaults {
 }
 
 @Composable
-private fun SidebarRow(item: TabItem, selected: Boolean, look: BarLook, modifier: Modifier, onClick: () -> Unit) {
+private fun SidebarRow(item: TabItem, selected: Boolean, look: BarLook, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val color = if (selected) look.selectedContent else look.content
     val filter = remember(color) { ColorFilter.tint(color) }
     Row(

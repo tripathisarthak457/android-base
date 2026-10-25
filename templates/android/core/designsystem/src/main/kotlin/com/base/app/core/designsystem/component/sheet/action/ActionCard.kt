@@ -51,15 +51,16 @@ import kotlin.math.roundToInt
  * modal for screen readers: what is beneath is hidden, focus moves to its first action and returns
  * to the anchor when it closes. Never a popup window, so it stays in the app's one window.
  */
+@Suppress("ktlint:compose:modifier-not-used-at-root") // The modifier is the card's.
 @Composable
 internal fun ActionCard(
     visible: Boolean,
     actions: List<SheetAction>,
     onDismissRequest: () -> Unit,
-    modifier: Modifier,
     title: String?,
     message: String?,
     anchor: SheetAnchor?,
+    modifier: Modifier = Modifier,
 ) {
     val presence = remember { MutableTransitionState(false) }
     presence.targetState = visible

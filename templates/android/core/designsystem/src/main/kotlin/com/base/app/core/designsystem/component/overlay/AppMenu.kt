@@ -102,7 +102,7 @@ fun AppMenu(
                 scaleY = scaleX
                 transformOrigin = position.origin
             },
-            onItemChosen = { dismiss() },
+            onChoose = { dismiss() },
             content = content,
         )
     }
@@ -169,7 +169,7 @@ internal val LocalMenuItemChosen = staticCompositionLocalOf<() -> Unit> { {} }
 /** The menu's card: items edge to edge, a hairline between neighbours, a gap between groups. */
 @Composable
 internal fun MenuPanel(
-    onItemChosen: () -> Unit,
+    onChoose: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
@@ -180,7 +180,7 @@ internal fun MenuPanel(
         elevation = AppTheme.elevation.overlay,
         clipContent = true,
     ) {
-        CompositionLocalProvider(LocalMenuItemChosen provides onItemChosen) {
+        CompositionLocalProvider(LocalMenuItemChosen provides onChoose) {
             MenuColumn(content)
         }
     }

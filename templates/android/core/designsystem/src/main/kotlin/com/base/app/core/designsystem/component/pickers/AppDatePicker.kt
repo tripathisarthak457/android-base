@@ -60,7 +60,7 @@ import java.time.temporal.WeekFields
 @Composable
 fun AppDatePicker(
     selectedDate: LocalDate?,
-    onDateSelected: (LocalDate) -> Unit,
+    onDateChange: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
     minDate: LocalDate? = null,
     maxDate: LocalDate? = null,
@@ -129,9 +129,9 @@ fun AppDatePicker(
                 isSelectable = { date ->
                     (minDate == null || !date.isBefore(minDate)) && (maxDate == null || !date.isAfter(maxDate)) && isDateEnabled(date)
                 },
-                onDateSelected = { date ->
+                onDateChange = { date ->
                     if (date != selectedDate) haptics.perform(AppHaptic.Selection)
-                    onDateSelected(date)
+                    onDateChange(date)
                 },
             )
         }
@@ -159,7 +159,7 @@ fun AppDatePill(
         AnimatedVisibility(visible = open, enter = transitions.expandIn, exit = transitions.collapseOut) {
             AppDatePicker(
                 selectedDate = date,
-                onDateSelected = {
+                onDateChange = {
                     onDateChange(it)
                     open = false
                 },
@@ -194,7 +194,7 @@ private fun MonthGrid(
     selectedDate: LocalDate?,
     describe: (LocalDate) -> String,
     isSelectable: (LocalDate) -> Boolean,
-    onDateSelected: (LocalDate) -> Unit,
+    onDateChange: (LocalDate) -> Unit,
 ) {
     // Blank cells before the 1st. Adding 7 before the modulo keeps it non-negative for every
     // locale's first day, which a bare subtraction does not.
@@ -215,7 +215,7 @@ private fun MonthGrid(
                                 isSelected = date == selectedDate,
                                 enabled = isSelectable(date),
                                 description = describe(date),
-                                onClick = { onDateSelected(date) },
+                                onClick = { onDateChange(date) },
                             )
                         }
                     }
@@ -288,7 +288,7 @@ private fun AppDatePickerPreview() {
     ) {
         AppDatePicker(
             selectedDate = today.plusDays(3),
-            onDateSelected = {},
+            onDateChange = {},
             today = today,
             minDate = today,
             isDateEnabled = { it.dayOfWeek != DayOfWeek.SUNDAY },

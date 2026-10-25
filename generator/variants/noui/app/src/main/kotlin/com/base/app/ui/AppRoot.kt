@@ -56,7 +56,7 @@ import com.base.app.core.playstore.update.AppUpdates
  * [AppDestinations]' choice: today every one opens on the start screen.
  */
 @Composable
-fun AppRoot(
+internal fun AppRoot(
     startup: Startup,
     navigator: AppNavigator,
     registry: NavRegistry,

@@ -204,12 +204,12 @@ private fun IconButton(
     icon: ImageVector,
     contentDescription: String,
     onClick: () -> Unit,
-    modifier: Modifier,
     variant: ButtonVariant,
     diameter: Dp,
     glyphSize: Dp,
     enabled: Boolean,
     colors: ButtonColors,
+    modifier: Modifier = Modifier,
 ) {
     val container = colors.container(enabled)
     val bone = LocalRedacted.current && container.alpha > 0f

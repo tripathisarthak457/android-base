@@ -21,7 +21,7 @@ import com.base.app.core.designsystem.component.text.AppFiguresText
 import com.base.app.core.designsystem.theme.AppTheme
 
 @Composable
-fun FieldsSection() {
+internal fun FieldsSection() {
     CatalogGroup("One-time code", caption = "One real field under the boxes, so paste and SMS autofill land at once.") {
         AppOtpField(state = rememberTextFieldState(), label = "Verification code", autoFocus = false)
     }

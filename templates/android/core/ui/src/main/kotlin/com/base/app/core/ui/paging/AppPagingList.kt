@@ -105,7 +105,7 @@ fun <T : Any> AppPagingList(
 }
 
 @Composable
-private fun StateBox(modifier: Modifier, content: @Composable () -> Unit) {
+private fun StateBox(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     Box(modifier = modifier.fillMaxSize(), propagateMinConstraints = true) { content() }
 }
 
