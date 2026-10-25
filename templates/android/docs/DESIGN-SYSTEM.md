@@ -273,16 +273,7 @@ fun AppTag(
     }
 }
 
-<!-- <opt:ui_components> -->
-@Preview(name = "Light")
-@Preview(name = "Dark", uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
-@Preview(name = "Font 2x", fontScale = 2f)
-@Preview(name = "Right to left", locale = "ar")
-@PreviewWrapper(AppPreviewTheme::class)
-<!-- </opt:ui_components> -->
-<!-- <opt:!ui_components> -->
 @AppComponentPreviews
-<!-- </opt:!ui_components> -->
 @Composable
 private fun AppTagPreview() {
     var selected by remember { mutableStateOf(true) }
@@ -410,4 +401,9 @@ skeleton is rendered from the first build. `@AppComponentPreviews` gives a compo
 has to survive: light, dark, twice the font size, right to left and a 320 dp window, each inside `AppPreviewTheme`.
 Put it on each component's preview, as the template above does; a component without one fails `component-preview`.
 <!-- </opt:!ui_components> -->
+<!-- <opt:ui_components> -->
+Every component file in `:core:designsystem` ends with a private preview under `@AppComponentPreviews`, which renders
+it in light and dark, at twice the font size, right to left and in a 320 dp window, each inside `AppPreviewTheme`;
+give a component you add the same, in its own file.
+<!-- </opt:ui_components> -->
 Record and compare goldens with Roborazzi's Gradle tasks, and never re-record a golden to make a test pass.
