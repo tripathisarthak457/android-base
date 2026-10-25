@@ -9,10 +9,10 @@ preset ships these rules, including presets without the benchmark module, so the
 `src/main/baseline-prof.txt` of the modules they belong to: a listed library module's rules (navigation
 runtime and shell, design system, shared UI) go into that library, and the app module gets the rest of
 the project's own code (the app's classes, the features' screens, the data layer), whichever module
-declares it, since an app's profile applies to every class in its APK. A rule belongs to the module whose sources declare its
-class's package. Wildcard rules already
-in a module's profile are written by hand (the safety net that covers code no journey reaches), so a
-split keeps them at the top and adds the generated rules under them.
+declares it, since an app's profile applies to every class in its APK. A rule belongs to the module
+whose sources declare its class's package. Wildcard rules already in a module's profile are written by
+hand (the safety net that covers code no journey reaches), so a split keeps them at the top and adds
+the generated rules under them.
 """
 
 import argparse

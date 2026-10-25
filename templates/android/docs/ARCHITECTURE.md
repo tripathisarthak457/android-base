@@ -289,7 +289,8 @@ arriving host takes navigator commands. Sign-out runs the other way: `SessionCoo
 ### Each tab keeps its own back stack
 
 `TabStacks` holds one stack per tab and the tab in front, and `ShellState` composes it with the presentation stack
-and the chrome. Back inside a tab pops that tab; Back at a tab's root is the shell's. Each tab's entries stay decorated (saved state and a ViewModel store per entry) while another tab shows, because Navigation 3
+and the chrome. Back inside a tab pops that tab; Back at a tab's root is the shell's. Each tab's entries stay
+decorated (saved state and a ViewModel store per entry) while another tab shows, because Navigation 3
 treats an entry that leaves the list it was given as popped and discards its state: leaving a tab only hides it.
 A tab switch does not slide, which would read as forward navigation that Back cannot undo; the incoming tab springs
 in from 12 dp and the tab being left is parked at once ([PERFORMANCE.md](PERFORMANCE.md#navigation-and-back)).
@@ -679,8 +680,8 @@ layer is yours to build on the theme skeleton. In order:
    preview that becomes its render test.
 4. **Screens** in place of each `PlaceholderScreen`: a stateless `XScreen(state, onEvent)` the route calls, drawing
    every `LoadState`.
-5. **A shell** if the app has sections: tab stacks, a `SceneStrategy` for list-detail and sheets, transitions in
-   `:core:navigation` ([Adding a shell](#adding-a-shell-tabs-panes-and-sheets)).
+5. **A shell** if the app has sections: a bar over `TabStacks`, a `SceneStrategy` for list-detail and sheets,
+   transitions in `:core:navigation` ([Adding a shell](#adding-a-shell-tabs-panes-and-sheets)).
 6. **The start destination and the entry gates** once those screens exist
    ([The entry identity](#the-entry-identity-is-wired-the-gates-are-yours)).
 
