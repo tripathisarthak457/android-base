@@ -74,7 +74,7 @@ fun AppTimePicker(
             modifier = Modifier.weight(1f),
             label = { it.toString().padStart(2, '0') },
         )
-        AppText(text = ":", style = AppTheme.typography.title2, color = AppTheme.colors.contentSecondary, modifier = Modifier.padding(bottom = 2.dp))
+        AppText(text = ":", style = AppTheme.typography.title2, color = AppTheme.colors.contentSecondary, modifier = Modifier.padding(bottom = AppTimePickerDefaults.SeparatorLift))
         AppWheelPicker(
             items = minutes,
             selectedIndex = minuteIndex(time),
@@ -122,6 +122,11 @@ private fun Locale.uses24HourClock(): Boolean {
     // 13:00 renders as "1:00 PM" on a twelve-hour locale and "13:00" on a twenty-four-hour one;
     // any letter is the period marker, whatever language it is in.
     return sample.none { it.isLetter() }
+}
+
+/** The time picker's colon, set on the digits' baseline. */
+object AppTimePickerDefaults {
+    val SeparatorLift = 2.dp
 }
 
 @AppComponentPreviews

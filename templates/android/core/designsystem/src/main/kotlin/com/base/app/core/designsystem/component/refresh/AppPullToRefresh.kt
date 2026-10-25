@@ -147,11 +147,11 @@ private class RefreshMeasurePolicy(private val topChrome: ChromeInset) : MultiCo
     override fun MeasureScope.measure(measurables: List<List<Measurable>>, constraints: Constraints): MeasureResult {
         val (body, spinnerSlot) = measurables
         val content = body.first().measure(constraints)
-        val diameter = (SpinnerRadius * 2).roundToPx()
+        val diameter = (AppPullToRefreshDefaults.SpinnerRadius * 2).roundToPx()
         val spinner = spinnerSlot.first().measure(Constraints.fixed(diameter, diameter))
         return layout(content.width, content.height) {
             content.place(0, 0)
-            spinner.place((content.width - diameter) / 2, (topChrome.value + SpinnerTop).roundToPx())
+            spinner.place((content.width - diameter) / 2, (topChrome.value + AppPullToRefreshDefaults.SpinnerTop).roundToPx())
         }
     }
 }
@@ -223,9 +223,9 @@ private class PullToRefreshNode(
 
     private var viewport = 1f
     private val trigger: Float
-        get() = with(requireDensity()) { Trigger.toPx() }
+        get() = with(requireDensity()) { AppPullToRefreshDefaults.Trigger.toPx() }
     private val rest: Float
-        get() = with(requireDensity()) { Rest.toPx() }
+        get() = with(requireDensity()) { AppPullToRefreshDefaults.Rest.toPx() }
 
     init {
         delegate(nestedScrollModifierNode(this, null))
@@ -455,16 +455,16 @@ private class RefreshSpinnerNode(
     override fun ContentDrawScope.draw() {
         val gap = indicator.gap
         // The gap opens from the top bar down; the spinner starts SpinnerTop below it.
-        val uncovered = gap - SpinnerTop.toPx()
+        val uncovered = gap - AppPullToRefreshDefaults.SpinnerTop.toPx()
         if (uncovered <= 0.5f) return
         val spinning = indicator.spinning
         val retracting = indicator.retracting
         val radius = size.minDimension / 2f
-        val pulled = (gap / Trigger.toPx()).coerceIn(0f, 1f)
+        val pulled = (gap / AppPullToRefreshDefaults.Trigger.toPx()).coerceIn(0f, 1f)
         clipRect(bottom = uncovered) {
             drawActivitySpokes(
                 center = center,
-                radius = if (retracting) radius * (gap / Rest.toPx()).coerceIn(0f, 1f) else radius,
+                radius = if (retracting) radius * (gap / AppPullToRefreshDefaults.Rest.toPx()).coerceIn(0f, 1f) else radius,
                 color = color(),
                 head = if (spinning) indicator.head else null,
                 revealed = if (spinning) ActivitySpokes else ceil(ActivitySpokes * pulled).toInt(),
@@ -492,10 +492,14 @@ private const val MinVisibleMillis = 400L
 
 /** The spinner fades in over the first part of the pull, then the spokes alone show progress. */
 private const val FadeInFraction = 0.35f
-private val Trigger = 100.dp
-private val Rest = 60.dp
-private val SpinnerRadius = 14.dp
-private val SpinnerTop = 16.dp
+
+/** How far a pull refreshes, where the content rests while it does, and the spinner. */
+object AppPullToRefreshDefaults {
+    val Trigger = 100.dp
+    val Rest = 60.dp
+    val SpinnerRadius = 14.dp
+    val SpinnerTop = 16.dp
+}
 
 @AppComponentPreviews
 @Composable

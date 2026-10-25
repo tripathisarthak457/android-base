@@ -74,7 +74,7 @@ fun <T> AppWheelPicker(
     val haptics = rememberAppHaptics()
     val density = LocalDensity.current
     val style = AppTheme.typography.body
-    val rowHeight = if (itemHeight != Dp.Unspecified) itemHeight else maxOf(44.dp, with(density) { style.lineHeight.toDp() } + 16.dp)
+    val rowHeight = if (itemHeight != Dp.Unspecified) itemHeight else maxOf(AppWheelPickerDefaults.MinRowHeight, with(density) { style.lineHeight.toDp() } + AppWheelPickerDefaults.RowPadding)
     val current by rememberUpdatedState(selectedIndex)
     val onChange by rememberUpdatedState(onSelectedChange)
 
@@ -112,7 +112,7 @@ fun <T> AppWheelPicker(
     // The list is laid out flat over more rows than are visible; bending it onto the drum pulls the
     // outer rows in, so the extra rows are what fills the wheel's top and bottom edges.
     val laidOutRows = visibleCount * Squeeze
-    val cameraPx = with(density) { PerspectiveDistance.toPx() }
+    val cameraPx = with(density) { AppWheelPickerDefaults.PerspectiveDistance.toPx() }
 
     Box(
         modifier = modifier
@@ -195,7 +195,14 @@ private fun centreOffset(state: LazyListState, index: Int): Float {
 private const val DiameterRatio = 1.07f
 private const val Squeeze = 1.45f
 private const val OffCentreAlpha = 0.447f
-private val PerspectiveDistance = 333.dp
+
+/** The wheel's rows and the distance it is seen from. */
+object AppWheelPickerDefaults {
+    val MinRowHeight = 44.dp
+    val RowPadding = 16.dp
+    val PerspectiveDistance = 333.dp
+}
+
 private val MaxVisibleAngle = asin(1f / DiameterRatio)
 private const val HalfTurn = (PI / 2).toFloat()
 
