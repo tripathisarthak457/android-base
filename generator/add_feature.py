@@ -118,8 +118,7 @@ def add_domain(project: Path, raw_name: str) -> int:
     settings = project / "settings.gradle.kts"
     text = settings.read_text(encoding="utf-8")
     include = f'include(":domain:{name}")\n'
-    anchor = 'include(":domain:' if 'include(":domain:' in text else 'include(":data:'
-    write_text(settings, insert_after_last(text, anchor, include))
+    write_text(settings, insert_include(text, ('include(":domain:', 'include(":data:'), "data", include))
 
     print()
     print(prompts.green(prompts.bold("  Done.")))
@@ -236,15 +235,27 @@ def shipped_languages(project: Path) -> tuple[str, ...]:
 
 
 def register_modules(project: Path, names: tuple[str, ...]) -> None:
-    """Appends the includes to settings.gradle.kts, under the section each belongs to."""
+    """Adds the includes to settings.gradle.kts, under the section each belongs to."""
     path = project / "settings.gradle.kts"
     text = path.read_text(encoding="utf-8")
 
-    for prefix in (":data:", ":feature:"):
-        additions = "".join(f'include("{prefix}{name}")\n' for name in names)
-        text = insert_after_last(text, f'include("{prefix}', additions)
+    for tier in ("data", "feature"):
+        additions = "".join(f'include(":{tier}:{name}")\n' for name in names)
+        text = insert_include(text, (f'include(":{tier}:',), tier, additions)
 
     write_text(path, text)
+
+
+def insert_include(text: str, anchors: tuple[str, ...], section: str, addition: str) -> str:
+    """
+    Puts [addition] after the last include that starts with the first of [anchors] the settings
+    have. With none of them, as in a project without UI components before its first module, it goes
+    right under the comment that heads [section] (`// ── data ──`), and at the end only when the
+    settings have lost that comment too.
+    """
+    lines = text.splitlines()
+    anchor = next((anchor for anchor in anchors if any(line.startswith(anchor) for line in lines)), None)
+    return insert_after_last(text, anchor or f"// ── {section} ", addition)
 
 
 def register_dependencies(project: Path, names: tuple[str, ...]) -> None:

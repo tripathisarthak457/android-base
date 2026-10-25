@@ -88,6 +88,11 @@ def whole_file_fence(source: Path) -> Expression | None:
     return Expression.parse(match.group(1), ANDROID.manifest.marker_keys, source, 2) if match else None
 
 
+def section(settings: list[str], tier: str) -> int:
+    """The line of settings.gradle.kts that heads [tier]'s includes: `// ── data ──…`."""
+    return next(index for index, line in enumerate(settings) if line.startswith(f"// ── {tier} "))
+
+
 def active_advice(project: Path) -> list[str]:
     """The advice of every rule in the project's CodeRules.ALL."""
     guard = project / f"build-logic/convention/src/main/kotlin/{PKG}/buildlogic/guard"
@@ -317,7 +322,11 @@ class ProjectScriptsTest(unittest.TestCase):
         self.assertEqual([], sorted(path.name for path in project.rglob("Orders*Screen.kt")))
         self.assertEqual([], sorted(path.name for path in project.rglob("*RecompositionTest.kt") if "orders" in path.as_posix()))
         self.assertTrue((project / "feature/orders/src/main/res/values-de/strings.xml").is_file())
-        self.assertIn('include(":feature:orders")', (project / "settings.gradle.kts").read_text(encoding="utf-8"))
+        # The tier's first module, so right under its section's heading rather than at the end.
+        settings = (project / "settings.gradle.kts").read_text(encoding="utf-8").splitlines()
+        for tier in ("data", "feature"):
+            with self.subTest(tier=tier):
+                self.assertEqual(f'include(":{tier}:orders")', settings[section(settings, tier) + 1])
         self.assertIn("Added :data:orders and :feature:orders with its ViewModel and a placeholder route.", out)
         self.assertIn("No UI components: build the screen on your design system.", out)
 
@@ -421,7 +430,9 @@ class ProjectScriptsTest(unittest.TestCase):
         code, out = self.add("--domain", "pricing", "--project", str(project))
         self.assertEqual(0, code, out)
         self.assertTrue((project / "domain/pricing/build.gradle.kts").is_file())
-        self.assertIn('include(":domain:pricing")', (project / "settings.gradle.kts").read_text(encoding="utf-8"))
+        # With no data module yet, it opens the data section, where a domain module's include goes.
+        settings = (project / "settings.gradle.kts").read_text(encoding="utf-8").splitlines()
+        self.assertEqual('include(":domain:pricing")', settings[section(settings, "data") + 1])
 
     def test_a_compact_project_has_no_place_for_a_domain_module(self):
         project = self.copy()
