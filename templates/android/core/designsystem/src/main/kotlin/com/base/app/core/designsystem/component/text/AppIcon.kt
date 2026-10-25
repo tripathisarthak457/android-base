@@ -33,7 +33,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 
 /** An icon, tinted to the surrounding content colour unless told otherwise. */
 @Composable
-fun AppIcon(
+public fun AppIcon(
     imageVector: ImageVector,
     contentDescription: String?,
     modifier: Modifier = Modifier,
@@ -48,7 +48,7 @@ fun AppIcon(
  * and recomposes nothing.
  */
 @Composable
-fun AppIcon(
+public fun AppIcon(
     imageVector: ImageVector,
     contentDescription: String?,
     tint: ColorProducer,

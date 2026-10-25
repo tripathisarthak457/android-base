@@ -36,7 +36,7 @@ import kotlinx.coroutines.flow.first
  * composition. [targetDetent] also changes while a finger drags across a midpoint.
  */
 @Stable
-class AppSheetState @RememberInComposition constructor(
+public class AppSheetState @RememberInComposition constructor(
     detents: List<SheetDetent> = AppSheetDefaults.Detents,
     initialDetent: SheetDetent = detents.first(),
 ) {
@@ -46,7 +46,7 @@ class AppSheetState @RememberInComposition constructor(
     }
 
     /** The heights the sheet can rest at, in any order; at least one. */
-    var detents: List<SheetDetent> by mutableStateOf(detents)
+    public var detents: List<SheetDetent> by mutableStateOf(detents)
         private set
 
     internal var initialDetent: SheetDetent = initialDetent
@@ -128,36 +128,36 @@ class AppSheetState @RememberInComposition constructor(
     internal var restoredDetent: SheetDetent? = null
 
     /** The detent the sheet rests on or is settling onto; null while hidden or leaving. */
-    val currentDetent: SheetDetent?
+    public val currentDetent: SheetDetent?
         get() = if (shown && !leaving) current else null
 
     /**
      * Where the sheet is heading: while it settles, the detent it settles onto; while a finger drags
      * it, the detent a release without velocity would reach. Null while hidden or leaving.
      */
-    val targetDetent: SheetDetent?
+    public val targetDetent: SheetDetent?
         get() = if (shown && !leaving) target else null
 
     /** True from show() until the sheet has left after hide() or a dismissal. */
-    val isVisible: Boolean
+    public val isVisible: Boolean
         get() = shown
 
     /** True from the moment the sheet is decided to close, by the person or by hide(), until it has gone. */
-    val isLeaving: Boolean
+    public val isLeaving: Boolean
         get() = leaving
 
     /** True while the sheet is dragged or animates. */
-    val isMoving: Boolean
+    public val isMoving: Boolean
         get() = dragging || animating
 
     /** The sheet's top edge in px from the top of its bounds, before the stretch, lift and park; NaN before its first layout. */
     @get:FrequentlyChangingValue
-    val offset: Float
+    public val offset: Float
         get() = anchored.offset
 
     /** 0 hidden, 1 at the lowest active detent and above. The dim follows it. */
     @get:FrequentlyChangingValue
-    val presentationFraction: Float
+    public val presentationFraction: Float
         get() {
             val stops = stops ?: return 0f
             val y = anchored.offset
@@ -172,7 +172,7 @@ class AppSheetState @RememberInComposition constructor(
      * The card stack, the floating-to-attached change and the glass opacity follow it.
      */
     @get:FrequentlyChangingValue
-    val expansionFraction: Float
+    public val expansionFraction: Float
         get() {
             val stops = stops ?: return 0f
             if (stops.single || !bottomPlaced || stops.largeIndex < 0) return 0f
@@ -192,12 +192,12 @@ class AppSheetState @RememberInComposition constructor(
      * button kept above it: read it in `Modifier.offset { }` or another placement block.
      */
     @get:FrequentlyChangingValue
-    val visibleTop: Float
+    public val visibleTop: Float
         get() = if (!shown) Float.NaN else boundsTop + placedTop()
 
     /** Window px from [visibleTop] to the window's bottom edge, 0 while hidden: the padding that keeps a map's controls clear. */
     @get:FrequentlyChangingValue
-    val visibleHeight: Float
+    public val visibleHeight: Float
         get() {
             if (!shown) return 0f
             val stops = stops ?: return 0f
@@ -218,7 +218,7 @@ class AppSheetState @RememberInComposition constructor(
      * a sheet shown through `AppSheet(visible)`, the caller's `visible` decides: while it is false
      * this returns at once.
      */
-    suspend fun show(detent: SheetDetent? = null) {
+    public suspend fun show(detent: SheetDetent? = null) {
         if (host?.callerHides == true) return
         if (shown && !leaving) {
             if (detent != null) animateTo(detent)
@@ -236,7 +236,7 @@ class AppSheetState @RememberInComposition constructor(
      * sheet shown through `AppSheet(visible)` or `AppSheet(item)`, closing it this way while the
      * caller still shows it calls onDismissRequest once, so the caller's value follows.
      */
-    suspend fun hide() {
+    public suspend fun hide() {
         if (!shown) return
         if (leaving) {
             snapshotFlow { !shown || !leaving }.first { it }
@@ -251,7 +251,7 @@ class AppSheetState @RememberInComposition constructor(
      * the sheet, while it leaves or is parked. On a form or side sheet it records [detent] as the
      * detent to take back at the bottom edge and does not move.
      */
-    suspend fun animateTo(detent: SheetDetent) {
+    public suspend fun animateTo(detent: SheetDetent) {
         val stops = stops ?: return
         if (stops.single) {
             if (detent in detents) record(detent)
@@ -262,7 +262,7 @@ class AppSheetState @RememberInComposition constructor(
     }
 
     /** Puts the sheet at [detent] at once: for restoring a sheet, and for tests. */
-    suspend fun snapTo(detent: SheetDetent) {
+    public suspend fun snapTo(detent: SheetDetent) {
         val stops = stops ?: return
         val stop = if (stops.single) stops.detents[0] else activeFor(detent)
         shown = true
@@ -276,7 +276,7 @@ class AppSheetState @RememberInComposition constructor(
     }
 
     /** One detent up; false at the top, and always on a form or side sheet. */
-    suspend fun expand(): Boolean {
+    public suspend fun expand(): Boolean {
         val stops = stops ?: return false
         val index = stops.indexOf(currentDetent ?: return false)
         if (stops.single || index <= 0 || !canMoveProgrammatically()) return false
@@ -285,7 +285,7 @@ class AppSheetState @RememberInComposition constructor(
     }
 
     /** One detent down, never to hidden; false at the bottom, and always on a form or side sheet. */
-    suspend fun collapse(): Boolean {
+    public suspend fun collapse(): Boolean {
         val stops = stops ?: return false
         val index = stops.indexOf(currentDetent ?: return false)
         if (stops.single || index < 0 || index == stops.count - 1 || !canMoveProgrammatically()) return false
@@ -297,7 +297,7 @@ class AppSheetState @RememberInComposition constructor(
      * Replaces the detents. A sheet resting on one that stays active stays; otherwise it animates to
      * the nearest active one.
      */
-    fun updateDetents(detents: List<SheetDetent>) {
+    public fun updateDetents(detents: List<SheetDetent>) {
         require(detents.isNotEmpty()) { "A sheet needs at least one detent" }
         refreshResolvers(detents)
         if (detents == this.detents) return
@@ -354,12 +354,12 @@ class AppSheetState @RememberInComposition constructor(
     internal fun canMoveProgrammatically(): Boolean =
         shown && !leaving && !pointerDown && parkProgress == 0f && !parkedInstantly
 
-    companion object {
+    public companion object {
         /**
          * Saves whether the sheet was shown and the identity of the detent it rested on. The detents
          * come back from the caller, because a custom resolver cannot be saved.
          */
-        fun Saver(detents: List<SheetDetent>): Saver<AppSheetState, String> = Saver(
+        public fun Saver(detents: List<SheetDetent>): Saver<AppSheetState, String> = Saver(
             save = { state -> SheetStateKey.encode(state.isVisible, state.currentDetent) },
             restore = { saved ->
                 val (wasShown, detent) = SheetStateKey.decode(saved, detents)
@@ -376,7 +376,7 @@ class AppSheetState @RememberInComposition constructor(
  * [SheetDetent.Custom] whose resolver captured new values, is applied on the next layout.
  */
 @Composable
-fun rememberAppSheetState(
+public fun rememberAppSheetState(
     detents: List<SheetDetent> = AppSheetDefaults.Detents,
     initialDetent: SheetDetent = detents.first(),
 ): AppSheetState {

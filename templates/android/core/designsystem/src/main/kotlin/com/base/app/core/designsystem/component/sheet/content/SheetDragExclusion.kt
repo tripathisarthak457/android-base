@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.Velocity
  * chart. Its own pointer input and scrolling are untouched as long as they come after this in the
  * modifier chain or in its children, which see every event first.
  */
-fun Modifier.sheetDragExclusion(): Modifier = this
+public fun Modifier.sheetDragExclusion(): Modifier = this
     .nestedScroll(KeepScroll)
     .then(DragExclusionElement)
 

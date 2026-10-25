@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.Dp
  * Lets content run [amount] past its parent's horizontal padding on both sides: a carousel that
  * reaches the screen edges inside a column padded to the gutter.
  */
-fun Modifier.bleed(amount: Dp): Modifier = layout { measurable, constraints ->
+public fun Modifier.bleed(amount: Dp): Modifier = layout { measurable, constraints ->
     val extra = amount.roundToPx() * 2
     val placeable = measurable.measure(
         constraints.copy(

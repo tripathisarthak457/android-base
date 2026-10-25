@@ -28,7 +28,7 @@ import androidx.compose.ui.semantics.role
  * press shows or the tap is known, so a destination can start loading during the tap: it must be
  * cheap and must not change what is on screen.
  */
-fun Modifier.pressable(
+public fun Modifier.pressable(
     onClick: () -> Unit,
     feedback: PressFeedback,
     enabled: Boolean = true,

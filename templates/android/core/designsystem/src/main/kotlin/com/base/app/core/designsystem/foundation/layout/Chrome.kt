@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
@@ -27,28 +28,28 @@ import androidx.compose.ui.unit.max
  * settled heights, so a change recomposes only the code that reads it rather than every screen below the provider.
  */
 @Stable
-class ChromeInset {
-    var value: Dp by mutableStateOf(0.dp)
+public class ChromeInset {
+    public var value: Dp by mutableStateOf(0.dp)
 }
 
 /**
  * Chrome over the bottom edge: the tab bar, its accessory, or the keyboard when it hides the bar. One holder per
  * window, provided by AppTheme and written only by the shell, so a toast host above the shell can read it too.
  */
-val LocalBottomChrome = staticCompositionLocalOf { ChromeInset() }
+public val LocalBottomChrome: ProvidableCompositionLocal<ChromeInset> = staticCompositionLocalOf { ChromeInset() }
 
 /**
  * Chrome over the top edge of the current screen: its top bar. Every AppScaffold provides its own holder, so two
  * screens composed during a push or pop never write the same state.
  */
-val LocalTopChrome = staticCompositionLocalOf { ChromeInset() }
+public val LocalTopChrome: ProvidableCompositionLocal<ChromeInset> = staticCompositionLocalOf { ChromeInset() }
 
 /**
  * The top bar of the settled screen in front, for the whole window, the way [LocalBottomChrome] publishes the
  * bottom: an overlay above the navigation hosts (a debug badge, a banner) keeps clear of a large title and its
  * search field with it. Written only by the shell, from [ScreenChrome.topBar], once the screens have stopped moving.
  */
-val LocalWindowTopChrome = staticCompositionLocalOf { ChromeInset() }
+public val LocalWindowTopChrome: ProvidableCompositionLocal<ChromeInset> = staticCompositionLocalOf { ChromeInset() }
 
 /**
  * Whether the screen it is provided to is on display: its tab is in front and nothing covers it in its stack. Hidden
@@ -59,12 +60,12 @@ val LocalWindowTopChrome = staticCompositionLocalOf { ChromeInset() }
  * in an effect (`snapshotFlow`) or a draw block.
  */
 @Stable
-class TabVisibility(private val visible: () -> Boolean) {
-    val isVisible: Boolean get() = visible()
+public class TabVisibility(private val visible: () -> Boolean) {
+    public val isVisible: Boolean get() = visible()
 }
 
 /** Whether the content here is on screen: false inside a hidden tab or a covered screen; see [TabVisibility]. */
-val LocalTabVisible = staticCompositionLocalOf { AlwaysVisible }
+public val LocalTabVisible: ProvidableCompositionLocal<TabVisibility> = staticCompositionLocalOf { AlwaysVisible }
 
 private val AlwaysVisible = TabVisibility { true }
 
@@ -74,7 +75,7 @@ private val AlwaysVisible = TabVisibility { true }
  * (AppBottomActionBar) belongs only where this is false; on a tab screen the bar's accessory slot
  * takes that role.
  */
-val LocalTabBarVisible = compositionLocalOf { false }
+public val LocalTabBarVisible: ProvidableCompositionLocal<Boolean> = compositionLocalOf { false }
 
 /**
  * What a screen tells the chrome around it. The shell gives every screen in its stacks one of its
@@ -87,15 +88,15 @@ val LocalTabBarVisible = compositionLocalOf { false }
  * [contentBelow] through [ReportScrollEdge]. Outside a navigation stack nothing reads them.
  */
 @Stable
-class ScreenChrome {
+public class ScreenChrome {
     /** The settled height of the screen's own bottom bar (an AppBottomActionBar); 0 without one. */
-    var bottomBar: Dp by mutableStateOf(0.dp)
+    public var bottomBar: Dp by mutableStateOf(0.dp)
 
     /** The settled height of the screen's top bar, status bar included; 0 without one. */
-    var topBar: Dp by mutableStateOf(0.dp)
+    public var topBar: Dp by mutableStateOf(0.dp)
 
     /** The colour the screen paints behind its content; Unspecified is the theme's background. */
-    var background: Color by mutableStateOf(Color.Unspecified)
+    public var background: Color by mutableStateOf(Color.Unspecified)
 
     internal var scrollEdge: ScrollableState? by mutableStateOf(null)
 
@@ -104,11 +105,11 @@ class ScreenChrome {
      * screen that reports nothing, so its chrome keeps the look that hides what passes under it.
      * Read it in an effect or a draw block: it flips as the list reaches or leaves its end.
      */
-    val contentBelow: Boolean get() = scrollEdge?.canScrollForward ?: true
+    public val contentBelow: Boolean get() = scrollEdge?.canScrollForward ?: true
 }
 
 /** Provided to every screen of a navigation stack; outside one, a holder nobody reads. */
-val LocalScreenChrome = staticCompositionLocalOf { ScreenChrome() }
+public val LocalScreenChrome: ProvidableCompositionLocal<ScreenChrome> = staticCompositionLocalOf { ScreenChrome() }
 
 /**
  * Reports [state], the screen's primary scrolling container, as what runs under the bottom chrome:
@@ -116,7 +117,7 @@ val LocalScreenChrome = staticCompositionLocalOf { ScreenChrome() }
  * both return as soon as content scrolls under them. Call it once per screen, beside the list.
  */
 @Composable
-fun ReportScrollEdge(state: ScrollableState) {
+public fun ReportScrollEdge(state: ScrollableState) {
     val screen = LocalScreenChrome.current
     DisposableEffect(screen, state) {
         screen.scrollEdge = state
@@ -125,7 +126,7 @@ fun ReportScrollEdge(state: ScrollableState) {
 }
 
 /** Which pane of its navigation page a screen is shown in (the shell's `NavPane`). */
-enum class PaneRole { Single, List, Detail, Extra, Main, Supporting }
+public enum class PaneRole { Single, List, Detail, Extra, Main, Supporting }
 
 /**
  * The pane a screen is shown in. [beside] is true while another pane of its page shares the window
@@ -134,7 +135,7 @@ enum class PaneRole { Single, List, Detail, Extra, Main, Supporting }
  * open beside it. [detailDepth] counts the details opened in the pane, 1 for the first.
  */
 @Immutable
-data class PaneContext(
+public data class PaneContext(
     val role: PaneRole = PaneRole.Single,
     val beside: Boolean = false,
     val detailDepth: Int = 0,
@@ -142,7 +143,7 @@ data class PaneContext(
 )
 
 /** Provided to every screen of a navigation stack; the default is a screen on its own. */
-val LocalPaneContext = staticCompositionLocalOf { PaneContext() }
+public val LocalPaneContext: ProvidableCompositionLocal<PaneContext> = staticCompositionLocalOf { PaneContext() }
 
 /**
  * The colour the host of the current screen has already painted under it edge to edge (a navigation
@@ -150,7 +151,7 @@ val LocalPaneContext = staticCompositionLocalOf { PaneContext() }
  * such a screen paints no background of its own: the second fill would cost the GPU a whole window
  * on every frame of every transition, where it is least affordable.
  */
-val LocalPaintedBackground = staticCompositionLocalOf { Color.Unspecified }
+public val LocalPaintedBackground: ProvidableCompositionLocal<Color> = staticCompositionLocalOf { Color.Unspecified }
 
 /**
  * [base] plus the chrome at both ends, for a scrolling container's contentPadding. The bottom is
@@ -161,7 +162,7 @@ val LocalPaintedBackground = staticCompositionLocalOf { Color.Unspecified }
  * or the keyboard rising lays the list out again and recomposes nothing.
  */
 @Composable
-fun chromeContentPadding(base: PaddingValues = PaddingValues(0.dp)): PaddingValues {
+public fun chromeContentPadding(base: PaddingValues = PaddingValues(0.dp)): PaddingValues {
     val top = LocalTopChrome.current
     val bottom = LocalBottomChrome.current
     val navigationBars = WindowInsets.navigationBars

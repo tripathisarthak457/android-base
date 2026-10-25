@@ -38,7 +38,7 @@ import android.graphics.Path as PlatformPath
  * black while it recedes.
  */
 @ShellSeamApi
-fun Modifier.cardStackPresenter(stack: SheetStack, level: Int = 0): Modifier =
+public fun Modifier.cardStackPresenter(stack: SheetStack, level: Int = 0): Modifier =
     this then RecedeElement(stack, level) then DimElement(stack, level) then ContentLayerElement
 
 private data class RecedeElement(val stack: SheetStack, val level: Int) : ModifierNodeElement<RecedeNode>() {

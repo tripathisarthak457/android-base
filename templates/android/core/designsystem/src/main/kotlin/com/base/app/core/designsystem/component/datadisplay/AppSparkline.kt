@@ -26,7 +26,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 
 /** A tiny chart, sized to sit inside a row or a stat tile. */
 @Composable
-fun AppSparkline(
+public fun AppSparkline(
     values: List<Float>,
     modifier: Modifier = Modifier,
     color: Color = AppTheme.colors.accent,
@@ -98,9 +98,9 @@ fun AppSparkline(
 private const val FillAlpha = 0.22f
 
 /** The sparkline's line and height. */
-object AppSparklineDefaults {
-    val StrokeWidth = 2.dp
-    val Height = 48.dp
+public object AppSparklineDefaults {
+    public val StrokeWidth: Dp = 2.dp
+    public val Height: Dp = 48.dp
 }
 
 @AppComponentPreviews

@@ -44,7 +44,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * in as new.
  */
 @Composable
-fun AppRedacted(
+public fun AppRedacted(
     active: Boolean,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,

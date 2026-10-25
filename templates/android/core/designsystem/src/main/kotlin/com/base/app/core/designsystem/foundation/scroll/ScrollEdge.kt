@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
  * which gives the same pixels as fading the content out and costs one rect per edge: no offscreen
  * layer. Over a background that is not one colour (glass, an image) use [scrollEdgeFade].
  */
-fun Modifier.edgeProtection(
+public fun Modifier.edgeProtection(
     color: ColorProducer,
     top: () -> Dp = { 0.dp },
     bottom: () -> Dp = { 0.dp },
@@ -68,7 +68,7 @@ private fun protection(color: Color, edge: Float, end: Float, startY: Float, end
  * usually `{ LocalTopChrome.current.value }` read through the scaffold; it is read while drawing,
  * so a bar that changes height redraws the strip and recomposes nothing.
  */
-fun Modifier.scrollEdgeFade(edge: () -> Dp): Modifier = drawWithCache {
+public fun Modifier.scrollEdgeFade(edge: () -> Dp): Modifier = drawWithCache {
     val edgePx = edge().toPx().coerceIn(0f, size.height)
     if (edgePx <= 0f) return@drawWithCache onDrawWithContent { drawContent() }
     val end = (edgePx + ScrollEdgeDefaults.FadeTail.toPx()).coerceAtMost(size.height)

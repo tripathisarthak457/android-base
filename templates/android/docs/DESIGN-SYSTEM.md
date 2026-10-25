@@ -109,9 +109,11 @@ Every component in `:core:designsystem` follows these rules. Most are checked by
   the root.
 - **Slots over data:** take `content: @Composable () -> Unit` (or a `RowScope` lambda) where a caller may want more
   than text, and plain types where it will not.
-- **Defaults live in `XDefaults`:** an `object` holding the component's dimensions (`val Height = 32.dp`) and a
-  `@Composable fun colors(…)` that builds an `@Immutable` `XColors` from `AppTheme.colors`. No hue, size or duration is
-  written anywhere else (`raw-color`, `raw-dp`, `raw-tween`).
+- **Defaults live in `XDefaults`:** an `object` holding the component's dimensions (`public val Height: Dp = 32.dp`)
+  and a `@Composable fun colors(…)` that builds an `@Immutable` `XColors` from `AppTheme.colors`. No hue, size or
+  duration is written anywhere else (`raw-color`, `raw-dp`, `raw-tween`).
+- **The API is a decision:** the module compiles in Kotlin's explicit API mode, so every declaration says `public`,
+  `internal` or `private`, and a public one states its type. A helper only the design system uses stays `internal`.
 - **Accessibility:** a control states its `Role`, keeps a touch target of at least `AppTheme.sizes.minTouchTarget`
   (48 dp), and takes `contentDescription: String?` where it shows only an icon (an explicit `null` means decorative).
   Copy comes from resources (`hardcoded-copy`); previews may use sample text.
@@ -225,19 +227,19 @@ A component, in a package of its own under the design system's `component` packa
 
 ```kotlin component-template
 @Immutable
-class AppTagColors(
-    val container: Color,
-    val content: Color,
-    val selectedContainer: Color,
-    val selectedContent: Color,
+public class AppTagColors(
+    public val container: Color,
+    public val content: Color,
+    public val selectedContainer: Color,
+    public val selectedContent: Color,
 )
 
-object AppTagDefaults {
-    val Height = 32.dp
-    val HorizontalPadding = 12.dp
+public object AppTagDefaults {
+    public val Height: Dp = 32.dp
+    public val HorizontalPadding: Dp = 12.dp
 
     @Composable
-    fun colors(
+    public fun colors(
         container: Color = AppTheme.colors.fill,
         content: Color = AppTheme.colors.contentPrimary,
         selectedContainer: Color = AppTheme.colors.accent,
@@ -247,7 +249,7 @@ object AppTagDefaults {
 
 /** A tag the person turns on and off. Stateless: the caller owns [selected] and changes it in [onSelectedChange]. */
 @Composable
-fun AppTag(
+public fun AppTag(
     text: String,
     selected: Boolean,
     onSelectedChange: (Boolean) -> Unit,
@@ -341,7 +343,7 @@ the rules over both templates (no finding) and over this one (exactly these), so
 
 ```kotlin component-dont
 @Composable
-fun AppBadge(
+public fun AppBadge(
     count: State<Int>, // state-param
     updates: Flow<Int>, // stateless-params
     modifier: Modifier = Modifier,

@@ -32,7 +32,7 @@ import com.base.app.core.designsystem.foundation.adaptive.rememberWindowMetrics
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
 
 /** Which palette to render with. [System] follows the device; the other two override it. */
-enum class ThemeMode {
+public enum class ThemeMode {
     System,
     Light,
     Dark,
@@ -40,7 +40,7 @@ enum class ThemeMode {
 
     @Composable
     @ReadOnlyComposable
-    fun isDark(): Boolean = when (this) {
+    public fun isDark(): Boolean = when (this) {
         System -> isSystemInDarkTheme()
         Light -> false
         Dark -> true
@@ -49,10 +49,10 @@ enum class ThemeMode {
 
 /** What the project was generated with: haptics and fonts. */
 @Immutable
-class AppThemeDefaults internal constructor(
-    val hapticsEnabled: Boolean,
-    val fontName: String,
-    val monoFontName: String,
+public class AppThemeDefaults internal constructor(
+    public val hapticsEnabled: Boolean,
+    public val fontName: String,
+    public val monoFontName: String,
 )
 
 /**
@@ -71,7 +71,7 @@ class AppThemeDefaults internal constructor(
  * watches the window for them; a nested theme keeps its parent's.
  */
 @Composable
-fun AppTheme(
+public fun AppTheme(
     mode: ThemeMode = ThemeMode.System,
     colors: AppColors = appColors(dark = mode.isDark()),
     fonts: AppFonts = themeFonts(),
@@ -130,57 +130,57 @@ fun AppTheme(
  * The accessor every component and screen reads tokens through: `AppTheme.colors.accent`,
  * `AppTheme.spacing.lg`, `AppTheme.springs.release`.
  */
-object AppTheme {
+public object AppTheme {
 
     /** The haptics and fonts the project was generated with. */
-    val defaults = AppThemeDefaults(
+    public val defaults: AppThemeDefaults = AppThemeDefaults(
         hapticsEnabled = DesignTokens.Defaults.hapticsEnabled,
         fontName = DesignTokens.Defaults.fontName,
         monoFontName = DesignTokens.Defaults.monoFontName,
     )
 
-    val colors: AppColors
+    public val colors: AppColors
         @Composable
         @ReadOnlyComposable
         get() = LocalAppColors.current
 
-    val typography: AppTypography
+    public val typography: AppTypography
         @Composable
         @ReadOnlyComposable
         get() = LocalAppTypography.current
 
-    val spacing: AppSpacing
+    public val spacing: AppSpacing
         @Composable
         @ReadOnlyComposable
         get() = LocalAppSpacing.current
 
-    val shapes: AppShapes
+    public val shapes: AppShapes
         @Composable
         @ReadOnlyComposable
         get() = AppShapesDefault
 
-    val elevation: AppElevation
+    public val elevation: AppElevation
         @Composable
         @ReadOnlyComposable
         get() = AppElevationDefault
 
-    val sizes: AppSizes
+    public val sizes: AppSizes
         @Composable
         @ReadOnlyComposable
         get() = AppSizesDefault
 
-    val springs: AppSprings
+    public val springs: AppSprings
         @Composable
         @ReadOnlyComposable
         get() = DefaultSprings
 
     /** Whether to skip motion that is not needed to understand a change. */
-    val reduceMotion: Boolean
+    public val reduceMotion: Boolean
         @Composable
         get() = LocalReduceMotion.current.value
 
     /** Whether controls may play haptics. The device's own setting still applies on top. */
-    val hapticsEnabled: Boolean
+    public val hapticsEnabled: Boolean
         @Composable
         @ReadOnlyComposable
         get() = LocalHapticsEnabled.current
@@ -190,31 +190,31 @@ object AppTheme {
      * panes. Screens and components read [containerClass] instead. Decide layout from these, never
      * from orientation or device.
      */
-    val windowClass: SizeClass
+    public val windowClass: SizeClass
         @Composable
         @ReadOnlyComposable
         get() = LocalWindowClass.current
 
     /** The size classes of the pane this is laid out in: the window's, unless a pane narrows it. */
-    val containerClass: SizeClass
+    public val containerClass: SizeClass
         @Composable
         @ReadOnlyComposable
         get() = LocalContainerClass.current
 
     /** How a foldable is held, and where its hinge is. */
-    val posture: WindowPosture
+    public val posture: WindowPosture
         @Composable
         @ReadOnlyComposable
         get() = LocalWindowPosture.current
 
     /** The pointer and keyboard the person has right now. */
-    val input: InputTraits
+    public val input: InputTraits
         @Composable
         @ReadOnlyComposable
         get() = LocalInputTraits.current
 
     /** Measurements that follow the pane: gutters, pane widths, maximum content widths. */
-    val layout: AppLayout
+    public val layout: AppLayout
         @Composable
         @ReadOnlyComposable
         get() = LocalAppLayout.current

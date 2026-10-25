@@ -40,7 +40,7 @@ import java.util.Locale
  * separators are shown but never stored, and the caret stays where it was typed.
  */
 @Composable
-fun AppDecimalField(
+public fun AppDecimalField(
     state: TextFieldState,
     modifier: Modifier = Modifier,
     label: String? = null,
@@ -83,7 +83,7 @@ fun AppDecimalField(
  * outside (a form reset) replaces what is typed.
  */
 @Composable
-fun AppMoneyField(
+public fun AppMoneyField(
     minorUnits: Long?,
     onMinorUnitsChange: (Long?) -> Unit,
     modifier: Modifier = Modifier,
@@ -123,13 +123,13 @@ fun AppMoneyField(
 }
 
 /** The rules behind the decimal fields, apart from Compose so they can be tested. */
-object DecimalInput {
+public object DecimalInput {
     /**
      * [candidate] as a field should hold it, or null when the keystroke must be refused. The
      * locale's [decimalSeparator] (a `,` in German) is stored as `.`; anything else that is not a
      * digit is dropped, so a pasted "1,234.50" lands as "1234.50"; a second point is refused.
      */
-    fun accept(candidate: String, maxDecimals: Int, maxIntegerDigits: Int, decimalSeparator: Char = DecimalPoint): String? {
+    public fun accept(candidate: String, maxDecimals: Int, maxIntegerDigits: Int, decimalSeparator: Char = DecimalPoint): String? {
         val cleaned = buildString {
             candidate.forEach { c ->
                 when {
@@ -147,7 +147,7 @@ object DecimalInput {
     }
 
     /** `"99.5"` with 2 digits is 9950; null for an empty or point-only field. */
-    fun toMinor(text: String, digits: Int): Long? {
+    public fun toMinor(text: String, digits: Int): Long? {
         if (text.isEmpty() || text == DecimalPoint.toString()) return null
         val whole = text.substringBefore(DecimalPoint).ifEmpty { "0" }.toLongOrNull() ?: return null
         val fraction = text.substringAfter(DecimalPoint, "").padEnd(digits, '0').take(digits).ifEmpty { "0" }.toLongOrNull() ?: return null
@@ -155,7 +155,7 @@ object DecimalInput {
     }
 
     /** 9950 with 2 digits is `"99.50"`, 10000 is `"100"`: the shortest text that says it exactly. */
-    fun fromMinor(minor: Long, digits: Int): String {
+    public fun fromMinor(minor: Long, digits: Int): String {
         val unit = pow10(digits)
         val whole = minor / unit
         val rest = minor % unit
@@ -163,7 +163,7 @@ object DecimalInput {
     }
 
     /** Where grouping separators go in a whole part of [length] digits: every three from the right. */
-    fun groupingPositions(length: Int): List<Int> = (length - GroupSize downTo 1 step GroupSize).toList()
+    public fun groupingPositions(length: Int): List<Int> = (length - GroupSize downTo 1 step GroupSize).toList()
 
     private fun pow10(digits: Int): Long = (1..digits).fold(1L) { acc, _ -> acc * 10 }
 
@@ -205,7 +205,7 @@ private class LocaleDecimalOutput(locale: Locale, private val grouping: Boolean)
 private const val MoneyIntegerDigits = 12
 
 /** The money field's defaults. */
-object AppMoneyFieldDefaults {
+public object AppMoneyFieldDefaults {
     /**
      * The currency of the person's region. A locale that names only a language (a per-app language
      * such as `de` often does) has no region to ask, so the region likeliest for that language
@@ -213,7 +213,7 @@ object AppMoneyFieldDefaults {
      * currency".
      */
     @Composable
-    fun currency(): Currency {
+    public fun currency(): Currency {
         val locale = rememberCurrentLocale()
         return remember(locale) { regionCurrency(locale) }
     }

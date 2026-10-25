@@ -5,6 +5,7 @@ import android.view.HapticFeedbackConstants
 import android.view.View
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalView
@@ -13,7 +14,7 @@ import androidx.compose.ui.platform.LocalView
  * The moments that earn a haptic. An ordinary tap on a button, a row or a card is not one of them:
  * iOS plays nothing there, and a phone that buzzes on every touch soon feels cheap.
  */
-enum class AppHaptic {
+public enum class AppHaptic {
     /** A segment, tab, picker wheel or slider step changed. */
     Selection,
 
@@ -38,11 +39,11 @@ enum class AppHaptic {
 
 /** Plays haptics, or nothing when the app turned them off. The system's own setting applies on top. */
 @Immutable
-class AppHaptics internal constructor(
+public class AppHaptics internal constructor(
     private val view: View?,
     private val enabled: Boolean,
 ) {
-    fun perform(haptic: AppHaptic) {
+    public fun perform(haptic: AppHaptic) {
         if (enabled) view?.performHapticFeedback(haptic.constant())
     }
 }
@@ -67,11 +68,11 @@ internal fun AppHaptic.constant(): Int {
 }
 
 /** Whether the app plays haptics at all. Set once, by `AppTheme(hapticsEnabled = …)`. */
-val LocalHapticsEnabled = staticCompositionLocalOf { true }
+public val LocalHapticsEnabled: ProvidableCompositionLocal<Boolean> = staticCompositionLocalOf { true }
 
 /** The haptics for the current theme. Cheap; read it wherever a control needs to speak. */
 @Composable
-fun rememberAppHaptics(): AppHaptics {
+public fun rememberAppHaptics(): AppHaptics {
     val view = LocalView.current
     val enabled = LocalHapticsEnabled.current
     return remember(view, enabled) { AppHaptics(view, enabled) }

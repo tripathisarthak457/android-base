@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
@@ -24,7 +25,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 
 /** A radio button, with an optional [label] that is part of the same target. */
 @Composable
-fun AppRadio(
+public fun AppRadio(
     selected: Boolean,
     onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
@@ -54,8 +55,8 @@ fun AppRadio(
 }
 
 /** The radio button's ring; its size is [AppCheckboxDefaults.Size]. */
-object AppRadioDefaults {
-    val RingWidth = 1.5.dp
+public object AppRadioDefaults {
+    public val RingWidth: Dp = 1.5.dp
 }
 
 @AppComponentPreviews

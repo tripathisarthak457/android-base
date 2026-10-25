@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
  * A solid copy of [shape] drawn behind the element, [distance] down and to the right. The outline
  * is built once per size, not on every frame the element redraws.
  */
-fun Modifier.offsetShadow(shape: Shape, distance: Dp, color: Color): Modifier {
+public fun Modifier.offsetShadow(shape: Shape, distance: Dp, color: Color): Modifier {
     if (distance <= 0.dp) return this
     return drawWithCache {
         val outline = shape.createOutline(size, layoutDirection, this)

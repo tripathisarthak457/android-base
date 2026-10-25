@@ -8,7 +8,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.StatusColors
 
 /** The visual severity of a message, banner or pill. */
-enum class AppTone {
+public enum class AppTone {
     Success,
     Error,
     Warning,
@@ -16,7 +16,7 @@ enum class AppTone {
     Neutral,
     ;
 
-    val colors: StatusColors
+    public val colors: StatusColors
         @Composable
         @ReadOnlyComposable
         get() = when (this) {
@@ -27,7 +27,7 @@ enum class AppTone {
             Neutral -> AppTheme.colors.neutral
         }
 
-    val icon: ImageVector
+    public val icon: ImageVector
         get() = when (this) {
             Success -> AppIcons.CheckCircle
             Error -> AppIcons.XCircle

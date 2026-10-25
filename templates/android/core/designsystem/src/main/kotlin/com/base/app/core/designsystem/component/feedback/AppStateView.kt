@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.button.AppButton
@@ -34,7 +35,7 @@ import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /** Why a screen is showing a state instead of its content. */
-enum class StateKind { Empty, Error, Offline }
+public enum class StateKind { Empty, Error, Offline }
 
 /**
  * What a screen shows instead of its content: nothing here yet, it did not load, or there is no
@@ -48,7 +49,7 @@ enum class StateKind { Empty, Error, Offline }
  * its own, such as `PaddingValues(AppTheme.spacing.xl)`.
  */
 @Composable
-fun AppStateView(
+public fun AppStateView(
     modifier: Modifier = Modifier,
     kind: StateKind = StateKind.Empty,
     title: String? = null,
@@ -119,10 +120,10 @@ fun AppStateView(
 }
 
 /** The state view's glyph and the measure of its text. */
-object AppStateViewDefaults {
-    val GlyphBackingSize = 64.dp
-    val GlyphSize = 28.dp
-    val MaxTextWidth = 320.dp
+public object AppStateViewDefaults {
+    public val GlyphBackingSize: Dp = 64.dp
+    public val GlyphSize: Dp = 28.dp
+    public val MaxTextWidth: Dp = 320.dp
 }
 
 @AppComponentPreviews

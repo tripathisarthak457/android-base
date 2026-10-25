@@ -39,7 +39,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * it is revealed is local to the screen and survives rotation.
  */
 @Composable
-fun AppSecureField(
+public fun AppSecureField(
     state: TextFieldState,
     modifier: Modifier = Modifier,
     label: String? = null,

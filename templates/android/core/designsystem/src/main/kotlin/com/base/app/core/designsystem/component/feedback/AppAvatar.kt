@@ -39,7 +39,7 @@ import kotlin.math.absoluteValue
  * name always maps to. A screen reader hears the name once, not the initials as well.
  */
 @Composable
-fun AppAvatar(
+public fun AppAvatar(
     name: String,
     modifier: Modifier = Modifier,
     size: Dp = AppAvatarDefaults.Size,
@@ -82,7 +82,7 @@ fun AppAvatar(
  * "+3". Each one is ringed in the background colour so the overlap reads as a stack.
  */
 @Composable
-fun AppAvatarGroup(
+public fun AppAvatarGroup(
     names: List<String>,
     modifier: Modifier = Modifier,
     size: Dp = AppAvatarDefaults.GroupSize,
@@ -158,10 +158,10 @@ private const val InitialsFraction = 0.4f
 private const val DarkTintFraction = 0.42f
 
 /** The avatar's sizes, and the ring that parts the avatars of a group. */
-object AppAvatarDefaults {
-    val Size = 40.dp
-    val GroupSize = 32.dp
-    val GroupRing = 2.dp
+public object AppAvatarDefaults {
+    public val Size: Dp = 40.dp
+    public val GroupSize: Dp = 32.dp
+    public val GroupRing: Dp = 2.dp
 }
 
 @AppComponentPreviews

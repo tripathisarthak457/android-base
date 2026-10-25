@@ -24,7 +24,7 @@ import com.base.app.core.designsystem.component.sheet.action.SheetAction as Acti
         "com.base.app.core.designsystem.component.sheet.action.SheetAction",
     ),
 )
-data class SheetAction(
+public data class SheetAction(
     val label: String,
     val onClick: () -> Unit,
     val icon: ImageVector? = null,
@@ -43,7 +43,7 @@ data class SheetAction(
 )
 @Suppress("DEPRECATION")
 @Composable
-fun AppActionSheet(
+public fun AppActionSheet(
     actions: List<SheetAction>,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,

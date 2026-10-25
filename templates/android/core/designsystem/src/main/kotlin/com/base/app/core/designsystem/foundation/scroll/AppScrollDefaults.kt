@@ -32,7 +32,7 @@ import kotlin.math.sign
  *
  * The edge needs nothing: `AppTheme` installs [AppOverscroll]'s rubber band for every container.
  */
-object AppScrollDefaults {
+public object AppScrollDefaults {
 
     /**
      * A fling that slows as an iOS scroll view does, keeping 0.998 of its speed every millisecond,
@@ -41,7 +41,7 @@ object AppScrollDefaults {
      * how a long list is crossed with a few quick flicks.
      */
     @Composable
-    fun flingBehavior(): FlingBehavior {
+    public fun flingBehavior(): FlingBehavior {
         val decay = AppTheme.springs.fling
         val density = LocalDensity.current.density
         return remember(decay, density) { AppFlingBehavior(decay, density) }
@@ -52,7 +52,7 @@ object AppScrollDefaults {
      * the screen spring, which never bounces a full-width page.
      */
     @Composable
-    fun pagerFlingBehavior(state: PagerState): TargetedFlingBehavior {
+    public fun pagerFlingBehavior(state: PagerState): TargetedFlingBehavior {
         val springs = AppTheme.springs
         return PagerDefaults.flingBehavior(
             state = state,

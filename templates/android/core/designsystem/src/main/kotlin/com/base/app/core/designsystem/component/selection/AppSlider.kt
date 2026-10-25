@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalGraphicsContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.setProgress
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -50,7 +51,7 @@ import kotlin.math.roundToInt
  * sets the value where it lands. With [steps], each step plays the selection haptic.
  */
 @Composable
-fun AppSlider(
+public fun AppSlider(
     value: Float,
     onValueChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
@@ -169,16 +170,16 @@ fun AppSlider(
 }
 
 /** The slider's metrics, iOS's. */
-object AppSliderDefaults {
+public object AppSliderDefaults {
     // iOS's thumb: a soft blur that lifts it off a white page, and a faint ring that still outlines
     // it where the blur is too light to see.
-    val ThumbShadow = Shadow(radius = 2.dp, alpha = 0.15f, offset = DpOffset(0.dp, 1.dp))
-    const val ThumbRingAlpha = 0.04f
-    val ThumbSize = 28.dp
-    val TrackHeight = 4.dp
+    public val ThumbShadow: Shadow = Shadow(radius = 2.dp, alpha = 0.15f, offset = DpOffset(0.dp, 1.dp))
+    public const val ThumbRingAlpha: Float = 0.04f
+    public val ThumbSize: Dp = 28.dp
+    public val TrackHeight: Dp = 4.dp
     /** Room above and below the thumb for its shadow and the finger. */
-    val VerticalSlack = 16.dp
-    val RingWidth = 0.5.dp
+    public val VerticalSlack: Dp = 16.dp
+    public val RingWidth: Dp = 0.5.dp
 }
 
 @AppComponentPreviews

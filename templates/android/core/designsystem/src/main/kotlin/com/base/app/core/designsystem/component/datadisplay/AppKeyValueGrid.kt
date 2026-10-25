@@ -16,7 +16,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 
 /** A dense two-column grid for records, where a list row would waste half the width. */
 @Composable
-fun AppKeyValueGrid(
+public fun AppKeyValueGrid(
     entries: List<Pair<String, String>>,
     modifier: Modifier = Modifier,
     striped: Boolean = true,

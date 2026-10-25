@@ -35,7 +35,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * beneath it to the sheet's edge, as it does over the navigation bar outside a sheet.
  */
 @Composable
-fun AppBottomActionBar(
+public fun AppBottomActionBar(
     modifier: Modifier = Modifier,
     content: @Composable RowScope.() -> Unit,
 ) {

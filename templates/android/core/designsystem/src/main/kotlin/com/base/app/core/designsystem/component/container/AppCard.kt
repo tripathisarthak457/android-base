@@ -26,7 +26,7 @@ import com.base.app.core.designsystem.theme.CardTreatment
 
 /** The default container for a block of related content. */
 @Composable
-fun AppCard(
+public fun AppCard(
     modifier: Modifier = Modifier,
     shape: Shape = AppTheme.shapes.md,
     color: Color = AppCardDefaults.color(),
@@ -51,7 +51,7 @@ fun AppCard(
  * since it is larger, and never lays a film over what it shows.
  */
 @Composable
-fun AppCard(
+public fun AppCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -78,22 +78,22 @@ fun AppCard(
 }
 
 /** What a card looks like when the caller does not say, per [CardTreatment]. */
-object AppCardDefaults {
+public object AppCardDefaults {
 
     /** Raised cards sit on the elevated surface, so in dark theme they still read as lifted. */
     @Composable
-    fun color(): Color =
+    public fun color(): Color =
         if (AppTheme.style.card == CardTreatment.Raised) AppTheme.colors.surfaceElevated else AppTheme.colors.surface
 
     @Composable
-    fun border(): BorderStroke? = when (AppTheme.style.card) {
+    public fun border(): BorderStroke? = when (AppTheme.style.card) {
         CardTreatment.Outlined -> BorderStroke(AppTheme.style.borderWidth, AppTheme.colors.separator)
         CardTreatment.Raised -> null
         CardTreatment.Offset -> BorderStroke(AppTheme.style.borderWidth, AppTheme.colors.contentPrimary)
     }
 
     @Composable
-    fun elevation(): Dp = if (AppTheme.style.card == CardTreatment.Raised) AppTheme.elevation.card else 0.dp
+    public fun elevation(): Dp = if (AppTheme.style.card == CardTreatment.Raised) AppTheme.elevation.card else 0.dp
 }
 
 @Composable

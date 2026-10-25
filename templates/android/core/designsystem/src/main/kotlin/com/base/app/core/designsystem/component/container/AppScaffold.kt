@@ -60,7 +60,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * a screen is filled once per frame, not twice.
  */
 @Composable
-fun AppScaffold(
+public fun AppScaffold(
     modifier: Modifier = Modifier,
     topBar: @Composable () -> Unit = {},
     bottomBar: (@Composable () -> Unit)? = null,

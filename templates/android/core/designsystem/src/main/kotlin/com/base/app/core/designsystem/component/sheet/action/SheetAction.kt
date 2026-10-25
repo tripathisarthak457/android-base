@@ -5,16 +5,16 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 /** One choice in an [AppActionSheet]. Remember the list it is in: a list rebuilt on every recomposition defeats skipping. */
 @Immutable
-class SheetAction(
-    val label: String,
-    val onClick: () -> Unit,
-    val icon: ImageVector? = null,
-    val destructive: Boolean = false,
-    val enabled: Boolean = true,
+public class SheetAction(
+    public val label: String,
+    public val onClick: () -> Unit,
+    public val icon: ImageVector? = null,
+    public val destructive: Boolean = false,
+    public val enabled: Boolean = true,
     /** Draws a checkmark and announces the row as selected. */
-    val selected: Boolean = false,
+    public val selected: Boolean = false,
 ) {
-    fun copy(
+    public fun copy(
         label: String = this.label,
         onClick: () -> Unit = this.onClick,
         icon: ImageVector? = this.icon,

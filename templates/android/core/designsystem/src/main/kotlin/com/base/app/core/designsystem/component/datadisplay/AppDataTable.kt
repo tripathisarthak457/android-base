@@ -56,7 +56,7 @@ import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 
 /** How a column's values read and line up. Figures keep one width per digit so they align. */
-enum class AppColumnType(internal val defaultWidth: Dp, internal val alignEnd: Boolean, internal val figures: Boolean) {
+public enum class AppColumnType(internal val defaultWidth: Dp, internal val alignEnd: Boolean, internal val figures: Boolean) {
     Text(defaultWidth = AppDataTableDefaults.TextColumnWidth, alignEnd = false, figures = false),
     Number(defaultWidth = AppDataTableDefaults.NumberColumnWidth, alignEnd = true, figures = true),
     Money(defaultWidth = AppDataTableDefaults.MoneyColumnWidth, alignEnd = true, figures = true),
@@ -68,12 +68,12 @@ enum class AppColumnType(internal val defaultWidth: Dp, internal val alignEnd: B
  * to line them up, not what a currency looks like.
  */
 @Immutable
-class AppTableColumn<T>(
-    val label: String,
-    val type: AppColumnType = AppColumnType.Text,
-    val width: Dp = type.defaultWidth,
-    val total: String? = null,
-    val value: (T) -> String,
+public class AppTableColumn<T>(
+    public val label: String,
+    public val type: AppColumnType = AppColumnType.Text,
+    public val width: Dp = type.defaultWidth,
+    public val total: String? = null,
+    public val value: (T) -> String,
 )
 
 /**
@@ -85,7 +85,7 @@ class AppTableColumn<T>(
  * [trailing].
  */
 @Composable
-fun <T> AppDataTable(
+public fun <T> AppDataTable(
     columns: List<AppTableColumn<T>>,
     rows: List<T>,
     modifier: Modifier = Modifier,
@@ -276,11 +276,11 @@ private const val TotalsKey = "app-data-table-totals"
 private const val RowType = "app-data-table-row"
 
 /** The table's column widths, by what a column holds. */
-object AppDataTableDefaults {
-    val TextColumnWidth = 160.dp
-    val NumberColumnWidth = 88.dp
-    val MoneyColumnWidth = 124.dp
-    val DateColumnWidth = 112.dp
+public object AppDataTableDefaults {
+    public val TextColumnWidth: Dp = 160.dp
+    public val NumberColumnWidth: Dp = 88.dp
+    public val MoneyColumnWidth: Dp = 124.dp
+    public val DateColumnWidth: Dp = 112.dp
 }
 
 @AppComponentPreviews

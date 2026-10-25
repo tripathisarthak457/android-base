@@ -49,7 +49,7 @@ import kotlin.math.sign
  * The offset is applied when the content is placed, so a pull moves the list's layer and recomposes,
  * re-measures and redraws nothing.
  */
-object AppOverscroll : OverscrollFactory {
+public object AppOverscroll : OverscrollFactory {
     override fun createOverscrollEffect(): OverscrollEffect = RubberBandOverscroll()
 
     override fun equals(other: Any?): Boolean = other === this

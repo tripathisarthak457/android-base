@@ -36,7 +36,7 @@ import com.base.app.core.designsystem.theme.AppTheme
     ),
 )
 @Composable
-fun AppBottomSheet(
+public fun AppBottomSheet(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     title: String? = null,

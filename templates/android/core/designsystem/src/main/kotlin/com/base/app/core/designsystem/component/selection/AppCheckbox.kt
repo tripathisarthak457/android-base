@@ -23,6 +23,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.toggleableState
 import androidx.compose.ui.state.ToggleableState
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.draw.disabledAlpha
@@ -38,7 +39,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * its own tap.
  */
 @Composable
-fun AppCheckbox(
+public fun AppCheckbox(
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)?,
     modifier: Modifier = Modifier,
@@ -110,11 +111,11 @@ internal fun LabelledControl(
  * The checkbox's metrics, iOS's 22 dp control. [Size] is the radio button's too, so the two line up
  * in a form.
  */
-object AppCheckboxDefaults {
-    val Size = 22.dp
-    val Corner = 6.dp
-    val RingWidth = 1.5.dp
-    val TickWidth = 2.dp
+public object AppCheckboxDefaults {
+    public val Size: Dp = 22.dp
+    public val Corner: Dp = 6.dp
+    public val RingWidth: Dp = 1.5.dp
+    public val TickWidth: Dp = 2.dp
 }
 
 @AppComponentPreviews

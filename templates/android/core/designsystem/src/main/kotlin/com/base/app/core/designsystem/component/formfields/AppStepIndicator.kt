@@ -21,6 +21,7 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.text.AppIcon
@@ -36,7 +37,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * Read by TalkBack as one sentence, "Step 2 of 4: Payment", rather than a row of numbers.
  */
 @Composable
-fun AppStepIndicator(
+public fun AppStepIndicator(
     steps: List<String>,
     currentStep: Int,
     modifier: Modifier = Modifier,
@@ -145,11 +146,11 @@ private fun StepNode(number: Int, done: Boolean, active: Boolean) {
 }
 
 /** The step indicator's nodes, labels and connectors. */
-object AppStepIndicatorDefaults {
-    val LabelInset = 2.dp
-    val ConnectorHeight = 2.dp
-    val ActiveRingWidth = 2.dp
-    val NodeSize = 26.dp
+public object AppStepIndicatorDefaults {
+    public val LabelInset: Dp = 2.dp
+    public val ConnectorHeight: Dp = 2.dp
+    public val ActiveRingWidth: Dp = 2.dp
+    public val NodeSize: Dp = 26.dp
 }
 
 @AppComponentPreviews

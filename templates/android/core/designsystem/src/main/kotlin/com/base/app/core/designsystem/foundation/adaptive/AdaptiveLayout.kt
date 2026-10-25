@@ -33,7 +33,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * Column(Modifier.centeredMaxWidth(AppTheme.layout.formMaxWidth)) { … }
  * ```
  */
-fun Modifier.centeredMaxWidth(maxWidth: Dp): Modifier = this
+public fun Modifier.centeredMaxWidth(maxWidth: Dp): Modifier = this
     .fillMaxWidth()
     .wrapContentWidth(Alignment.CenterHorizontally)
     .widthIn(max = maxWidth)
@@ -43,7 +43,7 @@ fun Modifier.centeredMaxWidth(maxWidth: Dp): Modifier = this
  * them side by side. True from Expanded width, and on anything Medium or wider that is short: a
  * phone held sideways, where stacking the halves would push the second one off screen.
  */
-val shouldUseTwoPanes: Boolean
+public val shouldUseTwoPanes: Boolean
     @Composable get() {
         val container = AppTheme.containerClass
         return container.hasRoomForTwoPanes || (container.isShort && container.width >= WindowWidth.Medium)
@@ -58,7 +58,7 @@ val shouldUseTwoPanes: Boolean
  * so neither half is ever split by the crease.
  */
 @Composable
-fun AppTwoPane(
+public fun AppTwoPane(
     first: @Composable () -> Unit,
     second: @Composable () -> Unit,
     modifier: Modifier = Modifier,

@@ -29,7 +29,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * in dark theme a shadow cannot be seen, so pass `surfaceElevated` as the colour instead.
  */
 @Composable
-fun AppSurface(
+public fun AppSurface(
     modifier: Modifier = Modifier,
     shape: Shape = AppTheme.shapes.md,
     color: Color = AppTheme.colors.surface,

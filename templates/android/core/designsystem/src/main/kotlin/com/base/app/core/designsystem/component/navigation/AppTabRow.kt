@@ -24,6 +24,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.container.AppDivider
 import com.base.app.core.designsystem.component.text.AppText
@@ -41,7 +42,7 @@ import kotlin.math.roundToInt
  * colours are read while drawing and placing, so a switch recomposes nothing per frame.
  */
 @Composable
-fun AppTabRow(
+public fun AppTabRow(
     tabs: List<String>,
     selected: Int,
     onSelect: (Int) -> Unit,
@@ -133,9 +134,9 @@ fun AppTabRow(
 }
 
 /** The tab row's height and the rule under the selected tab. */
-object AppTabRowDefaults {
-    val Height = 44.dp
-    val IndicatorHeight = 3.dp
+public object AppTabRowDefaults {
+    public val Height: Dp = 44.dp
+    public val IndicatorHeight: Dp = 3.dp
 }
 
 private const val IndicatorWidthFraction = 0.6f

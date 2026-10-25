@@ -7,7 +7,7 @@ import java.util.Locale
 
 /** The device's current locale, as something a composable can react to. */
 @Composable
-fun rememberCurrentLocale(): Locale {
+public fun rememberCurrentLocale(): Locale {
     val configuration = LocalConfiguration.current
     return remember(configuration) { configuration.locales[0] }
 }

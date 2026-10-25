@@ -19,7 +19,7 @@ import com.base.app.core.designsystem.component.sheet.action.SheetAction
  * yourself for a different question.
  */
 @Composable
-fun SheetDismissConfirmation(
+public fun SheetDismissConfirmation(
     enabled: Boolean,
     onDiscard: () -> Unit,
     title: String = stringResource(R.string.designsystem_sheet_discard_title),

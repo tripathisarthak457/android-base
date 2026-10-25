@@ -30,6 +30,7 @@ import androidx.compose.ui.semantics.paneTitle
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.container.AppVerticalDivider
 import com.base.app.core.designsystem.component.text.AppIcon
@@ -55,7 +56,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  */
 @Suppress("ktlint:compose:modifier-not-used-at-root") // The modifier is the card's.
 @Composable
-fun AppAlert(
+public fun AppAlert(
     visible: Boolean,
     title: String,
     confirmLabel: String,
@@ -158,10 +159,10 @@ private fun AlertAction(label: String, color: Color, bold: Boolean, onClick: () 
 }
 
 /** The alert's width, its buttons and its glyph, iOS's. */
-object AppAlertDefaults {
-    val IconSize = 28.dp
-    val Width = 300.dp
-    val ActionHeight = 44.dp
+public object AppAlertDefaults {
+    public val IconSize: Dp = 28.dp
+    public val Width: Dp = 300.dp
+    public val ActionHeight: Dp = 44.dp
 }
 
 private const val EnterScale = 0.3f

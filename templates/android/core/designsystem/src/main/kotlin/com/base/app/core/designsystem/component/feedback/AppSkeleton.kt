@@ -38,7 +38,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * loading region announces itself once.
  */
 @Composable
-fun AppSkeleton(
+public fun AppSkeleton(
     modifier: Modifier = Modifier,
     shape: Shape = AppSkeletonDefaults.shape,
 ) {
@@ -51,7 +51,7 @@ fun AppSkeleton(
  * it is given. Lines of a redacted `AppText` are drawn the same way.
  */
 @Composable
-fun AppSkeletonLine(
+public fun AppSkeletonLine(
     modifier: Modifier = Modifier,
     widthFraction: Float = 1f,
     style: TextStyle = AppTheme.typography.body,
@@ -76,7 +76,7 @@ fun AppSkeletonLine(
     DeprecationLevel.WARNING,
 )
 @Composable
-fun AppSkeletonLine(
+public fun AppSkeletonLine(
     height: Dp,
     modifier: Modifier = Modifier,
     widthFraction: Float = 1f,
@@ -86,7 +86,7 @@ fun AppSkeletonLine(
 
 /** A round placeholder, for an avatar or an icon in a circle. */
 @Composable
-fun AppSkeletonCircle(
+public fun AppSkeletonCircle(
     modifier: Modifier = Modifier,
     size: Dp = AppSkeletonDefaults.CircleSize,
 ) {
@@ -100,7 +100,7 @@ fun AppSkeletonCircle(
     DeprecationLevel.WARNING,
 )
 @Composable
-fun AppSkeletonListItem(modifier: Modifier = Modifier, showLeading: Boolean = true) {
+public fun AppSkeletonListItem(modifier: Modifier = Modifier, showLeading: Boolean = true) {
     Row(
         modifier = modifier.fillMaxWidth().padding(horizontal = AppTheme.spacing.lg, vertical = AppTheme.spacing.md),
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
@@ -118,15 +118,15 @@ fun AppSkeletonListItem(modifier: Modifier = Modifier, showLeading: Boolean = tr
 }
 
 /** What a skeleton looks like when the caller does not say. */
-object AppSkeletonDefaults {
+public object AppSkeletonDefaults {
     /** The corners of a block placeholder: the design style's small radius. */
-    val shape: Shape
+    public val shape: Shape
         @Composable
         @ReadOnlyComposable
         get() = AppTheme.shapes.sm
 
     /** The diameter of [AppSkeletonCircle]: an avatar's. */
-    val CircleSize: Dp = 40.dp
+    public val CircleSize: Dp = 40.dp
 
     /** The fixed line heights [AppSkeletonListItem] has always drawn. */
     internal val ListItemTitleHeight: Dp = 14.dp

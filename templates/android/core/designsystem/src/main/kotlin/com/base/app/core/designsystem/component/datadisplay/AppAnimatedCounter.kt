@@ -44,7 +44,7 @@ import java.text.NumberFormat
  * place rather than recomposing or re-measuring anything.
  */
 @Composable
-fun AppAnimatedCounter(
+public fun AppAnimatedCounter(
     count: Long,
     modifier: Modifier = Modifier,
     style: TextStyle = AppTheme.typography.title3,

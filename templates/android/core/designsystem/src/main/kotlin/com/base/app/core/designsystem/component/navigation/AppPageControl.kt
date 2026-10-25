@@ -46,7 +46,7 @@ import kotlin.math.roundToInt
 
 /** A horizontal pager with a page control under it, driven by the same state. */
 @Composable
-fun AppPager(
+public fun AppPager(
     pageCount: Int,
     modifier: Modifier = Modifier,
     state: PagerState = rememberPagerState(pageCount = { pageCount }),
@@ -82,7 +82,7 @@ fun AppPager(
  * the only part recomposed when the page changes, while the dots are redrawn from [selected].
  */
 @Composable
-fun AppPageControl(
+public fun AppPageControl(
     pageCount: Int,
     selected: () -> Int,
     modifier: Modifier = Modifier,
@@ -154,12 +154,12 @@ fun AppPageControl(
 }
 
 /** The page dots' size, their spacing and the control's height. */
-object AppPageControlDefaults {
+public object AppPageControlDefaults {
     /** Room either side of the dots, as half a step. */
-    val EdgePadding = 16.dp
-    val DotSize = 7.dp
-    val DotStep = 16.dp
-    val MinHeight = 28.dp
+    public val EdgePadding: Dp = 16.dp
+    public val DotSize: Dp = 7.dp
+    public val DotStep: Dp = 16.dp
+    public val MinHeight: Dp = 28.dp
 }
 
 @AppComponentPreviews

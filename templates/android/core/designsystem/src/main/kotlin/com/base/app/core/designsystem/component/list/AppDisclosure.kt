@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
@@ -36,7 +37,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * revealed. A screen reader hears whether it is expanded.
  */
 @Composable
-fun AppDisclosure(
+public fun AppDisclosure(
     title: String,
     expanded: Boolean,
     onExpandedChange: (Boolean) -> Unit,
@@ -95,10 +96,10 @@ fun AppDisclosure(
 }
 
 /** The disclosure row's metrics, a row's. */
-object AppDisclosureDefaults {
-    val VerticalPadding = 11.dp
-    val TitleSpacing = 2.dp
-    val ChevronSize = 16.dp
+public object AppDisclosureDefaults {
+    public val VerticalPadding: Dp = 11.dp
+    public val TitleSpacing: Dp = 2.dp
+    public val ChevronSize: Dp = 16.dp
 }
 
 @AppComponentPreviews

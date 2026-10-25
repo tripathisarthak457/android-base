@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.button.AppLinkButton
 import com.base.app.core.designsystem.component.text.AppIcon
@@ -24,7 +25,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * update available.
  */
 @Composable
-fun AppBanner(
+public fun AppBanner(
     text: String,
     modifier: Modifier = Modifier,
     tone: AppTone = AppTone.Warning,
@@ -50,8 +51,8 @@ fun AppBanner(
 }
 
 /** The banner's metrics. */
-object AppBannerDefaults {
-    val IconSize = 16.dp
+public object AppBannerDefaults {
+    public val IconSize: Dp = 16.dp
 }
 
 @AppComponentPreviews

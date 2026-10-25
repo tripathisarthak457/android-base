@@ -16,6 +16,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.animation.rememberAppTransitions
 import com.base.app.core.designsystem.component.text.AppText
@@ -33,7 +34,7 @@ import java.util.Locale
  * come from the locale, not from English.
  */
 @Composable
-fun AppTimePicker(
+public fun AppTimePicker(
     time: LocalTime,
     onTimeChange: (LocalTime) -> Unit,
     modifier: Modifier = Modifier,
@@ -96,7 +97,7 @@ fun AppTimePicker(
 
 /** A time shown as a pill that opens the wheels beneath it in place, as iOS's compact picker does. */
 @Composable
-fun AppTimePill(
+public fun AppTimePill(
     time: LocalTime,
     onTimeChange: (LocalTime) -> Unit,
     modifier: Modifier = Modifier,
@@ -125,8 +126,8 @@ private fun Locale.uses24HourClock(): Boolean {
 }
 
 /** The time picker's colon, set on the digits' baseline. */
-object AppTimePickerDefaults {
-    val SeparatorLift = 2.dp
+public object AppTimePickerDefaults {
+    public val SeparatorLift: Dp = 2.dp
 }
 
 @AppComponentPreviews

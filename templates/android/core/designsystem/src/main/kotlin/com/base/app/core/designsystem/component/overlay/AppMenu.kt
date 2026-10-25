@@ -31,6 +31,7 @@ import androidx.compose.ui.layout.ParentDataModifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
@@ -67,7 +68,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * ```
  */
 @Composable
-fun AppMenu(
+public fun AppMenu(
     expanded: Boolean,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
@@ -113,7 +114,7 @@ fun AppMenu(
  * choosing it runs [onClick], then closes the menu it is in.
  */
 @Composable
-fun AppMenuItem(
+public fun AppMenuItem(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -153,7 +154,7 @@ fun AppMenuItem(
 
 /** Ends a group of items: the gap iOS leaves between groups, where items have a hairline. */
 @Composable
-fun AppMenuDivider(modifier: Modifier = Modifier) {
+public fun AppMenuDivider(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .then(GroupGap)
@@ -260,12 +261,12 @@ private class MenuPosition(private val margin: Int, private val gap: Int) : Popu
  * The menu's width, its distance from the window's edges and from its anchor, and the gap between
  * its groups.
  */
-object AppMenuDefaults {
-    val WindowMargin = 16.dp
-    val AnchorGap = 6.dp
-    val MinWidth = 200.dp
-    val MaxWidth = 280.dp
-    val GroupGapHeight = 8.dp
+public object AppMenuDefaults {
+    public val WindowMargin: Dp = 16.dp
+    public val AnchorGap: Dp = 6.dp
+    public val MinWidth: Dp = 200.dp
+    public val MaxWidth: Dp = 280.dp
+    public val GroupGapHeight: Dp = 8.dp
 }
 
 internal const val MenuStartScale = 0.85f

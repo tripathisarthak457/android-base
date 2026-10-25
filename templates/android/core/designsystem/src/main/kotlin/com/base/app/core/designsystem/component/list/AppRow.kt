@@ -18,6 +18,7 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.constrainHeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.isFinite
@@ -42,7 +43,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * red for "Sign out" and "Delete account". Its height is a minimum, so it grows with the font size.
  */
 @Composable
-fun AppRow(
+public fun AppRow(
     title: String,
     modifier: Modifier = Modifier,
     subtitle: String? = null,
@@ -106,7 +107,7 @@ fun AppRow(
  * reader as a single switch with the row's title as its name. Toggling plays the toggle haptic.
  */
 @Composable
-fun AppToggleRow(
+public fun AppToggleRow(
     title: String,
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
@@ -144,7 +145,7 @@ fun AppToggleRow(
  * title, selected or not. The checkmark's room is kept on every row, so choosing never reflows text.
  */
 @Composable
-fun AppChoiceRow(
+public fun AppChoiceRow(
     title: String,
     selected: Boolean,
     onSelect: () -> Unit,
@@ -259,11 +260,11 @@ private fun RowLayout(
 }
 
 /** The row's metrics, iOS's. */
-object AppRowDefaults {
-    val TitleSpacing = 2.dp
-    val VerticalPadding = 11.dp
-    val ChevronSize = 16.dp
-    val CheckSize = 20.dp
+public object AppRowDefaults {
+    public val TitleSpacing: Dp = 2.dp
+    public val VerticalPadding: Dp = 11.dp
+    public val ChevronSize: Dp = 16.dp
+    public val CheckSize: Dp = 20.dp
 }
 
 @AppComponentPreviews

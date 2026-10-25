@@ -44,7 +44,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  *   never pulls transparent pixels in at an edge.
  */
 @Composable
-fun GlassStage(
+public fun GlassStage(
     background: Color,
     chrome: @Composable BoxScope.() -> Unit,
     modifier: Modifier = Modifier,

@@ -32,7 +32,7 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens
  * sheet it draws in place, without the scroll-edge fade.
  */
 @Composable
-fun AppSheetHeader(
+public fun AppSheetHeader(
     title: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     subtitle: (@Composable () -> Unit)? = null,
@@ -78,7 +78,7 @@ fun AppSheetHeader(
 
 /** [title] and [subtitle] as text; [title] also names the sheet for screen readers. */
 @Composable
-fun AppSheetHeader(
+public fun AppSheetHeader(
     title: String,
     modifier: Modifier = Modifier,
     subtitle: String? = null,

@@ -3,6 +3,7 @@ package com.base.app.core.designsystem.foundation.glass
 import android.os.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -31,7 +32,7 @@ import androidx.compose.ui.platform.LocalView
  * Read it from [LocalGlassQuality]. The shell provides [rememberGlassQuality]'s answer; a tier
  * switcher (the catalog, a benchmark) provides a fixed one.
  */
-enum class GlassQuality {
+public enum class GlassQuality {
     Live,
     LiveNoLens,
     Frosted,
@@ -39,11 +40,11 @@ enum class GlassQuality {
     ;
 
     /** Chrome blurs the recorded scene, so a [GlassStage] records one. */
-    val samplesScene: Boolean
+    public val samplesScene: Boolean
         get() = this == Live || this == LiveNoLens
 
     /** A selection under a finger, or on its way to another tab, may refract the scene. */
-    val refracts: Boolean
+    public val refracts: Boolean
         get() = this == Live
 }
 
@@ -51,7 +52,7 @@ enum class GlassQuality {
  * The tier glass draws at. Static: a tier changes a handful of times in a session at most, and
  * everything that reads it restyles when it does.
  */
-val LocalGlassQuality = staticCompositionLocalOf { GlassQuality.Frosted }
+public val LocalGlassQuality: ProvidableCompositionLocal<GlassQuality> = staticCompositionLocalOf { GlassQuality.Frosted }
 
 /**
  * The tier this window can afford, re-evaluated when one of its inputs changes.
@@ -68,7 +69,7 @@ val LocalGlassQuality = staticCompositionLocalOf { GlassQuality.Frosted }
  * app's install time.
  */
 @Composable
-fun rememberGlassQuality(reduceTransparency: Boolean? = null): GlassQuality {
+public fun rememberGlassQuality(reduceTransparency: Boolean? = null): GlassQuality {
     val context = LocalContext.current
     val view = LocalView.current
     val signals = remember(context) { DeviceGlassSignals(context.applicationContext) }

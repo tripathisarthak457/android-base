@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.input.AppTextField
@@ -26,7 +27,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * a blank or repeated tag is ignored, and the field says so once [maxTags] is reached.
  */
 @Composable
-fun AppTagField(
+public fun AppTagField(
     tags: List<String>,
     onTagsChange: (List<String>) -> Unit,
     input: TextFieldState,
@@ -68,9 +69,9 @@ fun AppTagField(
 }
 
 /** The tag field's metrics. */
-object AppTagFieldDefaults {
+public object AppTagFieldDefaults {
     /** How far a tag's 48 dp remove target reaches past its 32 dp chip, above and below. */
-    val TargetOverhang = 8.dp
+    public val TargetOverhang: Dp = 8.dp
 }
 
 @AppComponentPreviews

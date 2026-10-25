@@ -16,10 +16,10 @@ import androidx.compose.ui.graphics.Color
  *   blurred scene has none: the scene is its light.
  */
 @Immutable
-class GlassColors(
-    val body: Color,
-    val rim: Color,
-    val sheen: Color,
+public class GlassColors(
+    public val body: Color,
+    public val rim: Color,
+    public val sheen: Color,
 ) {
     override fun equals(other: Any?): Boolean =
         other is GlassColors && body == other.body && rim == other.rim && sheen == other.sheen

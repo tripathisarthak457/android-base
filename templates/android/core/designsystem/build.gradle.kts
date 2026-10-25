@@ -8,14 +8,17 @@ android {
     namespace = "com.base.app.core.designsystem"
 }
 
-// <opt:ui_components>
 kotlin {
+    // Each declaration says whether it is the design system's API: what a feature can call is a
+    // decision, and the compiler asks for it.
+    explicitApi()
+    // <opt:ui_components>
     compilerOptions {
         // The shell seams are this module's own API; only other modules have to opt in to them.
         optIn.add("com.base.app.core.designsystem.foundation.layout.ShellSeamApi")
     }
+    // </opt:ui_components>
 }
-// </opt:ui_components>
 
 dependencies {
 

@@ -10,10 +10,10 @@ import androidx.compose.runtime.staticCompositionLocalOf
  * nowhere.
  */
 @ShellSeamApi
-fun interface HostMotion {
+public fun interface HostMotion {
     /** [mover] starts ([moving] true) or stops moving the host's content. Every start is followed by a stop. */
-    fun report(mover: Any, moving: Boolean)
+    public fun report(mover: Any, moving: Boolean)
 }
 
 @ShellSeamApi
-val LocalHostMotion: ProvidableCompositionLocal<HostMotion> = staticCompositionLocalOf { HostMotion { _, _ -> } }
+public val LocalHostMotion: ProvidableCompositionLocal<HostMotion> = staticCompositionLocalOf { HostMotion { _, _ -> } }

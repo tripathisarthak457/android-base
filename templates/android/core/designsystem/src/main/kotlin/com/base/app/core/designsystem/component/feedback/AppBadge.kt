@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.animation.rememberAppTransitions
 import com.base.app.core.designsystem.component.text.AppIcon
@@ -30,7 +31,7 @@ import com.base.app.core.designsystem.theme.StatusColors
 
 /** A count in a red pill: "3", "99+". */
 @Composable
-fun AppBadge(
+public fun AppBadge(
     count: Int,
     modifier: Modifier = Modifier,
     maxCount: Int = 99,
@@ -60,7 +61,7 @@ fun AppBadge(
 
 /** [content] with an [AppBadge] on its top trailing corner while [count] is above zero. */
 @Composable
-fun AppBadgedBox(
+public fun AppBadgedBox(
     count: Int,
     modifier: Modifier = Modifier,
     maxCount: Int = 99,
@@ -82,7 +83,7 @@ fun AppBadgedBox(
 
 /** A bare dot, for "there is something new here" with no number to show. */
 @Composable
-fun AppDotBadge(
+public fun AppDotBadge(
     visible: Boolean,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
@@ -103,7 +104,7 @@ fun AppDotBadge(
 
 /** A status pill: "Delivered", "Pending", "Failed". */
 @Composable
-fun AppStatusPill(
+public fun AppStatusPill(
     text: String,
     status: StatusColors,
     modifier: Modifier = Modifier,
@@ -127,18 +128,18 @@ fun AppStatusPill(
 }
 
 /** The badges' and the status pill's metrics. */
-object AppBadgeDefaults {
-    val MinSize = 18.dp
-    val HorizontalPadding = 5.dp
-    val CountOffsetX = 8.dp
-    val CountOffsetY = (-6).dp
-    val DotSize = 8.dp
-    val DotOffsetX = 2.dp
-    val DotOffsetY = (-2).dp
-    val PillHorizontalPadding = 10.dp
-    val PillVerticalPadding = 4.dp
-    val PillIconSpacing = 4.dp
-    val PillIconSize = 14.dp
+public object AppBadgeDefaults {
+    public val MinSize: Dp = 18.dp
+    public val HorizontalPadding: Dp = 5.dp
+    public val CountOffsetX: Dp = 8.dp
+    public val CountOffsetY: Dp = (-6).dp
+    public val DotSize: Dp = 8.dp
+    public val DotOffsetX: Dp = 2.dp
+    public val DotOffsetY: Dp = (-2).dp
+    public val PillHorizontalPadding: Dp = 10.dp
+    public val PillVerticalPadding: Dp = 4.dp
+    public val PillIconSpacing: Dp = 4.dp
+    public val PillIconSize: Dp = 14.dp
 }
 
 @AppComponentPreviews

@@ -8,7 +8,7 @@ import androidx.compose.runtime.Immutable
  * and shortcuts; neither replaces touch, which is assumed until the window says otherwise.
  */
 @Immutable
-data class InputTraits(
+public data class InputTraits(
     val finePointer: Boolean = false,
     val hardwareKeyboard: Boolean = false,
     val touchscreen: Boolean = true,

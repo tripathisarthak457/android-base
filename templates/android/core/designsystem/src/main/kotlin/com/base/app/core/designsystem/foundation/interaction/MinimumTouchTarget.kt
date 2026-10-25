@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
  * Reserves at least the 48dp touch target around content that draws smaller, and centres it there.
  * The reserved space belongs to the node, so a pointer input before this modifier covers all of it.
  */
-fun Modifier.minimumTouchTarget(): Modifier = this then MinimumTouchTargetElement
+public fun Modifier.minimumTouchTarget(): Modifier = this then MinimumTouchTargetElement
 
 private object MinimumTouchTargetElement : ModifierNodeElement<MinimumTouchTargetNode>() {
     override fun create() = MinimumTouchTargetNode()

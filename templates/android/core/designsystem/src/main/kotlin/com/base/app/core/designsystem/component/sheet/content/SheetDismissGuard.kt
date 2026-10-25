@@ -15,7 +15,7 @@ import com.base.app.core.designsystem.foundation.layout.LocalEntryVisibility
  * code is not guarded. Outside a sheet it does nothing.
  */
 @Composable
-fun SheetDismissGuard(enabled: Boolean = true, onAttempt: (SheetDismissSource) -> Unit) {
+public fun SheetDismissGuard(enabled: Boolean = true, onAttempt: (SheetDismissSource) -> Unit) {
     val slots = LocalSheetSlots.current ?: return
     if (!enabled) return
     val visibility = LocalEntryVisibility.current

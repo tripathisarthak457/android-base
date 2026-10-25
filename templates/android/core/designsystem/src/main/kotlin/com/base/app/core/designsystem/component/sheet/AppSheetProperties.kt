@@ -4,36 +4,36 @@ import androidx.compose.runtime.Immutable
 
 /** Behaviour a sheet seldom changes. */
 @Immutable
-class AppSheetProperties(
-    val placement: SheetPlacement = SheetPlacement.Automatic,
-    val contentInteraction: SheetContentInteraction = SheetContentInteraction.Automatic,
-    val transition: SheetTransition = SheetTransition.Slide,
-    val keyboard: SheetKeyboard = SheetKeyboard.Lift,
+public class AppSheetProperties(
+    public val placement: SheetPlacement = SheetPlacement.Automatic,
+    public val contentInteraction: SheetContentInteraction = SheetContentInteraction.Automatic,
+    public val transition: SheetTransition = SheetTransition.Slide,
+    public val keyboard: SheetKeyboard = SheetKeyboard.Lift,
     /** False makes a tap on the dim do nothing; drag and Back still close the sheet. */
-    val scrimTapDismisses: Boolean = true,
+    public val scrimTapDismisses: Boolean = true,
     /**
      * False holds the sheet on its detent: no drag and no resizing from the content's scroll, for a
      * signature pad, a canvas, a pannable chart or a payment in progress. Back, the dim and the close
      * button still follow `dismissible`; the grabber's accessibility actions stay.
      */
-    val dragEnabled: Boolean = true,
+    public val dragEnabled: Boolean = true,
     /**
      * False keeps the screen behind upright at Large: the dim only. For a video call, a camera
      * preview or a SurfaceView map behind the sheet.
      */
-    val recedesPresenter: Boolean = true,
+    public val recedesPresenter: Boolean = true,
     /**
      * True starts the content at the surface's top edge, under the grabber, for artwork or a map
      * that fills the top corners; the grabber draws over it with a contrast pill.
      */
-    val contentUnderGrabber: Boolean = false,
+    public val contentUnderGrabber: Boolean = false,
     /**
      * True keeps the content composed, parked, between openings, so opening it again composes
      * nothing. For a sheet opened often from one screen; it holds its memory meanwhile.
      */
-    val keepContent: Boolean = false,
+    public val keepContent: Boolean = false,
 ) {
-    fun copy(
+    public fun copy(
         placement: SheetPlacement = this.placement,
         contentInteraction: SheetContentInteraction = this.contentInteraction,
         transition: SheetTransition = this.transition,
@@ -85,7 +85,7 @@ class AppSheetProperties(
  * the start edge on a wide window for a non-modal one.
  */
 @JvmInline
-value class SheetPlacement private constructor(private val value: Int) {
+public value class SheetPlacement private constructor(private val value: Int) {
     override fun toString(): String = when (this) {
         Automatic -> "Automatic"
         Bottom -> "Bottom"
@@ -94,66 +94,66 @@ value class SheetPlacement private constructor(private val value: Int) {
         else -> "End"
     }
 
-    companion object {
-        val Automatic = SheetPlacement(0)
-        val Bottom = SheetPlacement(1)
-        val Center = SheetPlacement(2)
+    public companion object {
+        public val Automatic: SheetPlacement = SheetPlacement(0)
+        public val Bottom: SheetPlacement = SheetPlacement(1)
+        public val Center: SheetPlacement = SheetPlacement(2)
 
         /** The start edge in the layout direction. */
-        val Start = SheetPlacement(3)
+        public val Start: SheetPlacement = SheetPlacement(3)
 
         /** The end edge in the layout direction. */
-        val End = SheetPlacement(4)
+        public val End: SheetPlacement = SheetPlacement(4)
     }
 }
 
 /** What a vertical scroll inside the sheet does first. */
 @JvmInline
-value class SheetContentInteraction private constructor(private val value: Int) {
+public value class SheetContentInteraction private constructor(private val value: Int) {
     override fun toString(): String = when (this) {
         Automatic -> "Automatic"
         Resizes -> "Resizes"
         else -> "Scrolls"
     }
 
-    companion object {
+    public companion object {
         /**
          * Resizes for a modal sheet dragged by touch or stylus; Scrolls for a non-modal sheet, for a
          * wheel, a touchpad or a mouse, and while TalkBack's touch exploration is on.
          */
-        val Automatic = SheetContentInteraction(0)
+        public val Automatic: SheetContentInteraction = SheetContentInteraction(0)
 
         /** Grows the sheet to its top detent, then scrolls: iOS's default. */
-        val Resizes = SheetContentInteraction(1)
+        public val Resizes: SheetContentInteraction = SheetContentInteraction(1)
 
         /** Scrolls at every detent; the sheet resizes from its grabber, header, footer and a pull at the content's top. */
-        val Scrolls = SheetContentInteraction(2)
+        public val Scrolls: SheetContentInteraction = SheetContentInteraction(2)
     }
 }
 
 /** How the sheet arrives and leaves. */
 @JvmInline
-value class SheetTransition private constructor(private val value: Int) {
+public value class SheetTransition private constructor(private val value: Int) {
     override fun toString(): String = if (this == Slide) "Slide" else "CrossFade"
 
-    companion object {
-        val Slide = SheetTransition(0)
+    public companion object {
+        public val Slide: SheetTransition = SheetTransition(0)
 
         /** A fade in and a quicker fade out at the sheet's detent, from the theme's fade durations. */
-        val CrossFade = SheetTransition(1)
+        public val CrossFade: SheetTransition = SheetTransition(1)
     }
 }
 
 /** What the sheet does when the keyboard rises for a field inside it. */
 @JvmInline
-value class SheetKeyboard private constructor(private val value: Int) {
+public value class SheetKeyboard private constructor(private val value: Int) {
     override fun toString(): String = if (this == Lift) "Lift" else "Expand"
 
-    companion object {
+    public companion object {
         /** Rises with the keyboard, keeping its height, up to Large. */
-        val Lift = SheetKeyboard(0)
+        public val Lift: SheetKeyboard = SheetKeyboard(0)
 
         /** Goes to its tallest detent while the keyboard is up, and back when it hides. */
-        val Expand = SheetKeyboard(1)
+        public val Expand: SheetKeyboard = SheetKeyboard(1)
     }
 }

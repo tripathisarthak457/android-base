@@ -42,6 +42,7 @@ import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
@@ -76,7 +77,7 @@ import kotlin.math.roundToInt
  * the menu recomposes nothing on the page; the lift and the dim move in the layer and in draw.
  */
 @Composable
-fun AppContextMenu(
+public fun AppContextMenu(
     menu: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -357,10 +358,10 @@ private const val ScrimFraction = 0.5f
  * The lifted preview's shadow, and how far the menu keeps from the window's edges and from the
  * preview.
  */
-object AppContextMenuDefaults {
-    val PreviewShadow = 16.dp
-    val Margin = 16.dp
-    val Gap = 8.dp
+public object AppContextMenuDefaults {
+    public val PreviewShadow: Dp = 16.dp
+    public val Margin: Dp = 16.dp
+    public val Gap: Dp = 8.dp
 }
 
 @AppComponentPreviews

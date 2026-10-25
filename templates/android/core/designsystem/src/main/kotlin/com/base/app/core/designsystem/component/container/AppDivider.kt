@@ -26,7 +26,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * `Modifier.hairline` on the rows, which adds no layout node per divider.
  */
 @Composable
-fun AppDivider(
+public fun AppDivider(
     modifier: Modifier = Modifier,
     color: Color = AppTheme.colors.separator,
     startIndent: Dp = 0.dp,
@@ -43,7 +43,7 @@ fun AppDivider(
 }
 
 @Composable
-fun AppVerticalDivider(
+public fun AppVerticalDivider(
     modifier: Modifier = Modifier,
     color: Color = AppTheme.colors.separator,
 ) {

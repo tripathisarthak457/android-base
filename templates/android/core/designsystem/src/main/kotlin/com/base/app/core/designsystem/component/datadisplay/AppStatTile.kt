@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.text.AppIcon
@@ -27,7 +28,7 @@ import com.base.app.core.designsystem.theme.StatusColors
 
 /** A single headline number with its label, and optionally which way it moved. */
 @Composable
-fun AppStatTile(
+public fun AppStatTile(
     label: String,
     value: String,
     modifier: Modifier = Modifier,
@@ -99,10 +100,10 @@ fun AppStatTile(
 }
 
 /** The stat tile's glyphs. */
-object AppStatTileDefaults {
-    val IconSize = 16.dp
-    val DeltaSpacing = 2.dp
-    val DeltaIconSize = 14.dp
+public object AppStatTileDefaults {
+    public val IconSize: Dp = 16.dp
+    public val DeltaSpacing: Dp = 2.dp
+    public val DeltaIconSize: Dp = 14.dp
 }
 
 @AppComponentPreviews

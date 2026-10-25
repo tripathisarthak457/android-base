@@ -37,7 +37,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * a `LazyColumn`, give each row `shape.groupItem(first, last)` and `Modifier.hairline` instead.
  */
 @Composable
-fun AppSection(
+public fun AppSection(
     modifier: Modifier = Modifier,
     header: String? = null,
     footer: String? = null,
@@ -71,7 +71,7 @@ fun AppSection(
  * so a screen reader can jump between sections.
  */
 @Composable
-fun AppSectionHeader(
+public fun AppSectionHeader(
     title: String,
     modifier: Modifier = Modifier,
     actionLabel: String? = null,

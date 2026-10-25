@@ -28,7 +28,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * row below it.
  */
 @Composable
-fun AppExpandableText(
+public fun AppExpandableText(
     text: String,
     modifier: Modifier = Modifier,
     collapsedMaxLines: Int = 3,

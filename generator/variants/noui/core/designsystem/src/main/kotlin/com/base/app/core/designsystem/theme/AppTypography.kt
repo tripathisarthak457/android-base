@@ -13,7 +13,7 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens
  * Android sp is close to an iOS point). [body] is the text style everything inherits.
  */
 @Immutable
-data class AppTypography(
+public data class AppTypography(
     val largeTitle: TextStyle,
     val title1: TextStyle,
     val title2: TextStyle,
@@ -50,7 +50,7 @@ private fun DesignTokens.TypeRole.style(family: FontFamily) = TextStyle(
  * are opened up so they stay legible. Each role's size, line height, tracking and weight are in
  * `DesignTokens.Type`.
  */
-fun appTypography(fonts: AppFonts): AppTypography {
+public fun appTypography(fonts: AppFonts): AppTypography {
     val sans = fonts.sans
     return with(DesignTokens.Type) {
         AppTypography(
@@ -71,13 +71,13 @@ fun appTypography(fonts: AppFonts): AppTypography {
 }
 
 /** The scale set in the platform's own typefaces. */
-val DefaultTypography: AppTypography = appTypography(PlatformFonts)
+public val DefaultTypography: AppTypography = appTypography(PlatformFonts)
 
 /** The weights of the sans family the scale draws with, lightest first: exactly what to download. */
-val SansWeights: List<FontWeight> =
+public val SansWeights: List<FontWeight> =
     DefaultTypography.sansRoles.mapNotNull { it.fontWeight }.distinct().sortedBy { it.weight }
 
 /** The weights of the mono family the scale uses. */
-val MonoWeights: List<FontWeight> = listOfNotNull(DefaultTypography.mono.fontWeight)
+public val MonoWeights: List<FontWeight> = listOfNotNull(DefaultTypography.mono.fontWeight)
 
 internal val LocalAppTypography = staticCompositionLocalOf { DefaultTypography }

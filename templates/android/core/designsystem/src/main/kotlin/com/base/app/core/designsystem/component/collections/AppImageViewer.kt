@@ -67,7 +67,7 @@ import kotlin.math.pow
  * never recompose.
  */
 @Composable
-fun AppImageViewer(
+public fun AppImageViewer(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,

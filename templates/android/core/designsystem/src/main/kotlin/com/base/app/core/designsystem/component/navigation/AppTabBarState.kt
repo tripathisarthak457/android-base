@@ -37,14 +37,14 @@ import kotlin.math.sign
  * moves while the user is scrolling.
  */
 @Stable
-class AppTabBarState internal constructor(private val density: Density, private val scope: CoroutineScope) {
+public class AppTabBarState internal constructor(private val density: Density, private val scope: CoroutineScope) {
 
     @get:FrequentlyChangingValue
-    var collapse by mutableFloatStateOf(0f)
+    public var collapse: Float by mutableFloatStateOf(0f)
         private set
 
     /** The pixels the bar takes from the bottom of the window, written only when it is at rest. */
-    var settledHeight by mutableIntStateOf(0)
+    public var settledHeight: Int by mutableIntStateOf(0)
         private set
 
     internal var behavior = BarMinimize.Never
@@ -61,7 +61,7 @@ class AppTabBarState internal constructor(private val density: Density, private 
     private var drift = 0f
     private var motion: Job? = null
 
-    val nestedScrollConnection: NestedScrollConnection = object : NestedScrollConnection {
+    public val nestedScrollConnection: NestedScrollConnection = object : NestedScrollConnection {
         override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
             if (behavior == BarMinimize.Never) return Offset.Zero
             // Scroll up that the content could not take: it is at the top.
@@ -78,7 +78,7 @@ class AppTabBarState internal constructor(private val density: Density, private 
     }
 
     /** Opens a minimized bar, as tapping it does, and returns once it is open. */
-    suspend fun expand() {
+    public suspend fun expand() {
         fold(minimized = false)
         motion?.join()
     }
@@ -106,7 +106,7 @@ class AppTabBarState internal constructor(private val density: Density, private 
 
 /** An [AppTabBarState] kept for as long as the caller is composed, with the bar open. */
 @Composable
-fun rememberAppTabBarState(): AppTabBarState {
+public fun rememberAppTabBarState(): AppTabBarState {
     val density = LocalDensity.current
     val scope = rememberCoroutineScope()
     return remember(density, scope) { AppTabBarState(density, scope) }

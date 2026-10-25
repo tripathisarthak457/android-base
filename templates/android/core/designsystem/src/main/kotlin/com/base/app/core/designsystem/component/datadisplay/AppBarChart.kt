@@ -26,7 +26,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 
 /** A horizontal bar chart, one row per value. */
 @Composable
-fun AppBarChart(
+public fun AppBarChart(
     entries: List<Pair<String, Float>>,
     modifier: Modifier = Modifier,
     barColor: Color = AppTheme.colors.accent,
@@ -93,8 +93,8 @@ fun AppBarChart(
 }
 
 /** The bar chart's bars. */
-object AppBarChartDefaults {
-    val BarHeight = 10.dp
+public object AppBarChartDefaults {
+    public val BarHeight: Dp = 10.dp
 }
 
 @AppComponentPreviews

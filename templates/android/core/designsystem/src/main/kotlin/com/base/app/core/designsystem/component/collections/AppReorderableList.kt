@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.base.app.core.designsystem.R
@@ -54,7 +55,7 @@ import kotlinx.coroutines.launch
  * recomposes only when the order changes.
  */
 @Composable
-fun <T> AppReorderableList(
+public fun <T> AppReorderableList(
     items: List<T>,
     key: (T) -> Any,
     onMove: (from: Int, to: Int) -> Unit,
@@ -196,10 +197,10 @@ private class ReorderDrag(private val list: LazyListState) {
 }
 
 /** Where a lifted row starts scrolling the list, how fast, and how high it lifts. */
-object AppReorderableListDefaults {
-    val AutoScrollEdge = 56.dp
-    val MaxScroll = 14.dp
-    val LiftElevation = 8.dp
+public object AppReorderableListDefaults {
+    public val AutoScrollEdge: Dp = 56.dp
+    public val MaxScroll: Dp = 14.dp
+    public val LiftElevation: Dp = 8.dp
 }
 
 private const val LiftScale = 1.02f

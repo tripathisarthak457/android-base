@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
  * factor. A width of [Dp.Infinity] means the content may take the whole pane.
  */
 @Immutable
-data class AppLayout(
+public data class AppLayout(
     /** The margin between content and the pane's edge. */
     val gutter: Dp,
     /** The list half of a list-detail layout. */
@@ -36,9 +36,9 @@ data class AppLayout(
     /** The narrowest a card gets in a grid; the column count follows from it. */
     val gridMinCardWidth: Dp,
 ) {
-    companion object {
+    public companion object {
         /** Material's pane widths and Apple's readable widths, per width class. */
-        fun forClass(sizeClass: SizeClass): AppLayout = when (sizeClass.width) {
+        public fun forClass(sizeClass: SizeClass): AppLayout = when (sizeClass.width) {
             WindowWidth.Compact -> Base.copy(gutter = 16.dp, readableMaxWidth = Dp.Infinity, contentMaxWidth = Dp.Infinity)
             WindowWidth.Medium -> Base.copy(gutter = 24.dp, contentMaxWidth = Dp.Infinity)
             WindowWidth.Expanded -> Base

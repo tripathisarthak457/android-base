@@ -12,7 +12,7 @@ import com.base.app.core.designsystem.foundation.layout.LocalEntryVisibility
  * instead of closing it: a step back in a flow the sheet holds. The sheet does not shrink for it.
  */
 @Composable
-fun SheetBackHandler(enabled: Boolean = true, onBack: () -> Unit) {
+public fun SheetBackHandler(enabled: Boolean = true, onBack: () -> Unit) {
     val slots = LocalSheetSlots.current ?: return
     if (!enabled) return
     val visibility = LocalEntryVisibility.current

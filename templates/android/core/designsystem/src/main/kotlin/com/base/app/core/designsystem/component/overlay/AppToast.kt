@@ -46,6 +46,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -69,14 +70,14 @@ import kotlinx.coroutines.launch
  * a square in the middle of the screen with the tone's glyph, for "Copied" or "Saved".
  */
 @Immutable
-class ToastMessage(
-    val text: String,
-    val title: String? = null,
-    val tone: AppTone = AppTone.Neutral,
-    val actionLabel: String? = null,
-    val onAction: (() -> Unit)? = null,
-    val durationMillis: Long = if (actionLabel != null) ActionDuration else DefaultDuration,
-    val hud: Boolean = false,
+public class ToastMessage(
+    public val text: String,
+    public val title: String? = null,
+    public val tone: AppTone = AppTone.Neutral,
+    public val actionLabel: String? = null,
+    public val onAction: (() -> Unit)? = null,
+    public val durationMillis: Long = if (actionLabel != null) ActionDuration else DefaultDuration,
+    public val hud: Boolean = false,
 ) {
     /** The same message, shown again: it restarts the one on screen rather than queueing a copy. */
     internal fun sameAs(other: ToastMessage) =
@@ -94,7 +95,7 @@ class ToastMessage(
  * is still there when the user comes back.
  */
 @Stable
-class ToastQueue internal constructor() {
+public class ToastQueue internal constructor() {
     internal var current by mutableStateOf<ToastMessage?>(null)
         private set
 
@@ -104,7 +105,7 @@ class ToastQueue internal constructor() {
 
     private val waiting = ArrayDeque<ToastMessage>()
 
-    fun show(message: ToastMessage) {
+    public fun show(message: ToastMessage) {
         val showing = current
         when {
             showing == null -> current = message
@@ -114,14 +115,14 @@ class ToastQueue internal constructor() {
     }
 
     /** Takes the toast on screen away now, and brings on the next one. */
-    fun dismiss() {
+    public fun dismiss() {
         current = waiting.removeFirstOrNull()
     }
 }
 
 /** A toast's look, used by the toast layer and on its own wherever one is shown inline. */
 @Composable
-fun AppToast(
+public fun AppToast(
     message: ToastMessage,
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {},
@@ -301,12 +302,12 @@ private fun SwipeAway(onDismiss: () -> Unit, modifier: Modifier = Modifier, cont
 private const val Tick = 100L
 
 /** How far a toast is thrown to dismiss, the gap above what it rests on, and the HUD's size. */
-object AppToastDefaults {
-    val HudIconSize = 40.dp
-    val TextSpacing = 2.dp
-    val DismissDistance = 48.dp
-    val Gap = 12.dp
-    val HudSize = 140.dp
+public object AppToastDefaults {
+    public val HudIconSize: Dp = 40.dp
+    public val TextSpacing: Dp = 2.dp
+    public val DismissDistance: Dp = 48.dp
+    public val Gap: Dp = 12.dp
+    public val HudSize: Dp = 140.dp
 }
 
 // How far ahead of the toast a release looks for where it was thrown (iOS's 0.99 projection).

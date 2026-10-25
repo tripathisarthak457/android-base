@@ -16,7 +16,7 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens
  * AppTheme(designStyle = AppDesignStyle.Social) { … }
  * ```
  */
-enum class AppDesignStyle {
+public enum class AppDesignStyle {
     /** Cool neutrals, hairline outlines, a floating tab bar. Dense and calm: tools, finance, admin. */
     Utility,
 
@@ -37,7 +37,7 @@ enum class AppDesignStyle {
     ;
 
     /** The tokens this style decides, built once per process. */
-    fun style(): AppStyle = StylesByDesign.getValue(this)
+    public fun style(): AppStyle = StylesByDesign.getValue(this)
 
     internal fun tokens(): DesignTokens.Style = when (this) {
         Utility -> DesignTokens.Styles.utility
@@ -79,7 +79,7 @@ private val StylesByDesign = AppDesignStyle.entries.associateWith { design ->
 /** A null radius is a pill: as round as the component is tall, whatever its width. */
 private fun Dp?.shape(): Shape = if (this == null) RoundedCornerShape(percent = 50) else RoundedCornerShape(this)
 
-enum class CardTreatment {
+public enum class CardTreatment {
     /** A hairline outline and no shadow. */
     Outlined,
 
@@ -90,7 +90,7 @@ enum class CardTreatment {
     Offset,
 }
 
-enum class FieldTreatment {
+public enum class FieldTreatment {
     /** A box with an outline that thickens and takes the accent on focus. */
     Outlined,
 
@@ -102,7 +102,7 @@ enum class FieldTreatment {
 }
 
 /** How the tab bar is drawn. Editing a style's treatment changes the bar app-wide. */
-enum class BarTreatment {
+public enum class BarTreatment {
     /** A capsule lifted off the bottom edge, on the elevated surface with a hairline and one soft shadow. */
     Floating,
 
@@ -114,7 +114,7 @@ enum class BarTreatment {
 }
 
 /** How the bar marks the selected tab. */
-enum class BarIndicator {
+public enum class BarIndicator {
     /** A solid pill in `barIndicator` behind the selected item, its glyph and label in `onAccent`. */
     Pill,
 
@@ -123,7 +123,7 @@ enum class BarIndicator {
 }
 
 /** What a sheet's surface is made of. A design style picks one of the last three for its sheets. */
-enum class SheetMaterial {
+public enum class SheetMaterial {
     /** The design style's choice: Solid unless the style is made of glass. */
     Automatic,
 
@@ -141,7 +141,7 @@ enum class SheetMaterial {
 }
 
 /** The neutrals a style sits on. The accent ramps are the brand's and never change here. */
-enum class SurfaceTone {
+public enum class SurfaceTone {
     /** The template's cool greys. */
     Cool,
 
@@ -156,7 +156,7 @@ enum class SurfaceTone {
 }
 
 /** How the type scale speaks. The typeface is still the one `AppTheme` was given. */
-enum class TypeVoice {
+public enum class TypeVoice {
     /** The scale as `appTypography` defines it. */
     Neutral,
 
@@ -172,7 +172,7 @@ enum class TypeVoice {
 
 /** The tokens a design style decides. Read through `AppTheme.style`. */
 @Immutable
-data class AppStyle(
+public data class AppStyle(
     val shapes: AppShapes,
     val buttonShape: Shape,
     val chipShape: Shape,

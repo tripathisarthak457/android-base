@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -58,7 +59,7 @@ import kotlinx.coroutines.launch
  * selection haptic.
  */
 @Composable
-fun AppSegmentedControl(
+public fun AppSegmentedControl(
     options: List<String>,
     selected: Int,
     onSelect: (Int) -> Unit,
@@ -190,12 +191,12 @@ fun AppSegmentedControl(
 }
 
 /** The segmented control's metrics, iOS's. */
-object AppSegmentedControlDefaults {
-    val Height = 32.dp
-    val ThumbInset = 2.dp
-    val TrackShape = RoundedCornerShape(9.dp)
-    val ThumbShape = RoundedCornerShape(7.dp)
-    val ThumbShadow = Shadow(radius = 4.dp, offset = DpOffset(0.dp, 1.dp), alpha = 0.12f)
+public object AppSegmentedControlDefaults {
+    public val Height: Dp = 32.dp
+    public val ThumbInset: Dp = 2.dp
+    public val TrackShape: RoundedCornerShape = RoundedCornerShape(9.dp)
+    public val ThumbShape: RoundedCornerShape = RoundedCornerShape(7.dp)
+    public val ThumbShadow: Shadow = Shadow(radius = 4.dp, offset = DpOffset(0.dp, 1.dp), alpha = 0.12f)
 }
 
 private const val PressedThumbScale = 0.95f

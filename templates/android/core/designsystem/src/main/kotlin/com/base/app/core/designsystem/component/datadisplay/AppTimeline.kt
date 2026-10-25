@@ -18,6 +18,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.text.AppIcon
@@ -28,7 +29,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 
 /** One point on an [AppTimeline]. */
 @Immutable
-data class TimelineStep(
+public data class TimelineStep(
     val title: String,
     val description: String? = null,
     val timestamp: String? = null,
@@ -40,7 +41,7 @@ data class TimelineStep(
  * Past the current step the trail is dashed: it is there, and still to come.
  */
 @Composable
-fun AppTimeline(
+public fun AppTimeline(
     steps: List<TimelineStep>,
     currentIndex: Int,
     modifier: Modifier = Modifier,
@@ -101,14 +102,14 @@ fun AppTimeline(
 }
 
 /** The timeline's nodes and connectors. */
-object AppTimelineDefaults {
-    val CheckSize = 10.dp
-    val TextSpacing = 2.dp
-    val NodeColumn = 24.dp
-    val NodeSize = 12.dp
-    val NodeActive = 16.dp
-    val NodeGap = 4.dp
-    val ConnectorWidth = 2.dp
+public object AppTimelineDefaults {
+    public val CheckSize: Dp = 10.dp
+    public val TextSpacing: Dp = 2.dp
+    public val NodeColumn: Dp = 24.dp
+    public val NodeSize: Dp = 12.dp
+    public val NodeActive: Dp = 16.dp
+    public val NodeGap: Dp = 4.dp
+    public val ConnectorWidth: Dp = 2.dp
 }
 
 @AppComponentPreviews

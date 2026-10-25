@@ -142,12 +142,15 @@ internal val LocalSheetSlots = staticCompositionLocalOf<SheetSlots?> { null }
  * for screen readers. Outside a sheet it draws in place.
  */
 @Composable
-fun ProvideSheetHeader(title: String? = null, content: @Composable AppSheetScope.() -> Unit) =
+public fun ProvideSheetHeader(title: String? = null, content: @Composable AppSheetScope.() -> Unit) {
     ProvideSlot(footer = false, title = title, content = content)
+}
 
 /** Puts [content] in the enclosing sheet's footer slot, pinned to its visible bottom. In place outside a sheet. */
 @Composable
-fun ProvideSheetFooter(content: @Composable AppSheetScope.() -> Unit) = ProvideSlot(footer = true, title = null, content = content)
+public fun ProvideSheetFooter(content: @Composable AppSheetScope.() -> Unit) {
+    ProvideSlot(footer = true, title = null, content = content)
+}
 
 @Composable
 private fun ProvideSlot(footer: Boolean, title: String?, content: @Composable AppSheetScope.() -> Unit) {
@@ -176,7 +179,7 @@ private fun ProvideSlot(footer: Boolean, title: String?, content: @Composable Ap
  * AppSheet call the screen never sees. Lands before the first visible frame. Nothing outside a sheet.
  */
 @Composable
-fun ProvideSheetStyle(
+public fun ProvideSheetStyle(
     style: AppSheetStyle,
     grabber: (@Composable AppSheetScope.() -> Unit)? = AppSheetDefaults.Grabber,
 ) {

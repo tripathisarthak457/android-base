@@ -4,12 +4,12 @@ import androidx.compose.runtime.Immutable
 
 /** Whether what is behind the sheet stays usable. More may be added: a `when` needs `else`. */
 @Immutable
-sealed interface SheetModality {
+public sealed interface SheetModality {
     /**
      * Dims and blocks what is behind at every detent, hides it from screen readers and takes focus;
      * drawn over the tab bar.
      */
-    data object Modal : SheetModality
+    public data object Modal : SheetModality
 
     /**
      * What is behind stays usable, undimmed and visible to screen readers while the sheet rests at
@@ -20,11 +20,11 @@ sealed interface SheetModality {
      * its undimmed detents.
      */
     @Immutable
-    class NonModal(
-        val upThrough: SheetDetent? = null,
-        val aboveBottomChrome: Boolean = true,
+    public class NonModal(
+        public val upThrough: SheetDetent? = null,
+        public val aboveBottomChrome: Boolean = true,
     ) : SheetModality {
-        fun copy(
+        public fun copy(
             upThrough: SheetDetent? = this.upThrough,
             aboveBottomChrome: Boolean = this.aboveBottomChrome,
         ): NonModal = NonModal(upThrough, aboveBottomChrome)
@@ -42,4 +42,4 @@ sealed interface SheetModality {
  * How the person tried to close a sheet. TalkBack's dismiss action reports [Request]; a tap outside
  * an anchored action card reports [Scrim]. More may be added: a `when` needs `else`.
  */
-enum class SheetDismissSource { Drag, Scrim, Back, Escape, Request }
+public enum class SheetDismissSource { Drag, Scrim, Back, Escape, Request }

@@ -38,6 +38,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.setProgress
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -58,7 +59,7 @@ import kotlin.math.roundToInt
  * Each thumb is its own control for TalkBack, adjustable with the volume keys like a single slider.
  */
 @Composable
-fun AppRangeSlider(
+public fun AppRangeSlider(
     value: ClosedFloatingPointRange<Float>,
     onValueChange: (ClosedFloatingPointRange<Float>) -> Unit,
     modifier: Modifier = Modifier,
@@ -250,9 +251,9 @@ private const val ThumbRadius = 10f
 private const val ThumbRadiusDragged = 12f
 
 /** The range slider's track and the ring around its thumbs. */
-object AppRangeSliderDefaults {
-    val ThumbRingWidth = 2.5.dp
-    val TrackHeight = 6.dp
+public object AppRangeSliderDefaults {
+    public val ThumbRingWidth: Dp = 2.5.dp
+    public val TrackHeight: Dp = 6.dp
 }
 
 @AppComponentPreviews

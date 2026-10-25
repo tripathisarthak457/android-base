@@ -5,10 +5,10 @@ import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.computeWindowSizeClass
 
 /** Android's width classes, narrowest first, so they compare: `width >= WindowWidth.Expanded`. */
-enum class WindowWidth { Compact, Medium, Expanded, Large, ExtraLarge }
+public enum class WindowWidth { Compact, Medium, Expanded, Large, ExtraLarge }
 
 /** Android's height classes. Compact is a phone held sideways, or a small split-screen pane. */
-enum class WindowHeight { Compact, Medium, Expanded }
+public enum class WindowHeight { Compact, Medium, Expanded }
 
 /**
  * How much room a window or a pane has, in Android's size classes and with Android's breakpoints,
@@ -20,7 +20,7 @@ enum class WindowHeight { Compact, Medium, Expanded }
  * size class recomposes when a breakpoint is crossed, not on every pixel of a resize.
  */
 @Immutable
-data class SizeClass(val width: WindowWidth, val height: WindowHeight) {
+public data class SizeClass(val width: WindowWidth, val height: WindowHeight) {
 
     /** Room for two panes side by side: a list and its detail, a picture and its words. */
     val hasRoomForTwoPanes: Boolean get() = width >= WindowWidth.Expanded
@@ -28,11 +28,11 @@ data class SizeClass(val width: WindowWidth, val height: WindowHeight) {
     /** Short enough that stacking content vertically wastes the width and hides the rest. */
     val isShort: Boolean get() = height == WindowHeight.Compact
 
-    companion object {
+    public companion object {
         /** A typical phone held upright, for previews and tests that render outside a real window. */
-        val Phone = SizeClass(WindowWidth.Compact, WindowHeight.Medium)
+        public val Phone: SizeClass = SizeClass(WindowWidth.Compact, WindowHeight.Medium)
 
-        fun of(widthDp: Float, heightDp: Float): SizeClass {
+        public fun of(widthDp: Float, heightDp: Float): SizeClass {
             val sizeClass = WindowSizeClass.BREAKPOINTS_V2.computeWindowSizeClass(widthDp, heightDp)
             val width = when {
                 sizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXTRA_LARGE_LOWER_BOUND) -> WindowWidth.ExtraLarge

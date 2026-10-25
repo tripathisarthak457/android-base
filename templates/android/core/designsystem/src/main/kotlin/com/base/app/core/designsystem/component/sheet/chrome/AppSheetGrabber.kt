@@ -31,7 +31,7 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens
  * lambda that draws something else keeps all of them.
  */
 @Composable
-fun AppSheetGrabber(modifier: Modifier = Modifier) {
+public fun AppSheetGrabber(modifier: Modifier = Modifier) {
     val look = LocalSheetGrabber.current
     val colors = AppTheme.colors
     val outside = colors.contentTertiary.copy(alpha = DesignTokens.Sheet.Grabber.alpha)

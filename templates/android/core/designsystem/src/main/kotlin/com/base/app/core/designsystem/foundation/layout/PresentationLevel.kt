@@ -9,4 +9,4 @@ import androidx.compose.runtime.staticCompositionLocalOf
  * recedes and dims what it covers and nothing beneath.
  */
 @ShellSeamApi
-val LocalPresentationLevel: ProvidableCompositionLocal<Int> = staticCompositionLocalOf { 0 }
+public val LocalPresentationLevel: ProvidableCompositionLocal<Int> = staticCompositionLocalOf { 0 }

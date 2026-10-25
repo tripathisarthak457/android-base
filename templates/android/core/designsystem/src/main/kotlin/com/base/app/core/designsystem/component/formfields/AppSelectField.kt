@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.input.AppTextField
@@ -44,7 +45,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * just its chevron, and the current choice is marked in the menu.
  */
 @Composable
-fun <T> AppSelectField(
+public fun <T> AppSelectField(
     value: T?,
     options: List<T>,
     onSelect: (T) -> Unit,
@@ -106,7 +107,7 @@ fun <T> AppSelectField(
  * names both.
  */
 @Composable
-fun AppPhoneField(
+public fun AppPhoneField(
     dialCode: String,
     onDialCodeChange: (String) -> Unit,
     number: TextFieldState,
@@ -146,16 +147,16 @@ fun AppPhoneField(
 }
 
 /** Refuses anything that is not a digit, typed or pasted. */
-val DigitsOnly = InputTransformation {
+public val DigitsOnly: InputTransformation = InputTransformation {
     if (!asCharSequence().all(Char::isDigit)) revertAllChanges()
 }
 
 /** A short default list. Replace it with the codes your product serves. */
-val DefaultDialCodes: List<String> = listOf("+1", "+44", "+61", "+65", "+91", "+971")
+public val DefaultDialCodes: List<String> = listOf("+1", "+44", "+61", "+65", "+91", "+971")
 
 /** The phone field's dialling-code column. */
-object AppPhoneFieldDefaults {
-    val DialCodeWidth = 108.dp
+public object AppPhoneFieldDefaults {
+    public val DialCodeWidth: Dp = 108.dp
 }
 
 private const val MaxNumberLength = 15

@@ -33,7 +33,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * line, so a placeholder takes exactly the room the real text will.
  */
 @Composable
-fun AppText(
+public fun AppText(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
@@ -62,7 +62,7 @@ fun AppText(
 }
 
 @Composable
-fun AppText(
+public fun AppText(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
@@ -95,7 +95,7 @@ fun AppText(
  * pressed label) redraws the text and never recomposes or re-measures it.
  */
 @Composable
-fun AppText(
+public fun AppText(
     text: String,
     color: ColorProducer,
     modifier: Modifier = Modifier,
@@ -165,7 +165,7 @@ private fun TextStyle.resolve(
  * timestamps. Set in the mono face.
  */
 @Composable
-fun AppMonoText(
+public fun AppMonoText(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
@@ -191,7 +191,7 @@ fun AppMonoText(
  * shift the words around it. The words keep the text face, so the line does not read like code.
  */
 @Composable
-fun AppFiguresText(
+public fun AppFiguresText(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,

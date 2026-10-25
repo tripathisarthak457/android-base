@@ -9,7 +9,7 @@ import androidx.compose.foundation.lazy.LazyListState
  * last stretch, so the trip is short however far down it was, and composes only the rows of those
  * two screens on the way.
  */
-suspend fun LazyListState.animateScrollToTop() {
+public suspend fun LazyListState.animateScrollToTop() {
     val screen = layoutInfo.visibleItemsInfo.size.coerceAtLeast(1)
     val approach = screen * ApproachScreens
     if (firstVisibleItemIndex > approach) scrollToItem(approach)
@@ -17,7 +17,7 @@ suspend fun LazyListState.animateScrollToTop() {
 }
 
 /** [LazyListState.animateScrollToTop] for a scrolling column. */
-suspend fun ScrollState.animateScrollToTop() {
+public suspend fun ScrollState.animateScrollToTop() {
     val approach = viewportSize * ApproachScreens
     if (approach > 0 && value > approach) scrollTo(approach)
     animateScrollTo(0)

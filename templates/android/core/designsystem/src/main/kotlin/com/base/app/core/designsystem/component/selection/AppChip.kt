@@ -28,6 +28,7 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.base.app.core.designsystem.R
@@ -52,7 +53,7 @@ import kotlinx.coroutines.launch
  * happens to when tapped, such as a tag in a field, passes a null [onClick] and is no button.
  */
 @Composable
-fun AppChip(
+public fun AppChip(
     label: String,
     onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
@@ -161,14 +162,14 @@ private fun rememberHeldFraction(interactions: InteractionSource): Animatable<Fl
 }
 
 /** The chip's metrics. */
-object AppChipDefaults {
-    val Height = 32.dp
-    val HorizontalPadding = 12.dp
-    val IconSpacing = 6.dp
-    val RemoveGlyph = 14.dp
-    val RemoveEndPadding = 10.dp
-    val RemoveTargetWidth = RemoveEndPadding + RemoveGlyph + IconSpacing
-    val RemoveTarget = 48.dp
+public object AppChipDefaults {
+    public val Height: Dp = 32.dp
+    public val HorizontalPadding: Dp = 12.dp
+    public val IconSpacing: Dp = 6.dp
+    public val RemoveGlyph: Dp = 14.dp
+    public val RemoveEndPadding: Dp = 10.dp
+    public val RemoveTargetWidth: Dp = RemoveEndPadding + RemoveGlyph + IconSpacing
+    public val RemoveTarget: Dp = 48.dp
 }
 
 @AppComponentPreviews

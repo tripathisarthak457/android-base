@@ -50,7 +50,7 @@ import kotlin.math.roundToInt
  * Its motion is the message, so it keeps turning with motion reduced, at half the pace.
  */
 @Composable
-fun AppActivityIndicator(
+public fun AppActivityIndicator(
     modifier: Modifier = Modifier,
     size: Dp = AppProgressDefaults.IndicatorSize,
     color: Color = AppTheme.colors.contentSecondary,
@@ -120,7 +120,7 @@ private val SpokeAlphas = floatArrayOf(147f, 122f, 97f, 72f, 47f, 47f, 47f, 47f)
  * recomposing anything; a screen reader hears it in steps of five percent.
  */
 @Composable
-fun AppLinearProgress(
+public fun AppLinearProgress(
     progress: () -> Float,
     modifier: Modifier = Modifier,
     color: Color = AppTheme.colors.accent,
@@ -148,9 +148,9 @@ private const val AnnouncedSteps = 20f
 private const val StepMillis = 125L
 
 /** The progress indicators' sizes. */
-object AppProgressDefaults {
-    val IndicatorSize = 20.dp
-    val LinearHeight = 4.dp
+public object AppProgressDefaults {
+    public val IndicatorSize: Dp = 20.dp
+    public val LinearHeight: Dp = 4.dp
 }
 
 @AppComponentPreviews

@@ -49,26 +49,26 @@ import kotlinx.coroutines.delay
  * The transitions content changes with, as named pairs. Anything that moves rides a spring from
  * [AppSprings], so it can be interrupted and retargeted mid-flight; only opacity uses a fade.
  */
-class AppTransitions internal constructor(
+public class AppTransitions internal constructor(
     private val springs: AppSprings,
     private val reduceMotion: Boolean,
 ) {
     /** For content that appears where it is. The default for almost everything. */
-    val fadeIn: EnterTransition
+    public val fadeIn: EnterTransition
         get() = if (reduceMotion) EnterTransition.None else fadeIn(springs.fadeIn())
 
-    val fadeOut: ExitTransition
+    public val fadeOut: ExitTransition
         get() = if (reduceMotion) ExitTransition.None else fadeOut(springs.fadeOut())
 
     /** For a block that opens in place: an expanded row, a validation message. */
-    val expandIn: EnterTransition
+    public val expandIn: EnterTransition
         get() = if (reduceMotion) {
             EnterTransition.None
         } else {
             expandVertically(springs.layout.size) + fadeIn(springs.quickFade())
         }
 
-    val collapseOut: ExitTransition
+    public val collapseOut: ExitTransition
         get() = if (reduceMotion) {
             ExitTransition.None
         } else {
@@ -76,21 +76,21 @@ class AppTransitions internal constructor(
         }
 
     /** For something arriving from the bottom edge: a banner, a bar. */
-    val riseIn: EnterTransition
+    public val riseIn: EnterTransition
         get() = if (reduceMotion) EnterTransition.None else slideInVertically(springs.sheet.offset) { it }
 
-    val sinkOut: ExitTransition
+    public val sinkOut: ExitTransition
         get() = if (reduceMotion) ExitTransition.None else slideOutVertically(springs.sheet.offset) { it }
 
     /** For an element that should read as appearing, not moving: a badge, a checkmark. */
-    val popIn: EnterTransition
+    public val popIn: EnterTransition
         get() = if (reduceMotion) {
             EnterTransition.None
         } else {
             scaleIn(springs.emphasis.unit, initialScale = PopScale) + fadeIn(springs.quickFade())
         }
 
-    val popOut: ExitTransition
+    public val popOut: ExitTransition
         get() = if (reduceMotion) {
             ExitTransition.None
         } else {
@@ -98,14 +98,14 @@ class AppTransitions internal constructor(
         }
 
     /** A lateral move inside one screen: step 2 of a form replacing step 1. */
-    fun slideIn(forward: Boolean = true): EnterTransition =
+    public fun slideIn(forward: Boolean = true): EnterTransition =
         if (reduceMotion) {
             EnterTransition.None
         } else {
             slideInHorizontally(springs.screen.offset) { width -> if (forward) width else -width }
         }
 
-    fun slideOut(forward: Boolean = true): ExitTransition =
+    public fun slideOut(forward: Boolean = true): ExitTransition =
         if (reduceMotion) {
             ExitTransition.None
         } else {
@@ -117,7 +117,7 @@ private const val PopScale = 0.85f
 
 /** The transition set for the current theme and accessibility settings. */
 @Composable
-fun rememberAppTransitions(): AppTransitions {
+public fun rememberAppTransitions(): AppTransitions {
     val springs = AppTheme.springs
     val reduceMotion = AppTheme.reduceMotion
     return remember(springs, reduceMotion) { AppTransitions(springs, reduceMotion) }
@@ -125,7 +125,7 @@ fun rememberAppTransitions(): AppTransitions {
 
 /** Fades and lifts its content in once, the first time it is shown. */
 @Composable
-fun AppAppear(
+public fun AppAppear(
     modifier: Modifier = Modifier,
     delayMillis: Long = 0,
     content: @Composable () -> Unit,
@@ -147,7 +147,7 @@ fun AppAppear(
 
 /** Animates a row into place when the list is reordered, filtered or inserted into. */
 @Composable
-fun LazyItemScope.appAnimateItem(modifier: Modifier = Modifier): Modifier {
+public fun LazyItemScope.appAnimateItem(modifier: Modifier = Modifier): Modifier {
     if (AppTheme.reduceMotion) return modifier
     val springs = AppTheme.springs
     return modifier.animateItem(
@@ -162,7 +162,7 @@ fun LazyItemScope.appAnimateItem(modifier: Modifier = Modifier): Modifier {
  * apart, the first [AppSprings.staggerMaxItems] waiting their turn and the rest arriving with the last.
  */
 @Composable
-fun AppStaggeredColumn(
+public fun AppStaggeredColumn(
     itemCount: Int,
     modifier: Modifier = Modifier,
     content: @Composable (index: Int) -> Unit,
@@ -220,7 +220,7 @@ private fun rememberAppearProgress(
  * Dims content and blocks every touch on it while [busy]: a form while it submits. The touch is
  * taken before children see it, so a button inside cannot fire a second time.
  */
-fun Modifier.busyOverlay(busy: Boolean): Modifier {
+public fun Modifier.busyOverlay(busy: Boolean): Modifier {
     if (!busy) return this
     return this
         .alpha(BusyAlpha)

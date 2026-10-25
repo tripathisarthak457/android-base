@@ -55,7 +55,7 @@ import kotlin.math.sin
  * build their value from each other (hours and minutes) never report a stale neighbour.
  */
 @Composable
-fun <T> AppWheelPicker(
+public fun <T> AppWheelPicker(
     items: List<T>,
     selectedIndex: Int,
     onSelectedChange: (Int) -> Unit,
@@ -197,10 +197,10 @@ private const val Squeeze = 1.45f
 private const val OffCentreAlpha = 0.447f
 
 /** The wheel's rows and the distance it is seen from. */
-object AppWheelPickerDefaults {
-    val MinRowHeight = 44.dp
-    val RowPadding = 16.dp
-    val PerspectiveDistance = 333.dp
+public object AppWheelPickerDefaults {
+    public val MinRowHeight: Dp = 44.dp
+    public val RowPadding: Dp = 16.dp
+    public val PerspectiveDistance: Dp = 333.dp
 }
 
 private val MaxVisibleAngle = asin(1f / DiameterRatio)

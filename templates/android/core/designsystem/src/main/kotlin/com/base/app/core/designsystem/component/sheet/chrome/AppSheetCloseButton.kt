@@ -28,7 +28,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * a sheet and full screen can keep it.
  */
 @Composable
-fun AppSheetCloseButton(modifier: Modifier = Modifier) {
+public fun AppSheetCloseButton(modifier: Modifier = Modifier) {
     val scope = LocalSheetSurface.current?.scope ?: return
     if ((scope as? SheetController)?.closable == false) return
     AppIconButton(

@@ -21,13 +21,13 @@ import kotlinx.coroutines.withTimeout
  * are read digit by digit.
  */
 @Immutable
-data class AppFonts(
+public data class AppFonts(
     val sans: FontFamily,
     val mono: FontFamily,
 )
 
 /** What a preview, a test, or a process whose fonts did not arrive in time draws with. */
-val PlatformFonts = AppFonts(sans = FontFamily.SansSerif, mono = FontFamily.Monospace)
+public val PlatformFonts: AppFonts = AppFonts(sans = FontFamily.SansSerif, mono = FontFamily.Monospace)
 // <opt:googlefonts>
 
 private val Provider = GoogleFont.Provider(
@@ -51,7 +51,7 @@ private fun googleFamily(name: String, weights: List<FontWeight>): FontFamily {
  * process, and the downloaded ones, cached on the device by then, apply from the next cold start.
  * Main thread only.
  */
-class FontPreload(private val downloaded: AppFonts) {
+public class FontPreload(private val downloaded: AppFonts) {
     private var arrived = false
     private var chosen: AppFonts? = null
 
@@ -60,7 +60,7 @@ class FontPreload(private val downloaded: AppFonts) {
      * device with no font provider, or one that answers late, gets the platform families; it never
      * fails the launch.
      */
-    suspend fun run(resolver: FontFamily.Resolver, budget: Duration = PreloadBudget): Boolean =
+    public suspend fun run(resolver: FontFamily.Resolver, budget: Duration = PreloadBudget): Boolean =
         run(budget) { resolver.preload(it) }
 
     internal suspend fun run(budget: Duration, load: suspend (FontFamily) -> Unit): Boolean {
@@ -84,7 +84,7 @@ class FontPreload(private val downloaded: AppFonts) {
     }
 
     /** The families to draw with, fixed the first time anything asks. */
-    val fonts: AppFonts
+    public val fonts: AppFonts
         get() = chosen ?: (if (arrived) downloaded else PlatformFonts).also { chosen = it }
 }
 
@@ -92,7 +92,7 @@ class FontPreload(private val downloaded: AppFonts) {
  * The longest the splash waits for fonts. Past this, a slower network costs a launch in the
  * platform font rather than a blank screen.
  */
-val PreloadBudget: Duration = 150.milliseconds
+public val PreloadBudget: Duration = 150.milliseconds
 // <opt:googlefonts>
 
 // <opt:ui_components>
@@ -100,7 +100,7 @@ val PreloadBudget: Duration = 150.milliseconds
  * The app's preload: the startup gate runs it, and [AppTheme] draws with its answer. It downloads
  * exactly the weights the design style's type voice uses.
  */
-val AppFontPreload = FontPreload(
+public val AppFontPreload: FontPreload = FontPreload(
     AppFonts(
         sans = googleFamily(DesignTokens.Defaults.fontName, sansWeights(AppTheme.defaults.designStyle.style().voice)),
         mono = googleFamily(DesignTokens.Defaults.monoFontName, MonoWeights),
@@ -112,7 +112,7 @@ val AppFontPreload = FontPreload(
 //~  * The app's preload: the startup gate runs it, and [AppTheme] draws with its answer. It downloads
 //~  * exactly the weights the type scale uses.
 //~  */
-//~ val AppFontPreload = FontPreload(
+//~ public val AppFontPreload: FontPreload = FontPreload(
 //~     AppFonts(
 //~         sans = googleFamily(DesignTokens.Defaults.fontName, SansWeights),
 //~         mono = googleFamily(DesignTokens.Defaults.monoFontName, MonoWeights),
@@ -128,7 +128,7 @@ val AppFontPreload = FontPreload(
 //~  * here and the theme picks it up with the same no-reflow rule:
 //~  *
 //~  * ```
-//~  * val AppFontPreload = FontPreload(
+//~  * public val AppFontPreload: FontPreload = FontPreload(
 //~  *     AppFonts(
 //~  *         sans = FontFamily(Font(R.font.brand_regular, FontWeight.Normal), Font(R.font.brand_bold, FontWeight.Bold)),
 //~  *         mono = FontFamily.Monospace,
@@ -136,7 +136,7 @@ val AppFontPreload = FontPreload(
 //~  * )
 //~  * ```
 //~  */
-//~ val AppFontPreload = FontPreload(PlatformFonts)
+//~ public val AppFontPreload: FontPreload = FontPreload(PlatformFonts)
 // </opt-else:googlefonts>
 
 internal fun themeFonts(): AppFonts = AppFontPreload.fonts

@@ -9,8 +9,8 @@ import androidx.compose.ui.geometry.Rect
  * screen is not a gap to lay out around.
  */
 @Immutable
-data class WindowPosture(val kind: Kind = Kind.Flat, val hinge: Rect? = null) {
-    enum class Kind {
+public data class WindowPosture(val kind: Kind = Kind.Flat, val hinge: Rect? = null) {
+    public enum class Kind {
         /** Fully open or closed, or not a foldable. */
         Flat,
 

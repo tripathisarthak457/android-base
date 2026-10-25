@@ -82,12 +82,12 @@ import kotlin.math.sign
  * accent by default.
  */
 @Immutable
-class SwipeAction(
-    val label: String,
-    val icon: ImageVector,
-    val onClick: () -> Unit,
-    val destructive: Boolean = false,
-    val tone: AppTone? = null,
+public class SwipeAction(
+    public val label: String,
+    public val icon: ImageVector,
+    public val onClick: () -> Unit,
+    public val destructive: Boolean = false,
+    public val tone: AppTone? = null,
 )
 
 /**
@@ -100,17 +100,17 @@ class SwipeAction(
  * ```
  */
 @Stable
-class AppSwipeActionsState @RememberInComposition constructor() {
+public class AppSwipeActionsState @RememberInComposition constructor() {
     /**
      * How far the row has moved, in pixels: positive reveals the leading actions, negative the
      * trailing ones, whatever the layout direction. Read it in layout or draw, never in composition.
      */
     @get:FrequentlyChangingValue
-    var offset: Float by mutableFloatStateOf(0f)
+    public var offset: Float by mutableFloatStateOf(0f)
         internal set
 
     /** Whether any action shows. Changes only when the row opens or closes, not while it moves. */
-    val isOpen: Boolean by derivedStateOf { offset != 0f }
+    public val isOpen: Boolean by derivedStateOf { offset != 0f }
 
     internal val mutex = MutatorMutex()
     internal var spring: SpringSpec<Float> = AppMotionStyle.Standard.springs().thumb.pixels
@@ -119,7 +119,9 @@ class AppSwipeActionsState @RememberInComposition constructor() {
     internal var travel = 0f
 
     /** Slides the row closed, unless a finger has it. */
-    suspend fun close() = settleTo(0f, 0f)
+    public suspend fun close() {
+        settleTo(0f, 0f)
+    }
 
     internal suspend fun settleTo(target: Float, velocity: Float) = mutex.mutate {
         animate(offset, target, velocity, spring) { value, _ -> offset = value }
@@ -130,7 +132,7 @@ class AppSwipeActionsState @RememberInComposition constructor() {
 }
 
 @Composable
-fun rememberAppSwipeActionsState(): AppSwipeActionsState = remember { AppSwipeActionsState() }
+public fun rememberAppSwipeActionsState(): AppSwipeActionsState = remember { AppSwipeActionsState() }
 
 /**
  * A row with actions behind it: [leading] revealed by swiping towards the trailing edge, [trailing]
@@ -147,7 +149,7 @@ fun rememberAppSwipeActionsState(): AppSwipeActionsState = remember { AppSwipeAc
  * speed, to the stop the swipe would have coasted to.
  */
 @Composable
-fun AppSwipeActions(
+public fun AppSwipeActions(
     modifier: Modifier = Modifier,
     state: AppSwipeActionsState = rememberAppSwipeActionsState(),
     leading: List<SwipeAction> = emptyList(),
@@ -383,9 +385,9 @@ private val RubberBand = DesignTokens.Motion.rubberBand
 private const val ProjectionSeconds = 0.099f
 
 /** The swipe actions' metrics. */
-object AppSwipeActionsDefaults {
-    val ActionWidth = 74.dp
-    val LabelSpacing = 4.dp
+public object AppSwipeActionsDefaults {
+    public val ActionWidth: Dp = 74.dp
+    public val LabelSpacing: Dp = 4.dp
 }
 
 @AppComponentPreviews

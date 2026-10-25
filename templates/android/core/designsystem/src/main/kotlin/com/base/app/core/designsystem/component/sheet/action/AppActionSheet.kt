@@ -58,7 +58,7 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens
  * still has it when the action runs.
  */
 @Composable
-fun AppActionSheet(
+public fun AppActionSheet(
     visible: Boolean,
     actions: List<SheetAction>,
     onDismissRequest: () -> Unit,
@@ -200,8 +200,8 @@ private val ActionFit = SheetDetent.Custom("action-fit") {
 private val ScrollingProperties = AppSheetProperties(contentInteraction = SheetContentInteraction.Scrolls)
 
 /** The action sheet's heading. */
-object AppActionSheetDefaults {
-    val HeadingSpacing = 2.dp
+public object AppActionSheetDefaults {
+    public val HeadingSpacing: Dp = 2.dp
 }
 
 @AppComponentPreviews

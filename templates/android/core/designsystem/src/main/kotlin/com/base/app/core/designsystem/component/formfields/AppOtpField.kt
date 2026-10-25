@@ -44,6 +44,7 @@ import androidx.compose.ui.semantics.error
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.layout.LocalTabVisible
@@ -57,7 +58,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  */
 @Suppress("ktlint:compose:parameter-naming") // onFilled runs once, when it is full.
 @Composable
-fun AppOtpField(
+public fun AppOtpField(
     state: TextFieldState,
     modifier: Modifier = Modifier,
     length: Int = 6,
@@ -168,10 +169,10 @@ private fun Caret() {
 }
 
 /** The code field's boxes and caret. */
-object AppOtpFieldDefaults {
-    val CaretWidth = 2.dp
-    val CaretHeight = 24.dp
-    val BoxHeight = 48.dp
+public object AppOtpFieldDefaults {
+    public val CaretWidth: Dp = 2.dp
+    public val CaretHeight: Dp = 24.dp
+    public val BoxHeight: Dp = 48.dp
 }
 
 

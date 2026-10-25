@@ -31,7 +31,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 /** The enclosing sheet's contentPadding; zero outside a sheet. */
 @Composable
 @ReadOnlyComposable
-fun sheetContentPadding(): PaddingValues = LocalSheetSurface.current?.scope?.contentPadding ?: NoPadding
+public fun sheetContentPadding(): PaddingValues = LocalSheetSurface.current?.scope?.contentPadding ?: NoPadding
 
 /**
  * A scrolling column with the sheet's contentPadding applied inside the scroll: a form, a settings
@@ -39,7 +39,7 @@ fun sheetContentPadding(): PaddingValues = LocalSheetSurface.current?.scope?.con
  * here, after [content].
  */
 @Composable
-fun SheetColumn(
+public fun SheetColumn(
     modifier: Modifier = Modifier,
     state: ScrollState = rememberScrollState(),
     contentPadding: PaddingValues = sheetContentPadding(),
@@ -61,7 +61,7 @@ fun SheetColumn(
 }
 
 /** In a lazy list, the sheet's footer as the last item when it cannot stay pinned; nothing otherwise. */
-fun LazyListScope.sheetFooterItem() {
+public fun LazyListScope.sheetFooterItem() {
     item(key = FooterItemKey, contentType = FooterItemKey) { UnpinnedSheetFooter() }
 }
 

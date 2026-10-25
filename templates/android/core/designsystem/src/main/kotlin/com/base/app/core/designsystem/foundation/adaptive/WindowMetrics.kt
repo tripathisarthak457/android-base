@@ -11,8 +11,8 @@ import androidx.compose.ui.unit.dp
  * resize, which is what size classes exist to avoid.
  */
 @Stable
-class WindowMetrics internal constructor(private val size: () -> DpSize) {
-    val sizeDp: DpSize get() = size()
+public class WindowMetrics internal constructor(private val size: () -> DpSize) {
+    public val sizeDp: DpSize get() = size()
 }
 
 internal val PhoneMetrics = WindowMetrics { DpSize(411.dp, 891.dp) }

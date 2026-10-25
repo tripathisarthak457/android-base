@@ -25,7 +25,7 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens
  */
 @ShellSeamApi
 @Stable
-class SheetStack internal constructor() {
+public class SheetStack internal constructor() {
     private var entries = arrayOfNulls<StackedSheet>(InitialCapacity)
 
     /** Snapshot state, so every reader that walks the entries follows a sheet arriving or leaving. */
@@ -39,14 +39,14 @@ class SheetStack internal constructor() {
 
     /** How far the presenter at [level] has receded: 0 upright, 1 behind a sheet at Large. Read in a layer block. */
     @FrequentlyChangingValue
-    fun recede(level: Int): Float {
+    public fun recede(level: Int): Float {
         val sheet = front(level + 1) ?: return 0f
         return if (sheet.drivesCardStack) sheet.expansion() else 0f
     }
 
     /** The merged dim to draw over the presenter at [level], alpha included. Read in draw. */
     @FrequentlyChangingValue
-    fun dim(level: Int): Color {
+    public fun dim(level: Int): Color {
         fold.reset()
         val above = front(level + 1) ?: return Color.Transparent
         fold.over(above.overlay, DesignTokens.Sheet.CardStack.overlayAlpha * recede(level))
@@ -66,7 +66,7 @@ class SheetStack internal constructor() {
      * nothing of the presenter shows. Read in draw.
      */
     @FrequentlyChangingValue
-    fun visibleBottom(level: Int): Float {
+    public fun visibleBottom(level: Int): Float {
         val sheet = front(level + 1) ?: return Float.POSITIVE_INFINITY
         if (!sheet.coversPresenter()) return Float.POSITIVE_INFINITY
         val geometry = presenters.getOrNull(level) ?: return Float.POSITIVE_INFINITY
@@ -76,14 +76,14 @@ class SheetStack internal constructor() {
     }
 
     /** True while a sheet at [level] may sample the live scene: its presenter is the shell and no cover is up. */
-    fun samplesScene(level: Int): Boolean = level == 1 && claimed and 1.inv() == 0
+    public fun samplesScene(level: Int): Boolean = level == 1 && claimed and 1.inv() == 0
 
     /**
      * True while a modal sheet is up above [level], so the default-priority Back handlers of the hosts
      * at that level stay off. A destination sheet stops blocking once it leaves, so the presses
      * of a rapid Back during its exit reach its host's gate. Changes at most twice per opening.
      */
-    fun blocksBack(level: Int): Boolean {
+    public fun blocksBack(level: Int): Boolean {
         for (index in 0 until size) {
             val sheet = entries[index] ?: continue
             if (sheet.level > level && sheet.modal && sheet.blocks()) return true
@@ -92,10 +92,10 @@ class SheetStack internal constructor() {
     }
 
     /** True while the shell has receded past sheet.cardStack.statusBarFlip. Changes once per crossing. */
-    val rootReceded: Boolean by derivedStateOf { recede(0) > DesignTokens.Sheet.CardStack.statusBarFlip }
+    public val rootReceded: Boolean by derivedStateOf { recede(0) > DesignTokens.Sheet.CardStack.statusBarFlip }
 
     /** The container of the sheet covering the window's bottom edge, or null. Changes once per crossing. */
-    val bottomEdgeContainer: Color? by derivedStateOf {
+    public val bottomEdgeContainer: Color? by derivedStateOf {
         var container: Color? = null
         for (index in 0 until size) {
             val sheet = entries[index] ?: continue
@@ -105,7 +105,7 @@ class SheetStack internal constructor() {
     }
 
     /** The front sheet's settled bottom chrome, for toasts. */
-    val topBottomChrome: Dp by derivedStateOf {
+    public val topBottomChrome: Dp by derivedStateOf {
         var chrome = 0.dp
         for (index in 0 until size) {
             val sheet = entries[index] ?: continue
@@ -212,4 +212,4 @@ internal class PresenterGeometry {
 
 /** The outermost AppTheme's stack, or null outside one (a bare preview). */
 @ShellSeamApi
-val LocalSheetStack: ProvidableCompositionLocal<SheetStack?> = staticCompositionLocalOf { null }
+public val LocalSheetStack: ProvidableCompositionLocal<SheetStack?> = staticCompositionLocalOf { null }

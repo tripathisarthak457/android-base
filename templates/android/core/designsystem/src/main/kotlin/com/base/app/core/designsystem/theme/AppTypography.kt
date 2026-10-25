@@ -15,7 +15,7 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens
  * Android sp is close to an iOS point). [body] is the text style everything inherits.
  */
 @Immutable
-data class AppTypography(
+public data class AppTypography(
     val largeTitle: TextStyle,
     val title1: TextStyle,
     val title2: TextStyle,
@@ -60,7 +60,7 @@ private fun DesignTokens.TypeRole.style(voice: TypeVoice, family: FontFamily) = 
  * download only the weights the voice uses. Large sizes are tracked in, as display cuts are; the
  * smallest are opened up so they stay legible.
  */
-fun appTypography(fonts: AppFonts, voice: TypeVoice = TypeVoice.Neutral): AppTypography {
+public fun appTypography(fonts: AppFonts, voice: TypeVoice = TypeVoice.Neutral): AppTypography {
     val sans = fonts.sans
     return with(DesignTokens.Type) {
         AppTypography(
@@ -81,14 +81,14 @@ fun appTypography(fonts: AppFonts, voice: TypeVoice = TypeVoice.Neutral): AppTyp
 }
 
 /** The scale set in the platform's own typefaces. */
-val DefaultTypography: AppTypography = appTypography(PlatformFonts)
+public val DefaultTypography: AppTypography = appTypography(PlatformFonts)
 
 /** The weights of the sans family that [voice] draws with, lightest first: exactly what to download. */
-fun sansWeights(voice: TypeVoice): List<FontWeight> =
+public fun sansWeights(voice: TypeVoice): List<FontWeight> =
     appTypography(PlatformFonts, voice).sansRoles.mapNotNull { it.fontWeight }.distinct().sortedBy { it.weight }
 
 /** The weights of the mono family the scale uses. */
-val MonoWeights: List<FontWeight> = listOfNotNull(DefaultTypography.mono.fontWeight)
+public val MonoWeights: List<FontWeight> = listOfNotNull(DefaultTypography.mono.fontWeight)
 
 /** The finest step text sized to fit shrinks by: a quarter point, below what the eye tells apart. */
 internal val AutoSizeStep: TextUnit = 0.25.sp

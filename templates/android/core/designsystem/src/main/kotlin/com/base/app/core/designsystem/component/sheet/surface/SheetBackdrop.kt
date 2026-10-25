@@ -16,35 +16,35 @@ import com.base.app.core.designsystem.foundation.layout.ShellSeamApi
  * getters, so nothing boxes; read in draw; nothing allocates.
  */
 @ShellSeamApi
-interface SheetFrame {
+public interface SheetFrame {
     @get:FrequentlyChangingValue
-    val left: Float
+    public val left: Float
 
     @get:FrequentlyChangingValue
-    val top: Float
+    public val top: Float
 
     @get:FrequentlyChangingValue
-    val right: Float
+    public val right: Float
 
     @get:FrequentlyChangingValue
-    val bottom: Float
+    public val bottom: Float
 
-    val cornerRadius: Float
+    public val cornerRadius: Float
 
     /** 0 glass, 1 opaque: the pass is skipped at 1, and whenever the stack says this level must not sample. */
     @get:FrequentlyChangingValue
-    val opaque: Float
+    public val opaque: Float
 
     /** The presenter's dim, which the recorded scene does not contain. */
     @get:FrequentlyChangingValue
-    val dim: Color
+    public val dim: Color
 }
 
 /** Draws a Glass sheet's live body: the scene behind the frame, blurred, under the dim and a tint. */
 @ShellSeamApi
 @Stable
-interface SheetBackdrop {
-    fun Modifier.sheetBackdrop(frame: SheetFrame): Modifier
+public interface SheetBackdrop {
+    public fun Modifier.sheetBackdrop(frame: SheetFrame): Modifier
 }
 
 /**
@@ -56,9 +56,9 @@ interface SheetBackdrop {
  */
 @ShellSeamApi
 @Stable
-class SheetBackdropHolder internal constructor() {
-    var backdrop: SheetBackdrop? by mutableStateOf(null)
+public class SheetBackdropHolder internal constructor() {
+    public var backdrop: SheetBackdrop? by mutableStateOf(null)
 }
 
 @ShellSeamApi
-val LocalSheetBackdrop: ProvidableCompositionLocal<SheetBackdropHolder?> = staticCompositionLocalOf { null }
+public val LocalSheetBackdrop: ProvidableCompositionLocal<SheetBackdropHolder?> = staticCompositionLocalOf { null }

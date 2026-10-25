@@ -31,7 +31,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  */
 @ShellSeamApi
 @Composable
-fun AppSheetLayout(
+public fun AppSheetLayout(
     state: AppSheetState,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,

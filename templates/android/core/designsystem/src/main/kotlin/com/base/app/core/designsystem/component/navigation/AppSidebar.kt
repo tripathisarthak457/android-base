@@ -72,7 +72,7 @@ import kotlin.math.floor
  *   widths for each window size.
  */
 @Composable
-fun AppSidebar(
+public fun AppSidebar(
     items: List<TabItem>,
     selected: Int,
     onSelect: (Int) -> Unit,
@@ -169,13 +169,13 @@ fun AppSidebar(
 }
 
 /** The sidebar's widths, for the `width` of [AppSidebar] on each window size. */
-object AppSidebarDefaults {
+public object AppSidebarDefaults {
 
     /** The sidebar's width on a large window. */
-    val Width: Dp = 280.dp
+    public val Width: Dp = 280.dp
 
     /** On an extra-large one, where the extra width reads as breathing room. */
-    val WideWidth: Dp = 304.dp
+    public val WideWidth: Dp = 304.dp
 
     internal val RowHeight = 48.dp
     internal val HighlightCorner = 10.dp

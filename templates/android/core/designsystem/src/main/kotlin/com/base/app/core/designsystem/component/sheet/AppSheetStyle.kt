@@ -9,18 +9,18 @@ import com.base.app.core.designsystem.theme.SheetMaterial
 
 /** A sheet's colours. */
 @Immutable
-class AppSheetColors(
+public class AppSheetColors(
     /** The body. Frosted and Glass draw it translucent at partial detents. */
-    val container: Color,
-    val content: Color,
+    public val container: Color,
+    public val content: Color,
     /** The grabber pill; `AppSheetGrabber` reads it from the enclosing sheet. */
-    val grabber: Color,
+    public val grabber: Color,
     /** A hairline around the body; transparent for none. */
-    val rim: Color,
+    public val rim: Color,
     /** The dim at full strength, alpha included. */
-    val scrim: Color,
+    public val scrim: Color,
 ) {
-    fun copy(
+    public fun copy(
         container: Color = this.container,
         content: Color = this.content,
         grabber: Color = this.grabber,
@@ -47,25 +47,25 @@ class AppSheetColors(
  * the sheet to Modifier.styleable once that API is stable is mechanical.
  */
 @Immutable
-class AppSheetStyle internal constructor(
-    val material: SheetMaterial,
-    val colors: AppSheetColors,
+public class AppSheetStyle internal constructor(
+    public val material: SheetMaterial,
+    public val colors: AppSheetColors,
     /** Painted over the container where the body is opaque: a gradient or a brand texture; null for none. */
-    val containerBrush: Brush?,
+    public val containerBrush: Brush?,
     /** All four corners, floating or attached. */
-    val cornerRadius: Dp,
+    public val cornerRadius: Dp,
     /** The gap to the side and bottom edges at partial detents; 0 keeps the sheet attached. */
-    val floatingInset: Dp,
+    public val floatingInset: Dp,
     /** A cap on the sheet's width; [Dp.Unspecified] for the placement's own width. */
-    val maxWidth: Dp,
+    public val maxWidth: Dp,
     /**
      * Drawn outside the shape, and only where it separates the sheet from what is beside it: a
      * non-modal sheet, a side panel, a form sheet, an anchored card, or a sheet over a faint dim, in
      * light theme. Ignored everywhere else. Null for none.
      */
-    val shadow: Shadow?,
+    public val shadow: Shadow?,
 ) {
-    fun copy(
+    public fun copy(
         material: SheetMaterial = this.material,
         colors: AppSheetColors = this.colors,
         containerBrush: Brush? = this.containerBrush,

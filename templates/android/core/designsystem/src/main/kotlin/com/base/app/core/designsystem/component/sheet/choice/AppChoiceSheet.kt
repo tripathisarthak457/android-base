@@ -39,7 +39,7 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens
  * are keyed by position.
  */
 @Composable
-fun <T : Any> AppChoiceSheet(
+public fun <T : Any> AppChoiceSheet(
     visible: Boolean,
     choices: List<T>,
     selected: T?,
@@ -77,12 +77,12 @@ fun <T : Any> AppChoiceSheet(
     )
 }
 
-object AppChoiceSheetDefaults {
+public object AppChoiceSheetDefaults {
     /** From this many choices the sheet offers a search field: past a screenful, scanning is slower than typing. */
-    const val SearchFrom: Int = DesignTokens.Sheet.Choice.searchFrom
+    public const val SearchFrom: Int = DesignTokens.Sheet.Choice.searchFrom
 
     /** The most of Large's height the sheet opens at before the list scrolls or the person pulls it up. */
-    const val MaxFitFraction: Float = DesignTokens.Sheet.Choice.maxFitFraction
+    public const val MaxFitFraction: Float = DesignTokens.Sheet.Choice.maxFitFraction
 }
 
 @Composable

@@ -75,7 +75,7 @@ import kotlin.math.min
  * action key, which [onKeyboardAction] handles.
  */
 @Composable
-fun AppTextField(
+public fun AppTextField(
     state: TextFieldState,
     modifier: Modifier = Modifier,
     label: String? = null,

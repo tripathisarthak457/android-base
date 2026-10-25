@@ -11,19 +11,19 @@ import androidx.compose.ui.geometry.Rect
  */
 @ShellSeamApi
 @Stable
-class PaneBounds(
+public class PaneBounds(
     private val bounds: () -> Rect?,
     private val onBlock: (blocker: Any, blocked: Boolean) -> Unit = { _, _ -> },
 ) {
     /** The stored rect, replaced only when the pane moves: reading it allocates nothing. Read in measure or placement. */
-    val rect: Rect? get() = bounds()
+    public val rect: Rect? get() = bounds()
 
     /**
      * A sheet bounded by this pane blocks it: the pane's subtree is hidden from accessibility while
      * any blocker is registered.
      */
-    fun block(blocker: Any, blocked: Boolean) = onBlock(blocker, blocked)
+    public fun block(blocker: Any, blocked: Boolean): Unit = onBlock(blocker, blocked)
 }
 
 @ShellSeamApi
-val LocalPaneBounds: ProvidableCompositionLocal<PaneBounds> = staticCompositionLocalOf { PaneBounds({ null }) }
+public val LocalPaneBounds: ProvidableCompositionLocal<PaneBounds> = staticCompositionLocalOf { PaneBounds({ null }) }

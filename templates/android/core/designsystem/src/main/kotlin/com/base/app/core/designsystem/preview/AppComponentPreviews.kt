@@ -32,4 +32,4 @@ import androidx.compose.ui.tooling.preview.PreviewWrapper
 @PreviewWrapper(AppPreviewTheme::class)
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.ANNOTATION_CLASS, AnnotationTarget.FUNCTION)
-annotation class AppComponentPreviews
+public annotation class AppComponentPreviews

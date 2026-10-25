@@ -37,7 +37,7 @@ import kotlin.math.abs
  * page control leaves, so the dots never sit on a card.
  */
 @Composable
-fun AppCarousel(
+public fun AppCarousel(
     pageCount: Int,
     modifier: Modifier = Modifier,
     state: PagerState = rememberPagerState { pageCount },
@@ -96,8 +96,8 @@ fun AppCarousel(
 private const val SideScale = 0.92f
 
 /** How much of the next slide shows. */
-object AppCarouselDefaults {
-    val Peek = 32.dp
+public object AppCarouselDefaults {
+    public val Peek: Dp = 32.dp
 }
 
 @AppComponentPreviews

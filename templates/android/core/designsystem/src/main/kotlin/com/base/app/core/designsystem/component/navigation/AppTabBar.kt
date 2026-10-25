@@ -67,7 +67,7 @@ import kotlin.math.roundToInt
  * is grouped under in a sidebar.
  */
 @Immutable
-data class TabItem(
+public data class TabItem(
     val label: String,
     val icon: ImageVector,
     val selectedIcon: ImageVector = icon,
@@ -76,20 +76,20 @@ data class TabItem(
 )
 
 /** The bar along the bottom edge, or stood on its side as a rail beside wide windows. */
-enum class BarOrientation { Horizontal, Vertical }
+public enum class BarOrientation { Horizontal, Vertical }
 
 /** Which tabs show their label. With [Never] the label is still read out by accessibility. */
-enum class TabLabels { Always, Selected, Never }
+public enum class TabLabels { Always, Selected, Never }
 
 /** Whether the floating bar shrinks to the selected tab while the content scrolls down. */
-enum class BarMinimize { Never, OnScrollDown }
+public enum class BarMinimize { Never, OnScrollDown }
 
 /** What a trailing action capsule or a floating toolbar puts its buttons through. */
-interface BarActionScope {
+public interface BarActionScope {
 
     /** A round button with the bar's look; [tag] becomes its resource id for tests and benchmarks. */
     @Composable
-    fun Action(icon: ImageVector, contentDescription: String, onClick: () -> Unit, tag: String? = null)
+    public fun Action(icon: ImageVector, contentDescription: String, onClick: () -> Unit, tag: String? = null)
 }
 
 /**
@@ -111,7 +111,7 @@ interface BarActionScope {
  * above it, so a list at its end is not cut by a hard edge. It is read in draw only.
  */
 @Composable
-fun AppTabBar(
+public fun AppTabBar(
     items: List<TabItem>,
     selected: Int,
     onSelect: (Int) -> Unit,
@@ -214,7 +214,7 @@ fun AppTabBar(
  * editor, a photo viewer. It shares the bar's surface and shadow.
  */
 @Composable
-fun AppFloatingToolbar(
+public fun AppFloatingToolbar(
     modifier: Modifier = Modifier,
     treatment: BarTreatment = AppTheme.style.bar,
     actions: @Composable BarActionScope.() -> Unit,
@@ -232,13 +232,13 @@ fun AppFloatingToolbar(
 }
 
 /** The tab bar's and the rail's fixed measurements, and the surface they share with the sidebar. */
-object AppTabBarDefaults {
+public object AppTabBarDefaults {
 
     /** The floating bar's own height, without its margins or the navigation bar. */
-    val Height: Dp = 64.dp
+    public val Height: Dp = 64.dp
 
     /** The rail's width, cutout padding aside. */
-    val RailWidth: Dp = 88.dp
+    public val RailWidth: Dp = 88.dp
 
     internal val MinimizedWidth = 72.dp
     internal val IconSize = 24.dp
@@ -284,7 +284,7 @@ object AppTabBarDefaults {
 
     /** The surface a docked bar, the rail and the sidebar are drawn on. */
     @Composable
-    fun surface(treatment: BarTreatment = AppTheme.style.bar): Color = barLook(treatment).surface
+    public fun surface(treatment: BarTreatment = AppTheme.style.bar): Color = barLook(treatment).surface
 }
 
 @Composable

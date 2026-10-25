@@ -41,14 +41,14 @@ import kotlinx.coroutines.launch
  * nor under reduce motion. The scale is applied where the element is placed, so a bounce
  * recomposes nothing.
  */
-fun Modifier.symbolBounce(trigger: Any?): Modifier = this then SymbolBounceElement(trigger)
+public fun Modifier.symbolBounce(trigger: Any?): Modifier = this then SymbolBounceElement(trigger)
 
 /**
  * A glyph that changes with the symbol-replace effect: the old one shrinks away as the new one
  * grows in, both on the emphasis spring. Under reduce motion they only cross-fade.
  */
 @Composable
-fun AppSymbolReplace(
+public fun AppSymbolReplace(
     icon: ImageVector,
     contentDescription: String?,
     modifier: Modifier = Modifier,

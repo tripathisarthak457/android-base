@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.currentCompositeKeyHashCode
 import androidx.compose.runtime.currentCompositionLocalContext
@@ -46,11 +47,11 @@ import com.base.app.core.designsystem.foundation.layout.LocalEntryVisibility
  * ```
  */
 @Stable
-class OverlayHostState internal constructor() {
+public class OverlayHostState internal constructor() {
     internal val overlays = mutableStateListOf<OverlayEntry>()
 
     /** The toast queue. Toasts show one at a time, above the bottom chrome. */
-    val toasts = ToastQueue()
+    public val toasts: ToastQueue = ToastQueue()
 
     /** The window's sheets, for whatever recedes and dims behind them. */
     internal val sheetStack = SheetStack()
@@ -117,7 +118,7 @@ internal class OverlayEntry(
 }
 
 /** The window's overlay host, or null outside an `AppTheme` (a bare preview). */
-val LocalOverlayHost = staticCompositionLocalOf<OverlayHostState?> { null }
+public val LocalOverlayHost: ProvidableCompositionLocal<OverlayHostState?> = staticCompositionLocalOf<OverlayHostState?> { null }
 
 /** Installed by the outermost `AppTheme` around everything the app draws. */
 @Suppress("ktlint:compose:content-slot-reused") // Drawn once; entry.content is an overlay's.
@@ -228,7 +229,7 @@ internal fun HostedOverlay(modal: () -> Boolean, onRemoved: (() -> Unit)? = null
  * same state the cover is shown from: then both change in the same frame.
  */
 @Composable
-fun SuspendOverlays(suspended: () -> Boolean) {
+public fun SuspendOverlays(suspended: () -> Boolean) {
     val host = LocalOverlayHost.current ?: return
     val condition = rememberUpdatedState(suspended)
     DisposableEffect(host) {

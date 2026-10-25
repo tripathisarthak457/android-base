@@ -17,14 +17,14 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.theme.LocalAppColors
 
 /** Which edge a [hairline] runs along. */
-enum class HairlineEdge { Top, Bottom }
+public enum class HairlineEdge { Top, Bottom }
 
 /**
  * A separator one physical pixel thick, as iOS draws them, along [edge], starting [startInset] in
  * from the leading edge (where a row's text begins). Drawn on the element itself, so a list of rows
  * gains no layout nodes for its dividers.
  */
-fun Modifier.hairline(edge: HairlineEdge = HairlineEdge.Bottom, startInset: Dp = 0.dp): Modifier =
+public fun Modifier.hairline(edge: HairlineEdge = HairlineEdge.Bottom, startInset: Dp = 0.dp): Modifier =
     this then HairlineElement(edge, startInset)
 
 private data class HairlineElement(val edge: HairlineEdge, val startInset: Dp) : ModifierNodeElement<HairlineNode>() {

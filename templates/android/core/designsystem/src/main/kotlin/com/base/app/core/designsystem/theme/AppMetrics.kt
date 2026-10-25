@@ -9,7 +9,7 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens
 
 /** The spacing scale. A 4dp grid, with the two values you reach for most given their own names. */
 @Immutable
-data class AppSpacing(
+public data class AppSpacing(
     val xxs: Dp = DesignTokens.Spacing.xxs,
     val xs: Dp = DesignTokens.Spacing.xs,
     val sm: Dp = DesignTokens.Spacing.sm,
@@ -34,7 +34,7 @@ data class AppSpacing(
  * component that is wider than it is tall — a circle on a 200×40 chip clips the label.
  */
 @Immutable
-data class AppShapes(
+public data class AppShapes(
     val none: Shape = RoundedCornerShape(DesignTokens.Radii.none),
     val xs: Shape = RoundedCornerShape(DesignTokens.Radii.xs),
     val sm: Shape = RoundedCornerShape(DesignTokens.Radii.sm),
@@ -51,7 +51,7 @@ data class AppShapes(
 
 /** Elevation, as a token rather than a raw `Dp` at the call site. */
 @Immutable
-data class AppElevation(
+public data class AppElevation(
     val none: Dp = DesignTokens.Elevation.none,
     val raised: Dp = DesignTokens.Elevation.raised,
     val card: Dp = DesignTokens.Elevation.card,
@@ -65,7 +65,7 @@ data class AppElevation(
  * they grow with the user's font size.
  */
 @Immutable
-data class AppSizes(
+public data class AppSizes(
     val minTouchTarget: Dp = DesignTokens.Sizes.minTouchTarget,
     val iconSmall: Dp = DesignTokens.Sizes.iconSmall,
     val icon: Dp = DesignTokens.Sizes.icon,

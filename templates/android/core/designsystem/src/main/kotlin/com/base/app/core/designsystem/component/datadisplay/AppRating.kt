@@ -26,7 +26,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 
 /** A star rating, with real half stars. */
 @Composable
-fun AppRating(
+public fun AppRating(
     rating: Float,
     modifier: Modifier = Modifier,
     max: Int = 5,
@@ -82,9 +82,9 @@ private const val FullStar = 0.75f
 private const val HalfStar = 0.25f
 
 /** The rating's stars. */
-object AppRatingDefaults {
-    val StarSize = 18.dp
-    val StarSpacing = 2.dp
+public object AppRatingDefaults {
+    public val StarSize: Dp = 18.dp
+    public val StarSpacing: Dp = 2.dp
 }
 
 @AppComponentPreviews

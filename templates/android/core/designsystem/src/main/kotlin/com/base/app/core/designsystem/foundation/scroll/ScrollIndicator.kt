@@ -40,7 +40,7 @@ import kotlinx.coroutines.launch
  * It is drawn over the content from the scroll position alone, so scrolling redraws the capsule
  * and recomposes nothing.
  */
-fun Modifier.appScrollIndicator(state: ScrollableState): Modifier = this then ScrollIndicatorElement(state)
+public fun Modifier.appScrollIndicator(state: ScrollableState): Modifier = this then ScrollIndicatorElement(state)
 
 private data class ScrollIndicatorElement(val state: ScrollableState) : ModifierNodeElement<ScrollIndicatorNode>() {
     override fun create() = ScrollIndicatorNode(state)

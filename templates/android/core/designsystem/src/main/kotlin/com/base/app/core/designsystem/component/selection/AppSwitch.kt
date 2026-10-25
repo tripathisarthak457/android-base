@@ -32,6 +32,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.toggleableState
 import androidx.compose.ui.state.ToggleableState
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.foundation.draw.disabledAlpha
@@ -50,7 +51,7 @@ import kotlinx.coroutines.launch
  * makes the whole row the target.
  */
 @Composable
-fun AppSwitch(
+public fun AppSwitch(
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)?,
     modifier: Modifier = Modifier,
@@ -196,13 +197,13 @@ internal fun SwitchTrack(
 }
 
 /** The switch's metrics, iOS's. */
-object AppSwitchDefaults {
-    val TrackWidth = 51.dp
-    val TrackHeight = 31.dp
-    val ThumbSize = 27.dp
-    val ThumbInset = 2.dp
+public object AppSwitchDefaults {
+    public val TrackWidth: Dp = 51.dp
+    public val TrackHeight: Dp = 31.dp
+    public val ThumbSize: Dp = 27.dp
+    public val ThumbInset: Dp = 2.dp
     // How much the thumb grows towards the middle while held, as iOS's does.
-    val ThumbStretch = 7.dp
+    public val ThumbStretch: Dp = 7.dp
 }
 
 private const val ThumbShadowAlpha = 0.12f

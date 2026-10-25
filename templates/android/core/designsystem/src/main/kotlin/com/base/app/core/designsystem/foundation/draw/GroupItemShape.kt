@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Shape
  * wrap its rows in one background): the first row takes the card's top corners, the last its bottom
  * ones, and the rows between are square.
  */
-fun Shape.groupItem(first: Boolean, last: Boolean): Shape {
+public fun Shape.groupItem(first: Boolean, last: Boolean): Shape {
     if (this !is CornerBasedShape) return this
     val none = CornerSize(0)
     return when {

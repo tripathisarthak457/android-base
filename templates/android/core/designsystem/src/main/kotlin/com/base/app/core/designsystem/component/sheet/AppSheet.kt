@@ -67,7 +67,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  */
 @Suppress("ktlint:compose:parameter-naming") // onHidden: once the sheet is gone.
 @Composable
-fun AppSheet(
+public fun AppSheet(
     visible: Boolean,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
@@ -165,7 +165,7 @@ internal fun HostedSheet(
  */
 @Suppress("ktlint:compose:parameter-naming") // onHidden: once the sheet is gone.
 @Composable
-fun <T : Any> AppSheet(
+public fun <T : Any> AppSheet(
     item: T?,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,

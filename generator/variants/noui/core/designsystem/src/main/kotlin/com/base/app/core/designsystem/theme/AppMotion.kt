@@ -24,21 +24,21 @@ import kotlin.math.PI
  * drawing and nothing allocates a spec per recomposition.
  */
 @Immutable
-class AppSpring(val response: Float, val bounce: Float) {
+public class AppSpring(public val response: Float, public val bounce: Float) {
     internal constructor(token: DesignTokens.Spring) : this(token.response, token.bounce)
 
-    val stiffness: Float = ((2 * PI / response) * (2 * PI / response)).toFloat()
-    val dampingRatio: Float = 1f - bounce
+    public val stiffness: Float = ((2 * PI / response) * (2 * PI / response)).toFloat()
+    public val dampingRatio: Float = 1f - bounce
 
     /** For values on a 0 to 1 scale: a press, a scale, a progress. */
-    val unit: SpringSpec<Float> = spring(dampingRatio, stiffness, DesignTokens.Motion.visibilityThreshold)
+    public val unit: SpringSpec<Float> = spring(dampingRatio, stiffness, DesignTokens.Motion.visibilityThreshold)
 
     /** For a distance in pixels held as a float. */
-    val pixels: SpringSpec<Float> = spring(dampingRatio, stiffness, visibilityThreshold = 0.5f)
+    public val pixels: SpringSpec<Float> = spring(dampingRatio, stiffness, visibilityThreshold = 0.5f)
 
-    val offset: SpringSpec<IntOffset> = spring(dampingRatio, stiffness, IntOffset.VisibilityThreshold)
-    val size: SpringSpec<IntSize> = spring(dampingRatio, stiffness, IntSize.VisibilityThreshold)
-    val dp: SpringSpec<Dp> = spring(dampingRatio, stiffness, Dp.VisibilityThreshold)
+    public val offset: SpringSpec<IntOffset> = spring(dampingRatio, stiffness, IntOffset.VisibilityThreshold)
+    public val size: SpringSpec<IntSize> = spring(dampingRatio, stiffness, IntSize.VisibilityThreshold)
+    public val dp: SpringSpec<Dp> = spring(dampingRatio, stiffness, Dp.VisibilityThreshold)
 }
 
 /**
@@ -48,60 +48,60 @@ class AppSpring(val response: Float, val bounce: Float) {
  * `XDefaults`, not here.
  */
 @Immutable
-class AppSprings internal constructor() {
+public class AppSprings internal constructor() {
     private val tokens = DesignTokens.Motion
 
     /** Finger down. Quick and flat, so the press is seen before the finger hides it. */
-    val press = AppSpring(tokens.press)
+    public val press: AppSpring = AppSpring(tokens.press)
 
     /** Finger up: the one place a spring may overshoot. */
-    val release = AppSpring(tokens.release)
+    public val release: AppSpring = AppSpring(tokens.release)
 
     /** Thumbs, page dots and anything else moving to a new choice. Never bounces. */
-    val thumb = AppSpring(tokens.thumb)
+    public val thumb: AppSpring = AppSpring(tokens.thumb)
 
     /** Push, pop and full-screen covers. */
-    val screen = AppSpring(tokens.screen)
+    public val screen: AppSpring = AppSpring(tokens.screen)
 
     /** Sheets and their detents, toasts, a search field's focus. */
-    val sheet = AppSpring(tokens.sheet)
+    public val sheet: AppSpring = AppSpring(tokens.sheet)
 
     /** Alerts, menus and popovers arriving: quicker than a sheet, never bouncing. */
-    val dialog = AppSpring(tokens.dialog)
+    public val dialog: AppSpring = AppSpring(tokens.dialog)
 
     /** List placement, expanding and collapsing. */
-    val layout = AppSpring(tokens.layout)
+    public val layout: AppSpring = AppSpring(tokens.layout)
 
     /** Pop-ins, badges and success marks. */
-    val emphasis = AppSpring(tokens.emphasis)
+    public val emphasis: AppSpring = AppSpring(tokens.emphasis)
 
     /** A value trailing the finger, such as a lifted row: quick enough to feel attached. */
-    val interactive = AppSpring(tokens.interactive)
+    public val interactive: AppSpring = AppSpring(tokens.interactive)
 
     /**
      * Content coming back from past an edge: a pull to refresh settling, a fling caught at the end of
      * a list. Overdamped, so it carries the finger's velocity in without overshooting the edge.
      */
-    val bounceBack = AppSpring(tokens.bounceBack)
+    public val bounceBack: AppSpring = AppSpring(tokens.bounceBack)
 
     /**
      * A fling's deceleration, as iOS scroll views slow down (0.998 of the velocity kept per
      * millisecond). [flingFast] is the paging and picker rate (0.99), which stops much sooner.
      * Both end once the content no longer visibly moves.
      */
-    val fling: DecayAnimationSpec<Float> = exponentialDecay(tokens.flingFriction, FlingRestVelocity)
-    val flingFast: DecayAnimationSpec<Float> = exponentialDecay(tokens.pagingFriction, FlingRestVelocity)
+    public val fling: DecayAnimationSpec<Float> = exponentialDecay(tokens.flingFriction, FlingRestVelocity)
+    public val flingFast: DecayAnimationSpec<Float> = exponentialDecay(tokens.pagingFriction, FlingRestVelocity)
 
     /** Colour and opacity only; anything that moves uses a spring. */
-    val fadeQuick: Int = tokens.fadeShortMs
-    val fadeSlow: Int = tokens.fadeLongMs
+    public val fadeQuick: Int = tokens.fadeShortMs
+    public val fadeSlow: Int = tokens.fadeLongMs
 
     /** Arrivals decelerate hard, so they read as settled rather than coasting. */
-    val enterEasing: Easing = tokens.fadeEnterEasing
-    val exitEasing: Easing = tokens.fadeExitEasing
+    public val enterEasing: Easing = tokens.fadeEnterEasing
+    public val exitEasing: Easing = tokens.fadeExitEasing
 
-    fun <T> fadeIn(): FiniteAnimationSpec<T> = tween(fadeSlow, easing = enterEasing)
-    fun <T> fadeOut(): FiniteAnimationSpec<T> = tween(fadeQuick, easing = exitEasing)
+    public fun <T> fadeIn(): FiniteAnimationSpec<T> = tween(fadeSlow, easing = enterEasing)
+    public fun <T> fadeOut(): FiniteAnimationSpec<T> = tween(fadeQuick, easing = exitEasing)
 }
 
 /**

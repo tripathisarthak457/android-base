@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
  * A row under the finger, as iOS draws a table cell: the highlight colour at once, fading out over
  * a fifth of a second after the finger lifts. Translucent, so it reads on any surface.
  */
-object RowHighlight : IndicationNodeFactory {
+public object RowHighlight : IndicationNodeFactory {
     override fun create(interactionSource: InteractionSource): DelegatableNode = RowHighlightNode(interactionSource)
 
     override fun equals(other: Any?): Boolean = other === this

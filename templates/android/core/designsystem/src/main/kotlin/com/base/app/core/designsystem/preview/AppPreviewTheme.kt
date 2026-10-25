@@ -19,7 +19,7 @@ import com.base.app.core.designsystem.theme.PlatformFonts
  * screenshot tests render in a library's test app, whose manifest declares no RTL support, so
  * without this their "Right to left" image would be laid out left to right.
  */
-class AppPreviewTheme : PreviewWrapperProvider {
+public class AppPreviewTheme : PreviewWrapperProvider {
     @Composable
     override fun Wrap(content: @Composable () -> Unit) {
         val locale = LocalConfiguration.current.locales[0]

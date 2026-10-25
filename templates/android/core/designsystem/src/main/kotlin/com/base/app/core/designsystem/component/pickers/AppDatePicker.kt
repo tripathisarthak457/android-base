@@ -29,6 +29,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.animation.rememberAppTransitions
@@ -60,7 +61,7 @@ import java.time.temporal.WeekFields
  * [today] defaults to the device's date; pass the server's when it can differ.
  */
 @Composable
-fun AppDatePicker(
+public fun AppDatePicker(
     selectedDate: LocalDate?,
     onDateChange: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
@@ -145,7 +146,7 @@ fun AppDatePicker(
  * does. Choosing a day closes it again.
  */
 @Composable
-fun AppDatePill(
+public fun AppDatePill(
     date: LocalDate,
     onDateChange: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
@@ -279,11 +280,11 @@ private const val MonthsEachWay = 1200
 /** A day's test tag and resource name. */
 internal const val DayTag = "date_picker_day"
 
-object AppDatePickerDefaults {
-    val PillHorizontalPadding = 12.dp
-    val PillVerticalPadding = 7.dp
-    val WeekSpacing = 2.dp
-    val DayInset = 3.dp
+public object AppDatePickerDefaults {
+    public val PillHorizontalPadding: Dp = 12.dp
+    public val PillVerticalPadding: Dp = 7.dp
+    public val WeekSpacing: Dp = 2.dp
+    public val DayInset: Dp = 3.dp
 }
 
 @AppComponentPreviews

@@ -22,6 +22,7 @@ import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.button.AppIconButton
@@ -43,7 +44,7 @@ import kotlinx.coroutines.launch
  * width, so it does not jog as it changes. A screen reader can step it from the actions menu.
  */
 @Composable
-fun AppStepper(
+public fun AppStepper(
     value: Int,
     onValueChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -141,8 +142,8 @@ private const val RepeatFastestMillis = 40L
 private const val RepeatAcceleration = 0.85f
 
 /** The stepper's value column, wide enough for two digits. */
-object AppStepperDefaults {
-    val ValueMinWidth = 32.dp
+public object AppStepperDefaults {
+    public val ValueMinWidth: Dp = 32.dp
 }
 
 @AppComponentPreviews

@@ -45,20 +45,20 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens.Motion
  * text, icons, avatars, chips, badges and buttons with a fill draw themselves this way; any other
  * component reads [LocalRedacted] and adds this modifier.
  */
-fun Modifier.skeleton(shape: Shape): Modifier = layered(OutlineSkeletonElement(shape))
+public fun Modifier.skeleton(shape: Shape): Modifier = layered(OutlineSkeletonElement(shape))
 
 /**
  * Makes this element the area the shimmer crosses for the bones inside it, instead of the window:
  * for a sheet or a pane whose placeholders should sweep on their own.
  */
-fun Modifier.shimmerBounds(): Modifier = this then ShimmerBoundsElement
+public fun Modifier.shimmerBounds(): Modifier = this then ShimmerBoundsElement
 
 /**
  * True inside an active `AppRedacted`. A component that does not redact itself draws [skeleton] in
  * place of its content while it is true, and a control that is not built on `Modifier.pressable`
  * takes no input.
  */
-val LocalRedacted: CompositionLocal<Boolean> get() = LocalRedactedState
+public val LocalRedacted: CompositionLocal<Boolean> get() = LocalRedactedState
 
 internal val LocalRedactedState = compositionLocalOf { false }
 

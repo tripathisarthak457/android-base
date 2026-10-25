@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
  * per saved state: coming back to a screen does not replay it.
  */
 @Composable
-fun rememberCountUp(target: Int): Int {
+public fun rememberCountUp(target: Int): Int {
     val springs = AppTheme.springs
     val reduceMotion = AppTheme.reduceMotion
     var started by rememberSaveable { mutableStateOf(false) }
@@ -48,7 +48,7 @@ fun rememberCountUp(target: Int): Int {
  * the element is first drawn already on. Applied where the content is placed, so the pop redraws
  * the element and recomposes nothing.
  */
-fun Modifier.popWhenOn(on: Boolean): Modifier = this then PopWhenOnElement(on)
+public fun Modifier.popWhenOn(on: Boolean): Modifier = this then PopWhenOnElement(on)
 
 private data class PopWhenOnElement(val on: Boolean) : ModifierNodeElement<PopWhenOnNode>() {
     override fun create() = PopWhenOnNode(on)

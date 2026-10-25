@@ -38,6 +38,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.button.AppButtonDefaults
@@ -64,7 +65,7 @@ import kotlinx.coroutines.flow.collectLatest
  * first visible item index skips it as soon as it is behind the padding, which for a first row
  * shorter than the large title would snap the title shut part way through its collapse.
  */
-fun LazyListState.scrolledFromTop(): Int {
+public fun LazyListState.scrolledFromTop(): Int {
     val first = layoutInfo.visibleItemsInfo.firstOrNull() ?: return 0
     return if (first.index == 0) (-first.offset).coerceAtLeast(0) else Int.MAX_VALUE
 }
@@ -82,7 +83,7 @@ fun LazyListState.scrolledFromTop(): Int {
  * have no Back, it shows the sheet's close button in its place.
  */
 @Composable
-fun AppTopBar(
+public fun AppTopBar(
     title: String,
     modifier: Modifier = Modifier,
     subtitle: String? = null,
@@ -132,7 +133,7 @@ fun AppTopBar(
  * In a window too short for a large title (a phone held sideways), the bar is inline from the start.
  */
 @Composable
-fun AppLargeTitleTopBar(
+public fun AppLargeTitleTopBar(
     title: String,
     scrolled: () -> Int,
     modifier: Modifier = Modifier,
@@ -335,14 +336,14 @@ private fun InlineBar(
 }
 
 /** The top bars' scroll-driven fades, the large title's room and the gap around the title. */
-object AppTopBarDefaults {
-    val TitleGap = 4.dp
+public object AppTopBarDefaults {
+    public val TitleGap: Dp = 4.dp
     /** How far content scrolls under a clear bar before the bar is fully solid. */
-    val ScrollFadeDistance = 24.dp
+    public val ScrollFadeDistance: Dp = 24.dp
     /** The room the large title takes under the small bar. */
-    val LargeTitleArea = 52.dp
+    public val LargeTitleArea: Dp = 52.dp
     /** How much scroll the large-title bar's surface takes to fade in once the title has gone. */
-    val SurfaceFadeDistance = 10.dp
+    public val SurfaceFadeDistance: Dp = 10.dp
 }
 
 /** How far the large title grows with the font scale: as iOS's, 44 pt of 34 at the first accessibility size. */

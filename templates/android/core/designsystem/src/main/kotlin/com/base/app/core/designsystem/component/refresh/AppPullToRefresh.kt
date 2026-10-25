@@ -40,6 +40,7 @@ import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.Velocity
@@ -82,7 +83,7 @@ import kotlin.math.roundToInt
  * except when [isRefreshing] changes.
  */
 @Composable
-fun AppPullToRefresh(
+public fun AppPullToRefresh(
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
@@ -413,11 +414,11 @@ private const val SpinStepMillis = 125L
 private const val MinVisibleMillis = 400L
 
 /** How far a pull refreshes, where the content rests while it does, and the spinner. */
-object AppPullToRefreshDefaults {
-    val Trigger = 100.dp
-    val Rest = 60.dp
-    val SpinnerRadius = 14.dp
-    val SpinnerTop = 16.dp
+public object AppPullToRefreshDefaults {
+    public val Trigger: Dp = 100.dp
+    public val Rest: Dp = 60.dp
+    public val SpinnerRadius: Dp = 14.dp
+    public val SpinnerTop: Dp = 16.dp
 }
 
 @AppComponentPreviews

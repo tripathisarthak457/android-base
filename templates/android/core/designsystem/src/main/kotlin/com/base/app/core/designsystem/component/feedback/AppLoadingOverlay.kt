@@ -24,6 +24,7 @@ import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.overlay.HostedOverlay
 import com.base.app.core.designsystem.component.overlay.OverlayBackHandler
@@ -38,7 +39,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * touched, focused by a screen reader, or left with Back. Keep it composed and drive [visible].
  */
 @Composable
-fun AppLoadingOverlay(
+public fun AppLoadingOverlay(
     visible: Boolean,
     modifier: Modifier = Modifier,
     label: String? = null,
@@ -91,9 +92,9 @@ fun AppLoadingOverlay(
 }
 
 /** The loading overlay's panel. */
-object AppLoadingOverlayDefaults {
-    val MaxPanelWidth = 240.dp
-    val IndicatorSize = 28.dp
+public object AppLoadingOverlayDefaults {
+    public val MaxPanelWidth: Dp = 240.dp
+    public val IndicatorSize: Dp = 28.dp
 }
 
 @AppComponentPreviews

@@ -46,6 +46,7 @@ IMPORTS = {
     "Composable": "androidx.compose.runtime.Composable",
     "Config": "org.robolectric.annotation.Config",
     "Configuration": "android.content.res.Configuration",
+    "Dp": "androidx.compose.ui.unit.Dp",
     "Immutable": "androidx.compose.runtime.Immutable",
     "Modifier": "androidx.compose.ui.Modifier",
     "Preview": "androidx.compose.ui.tooling.preview.Preview",

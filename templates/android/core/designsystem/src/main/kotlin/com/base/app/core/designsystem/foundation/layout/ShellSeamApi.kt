@@ -8,4 +8,4 @@ package com.base.app.core.designsystem.foundation.layout
 @RequiresOptIn("A shell seam: features use AppSheet", RequiresOptIn.Level.ERROR)
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY, AnnotationTarget.TYPEALIAS)
-annotation class ShellSeamApi
+public annotation class ShellSeamApi

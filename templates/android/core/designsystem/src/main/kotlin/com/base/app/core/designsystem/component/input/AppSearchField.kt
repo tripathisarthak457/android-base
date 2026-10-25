@@ -39,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -65,7 +66,7 @@ import kotlin.math.roundToInt
  * beside Cancel, so focusing it re-measures nothing.
  */
 @Composable
-fun AppSearchField(
+public fun AppSearchField(
     state: TextFieldState,
     modifier: Modifier = Modifier,
     placeholder: String = stringResource(R.string.designsystem_search),
@@ -195,8 +196,8 @@ private class CancelRoom {
 }
 
 /** The search field's metrics, iOS's. */
-object AppSearchFieldDefaults {
-    val Height = 36.dp
+public object AppSearchFieldDefaults {
+    public val Height: Dp = 36.dp
 }
 
 @AppComponentPreviews

@@ -49,7 +49,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * How prominent an action is. A screen picks a variant by asking "how important is this action",
  * not "what colour should this be", which is what keeps two screens from disagreeing.
  */
-enum class ButtonVariant {
+public enum class ButtonVariant {
     /** The one action the screen exists for. At most one per screen. */
     Filled,
 
@@ -63,7 +63,7 @@ enum class ButtonVariant {
     Destructive,
 }
 
-enum class ButtonSize { Small, Medium, Large }
+public enum class ButtonSize { Small, Medium, Large }
 
 /**
  * The app's button. Filled, tinted and destructive buttons shrink under the finger; a plain one
@@ -72,7 +72,7 @@ enum class ButtonSize { Small, Medium, Large }
  * stays legible. For a button as wide as its column, pass `Modifier.fillMaxWidth()`.
  */
 @Composable
-fun AppButton(
+public fun AppButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -149,7 +149,7 @@ fun AppButton(
  * one sits in a circle and shrinks. Whatever it draws, it answers taps across 48dp.
  */
 @Composable
-fun AppIconButton(
+public fun AppIconButton(
     icon: ImageVector,
     contentDescription: String,
     onClick: () -> Unit,
@@ -243,7 +243,7 @@ private fun IconButton(
  * as wide as its label, so it starts on the text column around it; touch still reaches 48dp across.
  */
 @Composable
-fun AppLinkButton(
+public fun AppLinkButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -263,18 +263,18 @@ fun AppLinkButton(
  * single button; change the theme's roles to change them all.
  */
 @Immutable
-class ButtonColors(
-    val container: Color,
-    val content: Color,
-    val disabledContainer: Color,
-    val disabledContent: Color,
+public class ButtonColors(
+    public val container: Color,
+    public val content: Color,
+    public val disabledContainer: Color,
+    public val disabledContent: Color,
 ) {
-    fun copy(
+    public fun copy(
         container: Color = this.container,
         content: Color = this.content,
         disabledContainer: Color = this.disabledContainer,
         disabledContent: Color = this.disabledContent,
-    ) = ButtonColors(container, content, disabledContainer, disabledContent)
+    ): ButtonColors = ButtonColors(container, content, disabledContainer, disabledContent)
 
     internal fun container(enabled: Boolean) = if (enabled) container else disabledContainer
 
@@ -293,20 +293,20 @@ class ButtonColors(
 }
 
 /** What a button looks like when the caller does not say, so a glass or branded variant can reuse it. */
-object AppButtonDefaults {
+public object AppButtonDefaults {
 
     @Immutable
-    class Metrics(
-        val height: Dp,
-        val padding: PaddingValues,
-        val gap: Dp,
-        val iconSize: Dp,
-        val textStyle: TextStyle,
+    public class Metrics(
+        public val height: Dp,
+        public val padding: PaddingValues,
+        public val gap: Dp,
+        public val iconSize: Dp,
+        public val textStyle: TextStyle,
     )
 
     /** A [variant]'s colours. Disabled, every variant goes grey, so a disabled label never fades. */
     @Composable
-    fun colors(variant: ButtonVariant): ButtonColors {
+    public fun colors(variant: ButtonVariant): ButtonColors {
         val colors = AppTheme.colors
         return remember(variant, colors) {
             val disabledContainer = if (variant == ButtonVariant.Plain) Color.Transparent else colors.fill
@@ -324,7 +324,7 @@ object AppButtonDefaults {
      * the accent. [content] overrides the glyph's colour when it is specified.
      */
     @Composable
-    fun iconButtonColors(variant: ButtonVariant = ButtonVariant.Plain, content: Color = Color.Unspecified): ButtonColors {
+    public fun iconButtonColors(variant: ButtonVariant = ButtonVariant.Plain, content: Color = Color.Unspecified): ButtonColors {
         val colors = colors(variant)
         val glyph = when {
             content.isSpecified -> content
@@ -335,7 +335,7 @@ object AppButtonDefaults {
     }
 
     @Composable
-    fun metrics(size: ButtonSize): Metrics {
+    public fun metrics(size: ButtonSize): Metrics {
         val sizes = AppTheme.sizes
         val typography = AppTheme.typography
         return remember(size, typography) {
@@ -365,7 +365,7 @@ object AppButtonDefaults {
         }
     }
 
-    fun iconButtonSize(size: ButtonSize): Dp = when (size) {
+    public fun iconButtonSize(size: ButtonSize): Dp = when (size) {
         ButtonSize.Small -> 32.dp
         ButtonSize.Medium -> 40.dp
         ButtonSize.Large -> 48.dp

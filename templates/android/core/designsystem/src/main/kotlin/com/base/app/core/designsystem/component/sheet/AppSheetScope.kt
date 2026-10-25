@@ -11,8 +11,8 @@ import com.base.app.core.designsystem.theme.SheetMaterial
 
 /** What a sheet's slots and content can reach. */
 @Stable
-interface AppSheetScope {
-    val sheetState: AppSheetState
+public interface AppSheetScope {
+    public val sheetState: AppSheetState
 
     /**
      * Padding for the content's scroller. Start and end: the sheet's gutter (its placement class's
@@ -23,20 +23,20 @@ interface AppSheetScope {
      * scroller and never recomposes it. It changes only when the sheet settles, the footer's height
      * changes, the keyboard's target changes or the placement class changes; never during a drag.
      */
-    val contentPadding: PaddingValues
+    public val contentPadding: PaddingValues
 
     /** How far the content has scrolled under the header, 0 to 1 over sheet.header.scrollEdgeRamp. Read in draw. */
     @get:FrequentlyChangingValue
-    val contentScrolled: Float
+    public val contentScrolled: Float
 
     /** True while another sheet is stacked on this one. */
-    val isCovered: Boolean
+    public val isCovered: Boolean
 
     /** Closes the sheet as the scrim would: a SheetDismissGuard or dismissible = false turns it into an attempt. */
-    fun requestDismiss()
+    public fun requestDismiss()
 
     /** Closes the sheet without asking: a Done button after the work is saved. Calls onDismissRequest. */
-    fun dismiss()
+    public fun dismiss()
 }
 
 internal val LocalSheetSurfaceProvider = staticCompositionLocalOf<SheetSurface?> { null }
@@ -47,11 +47,11 @@ internal val LocalSheetSurfaceProvider = staticCompositionLocalOf<SheetSurface?>
  * bar and shows a close button where it would show Back at the root; AppBottomActionBar paints the
  * sheet's colour, and the insets it pads are already consumed by the sheet.
  */
-val LocalSheetSurface: CompositionLocal<SheetSurface?> = LocalSheetSurfaceProvider
+public val LocalSheetSurface: CompositionLocal<SheetSurface?> = LocalSheetSurfaceProvider
 
 /** One per sheet, remembered: the declared material and container, never what animates. */
 @Stable
-class SheetSurface internal constructor(val material: SheetMaterial, val container: Color, val scope: AppSheetScope)
+public class SheetSurface internal constructor(public val material: SheetMaterial, public val container: Color, public val scope: AppSheetScope)
 
 /** The scope a header or footer provider draws in when it is not inside a sheet: it draws in place. */
 internal object OutsideSheetScope : AppSheetScope {

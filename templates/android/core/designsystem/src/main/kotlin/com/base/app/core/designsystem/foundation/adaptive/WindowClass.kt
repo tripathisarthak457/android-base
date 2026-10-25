@@ -2,6 +2,7 @@ package com.base.app.core.designsystem.foundation.adaptive
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -19,7 +20,7 @@ internal val LocalWindowPosture = staticCompositionLocalOf { WindowPosture() }
 internal val LocalInputTraits = staticCompositionLocalOf { InputTraits() }
 
 /** The window's exact size, for lambdas that run in layout or drawing. See [WindowMetrics]. */
-val LocalWindowMetrics = staticCompositionLocalOf { PhoneMetrics }
+public val LocalWindowMetrics: ProvidableCompositionLocal<WindowMetrics> = staticCompositionLocalOf { PhoneMetrics }
 
 /**
  * The window's size class, recomputed as the window changes size but changing only when a
@@ -57,7 +58,7 @@ internal fun rememberWindowMetrics(): WindowMetrics {
  * phone-sized rows and phone-sized gutters. The height class stays the window's.
  */
 @Composable
-fun ProvideContainerWidth(width: Dp, content: @Composable () -> Unit) {
+public fun ProvideContainerWidth(width: Dp, content: @Composable () -> Unit) {
     val window = LocalWindowClass.current
     val container = SizeClass.of(width.value, 0f).width.let { SizeClass(it, window.height) }
     val layout = remember(container) { AppLayout.forClass(container) }

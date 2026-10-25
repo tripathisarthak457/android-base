@@ -37,7 +37,7 @@ import androidx.compose.ui.platform.InspectorInfo
  * Do not fade an ancestor of it with a layer alpha: an offscreen layer is clipped to its bounds and
  * cuts the shadow off square. Fade with `CompositingStrategy.ModulateAlpha`, which needs no buffer.
  */
-fun Modifier.glassSurface(
+public fun Modifier.glassSurface(
     shape: Shape,
     colors: GlassColors,
     shadow: Shadow? = null,

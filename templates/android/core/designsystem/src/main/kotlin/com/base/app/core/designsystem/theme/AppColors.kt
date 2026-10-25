@@ -10,7 +10,7 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens
  * Read through `AppTheme.colors`.
  */
 @Immutable
-data class AppColors(
+public data class AppColors(
     /** Behind a screen's content. */
     val background: Color,
     /** Behind inset-grouped sections. */
@@ -118,7 +118,7 @@ data class AppColors(
  * [subtle] for the panel behind them, [on] for text and icons on [base].
  */
 @Immutable
-data class StatusColors(
+public data class StatusColors(
     val base: Color,
     val content: Color,
     val subtle: Color,
@@ -132,7 +132,7 @@ data class StatusColors(
  * text, status text, outlines, a dark segment thumb) already darkened or lightened until they keep
  * their contrast on every one of them; `PaletteContrastTest` holds them to it.
  */
-fun SurfaceTone.colors(dark: Boolean): AppColors = when (this) {
+public fun SurfaceTone.colors(dark: Boolean): AppColors = when (this) {
     SurfaceTone.Cool -> if (dark) DesignTokens.Palette.Cool.dark else DesignTokens.Palette.Cool.light
     SurfaceTone.BrandTint -> if (dark) DesignTokens.Palette.BrandTint.dark else DesignTokens.Palette.BrandTint.light
     SurfaceTone.Paper -> if (dark) DesignTokens.Palette.Paper.dark else DesignTokens.Palette.Paper.light
@@ -148,7 +148,7 @@ internal val LocalAppColors = staticCompositionLocalOf { SurfaceTone.Cool.colors
 //~  * status text, outlines) already darkened or lightened until they keep their contrast on every one
 //~  * of them; `PaletteContrastTest` holds them to it.
 //~  */
-//~ fun appColors(dark: Boolean): AppColors = if (dark) DesignTokens.Palette.dark else DesignTokens.Palette.light
+//~ public fun appColors(dark: Boolean): AppColors = if (dark) DesignTokens.Palette.dark else DesignTokens.Palette.light
 //~
 //~ internal val LocalAppColors = staticCompositionLocalOf { appColors(dark = false) }
 // </opt-else:ui_components>

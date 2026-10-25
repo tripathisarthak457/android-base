@@ -15,16 +15,16 @@ import com.base.app.core.designsystem.theme.SheetMaterial
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
 
 /** The defaults of [AppSheet]'s parameters. The sheet's geometry is the design tokens', not API. */
-object AppSheetDefaults {
+public object AppSheetDefaults {
     /** iOS's default: a sheet rests at the large detent only. */
-    val Detents: List<SheetDetent> = listOf(SheetDetent.Large)
+    public val Detents: List<SheetDetent> = listOf(SheetDetent.Large)
 
     /** The grabber pill, shown while the sheet has more than one place to rest. */
-    val Grabber: @Composable AppSheetScope.() -> Unit = { AppSheetGrabber() }
+    public val Grabber: @Composable AppSheetScope.() -> Unit = { AppSheetGrabber() }
 
     @Composable
     @ReadOnlyComposable
-    fun colors(
+    public fun colors(
         container: Color = AppTheme.colors.surfaceElevated,
         content: Color = AppTheme.colors.contentPrimary,
         grabber: Color = AppTheme.colors.contentTertiary.copy(alpha = DesignTokens.Sheet.Grabber.alpha),
@@ -35,7 +35,7 @@ object AppSheetDefaults {
     /** For inset-grouped content (AppSection): the grouped background, as iOS's grouped sheets. */
     @Composable
     @ReadOnlyComposable
-    fun groupedColors(): AppSheetColors = colors(container = AppTheme.colors.backgroundGrouped)
+    public fun groupedColors(): AppSheetColors = colors(container = AppTheme.colors.backgroundGrouped)
 
     /**
      * A hairline in dark theme, where a dark sheet on a dark dim would lose its edge; transparent in
@@ -43,13 +43,13 @@ object AppSheetDefaults {
      */
     @Composable
     @ReadOnlyComposable
-    fun solidRim(): Color =
+    public fun solidRim(): Color =
         if (AppTheme.colors.isLight) Color.Transparent else AppTheme.colors.sheen.copy(alpha = DesignTokens.Sheet.Rim.solidDarkAlpha)
 
     /** Soft in light theme; null in dark, where the rim shows the edge. */
     @Composable
     @ReadOnlyComposable
-    fun shadow(): Shadow? = if (!AppTheme.colors.isLight) {
+    public fun shadow(): Shadow? = if (!AppTheme.colors.isLight) {
         null
     } else {
         Shadow(
@@ -66,7 +66,7 @@ object AppSheetDefaults {
      */
     @Composable
     @ReadOnlyComposable
-    fun style(
+    public fun style(
         material: SheetMaterial = SheetMaterial.Automatic,
         colors: AppSheetColors = colors(),
         containerBrush: Brush? = null,
