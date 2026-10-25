@@ -172,16 +172,20 @@ A spec that leaves it out, or sets it to `true`, gets a project with the design 
 exactly as before the option existed. `"ui_components": false` gets a setup-only project: the
 architecture, the theme skeleton and every build guard, without components. The generator drops the
 features that need components (the catalogue's `disables`, each with a reason) with a note each,
-rather than refusing a preset that lists them.
+rather than refusing a preset that lists them, and leaves the fields the option `hides` at their
+defaults the same way, so a request that sends another design or motion style gets the defaults.
 
 The site shows the option as the "No UI components" box, first on the Features step. It sends
 `"ui_components": false` only when the box is ticked, so every other request is the one it always
 sent. Ticking it greys the disabled features with their reasons, hides design and motion style
 (the option's `hides`), and Review says what was skipped and why. The features and presets it keeps
-but whose own words name what such a project lacks (a tab, a component, the performance harness)
-read in the option's words instead: its `feature_copy` and `preset_copy`, which the wizard and
-`--list-features --no-ui-components` show too. Multiplatform and iOS have no such option yet; the
-site says so where the box would be.
+but whose own words name what such a project lacks (a screen, a tab, a component, the performance
+harness) read in the option's words instead: its `feature_copy` and `preset_copy`, which the wizard
+and `--list-features --no-ui-components` show too, and the feature-modules hint reads its
+`module_copy`, as the wizard's module question does, and the haptics toggle its `field_copy`, as the
+wizard's haptics question does. The Project step's summary lists the tabs only for a project with
+components; one without them has no tab bar and opens on its blank start screen, and the summary says
+that instead. Multiplatform and iOS have no such option yet; the site says so where the box would be.
 
 **The lock.** A deployment can generate setup-only projects and nothing else, until the Android
 release brings the components. The switch is a `[locked]` table in the option file:
@@ -208,8 +212,10 @@ HTTP/1.1 403 Forbidden
 
 A value that is not `true` or `false` is a 400 `invalid_spec` on `ui_components`, locked or not.
 A catalogue whose lock has no boolean `value` or no `note` stops the API at boot: serving with the
-lock ignored would generate exactly what it is there to refuse. The boot selftest asks for the
-locked value. A refused request is recorded as an invalid generation with the note as its reason,
+lock ignored would generate exactly what it is there to refuse; that is all the boot checks of the
+lock. `server -selftest` sends the locked value through the route's checks and the generator, but
+nothing runs it on its own, neither the image's command nor CI: run it against an image before
+deploying it. A refused request is recorded as an invalid generation with the note as its reason,
 so the admin shows what people asked for while the lock is on.
 
 The lock lives only on the branch that deploys setup-only; it never merges back into the

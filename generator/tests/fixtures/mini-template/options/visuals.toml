@@ -8,12 +8,20 @@ and a variant takes the place of the resources."""
 default = true
 variant = "bare"
 owns = ["assets"]
+module_copy = """
+Each module brings its state
+and its routes, undrawn."""
 
 [disables]
 extra = "Extra draws, and this project draws nothing."
 
 [hides]
 design_style = "Nothing is drawn, so there is no style to choose."
+
+[field_copy]
+haptics_enabled = """
+The default your own controls read;
+nothing here plays a tick."""
 
 [feature_copy.ui]
 description = """

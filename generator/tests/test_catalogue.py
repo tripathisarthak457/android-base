@@ -57,10 +57,12 @@ class ShapeTest(unittest.TestCase):
         self.assertEqual(
             [
                 "key", "title", "checkbox", "headline", "description", "default", "disables", "hides", "feature_copy",
-                "preset_copy", "locked",
+                "preset_copy", "module_copy", "field_copy", "locked",
             ],
             list(option),
         )
+        self.assertEqual(" ".join(option["module_copy"].split()), option["module_copy"])
+        self.assertIn("placeholder route", option["module_copy"])
         self.assertEqual("ui_components", option["key"])
         self.assertEqual({"label": "No UI components", "ticked_value": False}, option["checkbox"])
         self.assertIs(True, option["default"])
@@ -79,7 +81,10 @@ class ShapeTest(unittest.TestCase):
             self.assertEqual(["feature", "headline", "description"], list(entry))
         for entry in option["preset_copy"]:
             self.assertEqual(["preset", "description"], list(entry))
-        for entry in option["feature_copy"] + option["preset_copy"]:
+        self.assertEqual(["haptics_enabled"], [entry["field"] for entry in option["field_copy"]])
+        for entry in option["field_copy"]:
+            self.assertEqual(["field", "description"], list(entry))
+        for entry in option["feature_copy"] + option["preset_copy"] + option["field_copy"]:
             self.assertEqual(" ".join(entry["description"].split()), entry["description"])
             self.assertTrue(entry["description"].endswith("."), entry)
 
@@ -96,11 +101,14 @@ class ShapeTest(unittest.TestCase):
                     self.assertTrue(described <= selectable - {entry["feature"] for entry in option["disables"]})
                     presets = {preset["key"] for preset in target["presets"]}
                     self.assertTrue({entry["preset"] for entry in option["preset_copy"]} <= presets)
+                    # A field the option hides is not asked, so only the fields still asked are described.
+                    described_fields = {entry["field"] for entry in option["field_copy"]}
+                    self.assertTrue(described_fields <= fields - {entry["field"] for entry in option["hides"]})
 
     def test_a_lock_reaches_the_catalogue_with_its_note(self):
         option = mock.Mock(
             key="ui_components", title="UI components", label="No UI components", headline="h", description="d",
-            default=True, disables={}, hides={}, feature_copy={}, preset_copy={},
+            default=True, disables={}, hides={}, feature_copy={}, preset_copy={}, module_copy=None, field_copy={},
             locked=mock.Mock(value=False, note="Coming soon."),
         )
         self.assertEqual({"value": False, "note": "Coming soon."}, catalogue._option(option)["locked"])

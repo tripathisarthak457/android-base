@@ -9,7 +9,7 @@ from __future__ import annotations
 import re
 import secrets
 import sys
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from typing import Any, TextIO
 
 from .. import brand, tokens
@@ -295,10 +295,13 @@ def ask_architecture(target: Target) -> str:
     return available[choice]["key"]
 
 
-def ask_look(features: frozenset[str], hidden: frozenset[str] = frozenset()) -> dict[str, Any]:
+def ask_look(
+    features: frozenset[str], hidden: frozenset[str] = frozenset(), described: Mapping[str, str] | None = None
+) -> dict[str, Any]:
     """
     The decisions that change how the app looks and feels everywhere. A field in `hidden` is not
-    asked, because an option took away what it decides, and keeps its default.
+    asked, because an option took away what it decides, and keeps its default. A field in
+    `described` is introduced in the option's words, because the usual ones name what it lacks.
     """
     heading("Look and feel")
     print(dim("  The brand colours. Every shade of each, pressed, subtle and the dark-theme"))
@@ -337,8 +340,13 @@ def ask_look(features: frozenset[str], hidden: frozenset[str] = frozenset()) -> 
             print(red(f"  {design} needs {', '.join(missing)}, which is not in this project."))
 
     print()
-    print(dim("  Haptics are a light vibration when a control responds. The device's own setting"))
-    print(dim("  always applies on top."))
+    haptics_copy = (described or {}).get("haptics_enabled")
+    if haptics_copy is None:
+        print(dim("  Haptics are a light vibration when a control responds. The device's own setting"))
+        print(dim("  always applies on top."))
+    else:
+        for line in wrap(haptics_copy, 76):
+            print(dim(f"  {line}"))
     haptics = ask_yes_no("  Haptics on by default?", True)
     return {
         "accent_colour": accent,
@@ -367,10 +375,18 @@ def ask_fonts(features: frozenset[str]) -> dict[str, str]:
     }
 
 
-def ask_feature_modules(target: Target) -> list[str]:
+def ask_feature_modules(target: Target, values: dict[str, bool]) -> list[str]:
+    """`values` are the option values chosen, which can change what a module brings."""
     heading("Feature modules")
-    print(dim("  Comma-separated, lowercase, e.g. home, orders. Each produces a working screen, its"))
-    print(dim("  navigation wiring and a test. Leave blank to add them later."))
+    described = target.manifest.module_description(values)
+    if described is None:
+        print(dim("  Comma-separated, lowercase, e.g. home, orders. Each produces a working screen, its"))
+        print(dim("  navigation wiring and a test. Leave blank to add them later."))
+    else:
+        print(dim("  Comma-separated, lowercase, e.g. home, orders."))
+        for line in wrap(described, 76):
+            print(dim(f"  {line}"))
+        print(dim("  Leave blank to add them later."))
     print()
     reserved = target.vocabulary().reserved_module_names
     while True:
@@ -593,7 +609,8 @@ def run_wizard(
     features = manifest.resolve(requested)
     raw["features"] = sorted(requested)
     raw.update({key: value for key, value in values.items() if value != manifest.options[key].default})
-    hidden = frozenset(field for key, option in manifest.options.items() if not values[key] for field in option.hides)
+    hidden = frozenset(manifest.hidden_fields(values))
+    described = manifest.field_descriptions(values)
     raw["architecture"] = ask_architecture(target)
     if target.key == "android":
         raw["android"] = ask_android(features, raw["app_name"])
@@ -601,8 +618,8 @@ def run_wizard(
         raw["android"] = ask_android(features, raw["app_name"], flavours=multiplatform.FLAVOURS, signing=False)
         raw["ios"] = ask_ios(raw["package_name"])
     raw.update(ask_fonts(features))
-    raw.update(ask_look(features, hidden))
-    raw["feature_modules"] = ask_feature_modules(target)
+    raw.update(ask_look(features, hidden, described))
+    raw["feature_modules"] = ask_feature_modules(target, values)
     raw["languages"] = ask_languages(target)
     return raw
 

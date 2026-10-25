@@ -8,6 +8,8 @@ from pathlib import Path
 
 from genkit.core import pipeline
 from genkit.core.spec import (
+    DEFAULT_DESIGN_STYLE,
+    DEFAULT_MOTION_STYLE,
     KOTLIN_KEYWORDS,
     MAX_FEATURE_MODULES,
     SpecError,
@@ -313,6 +315,37 @@ class UiComponentsOptionTest(unittest.TestCase):
             tuple(f"'{key}' was left out: {manifest.disables[key]}" for key in ("catalog", "pickers", "liquidglass")),
             parsed.notes,
         )
+
+    def test_the_fields_it_hides_are_left_at_their_defaults_with_one_note_each(self):
+        hides = ANDROID.manifest.options["ui_components"].hides
+        for given in (
+            minimal(ui_components=False, design_style="Playful", motion_style="Bouncy"),
+            {"app_name": "Acme Field", "package_name": "com.acme.field", "ui_components": False, "design_style": "Social"},
+        ):
+            with self.subTest(given=given):
+                parsed = read(given)
+                self.assertEqual((DEFAULT_DESIGN_STYLE, DEFAULT_MOTION_STYLE), (parsed.spec.design_style, parsed.spec.motion_style))
+                record = to_json(parsed.spec, keystores=False)
+                self.assertEqual((DEFAULT_DESIGN_STYLE, DEFAULT_MOTION_STYLE), (record["design_style"], record["motion_style"]))
+                expected = [f"'design_style' was left at its default, {DEFAULT_DESIGN_STYLE}: {hides['design_style']}"]
+                if "motion_style" in given:
+                    expected.append(f"'motion_style' was left at its default, {DEFAULT_MOTION_STYLE}: {hides['motion_style']}")
+                self.assertEqual(expected, [note for note in parsed.notes if note.startswith("'")])
+
+    def test_a_set_override_of_a_hidden_field_is_left_at_its_default_too(self):
+        parsed = read(minimal(ui_components=False), [("design_style", "Editorial"), ("motion_style", "Snappy")])
+        self.assertEqual((DEFAULT_DESIGN_STYLE, DEFAULT_MOTION_STYLE), (parsed.spec.design_style, parsed.spec.motion_style))
+        self.assertEqual(2, len(parsed.notes))
+
+    def test_a_hidden_field_given_at_its_default_needs_no_note(self):
+        parsed = read(minimal(ui_components=False, design_style=DEFAULT_DESIGN_STYLE, motion_style=DEFAULT_MOTION_STYLE))
+        self.assertEqual((), parsed.notes)
+        self.assertEqual(parsed.spec, read(to_json(parsed.spec, keystores=False)).spec)
+
+    def test_with_ui_components_the_style_fields_are_the_spec_s(self):
+        parsed = read(minimal(design_style="Playful", motion_style="Bouncy"))
+        self.assertEqual(("Playful", "Bouncy"), (parsed.spec.design_style, parsed.spec.motion_style))
+        self.assertEqual((), parsed.notes)
 
     def test_every_preset_combines_with_it(self):
         disabled = set(ANDROID.manifest.options["ui_components"].disables)

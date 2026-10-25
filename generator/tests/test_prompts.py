@@ -106,8 +106,9 @@ class AskFeaturesTest(unittest.TestCase):
         self.assertNotIn(manifest.presets["lean"].description, shown)
         self.assertIn(option.feature_copy["performance"].description, shown)
         self.assertNotIn(manifest.features["performance"].description, shown)
-        # A preset or feature the option does not describe reads as it always has.
-        self.assertIn(manifest.presets["standard"].description, shown)
+        self.assertIn(option.preset_copy["standard"], shown)
+        self.assertNotIn(manifest.presets["standard"].description, shown)
+        # A feature the option does not describe reads as it always has.
         self.assertIn(manifest.features["network"].description, shown)
 
     def test_a_preset_without_ui_components_loses_only_what_they_disable(self):
@@ -126,6 +127,25 @@ class AskFeaturesTest(unittest.TestCase):
         self.assertNotIn("catalog", selected)
 
 
+class AskFeatureModulesTest(unittest.TestCase):
+
+    def shown(self, values: dict[str, bool]) -> str:
+        replies = iter(["orders"])
+        with mock.patch("builtins.input", lambda _prompt: next(replies)), redirect_stdout(io.StringIO()) as out:
+            self.assertEqual(["orders"], prompts.ask_feature_modules(targets.get("android"), values))
+        return " ".join(out.getvalue().split())
+
+    def test_without_ui_components_a_module_reads_as_such_a_project_gets_it(self):
+        shown = self.shown({"ui_components": False})
+        self.assertIn(targets.get("android").manifest.options["ui_components"].module_copy, shown)
+        self.assertNotIn("working screen", shown)
+
+    def test_with_ui_components_a_module_still_brings_a_working_screen(self):
+        shown = self.shown({"ui_components": True})
+        self.assertIn("Each produces a working screen, its navigation wiring and a test.", shown)
+        self.assertNotIn(targets.get("android").manifest.options["ui_components"].module_copy, shown)
+
+
 class AskLookTest(unittest.TestCase):
 
     def test_a_hidden_field_is_not_asked_and_keeps_its_default(self):
@@ -135,6 +155,29 @@ class AskLookTest(unittest.TestCase):
             look = prompts.ask_look(frozenset(), frozenset({"design_style", "motion_style"}))
         self.assertIsNone(next(replies, None))
         self.assertEqual(("Utility", "Standard"), (look["design_style"], look["motion_style"]))
+
+    def shown(self, described: dict[str, str]) -> str:
+        # Primary, secondary and tertiary colours, then haptics.
+        replies = iter(["", "", "", ""])
+        with mock.patch("builtins.input", lambda _prompt: next(replies)), redirect_stdout(io.StringIO()) as out:
+            prompts.ask_look(frozenset(), frozenset({"design_style", "motion_style"}), described)
+        return " ".join(out.getvalue().split())
+
+    def test_without_ui_components_haptics_read_as_what_the_value_sets(self):
+        manifest = targets.get("android").manifest
+        described = manifest.field_descriptions(manifest.option_values({"ui_components": False}))
+        shown = self.shown(described)
+        self.assertIn(described["haptics_enabled"], shown)
+        self.assertNotIn("when a control responds", shown)
+
+    def test_with_ui_components_haptics_keep_their_words(self):
+        manifest = targets.get("android").manifest
+        described = manifest.field_descriptions(manifest.option_values({}))
+        self.assertEqual({}, described)
+        self.assertIn(
+            "Haptics are a light vibration when a control responds. The device's own setting always applies on top.",
+            self.shown(described),
+        )
 
 
 if __name__ == "__main__":

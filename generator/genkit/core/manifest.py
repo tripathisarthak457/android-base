@@ -31,7 +31,7 @@ _FEATURE_FIELDS = {
 _PRESET_FIELDS = {"title", "description", "features", "all"}
 _OPTION_FIELDS = {
     "key", "title", "label", "headline", "description", "default", "variant", "owns", "disables", "hides", "locked",
-    "feature_copy", "preset_copy",
+    "feature_copy", "preset_copy", "module_copy", "field_copy",
 }
 _VARIANT_NAME = re.compile(r"[a-z][a-z0-9_-]*")
 
@@ -117,7 +117,7 @@ class Option:
     owns: tuple[str, ...]
     #: Feature → why it cannot be had while the option is off, in catalogue order.
     disables: dict[str, str]
-    #: Spec field → why the website does not ask for it while the option is off.
+    #: Spec field → why it is not asked for while the option is off, when the project gets its default.
     hides: dict[str, str]
     locked: OptionLock | None
     #: Feature → how it reads while the option is off, for a kept feature whose own copy names what the
@@ -125,6 +125,12 @@ class Option:
     feature_copy: dict[str, FeatureCopy]
     #: Preset → its description while the option is off, likewise.
     preset_copy: dict[str, str]
+    #: What a feature module the spec names brings while the option is off, when that is not what
+    #: the wizard and the website otherwise say. None: their own words hold.
+    module_copy: str | None
+    #: Spec field → what it does while the option is off, for a field still asked whose usual words
+    #: name what the project then lacks.
+    field_copy: dict[str, str]
 
 
 @dataclass(frozen=True)
@@ -256,6 +262,15 @@ class TemplateManifest:
             for feature, reason in option.disables.items()
         }
 
+    def hidden_fields(self, values: dict[str, bool]) -> dict[str, str]:
+        """Spec field → why it stays at its default, for every option `values` turns off."""
+        return {
+            field: reason
+            for key, option in self.options.items()
+            if not values[key]
+            for field, reason in option.hides.items()
+        }
+
     def feature_copy(self, feature: Feature, values: dict[str, bool]) -> FeatureCopy:
         """How `feature` reads for a project with these option values: an option that is off has the last word."""
         for key, option in self.options.items():
@@ -269,6 +284,22 @@ class TemplateManifest:
             if not values[key] and preset.key in option.preset_copy:
                 return option.preset_copy[preset.key]
         return preset.description
+
+    def module_description(self, values: dict[str, bool]) -> str | None:
+        """What a feature module brings to a project with these option values, or None for the clients' own words."""
+        for key, option in self.options.items():
+            if not values[key] and option.module_copy is not None:
+                return option.module_copy
+        return None
+
+    def field_descriptions(self, values: dict[str, bool]) -> dict[str, str]:
+        """Spec field → what it does in a project with these option values, where the clients' own words do not hold."""
+        return {
+            field: text
+            for key, option in self.options.items()
+            if not values[key]
+            for field, text in option.field_copy.items()
+        }
 
     def owned_paths(self, enabled: frozenset[str]) -> list[str]:
         """Template-relative paths that belong to features and options which are off."""
@@ -464,6 +495,10 @@ def _load_options(
 
         feature_copy = _feature_copy(source, data.get("feature_copy", {}), features, disables)
         preset_copy = _preset_copy(source, data.get("preset_copy", {}), presets)
+        module_copy = data.get("module_copy")
+        if module_copy is not None and not (isinstance(module_copy, str) and module_copy.strip()):
+            raise TemplateError(source, None, "module_copy needs words, or leave it out")
+        field_copy = _field_copy(source, data.get("field_copy", {}), hides)
 
         options[key] = Option(
             key=key,
@@ -479,6 +514,8 @@ def _load_options(
             locked=_lock(source, data.get("locked")),
             feature_copy=feature_copy,
             preset_copy=preset_copy,
+            module_copy=" ".join(module_copy.split()) if module_copy is not None else None,
+            field_copy=field_copy,
         )
     return options
 
@@ -517,6 +554,19 @@ def _preset_copy(source: Path, raw: object, presets: dict[str, Preset]) -> dict[
         if name not in presets:
             raise TemplateError(source, None, f"[preset_copy] names '{name}', which is not a preset")
     return {name: " ".join(raw[name].split()) for name in presets if name in raw}
+
+
+def _field_copy(source: Path, raw: object, hides: dict[str, str]) -> dict[str, str]:
+    """`[field_copy]`: what each spec field still asked does while the option is off."""
+    if not isinstance(raw, dict) or not all(isinstance(text, str) and text.strip() for text in raw.values()):
+        raise TemplateError(source, None, "[field_copy] must give each field a description")
+    for field in raw:
+        if field not in COMMON_FIELDS:
+            raise TemplateError(source, None, f"[field_copy] names '{field}', which is not a spec field")
+        # A hidden field is not asked, so no question would show its words.
+        if field in hides:
+            raise TemplateError(source, None, f"[field_copy] describes '{field}', which [hides] leaves unasked")
+    return {field: " ".join(text.split()) for field, text in raw.items()}
 
 
 def _reasons(source: Path, data: dict[str, Any], table: str) -> dict[str, str]:

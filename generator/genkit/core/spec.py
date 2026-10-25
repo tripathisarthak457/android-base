@@ -435,6 +435,15 @@ def parse(
     for block in ("android", "ios"):
         if block in data and block not in _SETTINGS_BLOCKS[platform]:
             raise SpecError(f"A '{platform}' spec has no \"{block}\" settings.", block)
+    # What the wizard and the website do by not asking, for every spec: a field an option that is off
+    # hides gets the value a spec without it gets, whatever a spec, --set or a request gave, so the
+    # project and its record never carry a choice the project does not use.
+    unset = Spec(app_name=spec.app_name, package_name=spec.package_name)
+    for name, reason in manifest.hidden_fields(options).items():
+        default = getattr(unset, name)
+        if getattr(spec, name) != default:
+            spec = replace(spec, **{name: default})
+            notes.append(f"'{name}' was left at its default, {default}: {reason}")
 
     validate(spec, manifest, vocabulary)
     resolved = manifest.resolve(spec.features)

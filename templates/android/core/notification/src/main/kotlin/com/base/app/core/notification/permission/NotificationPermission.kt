@@ -63,11 +63,22 @@ class NotificationPermission internal constructor(
     }
 }
 
+// <opt:ui_components>
 /**
  * The permission to post notifications, asked for in context: onboarding asks once at its end, and
  * settings offers it again. Before Android 13 there is nothing to ask and [NotificationPermission.access]
  * is always granted. [onResult] hears the answer to a request made from here.
  */
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ /**
+//~  * The permission to post notifications, asked for in context. Nothing in this project calls this
+//~  * yet, so on Android 13 and up no notification is shown until a screen of yours does and the
+//~  * person grants it: ask where they can see why. Before Android 13 there is nothing to ask and
+//~  * [NotificationPermission.access] is always granted. [onResult] hears the answer to a request made
+//~  * from here.
+//~  */
+// </opt-else:ui_components>
 @Composable
 fun rememberNotificationPermission(onResult: (granted: Boolean) -> Unit = {}): NotificationPermission {
     val context = LocalContext.current

@@ -50,8 +50,9 @@ A spec is plain JSON. Only `app_name` and `package_name` are required:
   brings their own design system: the architecture, a theme skeleton in `:core:designsystem`, a
   placeholder route over each screen's ViewModel and every build guard, without components. The
   features that need components (`catalog`, `collections`, `datadisplay`, `formfields`, `pickers`,
-  `liquidglass`) are left out with a note each, and the theme does not use `design_style` or
-  `motion_style`. Leave the field out for a project with components.
+  `liquidglass`) are left out with a note each, and `design_style` and `motion_style` stay at
+  their defaults (a value given for either is noted and not used): the theme starts from neutral
+  values for the design system you bring. Leave the field out for a project with components.
   `--list-features --json --no-ui-components` lists the features as such a project has them.
 - Then build it (`./gradlew :app:assembleDevDebug`) before you tell the user it is ready.
 
@@ -76,9 +77,13 @@ manifest, or a variant file under `generator/variants/`.
 
 **Options.** A spec-level switch such as `ui_components` lives in
 `templates/android/options/<key>.toml`: its default, the features it `disables` and the spec fields
-it `hides` (each with a reason), the paths it `owns` (absent while it is off), its `variant`
-directory, and `feature_copy` and `preset_copy` for kept features and presets whose usual words no
-longer hold. Its key is a marker key like a feature's, and the code with UI components is always
+it `hides` (each with a reason; the generator leaves them at their defaults, with a note when a spec
+gave another value), the paths it `owns` (absent while it is off), its `variant`
+directory, and `feature_copy`, `preset_copy`, `module_copy` and `field_copy` for the kept features,
+presets, feature modules and still-asked spec fields whose usual words no longer hold
+(`test_android_noui.py` names every kept feature whose UI the option takes and that still lacks its
+entry). Its key is a marker key like a feature's,
+and the code with UI components is always
 the live branch, so the raw template stays the project with components:
 
 ```kotlin

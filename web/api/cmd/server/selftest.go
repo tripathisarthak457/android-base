@@ -16,7 +16,7 @@ import (
 
 // selfTest proves an image can do its job: it loads the catalogue and generates one small project
 // per enabled target through the same checks and generator as a request, then checks each zip
-// opens. CI runs it against the built container.
+// opens. Only `server -selftest` runs it; neither the image's command nor CI does.
 func selfTest(log *slog.Logger) error {
 	cfg, err := config.Load()
 	if err != nil {

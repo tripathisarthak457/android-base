@@ -104,7 +104,8 @@ components, the navigation shell's visuals and the catalog app, and keeps the re
 MVI, Navigation 3 with deep links, data, DI, tests and every build guard. `:core:designsystem` is a
 theme skeleton, each screen a placeholder route over its ViewModel, and the app opens on a blank
 start screen. It combines with any preset, `--all` or a spec (`"ui_components": false`); a feature
-that needs components is left out with a note saying why.
+that needs components is left out with a note saying why, and the design and motion style stay at
+their defaults, with a note when the spec asked for others.
 
 The three presets:
 

@@ -317,9 +317,21 @@ like any destination. `AppDestinations.start` names it; change it to your first 
 
 `StartupViewModel` still turns settings and the session into an `EntryIdentity` (onboarding, signed out, signed in
 with a session generation), and `AppRoot` keys the host on it, so a sign-out or a new account starts a fresh back
-stack and no screen outlives its session. Every identity opens on the start screen: onboarding and sign-in are routes
-reachable by navigation and deep links, and their placeholders have no way forward yet. When your onboarding and
-sign-in screens exist, pass the identity to the stack `AppRoot` keys on it and pick its start key there:
+stack and no screen outlives its session. Every identity opens on the start screen.
+<!-- <opt:onboarding&auth> -->
+Nothing opens onboarding or sign-in yet: their routes are registered, a link reaches them only once a `DeepLinkRoute`
+maps it, and their placeholders have no way forward.
+<!-- </opt:onboarding&auth> -->
+<!-- <opt:onboarding&!auth> -->
+Nothing opens onboarding yet: its route is registered, a link reaches it only once a `DeepLinkRoute` maps it, and its
+placeholder has no way forward.
+<!-- </opt:onboarding&!auth> -->
+<!-- <opt:auth&!onboarding> -->
+Nothing opens sign-in yet: its route is registered, a link reaches it only once a `DeepLinkRoute` maps it, and its
+placeholder has no way forward.
+<!-- </opt:auth&!onboarding> -->
+When your onboarding and sign-in screens exist, pass the identity to the stack `AppRoot` keys on it and pick its start
+key there:
 
 ```kotlin
 val start = when (identity) {
@@ -473,8 +485,17 @@ Remote Config starts from the same defaults, so the app behaves the same before 
 <!-- </opt:flags> -->
 <!-- <opt:push> -->
 **Notifications.** Channels are the `NotificationChannelSpec` enum, created at start-up off the main thread, so people
+<!-- <opt:ui_components> -->
 can mute a category before its first message. The permission is asked at the end of onboarding and offered again in
 settings. The push token is handed to `PushTokenSink` only when it changes, and sign-out unregisters it.
+<!-- </opt:ui_components> -->
+<!-- <opt:!ui_components> -->
+can mute a category before its first message. The push token is handed to `PushTokenSink` only when it changes, and
+sign-out unregisters it. Nothing asks for the permission to post notifications yet, so on Android 13 and up none is
+shown (`AppNotifications.post` logs and drops it) until a screen of yours asks: call `rememberNotificationPermission()`
+from `:core:notification` there and `request()` it where the person sees why, and it opens the app's notification
+settings instead once the system will not ask again.
+<!-- </opt:!ui_components> -->
 
 <!-- </opt:push> -->
 **Connectivity.** `NetworkMonitor.isOnline` is one shared registration with the system and counts networks that claim

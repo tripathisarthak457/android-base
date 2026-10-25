@@ -61,6 +61,10 @@ EXAMPLE_NAMES = frozenset({
 STALE_NAMES: dict[str, set[str]] = {}
 #: Backticked hyphenated tokens that are neither rule ids, skills nor folders: Android tools' own words.
 OTHER_HYPHENATED = frozenset({"run-as", "speed-profile"})
+#: Modules a page names that a project with UI components may not have. README's "Only `:app` and `:catalog` carry
+#: flavours" is untrue of one without the catalog (lean, none); fencing it on `catalog` would change those projects'
+#: bytes, which is the UI release's decision. A project without UI components gets no exception.
+UI_STALE_MODULES = frozenset({("README.md", ":catalog")})
 #: Projects generated for the per-project checks: the presets at both ends, both architectures, every language, and
 #: the same without UI components.
 LANGUAGES = ["de", "es", "fr", "hi", "pt-BR"]
@@ -263,9 +267,11 @@ class GeneratedDocsTest(unittest.TestCase):
     def test_every_module_the_docs_name_is_in_the_build(self):
         for name, project in self.projects.items():
             modules = included_modules(project)
+            ui = CASES[name][3]
             for page, text in self.pages(project).items():
                 for token in backticked(prose(text)):
-                    if not re.fullmatch(r":[a-z][\w-]*(?::[\w-]+)+", token):
+                    # Root modules too: `:app`, `:catalog` and `:benchmark` come and go with features and the option.
+                    if not re.fullmatch(r":[a-z][\w-]*(?::[\w-]+)*", token) or (ui and (page, token) in UI_STALE_MODULES):
                         continue
                     with self.subTest(case=name, page=page, module=token):
                         # A modular project includes `:feature:auth:impl`; `:feature:auth` names the pair.
@@ -344,6 +350,58 @@ class GeneratedDocsTest(unittest.TestCase):
             for page in [*self.pages(project), ".agents/skills/README.md"]:
                 with self.subTest(case=name, page=page):
                     self.assertEqual([], WORKSHOP_WORDS.findall((project / page).read_text(encoding="utf-8")))
+
+    def test_what_the_docs_say_asks_or_opens_is_what_the_code_does(self):
+        # A project without UI components keeps the logic behind a prompt or a gate but not the screen
+        # that triggers it, so a sentence true of one project can be false of another. Each claim is
+        # held to the code of every project whose docs make it.
+        for name, project in self.projects.items():
+            main = {
+                path.relative_to(project).as_posix(): path.read_text(encoding="utf-8")
+                for path in project.rglob("*.kt") if "/src/main/" in path.as_posix() and "build" not in path.parts
+            }
+
+            def asks_in(folder: str) -> bool:
+                # A call, with arguments or a trailing lambda, outside the file that declares it.
+                return any(
+                    path.startswith(folder) and re.search(r"\brememberNotificationPermission\s*[({]", text)
+                    and "fun rememberNotificationPermission(" not in text
+                    for path, text in main.items()
+                )
+
+            def opened_by_nothing(feature: str, key: str) -> bool:
+                own = f"feature/{feature}/"
+                return (project / own).is_dir() and not any(
+                    re.search(rf"\b{key}\b", text) for path, text in main.items() if not path.startswith(own)
+                )
+
+            claims = {
+                "asked at the end of onboarding": lambda: asks_in("feature/onboarding/"),
+                "offered again in settings": lambda: asks_in("feature/settings/"),
+                "Nothing asks for the permission to post notifications": lambda: not asks_in(""),
+                "Nothing opens onboarding": lambda: opened_by_nothing("onboarding", "OnboardingKey"),
+                r"Nothing opens (?:onboarding or )?sign-in": lambda: opened_by_nothing("auth", "SignInKey"),
+            }
+            for page, text in self.pages(project).items():
+                flat = " ".join(prose(text).split())
+                for claim, holds in claims.items():
+                    if re.search(claim, flat):
+                        with self.subTest(case=name, page=page, claim=claim):
+                            self.assertTrue(holds(), f"{page} says '{claim}', which the code does not do")
+
+    def test_the_docs_call_onboarding_and_sign_in_routes_only_where_the_project_has_them(self):
+        for name, project in self.projects.items():
+            for feature, word in (("onboarding", "onboarding"), ("auth", "sign-in")):
+                if (project / "feature" / feature).is_dir():
+                    continue
+                for page, text in self.pages(project).items():
+                    sentences = re.split(r"(?<=[.:;])\s+", " ".join(prose(text).split()))
+                    with self.subTest(case=name, page=page, feature=feature):
+                        self.assertEqual([], [
+                            sentence for sentence in sentences
+                            if re.search(rf"\b{word}\b", sentence, re.IGNORECASE)
+                            and re.search(r"\b(?:routes?|placeholders?)\b", sentence)
+                        ])
 
     def test_the_design_system_doc_carries_both_templates(self):
         for name, project in self.projects.items():

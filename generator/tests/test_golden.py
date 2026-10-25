@@ -110,11 +110,11 @@ CASES: dict[str, dict[str, Any]] = {
         "app_name": "Xbaseapp", "package_name": "com.base.apple", "features": ["screens", "network-v0", "old"],
         "display_name": "Café & Co",
     },
-    # The option off: what it owns goes, its variant replaces and adds files, its blocks flip, and
-    # the feature it disables is dropped although the spec asks for it.
+    # The option off: what it owns goes, its variant replaces and adds files, its blocks flip, the
+    # feature it disables is dropped although the spec asks for it, and so is the field it hides.
     "option-off": {
         "schema": 2, "platform": "android", "app_name": "Plain Notes", "package_name": "com.example.plain",
-        "features": ["net", "ui", "extra"], "visuals": False,
+        "features": ["net", "ui", "extra"], "visuals": False, "design_style": "Playful",
     },
 }
 
@@ -287,6 +287,19 @@ class GoldenTest(unittest.TestCase):
         self.assertEqual(["net", "ui"], record["features"])
         generate("all", self.root / "all")
         self.assertNotIn("visuals", json.loads((self.root / "all" / "generator-spec.json").read_text(encoding="utf-8")))
+
+    def test_an_option_off_leaves_the_field_it_hides_at_its_default(self):
+        parsed, _ = pipeline.read_spec(CASES["option-off"], MiniTarget())
+        self.assertEqual(Spec.design_style, parsed.spec.design_style)
+        self.assertIn(
+            f"'design_style' was left at its default, {Spec.design_style}: Nothing is drawn, so there is no style to choose.",
+            parsed.notes,
+        )
+        project = self.root / "option-off"
+        generate("option-off", project)
+        self.assertEqual(
+            Spec.design_style, json.loads((project / "generator-spec.json").read_text(encoding="utf-8"))["design_style"]
+        )
 
     def test_the_variants_pass_their_check(self):
         variants.check(MiniTarget().manifest, MINI_VARIANTS)
