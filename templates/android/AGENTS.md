@@ -30,8 +30,9 @@ fails `verifyModuleDependencies`: shared code goes to `core/`, or to a `data/` m
 <!-- </opt:!ui_components> -->
 - The ViewModel extends `MviViewModel`: `setState { copy(…) }` for what the screen renders, `emit(effect)` for one-off
   things (navigate, share), `showMessage(UiText)` for a transient note. `handleEvent` never suspends: slow work goes
-  through `launchLatest(key, debounce)` (the newest request wins) or `launchExclusive(key)` (a repeat is ignored), and
-  repository flows through `observe(flow) { … }`, which runs them only while the screen watches.
+  through `launchLatest(key, debounce)` (the newest request wins) or `launchExclusive(key, busy)` (a repeat is ignored,
+  and `busy` holds a flag up exactly while it runs), and repository flows through `observe(flow) { … }`, which runs
+  them only while the screen watches. The first load: `onFirstObserved { load() }` in `init`, never a `LaunchedEffect`.
 - State is read-only: `val`s and `List`, `Set`, `Map` (`uistate-mutable`). Loading is a sealed `LoadState`, never a
   boolean beside a nullable, and a screen that loads draws loading, empty, error with retry, and offline.
 - A destination is a `@Serializable` key implementing `AppNavKey`, registered twice with `@Provides @IntoSet`:
