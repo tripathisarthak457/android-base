@@ -63,7 +63,7 @@ fun AppSwitch(
     val onChange by rememberUpdatedState(onCheckedChange)
     val motion = remember { SwitchMotion(checked) }
     val springs = AppTheme.springs
-    val travel = with(LocalDensity.current) { (TrackWidth - ThumbSize - ThumbInset * 2).toPx() }
+    val travel = with(LocalDensity.current) { (AppSwitchDefaults.TrackWidth - AppSwitchDefaults.ThumbSize - AppSwitchDefaults.ThumbInset * 2).toPx() }
     val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
 
     fun toggle(on: Boolean) {
@@ -166,7 +166,7 @@ internal fun SwitchTrack(
     LaunchedEffect(checked) { motion.position.animateTo(if (checked) 1f else 0f, springs.thumb.unit) }
     val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
 
-    Canvas(modifier = modifier.size(width = TrackWidth, height = TrackHeight)) {
+    Canvas(modifier = modifier.size(width = AppSwitchDefaults.TrackWidth, height = AppSwitchDefaults.TrackHeight)) {
         val fraction = motion.drag ?: motion.position.value
         val visual = if (rtl) 1f - fraction else fraction
         val radius = CornerRadius(size.height / 2f)
@@ -179,9 +179,9 @@ internal fun SwitchTrack(
                 style = Stroke(width = 1.dp.toPx()),
             )
         }
-        val inset = ThumbInset.toPx()
-        val thumbHeight = ThumbSize.toPx()
-        val thumbWidth = thumbHeight + ThumbStretch.toPx() * widen.value
+        val inset = AppSwitchDefaults.ThumbInset.toPx()
+        val thumbHeight = AppSwitchDefaults.ThumbSize.toPx()
+        val thumbWidth = thumbHeight + AppSwitchDefaults.ThumbStretch.toPx() * widen.value
         val travel = size.width - inset * 2 - thumbWidth
         val left = inset + travel * visual
         val top = (size.height - thumbHeight) / 2f
@@ -196,13 +196,16 @@ internal fun SwitchTrack(
     }
 }
 
-private val TrackWidth = 51.dp
-private val TrackHeight = 31.dp
-private val ThumbSize = 27.dp
-private val ThumbInset = 2.dp
+/** The switch's metrics, iOS's. */
+object AppSwitchDefaults {
+    val TrackWidth = 51.dp
+    val TrackHeight = 31.dp
+    val ThumbSize = 27.dp
+    val ThumbInset = 2.dp
+    // How much the thumb grows towards the middle while held, as iOS's does.
+    val ThumbStretch = 7.dp
+}
 
-// How much the thumb grows towards the middle while held, as iOS's does.
-private val ThumbStretch = 7.dp
 private const val ThumbShadowAlpha = 0.12f
 private const val CommitFraction = 0.7f
 private const val RevertFraction = 0.2f

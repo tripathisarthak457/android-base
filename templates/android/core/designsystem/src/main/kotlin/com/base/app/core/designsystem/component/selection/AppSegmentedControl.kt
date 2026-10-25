@@ -100,9 +100,9 @@ fun AppSegmentedControl(
             .fillMaxWidth()
             .minimumTouchTarget()
             .disabledAlpha(enabled)
-            .heightIn(min = SegmentHeight)
-            .background(colors.fill, TrackShape)
-            .padding(ThumbInset),
+            .heightIn(min = AppSegmentedControlDefaults.Height)
+            .background(colors.fill, AppSegmentedControlDefaults.TrackShape)
+            .padding(AppSegmentedControlDefaults.ThumbInset),
     ) {
         val segmentPx = with(density) { maxWidth.toPx() } / options.size
         // Sized to the segments beside it, which set the height; the thumb is one segment wide and
@@ -121,8 +121,8 @@ fun AppSegmentedControl(
                     scaleX = pressScale.value
                     scaleY = pressScale.value
                 }
-                .dropShadow(ThumbShape, ThumbShadow)
-                .background(colors.segmentThumb, ThumbShape),
+                .dropShadow(AppSegmentedControlDefaults.ThumbShape, AppSegmentedControlDefaults.ThumbShadow)
+                .background(colors.segmentThumb, AppSegmentedControlDefaults.ThumbShape),
         )
         Row(
             Modifier
@@ -163,7 +163,7 @@ fun AppSegmentedControl(
                 Box(
                     modifier = Modifier
                         .weight(1f)
-                        .heightIn(min = SegmentHeight - ThumbInset * 2)
+                        .heightIn(min = AppSegmentedControlDefaults.Height - AppSegmentedControlDefaults.ThumbInset * 2)
                         .selectable(
                             selected = isSelected,
                             enabled = enabled,
@@ -189,11 +189,15 @@ fun AppSegmentedControl(
     }
 }
 
-private val SegmentHeight = 32.dp
-private val ThumbInset = 2.dp
-private val TrackShape = RoundedCornerShape(9.dp)
-private val ThumbShape = RoundedCornerShape(7.dp)
-private val ThumbShadow = Shadow(radius = 4.dp, offset = DpOffset(0.dp, 1.dp), alpha = 0.12f)
+/** The segmented control's metrics, iOS's. */
+object AppSegmentedControlDefaults {
+    val Height = 32.dp
+    val ThumbInset = 2.dp
+    val TrackShape = RoundedCornerShape(9.dp)
+    val ThumbShape = RoundedCornerShape(7.dp)
+    val ThumbShadow = Shadow(radius = 4.dp, offset = DpOffset(0.dp, 1.dp), alpha = 0.12f)
+}
+
 private const val PressedThumbScale = 0.95f
 
 // How far ahead a release looks for where the thumb was thrown (iOS's 0.99 projection).

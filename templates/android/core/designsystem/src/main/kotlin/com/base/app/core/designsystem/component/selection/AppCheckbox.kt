@@ -60,7 +60,7 @@ fun AppCheckbox(
     LabelledControl(modifier.then(interaction), label, enabled) {
         Spacer(
             Modifier
-                .size(BoxSize)
+                .size(AppCheckboxDefaults.Size)
                 .drawWithCache {
                     // Built once per size; the tick is drawn as a growing segment of the same path.
                     val tick = Path().apply {
@@ -70,9 +70,9 @@ fun AppCheckbox(
                     }
                     val measure = PathMeasure().apply { setPath(tick, false) }
                     val segment = Path()
-                    val radius = CornerRadius(BoxCorner.toPx())
-                    val ring = Stroke(1.5.dp.toPx())
-                    val tickStroke = Stroke(2.dp.toPx(), cap = StrokeCap.Round, join = StrokeJoin.Round)
+                    val radius = CornerRadius(AppCheckboxDefaults.Corner.toPx())
+                    val ring = Stroke(AppCheckboxDefaults.RingWidth.toPx())
+                    val tickStroke = Stroke(AppCheckboxDefaults.TickWidth.toPx(), cap = StrokeCap.Round, join = StrokeJoin.Round)
                     onDrawBehind {
                         val p = progress.value
                         drawRoundRect(colors.outline, cornerRadius = radius, style = ring, alpha = 1f - p)
@@ -106,8 +106,16 @@ internal fun LabelledControl(
     }
 }
 
-internal val BoxSize = 22.dp
-private val BoxCorner = 6.dp
+/**
+ * The checkbox's metrics, iOS's 22 dp control. [Size] is the radio button's too, so the two line up
+ * in a form.
+ */
+internal object AppCheckboxDefaults {
+    val Size = 22.dp
+    val Corner = 6.dp
+    val RingWidth = 1.5.dp
+    val TickWidth = 2.dp
+}
 
 @AppComponentPreviews
 @Composable

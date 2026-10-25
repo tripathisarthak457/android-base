@@ -44,13 +44,18 @@ fun AppRadio(
     }
 
     LabelledControl(modifier.then(interaction), label, enabled) {
-        Canvas(Modifier.size(BoxSize)) {
+        Canvas(Modifier.size(AppCheckboxDefaults.Size)) {
             val radius = size.minDimension / 2f
             val p = dot.value
-            drawCircle(lerp(colors.outline, colors.accent, p.coerceIn(0f, 1f)), radius - 0.75.dp.toPx(), style = Stroke(1.5.dp.toPx()))
+            drawCircle(lerp(colors.outline, colors.accent, p.coerceIn(0f, 1f)), radius - (AppRadioDefaults.RingWidth / 2).toPx(), style = Stroke(AppRadioDefaults.RingWidth.toPx()))
             if (p > 0f) drawCircle(colors.accent, radius * 0.5f * p, Offset(size.width / 2f, size.height / 2f))
         }
     }
+}
+
+/** The radio button's ring; its size is [AppCheckboxDefaults.Size]. */
+internal object AppRadioDefaults {
+    val RingWidth = 1.5.dp
 }
 
 @AppComponentPreviews

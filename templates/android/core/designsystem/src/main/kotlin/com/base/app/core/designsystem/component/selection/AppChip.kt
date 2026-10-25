@@ -2,7 +2,6 @@ package com.base.app.core.designsystem.component.selection
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -74,9 +73,9 @@ fun AppChip(
                 .semantics { this.selected = selected }
                 .then(redacted)
                 .background(container, shape)
-                .heightIn(min = ChipHeight)
-                .padding(start = 12.dp, end = if (onRemove != null) RemoveEndPadding else 12.dp),
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
+                .heightIn(min = AppChipDefaults.Height)
+                .padding(start = AppChipDefaults.HorizontalPadding, end = if (onRemove != null) AppChipDefaults.RemoveEndPadding else AppChipDefaults.HorizontalPadding),
+            horizontalArrangement = Arrangement.spacedBy(AppChipDefaults.IconSpacing),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             ContentUnderBone(bone) {
@@ -97,7 +96,7 @@ fun AppChip(
                         AppIcons.Close,
                         contentDescription = null,
                         tint = content,
-                        size = RemoveGlyph,
+                        size = AppChipDefaults.RemoveGlyph,
                         modifier = Modifier.graphicsLayer {
                             alpha = lerp(1f, dimAlpha, held.value)
                             compositingStrategy = CompositingStrategy.ModulateAlpha
@@ -119,7 +118,7 @@ fun AppChip(
                         onClickLabel = removeLabel,
                         interactionSource = removeInteractions,
                     )
-                    .size(RemoveTargetWidth, ChipHeight)
+                    .size(AppChipDefaults.RemoveTargetWidth, AppChipDefaults.Height)
                     .semantics { contentDescription = removeLabel },
             )
         }
@@ -133,16 +132,21 @@ private fun rememberHeldFraction(interactions: InteractionSource): Animatable<Fl
     val held = remember { Animatable(0f) }
     LaunchedEffect(interactions, springs) {
         interactions.collectHeld { pressed ->
-            launch { if (pressed) held.snapTo(1f) else held.animateTo(0f, tween(springs.fadeSlow)) }
+            launch { if (pressed) held.snapTo(1f) else held.animateTo(0f, springs.slowFade()) }
         }
     }
     return held
 }
 
-private val ChipHeight = 32.dp
-private val RemoveGlyph = 14.dp
-private val RemoveEndPadding = 10.dp
-private val RemoveTargetWidth = RemoveEndPadding + RemoveGlyph + 6.dp
+/** The chip's metrics. */
+object AppChipDefaults {
+    val Height = 32.dp
+    val HorizontalPadding = 12.dp
+    val IconSpacing = 6.dp
+    val RemoveGlyph = 14.dp
+    val RemoveEndPadding = 10.dp
+    val RemoveTargetWidth = RemoveEndPadding + RemoveGlyph + IconSpacing
+}
 
 @AppComponentPreviews
 @Composable
