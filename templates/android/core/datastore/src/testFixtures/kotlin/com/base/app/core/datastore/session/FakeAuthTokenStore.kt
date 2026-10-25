@@ -14,9 +14,13 @@ class FakeAuthTokenStore(initial: AuthTokens? = null) : AuthTokenStore {
     /** What is stored now, read without suspending. */
     val stored: AuthTokens? get() = state.value
 
+    /** While set, [save] throws, as a Keystore that cannot be reached does. */
+    var refuseSaves = false
+
     override val tokens: Flow<AuthTokens?> = state
 
     override suspend fun save(tokens: AuthTokens) {
+        check(!refuseSaves) { "Keystore unavailable" }
         state.value = tokens
     }
 
