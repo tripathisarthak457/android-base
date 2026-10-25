@@ -38,6 +38,7 @@ class AppBackStack @NavigationHostApi constructor(
     fun contains(key: AppNavKey): Boolean = entries.contains(key)
 
     /** Applies one command, without regard to motion: the shell decides when (see [guard]). */
+    @NavigationHostApi
     fun apply(command: NavCommand) {
         when (command) {
             is NavCommand.Navigate -> {
