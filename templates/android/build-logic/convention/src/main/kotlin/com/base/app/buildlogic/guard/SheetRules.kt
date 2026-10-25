@@ -112,7 +112,9 @@ internal object SheetRules {
             val open = call.range.last
             val close = Declarations.closing(code, open)
             val arguments = code.substring(open + 1, close)
-            val modifier = MODIFIER_ARGUMENT.find(arguments) ?: return@mapNotNull null
+            // A slot's lambda may pass `modifier =` to its own content; only the sheet's argument counts.
+            val modifier = MODIFIER_ARGUMENT.findAll(arguments)
+                .firstOrNull { depthAt(arguments, it.range.first) == 0 } ?: return@mapNotNull null
             val value = topLevelArgument(arguments, modifier.range.last + 1)
             if (FORBIDDEN_MODIFIER.containsMatchIn(value)) source.lineOf(open + 1 + modifier.range.first) else null
         }.toList()
@@ -212,6 +214,18 @@ internal object SheetRules {
         var start = end
         while (start >= 0 && (code[start].isLetterOrDigit() || code[start] == '_')) start--
         return code.substring(start + 1, end + 1) in LAZY_ITEMS
+    }
+
+    /** How many brackets are open at [index] of a call's [arguments]: 0 for one of its own arguments. */
+    private fun depthAt(arguments: String, index: Int): Int {
+        var depth = 0
+        for (position in 0 until index) {
+            when (arguments[position]) {
+                '(', '{', '[' -> depth++
+                ')', '}', ']' -> depth--
+            }
+        }
+        return depth
     }
 
     private fun topLevelArgument(arguments: String, from: Int): String {

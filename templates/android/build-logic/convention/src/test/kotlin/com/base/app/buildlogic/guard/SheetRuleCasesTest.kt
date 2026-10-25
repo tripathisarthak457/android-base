@@ -77,6 +77,22 @@ class SheetRuleCasesTest {
     }
 
     @Test
+    fun `a modifier inside the sheet's slots belongs to their content, not to the sheet`() {
+        val code = """
+            @Composable
+            private fun Orders() {
+                AppSheet(
+                    visible = true,
+                    onDismissRequest = {},
+                    footer = { AppButton(text = "Apply", onClick = {}, modifier = Modifier.fillMaxWidth()) },
+                ) { }
+                AppSheet(visible = true, onDismissRequest = {}, modifier = Modifier.fillMaxWidth()) { }
+            }
+        """
+        assertEquals(listOf(8), findings(FEATURE, code, "sheet-modifier"))
+    }
+
+    @Test
     fun `effects, guards and overlays beside the root are not a second root`() {
         val code = """
             @Composable
