@@ -1,7 +1,7 @@
 """
 What a project with UI components says about itself holds for the features it was generated with: the startup
-profile names its own classes, and its docs, KDocs, manifest comments and overlay never send a reader to a screen or a
-tool the project left out.
+profile names its own classes, its docs, KDocs, manifest comments and overlay never send a reader to a screen or a
+tool the project left out, and every preview test runs the accessibility tester the build names.
 """
 
 from __future__ import annotations
@@ -184,6 +184,23 @@ class PushPermissionTest(unittest.TestCase):
                     self.assertIn(PUSH_WORDS[asking][index], text)
                     self.assertEqual([], [words[index] for key, words in PUSH_WORDS.items()
                                           if key != asking and words[index] in text])
+
+
+class PreviewTesterTest(unittest.TestCase):
+    """Every generated preview test runs the accessibility tester, in projects with UI components and without."""
+
+    def test_the_screenshots_convention_names_a_tester_the_project_declares(self):
+        convention = "build-logic/convention/src/main/kotlin/AndroidScreenshotsConventionPlugin.kt"
+        for name, project in _projects.items():
+            with self.subTest(case=name):
+                text = (project / convention).read_text(encoding="utf-8")
+                self.assertRegex(text, r"testerQualifiedClassName\.set\(PREVIEW_TESTER\)")
+                tester = re.search(r'const val PREVIEW_TESTER =\s*"([\w.]+)"', text).group(1)
+                package, _, simple = tester.rpartition(".")
+                source = project / "core/testing/compose/src/main/kotlin" / package.replace(".", "/") / f"{simple}.kt"
+                self.assertTrue(source.is_file(), source)
+                self.assertRegex(source.read_text(encoding="utf-8"), rf"(?m)^package {re.escape(package)}$")
+                self.assertRegex(source.read_text(encoding="utf-8"), rf"\bclass {simple}\s*:\s*ComposePreviewTester<")
 
 
 class HarnessAdviceTest(unittest.TestCase):

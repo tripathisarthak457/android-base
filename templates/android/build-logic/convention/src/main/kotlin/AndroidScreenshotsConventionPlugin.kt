@@ -23,6 +23,10 @@ import org.gradle.kotlin.dsl.withType
  * Nothing is compared until the goldens exist. `./gradlew recordRoborazziDebug` writes them to
  * `src/test/screenshots/`, and `verifyRoborazziDebug` then fails on any difference. Without either,
  * the unit tests still render every preview, so one that crashes at some size fails the build.
+ *
+ * Every rendered preview is also audited by Google's Accessibility Test Framework, through the
+ * tester in `:core:testing:compose`: a touch target under 48 dp or a control without a label fails
+ * its test, and ATF's warnings, contrast among them, are printed in the test's output.
  */
 class AndroidScreenshotsConventionPlugin : Plugin<Project> {
     @OptIn(ExperimentalRoborazziApi::class)
@@ -56,6 +60,10 @@ class AndroidScreenshotsConventionPlugin : Plugin<Project> {
                 packages.set(provider { listOf(checkNotNull(extensions.getByType(CommonExtension::class.java).namespace)) })
                 includePrivatePreviews.set(true)
                 robolectricConfig.set(mapOf("sdk" to "[$ROBOLECTRIC_SDK]"))
+                testerQualifiedClassName.set(PREVIEW_TESTER)
+                // The tester scans with Roborazzi's own scanner, which reads the options above
+                // from here.
+                useScanOptionParametersInTester.set(true)
             }
         }
 
@@ -80,5 +88,9 @@ class AndroidScreenshotsConventionPlugin : Plugin<Project> {
     private companion object {
         /** `TEST_SDK` in `:core:testing:compose`, which hand-written Robolectric tests use. */
         const val ROBOLECTRIC_SDK = 35
+
+        /** Renders each preview and audits it for accessibility, in `:core:testing:compose`. */
+        const val PREVIEW_TESTER =
+            "com.base.app.core.testing.compose.preview.AccessibilityPreviewTester"
     }
 }

@@ -381,6 +381,12 @@ Robolectric test at its configuration: adding a preview is enough to get a test 
 at twice the font size, in dark theme or right to left. `@AppScreenPreviews` renders a screen on a phone, a phone held
 sideways, a foldable, a tablet and a desktop window, at twice the font size and in dark theme; wrap a component's own
 previews with `@PreviewWrapper(AppPreviewTheme::class)` so they draw in the theme.
+Each rendered preview is also audited by Google's Accessibility Test Framework (`AccessibilityPreviewTester` in
+`:core:testing:compose`), in `./gradlew check` as well as in Roborazzi's tasks. An error fails the test: a touch target
+under 48 dp, a control without a label, two controls on the same spot. A warning is printed in the test's output
+without failing it: contrast, which ATF measures from the drawn pixels and so reports only as a warning
+(`PaletteContrastTest` holds the theme's colour pairs to WCAG AA exactly), or two elements with one description. Fix
+the component; a result that is right to accept goes in the tester's reviewed `SUPPRESSIONS`, with its reason.
 <!-- <opt:!ui_components> -->
 The convention runs in `:core:designsystem` from the start. Feature modules start without it, since a placeholder has
 nothing to render, so a screen's previews are rendered only once its module applies it: with the first screen and its

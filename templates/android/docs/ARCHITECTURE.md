@@ -637,9 +637,10 @@ compares against them, and without them a schema change cannot be reviewed.
 - Repositories are interfaces, so a ViewModel test injects a fake and never opens a socket; `FakeNetworkMonitor`
   switches between online and offline.
 <!-- <opt:ui_components> -->
-- Compose tests run on the JVM with Robolectric. Every `@Preview` becomes a screenshot test through Roborazzi, and
-  `RecompositionCounter` with `framesUntilIdle` proves a journey composes nothing while it moves
-  ([PERFORMANCE.md](PERFORMANCE.md#state-reads-per-frame)).
+- Compose tests run on the JVM with Robolectric. Every `@Preview` becomes a screenshot test through Roborazzi, which
+  also runs Google's Accessibility Test Framework over what it drew
+  ([DESIGN-SYSTEM.md](DESIGN-SYSTEM.md#previews-are-render-tests)), and `RecompositionCounter` with `framesUntilIdle`
+  proves a journey composes nothing while it moves ([PERFORMANCE.md](PERFORMANCE.md#state-reads-per-frame)).
 <!-- </opt:ui_components> -->
 <!-- <opt:!ui_components> -->
 - Compose tests run on the JVM with Robolectric, and `RecompositionCounter` with `framesUntilIdle` proves a journey
@@ -648,7 +649,8 @@ compares against them, and without them a schema change cannot be reviewed.
   that screenshots convention, because a placeholder has nothing to render: when a feature gets its first screen and
   its `@AppScreenPreviews`, add `id("com.base.app.android.screenshots")` to the `plugins { }` of that feature's
   `build.gradle.kts`. Once every feature has screens, apply it in `AndroidFeatureConventionPlugin` instead, as a
-  project with UI components does.
+  project with UI components does. Each of those tests also runs Google's Accessibility Test Framework over what it
+  drew ([DESIGN-SYSTEM.md](DESIGN-SYSTEM.md#previews-are-render-tests)).
 <!-- </opt:!ui_components> -->
 - `NavKeyRegistrationTest` fails on a destination with no serializer.
 <!-- <opt:sample> -->
