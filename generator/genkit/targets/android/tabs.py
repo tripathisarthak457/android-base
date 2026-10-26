@@ -54,7 +54,7 @@ _GLYPHS: tuple[tuple[tuple[str, ...], tuple[str, ...]], ...] = (
 _FALLBACK = ("Grid", "Tag", "Bookmark", "Star", "Folder", "Globe", "Heart", "Calendar")
 
 _TEMPLATE_DIR = Path(__file__).resolve().parents[4] / "templates" / "android"
-_GLYPH = re.compile(r"^\s+val\s+([A-Z]\w*)\b", re.MULTILINE)
+_GLYPH = re.compile(r"^\s+(?:public\s+)?val\s+([A-Z]\w*)\b", re.MULTILINE)
 
 
 @cache

@@ -174,7 +174,7 @@ class LookTest(unittest.TestCase):
             tokens = next(project.rglob("DesignTokens.kt")).read_text(encoding="utf-8")
             fonts = next(project.rglob("AppFonts.kt")).read_text(encoding="utf-8")
         self.assertIn('const val fontName: String = "sans-serif"\n', tokens)
-        self.assertIn("val AppFontPreload = FontPreload(PlatformFonts)\n", fonts)
+        self.assertIn("public val AppFontPreload: FontPreload = FontPreload(PlatformFonts)\n", fonts)
         self.assertNotIn("googlefonts", fonts)
 
 
