@@ -1,18 +1,27 @@
 package com.base.app.core.perfhud.frame
 
+import android.app.Application
 import android.hardware.display.DisplayManager
 import androidx.metrics.performance.FrameDataApi24
 import androidx.metrics.performance.FrameDataApi31
-import io.mockk.mockk
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
+// DisplayManager is a final framework class, so the intake reads the real one Robolectric provides.
+@RunWith(AndroidJUnit4::class)
+@Config(sdk = [ROBOLECTRIC_SDK])
 class FrameIntakeTest {
 
     private val log = FrameLog(capacity = 64)
     private val screens = ScreenTimeline()
-    private val intake =
-        FrameIntake(log, RefreshRate(mockk<DisplayManager>(relaxed = true)), screens)
+    private val displays =
+        ApplicationProvider.getApplicationContext<Application>()
+            .getSystemService(DisplayManager::class.java)
+    private val intake = FrameIntake(log, RefreshRate(displays), screens)
 
     @Test
     fun `a frame past its deadline is janky, however far past`() {
@@ -70,3 +79,5 @@ class FrameIntakeTest {
 
     private fun millis(value: Float): Long = (value * 1_000_000).toLong()
 }
+
+private const val ROBOLECTRIC_SDK = 35
