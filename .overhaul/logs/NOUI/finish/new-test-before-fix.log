@@ -1,0 +1,41 @@
+FFFF
+======================================================================
+FAIL: test_what_the_docs_say_asks_or_opens_is_what_the_code_does (tests.test_docs.GeneratedDocsTest.test_what_the_docs_say_asks_or_opens_is_what_the_code_does) (case='noui-everything', page='docs/ARCHITECTURE.md', claim='asked at the end of onboarding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_docs.py", line 384, in test_what_the_docs_say_asks_or_opens_is_what_the_code_does
+    self.assertTrue(holds(), f"{page} says '{claim}', which the code does not do")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : docs/ARCHITECTURE.md says 'asked at the end of onboarding', which the code does not do
+
+======================================================================
+FAIL: test_what_the_docs_say_asks_or_opens_is_what_the_code_does (tests.test_docs.GeneratedDocsTest.test_what_the_docs_say_asks_or_opens_is_what_the_code_does) (case='noui-everything', page='docs/ARCHITECTURE.md', claim='offered again in settings')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_docs.py", line 384, in test_what_the_docs_say_asks_or_opens_is_what_the_code_does
+    self.assertTrue(holds(), f"{page} says '{claim}', which the code does not do")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : docs/ARCHITECTURE.md says 'offered again in settings', which the code does not do
+
+======================================================================
+FAIL: test_what_the_docs_say_asks_or_opens_is_what_the_code_does (tests.test_docs.GeneratedDocsTest.test_what_the_docs_say_asks_or_opens_is_what_the_code_does) (case='noui-everything-modular', page='docs/ARCHITECTURE.md', claim='asked at the end of onboarding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_docs.py", line 384, in test_what_the_docs_say_asks_or_opens_is_what_the_code_does
+    self.assertTrue(holds(), f"{page} says '{claim}', which the code does not do")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : docs/ARCHITECTURE.md says 'asked at the end of onboarding', which the code does not do
+
+======================================================================
+FAIL: test_what_the_docs_say_asks_or_opens_is_what_the_code_does (tests.test_docs.GeneratedDocsTest.test_what_the_docs_say_asks_or_opens_is_what_the_code_does) (case='noui-everything-modular', page='docs/ARCHITECTURE.md', claim='offered again in settings')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_docs.py", line 384, in test_what_the_docs_say_asks_or_opens_is_what_the_code_does
+    self.assertTrue(holds(), f"{page} says '{claim}', which the code does not do")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : docs/ARCHITECTURE.md says 'offered again in settings', which the code does not do
+
+----------------------------------------------------------------------
+Ran 1 test in 45.597s
+
+FAILED (failures=4)

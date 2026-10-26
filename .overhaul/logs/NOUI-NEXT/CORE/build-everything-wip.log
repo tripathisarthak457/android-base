@@ -1,0 +1,4 @@
+== 13:13:12 build noui-everything: check assembleDevDebug --continue
+[locked:gradle] waiting for the lock (pid 1808 since 2026-10-25 13:12:56: ./gradlew testDebugUnitTest testDevDebugUnitTest verifyCodeRules --continue)
+[locked:gradle] waiting for the lock (pid 1808 since 2026-10-25 13:12:56: ./gradlew testDebugUnitTest testDevDebugUnitTest verifyCodeRules --continue)
+== 13:20:34 EXIT 66

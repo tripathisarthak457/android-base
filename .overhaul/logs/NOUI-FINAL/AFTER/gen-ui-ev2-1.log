@@ -1,0 +1,49 @@
+04:05:21
+0111b148f
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/formfields/AppTagField.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/list/AppSwipeActions.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/pickers/AppDatePicker.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppChip.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/surface/SheetScrim.kt
+ M ../templates/android/core/testing/compose/src/main/kotlin/com/base/app/core/testing/compose/preview/AccessibilityPreviewTester.kt
+ M ../templates/android/feature/auth/src/main/kotlin/com/base/app/feature/auth/AuthFrame.kt
+
+Summary
+───────
+           App  Final After (FinalAfter)
+       Package  com.example.finalafter.uiev2
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, appstatus, auth, browser, catalog, ci,
+                coil, collections, coverage, crashlytics, database,
+                datadisplay, deeplink, depsanalysis, devtools, firebase,
+                firebaseanalytics, flags, formatting, formfields, forms,
+                googlefonts, googlesignin, language, leakcanary, licenses,
+                liquidglass, media, network, offlinequeue, onboarding,
+                paging, perfhud, performance, pickers, playstore, profile,
+                push, remoteconfig, sample, search, settings, websocket
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\ui-ev2
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\ui-ev2 and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Commit app/dependencies/ after the first ./gradlew check: it is the list of libraries the prod
+       release ships, which every later check compares against.
+    4. Replace app/google-services.json: the included one is a placeholder.
+
+EXIT 0
+04:05:25

@@ -1,0 +1,24 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI/generator
+# command: D:/projects/tools/.overhaul/bin/memwait python create_project.py --spec D:/projects/tools/.overhaul/out/NOUI/gate-1/specs/d10-lean-compact.json --preset lean --no-ui-components --out D:/projects/tools/.overhaul/out/NOUI/gate-1/d10-lean-compact --no-zip --json --force
+# start: Sun Oct 25 08:49:11 IST 2026
+{
+  "ok": true,
+  "target": "android",
+  "project_name": "GateOne",
+  "path": "D:\\projects\\tools\\.overhaul\\out\\NOUI\\gate-1\\d10-lean-compact",
+  "resolved_features": [
+    "ci",
+    "coil",
+    "deeplink",
+    "googlefonts",
+    "leakcanary",
+    "network"
+  ],
+  "feature_modules": [],
+  "notes": [],
+  "warnings": [],
+  "ignored_fields": [],
+  "summary": []
+}
+# end: Sun Oct 25 08:49:14 IST 2026
+EXIT=0

@@ -1,0 +1,15 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/red-ui
+# command: locked gradle ./gradlew -p build-logic :convention:test --continue
+# start: Sun Oct 25 14:05:34 IST 2026
+[locked:gradle] waiting for the lock (pid 13284 since 2026-10-25 13:55:44: ./gradlew :core:navigation:testDebugUnitTest :app:testDevDebugUnitTest --continue)
+[locked:gradle] 1154 MB available, 5878 MB commit left; waiting for 1500 MB
+[locked:gradle] 702 MB available, 5849 MB commit left; waiting for 1500 MB
+[locked:gradle] 894 MB available, 2857 MB commit left; waiting for 1500 MB
+[locked:gradle] 863 MB available, 2976 MB commit left; waiting for 1500 MB
+[locked:gradle] 490 MB available, 3767 MB commit left; waiting for 1500 MB
+[locked:gradle] 896 MB available, 3961 MB commit left; waiting for 1500 MB
+[locked:gradle] 432 MB available, 3420 MB commit left; waiting for 1500 MB
+[locked:gradle] 379 MB available, 388 MB commit left; waiting for 1500 MB
+# exit: 0
+# end: Sun Oct 25 14:15:27 IST 2026
+# seconds: 592

@@ -1,0 +1,79 @@
+# mutations applied to two copies of out/NOUI-FINAL/TEST/mut (generated from 0a69446f0, gen-mut.log); scratch/mutate.py
+# Sun Oct 25 18:00:06 IST 2026
+A SignUp.kt: SignUp: a valid form sends what was typed
+A SignUp.kt: SignUp: the form can be submitted only once every field has text
+A SignUp.kt: SignUp: an invalid field is reported on submit and nothing is sent
+A SignUp.kt: SignUp: changing the password checks the confirmation again
+A SignUp.kt: SignUp: a 422 puts the server's messages on the fields it names
+A SignUp.kt: SignUp: a submit after a failure clears the banner
+A SignUp.kt: SignUp: back asks to leave the screen
+A PasswordReset.kt: PasswordReset: a valid address is sent and the screen says a link is on its way
+A PasswordReset.kt: PasswordReset: an invalid address is reported on submit and nothing is sent
+A PasswordReset.kt: PasswordReset: a 422 puts the server's message on the address
+A PasswordReset.kt: PasswordReset: the form is busy while in flight, and a second submit sends nothing
+A PasswordReset.kt: PasswordResetProcessDeathTest: the address survives process death
+A SignIn.kt: SignIn: a Google ID token signs in; a Google sign-in the server refuses goes in the banner
+A Settings.kt: Settings: picking a theme stores it; of quick picks the last one is what stays
+A Settings.kt: Settings: a confirmed sign-out ends the session once
+A Settings.kt: Settings: a picked language is shown and handed to the platform; going back to the phone's language
+A Settings.kt: Settings: the switches store what they were set to
+A Settings.kt: Settings: the app lock switch stores what it was set to
+A Settings.kt: Settings: the licences row opens the licences
+A Onboarding.kt: (import for the next mutation)
+A Onboarding.kt: Onboarding: the flag is written even though leaving clears the screen at once
+A Onboarding.kt: Onboarding: skipping counts as finishing
+A FeedViewModel.kt: Feed: a second collector reads the pages already fetched
+A FeatureFlags.kt: Flags: an override wins until it is reset; an override of one flag leaves the others alone; observing follows
+A AppErrorText.kt: AppErrorText: no connection and no answer each get their own sentence
+A AppErrorText.kt: AppErrorText: the server's own words are shown as they came
+A AppErrorText.kt: AppErrorText: without a fallback of the screen's own the generic sentence is used
+A ValidationErrorText.kt: ValidationErrorText: every rule a field can fail has its own sentence
+A AppNotifications.kt: AppNotifications: without the permission nothing is posted
+A AppNotifications.kt: AppNotifications: on the lock screen only a neutral line is shown
+A AppNotifications.kt: AppNotifications: cancelling removes the notification
+A NotificationChannels.kt: NotificationChannels: every channel is created with its name, description and importance
+core/notification/src/main/kotlin/com/example/finaltest/uieverything/core/notification/channel/NotificationChannels.kt: expected one 'id = "base_app_silent",', found 0
+B SignUp.kt: SignUp: nothing is judged until the first submit
+B SignUp.kt: SignUp: after a submit each error follows the text as it is corrected
+B SignUp.kt: SignUp: a confirmation that differs says the passwords do not match
+B SignUp.kt: SignUp: any other failure goes in the banner; too many attempts says to wait
+B SignUp.kt: SignUp: the form is busy while in flight, and a second submit sends nothing
+B SignUp.kt: SignUpProcessDeathTest: the name and email survive process death
+B PasswordReset.kt: PasswordReset: the form can be submitted only once the address has text
+B PasswordReset.kt: PasswordReset: after a submit the error follows the address as it is corrected
+B PasswordReset.kt: PasswordReset: any other failure goes in the banner; no connection says so
+B PasswordReset.kt: PasswordReset: back asks to leave the screen
+B SignIn.kt: SignIn: a Google sign-in the server refuses goes in the banner
+B SignIn.kt: SignIn: Credential Manager failing says so in the banner
+B Settings.kt: Settings: the screen shows the build's version and the stored settings; a change made elsewhere reaches the screen
+B Settings.kt: Settings: the language the platform reports is shown
+B Onboarding.kt: Onboarding: finishing leaves onboarding and records that it is done; skipping counts as finishing
+B FeedViewModel.kt: Feed: a tapped post expands, and a second tap collapses it; each post expands on its own
+B Flag.kt: Flags: a flag nobody has overridden reads its declared default
+B Flag.kt: FlagTest: every flag has a key of its own
+B FeatureFlags.kt: Flags: observing follows each change of that flag and nothing else
+B FlagOverrides.kt: Flags: signing out drops every override
+B AppErrorText.kt: AppErrorText: a server error without words of its own falls back
+B AppErrorText.kt: AppErrorText: failures the person cannot act on fall back
+B ValidationErrorText.kt: ValidationErrorText: a length rule is worded as a plural of the length it asks for
+B AppNotifications.kt: AppNotifications: a notification carries its title, its whole body and its channel
+B AppNotifications.kt: AppNotifications: a tap opens the link in this app and no other
+B NotificationChannels.kt: NotificationChannels: creating again at the next start leaves one channel each
+B NotificationPermission.kt: NotificationPermission: once granted, a request does nothing
+B NotificationPermission.kt: NotificationPermission: a refusal for good stays blocked; a grant withdrawn in the system's settings is seen
+B PushRegistration.kt: PushRegistration: a changed installation id is handed over again
+B PushRegistration.kt: PushRegistration: an id the sink could not take is handed over again next time
+# A resumed from the channel-id mutation (the generator renames base_app_ ids)
+A NotificationChannels.kt: NotificationChannels: every channel has an id of its own
+A NotificationPermission.kt: NotificationPermission: not granted yet, a request asks the system
+A NotificationPermission.kt: NotificationPermission: once blocked, a request opens this app's notification settings
+A NotificationPermission.kt: NotificationPermission: a grant made in the system's settings is seen when the screen comes back
+A PushRegistration.kt: PushRegistration: a new installation id is handed over once
+# Sun Oct 25 18:03:12 IST 2026: core/notification/build.gradle.kts in ui-everything, mut and mut-b given testOptions.unitTests.isIncludeAndroidResources = true (the template fix, applied by hand to these generated copies before their runs)
+# Sun Oct 25 18:21:28 IST 2026: set C on mut-c (gen-mut-c.log)
+C MviViewModel.kt: MVI: nothing first-observed runs before collection; per screen: list, detail, profile, search, search result and the scaffold's list load nothing before the screen collects
+C MviViewModel.kt: MVI: the busy flag is up while an exclusive run works; SignIn, SignUp, PasswordReset: busy while in flight
+C SignUp.kt: SignUp: nothing is judged until the first submit
+C SignUp.kt: SignUp: a short name and a weak password are each reported on their own field
+# Sun Oct 25 18:39:39 IST 2026: set C's busy mutation replaced (the first left an unreachable nullable call that did not compile, mut-c-unit.log): the flag is now raised as false
+# Sun Oct 25 18:40:00 IST 2026: (the note above was written before the replacement applied; it applied now)

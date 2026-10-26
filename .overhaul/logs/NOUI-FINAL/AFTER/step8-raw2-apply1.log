@@ -1,0 +1,116 @@
+05:24:36
+D free GB: 76.5
+./gradlew --offline --continue --no-parallel --no-daemon --no-configuration-cache spotlessApply
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.7.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :spotlessKotlin
+Format was not able to resolve all violations which (theoretically) can be autocorrected in file D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\rawtpl2\core\navigation\shell\src\test\kotlin\com\base\app\core\navigation\shell\tabs\KeptTabsTest.kt in 3 consecutive runs of format.
+Format was not able to resolve all violations which (theoretically) can be autocorrected in file D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\rawtpl2\core\network\src\main\kotlin\com\base\app\core\network\di\HttpClientModule.kt in 3 consecutive runs of format.
+Format was not able to resolve all violations which (theoretically) can be autocorrected in file D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\rawtpl2\core\network\src\main\kotlin\com\base\app\core\network\di\HttpClientModule.kt in 3 consecutive runs of format.
+
+> Task :spotlessKotlinApply FAILED
+> Task :spotlessKotlinGradle
+> Task :spotlessKotlinGradleApply
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':spotlessKotlinApply' (registered in build file 'build.gradle.kts').
+> There were 69 lint error(s), they must be fixed or suppressed.
+  app/src/main/kotlin/com/base/app/BaseAppApplication.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  app/src/main/kotlin/com/base/app/MainActivity.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  app/src/main/kotlin/com/base/app/di/CoroutinesModule.kt:L4 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  app/src/main/kotlin/com/base/app/session/SessionCoordinator.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  app/src/main/kotlin/com/base/app/startup/LaunchHook.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  app/src/main/kotlin/com/base/app/ui/AppDestinations.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  app/src/main/kotlin/com/base/app/ui/AppRoot.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  app/src/test/kotlin/com/base/app/navigation/SharedDestinationsTest.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  app/src/test/kotlin/com/base/app/session/SessionCoordinatorTest.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  benchmark/src/main/kotlin/com/base/app/benchmark/startup/StartupBenchmark.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  build-logic/convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt:L1 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  build-logic/convention/src/main/kotlin/AndroidApplicationFlavorsConventionPlugin.kt:L1 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  build-logic/convention/src/main/kotlin/AndroidFirebaseConventionPlugin.kt:L2 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  build-logic/convention/src/main/kotlin/AndroidLibraryConventionPlugin.kt:L1 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  build-logic/convention/src/main/kotlin/JvmLibraryConventionPlugin.kt:L1 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  catalog/src/main/kotlin/com/base/app/catalog/CatalogSection.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/analytics/src/main/kotlin/com/base/app/core/analytics/di/AnalyticsModule.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/analytics/src/main/kotlin/com/base/app/core/analytics/di/CrashModule.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/applock/src/main/kotlin/com/base/app/core/applock/AppLockGate.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/applock/src/test/kotlin/com/base/app/core/applock/AppLockGateTest.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/database/src/main/kotlin/com/base/app/core/database/AppDatabase.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/database/src/main/kotlin/com/base/app/core/database/di/DatabaseModule.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/glass/DeviceGlassSignals.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/glass/GlassVerdictStore.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppFonts.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/adaptive/PostureTest.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/devtools/src/main/kotlin/com/base/app/core/devtools/DevTools.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/devtools/src/main/kotlin/com/base/app/core/devtools/badge/DevToolsOverlay.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/devtools/src/main/kotlin/com/base/app/core/devtools/di/DevToolsModule.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/devtools/src/main/kotlin/com/base/app/core/devtools/panel/DevToolsPanel.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/devtools/src/main/kotlin/com/base/app/core/devtools/panel/FlagsTab.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/devtools/src/test/kotlin/com/base/app/core/devtools/badge/DevToolsOverlayTest.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/flags/src/main/kotlin/com/base/app/core/flags/di/FlagsModule.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/network/src/main/kotlin/com/base/app/core/network/client/KtorNetworkClient.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/network/src/main/kotlin/com/base/app/core/network/di/HttpClientModule.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/network/src/main/kotlin/com/base/app/core/network/di/NetworkModule.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/network/src/test/kotlin/com/base/app/core/network/client/KtorNetworkClientTest.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/notification/src/main/kotlin/com/base/app/core/notification/push/PushRegistration.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/notification/src/test/kotlin/com/base/app/core/notification/push/PushRegistrationTest.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/frame/FrameFeed.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/overlay/PerformancePill.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/DetailSections.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/FrameSections.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/PerformanceTab.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/ScoreSection.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/perfhud/src/test/kotlin/com/base/app/core/perfhud/frame/FrameFeedTest.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/perfhud/src/test/kotlin/com/base/app/core/perfhud/frame/FrameFeeds.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/playstore/src/main/kotlin/com/base/app/core/playstore/PlayStorePrompts.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/ui/src/main/kotlin/com/base/app/core/ui/appstatus/AppStatusGate.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  data/auth/src/main/kotlin/com/base/app/data/auth/DefaultAuthRepository.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  data/profile/src/main/kotlin/com/base/app/data/profile/DefaultProfileRepository.kt:L4 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  data/profile/src/main/kotlin/com/base/app/data/profile/api/ProfileRepository.kt:L4 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  data/profile/src/main/kotlin/com/base/app/data/profile/di/ProfileDataModule.kt:L4 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  data/profile/src/test/kotlin/com/base/app/data/profile/DefaultProfileRepositoryTest.kt:L4 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  data/profile/src/testFixtures/kotlin/com/base/app/data/profile/api/FakeProfileRepository.kt:L4 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  data/sample/src/main/kotlin/com/base/app/data/sample/di/SampleDataModule.kt:L4 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/auth/src/main/kotlin/com/base/app/feature/auth/signin/SignInRoute.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/auth/src/main/kotlin/com/base/app/feature/auth/signin/SignInScreen.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/auth/src/main/kotlin/com/base/app/feature/auth/signin/SignInViewModel.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/feed/src/main/kotlin/com/base/app/feature/feed/FeedRoute.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/onboarding/src/main/kotlin/com/base/app/feature/onboarding/OnboardingContract.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/onboarding/src/main/kotlin/com/base/app/feature/onboarding/OnboardingRoute.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/profile/src/main/kotlin/com/base/app/feature/profile/ProfileScreen.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/profile/src/main/kotlin/com/base/app/feature/profile/ProfileViewModel.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/sample/src/main/kotlin/com/base/app/feature/sample/navigation/SampleNavigation.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/settings/src/main/kotlin/com/base/app/feature/settings/SettingsRoute.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/settings/src/main/kotlin/com/base/app/feature/settings/SettingsScreen.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/settings/src/main/kotlin/com/base/app/feature/settings/navigation/SettingsNavigation.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/settings/src/test/kotlin/com/base/app/feature/settings/SettingsViewModelTest.kt:L4 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  Resolve these lints or suppress with `suppressLintsFor`
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1m 38s
+8 actionable tasks: 8 executed
+EXIT 1
+05:26:16

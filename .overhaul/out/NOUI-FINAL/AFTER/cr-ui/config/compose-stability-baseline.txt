@@ -1,0 +1,5 @@
+# Composable parameters the Compose compiler compares by identity, accepted with a reason:
+# `fqName(parameter)  # why it has to stay`. Deleting a line records a fix, and a line that matches
+# nothing fails the check, so the list only shrinks; the check fails again if the parameter comes back.
+com.example.finalafter.crui.core.navigation.shell.back.BackHandlerEffect(handler)  # added to and removed from the dispatcher by identity, so identity is the comparison it needs; every caller remembers its handler
+com.example.finalafter.crui.core.navigation.shell.stack.rememberEntryLifecycle(key)  # returns a value, so it is never skipped; the key is only an effect key, which effects compare with equals

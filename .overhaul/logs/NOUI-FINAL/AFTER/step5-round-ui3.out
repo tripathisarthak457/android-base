@@ -1,0 +1,18 @@
+> Task :core:designsystem:compileDebugKotlin FAILED
+BUILD FAILED in 51s
+EXIT 1
+visibility: 886 return types: 190
+inserted public: 885 in 142 files
+skipped 0 other 0
+typed: 180
+MANUAL AppButton.kt:272: public fun copy(
+MANUAL AppSwipeActions.kt:122: public suspend fun close() = settleTo(0f, 0f)
+MANUAL AppTabBarState.kt:43: public var collapse by mutableFloatStateOf(0f)
+MANUAL AppTabBarState.kt:47: public var settledHeight by mutableIntStateOf(0)
+MANUAL AppChip.kt:170: public val RemoveTargetWidth = RemoveEndPadding + RemoveGlyph + IconSpacing
+MANUAL SheetSlots.kt:145: public fun ProvideSheetHeader(title: String? = null, content: @Composable AppSheetScope.() -> Unit) =
+MANUAL SheetSlots.kt:150: public fun ProvideSheetFooter(content: @Composable AppSheetScope.() -> Unit) = ProvideSlot(footer = true, title = null, content = content)
+MANUAL WindowClass.kt:22: public val LocalWindowMetrics = staticCompositionLocalOf { PhoneMetrics }
+MANUAL Chrome.kt:67: public val LocalTabVisible = staticCompositionLocalOf { AlwaysVisible }
+MANUAL PaneBounds.kt:25: public fun block(blocker: Any, blocked: Boolean) = onBlock(blocker, blocked)
+done

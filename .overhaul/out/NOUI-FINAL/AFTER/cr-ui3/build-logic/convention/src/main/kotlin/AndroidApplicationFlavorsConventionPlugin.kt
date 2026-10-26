@@ -1,0 +1,34 @@
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.variant.ApplicationAndroidComponentsExtension
+import com.example.finalafter.crui3.buildlogic.android.registerDistributionTasks
+import com.example.finalafter.crui3.buildlogic.config.configureAbiSplits
+import com.example.finalafter.crui3.buildlogic.config.configureFlavors
+import com.example.finalafter.crui3.buildlogic.config.configureSigning
+import com.example.finalafter.crui3.buildlogic.config.configureVariants
+import com.example.finalafter.crui3.buildlogic.guard.guardReleaseDependencies
+import com.example.finalafter.crui3.buildlogic.guard.verifyReleasesCarryNoDevTooling
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.getByType
+
+/**
+ * The four environments — dev, staging, prod, playstore — and everything that follows from them:
+ * per-flavour backend URLs, application id suffixes, signing keys, version naming, ABI splits,
+ * the named-artifact distribution tasks, and the guarded list of what the prod release ships.
+ */
+class AndroidApplicationFlavorsConventionPlugin : Plugin<Project> {
+    override fun apply(target: Project) = with(target) {
+        extensions.configure<ApplicationExtension> {
+            configureFlavors(this)
+            configureSigning(this)
+            configureAbiSplits(this)
+        }
+
+        val components = extensions.getByType<ApplicationAndroidComponentsExtension>()
+        configureVariants(components)
+        registerDistributionTasks(components)
+        guardReleaseDependencies()
+        verifyReleasesCarryNoDevTooling(components)
+    }
+}

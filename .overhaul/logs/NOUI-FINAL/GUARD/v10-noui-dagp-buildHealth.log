@@ -1,0 +1,1414 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/vno-dagp
+# command: locked gradle ./gradlew buildHealth
+# start: Mon Oct 26 00:20:58 IST 2026
+[locked:gradle] waiting for the lock (pid 1248 since 2026-10-26 00:20:46: ./gradlew spotlessKotlinCheck buildHealth --continue)
+[locked:gradle] waiting for the lock (pid 3280 since 2026-10-26 00:23:51: ./gradlew :core:designsystem:recordRoborazziDebug)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: buildHealth
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:verifyModuleDependencies
+> Task :core:common:processResources NO-SOURCE
+> Task :core:navigation:verifyModuleDependencies
+> Task :core:common:verifyApiPurity
+> Task :core:navigation:verifyApiPurity
+> Task :core:navigation:preBuild
+> Task :core:navigation:preReleaseBuild
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:mvi:verifyApiPurity
+> Task :core:mvi:verifyModuleDependencies
+> Task :core:mvi:preBuild
+> Task :core:mvi:preReleaseBuild
+> Task :core:mvi:javaPreCompileRelease
+> Task :core:navigation:javaPreCompileRelease
+> Task :core:ui:verifyApiPurity
+> Task :core:ui:verifyModuleDependencies
+> Task :core:ui:preBuild
+> Task :core:ui:preReleaseBuild
+> Task :core:datastore:verifyApiPurity
+> Task :core:ui:generateReleaseResources
+> Task :core:ui:processReleaseNavigationResources
+> Task :core:ui:javaPreCompileRelease FROM-CACHE
+> Task :core:datastore:verifyModuleDependencies
+> Task :core:datastore:preBuild
+> Task :core:datastore:preReleaseBuild
+> Task :core:datastore:javaPreCompileRelease FROM-CACHE
+> Task :core:network:verifyApiPurity
+> Task :core:network:verifyModuleDependencies
+> Task :core:network:preBuild
+> Task :core:network:preReleaseBuild
+> Task :core:network:javaPreCompileRelease FROM-CACHE
+> Task :app:explodeAssetSourceDevBenchmarkRelease
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDevBenchmarkReleaseBuild UP-TO-DATE
+> Task :app:generateDevBenchmarkReleaseBuildConfig
+> Task :core:ui:packageReleaseResources
+> Task :app:generateDevBenchmarkReleaseResources
+> Task :core:designsystem:verifyCodeRules
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preReleaseBuild
+> Task :core:designsystem:generateReleaseResources
+> Task :app:packageDevBenchmarkReleaseResources
+> Task :core:designsystem:packageReleaseResources
+> Task :core:designsystem:processReleaseNavigationResources
+> Task :core:designsystem:javaPreCompileRelease FROM-CACHE
+> Task :core:datastore:generateReleaseEmptyResourceFiles
+> Task :core:mvi:generateReleaseEmptyResourceFiles
+> Task :core:navigation:generateReleaseEmptyResourceFiles
+> Task :core:network:generateReleaseEmptyResourceFiles
+> Task :core:designsystem:parseReleaseLocalResources
+> Task :core:designsystem:generateReleaseRFile
+> Task :core:ui:parseReleaseLocalResources
+> Task :core:ui:generateReleaseRFile
+> Task :app:javaPreCompileDevBenchmarkRelease FROM-CACHE
+> Task :app:processDevBenchmarkReleaseNavigationResources
+> Task :core:datastore:writeReleaseAarMetadata
+> Task :core:designsystem:writeReleaseAarMetadata
+> Task :app:parseDevBenchmarkReleaseLocalResources
+> Task :core:mvi:writeReleaseAarMetadata
+> Task :core:navigation:writeReleaseAarMetadata
+> Task :core:network:writeReleaseAarMetadata
+> Task :core:ui:writeReleaseAarMetadata
+> Task :app:generateDevBenchmarkReleaseRFile
+> Task :app:mapDevBenchmarkReleaseSourceSetPaths
+> Task :app:compileDevBenchmarkReleaseNavigationResources
+> Task :app:checkDevBenchmarkReleaseAarMetadata
+> Task :app:createDevBenchmarkReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksDevBenchmarkRelease
+> Task :core:datastore:processReleaseManifest
+> Task :core:designsystem:extractDeepLinksRelease
+> Task :core:designsystem:processReleaseManifest
+> Task :core:mvi:processReleaseManifest
+> Task :core:navigation:processReleaseManifest
+> Task :core:network:processReleaseManifest
+> Task :core:ui:extractDeepLinksRelease FROM-CACHE
+> Task :core:ui:processReleaseManifest
+> Task :app:mergeDevBenchmarkReleaseResources
+> Task :core:designsystem:mapReleaseSourceSetPaths
+> Task :core:designsystem:compileReleaseLibraryResources
+> Task :core:ui:mapReleaseSourceSetPaths
+> Task :core:ui:compileReleaseLibraryResources
+> Task :app:findDeclaredProcsDevBenchmarkRelease
+> Task :app:findDeclarations
+> Task :app:processDevBenchmarkReleaseMainManifest
+> Task :app:processDevBenchmarkReleaseManifest
+> Task :app:processDevBenchmarkReleaseManifestForPackage
+> Task :core:common:compileKotlin
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar
+> Task :core:designsystem:compileReleaseKotlin
+> Task :core:designsystem:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibCompileToJarRelease
+> Task :app:graphViewDevBenchmarkRelease
+> Task :core:mvi:compileReleaseKotlin
+> Task :core:mvi:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibCompileToJarRelease
+> Task :core:mvi:bundleLibRuntimeToJarRelease
+> Task :core:designsystem:bundleLibRuntimeToJarRelease
+> Task :app:explodeXmlSourceDevBenchmarkRelease
+> Task :app:processDevBenchmarkReleaseResources
+> Task :core:datastore:prepareLintJarForPublish
+> Task :core:designsystem:prepareLintJarForPublish
+> Task :core:mvi:prepareLintJarForPublish
+> Task :core:network:prepareLintJarForPublish
+> Task :core:navigation:prepareLintJarForPublish
+> Task :core:ui:prepareLintJarForPublish
+> Task :app:extractPackageNameFromManifestDevBenchmarkRelease
+> Task :core:datastore:generateReleaseAssets UP-TO-DATE
+> Task :core:datastore:mergeReleaseAssets
+> Task :core:designsystem:generateReleaseAssets UP-TO-DATE
+> Task :core:designsystem:mergeReleaseAssets
+> Task :core:mvi:generateReleaseAssets UP-TO-DATE
+> Task :core:mvi:mergeReleaseAssets
+> Task :core:navigation:generateReleaseAssets UP-TO-DATE
+> Task :core:navigation:mergeReleaseAssets
+> Task :core:network:generateReleaseAssets UP-TO-DATE
+> Task :app:findAndroidLintersDevBenchmarkRelease
+> Task :core:ui:generateReleaseAssets UP-TO-DATE
+> Task :core:ui:mergeReleaseAssets
+> Task :core:network:mergeReleaseAssets
+> Task :app:findAndroidResImportsDevBenchmarkRelease
+> Task :core:mvi:processReleaseJavaRes
+> Task :core:mvi:createFullJarRelease
+> Task :core:designsystem:processReleaseJavaRes
+> Task :core:designsystem:createFullJarRelease
+> Task :core:navigation:preDebugBuild
+> Task :app:findAndroidAssetProvidersDevBenchmarkRelease
+> Task :core:navigation:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:designsystem:packageDebugResources
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:generateDebugRFile FROM-CACHE
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:mvi:preDebugBuild
+> Task :core:mvi:compileDebugKotlin
+> Task :core:mvi:javaPreCompileDebug FROM-CACHE
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibCompileToJarDebug
+> Task :core:ui:preDebugBuild
+> Task :core:ui:generateDebugResources FROM-CACHE
+> Task :core:ui:packageDebugResources
+> Task :core:ui:processDebugNavigationResources FROM-CACHE
+> Task :core:ui:parseDebugLocalResources FROM-CACHE
+> Task :core:ui:generateDebugRFile FROM-CACHE
+> Task :core:ui:javaPreCompileDebug FROM-CACHE
+> Task :core:datastore:kspReleaseKotlin
+> Task :core:datastore:kspDebugKotlin
+> Task :core:datastore:preDebugBuild
+> Task :core:navigation:kspDebugKotlin
+> Task :core:navigation:kspReleaseKotlin
+> Task :core:datastore:compileReleaseKotlin
+> Task :core:datastore:compileDebugKotlin
+> Task :core:datastore:processReleaseJavaRes
+> Task :core:datastore:javaPreCompileDebug FROM-CACHE
+> Task :core:navigation:compileReleaseKotlin
+> Task :core:datastore:compileReleaseJavaWithJavac
+> Task :core:datastore:compileDebugJavaWithJavac
+> Task :core:datastore:bundleLibCompileToJarRelease
+> Task :core:datastore:bundleLibRuntimeToJarRelease
+> Task :core:navigation:processReleaseJavaRes
+> Task :core:datastore:createFullJarRelease
+> Task :core:datastore:bundleLibCompileToJarDebug
+> Task :core:navigation:compileReleaseJavaWithJavac
+> Task :core:navigation:compileDebugKotlin
+> Task :core:navigation:transformReleaseClassesWithAsm
+> Task :core:navigation:bundleLibCompileToJarRelease
+> Task :core:navigation:compileDebugJavaWithJavac
+> Task :core:navigation:bundleLibRuntimeToJarRelease
+> Task :core:navigation:createFullJarRelease
+> Task :core:navigation:transformDebugClassesWithAsm
+> Task :core:navigation:bundleLibCompileToJarDebug
+The Daemon will expire after the build after running out of JVM Metaspace.
+The project memory settings are likely not configured or are configured to an insufficient value.
+The daemon will restart for the next build, which may increase subsequent build times.
+These settings can be adjusted by setting 'org.gradle.jvmargs' in 'gradle.properties'.
+The currently configured max heap space is '2 GiB' and the configured max metaspace is '1 GiB'.
+For more information on how to set these values, please refer to https://docs.gradle.org/9.7.1/userguide/build_environment.html#sec:configuring_jvm_memory in the Gradle documentation.
+To disable this warning, set 'org.gradle.daemon.performance.disable-logging=true'.
+Daemon will be stopped at the end of the build after running out of JVM Metaspace
+> Task :core:network:kspDebugKotlin
+> Task :core:network:preDebugBuild
+> Task :core:network:kspReleaseKotlin
+> Task :core:ui:compileDebugKotlin
+> Task :core:ui:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:ui:bundleLibCompileToJarDebug
+> Task :core:network:javaPreCompileDebug FROM-CACHE
+> Task :app:explodeAssetSourceDevDebug FROM-CACHE
+> Task :app:preDevDebugBuild UP-TO-DATE
+> Task :app:generateDevDebugBuildConfig
+> Task :app:generateDevDebugResources
+> Task :app:packageDevDebugResources
+> Task :core:datastore:generateDebugEmptyResourceFiles
+> Task :core:mvi:generateDebugEmptyResourceFiles
+> Task :core:navigation:generateDebugEmptyResourceFiles
+> Task :core:network:generateDebugEmptyResourceFiles
+> Task :core:ui:compileReleaseKotlin
+> Task :core:ui:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:ui:bundleLibCompileToJarRelease
+> Task :core:ui:bundleLibRuntimeToJarRelease
+> Task :core:ui:processReleaseJavaRes
+> Task :core:ui:createFullJarRelease
+> Task :app:javaPreCompileDevDebug FROM-CACHE
+> Task :core:datastore:bundleLibRuntimeToJarDebug
+> Task :core:ui:bundleLibRuntimeToJarDebug
+> Task :core:navigation:bundleLibRuntimeToJarDebug
+> Task :core:mvi:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:datastore:writeDebugAarMetadata
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:mvi:writeDebugAarMetadata
+> Task :core:navigation:writeDebugAarMetadata
+> Task :core:network:writeDebugAarMetadata
+> Task :core:ui:writeDebugAarMetadata
+> Task :app:processDevDebugNavigationResources
+> Task :app:parseDevDebugLocalResources
+> Task :app:generateDevDebugRFile FROM-CACHE
+> Task :app:mapDevDebugSourceSetPaths
+> Task :app:compileDevDebugNavigationResources FROM-CACHE
+> Task :app:checkDevDebugAarMetadata
+> Task :app:createDevDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDevDebug FROM-CACHE
+> Task :core:datastore:processDebugManifest FROM-CACHE
+> Task :core:designsystem:extractDeepLinksDebug FROM-CACHE
+> Task :core:designsystem:processDebugManifest FROM-CACHE
+> Task :core:mvi:processDebugManifest FROM-CACHE
+> Task :core:navigation:processDebugManifest FROM-CACHE
+> Task :core:network:processDebugManifest FROM-CACHE
+> Task :core:ui:extractDeepLinksDebug FROM-CACHE
+> Task :core:ui:processDebugManifest FROM-CACHE
+> Task :app:processDevDebugMainManifest
+> Task :app:processDevDebugManifest
+> Task :app:processDevDebugManifestForPackage
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:designsystem:compileDebugLibraryResources
+> Task :core:ui:mapDebugSourceSetPaths
+> Task :core:ui:compileDebugLibraryResources
+> Task :app:explodeXmlSourceDevDebug
+> Task :app:findDeclaredProcsDevDebug FROM-CACHE
+> Task :app:graphViewDevDebug
+> Task :core:network:compileDebugKotlin
+> Task :core:network:compileReleaseKotlin
+> Task :app:findAndroidLintersDevDebug FROM-CACHE
+> Task :core:network:processReleaseJavaRes
+> Task :app:extractPackageNameFromManifestDevDebug
+> Task :core:datastore:generateDebugAssets UP-TO-DATE
+> Task :core:datastore:mergeDebugAssets
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets
+> Task :core:mvi:generateDebugAssets UP-TO-DATE
+> Task :core:mvi:mergeDebugAssets
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:mergeDebugAssets
+> Task :core:network:generateDebugAssets UP-TO-DATE
+> Task :core:network:mergeDebugAssets
+> Task :core:ui:generateDebugAssets UP-TO-DATE
+> Task :core:ui:mergeDebugAssets
+> Task :app:findAndroidAssetProvidersDevDebug FROM-CACHE
+> Task :app:mergeDevDebugResources
+> Task :app:findAndroidResImportsDevDebug
+> Task :core:navigation:processDebugJavaRes
+> Task :core:navigation:createFullJarDebug
+> Task :core:ui:processDebugJavaRes
+> Task :core:ui:createFullJarDebug
+> Task :core:mvi:processDebugJavaRes
+> Task :core:mvi:createFullJarDebug
+> Task :core:network:processDebugJavaRes
+> Task :core:datastore:processDebugJavaRes
+> Task :core:datastore:createFullJarDebug
+> Task :core:designsystem:processDebugJavaRes
+> Task :core:designsystem:createFullJarDebug
+> Task :core:network:compileReleaseJavaWithJavac
+> Task :core:testing:verifyApiPurity
+> Task :core:network:compileDebugJavaWithJavac
+> Task :core:network:bundleLibCompileToJarRelease
+> Task :core:network:bundleLibCompileToJarDebug
+> Task :core:network:bundleLibRuntimeToJarRelease
+> Task :app:artifactsReportDevBenchmarkRelease
+> Task :app:processDevDebugResources
+> Task :core:network:createFullJarRelease
+> Task :app:findNativeLibsDevBenchmarkRelease
+> Task :app:serviceLoaderDevBenchmarkRelease
+> Task :app:artifactsReportDevDebug
+> Task :app:findKotlinMagicDevBenchmarkRelease
+> Task :core:network:bundleLibRuntimeToJarDebug
+> Task :app:explodeJarDevBenchmarkRelease
+> Task :app:synthesizeDependenciesDevBenchmarkRelease
+> Task :app:findKotlinMagicDevDebug
+> Task :core:network:createFullJarDebug
+> Task :app:findNativeLibsDevDebug FROM-CACHE
+> Task :app:serviceLoaderDevDebug
+> Task :core:testing:verifyModuleDependencies
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :app:kspDevBenchmarkReleaseKotlin
+> Task :core:testing:compileDebugKotlin
+> Task :app:explodeCodeSourceDevBenchmarkRelease
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :app:explodeAssetSourceDevDebugTest FROM-CACHE
+> Task :app:preDevDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileDevDebugUnitTest FROM-CACHE
+> Task :core:testing:bundleLibRuntimeToJarDebug
+> Task :app:explodeXmlSourceDevDebugTest
+> Task :app:findDeclaredProcsDevDebugTest FROM-CACHE
+> Task :app:explodeJarDevDebug
+> Task :app:graphViewDevDebugTest
+> Task :core:testing:prepareLintJarForPublish
+> Task :app:findAndroidLintersDevDebugTest
+> Task :core:testing:processDebugManifest
+> Task :app:kspDevDebugKotlin
+> Task :app:extractPackageNameFromManifestDevDebugTest
+> Task :app:explodeCodeSourceDevDebug
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:mergeDebugAssets
+> Task :app:findAndroidAssetProvidersDevDebugTest
+> Task :app:findAndroidResImportsDevDebugTest FROM-CACHE
+> Task :core:testing:processDebugJavaRes
+> Task :core:testing:createFullJarDebug
+> Task :app:synthesizeDependenciesDevDebug
+> Task :app:explodeAssetSourceDevNonMinifiedRelease FROM-CACHE
+> Task :app:preDevNonMinifiedReleaseBuild UP-TO-DATE
+> Task :app:artifactsReportDevNonMinifiedRelease
+> Task :app:generateDevNonMinifiedReleaseResources FROM-CACHE
+> Task :app:generateDevNonMinifiedReleaseBuildConfig
+> Task :app:processDevNonMinifiedReleaseNavigationResources FROM-CACHE
+> Task :app:javaPreCompileDevNonMinifiedRelease FROM-CACHE
+> Task :app:checkDevNonMinifiedReleaseAarMetadata
+> Task :app:packageDevNonMinifiedReleaseResources
+> Task :app:mapDevNonMinifiedReleaseSourceSetPaths
+> Task :app:compileDevNonMinifiedReleaseNavigationResources FROM-CACHE
+> Task :app:parseDevNonMinifiedReleaseLocalResources FROM-CACHE
+> Task :app:generateDevNonMinifiedReleaseRFile FROM-CACHE
+> Task :app:compileDevBenchmarkReleaseKotlin
+> Task :app:compileDevDebugKotlin
+> Task :app:kspDevNonMinifiedReleaseKotlin
+> Task :app:mergeDevNonMinifiedReleaseResources
+> Task :app:createDevNonMinifiedReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksDevNonMinifiedRelease FROM-CACHE
+> Task :app:processDevNonMinifiedReleaseMainManifest
+> Task :app:processDevNonMinifiedReleaseManifest
+> Task :app:processDevNonMinifiedReleaseManifestForPackage
+> Task :app:processDevNonMinifiedReleaseResources
+> Task :app:explodeCodeSourceDevNonMinifiedRelease
+> Task :app:explodeXmlSourceDevNonMinifiedRelease
+> Task :app:findDeclaredProcsDevNonMinifiedRelease FROM-CACHE
+> Task :app:graphViewDevNonMinifiedRelease
+> Task :app:findAndroidLintersDevNonMinifiedRelease FROM-CACHE
+> Task :app:explodeJarDevNonMinifiedRelease FROM-CACHE
+> Task :app:extractPackageNameFromManifestDevNonMinifiedRelease FROM-CACHE
+> Task :app:findAndroidAssetProvidersDevNonMinifiedRelease FROM-CACHE
+> Task :app:findAndroidResImportsDevNonMinifiedRelease FROM-CACHE
+> Task :app:findKotlinMagicDevNonMinifiedRelease FROM-CACHE
+> Task :app:compileDevDebugJavaWithJavac
+> Task :app:hiltCollectClassesDevDebug
+> Task :app:findNativeLibsDevNonMinifiedRelease FROM-CACHE
+> Task :app:serviceLoaderDevNonMinifiedRelease FROM-CACHE
+> Task :app:synthesizeDependenciesDevNonMinifiedRelease FROM-CACHE
+> Task :app:compileDevBenchmarkReleaseJavaWithJavac
+> Task :app:hiltCollectClassesDevBenchmarkRelease
+> Task :app:artifactsReportDevRelease
+> Task :app:explodeAssetSourceDevRelease FROM-CACHE
+> Task :app:preDevReleaseBuild UP-TO-DATE
+> Task :app:generateDevReleaseBuildConfig
+> Task :app:generateDevReleaseResources FROM-CACHE
+> Task :app:packageDevReleaseResources
+> Task :app:processDevReleaseNavigationResources FROM-CACHE
+> Task :app:parseDevReleaseLocalResources FROM-CACHE
+> Task :app:generateDevReleaseRFile FROM-CACHE
+> Task :app:compileDevNonMinifiedReleaseKotlin
+> Task :app:compileDevNonMinifiedReleaseJavaWithJavac
+> Task :app:hiltCollectClassesDevNonMinifiedRelease
+> Task :app:hiltAggregateDepsDevBenchmarkRelease
+> Task :app:hiltAggregateDepsDevNonMinifiedRelease
+> Task :app:hiltAggregateDepsDevDebug FROM-CACHE
+> Task :app:kspDevReleaseKotlin
+> Task :app:compileDevReleaseKotlin
+> Task :app:javaPreCompileDevRelease FROM-CACHE
+> Task :app:hiltJavaCompileDevBenchmarkRelease
+> Task :app:compileDevReleaseJavaWithJavac
+> Task :app:hiltCollectClassesDevRelease
+> Task :app:hiltAggregateDepsDevRelease FROM-CACHE
+> Task :app:transformDevBenchmarkReleaseClassesWithAsm
+> Task :app:explodeByteCodeSourceDevBenchmarkRelease
+> Task :app:hiltJavaCompileDevNonMinifiedRelease
+> Task :app:synthesizeProjectViewDevBenchmarkRelease
+> Task :app:hiltJavaCompileDevDebug
+> Task :app:discoverDuplicationForCompileDevBenchmarkRelease
+> Task :app:discoverDuplicationForRuntimeDevBenchmarkRelease
+> Task :app:computeActualUsageDevBenchmarkRelease
+> Task :app:bundleDevDebugClassesToCompileJar
+> Task :app:artifactsReportDevDebugTest
+> Task :app:transformDevNonMinifiedReleaseClassesWithAsm
+> Task :app:transformDevDebugClassesWithAsm
+> Task :app:bundleDevDebugClassesToRuntimeJar
+> Task :app:kspDevDebugUnitTestKotlin
+> Task :app:explodeByteCodeSourceDevDebug
+> Task :app:synthesizeProjectViewDevDebug
+> Task :app:discoverDuplicationForCompileDevDebug
+> Task :app:discoverDuplicationForRuntimeDevDebug
+> Task :app:computeActualUsageDevDebug
+> Task :app:explodeCodeSourceDevDebugTest
+> Task :app:findKotlinMagicDevDebugTest
+> Task :app:findNativeLibsDevDebugTest FROM-CACHE
+> Task :app:explodeJarDevDebugTest
+> Task :app:serviceLoaderDevDebugTest
+> Task :app:explodeByteCodeSourceDevNonMinifiedRelease
+> Task :app:synthesizeProjectViewDevNonMinifiedRelease
+> Task :app:discoverDuplicationForCompileDevNonMinifiedRelease
+> Task :app:discoverDuplicationForRuntimeDevNonMinifiedRelease
+> Task :app:hiltJavaCompileDevRelease
+> Task :app:synthesizeDependenciesDevDebugTest
+> Task :app:checkDevReleaseAarMetadata
+> Task :app:mapDevReleaseSourceSetPaths
+> Task :app:compileDevReleaseNavigationResources FROM-CACHE
+> Task :app:createDevReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksDevRelease FROM-CACHE
+> Task :app:processDevReleaseMainManifest
+> Task :app:processDevReleaseManifest
+> Task :app:processDevReleaseManifestForPackage
+> Task :app:explodeCodeSourceDevRelease
+> Task :app:explodeXmlSourceDevRelease
+> Task :app:findDeclaredProcsDevRelease FROM-CACHE
+> Task :app:computeActualUsageDevNonMinifiedRelease
+> Task :app:findAndroidLintersDevRelease FROM-CACHE
+> Task :app:explodeJarDevRelease FROM-CACHE
+> Task :app:extractPackageNameFromManifestDevRelease FROM-CACHE
+> Task :app:findAndroidAssetProvidersDevRelease FROM-CACHE
+> Task :app:findAndroidResImportsDevRelease FROM-CACHE
+> Task :app:findKotlinMagicDevRelease FROM-CACHE
+> Task :app:findNativeLibsDevRelease FROM-CACHE
+> Task :app:serviceLoaderDevRelease FROM-CACHE
+> Task :app:graphViewDevRelease
+
+> Task :app:compileDevDebugUnitTestKotlin
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/vno-dagp/app/src/test/kotlin/com/example/finalguard/nodagp/navigation/NavKeyRegistrationTest.kt:141:30 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'ProtectionDomain?'.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/vno-dagp/app/src/test/kotlin/com/example/finalguard/nodagp/navigation/NavKeyRegistrationTest.kt:143:16 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'String?'.
+
+> Task :app:synthesizeDependenciesDevRelease FROM-CACHE
+> Task :app:artifactsReportPlaystoreRelease
+> Task :app:prePlaystoreReleaseBuild UP-TO-DATE
+> Task :app:explodeAssetSourcePlaystoreRelease FROM-CACHE
+> Task :app:generatePlaystoreReleaseResources FROM-CACHE
+> Task :app:generatePlaystoreReleaseBuildConfig
+> Task :app:processPlaystoreReleaseNavigationResources
+> Task :app:javaPreCompilePlaystoreRelease FROM-CACHE
+> Task :app:packagePlaystoreReleaseResources
+> Task :app:checkPlaystoreReleaseAarMetadata
+> Task :app:mapPlaystoreReleaseSourceSetPaths
+> Task :app:parsePlaystoreReleaseLocalResources FROM-CACHE
+> Task :app:compilePlaystoreReleaseNavigationResources FROM-CACHE
+> Task :app:generatePlaystoreReleaseRFile FROM-CACHE
+> Task :app:compileDevDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:hiltCollectClassesDevDebugUnitTest
+> Task :app:hiltAggregateDepsDevDebugUnitTest
+> Task :app:hiltJavaCompileDevDebugUnitTest NO-SOURCE
+> Task :app:mergeDevReleaseResources
+> Task :app:transformDevDebugUnitTestClassesWithAsm
+> Task :app:explodeByteCodeSourceDevDebugTest
+> Task :app:synthesizeProjectViewDevDebugTest
+> Task :app:discoverDuplicationForCompileDevDebugTest
+> Task :app:processDevReleaseResources
+> Task :app:discoverDuplicationForRuntimeDevDebugTest
+> Task :app:computeActualUsageDevDebugTest
+> Task :app:createPlaystoreReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksPlaystoreRelease
+> Task :app:processPlaystoreReleaseMainManifest
+> Task :app:processPlaystoreReleaseManifest
+> Task :app:processPlaystoreReleaseManifestForPackage
+> Task :app:explodeXmlSourcePlaystoreRelease
+> Task :app:findDeclaredProcsPlaystoreRelease FROM-CACHE
+> Task :app:graphViewPlaystoreRelease
+> Task :app:findAndroidLintersPlaystoreRelease FROM-CACHE
+> Task :app:mergePlaystoreReleaseResources
+> Task :app:transformDevReleaseClassesWithAsm
+> Task :app:explodeByteCodeSourceDevRelease
+> Task :app:synthesizeProjectViewDevRelease
+> Task :app:discoverDuplicationForCompileDevRelease
+> Task :app:processPlaystoreReleaseResources
+> Task :app:discoverDuplicationForRuntimeDevRelease
+> Task :app:explodeJarPlaystoreRelease
+> Task :app:findAndroidAssetProvidersPlaystoreRelease FROM-CACHE
+> Task :app:computeActualUsageDevRelease
+> Task :app:findAndroidResImportsPlaystoreRelease
+> Task :app:findNativeLibsPlaystoreRelease FROM-CACHE
+> Task :app:serviceLoaderPlaystoreRelease
+> Task :app:extractPackageNameFromManifestPlaystoreRelease
+> Task :app:explodeAssetSourceProdDebug FROM-CACHE
+> Task :app:preProdDebugBuild UP-TO-DATE
+> Task :app:artifactsReportProdDebug
+> Task :app:generateProdDebugResources FROM-CACHE
+> Task :app:generateProdDebugBuildConfig
+> Task :app:processProdDebugNavigationResources
+> Task :app:javaPreCompileProdDebug FROM-CACHE
+> Task :app:checkProdDebugAarMetadata
+> Task :app:mapProdDebugSourceSetPaths
+> Task :app:compileProdDebugNavigationResources FROM-CACHE
+> Task :app:packageProdDebugResources
+> Task :app:parseProdDebugLocalResources FROM-CACHE
+> Task :app:generateProdDebugRFile FROM-CACHE
+> Task :app:findKotlinMagicPlaystoreRelease
+> Task :app:synthesizeDependenciesPlaystoreRelease
+> Task :app:createProdDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksProdDebug FROM-CACHE
+> Task :app:processProdDebugMainManifest
+> Task :app:processProdDebugManifest
+> Task :app:processProdDebugManifestForPackage
+> Task :app:explodeXmlSourceProdDebug
+> Task :app:findDeclaredProcsProdDebug FROM-CACHE
+> Task :app:graphViewProdDebug
+> Task :app:findAndroidLintersProdDebug FROM-CACHE
+> Task :app:kspPlaystoreReleaseKotlin
+> Task :app:explodeJarProdDebug
+> Task :app:explodeCodeSourcePlaystoreRelease
+> Task :app:extractPackageNameFromManifestProdDebug
+> Task :app:findAndroidAssetProvidersProdDebug FROM-CACHE
+> Task :app:findAndroidResImportsProdDebug
+> Task :app:findKotlinMagicProdDebug
+> Task :app:findNativeLibsProdDebug FROM-CACHE
+> Task :app:serviceLoaderProdDebug
+> Task :app:mergeProdDebugResources
+> Task :app:synthesizeDependenciesProdDebug
+> Task :app:artifactsReportProdRelease
+> Task :app:explodeAssetSourceProdRelease FROM-CACHE
+> Task :app:preProdReleaseBuild UP-TO-DATE
+> Task :app:generateProdReleaseBuildConfig
+> Task :app:generateProdReleaseResources FROM-CACHE
+> Task :app:packageProdReleaseResources
+> Task :app:processProdReleaseNavigationResources FROM-CACHE
+> Task :app:parseProdReleaseLocalResources FROM-CACHE
+> Task :app:generateProdReleaseRFile FROM-CACHE
+> Task :app:processProdDebugResources
+> Task :app:javaPreCompileProdRelease FROM-CACHE
+> Task :app:checkProdReleaseAarMetadata
+> Task :app:mapProdReleaseSourceSetPaths
+> Task :app:compileProdReleaseNavigationResources FROM-CACHE
+> Task :app:kspProdDebugKotlin
+> Task :app:compilePlaystoreReleaseKotlin
+> Task :app:mergeProdReleaseResources
+> Task :app:explodeCodeSourceProdDebug
+> Task :app:createProdReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksProdRelease FROM-CACHE
+> Task :app:processProdReleaseMainManifest FROM-CACHE
+> Task :app:processProdReleaseManifest
+> Task :app:processProdReleaseManifestForPackage
+> Task :app:compileProdDebugKotlin
+> Task :app:processProdReleaseResources
+> Task :app:explodeXmlSourceProdRelease FROM-CACHE
+> Task :app:kspProdReleaseKotlin
+> Task :app:findDeclaredProcsProdRelease FROM-CACHE
+> Task :app:compilePlaystoreReleaseJavaWithJavac
+> Task :app:hiltCollectClassesPlaystoreRelease
+> Task :app:explodeCodeSourceProdRelease
+> Task :app:hiltAggregateDepsPlaystoreRelease FROM-CACHE
+> Task :app:graphViewProdRelease
+> Task :app:findAndroidLintersProdRelease FROM-CACHE
+> Task :app:explodeJarProdRelease FROM-CACHE
+> Task :app:extractPackageNameFromManifestProdRelease FROM-CACHE
+> Task :app:findAndroidAssetProvidersProdRelease FROM-CACHE
+> Task :app:findAndroidResImportsProdRelease FROM-CACHE
+> Task :app:findKotlinMagicProdRelease FROM-CACHE
+> Task :app:findNativeLibsProdRelease FROM-CACHE
+> Task :app:serviceLoaderProdRelease FROM-CACHE
+> Task :app:synthesizeDependenciesProdRelease FROM-CACHE
+> Task :app:artifactsReportStagingDebug
+> Task :app:explodeAssetSourceStagingDebug FROM-CACHE
+> Task :app:preStagingDebugBuild UP-TO-DATE
+> Task :app:generateStagingDebugBuildConfig
+> Task :app:generateStagingDebugResources FROM-CACHE
+> Task :app:packageStagingDebugResources
+> Task :app:processStagingDebugNavigationResources
+> Task :app:parseStagingDebugLocalResources FROM-CACHE
+> Task :app:generateStagingDebugRFile FROM-CACHE
+> Task :app:compileProdDebugJavaWithJavac
+> Task :app:hiltCollectClassesProdDebug
+> Task :app:hiltAggregateDepsProdDebug FROM-CACHE
+> Task :app:compileProdReleaseKotlin
+> Task :app:compileProdReleaseJavaWithJavac
+> Task :app:hiltCollectClassesProdRelease
+> Task :app:hiltAggregateDepsProdRelease FROM-CACHE
+> Task :app:hiltJavaCompilePlaystoreRelease
+> Task :app:kspStagingDebugKotlin
+> Task :app:transformPlaystoreReleaseClassesWithAsm
+> Task :app:explodeByteCodeSourcePlaystoreRelease
+> Task :app:synthesizeProjectViewPlaystoreRelease
+> Task :app:discoverDuplicationForCompilePlaystoreRelease
+> Task :app:discoverDuplicationForRuntimePlaystoreRelease
+> Task :app:computeActualUsagePlaystoreRelease
+> Task :app:javaPreCompileStagingDebug FROM-CACHE
+> Task :app:checkStagingDebugAarMetadata
+> Task :app:mapStagingDebugSourceSetPaths
+> Task :app:compileStagingDebugNavigationResources FROM-CACHE
+> Task :app:hiltJavaCompileProdDebug
+> Task :app:compileStagingDebugKotlin
+> Task :app:mergeStagingDebugResources
+> Task :app:createStagingDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksStagingDebug
+> Task :app:processStagingDebugMainManifest
+> Task :app:processStagingDebugManifest
+> Task :app:processStagingDebugManifestForPackage
+> Task :app:hiltJavaCompileProdRelease
+> Task :app:transformProdDebugClassesWithAsm
+> Task :app:explodeByteCodeSourceProdDebug
+> Task :app:synthesizeProjectViewProdDebug
+> Task :app:discoverDuplicationForCompileProdDebug
+> Task :app:discoverDuplicationForRuntimeProdDebug
+> Task :app:compileStagingDebugJavaWithJavac
+> Task :app:hiltCollectClassesStagingDebug
+> Task :app:processStagingDebugResources
+> Task :app:hiltAggregateDepsStagingDebug FROM-CACHE
+> Task :app:computeActualUsageProdDebug
+> Task :app:explodeXmlSourceStagingDebug
+> Task :app:findDeclaredProcsStagingDebug FROM-CACHE
+> Task :app:explodeCodeSourceStagingDebug
+> Task :app:findAndroidLintersStagingDebug FROM-CACHE
+> Task :app:explodeJarStagingDebug FROM-CACHE
+> Task :app:extractPackageNameFromManifestStagingDebug FROM-CACHE
+> Task :app:findAndroidAssetProvidersStagingDebug FROM-CACHE
+> Task :app:findAndroidResImportsStagingDebug FROM-CACHE
+> Task :app:findKotlinMagicStagingDebug FROM-CACHE
+> Task :app:findNativeLibsStagingDebug FROM-CACHE
+> Task :app:serviceLoaderStagingDebug FROM-CACHE
+> Task :app:artifactsReportStagingRelease
+> Task :app:explodeAssetSourceStagingRelease FROM-CACHE
+> Task :app:preStagingReleaseBuild UP-TO-DATE
+> Task :app:graphViewStagingDebug
+> Task :app:synthesizeDependenciesStagingDebug FROM-CACHE
+> Task :app:generateStagingReleaseBuildConfig
+> Task :app:transformProdReleaseClassesWithAsm
+> Task :app:generateStagingReleaseResources FROM-CACHE
+> Task :app:processStagingReleaseNavigationResources
+> Task :app:javaPreCompileStagingRelease FROM-CACHE
+> Task :app:checkStagingReleaseAarMetadata
+> Task :app:mapStagingReleaseSourceSetPaths
+> Task :app:compileStagingReleaseNavigationResources FROM-CACHE
+> Task :app:packageStagingReleaseResources
+> Task :app:parseStagingReleaseLocalResources FROM-CACHE
+> Task :app:generateStagingReleaseRFile FROM-CACHE
+> Task :app:explodeByteCodeSourceProdRelease
+> Task :app:synthesizeProjectViewProdRelease
+> Task :app:discoverDuplicationForCompileProdRelease
+> Task :app:discoverDuplicationForRuntimeProdRelease
+> Task :app:computeActualUsageProdRelease
+> Task :app:createStagingReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksStagingRelease FROM-CACHE
+> Task :app:processStagingReleaseMainManifest
+> Task :app:processStagingReleaseManifest
+> Task :app:processStagingReleaseManifestForPackage
+> Task :app:explodeXmlSourceStagingRelease
+> Task :app:findDeclaredProcsStagingRelease FROM-CACHE
+> Task :app:graphViewStagingRelease
+> Task :app:findAndroidLintersStagingRelease FROM-CACHE
+> Task :app:explodeJarStagingRelease FROM-CACHE
+> Task :app:extractPackageNameFromManifestStagingRelease FROM-CACHE
+> Task :app:findAndroidAssetProvidersStagingRelease FROM-CACHE
+> Task :app:findAndroidResImportsStagingRelease FROM-CACHE
+> Task :app:findKotlinMagicStagingRelease FROM-CACHE
+> Task :app:findNativeLibsStagingRelease FROM-CACHE
+> Task :app:serviceLoaderStagingRelease FROM-CACHE
+> Task :app:synthesizeDependenciesStagingRelease FROM-CACHE
+> Task :app:writeProjectMetadata
+> Task :core:common:abiAnalysisMain
+> Task :core:common:artifactsReportMain
+> Task :core:common:explodeByteCodeSourceMain
+> Task :core:common:explodeCodeSourceMain
+> Task :core:common:findDeclaredProcsMain FROM-CACHE
+> Task :core:common:findDeclarations
+> Task :core:common:graphViewMain
+> Task :core:common:synthesizeProjectViewMain
+> Task :core:common:discoverDuplicationForCompileMain
+> Task :core:common:discoverDuplicationForRuntimeMain
+> Task :app:mergeStagingReleaseResources
+> Task :core:common:explodeJarMain
+> Task :core:common:findKotlinMagicMain
+> Task :core:common:findNativeLibsMain
+> Task :core:common:serviceLoaderMain
+> Task :core:common:synthesizeDependenciesMain
+> Task :core:common:computeActualUsageMain
+> Task :core:common:artifactsReportTest
+> Task :app:processStagingReleaseResources
+> Task :core:common:explodeCodeSourceTest
+> Task :core:common:findDeclaredProcsTest FROM-CACHE
+> Task :core:common:graphViewTest
+> Task :core:common:explodeJarTest
+> Task :core:common:findKotlinMagicTest
+> Task :core:common:findNativeLibsTest FROM-CACHE
+> Task :core:common:serviceLoaderTest
+> Task :core:common:synthesizeDependenciesTest
+> Task :core:common:writeProjectMetadata
+> Task :core:common:compileTestKotlin
+> Task :core:common:compileTestJava NO-SOURCE
+> Task :core:common:explodeByteCodeSourceTest
+> Task :core:common:synthesizeProjectViewTest
+> Task :core:common:discoverDuplicationForCompileTest
+> Task :core:common:discoverDuplicationForRuntimeTest
+> Task :core:common:computeActualUsageTest
+> Task :core:datastore:abiAnalysisDebug
+> Task :core:datastore:artifactsReportDebug
+> Task :core:datastore:explodeAssetSourceDebug FROM-CACHE
+> Task :core:common:computeAdvice
+> Task :core:common:filterAdvice
+> Task :core:datastore:explodeByteCodeSourceDebug
+> Task :core:datastore:explodeXmlSourceDebug
+> Task :core:datastore:findDeclaredProcsDebug FROM-CACHE
+> Task :core:datastore:explodeCodeSourceDebug
+> Task :core:datastore:findDeclarations
+> Task :core:datastore:findAndroidLintersDebug
+> Task :core:datastore:graphViewDebug
+> Task :core:datastore:synthesizeProjectViewDebug
+> Task :core:datastore:discoverDuplicationForCompileDebug
+> Task :core:datastore:discoverDuplicationForRuntimeDebug
+> Task :core:datastore:extractPackageNameFromManifestDebug
+> Task :core:datastore:findAndroidAssetProvidersDebug
+> Task :core:datastore:findAndroidResImportsDebug
+> Task :app:kspStagingReleaseKotlin
+> Task :core:datastore:findKotlinMagicDebug
+> Task :app:explodeCodeSourceStagingRelease
+> Task :core:datastore:findNativeLibsDebug FROM-CACHE
+> Task :core:datastore:serviceLoaderDebug
+> Task :core:datastore:artifactsReportDebugTest
+> Task :core:datastore:explodeAssetSourceDebugTest FROM-CACHE
+> Task :core:datastore:kspDebugUnitTestKotlin
+> Task :core:datastore:preDebugUnitTestBuild
+> Task :core:datastore:explodeJarDebug
+> Task :core:datastore:synthesizeDependenciesDebug
+> Task :core:datastore:computeActualUsageDebug
+> Task :core:datastore:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :app:hiltJavaCompileStagingDebug
+> Task :core:datastore:explodeCodeSourceDebugTest
+> Task :core:datastore:explodeXmlSourceDebugTest
+> Task :core:datastore:findDeclaredProcsDebugTest FROM-CACHE
+> Task :core:datastore:graphViewDebugTest
+> Task :core:datastore:findAndroidLintersDebugTest
+> Task :core:datastore:explodeJarDebugTest
+> Task :core:datastore:extractPackageNameFromManifestDebugTest
+> Task :core:datastore:findAndroidAssetProvidersDebugTest
+> Task :core:datastore:findAndroidResImportsDebugTest FROM-CACHE
+
+> Task :core:datastore:compileDebugUnitTestKotlin
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/vno-dagp/core/datastore/src/test/kotlin/com/example/finalguard/nodagp/core/datastore/session/AuthTokenStoreTest.kt:139:40 Java type mismatch: inferred type is 'Boolean?', but 'Boolean' was expected.
+
+> Task :core:datastore:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:datastore:explodeByteCodeSourceDebugTest
+> Task :core:datastore:synthesizeProjectViewDebugTest
+> Task :core:datastore:discoverDuplicationForCompileDebugTest
+> Task :core:datastore:discoverDuplicationForRuntimeDebugTest
+> Task :core:datastore:findNativeLibsDebugTest FROM-CACHE
+> Task :core:datastore:serviceLoaderDebugTest
+> Task :core:datastore:abiAnalysisRelease FROM-CACHE
+> Task :core:datastore:artifactsReportRelease
+> Task :core:datastore:explodeAssetSourceRelease FROM-CACHE
+> Task :core:datastore:findKotlinMagicDebugTest
+> Task :core:datastore:explodeByteCodeSourceRelease FROM-CACHE
+> Task :core:datastore:explodeCodeSourceRelease FROM-CACHE
+> Task :core:datastore:explodeXmlSourceRelease FROM-CACHE
+> Task :core:datastore:findDeclaredProcsRelease FROM-CACHE
+> Task :core:datastore:graphViewRelease
+> Task :core:datastore:synthesizeProjectViewRelease
+> Task :core:datastore:discoverDuplicationForCompileRelease
+> Task :core:datastore:synthesizeDependenciesDebugTest
+> Task :core:datastore:computeActualUsageDebugTest
+> Task :core:datastore:findAndroidLintersRelease FROM-CACHE
+> Task :core:datastore:discoverDuplicationForRuntimeRelease
+> Task :core:datastore:extractPackageNameFromManifestRelease FROM-CACHE
+> Task :core:datastore:explodeJarRelease FROM-CACHE
+> Task :core:datastore:findAndroidAssetProvidersRelease FROM-CACHE
+> Task :core:datastore:findAndroidResImportsRelease FROM-CACHE
+> Task :core:datastore:findKotlinMagicRelease FROM-CACHE
+> Task :core:datastore:findNativeLibsRelease FROM-CACHE
+> Task :core:datastore:serviceLoaderRelease FROM-CACHE
+> Task :core:datastore:synthesizeDependenciesRelease FROM-CACHE
+> Task :core:datastore:computeAndroidScoreDebug
+> Task :core:datastore:computeAndroidScoreDebugTest
+> Task :core:datastore:computeActualUsageRelease
+> Task :core:datastore:computeAndroidScoreRelease
+> Task :core:datastore:writeProjectMetadata
+> Task :core:datastore:computeAdvice
+> Task :core:datastore:filterAdvice
+> Task :core:designsystem:artifactsReportDebug
+> Task :core:designsystem:explodeAssetSourceDebug FROM-CACHE
+> Task :core:designsystem:abiAnalysisDebug
+> Task :core:designsystem:explodeByteCodeSourceDebug
+> Task :core:designsystem:explodeXmlSourceDebug
+> Task :core:designsystem:findDeclaredProcsDebug FROM-CACHE
+> Task :core:designsystem:findDeclarations
+> Task :core:designsystem:graphViewDebug
+> Task :app:compileStagingReleaseKotlin
+> Task :app:transformStagingDebugClassesWithAsm
+> Task :core:designsystem:findAndroidLintersDebug
+> Task :core:designsystem:explodeCodeSourceDebug
+> Task :core:designsystem:synthesizeProjectViewDebug
+> Task :core:designsystem:discoverDuplicationForCompileDebug
+> Task :app:explodeByteCodeSourceStagingDebug
+> Task :core:designsystem:discoverDuplicationForRuntimeDebug
+> Task :core:designsystem:extractPackageNameFromManifestDebug
+> Task :core:designsystem:findAndroidAssetProvidersDebug FROM-CACHE
+> Task :app:synthesizeProjectViewStagingDebug
+> Task :core:designsystem:findAndroidResImportsDebug
+> Task :app:discoverDuplicationForCompileStagingDebug
+> Task :app:discoverDuplicationForRuntimeStagingDebug
+> Task :app:computeActualUsageStagingDebug
+> Task :core:designsystem:findNativeLibsDebug FROM-CACHE
+> Task :core:designsystem:serviceLoaderDebug
+> Task :core:testing:compose:verifyApiPurity
+> Task :core:testing:compose:verifyModuleDependencies
+> Task :core:testing:compose:preBuild
+> Task :core:testing:compose:preDebugBuild
+> Task :core:designsystem:findKotlinMagicDebug
+> Task :core:testing:compose:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:explodeAssetSourceDebugTest FROM-CACHE
+> Task :core:designsystem:generateDebugComposePreviewRobolectricTests
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:testing:writeDebugAarMetadata
+> Task :core:testing:compose:writeDebugAarMetadata
+> Task :core:designsystem:checkDebugUnitTestAarMetadata
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths
+> Task :core:designsystem:generateDebugUnitTestResources
+> Task :app:compileStagingReleaseJavaWithJavac
+> Task :app:hiltCollectClassesStagingRelease
+> Task :core:testing:generateDebugEmptyResourceFiles
+> Task :core:testing:compose:generateDebugEmptyResourceFiles
+> Task :app:hiltAggregateDepsStagingRelease FROM-CACHE
+> Task :core:designsystem:explodeJarDebug
+> Task :core:designsystem:synthesizeDependenciesDebug
+> Task :core:designsystem:computeActualUsageDebug
+> Task :core:testing:compose:processDebugManifest
+> Task :core:designsystem:mergeDebugUnitTestManifest
+> Task :core:designsystem:processDebugUnitTestManifest
+> Task :core:designsystem:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:designsystem:explodeCodeSourceDebugTest
+> Task :core:designsystem:explodeXmlSourceDebugTest
+> Task :core:designsystem:findDeclaredProcsDebugTest FROM-CACHE
+> Task :core:designsystem:graphViewDebugTest
+> Task :core:testing:compose:prepareLintJarForPublish
+> Task :core:designsystem:findAndroidLintersDebugTest
+> Task :core:designsystem:extractPackageNameFromManifestDebugTest
+> Task :core:testing:compose:generateDebugAssets UP-TO-DATE
+> Task :core:testing:compose:mergeDebugAssets
+> Task :core:designsystem:findAndroidAssetProvidersDebugTest
+> Task :core:designsystem:mergeDebugUnitTestResources
+> Task :core:designsystem:findAndroidResImportsDebugTest
+> Task :core:designsystem:abiAnalysisRelease FROM-CACHE
+> Task :core:designsystem:artifactsReportRelease
+> Task :core:designsystem:explodeAssetSourceRelease FROM-CACHE
+> Task :core:designsystem:explodeByteCodeSourceRelease FROM-CACHE
+> Task :core:designsystem:explodeCodeSourceRelease FROM-CACHE
+> Task :core:designsystem:explodeXmlSourceRelease FROM-CACHE
+> Task :core:designsystem:findDeclaredProcsRelease FROM-CACHE
+> Task :core:designsystem:graphViewRelease
+> Task :core:designsystem:synthesizeProjectViewRelease
+> Task :core:designsystem:discoverDuplicationForCompileRelease
+> Task :core:designsystem:discoverDuplicationForRuntimeRelease
+> Task :core:designsystem:findAndroidLintersRelease
+> Task :core:designsystem:explodeJarRelease
+> Task :core:designsystem:extractPackageNameFromManifestRelease
+> Task :core:designsystem:findAndroidAssetProvidersRelease FROM-CACHE
+> Task :core:designsystem:findAndroidResImportsRelease
+> Task :core:designsystem:findKotlinMagicRelease
+> Task :core:designsystem:findNativeLibsRelease FROM-CACHE
+> Task :core:designsystem:serviceLoaderRelease
+> Task :core:designsystem:synthesizeDependenciesRelease
+> Task :core:designsystem:computeActualUsageRelease
+> Task :core:designsystem:computeAndroidScoreDebug
+> Task :core:designsystem:processDebugUnitTestResources
+> Task :core:designsystem:writeProjectMetadata
+> Task :core:designsystem:computeAndroidScoreRelease
+> Task :core:mvi:artifactsReportDebug
+> Task :core:mvi:explodeAssetSourceDebug FROM-CACHE
+> Task :core:mvi:explodeByteCodeSourceDebug
+> Task :core:mvi:explodeCodeSourceDebug
+> Task :core:testing:compose:compileDebugKotlin
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:mvi:explodeXmlSourceDebug
+> Task :core:testing:compose:bundleLibCompileToJarDebug
+> Task :core:testing:compose:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:artifactsReportDebugTest
+> Task :core:mvi:abiAnalysisDebug
+> Task :core:designsystem:findKotlinMagicDebugTest
+> Task :core:testing:compose:processDebugJavaRes
+> Task :core:testing:compose:createFullJarDebug
+> Task :core:designsystem:findNativeLibsDebugTest FROM-CACHE
+> Task :core:designsystem:serviceLoaderDebugTest
+> Task :core:mvi:findDeclaredProcsDebug FROM-CACHE
+> Task :core:mvi:findDeclarations
+> Task :core:mvi:graphViewDebug
+> Task :core:mvi:synthesizeProjectViewDebug
+> Task :core:mvi:discoverDuplicationForCompileDebug
+> Task :core:mvi:discoverDuplicationForRuntimeDebug
+> Task :core:mvi:findAndroidLintersDebug
+> Task :core:mvi:explodeJarDebug
+> Task :core:mvi:extractPackageNameFromManifestDebug
+> Task :core:mvi:findAndroidAssetProvidersDebug FROM-CACHE
+> Task :core:mvi:findAndroidResImportsDebug
+> Task :app:hiltJavaCompileStagingRelease
+> Task :core:mvi:findKotlinMagicDebug
+> Task :core:mvi:findNativeLibsDebug FROM-CACHE
+> Task :core:mvi:serviceLoaderDebug
+> Task :core:mvi:synthesizeDependenciesDebug
+> Task :core:mvi:computeActualUsageDebug
+> Task :core:mvi:artifactsReportDebugTest
+> Task :core:mvi:explodeAssetSourceDebugTest FROM-CACHE
+> Task :core:mvi:preDebugUnitTestBuild
+> Task :core:designsystem:compileDebugUnitTestKotlin
+> Task :core:designsystem:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:designsystem:explodeByteCodeSourceDebugTest
+> Task :core:designsystem:synthesizeProjectViewDebugTest
+> Task :core:designsystem:discoverDuplicationForCompileDebugTest
+> Task :core:mvi:compileDebugUnitTestKotlin
+> Task :core:mvi:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:mvi:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:mvi:explodeByteCodeSourceDebugTest
+> Task :core:mvi:explodeCodeSourceDebugTest
+> Task :core:mvi:explodeXmlSourceDebugTest
+> Task :core:mvi:findDeclaredProcsDebugTest FROM-CACHE
+> Task :core:mvi:graphViewDebugTest
+> Task :core:mvi:synthesizeProjectViewDebugTest
+> Task :core:mvi:discoverDuplicationForCompileDebugTest
+> Task :core:mvi:discoverDuplicationForRuntimeDebugTest
+> Task :core:mvi:findAndroidLintersDebugTest
+> Task :core:designsystem:discoverDuplicationForRuntimeDebugTest
+> Task :core:mvi:extractPackageNameFromManifestDebugTest
+> Task :core:mvi:findAndroidAssetProvidersDebugTest
+> Task :core:mvi:findAndroidResImportsDebugTest FROM-CACHE
+> Task :core:mvi:findKotlinMagicDebugTest
+> Task :core:mvi:findNativeLibsDebugTest FROM-CACHE
+> Task :core:mvi:serviceLoaderDebugTest
+> Task :core:mvi:abiAnalysisRelease FROM-CACHE
+> Task :core:mvi:artifactsReportRelease
+> Task :core:mvi:explodeAssetSourceRelease FROM-CACHE
+> Task :core:mvi:explodeByteCodeSourceRelease FROM-CACHE
+> Task :core:mvi:explodeCodeSourceRelease FROM-CACHE
+> Task :core:mvi:explodeXmlSourceRelease FROM-CACHE
+> Task :core:mvi:findDeclaredProcsRelease FROM-CACHE
+> Task :core:mvi:graphViewRelease
+> Task :core:mvi:synthesizeProjectViewRelease
+> Task :core:mvi:explodeJarDebugTest
+> Task :core:mvi:discoverDuplicationForCompileRelease
+> Task :core:mvi:discoverDuplicationForRuntimeRelease
+> Task :core:mvi:findAndroidLintersRelease FROM-CACHE
+> Task :core:mvi:explodeJarRelease FROM-CACHE
+> Task :core:mvi:extractPackageNameFromManifestRelease FROM-CACHE
+> Task :core:mvi:findAndroidAssetProvidersRelease FROM-CACHE
+> Task :core:mvi:findAndroidResImportsRelease FROM-CACHE
+> Task :core:mvi:findKotlinMagicRelease FROM-CACHE
+> Task :core:mvi:findNativeLibsRelease FROM-CACHE
+> Task :core:mvi:synthesizeDependenciesDebugTest
+> Task :core:mvi:serviceLoaderRelease FROM-CACHE
+> Task :core:mvi:synthesizeDependenciesRelease FROM-CACHE
+> Task :core:mvi:computeActualUsageDebugTest
+> Task :core:mvi:computeAndroidScoreDebug
+> Task :core:mvi:computeActualUsageRelease
+> Task :core:mvi:computeAndroidScoreRelease
+> Task :core:mvi:computeAndroidScoreDebugTest
+> Task :core:mvi:writeProjectMetadata
+> Task :app:transformStagingReleaseClassesWithAsm
+> Task :core:mvi:computeAdvice
+> Task :core:mvi:filterAdvice
+> Task :core:navigation:artifactsReportDebug
+> Task :core:navigation:explodeAssetSourceDebug FROM-CACHE
+> Task :app:explodeByteCodeSourceStagingRelease
+> Task :core:navigation:explodeByteCodeSourceDebug
+> Task :app:synthesizeProjectViewStagingRelease
+> Task :core:navigation:explodeCodeSourceDebug
+> Task :core:navigation:abiAnalysisDebug
+> Task :core:navigation:explodeXmlSourceDebug
+> Task :core:navigation:findDeclaredProcsDebug FROM-CACHE
+> Task :core:navigation:findDeclarations
+> Task :app:discoverDuplicationForCompileStagingRelease
+> Task :core:navigation:findAndroidLintersDebug
+> Task :app:discoverDuplicationForRuntimeStagingRelease
+> Task :core:navigation:graphViewDebug
+> Task :core:navigation:synthesizeProjectViewDebug
+> Task :core:navigation:discoverDuplicationForCompileDebug
+> Task :app:computeActualUsageStagingRelease
+> Task :core:navigation:discoverDuplicationForRuntimeDebug
+> Task :core:navigation:extractPackageNameFromManifestDebug
+> Task :core:navigation:findAndroidAssetProvidersDebug FROM-CACHE
+> Task :core:navigation:findAndroidResImportsDebug
+> Task :core:navigation:findKotlinMagicDebug
+> Task :core:navigation:findNativeLibsDebug FROM-CACHE
+> Task :core:navigation:serviceLoaderDebug
+> Task :core:navigation:artifactsReportDebugTest
+> Task :core:navigation:explodeAssetSourceDebugTest FROM-CACHE
+> Task :core:navigation:preDebugUnitTestBuild
+> Task :core:navigation:checkDebugUnitTestAarMetadata
+> Task :core:navigation:mapDebugUnitTestSourceSetPaths
+> Task :core:navigation:generateDebugUnitTestResources FROM-CACHE
+> Task :app:computeAdvice
+> Task :app:filterAdvice
+> Task :core:navigation:explodeJarDebug
+> Task :core:navigation:mergeDebugUnitTestManifest
+> Task :core:navigation:processDebugUnitTestManifest
+> Task :core:navigation:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:navigation:explodeXmlSourceDebugTest
+> Task :core:navigation:findDeclaredProcsDebugTest FROM-CACHE
+> Task :core:navigation:graphViewDebugTest
+> Task :core:navigation:findAndroidLintersDebugTest
+> Task :core:navigation:synthesizeDependenciesDebug
+> Task :core:navigation:computeActualUsageDebug
+> Task :core:navigation:extractPackageNameFromManifestDebugTest
+> Task :core:navigation:findAndroidAssetProvidersDebugTest
+> Task :core:navigation:findAndroidResImportsDebugTest
+> Task :core:designsystem:explodeJarDebugTest
+> Task :core:navigation:findKotlinMagicDebugTest
+> Task :core:navigation:findNativeLibsDebugTest FROM-CACHE
+> Task :core:navigation:serviceLoaderDebugTest
+> Task :core:navigation:abiAnalysisRelease FROM-CACHE
+> Task :core:navigation:artifactsReportRelease
+> Task :core:navigation:explodeAssetSourceRelease FROM-CACHE
+> Task :core:navigation:explodeByteCodeSourceRelease FROM-CACHE
+> Task :core:navigation:explodeCodeSourceRelease FROM-CACHE
+> Task :core:navigation:explodeXmlSourceRelease FROM-CACHE
+> Task :core:navigation:findDeclaredProcsRelease FROM-CACHE
+> Task :core:navigation:graphViewRelease
+> Task :core:navigation:synthesizeProjectViewRelease
+> Task :core:navigation:mergeDebugUnitTestResources
+> Task :core:navigation:discoverDuplicationForCompileRelease
+> Task :core:navigation:discoverDuplicationForRuntimeRelease
+> Task :core:navigation:findAndroidLintersRelease
+> Task :core:designsystem:synthesizeDependenciesDebugTest
+> Task :core:designsystem:computeActualUsageDebugTest
+> Task :core:navigation:explodeJarDebugTest
+> Task :core:designsystem:computeAndroidScoreDebugTest
+> Task :core:designsystem:computeAdvice
+> Task :core:designsystem:filterAdvice
+> Task :core:navigation:extractPackageNameFromManifestRelease
+> Task :core:navigation:findAndroidAssetProvidersRelease FROM-CACHE
+> Task :core:navigation:findAndroidResImportsRelease
+> Task :core:navigation:explodeJarRelease
+> Task :core:navigation:findNativeLibsRelease FROM-CACHE
+> Task :core:navigation:serviceLoaderRelease
+> Task :core:navigation:processDebugUnitTestResources
+> Task :core:navigation:findKotlinMagicRelease
+> Task :core:navigation:computeAndroidScoreDebug
+> Task :core:navigation:writeProjectMetadata
+> Task :core:navigation:synthesizeDependenciesDebugTest
+> Task :core:navigation:synthesizeDependenciesRelease
+> Task :core:network:artifactsReportDebug
+> Task :core:network:abiAnalysisDebug
+> Task :core:network:explodeAssetSourceDebug FROM-CACHE
+> Task :core:navigation:computeAndroidScoreRelease
+> Task :core:navigation:computeActualUsageRelease
+> Task :core:network:explodeXmlSourceDebug
+> Task :core:network:findDeclaredProcsDebug FROM-CACHE
+> Task :core:network:findDeclarations
+> Task :core:network:explodeByteCodeSourceDebug
+> Task :core:network:explodeCodeSourceDebug
+> Task :core:network:findAndroidLintersDebug
+> Task :core:network:graphViewDebug
+> Task :core:network:extractPackageNameFromManifestDebug
+> Task :core:network:synthesizeProjectViewDebug
+> Task :core:network:discoverDuplicationForCompileDebug
+> Task :core:network:findAndroidAssetProvidersDebug
+> Task :core:network:findAndroidResImportsDebug
+> Task :core:network:discoverDuplicationForRuntimeDebug
+> Task :core:network:findNativeLibsDebug FROM-CACHE
+> Task :core:network:serviceLoaderDebug
+> Task :core:network:artifactsReportDebugTest
+> Task :core:network:explodeAssetSourceDebugTest FROM-CACHE
+> Task :core:network:preDebugUnitTestBuild
+> Task :core:network:checkDebugUnitTestAarMetadata
+> Task :core:network:mapDebugUnitTestSourceSetPaths
+> Task :core:network:generateDebugUnitTestResources FROM-CACHE
+> Task :core:network:findKotlinMagicDebug
+> Task :core:network:mergeDebugUnitTestManifest
+> Task :core:network:processDebugUnitTestManifest
+> Task :core:network:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:network:explodeXmlSourceDebugTest
+> Task :core:network:findDeclaredProcsDebugTest FROM-CACHE
+> Task :core:network:graphViewDebugTest
+> Task :core:network:findAndroidLintersDebugTest
+> Task :core:network:mergeDebugUnitTestResources
+> Task :core:network:explodeJarDebug
+> Task :core:network:processDebugUnitTestResources
+> Task :core:network:synthesizeDependenciesDebug
+> Task :core:network:computeActualUsageDebug
+> Task :core:network:kspDebugUnitTestKotlin
+> Task :core:network:extractPackageNameFromManifestDebugTest
+> Task :core:network:explodeCodeSourceDebugTest
+> Task :core:network:findAndroidAssetProvidersDebugTest
+> Task :core:network:findAndroidResImportsDebugTest
+> Task :core:network:findKotlinMagicDebugTest
+> Task :core:network:findNativeLibsDebugTest FROM-CACHE
+> Task :core:network:serviceLoaderDebugTest
+> Task :core:network:abiAnalysisRelease FROM-CACHE
+> Task :core:network:artifactsReportRelease
+> Task :core:network:explodeAssetSourceRelease FROM-CACHE
+> Task :core:network:explodeByteCodeSourceRelease FROM-CACHE
+> Task :core:network:explodeCodeSourceRelease FROM-CACHE
+> Task :core:network:explodeXmlSourceRelease FROM-CACHE
+> Task :core:network:findDeclaredProcsRelease FROM-CACHE
+> Task :core:network:graphViewRelease
+> Task :core:network:synthesizeProjectViewRelease
+> Task :core:network:discoverDuplicationForCompileRelease
+> Task :core:network:discoverDuplicationForRuntimeRelease
+> Task :core:network:findAndroidLintersRelease FROM-CACHE
+> Task :core:network:explodeJarDebugTest
+> Task :core:network:explodeJarRelease
+> Task :core:network:extractPackageNameFromManifestRelease FROM-CACHE
+> Task :core:network:findAndroidAssetProvidersRelease FROM-CACHE
+> Task :core:network:findAndroidResImportsRelease FROM-CACHE
+> Task :core:network:synthesizeDependenciesDebugTest
+> Task :core:network:findNativeLibsRelease FROM-CACHE
+> Task :core:network:serviceLoaderRelease FROM-CACHE
+> Task :core:network:computeAndroidScoreDebug
+> Task :core:network:writeProjectMetadata
+> Task :core:network:findKotlinMagicRelease
+> Task :core:testing:abiAnalysisDebug
+> Task :core:testing:artifactsReportDebug
+> Task :core:testing:explodeAssetSourceDebug FROM-CACHE
+> Task :core:testing:explodeByteCodeSourceDebug
+> Task :core:testing:explodeCodeSourceDebug
+> Task :core:testing:explodeXmlSourceDebug
+> Task :core:testing:findDeclaredProcsDebug FROM-CACHE
+> Task :core:testing:findDeclarations
+> Task :core:testing:graphViewDebug
+> Task :core:testing:synthesizeProjectViewDebug
+> Task :core:testing:discoverDuplicationForCompileDebug
+> Task :core:network:synthesizeDependenciesRelease
+> Task :core:navigation:kspDebugUnitTestKotlin
+> Task :core:testing:discoverDuplicationForRuntimeDebug
+> Task :core:network:computeActualUsageRelease
+> Task :core:navigation:explodeCodeSourceDebugTest
+> Task :core:testing:findAndroidLintersDebug FROM-CACHE
+> Task :core:network:computeAndroidScoreRelease
+> Task :core:testing:extractPackageNameFromManifestDebug
+> Task :core:testing:findAndroidAssetProvidersDebug FROM-CACHE
+> Task :core:testing:findAndroidResImportsDebug
+> Task :core:testing:findKotlinMagicDebug
+> Task :core:testing:findNativeLibsDebug FROM-CACHE
+> Task :core:testing:serviceLoaderDebug
+> Task :core:testing:preReleaseBuild
+> Task :core:testing:explodeJarDebug
+> Task :core:testing:synthesizeDependenciesDebug
+> Task :core:testing:computeActualUsageDebug
+> Task :core:testing:javaPreCompileRelease FROM-CACHE
+> Task :core:testing:artifactsReportRelease
+> Task :core:testing:explodeAssetSourceRelease FROM-CACHE
+> Task :core:testing:explodeCodeSourceRelease FROM-CACHE
+> Task :core:testing:processReleaseManifest FROM-CACHE
+> Task :core:testing:explodeXmlSourceRelease FROM-CACHE
+> Task :core:network:compileDebugUnitTestKotlin
+> Task :core:network:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:testing:findDeclaredProcsRelease FROM-CACHE
+> Task :core:testing:graphViewRelease
+> Task :core:testing:findAndroidLintersRelease FROM-CACHE
+> Task :core:testing:explodeJarRelease FROM-CACHE
+> Task :core:testing:extractPackageNameFromManifestRelease FROM-CACHE
+> Task :core:testing:findAndroidAssetProvidersRelease FROM-CACHE
+> Task :core:testing:findAndroidResImportsRelease FROM-CACHE
+> Task :core:testing:findKotlinMagicRelease FROM-CACHE
+> Task :core:testing:findNativeLibsRelease FROM-CACHE
+> Task :core:testing:serviceLoaderRelease FROM-CACHE
+> Task :core:network:explodeByteCodeSourceDebugTest
+> Task :core:testing:synthesizeDependenciesRelease FROM-CACHE
+> Task :core:network:synthesizeProjectViewDebugTest
+> Task :core:testing:computeAndroidScoreDebug
+> Task :core:network:discoverDuplicationForCompileDebugTest
+> Task :core:network:discoverDuplicationForRuntimeDebugTest
+> Task :core:network:computeAndroidScoreDebugTest
+> Task :core:testing:writeProjectMetadata
+> Task :core:testing:compileReleaseKotlin
+> Task :core:testing:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:testing:abiAnalysisRelease FROM-CACHE
+> Task :core:testing:explodeByteCodeSourceRelease FROM-CACHE
+> Task :core:testing:synthesizeProjectViewRelease
+> Task :core:testing:discoverDuplicationForCompileRelease
+> Task :core:testing:discoverDuplicationForRuntimeRelease
+> Task :core:testing:computeActualUsageRelease
+> Task :core:testing:computeAndroidScoreRelease
+> Task :core:network:computeActualUsageDebugTest
+> Task :core:testing:computeAdvice
+> Task :core:testing:filterAdvice
+> Task :core:ui:artifactsReportDebug
+> Task :core:ui:explodeAssetSourceDebug FROM-CACHE
+> Task :core:ui:abiAnalysisDebug
+> Task :core:ui:explodeCodeSourceDebug
+> Task :core:network:computeAdvice
+> Task :core:ui:explodeByteCodeSourceDebug
+> Task :core:ui:findDeclaredProcsDebug FROM-CACHE
+> Task :core:ui:explodeXmlSourceDebug
+> Task :core:ui:findDeclarations
+> Task :core:ui:findAndroidLintersDebug
+> Task :core:network:filterAdvice
+> Task :core:ui:extractPackageNameFromManifestDebug
+> Task :core:ui:graphViewDebug
+> Task :core:ui:synthesizeProjectViewDebug
+> Task :core:ui:findAndroidAssetProvidersDebug
+> Task :core:ui:discoverDuplicationForCompileDebug
+> Task :core:ui:discoverDuplicationForRuntimeDebug
+> Task :core:ui:findAndroidResImportsDebug
+> Task :core:ui:findNativeLibsDebug FROM-CACHE
+> Task :core:ui:serviceLoaderDebug
+> Task :core:ui:artifactsReportDebugTest
+> Task :core:ui:explodeAssetSourceDebugTest FROM-CACHE
+> Task :core:ui:preDebugUnitTestBuild
+> Task :core:ui:checkDebugUnitTestAarMetadata
+> Task :core:ui:mapDebugUnitTestSourceSetPaths
+> Task :core:ui:generateDebugUnitTestResources FROM-CACHE
+> Task :core:ui:findKotlinMagicDebug
+> Task :core:ui:mergeDebugUnitTestManifest
+> Task :core:ui:processDebugUnitTestManifest
+> Task :core:ui:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:ui:explodeCodeSourceDebugTest
+> Task :core:ui:explodeXmlSourceDebugTest
+> Task :core:ui:findDeclaredProcsDebugTest FROM-CACHE
+> Task :core:ui:graphViewDebugTest
+> Task :core:ui:findAndroidLintersDebugTest
+> Task :core:ui:explodeJarDebug
+> Task :core:ui:synthesizeDependenciesDebug
+> Task :core:ui:computeActualUsageDebug
+> Task :core:ui:extractPackageNameFromManifestDebugTest
+> Task :core:ui:findAndroidAssetProvidersDebugTest
+> Task :core:ui:findAndroidResImportsDebugTest
+
+> Task :core:navigation:compileDebugUnitTestKotlin
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/vno-dagp/core/navigation/src/test/kotlin/com/example/finalguard/nodagp/core/navigation/NavDisplayHostTest.kt:28:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/vno-dagp/core/navigation/src/test/kotlin/com/example/finalguard/nodagp/core/navigation/ShortcutsTest.kt:25:16 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+
+> Task :core:ui:findKotlinMagicDebugTest
+> Task :core:ui:findNativeLibsDebugTest FROM-CACHE
+> Task :core:ui:serviceLoaderDebugTest
+> Task :core:ui:abiAnalysisRelease FROM-CACHE
+> Task :core:ui:explodeJarDebugTest
+> Task :core:ui:artifactsReportRelease
+> Task :core:ui:explodeAssetSourceRelease FROM-CACHE
+> Task :core:ui:explodeByteCodeSourceRelease FROM-CACHE
+> Task :core:ui:explodeCodeSourceRelease FROM-CACHE
+> Task :core:ui:explodeXmlSourceRelease FROM-CACHE
+> Task :core:ui:findDeclaredProcsRelease FROM-CACHE
+> Task :core:ui:graphViewRelease
+> Task :core:ui:synthesizeProjectViewRelease
+> Task :core:ui:discoverDuplicationForCompileRelease
+> Task :core:ui:mergeDebugUnitTestResources
+> Task :core:ui:discoverDuplicationForRuntimeRelease
+> Task :core:ui:findAndroidLintersRelease
+> Task :core:ui:synthesizeDependenciesDebugTest
+> Task :core:ui:extractPackageNameFromManifestRelease
+> Task :core:ui:findAndroidAssetProvidersRelease FROM-CACHE
+> Task :core:ui:findAndroidResImportsRelease
+> Task :core:ui:findKotlinMagicRelease
+> Task :core:ui:findNativeLibsRelease FROM-CACHE
+> Task :core:ui:serviceLoaderRelease
+> Task :core:ui:processDebugUnitTestResources
+> Task :core:navigation:compileDebugUnitTestJavaWithJavac
+> Task :core:navigation:hiltCollectClassesDebugUnitTest
+> Task :core:ui:computeAndroidScoreDebug
+> Task :core:ui:writeProjectMetadata
+> Task :core:ui:explodeJarRelease
+> Task :core:ui:synthesizeDependenciesRelease
+> Task :core:testing:compose:abiAnalysisDebug
+> Task :core:ui:computeActualUsageRelease
+> Task :core:ui:computeAndroidScoreRelease
+> Task :core:testing:compose:explodeAssetSourceDebug FROM-CACHE
+> Task :core:testing:compose:artifactsReportDebug
+> Task :core:testing:compose:explodeByteCodeSourceDebug
+> Task :core:testing:compose:explodeCodeSourceDebug
+> Task :core:testing:compose:findDeclaredProcsDebug FROM-CACHE
+> Task :core:testing:compose:explodeXmlSourceDebug
+> Task :core:testing:compose:findDeclarations
+> Task :core:testing:compose:findAndroidLintersDebug
+> Task :core:testing:compose:graphViewDebug
+> Task :core:testing:compose:synthesizeProjectViewDebug
+> Task :core:testing:compose:discoverDuplicationForCompileDebug
+> Task :core:testing:compose:discoverDuplicationForRuntimeDebug
+> Task :core:testing:compose:extractPackageNameFromManifestDebug
+> Task :core:testing:compose:findAndroidAssetProvidersDebug FROM-CACHE
+> Task :core:testing:compose:findAndroidResImportsDebug
+> Task :core:testing:compose:findKotlinMagicDebug
+> Task :core:testing:compose:findNativeLibsDebug FROM-CACHE
+
+> Task :core:ui:compileDebugUnitTestKotlin
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/vno-dagp/core/ui/src/test/kotlin/com/example/finalguard/nodagp/core/ui/MessageHostTest.kt:27:16 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+
+> Task :core:ui:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:serviceLoaderDebug
+> Task :core:ui:explodeByteCodeSourceDebugTest
+> Task :core:testing:compose:artifactsReportDebugTest
+> Task :core:ui:synthesizeProjectViewDebugTest
+> Task :core:testing:compose:explodeAssetSourceDebugTest FROM-CACHE
+> Task :core:ui:discoverDuplicationForCompileDebugTest
+> Task :core:ui:discoverDuplicationForRuntimeDebugTest
+> Task :core:ui:computeAndroidScoreDebugTest
+> Task :core:testing:compose:preDebugUnitTestBuild
+> Task :core:testing:compose:checkDebugUnitTestAarMetadata
+> Task :core:testing:compose:mapDebugUnitTestSourceSetPaths
+> Task :core:testing:compose:generateDebugUnitTestResources FROM-CACHE
+> Task :core:ui:computeActualUsageDebugTest
+> Task :core:ui:computeAdvice
+> Task :core:ui:filterAdvice
+> Task :core:testing:compose:mergeDebugUnitTestManifest
+> Task :core:testing:compose:processDebugUnitTestManifest
+> Task :core:testing:compose:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:testing:compose:explodeCodeSourceDebugTest
+> Task :core:testing:compose:explodeJarDebug
+> Task :core:testing:compose:explodeXmlSourceDebugTest
+> Task :core:testing:compose:findDeclaredProcsDebugTest FROM-CACHE
+> Task :core:testing:compose:graphViewDebugTest
+> Task :core:testing:compose:findAndroidLintersDebugTest
+> Task :core:testing:compose:synthesizeDependenciesDebug
+> Task :core:testing:compose:computeActualUsageDebug
+> Task :core:testing:compose:extractPackageNameFromManifestDebugTest
+> Task :core:testing:compose:findAndroidAssetProvidersDebugTest
+> Task :core:testing:compose:findAndroidResImportsDebugTest FROM-CACHE
+> Task :core:testing:compose:mergeDebugUnitTestResources
+> Task :core:testing:compose:findKotlinMagicDebugTest
+> Task :core:testing:compose:findNativeLibsDebugTest FROM-CACHE
+> Task :core:testing:compose:serviceLoaderDebugTest
+> Task :core:testing:compose:preReleaseBuild
+> Task :core:testing:compose:explodeJarDebugTest
+> Task :core:testing:compose:processDebugUnitTestResources
+> Task :core:testing:compose:synthesizeDependenciesDebugTest
+> Task :core:testing:compose:javaPreCompileRelease FROM-CACHE
+> Task :core:testing:compose:artifactsReportRelease
+> Task :core:testing:compose:explodeAssetSourceRelease FROM-CACHE
+> Task :core:testing:compose:explodeCodeSourceRelease FROM-CACHE
+> Task :core:testing:compose:processReleaseManifest FROM-CACHE
+> Task :core:testing:compose:explodeXmlSourceRelease FROM-CACHE
+> Task :core:testing:compose:findDeclaredProcsRelease FROM-CACHE
+> Task :core:testing:compose:graphViewRelease
+> Task :core:testing:compose:findAndroidLintersRelease
+> Task :core:testing:compose:compileReleaseKotlin
+> Task :core:testing:compose:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:abiAnalysisRelease FROM-CACHE
+> Task :core:testing:compose:explodeByteCodeSourceRelease FROM-CACHE
+> Task :core:testing:compose:synthesizeProjectViewRelease
+> Task :core:testing:compose:discoverDuplicationForCompileRelease
+> Task :core:testing:compose:discoverDuplicationForRuntimeRelease
+> Task :core:testing:compose:extractPackageNameFromManifestRelease
+> Task :core:testing:compose:findAndroidAssetProvidersRelease FROM-CACHE
+> Task :core:testing:compose:findAndroidResImportsRelease
+> Task :core:testing:compose:compileDebugUnitTestKotlin
+> Task :core:testing:compose:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:explodeByteCodeSourceDebugTest
+> Task :core:testing:compose:synthesizeProjectViewDebugTest
+> Task :core:testing:compose:findKotlinMagicRelease
+> Task :core:testing:compose:discoverDuplicationForCompileDebugTest
+> Task :core:testing:compose:findNativeLibsRelease FROM-CACHE
+> Task :core:testing:compose:serviceLoaderRelease
+> Task :core:testing:compose:discoverDuplicationForRuntimeDebugTest
+> Task :core:testing:compose:computeAndroidScoreDebug
+> Task :core:testing:compose:computeAndroidScoreDebugTest
+> Task :core:testing:compose:writeProjectMetadata
+> Task :core:testing:compose:computeActualUsageDebugTest
+> Task :core:testing:compose:explodeJarRelease
+> Task :core:testing:compose:synthesizeDependenciesRelease
+> Task :core:testing:compose:computeAndroidScoreRelease
+> Task :core:testing:compose:computeActualUsageRelease
+> Task :core:testing:compose:computeAdvice
+> Task :core:testing:compose:filterAdvice
+> Task :core:navigation:hiltAggregateDepsDebugUnitTest
+> Task :core:navigation:hiltJavaCompileDebugUnitTest
+> Task :core:navigation:transformDebugUnitTestClassesWithAsm
+> Task :core:navigation:explodeByteCodeSourceDebugTest
+> Task :core:navigation:synthesizeProjectViewDebugTest
+> Task :core:navigation:computeAndroidScoreDebugTest
+> Task :core:navigation:discoverDuplicationForCompileDebugTest
+> Task :core:navigation:discoverDuplicationForRuntimeDebugTest
+> Task :core:navigation:computeActualUsageDebugTest
+> Task :core:navigation:computeAdvice
+> Task :core:navigation:filterAdvice
+> Task :generateBuildHealth
+
+> Task :buildHealth
+
+
+[1;33mThere were non-fatal dependency violations.[0m
+See report at file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/vno-dagp/build/reports/dependency-analysis/build-health-report.txt 
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/vno-dagp/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 3m 36s
+1263 actionable tasks: 941 executed, 322 from cache
+Configuration cache entry stored.
+# exit: 0
+# end: Mon Oct 26 00:30:17 IST 2026
+# seconds: 559

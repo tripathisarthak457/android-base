@@ -1,0 +1,8 @@
+D:\projects\tools\.overhaul\out\NOUI-FINAL\NAV\ui-everything\core\navigation\shell\build.gradle.kts: Warning: Unknown issue id "ExitAwaitPointerEventScope" [UnknownIssueId]
+D:\projects\tools\.overhaul\out\NOUI-FINAL\NAV\ui-everything\core\navigation\shell\build.gradle.kts: Warning: Unknown issue id "UnrememberedState" [UnknownIssueId]
+
+   Explanation for issues of type "UnknownIssueId":
+   Lint will report this issue if it is configured with an issue id it does
+   not recognize in for example Gradle files or lint.xml configuration files.
+
+0 errors, 2 warnings

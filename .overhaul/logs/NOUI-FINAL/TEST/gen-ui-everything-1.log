@@ -1,0 +1,7 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI-NEXT-TEST/generator
+# head: 516491331
+# command: memwait python create_project.py --spec specs/ui-everything.json --preset everything --out out/NOUI-FINAL/TEST/ui-everything
+# start: Sun Oct 25 14:12:37 IST 2026
+[locked:memwait] 447 MB available, 4018 MB commit left; waiting for 1500 MB
+[locked:memwait] 918 MB available, 3911 MB commit left; waiting for 1500 MB
+[locked:memwait] 239 MB available, 404 MB commit left; waiting for 1500 MB

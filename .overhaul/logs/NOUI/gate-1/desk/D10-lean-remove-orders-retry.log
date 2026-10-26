@@ -1,0 +1,21 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI/generator
+# command: python remove_feature.py --project D:/projects/tools/.overhaul/out/NOUI/gate-1/d10-lean-compact --yes orders
+# start: Sun Oct 25 10:06:53 IST 2026
+
+Removing
+────────
+  delete  feature/orders/
+  delete  feature/  (no module left in it)
+
+  and the lines naming them in:
+    settings.gradle.kts, app/build.gradle.kts, ui/AppDestinations.kt
+
+
+  The modules are out of the build, but these folders could not all be deleted:
+    feature/orders/
+    feature/
+  Something still holds files in them open, usually the Gradle daemon (./gradlew --stop)
+  or the IDE. Delete them once it lets go.
+
+# end: Sun Oct 25 10:06:55 IST 2026
+EXIT=1

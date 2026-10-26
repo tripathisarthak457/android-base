@@ -1,0 +1,91 @@
+== 23:51:27 noui-everything: 1 line(s) removed
+[locked:gradle] waiting for the lock (pid 9200 since 2026-10-25 23:49:21: ./gradlew :build-logic:convention:test verifyCodeRules verifyModuleDependencies checkComposeStability spotlessKotlinChec)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: verifyCodeRules
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:analytics:verifyCodeRules
+> Task :core:common:verifyCodeRules
+> Task :core:applock:verifyCodeRules
+> Task :core:database:verifyCodeRules
+> Task :core:datastore:verifyCodeRules
+> Task :core:flags:verifyCodeRules
+> Task :app:verifyCodeRules
+> Task :core:media:verifyCodeRules
+> Task :core:devtools:verifyCodeRules
+> Task :core:designsystem:verifyCodeRules
+> Task :core:navigation:verifyCodeRules
+> Task :core:mvi:verifyCodeRules
+> Task :core:notification:verifyCodeRules
+> Task :core:testing:verifyCodeRules
+> Task :core:playstore:verifyCodeRules
+> Task :core:network:verifyCodeRules
+> Task :core:ui:verifyCodeRules
+> Task :data:feed:verifyCodeRules
+> Task :data:auth:verifyCodeRules
+> Task :data:profile:verifyCodeRules
+> Task :data:sample:verifyCodeRules
+> Task :data:search:verifyCodeRules
+> Task :feature:feed:verifyCodeRules
+> Task :feature:onboarding:verifyCodeRules
+> Task :core:perfhud:verifyCodeRules
+> Task :feature:profile:verifyCodeRules
+> Task :feature:search:verifyCodeRules
+> Task :feature:settings:verifyCodeRules
+> Task :core:testing:compose:verifyCodeRules
+> Task :feature:auth:verifyCodeRules
+> Task :feature:sample:verifyCodeRules
+
+BUILD SUCCESSFUL in 13s
+35 actionable tasks: 31 executed, 4 up-to-date
+Configuration cache entry stored.
+EXIT rules-noui-everything 0 seconds=197
+== 23:54:45 noui-lean: 1 line(s) removed
+[locked:gradle] waiting for the lock (pid 2588 since 2026-10-25 23:54:45: ./gradlew :core:navigation:shell:testDebugUnitTest :app:testDevDebugUnitTest :catalog:compileDebugKotlin --continue)
+[locked:gradle] waiting for the lock (pid 10020 since 2026-10-25 23:58:40: ./gradlew :data:orders:testDebugUnitTest :feature:orders:testDebugUnitTest :app:assembleDevDebug --continue)
+[locked:gradle] waiting for the lock (pid 13332 since 2026-10-26 00:00:04: ./gradlew testDebugUnitTest testDevDebugUnitTest --continue)
+[locked:gradle] waiting for the lock (pid 3036 since 2026-10-26 00:08:32: ./gradlew :core:designsystem:testDebugUnitTest --rerun)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: verifyCodeRules
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:verifyCodeRules
+> Task :core:datastore:verifyCodeRules
+> Task :core:mvi:verifyCodeRules
+> Task :app:verifyCodeRules
+> Task :core:testing:verifyCodeRules
+> Task :core:navigation:verifyCodeRules
+> Task :core:ui:verifyCodeRules
+> Task :core:designsystem:verifyCodeRules
+> Task :core:network:verifyCodeRules
+> Task :core:testing:compose:verifyCodeRules
+
+BUILD SUCCESSFUL in 12s
+14 actionable tasks: 10 executed, 4 up-to-date
+Configuration cache entry stored.
+EXIT rules-noui-lean 0 seconds=960
+== 00:10:45 done

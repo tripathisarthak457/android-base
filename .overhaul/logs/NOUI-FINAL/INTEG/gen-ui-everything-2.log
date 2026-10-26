@@ -1,0 +1,54 @@
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppMenu.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppCheckbox.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppRadio.kt
+
+Summary
+───────
+           App  Final Integ (FinalInteg)
+       Package  com.example.finalinteg.ui
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, appstatus, auth, browser, catalog, ci,
+                coil, collections, coverage, crashlytics, database,
+                datadisplay, deeplink, depsanalysis, devtools, firebase,
+                firebaseanalytics, flags, formatting, formfields, forms,
+                googlefonts, googlesignin, language, leakcanary, licenses,
+                liquidglass, media, network, offlinequeue, onboarding,
+                paging, perfhud, performance, pickers, playstore, profile,
+                push, remoteconfig, sample, search, settings, websocket
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\INTEG\ui-everything-2
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\INTEG\ui-everything-2 and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Commit app/dependencies/ after the first ./gradlew check: it is the list of libraries the prod
+       release ships, which every later check compares against.
+    4. Replace app/google-services.json: the included one is a placeholder.
+
+GEN 0
+
+  Done.
+
+    core/designsystem/src/main/kotlin/com/example/finalinteg/ui/core/designsystem/component/tag/AppTag.kt
+    core/designsystem/src/test/kotlin/com/example/finalinteg/ui/core/designsystem/component/tag/AppTagTest.kt
+
+  Next
+    1. Make it yours: what AppTag draws, its sizes and colours in AppTagDefaults, its KDoc and its test,
+       keeping it stateless and every value from AppTheme (docs/DESIGN-SYSTEM.md).
+    2. ./gradlew :core:designsystem:verifyCodeRules :core:designsystem:testDebugUnitTest
+
+ADD 0

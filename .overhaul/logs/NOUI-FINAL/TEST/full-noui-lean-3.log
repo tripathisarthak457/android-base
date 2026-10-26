@@ -1,0 +1,11 @@
+# cwd: D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/noui-lean-3
+# project: gen-noui-lean-3.log (head 207a12d2f)
+# command: locked gradle ./gradlew check assembleDevDebug --continue
+# D: free before: 82 GB
+# start: Sun Oct 25 20:53:09 IST 2026
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Starting a Gradle Daemon, 2 busy and 1 incompatible and 1 stopped Daemons could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: check assembleDevDebug
+EXIT=127
+# end: Sun Oct 25 20:53:21 IST 2026

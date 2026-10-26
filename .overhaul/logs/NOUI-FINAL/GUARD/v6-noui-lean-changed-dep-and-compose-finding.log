@@ -1,0 +1,72 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/vno-lean
+# command: locked gradle ./gradlew :app:dependencyGuard spotlessCheck --continue
+# start: Mon Oct 26 00:10:58 IST 2026
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :app:dependencyGuard spotlessCheck
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :app:dependencyGuard FAILED
+[33mDependencies Changed in :app for configuration prodReleaseRuntimeClasspath[0m
+[32m+ junit:junit:4.13.2[0m
+[32m+ org.hamcrest:hamcrest-core:1.3[0m
+
+[31mIf this is intentional, re-baseline using ./gradlew :app:dependencyGuardBaseline
+Or use ./gradlew dependencyGuardBaseline to re-baseline dependencies in entire project.[0m
+
+
+> Task :spotlessKotlin
+> Task :spotlessKotlinCheck FAILED
+
+FAILURE: Build completed with 2 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':app:dependencyGuard' (registered by plugin 'com.dropbox.dependency-guard').
+> Dependencies Changed in :app for configuration prodReleaseRuntimeClasspath
+  + junit:junit:4.13.2
+  + org.hamcrest:hamcrest-core:1.3
+  
+  If this is intentional, re-baseline using ./gradlew :app:dependencyGuardBaseline
+  Or use ./gradlew dependencyGuardBaseline to re-baseline dependencies in entire project.
+  
+
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+2: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':spotlessKotlinCheck' (registered in build file 'build.gradle.kts').
+> There were 1 lint error(s), they must be fixed or suppressed.
+  core/designsystem/src/main/kotlin/com/example/finalguard/nolean/core/designsystem/ScratchViolation.kt:L8 ktlint(compose:mutable-params-check) Using mutable objects as state in Compose will cause your users to see incorrect or stale data in your app. (...)
+  Resolve these lints or suppress with `suppressLintsFor`
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+BUILD FAILED in 12s
+7 actionable tasks: 3 executed, 4 up-to-date
+Configuration cache entry stored.
+# exit: 1
+# end: Mon Oct 26 00:11:12 IST 2026
+# seconds: 14

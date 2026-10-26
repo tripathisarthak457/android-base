@@ -1,0 +1,58 @@
+04:42:42
+7b6a63621
+ M add_component.py
+ M variants/noui/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppMotion.kt
+ M variants/noui/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppTheme.kt
+ M variants/noui/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppTypography.kt
+ M ../templates/android/core/designsystem/build.gradle.kts
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/animation/AppTransitions.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/animation/Emphasis.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/animation/SymbolEffects.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/button/AppButton.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/collections/AppCarousel.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/collections/AppImageViewer.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/collections/AppReorderableList.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/container/AppBottomActionBar.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/container/AppCard.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/container/AppDivider.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/container/AppScaffold.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/datadisplay/AppAnimatedCounter.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/datadisplay/AppBarChart.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/datadisplay/AppDataTable.kt
+ M ../templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/datadisplay/AppKeyValueGrid.kt
+
+Summary
+───────
+           App  Final After (FinalAfter)
+       Package  com.example.finalafter.xui6
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  ci, coil, deeplink, googlefonts, leakcanary, network
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\xui6
+
+  ! No feature gives the app a tab, so a 'home' module was scaffolded under
+  ! feature/home and data/home. Its repository has no source yet: give it one,
+  ! or rename the module.
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\xui6 and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Commit app/dependencies/ after the first ./gradlew check: it is the list of libraries the prod
+       release ships, which every later check compares against.
+
+EXIT 0
+04:42:45

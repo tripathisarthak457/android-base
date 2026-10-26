@@ -1,0 +1,44 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/vui-ev
+# command: locked gradle ./gradlew help --configuration-cache -Dorg.gradle.unsafe.isolated-projects=true
+# start: Sun Oct 25 23:53:14 IST 2026
+[locked:gradle] waiting for the lock (pid 18860 since 2026-10-25 23:53:14: ./gradlew verifyCodeRules verifyModuleDependencies verifyApiPurity :core:navigation:checkComposeStability :core:navigati)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Isolated Projects is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: help
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :help
+
+Welcome to Gradle 9.7.1.
+
+To run a build, run gradlew <task> ...
+
+To see a list of available tasks, run gradlew tasks
+
+To see more detail about a task, run gradlew help --task <task>
+
+To see a list of command-line options, run gradlew --help
+
+For more detail on using Gradle, see https://docs.gradle.org/9.7.1/userguide/command_line_interface.html
+
+For troubleshooting, visit https://help.gradle.org
+
+BUILD SUCCESSFUL in 10s
+5 actionable tasks: 1 executed, 4 up-to-date
+Configuration cache entry stored.
+# exit: 0
+# end: Sun Oct 25 23:56:56 IST 2026
+# seconds: 222

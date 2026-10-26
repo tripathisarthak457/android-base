@@ -1,0 +1,63 @@
+# cwd: D:/projects/tools/.overhaul/wt/NOUI-NEXT-TEST/generator
+# command: D:/projects/tools/.overhaul/bin/memwait C:/Users/crazyhusir/AppData/Local/Python/pythoncore-3.15-64/python.exe create_project.py --spec D:/projects/tools/.overhaul/out/NOUI-NEXT/TEST/specs/ui-everything.json --preset everything --out D:/projects/tools/.overhaul/out/NOUI-NEXT/TEST/ui-l7probe --no-zip --json --force
+# start: Sun Oct 25 09:59:16 IST 2026
+[locked:memwait] 1479 MB available, 8024 MB commit left; waiting for 1500 MB
+{
+  "ok": true,
+  "target": "android",
+  "project_name": "TestLane",
+  "path": "D:\\projects\\tools\\.overhaul\\out\\NOUI-NEXT\\TEST\\ui-l7probe",
+  "resolved_features": [
+    "analytics",
+    "applock",
+    "appstatus",
+    "auth",
+    "browser",
+    "catalog",
+    "ci",
+    "coil",
+    "collections",
+    "coverage",
+    "crashlytics",
+    "database",
+    "datadisplay",
+    "deeplink",
+    "depsanalysis",
+    "devtools",
+    "firebase",
+    "firebaseanalytics",
+    "flags",
+    "formatting",
+    "formfields",
+    "forms",
+    "googlefonts",
+    "googlesignin",
+    "language",
+    "leakcanary",
+    "licenses",
+    "liquidglass",
+    "media",
+    "network",
+    "offlinequeue",
+    "onboarding",
+    "paging",
+    "perfhud",
+    "performance",
+    "pickers",
+    "playstore",
+    "profile",
+    "push",
+    "remoteconfig",
+    "sample",
+    "search",
+    "settings",
+    "websocket"
+  ],
+  "feature_modules": [],
+  "notes": [],
+  "warnings": [],
+  "ignored_fields": [],
+  "summary": []
+}
+# end: Sun Oct 25 10:00:21 IST 2026
+EXIT=0

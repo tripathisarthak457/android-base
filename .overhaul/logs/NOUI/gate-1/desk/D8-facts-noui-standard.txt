@@ -1,0 +1,5 @@
+noui-standard: test result files in 17 modules; tests=402 failures=0 errors=0 skipped=0
+modules with failures/errors: none
+DesignSystemDocTest: ('build-logic:convention', 'TEST-com.example.gateone.buildlogic.guard.DesignSystemDocTest.xml', '3', '0', '0', '0')
+apk: app/build/outputs/apk/dev/debug/app-dev-debug.apk 16731607
+apk: app/build/outputs/apk/prod/release/app-prod-release.apk 1421922

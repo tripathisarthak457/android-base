@@ -1,0 +1,61 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Starting a Gradle Daemon, 3 busy and 2 stopped Daemons could not be reused, use --status for details
+> Task :convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :convention:pluginDescriptors
+> Task :convention:processResources
+> Task :convention:processTestResources NO-SOURCE
+> Task :convention:compileKotlin
+> Task :convention:compileJava NO-SOURCE
+> Task :convention:classes
+> Task :convention:jar
+> Task :convention:pluginUnderTestMetadata
+
+> Task :convention:compileTestKotlin
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:131:85 Syntax error: Expecting '"'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:131:85 Syntax error: Expecting ','.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:133:2 Unresolved reference 'Composable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:133:17 Anonymous functions with names are prohibited.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:133:39 Syntax error: Expecting ','.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:134:1 Too many arguments for 'fun File.writeText(text: String, charset: Charset = ...): Unit'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:134:5 Syntax error: Expecting '"'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:135:9 Syntax error: Expecting ')'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:135:13 Unresolved reference 'back'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:135:18 Syntax error: Expecting an element.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:135:26 Syntax error: Expecting an element.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:136:44 Syntax error: Expecting '"'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:136:44 Syntax error: Expecting ','.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:138:2 Unresolved reference 'Composable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:139:5 Anonymous functions with names are prohibited.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:139:25 Unresolved reference 'BackHandler'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:139:40 Syntax error: Expecting ','.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:140:1 Too many arguments for 'fun File.writeText(text: String, charset: Charset = ...): Unit'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:140:3 Syntax error: Expecting '"'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:140:3 Syntax error: Expecting ')'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:143:91 Syntax error: Expecting '"'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:143:91 Syntax error: Expecting ','.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:144:1 Argument type mismatch: actual type is 'String', but 'Charset' was expected.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:144:3 Syntax error: Expecting '"'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:144:3 Syntax error: Expecting ')'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:149:26 Unresolved reference 'host'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:149:32 Unresolved reference 'back'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/src/test/kotlin/com/example/fixone/uiev/buildlogic/android/ComposeStabilityTest.kt:192:2 Syntax error: Missing '}.
+
+> Task :convention:compileTestKotlin FAILED
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':convention:compileTestKotlin' (registered by plugin class 'org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 44s
+6 actionable tasks: 6 executed

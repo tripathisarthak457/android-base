@@ -1,0 +1,8 @@
+Sun Oct 25 17:55:00 IST 2026
+Browser pane smoke on the build of next-build-smoke.log (NEXT_PUBLIC_API_BASE=http://127.0.0.1:8080), API from api-server built at HEAD with PYTHON_BIN=C:/Users/crazyhusir/AppData/Local/Python/pythoncore-3.15-64/python.exe, no DATABASE_URL:
+- / (landing): renders, title "Android base — a project generator".
+- /#configure: Platform, Project, Features, Look steps; Features step lists presets Lean 6, Standard 18, Everything 43 and the feature groups from /api/options; the "No UI components" box is present.
+- /admin: the token screen ("Admin", Token field, Sign in); no token typed.
+- Console errors: none.
+Both servers stopped (node next start PID 17412, api-server.exe PID 13124).
+Sun Oct 25 17:55:01 IST 2026

@@ -1,0 +1,55 @@
+npm warn exec The following package was not found and will be installed: node@26.12.1
+✖ with the box ticked, no preset or feature promises what a project without UI components lacks (3.338ms)
+✖ a setup-only site, whatever the visitor asked for, promises none of it either (1.1293ms)
+✔ with the box unticked every preset and feature reads as the catalogue writes it (1.5252ms)
+✔ with the box ticked a feature module reads as such a project gets it; unticked the site keeps its own words (1.3531ms)
+✔ the option describes only features it keeps, and presets the target has (0.8222ms)
+✔ with the box ticked the haptics toggle says what the value sets; unticked the site keeps its own words (1.8115ms)
+✔ on a setup-only site the Project step's summary names no tab and no home module, whatever was picked (1.8498ms)
+✔ with UI components the summary still lists the tabs, and the home module scaffolded when nothing gives one (1.06ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 6
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 154.6314
+
+✖ failing tests:
+
+test at features\catalogue\copy.test.ts:61:1
+✖ with the box ticked, no preset or feature promises what a project without UI components lacks (3.338ms)
+  AssertionError [ERR_ASSERTION]: languages
+      at assertPromisesNothingMissing (file:///D:/projects/tools/.overhaul/wt/NOUI-FINAL/web/frontend/features/catalogue/copy.test.ts:56:14)
+      at TestContext.<anonymous> (file:///D:/projects/tools/.overhaul/wt/NOUI-FINAL/web/frontend/features/catalogue/copy.test.ts:62:3)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'English is always included. Each one you pick translates every screen and joins the language picker.',
+    expected: /language picker/i,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at features\catalogue\copy.test.ts:65:1
+✖ a setup-only site, whatever the visitor asked for, promises none of it either (1.1293ms)
+  AssertionError [ERR_ASSERTION]: languages
+      at assertPromisesNothingMissing (file:///D:/projects/tools/.overhaul/wt/NOUI-FINAL/web/frontend/features/catalogue/copy.test.ts:56:14)
+      at TestContext.<anonymous> (file:///D:/projects/tools/.overhaul/wt/NOUI-FINAL/web/frontend/features/catalogue/copy.test.ts:67:3)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'English is always included. Each one you pick translates every screen and joins the language picker.',
+    expected: /language picker/i,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }

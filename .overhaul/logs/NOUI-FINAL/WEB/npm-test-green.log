@@ -1,0 +1,20 @@
+Sun Oct 25 13:58:05 IST 2026
+$ node --test features/admin/{dimensions,columns,filters}.test.ts
+✔ the Generations table has a UI components column beside the preset (0.9311ms)
+✔ a row says with or without UI components, and nothing when its spec was never read (0.1762ms)
+✔ the Adoption panel shows every dimension the API counts, in its order (2.7585ms)
+✔ the share of projects without UI components has its own heading, weekly too (0.3597ms)
+✔ a preset range ends today in UTC and includes both ends (11.6139ms)
+✔ only the filters that are set go into the query, the country uppercased (0.7345ms)
+✔ a custom window is checked the way the API checks it (0.7462ms)
+✔ the UI components filter goes into the query as the API's value, only when set (0.2598ms)
+✔ the filter bar offers the two values the API takes, each named for what it keeps (0.2445ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 216.3491
+exit=0

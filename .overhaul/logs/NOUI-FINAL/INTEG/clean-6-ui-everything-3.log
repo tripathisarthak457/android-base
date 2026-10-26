@@ -1,0 +1,14 @@
+ui-everything-3: removed 13 folders
+   build
+   .gradle
+   build-logic/.gradle
+   build-logic/convention/build
+   catalog/build
+   core/designsystem/build
+   feature/auth/build
+   feature/feed/build
+   feature/onboarding/build
+   feature/profile/build
+   feature/sample/build
+   feature/search/build
+   feature/settings/build

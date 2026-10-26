@@ -1,0 +1,35 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+> Task :convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :convention:compileKotlin FROM-CACHE
+> Task :convention:compileJava NO-SOURCE
+> Task :convention:pluginDescriptors
+> Task :convention:processResources
+> Task :convention:classes
+> Task :convention:jar
+> Task :convention:pluginUnderTestMetadata
+> Task :convention:processTestResources NO-SOURCE
+> Task :convention:compileTestKotlin
+> Task :convention:compileTestJava NO-SOURCE
+> Task :convention:testClasses UP-TO-DATE
+
+> Task :convention:test
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+ComposeStabilityTest > an entry stays while a source declares its function, though the report leaves the function out FAILED
+    org.gradle.api.GradleException at ComposeStabilityTest.kt:147
+
+8 tests completed, 1 failed
+
+> Task :convention:test FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':convention:test'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/FIX1/ui-ev/build-logic/convention/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 7s
+7 actionable tasks: 6 executed, 1 from cache

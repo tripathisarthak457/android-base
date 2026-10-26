@@ -1,0 +1,12 @@
+DIFF templates/android/README.md lean
+DIFF templates/android/README.md standard
+DIFF templates/android/README.md everything
+DIFF templates/android/README.md none
+DIFF templates/android/README.md only-push
+DIFF templates/android/README.md only-onboarding
+DIFF templates/android/README.md only-auth
+DIFF templates/android/README.md only-settings
+DIFF templates/android/README.md push-onboarding
+DIFF templates/android/README.md push-settings
+UI renders compared: 10 differences: 10
+exit 0

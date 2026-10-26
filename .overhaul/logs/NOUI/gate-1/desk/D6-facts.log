@@ -1,0 +1,5 @@
+D6: a spec file without the new field generates as before
+facts (read-only, Sun Oct 25 08:42:42 IST 2026):
+- tools/compare_generations.py default_specs(): 105 specs, 0 name ui_components (the only mention is the timing arm 'after, No UI')
+- D5 (105 specs, before=base export, after=NOUI): identical outside the exceptions, EXIT=0 (D5-compare-generations.log)
+- generator/tests/test_spec.py: test_a_spec_without_the_field_has_ui_components_and_a_record_without_it (line 280) and neighbours; part of D1, suite OK

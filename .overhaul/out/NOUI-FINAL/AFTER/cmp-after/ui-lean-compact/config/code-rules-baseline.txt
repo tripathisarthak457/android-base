@@ -1,0 +1,16 @@
+# Findings verifyCodeRules accepts in code written before its rule existed: `<path> <rule> <count>`.
+# A file may break the rule at most `count` times. An entry higher than what the file breaks fails
+# the build too, so the list only shrinks: lower or delete a line when you fix the code. New code
+# never goes here; fix it, or put a reasoned `// allow(<rule>): <why>` on the line above.
+
+# Screens
+
+# Design system and catalog
+core/designsystem/src/main/kotlin/com/example/cmp/core/designsystem/animation/Emphasis.kt animated-delegate 1
+core/designsystem/src/main/kotlin/com/example/cmp/core/designsystem/theme/tokens/DesignTokens.kt file-length 1
+
+# Navigation shell
+core/navigation/shell/src/main/kotlin/com/example/cmp/core/navigation/shell/presentation/PresentationCard.kt layer-package 1
+core/navigation/shell/src/main/kotlin/com/example/cmp/core/navigation/shell/presentation/PresentationHost.kt layer-package 1
+core/navigation/shell/src/main/kotlin/com/example/cmp/core/navigation/shell/ShellShortcuts.kt legacy-back 1
+core/navigation/shell/src/test/kotlin/com/example/cmp/core/navigation/shell/presentation/PresentationCardTest.kt layer-package 1

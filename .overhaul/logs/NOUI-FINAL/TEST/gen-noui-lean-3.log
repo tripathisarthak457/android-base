@@ -1,0 +1,24 @@
+# cwd: D:/projects/tools/.overhaul/wt/NOUI-NEXT-TEST/generator
+# head: 207a12d2f, uncommitted: 0
+# command: memwait <python> create_project.py --spec D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/specs/noui-lean.json --preset lean --no-ui-components --no-zip --force --out D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/noui-lean-3 --json
+# start: Sun Oct 25 20:53:03 IST 2026
+{
+  "ok": true,
+  "target": "android",
+  "project_name": "FinalTest",
+  "path": "D:\\projects\\tools\\.overhaul\\out\\NOUI-FINAL\\TEST\\noui-lean-3",
+  "resolved_features": [
+    "ci",
+    "coil",
+    "deeplink",
+    "googlefonts",
+    "leakcanary",
+    "network"
+  ],
+  "feature_modules": [],
+  "notes": [],
+  "warnings": [],
+  "ignored_fields": [],
+  "summary": []
+}
+# end: Sun Oct 25 20:53:07 IST 2026

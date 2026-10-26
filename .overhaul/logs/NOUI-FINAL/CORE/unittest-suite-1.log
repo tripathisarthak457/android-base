@@ -1,0 +1,52 @@
+18:32:55
+f22dae024
+...............................................................................................................................................s.........................................................s...........................................ss....................................................................................................................................................................................................Fs...........s.........................s..........s.............................................................................................s.............................
+======================================================================
+FAIL: test_the_templates_are_in_sync (tests.test_sync.RepositoryTest.test_the_templates_are_in_sync)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-NEXT-CORE\generator\tests\test_sync.py", line 50, in test_the_templates_are_in_sync
+    self.assertEqual([], sync_check.check(sync_check.load(REPOSITORY)))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ["core/mvi/UiMessage.kt: only the Android [766 chars]),'"]
+
+Second list contains 7 additional elements.
+First extra element 0:
+"core/mvi/UiMessage.kt: only the Android copy has   'val id: Uuid = Uuid.random(),'"
+
+Diff is 881 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 617 tests in 851.457s
+
+FAILED (failures=1, skipped=9)
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+EXIT 0
+18:47:27

@@ -1,0 +1,35 @@
+05:45:30
+D free GB: 76.2
+./gradlew --offline --continue --no-parallel --no-daemon --no-configuration-cache spotlessApply
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.7.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin FROM-CACHE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :spotlessKotlin
+Format was not able to resolve all violations which (theoretically) can be autocorrected in file D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\rawtpl4\core\navigation\shell\src\test\kotlin\com\base\app\core\navigation\shell\tabs\KeptTabsTest.kt in 3 consecutive runs of format.
+Format was not able to resolve all violations which (theoretically) can be autocorrected in file D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\rawtpl4\core\network\src\main\kotlin\com\base\app\core\network\di\HttpClientModule.kt in 3 consecutive runs of format.
+Format was not able to resolve all violations which (theoretically) can be autocorrected in file D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\rawtpl4\core\network\src\main\kotlin\com\base\app\core\network\di\HttpClientModule.kt in 3 consecutive runs of format.
+
+> Task :spotlessKotlinApply
+> Task :spotlessKotlinGradle
+> Task :spotlessKotlinGradleApply
+> Task :spotlessApply
+
+BUILD SUCCESSFUL in 1m 32s
+8 actionable tasks: 7 executed, 1 from cache
+EXIT 0
+05:47:04

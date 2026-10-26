@@ -1,0 +1,832 @@
+# cwd: D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/mut
+# project: gen-mut.log, mutated by set A (mutate.log)
+# command: locked gradle ./gradlew :feature:auth:testDebugUnitTest :feature:settings:testDebugUnitTest :feature:onboarding:testDebugUnitTest :feature:feed:testDebugUnitTest :core:flags:testDebugUnitTest :core:ui:testDebugUnitTest :core:notification:testDebugUnitTest --continue
+# start: Sun Oct 25 18:00:28 IST 2026
+[locked:gradle] waiting for the lock (pid 12992 since 2026-10-25 17:56:42: ./gradlew :core:mvi:testDebugUnitTest :core:datastore:testDebugUnitTest :core:network:testDebugUnitTest :core:notificati)
+[locked:gradle] waiting for the lock (pid 19040 since 2026-10-25 18:04:59: ./gradlew :core:designsystem:testDebugUnitTest --rerun)
+[locked:gradle] waiting for the lock (pid 15992 since 2026-10-25 18:07:26: ./gradlew check assembleDevDebug --continue)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :feature:auth:testDebugUnitTest :feature:settings:testDebugUnitTest :feature:onboarding:testDebugUnitTest :feature:feed:testDebugUnitTest :core:flags:testDebugUnitTest :core:ui:testDebugUnitTest :core:notification:testDebugUnitTest
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin FROM-CACHE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies FROM-CACHE
+> Task :core:database:verifyModuleDependencies FROM-CACHE
+> Task :core:datastore:verifyModuleDependencies FROM-CACHE
+> Task :core:database:verifyApiPurity FROM-CACHE
+> Task :core:database:preBuild UP-TO-DATE
+> Task :core:database:preDebugBuild UP-TO-DATE
+> Task :core:common:verifyApiPurity FROM-CACHE
+> Task :core:datastore:verifyApiPurity FROM-CACHE
+> Task :core:datastore:preBuild UP-TO-DATE
+> Task :core:datastore:preDebugBuild UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity FROM-CACHE
+> Task :core:designsystem:verifyModuleDependencies FROM-CACHE
+> Task :core:designsystem:preBuild UP-TO-DATE
+> Task :core:designsystem:preDebugBuild UP-TO-DATE
+> Task :core:datastore:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:database:javaPreCompileDebug FROM-CACHE
+> Task :core:mvi:verifyApiPurity FROM-CACHE
+> Task :core:mvi:verifyModuleDependencies FROM-CACHE
+> Task :core:mvi:preBuild UP-TO-DATE
+> Task :core:mvi:preDebugBuild UP-TO-DATE
+> Task :core:designsystem:packageDebugResources FROM-CACHE
+> Task :core:common:compileKotlin FROM-CACHE
+> Task :core:mvi:javaPreCompileDebug FROM-CACHE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar
+> Task :core:navigation:verifyApiPurity FROM-CACHE
+> Task :core:navigation:verifyModuleDependencies FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:generateDebugRFile FROM-CACHE
+> Task :core:datastore:kspDebugKotlin FROM-CACHE
+> Task :core:database:kspDebugKotlin FROM-CACHE
+> Task :core:mvi:compileDebugKotlin FROM-CACHE
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:datastore:compileDebugKotlin FROM-CACHE
+> Task :core:mvi:bundleLibRuntimeToJarDebug
+> Task :core:datastore:processDebugJavaRes
+> Task :core:mvi:processDebugJavaRes
+> Task :core:navigation:preBuild UP-TO-DATE
+> Task :core:navigation:preDebugBuild UP-TO-DATE
+> Task :core:navigation:generateDebugResources FROM-CACHE
+> Task :core:navigation:packageDebugResources FROM-CACHE
+> Task :core:navigation:processDebugNavigationResources FROM-CACHE
+> Task :core:navigation:parseDebugLocalResources FROM-CACHE
+> Task :core:navigation:generateDebugRFile FROM-CACHE
+> Task :core:navigation:javaPreCompileDebug FROM-CACHE
+> Task :core:network:verifyApiPurity FROM-CACHE
+> Task :core:network:verifyModuleDependencies FROM-CACHE
+> Task :core:network:preBuild UP-TO-DATE
+> Task :core:network:preDebugBuild UP-TO-DATE
+> Task :core:network:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:verifyApiPurity FROM-CACHE
+> Task :core:testing:verifyModuleDependencies FROM-CACHE
+> Task :core:testing:preBuild UP-TO-DATE
+> Task :core:testing:preDebugBuild UP-TO-DATE
+> Task :core:database:compileDebugKotlin FROM-CACHE
+> Task :core:datastore:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:database:processDebugJavaRes
+> Task :core:datastore:bundleLibRuntimeToJarDebug
+> Task :core:database:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:database:copyRoomSchemas NO-SOURCE
+> Task :core:database:bundleLibRuntimeToJarDebug
+> Task :core:datastore:bundleLibCompileToJarDebug
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :core:database:bundleLibCompileToJarDebug
+> Task :core:mvi:bundleLibCompileToJarDebug
+> Task :core:testing:compileDebugKotlin FROM-CACHE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibRuntimeToJarDebug
+> Task :core:testing:processDebugJavaRes
+> Task :core:ui:verifyModuleDependencies FROM-CACHE
+> Task :core:designsystem:compileDebugKotlin FROM-CACHE
+> Task :core:ui:verifyApiPurity
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:auth:verifyApiPurity FROM-CACHE
+> Task :core:network:kspDebugKotlin FROM-CACHE
+> Task :core:designsystem:processDebugJavaRes
+> Task :core:ui:preBuild
+> Task :core:ui:preDebugBuild
+> Task :core:ui:generateDebugResources FROM-CACHE
+> Task :core:ui:packageDebugResources FROM-CACHE
+> Task :core:ui:processDebugNavigationResources FROM-CACHE
+> Task :core:ui:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:ui:generateDebugRFile FROM-CACHE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :data:auth:verifyModuleDependencies FROM-CACHE
+> Task :data:auth:preBuild UP-TO-DATE
+> Task :data:auth:preDebugBuild UP-TO-DATE
+> Task :data:auth:javaPreCompileDebug FROM-CACHE
+> Task :data:auth:preDebugTestFixturesBuild UP-TO-DATE
+> Task :core:ui:javaPreCompileDebug FROM-CACHE
+> Task :data:auth:javaPreCompileDebugTestFixtures FROM-CACHE
+> Task :feature:auth:verifyModuleDependencies FROM-CACHE
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :feature:auth:generateDebugComposePreviewRobolectricTests FROM-CACHE
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :feature:auth:verifyApiPurity
+> Task :core:network:compileDebugKotlin FROM-CACHE
+> Task :core:designsystem:compileDebugLibraryResources FROM-CACHE
+> Task :feature:auth:preBuild
+> Task :feature:auth:preDebugBuild
+> Task :core:navigation:kspDebugKotlin FROM-CACHE
+> Task :feature:auth:generateDebugResources FROM-CACHE
+> Task :core:network:processDebugJavaRes
+> Task :feature:auth:processDebugNavigationResources FROM-CACHE
+> Task :feature:auth:javaPreCompileDebug FROM-CACHE
+> Task :core:navigation:mapDebugSourceSetPaths
+> Task :feature:auth:packageDebugResources FROM-CACHE
+> Task :feature:auth:parseDebugLocalResources FROM-CACHE
+> Task :core:navigation:compileDebugLibraryResources FROM-CACHE
+> Task :core:ui:mapDebugSourceSetPaths
+> Task :core:ui:compileDebugLibraryResources FROM-CACHE
+> Task :feature:auth:generateDebugRFile FROM-CACHE
+> Task :core:datastore:writeDebugAarMetadata
+> Task :core:database:writeDebugAarMetadata
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:mvi:writeDebugAarMetadata
+> Task :core:navigation:writeDebugAarMetadata
+> Task :core:network:writeDebugAarMetadata
+> Task :core:testing:writeDebugAarMetadata
+> Task :core:ui:writeDebugAarMetadata
+> Task :data:auth:writeDebugAarMetadata
+> Task :data:auth:writeDebugTestFixturesAarMetadata
+> Task :feature:auth:preDebugUnitTestBuild
+> Task :feature:auth:writeDebugAarMetadata
+> Task :core:network:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:testing:compose:verifyModuleDependencies FROM-CACHE
+> Task :core:testing:compose:verifyApiPurity FROM-CACHE
+> Task :core:testing:compose:preBuild UP-TO-DATE
+> Task :core:testing:compose:preDebugBuild UP-TO-DATE
+> Task :core:testing:compose:writeDebugAarMetadata
+> Task :core:network:bundleLibRuntimeToJarDebug
+> Task :feature:auth:mapDebugSourceSetPaths
+> Task :core:network:bundleLibCompileToJarDebug
+> Task :feature:auth:compileDebugLibraryResources FROM-CACHE
+> Task :feature:auth:mapDebugUnitTestSourceSetPaths
+> Task :core:database:generateDebugEmptyResourceFiles
+> Task :core:datastore:generateDebugEmptyResourceFiles
+> Task :data:auth:kspDebugKotlin FROM-CACHE
+> Task :core:mvi:generateDebugEmptyResourceFiles
+> Task :core:network:generateDebugEmptyResourceFiles
+> Task :core:testing:generateDebugEmptyResourceFiles
+> Task :data:auth:generateDebugEmptyResourceFiles
+> Task :data:auth:generateDebugTestFixturesEmptyResourceFiles
+> Task :feature:auth:generateDebugUnitTestResources FROM-CACHE
+> Task :core:testing:compose:generateDebugEmptyResourceFiles
+> Task :data:auth:compileDebugKotlin FROM-CACHE
+> Task :data:auth:compileDebugJavaWithJavac FROM-CACHE
+> Task :data:auth:bundleLibRuntimeToJarDebug
+> Task :data:auth:bundleLibCompileToJarDebug
+> Task :core:navigation:compileDebugKotlin FROM-CACHE
+> Task :data:auth:kspDebugTestFixturesKotlin FROM-CACHE
+> Task :core:navigation:processDebugJavaRes
+> Task :data:auth:compileDebugTestFixturesKotlin FROM-CACHE
+> Task :data:auth:compileDebugTestFixturesJavaWithJavac NO-SOURCE
+> Task :data:auth:bundleLibRuntimeToJarDebugTestFixtures
+> Task :data:auth:processDebugJavaRes
+> Task :core:navigation:compileDebugJavaWithJavac FROM-CACHE
+> Task :data:auth:processDebugTestFixturesJavaRes
+> Task :data:auth:bundleLibCompileToJarDebugTestFixtures
+> Task :core:database:processDebugManifest FROM-CACHE
+> Task :core:datastore:processDebugManifest FROM-CACHE
+> Task :core:designsystem:extractDeepLinksDebug FROM-CACHE
+> Task :core:designsystem:processDebugManifest FROM-CACHE
+> Task :core:mvi:processDebugManifest FROM-CACHE
+> Task :core:navigation:extractDeepLinksDebug FROM-CACHE
+> Task :core:navigation:processDebugManifest FROM-CACHE
+> Task :core:network:processDebugManifest FROM-CACHE
+> Task :core:testing:processDebugManifest FROM-CACHE
+> Task :core:ui:extractDeepLinksDebug FROM-CACHE
+> Task :core:ui:processDebugManifest FROM-CACHE
+> Task :data:auth:processDebugManifest FROM-CACHE
+> Task :data:auth:processDebugTestFixturesManifest FROM-CACHE
+> Task :feature:auth:extractDeepLinksDebug FROM-CACHE
+> Task :feature:auth:processDebugManifest FROM-CACHE
+> Task :core:testing:compose:processDebugManifest FROM-CACHE
+> Task :core:navigation:transformDebugClassesWithAsm FROM-CACHE
+> Task :core:navigation:bundleLibRuntimeToJarDebug
+> Task :core:navigation:bundleLibCompileToJarDebug
+> Task :feature:auth:checkDebugUnitTestAarMetadata
+> Task :core:testing:compose:compileDebugKotlin FROM-CACHE
+> Task :core:testing:compose:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:bundleLibCompileToJarDebug
+> Task :feature:auth:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:database:generateDebugAssets UP-TO-DATE
+> Task :core:database:mergeDebugAssets
+> Task :core:datastore:generateDebugAssets UP-TO-DATE
+> Task :core:datastore:mergeDebugAssets
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets
+> Task :core:mvi:generateDebugAssets UP-TO-DATE
+> Task :core:mvi:mergeDebugAssets
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:mergeDebugAssets
+> Task :core:network:generateDebugAssets UP-TO-DATE
+> Task :core:network:mergeDebugAssets
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:mergeDebugAssets
+> Task :core:ui:generateDebugAssets UP-TO-DATE
+> Task :core:ui:mergeDebugAssets
+> Task :data:auth:generateDebugAssets UP-TO-DATE
+> Task :data:auth:mergeDebugAssets
+> Task :data:auth:generateDebugTestFixturesAssets UP-TO-DATE
+> Task :data:auth:mergeDebugTestFixturesAssets
+> Task :feature:auth:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:auth:generateDebugAssets UP-TO-DATE
+> Task :feature:auth:mergeDebugAssets
+> Task :feature:auth:mergeDebugUnitTestResources FROM-CACHE
+> Task :core:testing:compose:generateDebugAssets UP-TO-DATE
+> Task :feature:auth:koverFindJar
+> Task :feature:auth:mergeDebugUnitTestManifest
+> Task :core:testing:compose:mergeDebugAssets
+> Task :core:testing:compose:bundleLibRuntimeToJarDebug
+> Task :feature:auth:processDebugUnitTestManifest
+> Task :core:testing:compose:processDebugJavaRes
+> Task :core:datastore:kspDebugTestFixturesKotlin FROM-CACHE
+> Task :core:datastore:preDebugTestFixturesBuild UP-TO-DATE
+> Task :core:datastore:compileDebugTestFixturesKotlin FROM-CACHE
+> Task :core:datastore:javaPreCompileDebugTestFixtures FROM-CACHE
+> Task :core:datastore:compileDebugTestFixturesJavaWithJavac NO-SOURCE
+> Task :core:datastore:bundleLibRuntimeToJarDebugTestFixtures
+> Task :core:datastore:processDebugTestFixturesJavaRes
+> Task :core:notification:verifyApiPurity
+> Task :core:notification:verifyModuleDependencies FROM-CACHE
+> Task :core:notification:preBuild
+> Task :core:notification:preDebugBuild
+> Task :core:notification:generateDebugResources FROM-CACHE
+> Task :feature:auth:mergeDebugUnitTestAssets
+> Task :core:notification:processDebugNavigationResources FROM-CACHE
+> Task :core:notification:javaPreCompileDebug FROM-CACHE
+> Task :core:notification:packageDebugResources FROM-CACHE
+> Task :feature:settings:verifyApiPurity
+> Task :feature:settings:verifyModuleDependencies FROM-CACHE
+> Task :feature:settings:preBuild
+> Task :feature:settings:preDebugBuild
+> Task :core:notification:parseDebugLocalResources FROM-CACHE
+> Task :feature:settings:generateDebugResources FROM-CACHE
+> Task :core:notification:generateDebugRFile FROM-CACHE
+> Task :feature:settings:packageDebugResources FROM-CACHE
+> Task :feature:settings:processDebugNavigationResources FROM-CACHE
+> Task :feature:settings:parseDebugLocalResources FROM-CACHE
+> Task :feature:settings:generateDebugRFile FROM-CACHE
+> Task :feature:settings:javaPreCompileDebug FROM-CACHE
+> Task :core:datastore:bundleLibCompileToJarDebugTestFixtures
+> Task :feature:settings:generateDebugComposePreviewRobolectricTests FROM-CACHE
+> Task :core:notification:mapDebugSourceSetPaths
+> Task :core:notification:compileDebugLibraryResources FROM-CACHE
+> Task :core:datastore:writeDebugTestFixturesAarMetadata
+> Task :core:notification:writeDebugAarMetadata
+> Task :feature:settings:preDebugUnitTestBuild
+> Task :feature:settings:writeDebugAarMetadata
+> Task :feature:settings:checkDebugUnitTestAarMetadata
+> Task :feature:settings:mapDebugSourceSetPaths
+> Task :feature:settings:compileDebugLibraryResources FROM-CACHE
+> Task :feature:settings:mapDebugUnitTestSourceSetPaths
+> Task :core:datastore:generateDebugTestFixturesEmptyResourceFiles
+> Task :feature:settings:generateDebugUnitTestResources FROM-CACHE
+> Task :feature:auth:processDebugUnitTestResources FROM-CACHE
+> Task :feature:auth:packageDebugUnitTestForUnitTest
+> Task :feature:auth:generateDebugUnitTestConfig
+> Task :core:datastore:processDebugTestFixturesManifest FROM-CACHE
+> Task :core:notification:extractDeepLinksDebug FROM-CACHE
+> Task :core:notification:processDebugManifest FROM-CACHE
+> Task :feature:settings:extractDeepLinksDebug FROM-CACHE
+> Task :feature:settings:processDebugManifest FROM-CACHE
+> Task :feature:settings:mergeDebugUnitTestResources FROM-CACHE
+> Task :feature:settings:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:datastore:generateDebugTestFixturesAssets UP-TO-DATE
+> Task :feature:settings:mergeDebugUnitTestManifest
+> Task :core:datastore:mergeDebugTestFixturesAssets
+> Task :core:notification:generateDebugAssets UP-TO-DATE
+> Task :feature:settings:processDebugUnitTestManifest
+> Task :core:notification:mergeDebugAssets
+> Task :feature:settings:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:settings:generateDebugAssets UP-TO-DATE
+> Task :feature:settings:mergeDebugAssets
+> Task :feature:settings:mergeDebugUnitTestAssets
+> Task :feature:settings:koverFindJar
+> Task :feature:onboarding:verifyApiPurity
+> Task :feature:onboarding:verifyModuleDependencies FROM-CACHE
+> Task :feature:onboarding:preBuild
+> Task :feature:onboarding:preDebugBuild
+> Task :feature:onboarding:generateDebugResources FROM-CACHE
+> Task :feature:onboarding:packageDebugResources FROM-CACHE
+> Task :feature:onboarding:processDebugNavigationResources FROM-CACHE
+> Task :feature:onboarding:parseDebugLocalResources FROM-CACHE
+> Task :feature:settings:processDebugUnitTestResources FROM-CACHE
+> Task :feature:onboarding:generateDebugRFile FROM-CACHE
+> Task :feature:settings:packageDebugUnitTestForUnitTest
+> Task :feature:onboarding:javaPreCompileDebug FROM-CACHE
+> Task :feature:settings:generateDebugUnitTestConfig
+> Task :feature:onboarding:preDebugUnitTestBuild
+> Task :feature:onboarding:writeDebugAarMetadata
+> Task :feature:onboarding:generateDebugComposePreviewRobolectricTests FROM-CACHE
+> Task :feature:onboarding:mapDebugSourceSetPaths
+> Task :feature:onboarding:compileDebugLibraryResources FROM-CACHE
+> Task :feature:onboarding:mapDebugUnitTestSourceSetPaths
+> Task :feature:onboarding:generateDebugUnitTestResources FROM-CACHE
+> Task :feature:onboarding:checkDebugUnitTestAarMetadata
+> Task :feature:onboarding:extractDeepLinksDebug FROM-CACHE
+> Task :feature:onboarding:processDebugManifest FROM-CACHE
+> Task :feature:onboarding:mergeDebugUnitTestManifest
+> Task :feature:onboarding:processDebugUnitTestManifest
+> Task :feature:onboarding:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :feature:onboarding:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:onboarding:generateDebugAssets UP-TO-DATE
+> Task :feature:onboarding:mergeDebugAssets
+> Task :feature:onboarding:mergeDebugUnitTestAssets
+> Task :feature:onboarding:koverFindJar
+> Task :data:feed:kspDebugKotlin FROM-CACHE
+> Task :data:feed:verifyApiPurity FROM-CACHE
+> Task :data:feed:verifyModuleDependencies FROM-CACHE
+> Task :data:feed:preBuild UP-TO-DATE
+> Task :data:feed:preDebugBuild UP-TO-DATE
+> Task :data:feed:compileDebugKotlin FROM-CACHE
+> Task :data:feed:javaPreCompileDebug FROM-CACHE
+> Task :feature:onboarding:mergeDebugUnitTestResources FROM-CACHE
+> Task :data:feed:compileDebugJavaWithJavac FROM-CACHE
+> Task :data:feed:bundleLibRuntimeToJarDebug
+> Task :data:feed:bundleLibCompileToJarDebug
+> Task :data:feed:kspDebugTestFixturesKotlin FROM-CACHE
+> Task :feature:onboarding:processDebugUnitTestResources FROM-CACHE
+> Task :data:feed:preDebugTestFixturesBuild UP-TO-DATE
+> Task :feature:onboarding:packageDebugUnitTestForUnitTest
+> Task :feature:onboarding:generateDebugUnitTestConfig
+> Task :data:feed:javaPreCompileDebugTestFixtures FROM-CACHE
+> Task :data:feed:processDebugJavaRes
+> Task :data:feed:compileDebugTestFixturesKotlin FROM-CACHE
+> Task :data:feed:compileDebugTestFixturesJavaWithJavac NO-SOURCE
+> Task :feature:feed:verifyApiPurity
+> Task :data:feed:bundleLibRuntimeToJarDebugTestFixtures
+> Task :feature:feed:verifyModuleDependencies FROM-CACHE
+> Task :feature:feed:preBuild
+> Task :feature:feed:preDebugBuild
+> Task :feature:feed:generateDebugResources FROM-CACHE
+> Task :data:feed:processDebugTestFixturesJavaRes
+> Task :feature:feed:processDebugNavigationResources FROM-CACHE
+> Task :feature:feed:packageDebugResources FROM-CACHE
+> Task :feature:feed:parseDebugLocalResources FROM-CACHE
+> Task :feature:feed:javaPreCompileDebug FROM-CACHE
+> Task :data:feed:bundleLibCompileToJarDebugTestFixtures
+> Task :feature:feed:generateDebugRFile FROM-CACHE
+> Task :data:feed:writeDebugAarMetadata
+> Task :data:feed:writeDebugTestFixturesAarMetadata
+> Task :feature:feed:preDebugUnitTestBuild
+> Task :feature:feed:writeDebugAarMetadata
+> Task :feature:feed:generateDebugComposePreviewRobolectricTests FROM-CACHE
+> Task :feature:feed:mapDebugSourceSetPaths
+> Task :feature:feed:checkDebugUnitTestAarMetadata
+> Task :feature:feed:compileDebugLibraryResources FROM-CACHE
+> Task :feature:feed:mapDebugUnitTestSourceSetPaths
+> Task :data:feed:generateDebugTestFixturesEmptyResourceFiles
+> Task :feature:feed:generateDebugUnitTestResources FROM-CACHE
+> Task :data:feed:generateDebugEmptyResourceFiles
+> Task :data:feed:processDebugManifest FROM-CACHE
+> Task :data:feed:processDebugTestFixturesManifest FROM-CACHE
+> Task :feature:feed:extractDeepLinksDebug FROM-CACHE
+> Task :feature:feed:processDebugManifest FROM-CACHE
+> Task :feature:feed:mergeDebugUnitTestManifest
+> Task :feature:feed:processDebugUnitTestManifest
+> Task :feature:feed:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :data:feed:generateDebugAssets UP-TO-DATE
+> Task :data:feed:mergeDebugAssets
+> Task :data:feed:generateDebugTestFixturesAssets UP-TO-DATE
+> Task :data:feed:mergeDebugTestFixturesAssets
+> Task :feature:feed:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:feed:generateDebugAssets UP-TO-DATE
+> Task :feature:feed:mergeDebugAssets
+> Task :feature:feed:mergeDebugUnitTestAssets
+> Task :feature:feed:koverFindJar
+> Task :feature:feed:mergeDebugUnitTestResources FROM-CACHE
+> Task :feature:feed:processDebugUnitTestResources FROM-CACHE
+> Task :feature:feed:packageDebugUnitTestForUnitTest
+> Task :feature:feed:generateDebugUnitTestConfig
+> Task :core:flags:verifyApiPurity
+> Task :core:flags:verifyModuleDependencies FROM-CACHE
+> Task :core:flags:preBuild
+> Task :core:flags:preDebugBuild
+> Task :core:flags:javaPreCompileDebug FROM-CACHE
+> Task :core:flags:preDebugUnitTestBuild
+> Task :core:flags:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:flags:koverFindJar
+> Task :core:ui:preDebugUnitTestBuild
+> Task :core:ui:generateDebugUnitTestStubRFile FROM-CACHE
+> Task :core:ui:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:ui:koverFindJar
+> Task :core:notification:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:notification:preDebugUnitTestBuild
+> Task :core:notification:mergeDebugUnitTestAssets
+> Task :core:notification:checkDebugUnitTestAarMetadata
+> Task :core:notification:mapDebugUnitTestSourceSetPaths
+> Task :core:notification:generateDebugUnitTestResources FROM-CACHE
+> Task :core:notification:mergeDebugUnitTestResources
+> Task :core:notification:mergeDebugUnitTestManifest
+> Task :core:notification:processDebugUnitTestManifest
+> Task :core:ui:kspDebugKotlin
+> Task :core:notification:processDebugUnitTestResources
+> Task :core:notification:packageDebugUnitTestForUnitTest
+> Task :core:notification:generateDebugUnitTestConfig
+> Task :core:notification:koverFindJar
+> Task :core:notification:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:flags:kspDebugKotlin
+> Task :core:notification:kspDebugKotlin
+> Task :core:flags:compileDebugKotlin
+> Task :core:flags:processDebugJavaRes
+> Task :core:flags:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:flags:bundleLibCompileToJarDebug
+> Task :core:flags:bundleLibRuntimeToJarDebug
+> Task :core:flags:kspDebugUnitTestKotlin FROM-CACHE
+> Task :core:notification:compileDebugKotlin
+> Task :core:flags:compileDebugUnitTestKotlin FROM-CACHE
+> Task :core:flags:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:notification:processDebugJavaRes
+> Task :core:flags:processDebugUnitTestJavaRes
+> Task :core:ui:compileDebugKotlin
+> Task :core:ui:processDebugJavaRes
+> Task :core:notification:compileDebugJavaWithJavac
+> Task :core:ui:compileDebugJavaWithJavac
+> Task :core:ui:bundleLibRuntimeToJarDebug
+> Task :core:ui:bundleLibCompileToJarDebug
+> Task :core:notification:transformDebugClassesWithAsm
+> Task :core:notification:bundleLibRuntimeToJarDebug
+> Task :core:notification:bundleLibCompileToJarDebug
+
+> Task :core:flags:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+LocalFeatureFlagsTest > an override wins until it is reset FAILED
+    org.junit.ComparisonFailure at LocalFeatureFlagsTest.kt:27
+
+> Task :feature:auth:kspDebugKotlin
+> Task :feature:feed:kspDebugKotlin
+> Task :feature:settings:kspDebugKotlin
+> Task :feature:auth:compileDebugKotlin
+The Daemon will expire after the build after running out of JVM Metaspace.
+The project memory settings are likely not configured or are configured to an insufficient value.
+The daemon will restart for the next build, which may increase subsequent build times.
+These settings can be adjusted by setting 'org.gradle.jvmargs' in 'gradle.properties'.
+The currently configured max heap space is '2 GiB' and the configured max metaspace is '1 GiB'.
+For more information on how to set these values, please refer to https://docs.gradle.org/9.7.1/userguide/build_environment.html#sec:configuring_jvm_memory in the Gradle documentation.
+To disable this warning, set 'org.gradle.daemon.performance.disable-logging=true'.
+Daemon will be stopped at the end of the build after running out of JVM Metaspace
+> Task :feature:onboarding:kspDebugKotlin
+> Task :feature:auth:processDebugJavaRes
+> Task :feature:auth:compileDebugJavaWithJavac
+> Task :feature:auth:bundleLibRuntimeToJarDebug
+> Task :feature:auth:bundleLibCompileToJarDebug
+
+> Task :core:flags:testDebugUnitTest
+
+LocalFeatureFlagsTest > observing follows each change of that flag and nothing else FAILED
+    app.cash.turbine.TurbineAssertionError at LocalFeatureFlagsTest.kt:43
+        Caused by: app.cash.turbine.TurbineTimeoutCancellationException at channel.kt:123
+            Caused by: app.cash.turbine.TurbineTimeoutCancellationException at LocalFeatureFlagsTest.kt:43
+
+LocalFeatureFlagsTest > an override of one flag leaves the others alone FAILED
+    java.lang.AssertionError at LocalFeatureFlagsTest.kt:38
+
+> Task :feature:auth:kspDebugUnitTestKotlin
+> Task :feature:settings:compileDebugKotlin
+> Task :feature:settings:compileDebugJavaWithJavac
+> Task :feature:settings:bundleLibRuntimeToJarDebug
+> Task :feature:onboarding:compileDebugKotlin
+> Task :feature:settings:bundleLibCompileToJarDebug
+> Task :feature:settings:processDebugJavaRes
+> Task :feature:settings:kspDebugUnitTestKotlin
+> Task :feature:onboarding:compileDebugJavaWithJavac
+> Task :feature:onboarding:bundleLibRuntimeToJarDebug
+> Task :feature:onboarding:bundleLibCompileToJarDebug
+
+> Task :core:flags:testDebugUnitTest
+
+6 tests completed, 3 failed
+
+> Task :core:flags:testDebugUnitTest FAILED
+> Task :feature:onboarding:processDebugJavaRes
+> Task :feature:auth:compileDebugUnitTestKotlin
+> Task :feature:auth:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:onboarding:kspDebugUnitTestKotlin
+> Task :feature:auth:processDebugUnitTestJavaRes
+> Task :feature:settings:compileDebugUnitTestKotlin
+> Task :feature:settings:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:settings:processDebugUnitTestJavaRes
+> Task :feature:onboarding:compileDebugUnitTestKotlin
+> Task :feature:onboarding:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:onboarding:processDebugUnitTestJavaRes
+> Task :feature:feed:compileDebugKotlin
+> Task :feature:feed:compileDebugJavaWithJavac
+> Task :feature:feed:bundleLibRuntimeToJarDebug
+> Task :feature:feed:bundleLibCompileToJarDebug
+
+> Task :feature:auth:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :feature:feed:kspDebugUnitTestKotlin
+> Task :feature:feed:compileDebugUnitTestKotlin FROM-CACHE
+
+> Task :feature:settings:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :feature:feed:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:feed:processDebugJavaRes
+> Task :feature:feed:processDebugUnitTestJavaRes
+
+> Task :feature:onboarding:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+OnboardingViewModelTest > the flag is written even though leaving clears the screen at once FAILED
+    java.lang.AssertionError at OnboardingViewModelTest.kt:55
+
+OnboardingViewModelTest > skipping counts as finishing, so onboarding never comes back FAILED
+    java.lang.AssertionError at OnboardingViewModelTest.kt:41
+
+> Task :feature:feed:testDebugUnitTest FAILED
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+FeedViewModelTest > a second collector reads the pages already fetched FAILED
+    java.lang.AssertionError at FeedViewModelTest.kt:42
+
+3 tests completed, 1 failed
+
+> Task :feature:feed:finalizeTestRoborazziDebug SKIPPED
+
+> Task :feature:settings:testDebugUnitTest
+
+SettingsViewModelTest > a confirmed sign-out ends the session once FAILED
+    java.lang.AssertionError at SettingsViewModelTest.kt:97
+
+SettingsViewModelTest > of quick picks the last one is what stays FAILED
+    org.junit.ComparisonFailure at SettingsViewModelTest.kt:74
+
+SettingsViewModelTest > the switches store what they were set to FAILED
+    java.lang.AssertionError at SettingsViewModelTest.kt:61
+
+SettingsViewModelTest > the app lock switch stores what it was set to FAILED
+    java.lang.AssertionError at SettingsViewModelTest.kt:86
+
+SettingsViewModelTest > going back to the phone's language is a pick of no language FAILED
+    app.cash.turbine.TurbineAssertionError at SettingsViewModelTest.kt:126
+        Caused by: app.cash.turbine.TurbineTimeoutCancellationException at channel.kt:123
+            Caused by: app.cash.turbine.TurbineTimeoutCancellationException at SettingsViewModelTest.kt:126
+
+SettingsViewModelTest > a picked language is shown and handed to the platform to apply FAILED
+    app.cash.turbine.TurbineAssertionError at SettingsViewModelTest.kt:115
+        Caused by: app.cash.turbine.TurbineTimeoutCancellationException at channel.kt:123
+            Caused by: app.cash.turbine.TurbineTimeoutCancellationException at SettingsViewModelTest.kt:115
+
+> Task :core:ui:kspDebugUnitTestKotlin
+> Task :core:ui:compileDebugUnitTestKotlin FROM-CACHE
+> Task :core:ui:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:ui:processDebugUnitTestJavaRes
+
+> Task :core:ui:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :feature:settings:testDebugUnitTest
+
+SettingsViewModelTest > the licences row opens the licences FAILED
+    app.cash.turbine.TurbineAssertionError at SettingsViewModelTest.kt:138
+        Caused by: app.cash.turbine.TurbineTimeoutCancellationException at channel.kt:123
+            Caused by: app.cash.turbine.TurbineTimeoutCancellationException at SettingsViewModelTest.kt:138
+
+SettingsViewModelTest > picking a theme stores it FAILED
+    org.junit.ComparisonFailure at SettingsViewModelTest.kt:49
+
+> Task :core:ui:testDebugUnitTest FAILED
+
+AppErrorTextTest > no connection and no answer each get their own sentence FAILED
+    java.lang.AssertionError at AppErrorTextTest.kt:16
+
+AppErrorTextTest > the server's own words are shown as they came FAILED
+    java.lang.AssertionError at AppErrorTextTest.kt:23
+
+AppErrorTextTest > without a fallback of the screen's own the generic sentence is used FAILED
+    java.lang.AssertionError at AppErrorTextTest.kt:50
+
+ValidationErrorTextTest > every rule a field can fail has its own sentence FAILED
+    java.lang.AssertionError at ValidationErrorTextTest.kt:22
+
+7 tests completed, 4 failed
+
+> Task :core:notification:kspDebugUnitTestKotlin
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+> Task :core:notification:compileDebugUnitTestKotlin
+> Task :core:notification:processDebugUnitTestJavaRes
+> Task :core:notification:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:notification:hiltCollectClassesDebugUnitTest
+> Task :core:notification:hiltAggregateDepsDebugUnitTest FROM-CACHE
+> Task :core:notification:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :core:notification:transformDebugUnitTestClassesWithAsm
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:notification:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :feature:auth:testDebugUnitTest
+
+PasswordResetProcessDeathTest > the address survives process death FAILED
+    org.junit.ComparisonFailure at PasswordResetViewModelTest.kt:196
+
+PasswordResetViewModelTest > a valid address is sent and the screen says a link is on its way FAILED
+    java.lang.AssertionError at PasswordResetViewModelTest.kt:36
+
+PasswordResetViewModelTest > an invalid address is reported on submit and nothing is sent FAILED
+    java.lang.AssertionError at PasswordResetViewModelTest.kt:59
+
+PasswordResetViewModelTest > a 422 puts the server's message on the address FAILED
+    java.lang.AssertionError at PasswordResetViewModelTest.kt:83
+
+PasswordResetViewModelTest > the form is busy while in flight, and a second submit sends nothing FAILED
+    java.lang.AssertionError at PasswordResetViewModelTest.kt:122
+
+PasswordResetViewModelTest > a request that throws leaves the form usable FAILED
+    java.lang.AssertionError at PasswordResetViewModelTest.kt:139
+
+SignInViewModelTest > a Google ID token signs in FAILED
+    app.cash.turbine.TurbineAssertionError at SignInViewModelTest.kt:140
+        Caused by: app.cash.turbine.TurbineTimeoutCancellationException at channel.kt:123
+            Caused by: app.cash.turbine.TurbineTimeoutCancellationException at SignInViewModelTest.kt:140
+
+SignInViewModelTest > a Google sign-in the server refuses goes in the banner FAILED
+    java.lang.AssertionError at SignInViewModelTest.kt:151
+
+SignUpViewModelTest > a valid form sends what was typed and emits SignedUp FAILED
+    java.lang.AssertionError at SignUpViewModelTest.kt:37
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :feature:onboarding:testDebugUnitTest
+
+4 tests completed, 2 failed
+
+> Task :feature:onboarding:testDebugUnitTest FAILED
+> Task :feature:onboarding:finalizeTestRoborazziDebug SKIPPED
+
+> Task :feature:auth:testDebugUnitTest
+
+SignUpViewModelTest > back asks to leave the screen FAILED
+    app.cash.turbine.TurbineAssertionError at SignUpViewModelTest.kt:210
+        Caused by: app.cash.turbine.TurbineTimeoutCancellationException at channel.kt:123
+            Caused by: app.cash.turbine.TurbineTimeoutCancellationException at SignUpViewModelTest.kt:210
+
+SignUpViewModelTest > a submit after a failure clears the banner FAILED
+    java.lang.AssertionError at SignUpViewModelTest.kt:163
+
+SignUpViewModelTest > changing the password checks the confirmation again FAILED
+    java.lang.AssertionError at SignUpViewModelTest.kt:114
+
+SignUpViewModelTest > an invalid field is reported on submit and nothing is sent FAILED
+    java.lang.AssertionError at SignUpViewModelTest.kt:77
+
+SignUpViewModelTest > a 422 puts the server's messages on the fields it names FAILED
+    java.lang.AssertionError at SignUpViewModelTest.kt:126
+
+SignUpViewModelTest > the form can be submitted only once every field has text FAILED
+    java.lang.AssertionError at SignUpViewModelTest.kt:52
+
+> Task :feature:settings:testDebugUnitTest FAILED
+
+12 tests completed, 8 failed
+
+> Task :feature:settings:finalizeTestRoborazziDebug SKIPPED
+
+> Task :core:notification:testDebugUnitTest
+
+AppNotificationsTest > cancelling removes the notification FAILED
+    java.lang.AssertionError at AppNotificationsTest.kt:89
+
+AppNotificationsTest > without the permission nothing is posted FAILED
+    java.lang.AssertionError at AppNotificationsTest.kt:33
+
+AppNotificationsTest > on the lock screen only a neutral line is shown FAILED
+    java.lang.AssertionError at AppNotificationsTest.kt:61
+
+NotificationChannelsTest > creating again at the next start leaves one channel each FAILED
+    java.lang.AssertionError at NotificationChannelsTest.kt:36
+
+NotificationChannelsTest > every channel has an id of its own FAILED
+    java.lang.AssertionError at NotificationChannelsTest.kt:53
+
+NotificationChannelsTest > every channel is created with its name, description and importance FAILED
+    org.junit.ComparisonFailure at NotificationChannelsTest.kt:23
+
+NotificationPermissionTest > not granted yet, a request asks the system FAILED
+    java.lang.AssertionError at NotificationPermissionTest.kt:34
+
+NotificationPermissionTest > once blocked, a request opens this app's notification settings FAILED
+    android.util.AndroidRuntimeException at NotificationPermissionTest.kt:56
+
+NotificationPermissionTest > a grant made in the system's settings is seen when the screen comes back FAILED
+    java.lang.AssertionError at NotificationPermissionTest.kt:83
+
+PushRegistrationTest > a new installation id is handed over once FAILED
+    java.lang.AssertionError at PushRegistrationTest.kt:26
+
+17 tests completed, 10 failed
+
+> Task :core:notification:testDebugUnitTest FAILED
+
+> Task :feature:auth:testDebugUnitTest FAILED
+
+42 tests completed, 15 failed
+
+> Task :feature:auth:finalizeTestRoborazziDebug SKIPPED
+
+FAILURE: Build completed with 7 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':core:flags:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/mut/core/flags/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+2: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':feature:feed:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/mut/feature/feed/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+3: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':core:ui:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/mut/core/ui/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+4: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':feature:onboarding:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/mut/feature/onboarding/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+5: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':feature:settings:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/mut/feature/settings/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+6: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':core:notification:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/mut/core/notification/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+7: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':feature:auth:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/mut/feature/auth/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+BUILD FAILED in 2m 9s
+404 actionable tasks: 218 executed, 186 from cache
+Configuration cache entry stored.
+EXIT=1
+# end: Sun Oct 25 18:14:56 IST 2026

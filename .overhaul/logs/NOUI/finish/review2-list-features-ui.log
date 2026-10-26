@@ -1,0 +1,95 @@
+
+Networking and data
+───────────────────
+  off appstatus                    Turn away old versions, announce downtime
+      brings in network
+  on  coil                         Load images from URLs
+  off database                     Keep the app's own data on the device
+  on  network                      Talk to a REST API
+  off offlinequeue                 Send what was written offline
+      brings in database, network
+  off paging                       An endless feed that loads as you scroll
+      brings in network
+  off websocket                    Keep a live connection open
+      brings in network
+
+Sign-in and account
+───────────────────
+  off applock                      Ask for a fingerprint on return
+      brings in settings
+  off auth                         Sign in, sign up, reset password
+      brings in forms, network
+  off googlesignin                 Continue with Google
+      brings in auth, forms, network
+  off profile                      A profile tab with a photo
+
+Screens
+───────
+  off forms                        Validate forms properly
+  off language                     Let people pick the app's language
+      brings in settings
+  off licenses                     Show the licences you have to show
+      brings in settings
+  off onboarding                   A first-run walkthrough
+  off sample                       A working screen to learn from
+      brings in network
+  off search                       Search as you type
+      brings in network
+  off settings                     A settings screen
+
+Platform
+────────
+  off browser                      Open web pages without leaving the app
+  on  deeplink                     Open the app from a link
+  off media                        Pick, take and shrink photos
+  off playstore                    Offer updates and ask for ratings
+  off push                         Receive push notifications
+      brings in firebase
+
+Observability
+─────────────
+  off analytics                    Track events and crashes, vendor-free
+  off crashlytics                  Send crashes to Firebase
+      brings in analytics, firebase
+  off devtools                     See every request the app made
+  off firebaseanalytics            Send analytics to Firebase
+      brings in analytics, firebase
+  off flags                        Turn a feature on without shipping
+  on  perfhud                      FPS, jank, graphs and a score beside the DEV badge
+      brings in devtools
+  off remoteconfig                 Change feature flags from the console
+      brings in firebase, flags
+
+Design
+──────
+  on  catalog                      A second app showing every component
+  off collections                  Carousels, drag to reorder, zoomable images
+  off datadisplay                  Show numbers, charts and tables
+  off formfields                   Fields for codes, money and more
+  on  googlefonts                  Use any Google Font
+  off liquidglass                  Glass tiers, a backdrop and a lens to build glass chrome on; nothing uses them yet
+  off pickers                      Pick dates and times inline
+
+Build and quality
+─────────────────
+  on  ci                           Build and test every push on GitHub
+  off coverage                     Fail a build that drops coverage
+  off depsanalysis                 See which dependencies nobody uses
+  off formatting                   One code style, checked on every build
+  on  leakcanary                   Find memory leaks in debug builds
+  off performance                  Measure smoothness on a real phone
+
+Option: No UI components
+────────────────────────
+  ui_components                Setup only: the architecture, every build guard and a theme skeleton, without UI components
+      on by default; --set ui_components=false to tick it
+      leaves out catalog: The catalog app shows the design system's components, and this project has none.
+      leaves out collections: Carousels, reorderable lists and the image viewer are components; build yours on the theme skeleton.
+      leaves out datadisplay: Stat tiles, charts and tables are components; build yours on the theme skeleton.
+      leaves out formfields: Code, money and phone fields are components; form state and validation (forms) stay.
+      leaves out pickers: Calendars and wheel pickers are components; build yours on the theme skeleton.
+      leaves out liquidglass: Glass is drawn by components and the shell, which this project leaves to your design system.
+      describes appstatus, coil, database, paging, applock, auth, googlesignin, profile, language, licenses, onboarding, sample, search, settings, browser, deeplink, media, playstore, push, firebaseanalytics, performance differently; --no-ui-components lists them that way
+
+  44 features. Presets: lean, standard, everything.
+

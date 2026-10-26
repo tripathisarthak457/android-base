@@ -1,0 +1,12 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI/web/api
+# command: D:/projects/tools/.overhaul/bin/memwait go test -count=1 ./...
+# start: Sun Oct 25 08:44:23 IST 2026
+ok  	github.com/base-android/generator-api/cmd/server	0.684s
+ok  	github.com/base-android/generator-api/internal/clip	0.614s
+ok  	github.com/base-android/generator-api/internal/config	0.617s
+ok  	github.com/base-android/generator-api/internal/generate	0.689s
+ok  	github.com/base-android/generator-api/internal/httpapi	1.019s
+ok  	github.com/base-android/generator-api/internal/store	1.013s
+ok  	github.com/base-android/generator-api/internal/telemetry	0.675s
+# end: Sun Oct 25 08:44:26 IST 2026
+EXIT=0

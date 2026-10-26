@@ -1,0 +1,2 @@
+proxy: shutil.copytree of ['templates\\android\\.agents', 'templates\\android\\.claude'] files: 459 bytes: 4533478
+seconds per copy, 5 runs: median 0.325 min 0.314 max 0.327

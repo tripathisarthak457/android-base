@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-25T17:55:37.752Z" hostname="SARTHAK-PC" time="29.008">
+  <properties/>
+  <testcase name="test[JUnit4TestParameter(preview=com.example.finaltools.uieverything.feature.settings.SettingsKt_SettingsPreview)]" classname="com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests" time="28.092"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

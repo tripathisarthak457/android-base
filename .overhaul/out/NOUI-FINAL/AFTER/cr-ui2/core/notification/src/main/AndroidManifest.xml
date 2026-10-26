@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Declared by the module that posts notifications rather than by :app, so a project generated
+  without push never asks for the permission or carries the service.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Asked for in context on Android 13 and later: at the end of onboarding, and in settings. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application>
+        <service
+            android:name=".push.AppMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <!-- Delivery by installation id (FirebaseMessaging.register), which reports changes through onRegistered. -->
+        <meta-data
+            android:name="firebase_messaging_installation_id_enabled"
+            android:value="true" />
+
+        <!--
+          A `notification` payload delivered while the app is in the background is shown by the FCM
+          SDK without reaching AppMessagingService; the same channel and icon make it look the same.
+        -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="final_after_default" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/notification_small_icon" />
+    </application>
+
+</manifest>

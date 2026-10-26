@@ -1,0 +1,10 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI/generator
+# command: python add_feature.py --project D:/projects/tools/.overhaul/out/NOUI/gate-1/d10-everything-modular --domain pricing
+# start: Sun Oct 25 09:48:26 IST 2026
+
+  Done.
+    :domain:pricing
+    Add the data :api modules it reads to its build file, and depend on it from the features that use it.
+
+# end: Sun Oct 25 09:48:26 IST 2026
+EXIT=0

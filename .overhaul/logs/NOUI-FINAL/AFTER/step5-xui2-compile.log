@@ -1,0 +1,398 @@
+04:33:03
+D free GB: 77.5
+./gradlew --offline --continue :core:designsystem:compileDebugKotlin :core:designsystem:compileDebugUnitTestKotlin
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:designsystem:compileDebugKotlin :core:designsystem:compileDebugUnitTestKotlin
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+The Daemon will expire after the build after running out of JVM Metaspace.
+The project memory settings are likely not configured or are configured to an insufficient value.
+The daemon will restart for the next build, which may increase subsequent build times.
+These settings can be adjusted by setting 'org.gradle.jvmargs' in 'gradle.properties'.
+The currently configured max heap space is '2 GiB' and the configured max metaspace is '1 GiB'.
+For more information on how to set these values, please refer to https://docs.gradle.org/9.7.1/userguide/build_environment.html#sec:configuring_jvm_memory in the Gradle documentation.
+To disable this warning, set 'org.gradle.daemon.performance.disable-logging=true'.
+Daemon will be stopped at the end of the build after running out of JVM Metaspace
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:common:verifyModuleDependencies
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyApiPurity
+> Task :core:designsystem:generateDebugComposePreviewRobolectricTests
+> Task :core:designsystem:verifyApiPurity
+> Task :core:testing:verifyApiPurity
+> Task :core:testing:verifyModuleDependencies
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :core:testing:compose:verifyApiPurity
+> Task :core:testing:compose:verifyModuleDependencies
+> Task :core:testing:compose:preBuild
+> Task :core:testing:compose:preDebugBuild
+> Task :core:testing:writeDebugAarMetadata
+> Task :core:testing:compose:writeDebugAarMetadata
+> Task :core:testing:generateDebugEmptyResourceFiles
+> Task :core:testing:compose:generateDebugEmptyResourceFiles
+> Task :core:testing:processDebugManifest
+> Task :core:testing:compose:processDebugManifest
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:compose:javaPreCompileDebug FROM-CACHE
+> Task :core:common:compileKotlin
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar
+> Task :core:testing:compose:compileDebugKotlin
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:bundleLibCompileToJarDebug
+> Task :core:designsystem:verifyCodeRules
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths
+> Task :core:designsystem:generateDebugUnitTestResources FROM-CACHE
+> Task :core:designsystem:extractDeepLinksDebug FROM-CACHE
+> Task :core:designsystem:processDebugManifest
+> Task :core:designsystem:packageDebugResources
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:checkDebugUnitTestAarMetadata
+> Task :core:designsystem:compileDebugLibraryResources FROM-CACHE
+> Task :core:designsystem:generateDebugRFile
+> Task :core:designsystem:mergeDebugUnitTestManifest
+> Task :core:designsystem:processDebugUnitTestManifest
+> Task :core:testing:compileDebugKotlin
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :core:designsystem:mergeDebugUnitTestResources
+> Task :core:designsystem:processDebugUnitTestResources
+
+> Task :core:designsystem:compileDebugKotlin FAILED
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:58:76 Unresolved reference 'fadeIn' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:61:76 Unresolved reference 'fadeOut' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:68:38 Unresolved reference 'layout' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:68:68 Unresolved reference 'quickFade' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:75:38 Unresolved reference 'layout' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:75:69 Unresolved reference 'quickFade' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:80:87 Unresolved reference 'sheet' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:83:87 Unresolved reference 'sheet' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:90:29 Unresolved reference 'emphasis' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:90:86 Unresolved reference 'quickFade' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:97:30 Unresolved reference 'press' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:97:84 Unresolved reference 'quickFade' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:105:41 Unresolved reference 'screen' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:112:42 Unresolved reference 'screen' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:134:64 Unresolved reference 'fadeSlow' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:134:83 Unresolved reference 'staggerMillis' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:135:16 Cannot infer type for type parameter 'R'. Specify it explicitly.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:135:53 Unresolved reference 'appearOffset' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:154:30 Unresolved reference 'fadeIn' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:155:33 Unresolved reference 'layout' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:156:31 Unresolved reference 'fadeOut' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:171:27 Unresolved reference 'staggerMillis' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:172:24 Unresolved reference 'fadeSlow' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:173:43 Unresolved reference 'staggerMaxItems' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:177:16 Cannot infer type for type parameter 'R'. Specify it explicitly.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:177:53 Unresolved reference 'appearOffset' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:181:52 Unresolved reference 'staggerMaxItems' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:185:41 Unresolved reference 'enterEasing' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt:212:44 Unresolved reference 'arrival' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/Emphasis.kt:40:63 Unresolved reference 'arrival' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/Emphasis.kt:40:79 Unresolved reference 'fadeSlow' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/Emphasis.kt:74:34 Unresolved reference 'pressScale' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/Emphasis.kt:75:41 Unresolved reference 'emphasis' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/SymbolEffects.kt:65:32 Unresolved reference 'fadeIn' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/SymbolEffects.kt:65:71 Unresolved reference 'fadeOut' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/SymbolEffects.kt:67:33 Unresolved reference 'fadeIn' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/SymbolEffects.kt:67:61 Unresolved reference 'emphasis' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/SymbolEffects.kt:68:38 Unresolved reference 'fadeOut' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/SymbolEffects.kt:68:68 Unresolved reference 'emphasis' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/SymbolEffects.kt:98:37 Unresolved reference 'tabBar' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/SymbolEffects.kt:98:69 Unresolved reference 'iconBounceDown' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/SymbolEffects.kt:99:41 Unresolved reference 'iconBounceUp' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/collections/AppImageViewer.kt:102:40 Unresolved reference 'sheet' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/collections/AppImageViewer.kt:172:81 Unresolved reference 'sheet' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/collections/AppReorderableList.kt:100:56 Unresolved reference 'layout' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/collections/AppReorderableList.kt:101:59 Unresolved reference 'layout' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/collections/AppReorderableList.kt:110:98 Unresolved reference 'layout' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/container/AppBottomActionBar.kt:43:28 Unresolved reference 'container' on receiver of type 'SheetSurface'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/container/AppScaffold.kt:79:53 Unresolved reference 'container' on receiver of type 'SheetSurface'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/datadisplay/AppAnimatedCounter.kt:66:103 Unresolved reference 'thumb' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/datadisplay/AppBarChart.kt:47:50 Unresolved reference 'layout' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/datadisplay/AppSparkline.kt:41:42 Unresolved reference 'layout' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/feedback/AppLoadingOverlay.kt:57:72 Unresolved reference 'dialog' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/feedback/AppProgress.kt:133:97 Unresolved reference 'layout' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/formfields/AppOtpField.kt:156:46 Unresolved reference 'caretBlink' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/formfields/AppRangeSlider.kt:123:42 Unresolved reference 'press' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/formfields/AppRangeSlider.kt:128:42 Unresolved reference 'press' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/formfields/AppStepIndicator.kt:100:42 Unresolved reference 'slowFade' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/formfields/AppStepIndicator.kt:111:42 Unresolved reference 'slowFade' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/formfields/AppStepIndicator.kt:116:42 Unresolved reference 'slowFade' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/input/AppSearchField.kt:88:83 Unresolved reference 'sheet' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/input/AppTextField.kt:190:42 Unresolved reference 'quickFade' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/list/AppDisclosure.kt:52:42 Unresolved reference 'thumb' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/list/AppSwipeActions.kt:116:80 Unresolved reference 'thumb' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/list/AppSwipeActions.kt:171:35 Unresolved reference 'thumb' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/navigation/AppTabRow.kt:58:42 Unresolved reference 'thumb' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/navigation/AppTabRow.kt:79:54 Unresolved reference 'quickFade' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/navigation/AppTopBar.kt:99:43 Unresolved reference 'container' on receiver of type 'SheetSurface'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/navigation/AppTopBar.kt:159:100 Unresolved reference 'quickFade' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/navigation/AppTopBar.kt:163:43 Unresolved reference 'container' on receiver of type 'SheetSurface'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/overlay/AppAlert.kt:81:72 Unresolved reference 'dialog' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/overlay/AppContextMenu.kt:190:50 Unresolved reference 'dialog' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/overlay/AppContextMenu.kt:193:40 Unresolved reference 'dialog' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/overlay/AppContextMenu.kt:203:46 Unresolved reference 'dialog' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/overlay/AppContextMenu.kt:204:54 Unresolved reference 'dialog' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/overlay/AppContextMenu.kt:204:79 Unresolved reference 'emphasis' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/overlay/AppMenu.kt:96:72 Unresolved reference 'dialog' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/overlay/AppToast.kt:232:52 Unresolved reference 'fadeIn' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/overlay/AppToast.kt:232:80 Unresolved reference 'emphasis' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/overlay/AppToast.kt:233:52 Unresolved reference 'fadeOut' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/overlay/AppToast.kt:243:59 Unresolved reference 'sheet' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/overlay/AppToast.kt:243:97 Unresolved reference 'fadeIn' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/overlay/AppToast.kt:244:59 Unresolved reference 'sheet' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/overlay/AppToast.kt:244:98 Unresolved reference 'fadeOut' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/overlay/AppToast.kt:281:35 Unresolved reference 'sheet' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/pickers/AppWheelPicker.kt:72:70 Unresolved reference 'flingFast' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/pickers/AppWheelPicker.kt:72:89 Unresolved reference 'thumb' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/refresh/AppPullToRefresh.kt:347:58 Unresolved reference 'bounceBack' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/selection/AppCheckbox.kt:51:82 Unresolved reference 'thumb' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/selection/AppChip.kt:105:53 Unresolved reference 'pressDimAlpha' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/selection/AppChip.kt:158:83 Unresolved reference 'slowFade' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/selection/AppRadio.kt:37:78 Unresolved reference 'thumb' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/selection/AppSegmentedControl.kt:80:79 Unresolved reference 'thumb' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/selection/AppSegmentedControl.kt:87:39 Unresolved reference 'press' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/selection/AppSegmentedControl.kt:87:63 Unresolved reference 'release' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/selection/AppSegmentedControl.kt:153:78 Unresolved reference 'thumb' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/selection/AppSlider.kt:77:118 Unresolved reference 'thumb' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/selection/AppSwitch.kt:104:75 Unresolved reference 'thumb' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/selection/AppSwitch.kt:164:104 Unresolved reference 'press' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/selection/AppSwitch.kt:166:90 Unresolved reference 'thumb' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/AppSheetScope.kt:54:1 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/AppSheetScope.kt:54:29 Syntax error: Expecting a top level declaration.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/AppSheetScope.kt:54:47 Syntax error: Destructuring declarations are only allowed for local variables/values.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/AppSheetScope.kt:54:47 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/AppSheetScope.kt:54:76 Syntax error: Expecting val or var keyword.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/AppSheetScope.kt:54:82 Syntax error: Expecting a name.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/AppSheetScope.kt:54:84 Syntax error: Expecting ')'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/AppSheetScope.kt:54:88 Syntax error: Property getter or setter expected.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/AppSheetScope.kt:54:113 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/AppSheetScope.kt:54:113 Property must be initialized.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/AppSheetScope.kt:54:124 Unresolved reference 'AppSheetScopepublic'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/AppSheetScope.kt:54:144 Syntax error: Property getter or setter expected.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/AppSheetState.kt:317:63 Unresolved reference 'Custom'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetController.kt:36:60 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetController.kt:221:33 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetController.kt:221:73 Unresolved reference 'dialog' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetController.kt:221:93 Unresolved reference 'sheet' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetDetent.kt:59:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetDetent.kt:59:20 Syntax error: Expecting member declaration.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetDetent.kt:59:24 Syntax error: Destructuring declarations are only allowed for local variables/values.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetDetent.kt:59:24 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetDetent.kt:59:41 Syntax error: Expecting val or var keyword.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetDetent.kt:59:47 Syntax error: Expecting a name.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetDetent.kt:59:48 Syntax error: Expecting ')'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetDetent.kt:59:52 Syntax error: Property getter or setter expected.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetDetent.kt:59:112 Syntax error: Expecting member declaration.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetDetent.kt:59:112 Function declaration must have a name.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetDetent.kt:59:112 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetDetent.kt:60:9 Modifier 'override' is not applicable to 'local function'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetDetent.kt:60:62 Unresolved reference 'Custom'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetDetent.kt:60:78 Unresolved reference 'id' on receiver of type 'Any'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetDetent.kt:60:84 Unresolved reference 'id'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetDetent.kt:62:9 Modifier 'override' is not applicable to 'local function'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetDetent.kt:62:40 Unresolved reference 'id'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetDetent.kt:64:9 Modifier 'override' is not applicable to 'local function'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetDetent.kt:64:52 Unresolved reference 'id'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetHost.kt:4:60 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetHost.kt:17:24 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetStateKey.kt:26:57 Unresolved reference 'Custom'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetStateKey.kt:26:70 Unresolved reference 'id' on receiver of type 'SheetDetent'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetStateKey.kt:40:24 Unresolved reference 'Custom'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/SheetStateKey.kt:40:51 Unresolved reference 'id' on receiver of type 'SheetDetent'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/action/ActionCard.kt:76:40 Unresolved reference 'dialog' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/action/AppActionSheet.kt:196:37 Unresolved reference 'Custom'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/action/AppActionSheet.kt:197:11 Unresolved reference 'contentHeight'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/action/AppActionSheet.kt:197:26 Unresolved reference 'maxHeight'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/back/SheetBack.kt:121:69 Unresolved reference 'sheet' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/back/SheetBack.kt:124:67 Unresolved reference 'sheet' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/back/SheetBack.kt:142:82 Unresolved reference 'sheet' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/back/SheetBack.kt:146:88 Unresolved reference 'sheet' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/choice/AppChoiceSheet.kt:147:17 Unresolved reference 'Custom'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/choice/AppChoiceSheet.kt:147:46 Unresolved reference 'contentHeight'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/choice/AppChoiceSheet.kt:147:61 Unresolved reference 'maxHeight'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/chrome/AppSheetCloseButton.kt:32:44 Unresolved reference 'scope' on receiver of type 'SheetSurface'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/content/SheetColumn.kt:34:78 Unresolved reference 'scope' on receiver of type 'SheetSurface'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/content/SheetColumn.kt:70:49 Unresolved reference 'scope' on receiver of type 'SheetSurface'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/gesture/SheetFlingBehavior.kt:71:51 Unresolved reference 'sheet' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/gesture/SheetFlingBehavior.kt:115:68 Unresolved reference 'fadeIn' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/gesture/SheetFlingBehavior.kt:119:92 Unresolved reference 'pixels'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/gesture/SheetFlingBehavior.kt:153:68 Unresolved reference 'fadeOut' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/gesture/SheetFlingBehavior.kt:159:62 Unresolved reference 'sheet' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/layout/DetentResolution.kt:215:35 Unresolved reference 'Custom'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/layout/DetentResolution.kt:225:28 Unresolved reference 'Custom'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/layout/DetentResolution.kt:225:45 Unresolved reference 'resolve' on receiver of type 'SheetDetent'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/layout/DetentResolution.kt:225:60 Cannot infer type for type parameter 'T'. Specify it explicitly.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/layout/DetentResolution.kt:225:60 Cannot infer type for type parameter 'R'. Specify it explicitly.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/layout/DetentResolution.kt:225:64 Cannot infer type for type parameter 'T'. Specify it explicitly.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/layout/DetentResolution.kt:225:69 Unresolved reference 'value'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/layout/SheetEffects.kt:58:96 Unresolved reference 'sheet' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/layout/SheetEffects.kt:83:82 Unresolved reference 'screen' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/layout/SheetFrameUpdates.kt:88:102 Unresolved reference 'sheet' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/layout/SheetSession.kt:144:22 Too many arguments for 'constructor(): SheetSurface'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/layout/SheetSession.kt:144:32 Too many arguments for 'constructor(): SheetSurface'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/layout/SheetSession.kt:144:64 Too many arguments for 'constructor(): SheetSurface'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/sheet/surface/SheetFooterBacking.kt:43:30 Unresolved reference 'scope' on receiver of type 'SheetSurface'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/component/text/AppExpandableText.kt:42:104 Unresolved reference 'layout' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/foundation/interaction/PressableNode.kt:264:91 Unresolved reference 'press' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/foundation/interaction/PressableNode.kt:280:92 Unresolved reference 'pressDip' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/foundation/interaction/PressableNode.kt:281:48 Unresolved reference 'release' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/foundation/interaction/PressableNode.kt:283:89 Unresolved reference 'slowFade' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/foundation/interaction/PressableNode.kt:287:48 Unresolved reference 'highlightFade' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/foundation/interaction/PressableNode.kt:358:66 Unresolved reference 'pressDimAlpha' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/foundation/interaction/PressableNode.kt:375:87 Unresolved reference 'pressScaleLarge' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/foundation/interaction/PressableNode.kt:376:113 Unresolved reference 'pressScaleCompact' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/foundation/interaction/PressableNode.kt:377:29 Unresolved reference 'pressScale' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/foundation/interaction/RowHighlight.kt:47:64 Unresolved reference 'highlightFade' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/foundation/scroll/AppOverscroll.kt:105:79 Unresolved reference 'overscrollRelease' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/foundation/scroll/AppOverscroll.kt:108:32 Unresolved reference 'bounceBack' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/foundation/scroll/AppOverscroll.kt:127:88 Unresolved reference 'bounceBack' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/foundation/scroll/AppScrollDefaults.kt:45:38 Unresolved reference 'fling' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/foundation/scroll/AppScrollDefaults.kt:59:42 Unresolved reference 'flingFast' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/foundation/scroll/AppScrollDefaults.kt:60:41 Unresolved reference 'screen' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/foundation/scroll/ScrollIndicator.kt:75:73 Unresolved reference 'quickFade' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/foundation/scroll/ScrollIndicator.kt:78:73 Unresolved reference 'slowFade' on receiver of type 'AppSprings'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:67:1 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:67:24 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:67:71 Function declaration must have a name.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:67:77 Syntax error: Expecting a top level declaration.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:68:5 Unresolved reference 'internal'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:68:26 Unresolved reference 'token'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:68:31 Syntax error: Expecting ')'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:68:31 Syntax error: Unexpected tokens (use ';' to separate expressions on the same line).
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:70:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:70:46 Unresolved reference 'response'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:70:68 Unresolved reference 'response'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:71:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:71:43 Unresolved reference 'bounce'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:74:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:77:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:79:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:80:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:81:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:127:1 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:127:73 Function declaration must have a name.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:127:79 Syntax error: Expecting a top level declaration.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:128:5 Modifier 'private' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:128:26 Unresolved reference 'style'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:131:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:131:23 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:131:35 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:134:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:134:25 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:134:37 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:140:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:140:23 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:140:35 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:146:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:146:31 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:146:43 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:147:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:147:32 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:147:44 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:150:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:150:24 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:150:36 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:153:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:153:23 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:153:35 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:156:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:156:24 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:156:36 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:159:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:159:24 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:159:36 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:162:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:162:26 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:162:38 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:165:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:165:29 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:165:41 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:171:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:171:28 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:171:40 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:174:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:174:32 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:174:44 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:175:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:175:30 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:175:42 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:181:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:191:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:198:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:199:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:202:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:203:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:206:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:207:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:209:5 Modifier 'public' is not applicable to 'local function'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:210:5 Modifier 'public' is not applicable to 'local function'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:213:5 Modifier 'public' is not applicable to 'local function'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:214:5 Modifier 'public' is not applicable to 'local function'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:220:5 Modifier 'public' is not applicable to 'local function'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:224:5 Modifier 'public' is not applicable to 'local function'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:228:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:229:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:230:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:233:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:236:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:239:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:242:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:245:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:248:5 Modifier 'public' is not applicable to 'local function'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:251:5 Modifier 'public' is not applicable to 'local function'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:253:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:255:5 Modifier 'public' is not applicable to 'local variable'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:285:14 Unresolved reference 'AppSpring'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:285:70 Unresolved reference 'dampingRatio'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:285:84 Unresolved reference 'stiffness'.
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:designsystem:compileDebugKotlin' (registered by plugin 'com.android.internal.library').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: UNRESOLVED_REFERENCE
+       Kotlin compiler error
+         Unresolved reference 'fadeIn' on receiver of type 'AppSprings'.
+         Location: D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/animation/AppTransitions.kt line 58
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 33s
+47 actionable tasks: 38 executed, 9 from cache
+Configuration cache entry stored.
+EXIT 1
+04:33:37

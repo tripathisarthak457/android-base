@@ -1,0 +1,6 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/TEST/red
+# command: locked gradle ./gradlew :core:mvi:testDebugUnitTest :feature:auth:testDebugUnitTest :feature:sample:testDebugUnitTest :feature:profile:testDebugUnitTest :feature:search:testDebugUnitTest :feature:feed:testDebugUnitTest :core:notification:testDebugUnitTest --continue
+# scratch: MviViewModel's launchExclusive clears busy without finally, onFirstObserved runs at construction; ViewModels are the old ones (Appeared, submitting by hand)
+# start: Sun Oct 25 14:06:35 IST 2026
+[locked:gradle] waiting for the lock (pid 13284 since 2026-10-25 13:55:44: ./gradlew :core:navigation:testDebugUnitTest :app:testDevDebugUnitTest --continue)
+[locked:gradle] waiting for the lock (pid 4128 since 2026-10-25 14:07:40: ./gradlew -p build-logic :convention:test --continue)

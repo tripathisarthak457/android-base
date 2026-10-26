@@ -1,0 +1,613 @@
+== 23:16:02 generate ui-everything at 4929ad29a + 0 uncommitted
+
+Summary
+───────
+           App  Final Nav (FinalNav)
+       Package  com.example.finalnav.uieverything
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, appstatus, auth, browser, catalog, ci,
+                coil, collections, coverage, crashlytics, database,
+                datadisplay, deeplink, depsanalysis, devtools, firebase,
+                firebaseanalytics, flags, formatting, formfields, forms,
+                googlefonts, googlesignin, language, leakcanary, licenses,
+                liquidglass, media, network, offlinequeue, onboarding,
+                paging, perfhud, performance, pickers, playstore, profile,
+                push, remoteconfig, sample, search, settings, websocket
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\NAV\ui-everything
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\NAV\ui-everything and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json: the included one is a placeholder.
+
+== 23:16:14 build ui-everything: verifyCodeRules verifyModuleDependencies verifyApiPurity :core:navigation:checkComposeStability :core:navigation:lintDebug :core:navigation:shell:lintDebug --continue
+[locked:gradle] waiting for the lock (pid 5232 since 2026-10-25 23:16:13: ./gradlew -p build-logic :convention:test --tests *ModuleGraphTest*)
+[locked:gradle] waiting for the lock (pid 13972 since 2026-10-25 23:20:59: ./gradlew :core:designsystem:testDebugUnitTest :catalog:testDebugUnitTest :feature:auth:testDebugUnitTest :feature:sampl)
+[locked:gradle] waiting for the lock (pid 13972 since 2026-10-25 23:20:59: ./gradlew :core:designsystem:testDebugUnitTest :catalog:testDebugUnitTest :feature:auth:testDebugUnitTest :feature:sampl)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: verifyCodeRules verifyModuleDependencies verifyApiPurity :core:navigation:checkComposeStability :core:navigation:lintDebug :core:navigation:shell:lintDebug
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin FROM-CACHE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:analytics:verifyCodeRules
+> Task :core:applock:verifyCodeRules
+> Task :core:common:verifyCodeRules
+> Task :core:database:verifyCodeRules
+> Task :core:datastore:verifyCodeRules
+> Task :catalog:verifyCodeRules
+> Task :core:devtools:verifyCodeRules
+> Task :core:flags:verifyCodeRules
+> Task :core:mvi:verifyCodeRules
+> Task :app:verifyCodeRules
+> Task :core:media:verifyCodeRules
+> Task :core:notification:verifyCodeRules
+> Task :core:navigation:verifyCodeRules
+> Task :core:network:verifyCodeRules
+> Task :core:testing:verifyCodeRules
+> Task :core:playstore:verifyCodeRules
+> Task :data:auth:verifyCodeRules
+> Task :data:feed:verifyCodeRules
+> Task :core:ui:verifyCodeRules
+> Task :data:sample:verifyCodeRules
+> Task :data:search:verifyCodeRules
+> Task :core:perfhud:verifyCodeRules
+> Task :data:profile:verifyCodeRules
+> Task :feature:feed:verifyCodeRules
+> Task :feature:onboarding:verifyCodeRules
+> Task :feature:profile:verifyCodeRules
+> Task :feature:auth:verifyCodeRules
+> Task :feature:search:verifyCodeRules
+> Task :feature:settings:verifyCodeRules
+> Task :feature:sample:verifyCodeRules
+> Task :core:analytics:verifyModuleDependencies FROM-CACHE
+> Task :core:applock:verifyModuleDependencies FROM-CACHE
+> Task :core:common:verifyModuleDependencies FROM-CACHE
+> Task :core:database:verifyModuleDependencies FROM-CACHE
+> Task :core:testing:compose:verifyCodeRules
+> Task :core:datastore:verifyModuleDependencies FROM-CACHE
+> Task :core:designsystem:verifyModuleDependencies FROM-CACHE
+> Task :core:flags:verifyModuleDependencies FROM-CACHE
+> Task :core:devtools:verifyModuleDependencies FROM-CACHE
+> Task :core:media:verifyModuleDependencies FROM-CACHE
+> Task :core:mvi:verifyModuleDependencies FROM-CACHE
+> Task :core:navigation:verifyModuleDependencies FROM-CACHE
+> Task :core:network:verifyModuleDependencies FROM-CACHE
+> Task :core:notification:verifyModuleDependencies FROM-CACHE
+> Task :core:perfhud:verifyModuleDependencies FROM-CACHE
+> Task :core:playstore:verifyModuleDependencies FROM-CACHE
+> Task :core:testing:verifyModuleDependencies FROM-CACHE
+> Task :core:ui:verifyModuleDependencies FROM-CACHE
+> Task :data:auth:verifyModuleDependencies FROM-CACHE
+> Task :data:profile:verifyModuleDependencies FROM-CACHE
+> Task :data:sample:verifyModuleDependencies FROM-CACHE
+> Task :data:search:verifyModuleDependencies FROM-CACHE
+> Task :data:feed:verifyModuleDependencies FROM-CACHE
+> Task :feature:auth:verifyModuleDependencies FROM-CACHE
+> Task :feature:feed:verifyModuleDependencies FROM-CACHE
+> Task :feature:profile:verifyModuleDependencies FROM-CACHE
+> Task :feature:sample:verifyModuleDependencies FROM-CACHE
+> Task :feature:search:verifyModuleDependencies FROM-CACHE
+> Task :feature:settings:verifyModuleDependencies FROM-CACHE
+> Task :feature:onboarding:verifyModuleDependencies FROM-CACHE
+> Task :core:testing:compose:verifyModuleDependencies FROM-CACHE
+> Task :core:analytics:verifyApiPurity FROM-CACHE
+> Task :core:applock:verifyApiPurity FROM-CACHE
+> Task :core:navigation:shell:verifyModuleDependencies FROM-CACHE
+> Task :core:common:verifyApiPurity FROM-CACHE
+> Task :core:database:verifyApiPurity FROM-CACHE
+> Task :core:datastore:verifyApiPurity FROM-CACHE
+> Task :core:devtools:verifyApiPurity FROM-CACHE
+> Task :core:flags:verifyApiPurity FROM-CACHE
+> Task :core:media:verifyApiPurity FROM-CACHE
+> Task :core:designsystem:verifyApiPurity FROM-CACHE
+> Task :core:mvi:verifyApiPurity FROM-CACHE
+> Task :core:navigation:verifyApiPurity FROM-CACHE
+> Task :core:network:verifyApiPurity FROM-CACHE
+> Task :core:notification:verifyApiPurity FROM-CACHE
+> Task :core:perfhud:verifyApiPurity FROM-CACHE
+> Task :core:playstore:verifyApiPurity FROM-CACHE
+> Task :core:testing:verifyApiPurity FROM-CACHE
+> Task :core:ui:verifyApiPurity FROM-CACHE
+> Task :data:auth:verifyApiPurity FROM-CACHE
+> Task :data:profile:verifyApiPurity FROM-CACHE
+> Task :data:feed:verifyApiPurity FROM-CACHE
+> Task :data:sample:verifyApiPurity FROM-CACHE
+> Task :feature:auth:verifyApiPurity FROM-CACHE
+> Task :data:search:verifyApiPurity FROM-CACHE
+> Task :feature:onboarding:verifyApiPurity FROM-CACHE
+> Task :feature:feed:verifyApiPurity FROM-CACHE
+> Task :feature:profile:verifyApiPurity FROM-CACHE
+> Task :feature:sample:verifyApiPurity FROM-CACHE
+> Task :feature:settings:verifyApiPurity FROM-CACHE
+> Task :feature:search:verifyApiPurity FROM-CACHE
+> Task :core:navigation:shell:verifyApiPurity FROM-CACHE
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:testing:compose:verifyApiPurity FROM-CACHE
+> Task :core:common:processResources NO-SOURCE
+> Task :core:navigation:preBuild UP-TO-DATE
+> Task :core:navigation:preDebugBuild UP-TO-DATE
+> Task :core:navigation:javaPreCompileDebug FROM-CACHE
+> Task :core:navigation:extractProguardFiles
+> Task :core:navigation:shell:verifyCodeRules
+> Task :core:common:compileKotlin FROM-CACHE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:navigation:processDebugManifest FROM-CACHE
+> Task :core:navigation:generateDebugEmptyResourceFiles
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:common:jar
+> Task :core:navigation:mergeDebugAssets
+> Task :core:navigation:checkDebugAarMetadata
+> Task :core:navigation:prepareLintJarForPublish
+> Task :core:navigation:writeDebugAarMetadata
+> Task :core:navigation:prepareDebugArtProfile
+> Task :core:testing:preBuild UP-TO-DATE
+> Task :core:testing:preDebugBuild UP-TO-DATE
+> Task :core:testing:checkDebugAarMetadata
+> Task :core:testing:generateDebugEmptyResourceFiles
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:mergeDebugAssets
+> Task :core:navigation:kspDebugKotlin FROM-CACHE
+> Task :core:testing:extractDebugAnnotations
+> Task :core:navigation:extractDebugAnnotations
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:prepareDebugArtProfile
+> Task :core:testing:prepareLintJarForPublish
+> Task :core:testing:processDebugManifest FROM-CACHE
+> Task :core:testing:writeDebugAarMetadata
+> Task :core:navigation:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:navigation:writeDebugLintModelMetadata
+> Task :core:testing:writeDebugLintModelMetadata
+> Task :core:designsystem:preBuild UP-TO-DATE
+> Task :core:designsystem:preDebugBuild UP-TO-DATE
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:testing:compileDebugKotlin FROM-CACHE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:mergeDebugGeneratedProguardFiles
+> Task :core:testing:mergeDebugConsumerProguardFiles
+> Task :core:designsystem:packageDebugResources FROM-CACHE
+> Task :core:testing:processDebugJavaRes
+> Task :core:testing:bundleLibRuntimeToJarDebug
+> Task :core:navigation:compileDebugKotlin FROM-CACHE
+> Task :core:designsystem:verifyCodeRules
+> Task :core:testing:createFullJarDebug
+> Task :core:navigation:checkComposeStability
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:navigation:processDebugJavaRes
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:navigation:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:designsystem:generateDebugRFile FROM-CACHE
+> Task :core:testing:mergeDebugJavaResource
+> Task :core:navigation:mergeDebugJavaResource
+> Task :core:testing:syncDebugLibJars
+> Task :core:testing:bundleDebugLocalLintAar
+> Task :core:navigation:transformDebugClassesWithAsm FROM-CACHE
+> Task :core:navigation:mergeDebugGeneratedProguardFiles
+> Task :core:navigation:mergeDebugConsumerProguardFiles
+> Task :core:navigation:syncDebugLibJars
+> Task :core:navigation:bundleDebugLocalLintAar
+> Task :core:navigation:bundleLibRuntimeToJarDebug
+> Task :core:navigation:createFullJarDebug
+> Task :core:navigation:generateDebugLintReportModel
+> Task :core:navigation:generateDebugUnitTestLintModel
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:extractProguardFiles
+> Task :core:designsystem:processDebugManifest FROM-CACHE
+> Task :core:designsystem:compileDebugKotlin FROM-CACHE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:checkDebugAarMetadata
+> Task :core:designsystem:extractDebugAnnotations
+> Task :core:designsystem:extractDeepLinksForAarDebug FROM-CACHE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets
+> Task :core:designsystem:mergeDebugGeneratedProguardFiles
+> Task :core:designsystem:mergeDebugConsumerProguardFiles
+> Task :core:designsystem:prepareDebugArtProfile
+> Task :core:designsystem:prepareLintJarForPublish
+> Task :core:designsystem:generateDebugLintModel
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:testing:compose:preBuild UP-TO-DATE
+> Task :core:testing:compose:preDebugBuild UP-TO-DATE
+> Task :core:designsystem:processDebugJavaRes
+> Task :core:designsystem:mergeDebugJavaResource
+> Task :core:testing:compose:checkDebugAarMetadata
+> Task :core:testing:compose:extractDebugAnnotations
+> Task :core:testing:compose:generateDebugEmptyResourceFiles
+> Task :core:testing:compose:generateDebugAssets UP-TO-DATE
+> Task :core:testing:compose:mergeDebugAssets
+> Task :core:designsystem:syncDebugLibJars
+> Task :core:testing:compose:compileDebugKotlin FROM-CACHE
+> Task :core:testing:compose:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:mergeDebugGeneratedProguardFiles
+> Task :core:testing:compose:mergeDebugConsumerProguardFiles
+> Task :core:testing:compose:prepareDebugArtProfile
+> Task :core:testing:compose:prepareLintJarForPublish
+> Task :core:designsystem:bundleDebugLocalLintAar
+> Task :core:testing:compose:processDebugManifest FROM-CACHE
+> Task :core:testing:compose:processDebugJavaRes
+> Task :core:testing:compose:mergeDebugJavaResource
+> Task :core:testing:compose:syncDebugLibJars
+> Task :core:testing:compose:writeDebugAarMetadata
+> Task :core:testing:compose:bundleDebugLocalLintAar
+> Task :core:designsystem:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:designsystem:writeDebugLintModelMetadata
+> Task :core:testing:compose:bundleLibRuntimeToJarDebug
+> Task :core:testing:compose:createFullJarDebug
+> Task :core:testing:compose:writeDebugLintModelMetadata
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:createFullJarDebug
+> Task :core:designsystem:generateDebugUnitTestLintModel
+> Task :core:navigation:lintAnalyzeDebugUnitTest
+> Task :core:navigation:generateDebugLintModel
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:navigation:bundleLibCompileToJarDebug
+> Task :core:navigation:shell:preBuild UP-TO-DATE
+> Task :core:navigation:shell:preDebugBuild UP-TO-DATE
+> Task :core:navigation:shell:generateDebugResources FROM-CACHE
+> Task :core:navigation:shell:packageDebugResources FROM-CACHE
+> Task :core:navigation:shell:processDebugNavigationResources FROM-CACHE
+> Task :core:navigation:shell:parseDebugLocalResources FROM-CACHE
+> Task :core:navigation:shell:generateDebugRFile FROM-CACHE
+> Task :core:navigation:shell:compileDebugKotlin FROM-CACHE
+> Task :core:navigation:shell:javaPreCompileDebug FROM-CACHE
+> Task :core:navigation:shell:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:navigation:shell:extractProguardFiles
+> Task :core:navigation:shell:processDebugManifest FROM-CACHE
+> Task :core:navigation:shell:generateDebugLintReportModel
+> Task :core:navigation:shell:checkDebugAarMetadata
+> Task :core:navigation:shell:extractDebugAnnotations
+> Task :core:navigation:shell:extractDeepLinksForAarDebug FROM-CACHE
+> Task :core:navigation:shell:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:shell:mergeDebugAssets
+> Task :core:navigation:shell:mergeDebugGeneratedProguardFiles
+> Task :core:navigation:shell:mergeDebugConsumerProguardFiles
+> Task :core:navigation:shell:prepareDebugArtProfile
+> Task :core:navigation:shell:prepareLintJarForPublish
+> Task :core:navigation:shell:processDebugJavaRes
+> Task :core:navigation:shell:mergeDebugJavaResource
+> Task :core:navigation:shell:syncDebugLibJars
+> Task :core:navigation:shell:writeDebugAarMetadata
+> Task :core:navigation:shell:bundleDebugLocalLintAar
+> Task :core:navigation:lintAnalyzeDebug
+The Daemon will expire after the build after running out of JVM Metaspace.
+The project memory settings are likely not configured or are configured to an insufficient value.
+The daemon will restart for the next build, which may increase subsequent build times.
+These settings can be adjusted by setting 'org.gradle.jvmargs' in 'gradle.properties'.
+The currently configured max heap space is '2 GiB' and the configured max metaspace is '1 GiB'.
+For more information on how to set these values, please refer to https://docs.gradle.org/9.7.1/userguide/build_environment.html#sec:configuring_jvm_memory in the Gradle documentation.
+To disable this warning, set 'org.gradle.daemon.performance.disable-logging=true'.
+Daemon will be stopped at the end of the build after running out of JVM Metaspace
+> Task :core:navigation:shell:bundleLibRuntimeToJarDebug
+> Task :core:navigation:shell:createFullJarDebug
+> Task :core:navigation:shell:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:navigation:shell:writeDebugLintModelMetadata
+
+> Task :core:navigation:lintReportDebug
+Wrote HTML report to file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/build/reports/lint-results-debug.html
+Wrote SARIF report to file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/build/reports/lint-results-debug.sarif
+
+> Task :core:navigation:lintDebug
+> Task :core:navigation:shell:generateDebugUnitTestLintModel
+> Task :core:designsystem:lintAnalyzeDebug
+> Task :core:designsystem:lintAnalyzeDebugUnitTest
+> Task :core:navigation:shell:lintAnalyzeDebugUnitTest
+> Task :core:navigation:shell:lintAnalyzeDebug
+
+> Task :core:navigation:shell:lintReportDebug
+Wrote HTML report to file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/shell/build/reports/lint-results-debug.html
+Wrote SARIF report to file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/shell/build/reports/lint-results-debug.sarif
+Lint found 4 errors and 2 warnings. First failure:
+D:\projects\tools\.overhaul\out\NOUI-FINAL\NAV\ui-everything\core\navigation\shell\src\main\res\values\strings.xml:3: Error: Resource named 'navigation_more' does not start with the project's resource prefix 'shell_'; rename to 'shell_navigation_more' ? [ResourceName]
+    <string name="navigation_more">More</string>
+            ~~~~~~~~~~~~~~~~~~~~~~
+
+
+> Task :core:navigation:shell:lintDebug FAILED
+Lint found 4 errors, 2 warnings. First failure:
+
+D:\projects\tools\.overhaul\out\NOUI-FINAL\NAV\ui-everything\core\navigation\shell\src\main\res\values\strings.xml:3: Error: Resource named 'navigation_more' does not start with the project's resource prefix 'shell_'; rename to 'shell_navigation_more' ? [ResourceName]
+    <string name="navigation_more">More</string>
+            ~~~~~~~~~~~~~~~~~~~~~~
+
+The full lint text report is located at:
+  D:\projects\tools\.overhaul\out\NOUI-FINAL\NAV\ui-everything\core\navigation\shell\build\intermediates\lint_intermediate_text_report\debug\lintReportDebug\lint-results-debug.txt
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:navigation:shell:lintDebug' (registered by plugin 'com.android.internal.library').
+> Lint found errors in the project; aborting build.
+  
+  Fix the issues identified by lint, or create a baseline to see only new errors.
+  To create a baseline, run `gradlew updateLintBaseline` after adding the following to the module's build.gradle file:
+  ```
+  android {
+      lint {
+          baseline = file("lint-baseline.xml")
+      }
+  }
+  ```
+  For more details, see https://developer.android.com/studio/write/lint#snapshot
+  
+  Lint found 4 errors, 2 warnings. First failure:
+  
+  D:\projects\tools\.overhaul\out\NOUI-FINAL\NAV\ui-everything\core\navigation\shell\src\main\res\values\strings.xml:3: Error: Resource named 'navigation_more' does not start with the project's resource prefix 'shell_'; rename to 'shell_navigation_more' ? [ResourceName]
+      <string name="navigation_more">More</string>
+              ~~~~~~~~~~~~~~~~~~~~~~
+  
+  The full lint text report is located at:
+    D:\projects\tools\.overhaul\out\NOUI-FINAL\NAV\ui-everything\core\navigation\shell\build\intermediates\lint_intermediate_text_report\debug\lintReportDebug\lint-results-debug.txt
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 2m 5s
+232 actionable tasks: 138 executed, 94 from cache
+Configuration cache entry stored.
+== 23:29:10 EXIT 1
+== 23:29:11 ui-everything build output deleted
+== 23:29:11 generate noui-everything at 4929ad29a + 0 uncommitted
+  ! 'catalog' was left out: The catalog app shows the design system's components, and this project has none.
+  ! 'collections' was left out: Carousels, reorderable lists and the image viewer are components; build yours on the theme skeleton.
+  ! 'datadisplay' was left out: Stat tiles, charts and tables are components; build yours on the theme skeleton.
+  ! 'formfields' was left out: Code, money and phone fields are components; form state and validation (forms) stay.
+  ! 'pickers' was left out: Calendars and wheel pickers are components; build yours on the theme skeleton.
+  ! 'liquidglass' was left out: Glass is drawn by components and the shell, which this project leaves to your design system.
+
+Summary
+───────
+           App  Final Nav (FinalNav)
+       Package  com.example.finalnav.nouieverything
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, appstatus, auth, browser, ci, coil,
+                coverage, crashlytics, database, deeplink, depsanalysis,
+                devtools, firebase, firebaseanalytics, flags, formatting,
+                forms, googlefonts, googlesignin, language, leakcanary,
+                licenses, media, network, offlinequeue, onboarding, paging,
+                perfhud, performance, playstore, profile, push,
+                remoteconfig, sample, search, settings, websocket
+       Options  ui_components off
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\NAV\noui-everything
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\NAV\noui-everything and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json: the included one is a placeholder.
+
+== 23:29:22 build noui-everything: verifyCodeRules verifyModuleDependencies verifyApiPurity :core:navigation:checkComposeStability :core:navigation:lintDebug --continue
+[locked:gradle] waiting for the lock (pid 13804 since 2026-10-25 23:29:10: ./gradlew :app:compileDevDebugKotlin)
+[locked:gradle] waiting for the lock (pid 20400 since 2026-10-25 23:31:39: ./gradlew :build-logic:convention:test verifyCodeRules verifyModuleDependencies checkComposeStability spotlessKotlinChec)
+[locked:gradle] waiting for the lock (pid 5576 since 2026-10-25 23:38:01: ./gradlew :core:designsystem:recordRoborazziDebug --continue)
+[locked:gradle] waiting for the lock (pid 1632 since 2026-10-25 23:44:17: ./gradlew :core:testing:compose:testDebugUnitTest --tests *AccessibilityAuditTest* --continue)
+[locked:gradle] waiting for the lock (pid 9200 since 2026-10-25 23:49:21: ./gradlew :build-logic:convention:test verifyCodeRules verifyModuleDependencies checkComposeStability spotlessKotlinChec)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Starting a Gradle Daemon, 3 busy and 5 stopped Daemons could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: verifyCodeRules verifyModuleDependencies verifyApiPurity :core:navigation:checkComposeStability :core:navigation:lintDebug
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin FROM-CACHE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:verifyCodeRules
+> Task :core:analytics:verifyCodeRules
+> Task :core:applock:verifyCodeRules
+> Task :core:database:verifyCodeRules
+> Task :core:datastore:verifyCodeRules
+> Task :core:flags:verifyCodeRules
+> Task :core:media:verifyCodeRules
+> Task :core:devtools:verifyCodeRules
+> Task :core:mvi:verifyCodeRules
+> Task :app:verifyCodeRules
+> Task :core:navigation:verifyCodeRules
+> Task :core:notification:verifyCodeRules
+> Task :core:network:verifyCodeRules
+> Task :core:designsystem:verifyCodeRules
+> Task :core:testing:verifyCodeRules
+> Task :data:auth:verifyCodeRules
+> Task :core:perfhud:verifyCodeRules
+> Task :core:playstore:verifyCodeRules
+> Task :data:profile:verifyCodeRules
+> Task :core:ui:verifyCodeRules
+> Task :data:search:verifyCodeRules
+> Task :feature:feed:verifyCodeRules
+> Task :data:sample:verifyCodeRules
+> Task :data:feed:verifyCodeRules
+> Task :feature:onboarding:verifyCodeRules
+> Task :feature:auth:verifyCodeRules
+> Task :feature:profile:verifyCodeRules
+> Task :feature:search:verifyCodeRules
+> Task :feature:sample:verifyCodeRules
+> Task :core:analytics:verifyModuleDependencies FROM-CACHE
+> Task :core:applock:verifyModuleDependencies FROM-CACHE
+> Task :core:common:verifyModuleDependencies FROM-CACHE
+> Task :core:database:verifyModuleDependencies FROM-CACHE
+> Task :core:datastore:verifyModuleDependencies FROM-CACHE
+> Task :core:designsystem:verifyModuleDependencies FROM-CACHE
+> Task :core:devtools:verifyModuleDependencies FROM-CACHE
+> Task :core:flags:verifyModuleDependencies FROM-CACHE
+> Task :core:media:verifyModuleDependencies FROM-CACHE
+> Task :core:mvi:verifyModuleDependencies FROM-CACHE
+> Task :core:navigation:verifyModuleDependencies FROM-CACHE
+> Task :core:network:verifyModuleDependencies FROM-CACHE
+> Task :core:notification:verifyModuleDependencies FROM-CACHE
+> Task :core:perfhud:verifyModuleDependencies FROM-CACHE
+> Task :core:testing:verifyModuleDependencies FROM-CACHE
+> Task :core:ui:verifyModuleDependencies FROM-CACHE
+> Task :core:playstore:verifyModuleDependencies FROM-CACHE
+> Task :data:feed:verifyModuleDependencies FROM-CACHE
+> Task :data:auth:verifyModuleDependencies FROM-CACHE
+> Task :data:profile:verifyModuleDependencies FROM-CACHE
+> Task :data:sample:verifyModuleDependencies FROM-CACHE
+> Task :data:search:verifyModuleDependencies FROM-CACHE
+> Task :core:testing:compose:verifyCodeRules
+> Task :feature:auth:verifyModuleDependencies FROM-CACHE
+> Task :feature:feed:verifyModuleDependencies FROM-CACHE
+> Task :feature:onboarding:verifyModuleDependencies FROM-CACHE
+> Task :feature:profile:verifyModuleDependencies FROM-CACHE
+> Task :feature:sample:verifyModuleDependencies FROM-CACHE
+> Task :feature:search:verifyModuleDependencies FROM-CACHE
+> Task :feature:settings:verifyModuleDependencies FROM-CACHE
+> Task :core:testing:compose:verifyModuleDependencies
+> Task :core:applock:verifyApiPurity FROM-CACHE
+> Task :core:common:verifyApiPurity FROM-CACHE
+> Task :core:datastore:verifyApiPurity FROM-CACHE
+> Task :core:database:verifyApiPurity FROM-CACHE
+> Task :core:devtools:verifyApiPurity FROM-CACHE
+> Task :core:designsystem:verifyApiPurity FROM-CACHE
+> Task :core:flags:verifyApiPurity FROM-CACHE
+> Task :core:media:verifyApiPurity FROM-CACHE
+> Task :core:mvi:verifyApiPurity FROM-CACHE
+> Task :core:navigation:verifyApiPurity FROM-CACHE
+> Task :core:network:verifyApiPurity FROM-CACHE
+> Task :core:notification:verifyApiPurity FROM-CACHE
+> Task :core:analytics:verifyApiPurity FROM-CACHE
+> Task :core:playstore:verifyApiPurity FROM-CACHE
+> Task :core:perfhud:verifyApiPurity FROM-CACHE
+> Task :core:testing:verifyApiPurity FROM-CACHE
+> Task :data:auth:verifyApiPurity FROM-CACHE
+> Task :data:feed:verifyApiPurity FROM-CACHE
+> Task :data:profile:verifyApiPurity FROM-CACHE
+> Task :core:ui:verifyApiPurity FROM-CACHE
+> Task :data:search:verifyApiPurity FROM-CACHE
+> Task :feature:settings:verifyCodeRules
+> Task :feature:auth:verifyApiPurity FROM-CACHE
+> Task :feature:feed:verifyApiPurity FROM-CACHE
+> Task :feature:profile:verifyApiPurity FROM-CACHE
+> Task :feature:onboarding:verifyApiPurity FROM-CACHE
+> Task :feature:settings:verifyApiPurity FROM-CACHE
+> Task :feature:sample:verifyApiPurity FROM-CACHE
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :feature:search:verifyApiPurity FROM-CACHE
+> Task :core:common:processResources NO-SOURCE
+> Task :core:navigation:preBuild UP-TO-DATE
+> Task :core:navigation:preDebugBuild UP-TO-DATE
+> Task :data:sample:verifyApiPurity FROM-CACHE
+> Task :core:testing:compose:verifyApiPurity
+> Task :core:navigation:processDebugManifest FROM-CACHE
+> Task :core:navigation:javaPreCompileDebug FROM-CACHE
+> Task :core:navigation:generateDebugEmptyResourceFiles
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:extractProguardFiles
+> Task :core:navigation:mergeDebugAssets
+> Task :core:navigation:prepareLintJarForPublish
+> Task :core:navigation:prepareDebugArtProfile
+> Task :core:testing:preBuild UP-TO-DATE
+> Task :core:testing:preDebugBuild UP-TO-DATE
+> Task :core:navigation:writeDebugAarMetadata
+> Task :core:testing:generateDebugEmptyResourceFiles
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:checkDebugAarMetadata
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:prepareDebugArtProfile
+> Task :core:testing:prepareLintJarForPublish
+> Task :core:testing:processDebugManifest FROM-CACHE
+> Task :core:testing:mergeDebugAssets
+> Task :core:navigation:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:navigation:writeDebugLintModelMetadata
+> Task :core:testing:writeDebugLintModelMetadata
+> Task :core:testing:writeDebugAarMetadata
+> Task :core:common:compileKotlin FROM-CACHE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar
+> Task :core:navigation:checkDebugAarMetadata
+> Task :core:testing:compileDebugKotlin FROM-CACHE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:mergeDebugGeneratedProguardFiles
+> Task :core:testing:mergeDebugConsumerProguardFiles
+> Task :core:testing:processDebugJavaRes
+> Task :core:testing:bundleLibRuntimeToJarDebug
+> Task :core:testing:createFullJarDebug
+> Task :core:testing:mergeDebugJavaResource
+> Task :core:navigation:kspDebugKotlin FROM-CACHE
+> Task :core:testing:extractDebugAnnotations
+> Task :core:testing:syncDebugLibJars
+> Task :core:navigation:extractDebugAnnotations
+> Task :core:testing:bundleDebugLocalLintAar
+> Task :core:navigation:compileDebugKotlin FROM-CACHE
+> Task :core:navigation:checkComposeStability
+> Task :core:navigation:processDebugJavaRes
+> Task :core:navigation:mergeDebugJavaResource
+> Task :core:navigation:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:navigation:transformDebugClassesWithAsm FROM-CACHE
+> Task :core:navigation:mergeDebugGeneratedProguardFiles
+> Task :core:navigation:mergeDebugConsumerProguardFiles
+> Task :core:navigation:bundleLibRuntimeToJarDebug
+> Task :core:navigation:createFullJarDebug
+> Task :core:navigation:syncDebugLibJars
+> Task :core:navigation:bundleDebugLocalLintAar
+> Task :core:navigation:generateDebugLintReportModel
+> Task :core:navigation:generateDebugUnitTestLintModel
+> Task :core:navigation:lintAnalyzeDebugUnitTest
+> Task :core:navigation:lintAnalyzeDebug
+
+> Task :core:navigation:lintReportDebug
+Wrote HTML report to file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/noui-everything/core/navigation/build/reports/lint-results-debug.html
+Wrote SARIF report to file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/noui-everything/core/navigation/build/reports/lint-results-debug.sarif
+
+> Task :core:navigation:lintDebug
+
+BUILD SUCCESSFUL in 1m 15s
+146 actionable tasks: 77 executed, 69 from cache
+Configuration cache entry stored.
+== 23:54:31 EXIT 0
+== 23:54:31 noui-everything build output deleted
+== 23:54:31 GUARD DONE ui=1 noui=0

@@ -1,0 +1,9 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI/generator
+# command: D:/projects/tools/.overhaul/bin/memwait python -m tests.consistency
+# start: Sun Oct 25 08:27:14 IST 2026
+[locked:memwait] 735 MB available, 7996 MB commit left; waiting for 1500 MB
+
+223 projects in 526 s: 0 new issues, 374 known (2 of 2 known-issue lines seen).
+CONSISTENCY OK
+# end: Sun Oct 25 08:36:34 IST 2026
+EXIT=0

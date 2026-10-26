@@ -1,0 +1,63 @@
+# cwd: D:/projects/tools/.overhaul/wt/NOUI-NEXT-TEST/generator
+# head: 207a12d2f, uncommitted: 0
+# command: memwait <python> create_project.py --spec D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/specs/ui-modular.json --preset everything --no-zip --force --out D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/ui-modular-final --json
+# start: Sun Oct 25 18:21:59 IST 2026
+{
+  "ok": true,
+  "target": "android",
+  "project_name": "FinalTest",
+  "path": "D:\\projects\\tools\\.overhaul\\out\\NOUI-FINAL\\TEST\\ui-modular-final",
+  "resolved_features": [
+    "analytics",
+    "applock",
+    "appstatus",
+    "auth",
+    "browser",
+    "catalog",
+    "ci",
+    "coil",
+    "collections",
+    "coverage",
+    "crashlytics",
+    "database",
+    "datadisplay",
+    "deeplink",
+    "depsanalysis",
+    "devtools",
+    "firebase",
+    "firebaseanalytics",
+    "flags",
+    "formatting",
+    "formfields",
+    "forms",
+    "googlefonts",
+    "googlesignin",
+    "language",
+    "leakcanary",
+    "licenses",
+    "liquidglass",
+    "media",
+    "network",
+    "offlinequeue",
+    "onboarding",
+    "paging",
+    "perfhud",
+    "performance",
+    "pickers",
+    "playstore",
+    "profile",
+    "push",
+    "remoteconfig",
+    "sample",
+    "search",
+    "settings",
+    "websocket"
+  ],
+  "feature_modules": [],
+  "notes": [],
+  "warnings": [],
+  "ignored_fields": [],
+  "summary": []
+}
+EXIT=0
+# end: Sun Oct 25 18:22:13 IST 2026

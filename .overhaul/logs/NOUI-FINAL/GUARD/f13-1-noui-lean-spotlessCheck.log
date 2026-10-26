@@ -1,0 +1,53 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/no-lean
+# command: locked gradle ./gradlew spotlessCheck --continue
+# start: Sun Oct 25 22:21:57 IST 2026
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as configuration cache cannot be reused because an input to unknown location has changed.
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :spotlessKotlin UP-TO-DATE
+> Task :spotlessKotlinCheck FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':spotlessKotlinCheck' (registered in build file 'build.gradle.kts').
+> There were 14 lint error(s), they must be fixed or suppressed.
+  app/src/main/kotlin/com/example/finalguard/nolean/ui/AppRoot.kt:L41 ktlint(compose:modifier-missing-check) This @Composable function emits content but doesn't have a modifier parameter. (...)
+  core/designsystem/src/main/kotlin/com/example/finalguard/nolean/core/designsystem/foundation/adaptive/AdaptiveLayout.kt:L60 ktlint(compose:content-slot-reused) Content slots should not be reused in different code branches/scopes of a composable function, to preserve the slot internal state. (...)
+  core/designsystem/src/main/kotlin/com/example/finalguard/nolean/core/designsystem/foundation/adaptive/WindowClass.kt:L15 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalguard/nolean/core/designsystem/preview/AppComponentPreviews.kt:L35 ktlint(compose:preview-annotation-naming) MultiPreview annotations should start with `Preview` as prefix. (...)
+  core/designsystem/src/main/kotlin/com/example/finalguard/nolean/core/designsystem/preview/AppScreenPreviews.kt:L34 ktlint(compose:preview-annotation-naming) MultiPreview annotations should start with `Preview` as prefix. (...)
+  core/designsystem/src/main/kotlin/com/example/finalguard/nolean/core/designsystem/theme/AppColors.kt:L123 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalguard/nolean/core/designsystem/theme/AppMetrics.kt:L79 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalguard/nolean/core/designsystem/theme/AppMotion.kt:L242 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalguard/nolean/core/designsystem/theme/AppTheme.kt:L240 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalguard/nolean/core/designsystem/theme/AppTypography.kt:L91 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalguard/nolean/core/designsystem/theme/ReduceMotion.kt:L45 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/navigation/src/main/kotlin/com/example/finalguard/nolean/core/navigation/NavigationSettled.kt:L23 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/navigation/src/main/kotlin/com/example/finalguard/nolean/core/navigation/Shortcuts.kt:L70 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/ui/src/main/kotlin/com/example/finalguard/nolean/core/ui/MessagePresenter.kt:L35 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  Resolve these lints or suppress with `suppressLintsFor`
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 6s
+6 actionable tasks: 1 executed, 5 up-to-date
+Configuration cache entry stored.
+# exit: 1
+# end: Sun Oct 25 22:22:05 IST 2026
+# seconds: 8

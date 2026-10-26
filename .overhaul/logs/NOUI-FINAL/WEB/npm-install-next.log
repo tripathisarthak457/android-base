@@ -1,0 +1,16 @@
+Sun Oct 25 17:46:46 IST 2026
+npm_config_cache=D:\.caches\npm
+$ memwait npm install next@15.5.28 --save-exact
+
+changed 3 packages, and audited 54 packages in 17s
+
+9 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn install-scripts   @tailwindcss/oxide@4.1.13 (postinstall: node ./scripts/install.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+exit=0
+Sun Oct 25 17:47:04 IST 2026

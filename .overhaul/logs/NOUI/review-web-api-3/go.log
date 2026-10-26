@@ -1,0 +1,14 @@
+GOCACHE=D:\.caches\go\build GOMODCACHE=D:\.caches\go\mod
+gofmt:
+vet:
+vet-ok
+vet-linux-ok
+build-ok
+ok  	github.com/base-android/generator-api/cmd/server	1.180s
+ok  	github.com/base-android/generator-api/internal/clip	0.765s
+ok  	github.com/base-android/generator-api/internal/config	0.803s
+ok  	github.com/base-android/generator-api/internal/generate	1.222s
+ok  	github.com/base-android/generator-api/internal/httpapi	1.463s
+ok  	github.com/base-android/generator-api/internal/store	1.429s
+ok  	github.com/base-android/generator-api/internal/telemetry	1.190s
+exit=0

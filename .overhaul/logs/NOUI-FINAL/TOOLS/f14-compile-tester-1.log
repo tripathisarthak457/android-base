@@ -1,0 +1,58 @@
+# project: D:/projects/tools/.overhaul/out/NOUI-FINAL/TOOLS/noui-lean
+# tree: 2cd20428d + uncommitted
+# command: locked gradle ./gradlew :core:testing:compose:compileDebugKotlin
+# start: Sun Oct 25 20:09:33 IST 2026
+[locked:gradle] 3249 MB available, 12604 MB commit left; waiting for 3500 MB
+[locked:gradle] 3187 MB available, 12539 MB commit left; waiting for 3500 MB
+[locked:gradle] 3233 MB available, 12507 MB commit left; waiting for 3500 MB
+[locked:gradle] 3104 MB available, 12277 MB commit left; waiting for 3500 MB
+[locked:gradle] 2267 MB available, 12313 MB commit left; waiting for 3500 MB
+[locked:gradle] 751 MB available plus 6596 MB of system cache Windows will trim; continuing
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Starting a Gradle Daemon, 2 busy Daemons could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:testing:compose:compileDebugKotlin
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:testing:compose:verifyModuleDependencies
+> Task :core:testing:compose:verifyApiPurity
+> Task :core:testing:compose:preBuild
+> Task :core:testing:compose:preDebugBuild
+
+> Task :core:testing:compose:compileDebugKotlin
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/TOOLS/noui-lean/core/testing/compose/src/main/kotlin/com/example/finaltools/nouilean/core/testing/compose/preview/AccessibilityPreviewTester.kt:19:39 Cannot access 'fun createActivityScenario(theme: Int): ActivityScenario<out ComponentActivity>': it is internal in file.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/TOOLS/noui-lean/core/testing/compose/src/main/kotlin/com/example/finaltools/nouilean/core/testing/compose/preview/AccessibilityPreviewTester.kt:125:34 Cannot access 'fun createActivityScenario(theme: Int): ActivityScenario<out ComponentActivity>': it is internal in file.
+
+> Task :core:testing:compose:compileDebugKotlin FAILED
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/TOOLS/noui-lean/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:testing:compose:compileDebugKotlin' (registered by plugin 'com.android.internal.library').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: INVISIBLE_REFERENCE
+       Kotlin compiler error
+         Cannot access 'fun createActivityScenario(theme: Int): ActivityScenario<out ComponentActivity>': it is internal in file.
+         Location: D:/projects/tools/.overhaul/out/NOUI-FINAL/TOOLS/noui-lean/core/testing/compose/src/main/kotlin/com/example/finaltools/nouilean/core/testing/compose/preview/AccessibilityPreviewTester.kt line 19
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1m 38s
+7 actionable tasks: 7 executed
+Configuration cache entry stored.
+# exit: 1 end: Sun Oct 25 20:16:16 IST 2026

@@ -1,0 +1,28 @@
+07:07:11
+D free GB: 73.2
+./gradlew --offline --continue spotlessCheck
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: spotlessCheck
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :spotlessKotlinGradle
+> Task :spotlessKotlinGradleCheck
+> Task :spotlessKotlin
+> Task :spotlessKotlinCheck
+> Task :spotlessCheck
+
+BUILD SUCCESSFUL in 1m 14s
+8 actionable tasks: 8 executed
+Configuration cache entry stored.
+EXIT 0
+07:08:27

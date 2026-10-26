@@ -1,0 +1,18 @@
+## D10 lean round trip: d10-lean-compact now versus a fresh generation of the same spec and flags
+703 vs 703 files (build output excluded); only in first 0, only in second 0, changed 0
+
+## what is left on disk under d10-lean-compact/feature
+48
+/d/projects/tools/.overhaul/out/NOUI/gate-1/d10-lean-compact/feature
+/d/projects/tools/.overhaul/out/NOUI/gate-1/d10-lean-compact/feature/orders
+/d/projects/tools/.overhaul/out/NOUI/gate-1/d10-lean-compact/feature/orders/build
+/d/projects/tools/.overhaul/out/NOUI/gate-1/d10-lean-compact/feature/orders/build/.transforms
+/d/projects/tools/.overhaul/out/NOUI/gate-1/d10-lean-compact/feature/orders/build/intermediates
+
+## --tab on a fresh No-UI lean project (full digest, nothing excluded)
+before: 705 files 3e7c680340ef31bd28daa0e060664478b3d16cfd
+This project has no tab bar (it was generated without UI components). The module is reachable by its keys and deep links; add it to your own navigation once you build one.
+exit code: 1
+after:  705 files 3e7c680340ef31bd28daa0e060664478b3d16cfd
+same: .agents/skills/agp-9-upgrade/references/android/build/migrate-to-built-in-kotlin.md
+same: .agents/skills/agp-9-upgrade/references/android/build/releases/agp-9-0-0-release-notes.md

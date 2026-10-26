@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Auto Backup is off in the manifest (allowBackup="false"); these rules apply if it is turned on.
+  The session's tokens stay behind: the Keystore key that seals them never leaves the device, so a
+  restored copy would be ciphertext nothing can read.
+-->
+<full-backup-content>
+    <exclude domain="file" path="datastore/session_tokens.preferences_pb" />
+</full-backup-content>

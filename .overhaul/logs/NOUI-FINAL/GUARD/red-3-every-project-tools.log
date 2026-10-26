@@ -1,0 +1,116 @@
+FFFFFFEEEE
+======================================================================
+ERROR: test_the_release_build_guards_its_dependencies (tests.test_red_guard_tools.EveryProjectToolsTest.test_the_release_build_guards_its_dependencies) (formatting=True, ui=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\GUARD\base-src\generator\tests\test_red_guard_tools.py", line 68, in test_the_release_build_guards_its_dependencies
+    guard = (convention / PKG / "buildlogic/guard/DependencyGuard.kt").read_text(encoding="utf-8")
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 986, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 970, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmp7e24y_g3\\formatting-ui\\build-logic\\convention\\src\\main\\kotlin\\com\\acme\\guards\\buildlogic\\guard\\DependencyGuard.kt'
+
+======================================================================
+ERROR: test_the_release_build_guards_its_dependencies (tests.test_red_guard_tools.EveryProjectToolsTest.test_the_release_build_guards_its_dependencies) (formatting=True, ui=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\GUARD\base-src\generator\tests\test_red_guard_tools.py", line 68, in test_the_release_build_guards_its_dependencies
+    guard = (convention / PKG / "buildlogic/guard/DependencyGuard.kt").read_text(encoding="utf-8")
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 986, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 970, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmp7e24y_g3\\formatting-noui\\build-logic\\convention\\src\\main\\kotlin\\com\\acme\\guards\\buildlogic\\guard\\DependencyGuard.kt'
+
+======================================================================
+ERROR: test_the_release_build_guards_its_dependencies (tests.test_red_guard_tools.EveryProjectToolsTest.test_the_release_build_guards_its_dependencies) (formatting=False, ui=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\GUARD\base-src\generator\tests\test_red_guard_tools.py", line 68, in test_the_release_build_guards_its_dependencies
+    guard = (convention / PKG / "buildlogic/guard/DependencyGuard.kt").read_text(encoding="utf-8")
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 986, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 970, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmp7e24y_g3\\plain-ui\\build-logic\\convention\\src\\main\\kotlin\\com\\acme\\guards\\buildlogic\\guard\\DependencyGuard.kt'
+
+======================================================================
+ERROR: test_the_release_build_guards_its_dependencies (tests.test_red_guard_tools.EveryProjectToolsTest.test_the_release_build_guards_its_dependencies) (formatting=False, ui=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\GUARD\base-src\generator\tests\test_red_guard_tools.py", line 68, in test_the_release_build_guards_its_dependencies
+    guard = (convention / PKG / "buildlogic/guard/DependencyGuard.kt").read_text(encoding="utf-8")
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 986, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 970, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmp7e24y_g3\\plain-noui\\build-logic\\convention\\src\\main\\kotlin\\com\\acme\\guards\\buildlogic\\guard\\DependencyGuard.kt'
+
+======================================================================
+FAIL: test_a_rule_left_off_for_the_components_is_on_without_them (tests.test_red_guard_tools.EveryProjectToolsTest.test_a_rule_left_off_for_the_components_is_on_without_them) (formatting=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\GUARD\base-src\generator\tests\test_red_guard_tools.py", line 59, in test_a_rule_left_off_for_the_components_is_on_without_them
+    self.assertIn("ktlint_compose_param-order-check = disabled", ui)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ktlint_compose_param-order-check = disabled' not found in "# Formatting, read by Android Studio, by most other editors without a plugin, and by ktlint when\n# the project has the formatting feature: one set of rules, so a file reformatted in the IDE\n# passes the check unchanged.\n\nroot = true\n\n[*]\ncharset = utf-8\nend_of_line = lf\ninsert_final_newline = true\ntrim_trailing_whitespace = true\nindent_style = space\nindent_size = 4\n\n[*.{kt,kts}]\nmax_line_length = 100\nktlint_code_style = android_studio\n# Composables are nouns in PascalCase, which ktlint's function-naming rule would otherwise reject.\nktlint_function_naming_ignore_when_annotated_with = Composable\nij_kotlin_code_style_defaults = KOTLIN_OFFICIAL\nij_kotlin_allow_trailing_comma = true\nij_kotlin_allow_trailing_comma_on_call_site = true\nij_kotlin_imports_layout = *\nij_kotlin_name_count_to_use_star_import = 2147483647\nij_kotlin_name_count_to_use_star_import_for_members = 2147483647\n\n[*.{xml,json,yml,yaml,toml}]\nindent_size = 4\n\n[*.md]\ntrim_trailing_whitespace = false\n\n[{gradlew,*.sh}]\nend_of_line = lf\n\n[*.bat]\nend_of_line = crlf\n"
+
+======================================================================
+FAIL: test_a_rule_left_off_for_the_components_is_on_without_them (tests.test_red_guard_tools.EveryProjectToolsTest.test_a_rule_left_off_for_the_components_is_on_without_them) (formatting=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\GUARD\base-src\generator\tests\test_red_guard_tools.py", line 59, in test_a_rule_left_off_for_the_components_is_on_without_them
+    self.assertIn("ktlint_compose_param-order-check = disabled", ui)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ktlint_compose_param-order-check = disabled' not found in "# Formatting, read by Android Studio, by most other editors without a plugin, and by ktlint when\n# the project has the formatting feature: one set of rules, so a file reformatted in the IDE\n# passes the check unchanged.\n\nroot = true\n\n[*]\ncharset = utf-8\nend_of_line = lf\ninsert_final_newline = true\ntrim_trailing_whitespace = true\nindent_style = space\nindent_size = 4\n\n[*.{kt,kts}]\nmax_line_length = 100\nktlint_code_style = android_studio\n# Composables are nouns in PascalCase, which ktlint's function-naming rule would otherwise reject.\nktlint_function_naming_ignore_when_annotated_with = Composable\nij_kotlin_code_style_defaults = KOTLIN_OFFICIAL\nij_kotlin_allow_trailing_comma = true\nij_kotlin_allow_trailing_comma_on_call_site = true\nij_kotlin_imports_layout = *\nij_kotlin_name_count_to_use_star_import = 2147483647\nij_kotlin_name_count_to_use_star_import_for_members = 2147483647\n\n[*.{xml,json,yml,yaml,toml}]\nindent_size = 4\n\n[*.md]\ntrim_trailing_whitespace = false\n\n[{gradlew,*.sh}]\nend_of_line = lf\n\n[*.bat]\nend_of_line = crlf\n"
+
+======================================================================
+FAIL: test_spotless_runs_the_compose_rules_and_ktlints_own_rules_only_with_formatting (tests.test_red_guard_tools.EveryProjectToolsTest.test_spotless_runs_the_compose_rules_and_ktlints_own_rules_only_with_formatting) (formatting=True, ui=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\GUARD\base-src\generator\tests\test_red_guard_tools.py", line 49, in test_spotless_runs_the_compose_rules_and_ktlints_own_rules_only_with_formatting
+    self.assertIn(".customRuleSets(listOf(libs.compose.rules.ktlint.get().toString()))", build)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '.customRuleSets(listOf(libs.compose.rules.ktlint.get().toString()))' not found in '/*\n * Root build file.\n */\n\nplugins {\n    // The root\'s own `clean` and `check`; see the end of this file.\n    base\n    alias(libs.plugins.android.application) apply false\n    alias(libs.plugins.android.library) apply false\n    alias(libs.plugins.android.test) apply false\n    alias(libs.plugins.kotlin.jvm) apply false\n    alias(libs.plugins.kotlin.compose) apply false\n    alias(libs.plugins.kotlin.serialization) apply false\n    alias(libs.plugins.ksp) apply false\n    alias(libs.plugins.hilt) apply false\n    alias(libs.plugins.roborazzi) apply false\n    alias(libs.plugins.spotless)\n}\n\n/*\n * Formatting: `./gradlew spotlessApply` fixes it and `check` fails on what it would change. The\n * rules are ktlint\'s Android Studio style, read from .editorconfig, so the IDE formats the same way.\n */\nspotless {\n    kotlin {\n        target("**/src/**/*.kt")\n        targetExclude("**/build/**")\n        ktlint(libs.versions.ktlint.get())\n    }\n    kotlinGradle {\n        target("*.gradle.kts", "*/**/*.gradle.kts")\n        targetExclude("**/build/**")\n        ktlint(libs.versions.ktlint.get())\n    }\n}\n\n// The convention plugins\' own tests live in the included build, which `./gradlew check` does not\n// reach by itself.\ntasks.named("check") {\n    dependsOn(gradle.includedBuild("build-logic").task(":convention:check"))\n}\n'
+
+======================================================================
+FAIL: test_spotless_runs_the_compose_rules_and_ktlints_own_rules_only_with_formatting (tests.test_red_guard_tools.EveryProjectToolsTest.test_spotless_runs_the_compose_rules_and_ktlints_own_rules_only_with_formatting) (formatting=True, ui=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\GUARD\base-src\generator\tests\test_red_guard_tools.py", line 49, in test_spotless_runs_the_compose_rules_and_ktlints_own_rules_only_with_formatting
+    self.assertIn(".customRuleSets(listOf(libs.compose.rules.ktlint.get().toString()))", build)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '.customRuleSets(listOf(libs.compose.rules.ktlint.get().toString()))' not found in '/*\n * Root build file.\n */\n\nplugins {\n    // The root\'s own `clean` and `check`; see the end of this file.\n    base\n    alias(libs.plugins.android.application) apply false\n    alias(libs.plugins.android.library) apply false\n    alias(libs.plugins.android.test) apply false\n    alias(libs.plugins.kotlin.jvm) apply false\n    alias(libs.plugins.kotlin.compose) apply false\n    alias(libs.plugins.kotlin.serialization) apply false\n    alias(libs.plugins.ksp) apply false\n    alias(libs.plugins.hilt) apply false\n    alias(libs.plugins.roborazzi) apply false\n    alias(libs.plugins.spotless)\n}\n\n/*\n * Formatting: `./gradlew spotlessApply` fixes it and `check` fails on what it would change. The\n * rules are ktlint\'s Android Studio style, read from .editorconfig, so the IDE formats the same way.\n */\nspotless {\n    kotlin {\n        target("**/src/**/*.kt")\n        targetExclude("**/build/**")\n        ktlint(libs.versions.ktlint.get())\n    }\n    kotlinGradle {\n        target("*.gradle.kts", "*/**/*.gradle.kts")\n        targetExclude("**/build/**")\n        ktlint(libs.versions.ktlint.get())\n    }\n}\n\n// The convention plugins\' own tests live in the included build, which `./gradlew check` does not\n// reach by itself.\ntasks.named("check") {\n    dependsOn(gradle.includedBuild("build-logic").task(":convention:check"))\n}\n'
+
+======================================================================
+FAIL: test_spotless_runs_the_compose_rules_and_ktlints_own_rules_only_with_formatting (tests.test_red_guard_tools.EveryProjectToolsTest.test_spotless_runs_the_compose_rules_and_ktlints_own_rules_only_with_formatting) (formatting=False, ui=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\GUARD\base-src\generator\tests\test_red_guard_tools.py", line 48, in test_spotless_runs_the_compose_rules_and_ktlints_own_rules_only_with_formatting
+    self.assertIn("alias(libs.plugins.spotless)", build)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'alias(libs.plugins.spotless)' not found in '/*\n * Root build file.\n */\n\nplugins {\n    // The root\'s own `clean` and `check`; see the end of this file.\n    base\n    alias(libs.plugins.android.application) apply false\n    alias(libs.plugins.android.library) apply false\n    alias(libs.plugins.android.test) apply false\n    alias(libs.plugins.kotlin.jvm) apply false\n    alias(libs.plugins.kotlin.compose) apply false\n    alias(libs.plugins.kotlin.serialization) apply false\n    alias(libs.plugins.ksp) apply false\n    alias(libs.plugins.hilt) apply false\n    alias(libs.plugins.roborazzi) apply false\n}\n\n// The convention plugins\' own tests live in the included build, which `./gradlew check` does not\n// reach by itself.\ntasks.named("check") {\n    dependsOn(gradle.includedBuild("build-logic").task(":convention:check"))\n}\n'
+
+======================================================================
+FAIL: test_spotless_runs_the_compose_rules_and_ktlints_own_rules_only_with_formatting (tests.test_red_guard_tools.EveryProjectToolsTest.test_spotless_runs_the_compose_rules_and_ktlints_own_rules_only_with_formatting) (formatting=False, ui=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\GUARD\base-src\generator\tests\test_red_guard_tools.py", line 48, in test_spotless_runs_the_compose_rules_and_ktlints_own_rules_only_with_formatting
+    self.assertIn("alias(libs.plugins.spotless)", build)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'alias(libs.plugins.spotless)' not found in '/*\n * Root build file.\n */\n\nplugins {\n    // The root\'s own `clean` and `check`; see the end of this file.\n    base\n    alias(libs.plugins.android.application) apply false\n    alias(libs.plugins.android.library) apply false\n    alias(libs.plugins.android.test) apply false\n    alias(libs.plugins.kotlin.jvm) apply false\n    alias(libs.plugins.kotlin.compose) apply false\n    alias(libs.plugins.kotlin.serialization) apply false\n    alias(libs.plugins.ksp) apply false\n    alias(libs.plugins.hilt) apply false\n    alias(libs.plugins.roborazzi) apply false\n}\n\n// The convention plugins\' own tests live in the included build, which `./gradlew check` does not\n// reach by itself.\ntasks.named("check") {\n    dependsOn(gradle.includedBuild("build-logic").task(":convention:check"))\n}\n'
+
+----------------------------------------------------------------------
+Ran 3 tests in 28.310s
+
+FAILED (failures=6, errors=4)
+exit 1

@@ -1,0 +1,37 @@
+[2026-10-25 08:38:09] session start (P4d/P5d), link myapp://items/42
+[2026-10-25 08:38:12] STEP P4d-install -> 0 (D:/projects/tools/.overhaul/perf/NOUI/gate-1/p4d-install.txt)
+/data/local/tmp/noui-d-start.png: 1 file pulled, 0 skipped. 13.6 MB/s (32644 bytes in 0.002s)
+id=start present=True count=1 texts=[]
+/data/local/tmp/noui-d-deeplink.png: 1 file pulled, 0 skipped. 10.9 MB/s (35855 bytes in 0.003s)
+id=placeholder present=True count=1 texts=[]
+[2026-10-25 08:38:29] STEP P4d-deep-link -> 0 (D:/projects/tools/.overhaul/perf/NOUI/gate-1/noui-d-deeplink.check.txt)
+/data/local/tmp/noui-d-recents.png: 1 file pulled, 0 skipped. 23.9 MB/s (94554 bytes in 0.004s)
+[2026-10-25 08:38:41] recents card: 540 1084 label:com.google.android.apps.nexuslauncher:id/snapshot
+/data/local/tmp/noui-d-restored.png: 1 file pulled, 0 skipped. 5.0 MB/s (35855 bytes in 0.007s)
+id=placeholder present=True count=1 texts=[]
+/data/local/tmp/noui-d-restored-back.png: 1 file pulled, 0 skipped. 9.3 MB/s (32644 bytes in 0.003s)
+id=start present=True count=1 texts=[]
+[2026-10-25 08:38:56] STEP P5d-process-death -> 0 (restored (placeholder present: rc 0); after Back (start present: rc 0))
+/data/local/tmp/noui-e-cold-deeplink.png: 1 file pulled, 0 skipped. 9.0 MB/s (36485 bytes in 0.004s)
+id=placeholder present=True count=1 texts=[]
+[2026-10-25 08:39:06] STEP P4e-cold-deep-link -> 0 (D:/projects/tools/.overhaul/perf/NOUI/gate-1/noui-e-cold-deeplink.check.txt)
+/data/local/tmp/noui-e-cold-deeplink-back.png: 1 file pulled, 0 skipped. 8.1 MB/s (33287 bytes in 0.004s)
+id=start present=True count=1 texts=[]
+crash buffer lines: 0
+crash buffer lines naming com.example.noui.phone: 0
+D:/projects/tools/.overhaul/perf/NOUI/gate-1/logcat/after-p5d.txt lines=32339 first=--------- beginning of events
+FATAL EXCEPTION lines (all apps): 0
+'ANR in' lines (all apps): 0
+'Process: com.example.noui.phone' lines: 0
+'ANR in com.example.noui.phone' lines: 0
+[2026-10-25 08:39:14] STEP P7d-crash-log -> 0 (D:/projects/tools/.overhaul/perf/NOUI/gate-1/p7d-summary.txt)
+packages: same as before
+local-tmp: same as before
+android-media: same as before
+settings-system: same as before
+settings-secure: same as before
+settings-global: same as before
+wm: same as before
+[2026-10-25 08:39:18] STEP P8d-phone-as-found -> 0 (D:/projects/tools/.overhaul/perf/NOUI/gate-1/p8d-diff.txt)
+[2026-10-25 08:39:18] session end
+SESSION EXIT 0

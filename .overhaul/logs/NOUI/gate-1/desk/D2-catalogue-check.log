@@ -1,0 +1,6 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI/generator
+# command: D:/projects/tools/.overhaul/bin/memwait python -m genkit.core.catalogue --check
+# start: Sun Oct 25 08:20:41 IST 2026
+web/frontend/lib/catalogue.json is current.
+# end: Sun Oct 25 08:20:42 IST 2026
+EXIT=0

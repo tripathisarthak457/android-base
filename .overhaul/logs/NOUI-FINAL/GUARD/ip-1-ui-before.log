@@ -1,0 +1,36 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/ui-ev
+# command: locked gradle ./gradlew help --configuration-cache -Dorg.gradle.unsafe.isolated-projects=true -Dorg.gradle.configuration-cache.problems=warn
+# start: Sun Oct 25 22:08:06 IST 2026
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Isolated Projects is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: help
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+1 problem was found storing the configuration cache.
+- Build file 'build.gradle.kts': Project ':' cannot access 'Project.apply' functionality on subprojects
+
+See the complete report at file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/ui-ev/build/reports/configuration-cache/7v7ygo2vves9vdq85iiy7iwmr/8wcs0wm20qutvhj8em8mmj9qv/configuration-cache-report.html
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/ui-ev/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* Where:
+Build file 'D:\projects\tools\.overhaul\out\NOUI-FINAL\GUARD\ui-ev\build.gradle.kts' line: 49
+
+* What went wrong:
+Project ':' cannot access 'Project.apply' functionality on subprojects
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1s
+Configuration cache entry stored with 1 problem.
+# exit: 1
+# end: Sun Oct 25 22:08:09 IST 2026
+# seconds: 3

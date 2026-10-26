@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="applock_title">Unlock to continue</string>
+    <string name="applock_subtitle">Use your fingerprint, face or screen lock.</string>
+    <string name="applock_action">Unlock</string>
+</resources>

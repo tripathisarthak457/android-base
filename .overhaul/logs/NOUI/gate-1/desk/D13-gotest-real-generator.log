@@ -1,0 +1,188 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI/web/api
+# command: D:/projects/tools/.overhaul/bin/memwait go test -count=1 -v -run TestIntegrationRealGenerator ./internal/generate/
+# start: Sun Oct 25 08:44:50 IST 2026
+=== RUN   TestIntegrationRealGenerator
+=== RUN   TestIntegrationRealGenerator/android
+    integration_test.go:58: internal_error: The generator failed.
+        Traceback (most recent call last):
+          File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 1210, in mkdir
+            os.mkdir(self, mode)
+            ~~~~~~~~^^^^^^^^^^^^
+        FileNotFoundError: [WinError 206] The filename or extension is too long: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\TestIntegrationRealGenerator1204689960\\001\\android-2309891002\\android-gen-z3gxojrw\\Integration\\.agents\\skills\\display-glasses-with-jetpack-compose-glimmer\\references\\android\\design\\ui\\ai-glasses\\guides\\interaction'
+        
+        During handling of the above exception, another exception occurred:
+        
+        Traceback (most recent call last):
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\placement.py", line 72, in windows_path_limit_explained
+            yield
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\pipeline.py", line 81, in build
+            warnings = render_template(project, spec, target)
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\pipeline.py", line 116, in render_template
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 1219, in mkdir
+            self.mkdir(mode, parents=False, exist_ok=exist_ok)
+            ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 1210, in mkdir
+            os.mkdir(self, mode)
+            ~~~~~~~~^^^^^^^^^^^^
+        FileNotFoundError: [WinError 206] The filename or extension is too long: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\TestIntegrationRealGenerator1204689960\\001\\android-2309891002\\android-gen-z3gxojrw\\Integration\\.agents\\skills\\display-glasses-with-jetpack-compose-glimmer\\references\\android\\design\\ui\\ai-glasses\\guides\\interaction'
+        
+        The above exception was the direct cause of the following exception:
+        
+        Traceback (most recent call last):
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\headless.py", line 50, in run
+            result = _generate(raw, target_key, output)
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\headless.py", line 99, in _generate
+            generated = pipeline.build(spec, target, output, zip_output=True, commit=commit)
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\pipeline.py", line 76, in build
+            placement.windows_path_limit_explained("app name or package name"),
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\contextlib.py", line 224, in __exit__
+            self.gen.throw(value)
+            ~~~~~~~~~~~~~~^^^^^^^
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\placement.py", line 77, in windows_path_limit_explained
+            raise _past_windows_limit(
+                f"Windows refused a path of {_windows_length(path)} characters: {path}.", shorter
+            ) from error
+        genkit.core.target.RenderError: Windows refused a path of 250 characters: C:\Users\CRAZYH~1\AppData\Local\Temp\TestIntegrationRealGenerator1204689960\001\android-2309891002\android-gen-z3gxojrw\Integration\.agents\skills\display-glasses-with-jetpack-compose-glimmer\references\android\design\ui\ai-glasses\guides\interaction. With long paths off Windows takes 259 at most for a file and 247 for a folder. Turn long paths on (LongPathsEnabled), which building the project needs too, or choose a shorter app name or package name.
+=== RUN   TestIntegrationRealGenerator/multiplatform
+    integration_test.go:58: internal_error: The generator failed.
+        Traceback (most recent call last):
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\placement.py", line 72, in windows_path_limit_explained
+            yield
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\pipeline.py", line 81, in build
+            warnings = render_template(project, spec, target)
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\pipeline.py", line 131, in render_template
+            write_text(destination, rendered)
+            ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\copy.py", line 69, in write_text
+            path.write_bytes(text.encode("utf-8"))
+            ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+          File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 995, in write_bytes
+            with self.open(mode='wb') as f:
+                 ~~~~~~~~~^^^^^^^^^^^
+          File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 970, in open
+            return io.open(self, mode, buffering, encoding, errors, newline)
+                   ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\TestIntegrationRealGenerator1204689960\\001\\multiplatform-410855652\\multiplatform-gen-t16nudom\\Integration\\core\\designsystem\\src\\commonMain\\kotlin\\com\\example\\integration\\core\\designsystem\\foundation\\adaptive\\AdaptiveLayout.kt'
+        
+        The above exception was the direct cause of the following exception:
+        
+        Traceback (most recent call last):
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\headless.py", line 50, in run
+            result = _generate(raw, target_key, output)
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\headless.py", line 99, in _generate
+            generated = pipeline.build(spec, target, output, zip_output=True, commit=commit)
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\pipeline.py", line 76, in build
+            placement.windows_path_limit_explained("app name or package name"),
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\contextlib.py", line 224, in __exit__
+            self.gen.throw(value)
+            ~~~~~~~~~~~~~~^^^^^^^
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\placement.py", line 77, in windows_path_limit_explained
+            raise _past_windows_limit(
+                f"Windows refused a path of {_windows_length(path)} characters: {path}.", shorter
+            ) from error
+        genkit.core.target.RenderError: Windows refused a path of 262 characters: C:\Users\CRAZYH~1\AppData\Local\Temp\TestIntegrationRealGenerator1204689960\001\multiplatform-410855652\multiplatform-gen-t16nudom\Integration\core\designsystem\src\commonMain\kotlin\com\example\integration\core\designsystem\foundation\adaptive\AdaptiveLayout.kt. With long paths off Windows takes 259 at most for a file and 247 for a folder. Turn long paths on (LongPathsEnabled), which building the project needs too, or choose a shorter app name or package name.
+=== RUN   TestIntegrationRealGenerator/resolution
+    integration_test.go:107: internal_error: The generator failed.
+        Traceback (most recent call last):
+          File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 1210, in mkdir
+            os.mkdir(self, mode)
+            ~~~~~~~~^^^^^^^^^^^^
+        FileNotFoundError: [WinError 206] The filename or extension is too long: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\TestIntegrationRealGenerator1204689960\\001\\android-286798251\\android-gen-6jjfxc57\\Integration\\.agents\\skills\\display-glasses-with-jetpack-compose-glimmer\\references\\android\\design\\ui\\ai-glasses\\guides\\interaction'
+        
+        During handling of the above exception, another exception occurred:
+        
+        Traceback (most recent call last):
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\placement.py", line 72, in windows_path_limit_explained
+            yield
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\pipeline.py", line 81, in build
+            warnings = render_template(project, spec, target)
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\pipeline.py", line 116, in render_template
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 1219, in mkdir
+            self.mkdir(mode, parents=False, exist_ok=exist_ok)
+            ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 1210, in mkdir
+            os.mkdir(self, mode)
+            ~~~~~~~~^^^^^^^^^^^^
+        FileNotFoundError: [WinError 206] The filename or extension is too long: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\TestIntegrationRealGenerator1204689960\\001\\android-286798251\\android-gen-6jjfxc57\\Integration\\.agents\\skills\\display-glasses-with-jetpack-compose-glimmer\\references\\android\\design\\ui\\ai-glasses\\guides\\interaction'
+        
+        The above exception was the direct cause of the following exception:
+        
+        Traceback (most recent call last):
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\headless.py", line 50, in run
+            result = _generate(raw, target_key, output)
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\headless.py", line 99, in _generate
+            generated = pipeline.build(spec, target, output, zip_output=True, commit=commit)
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\pipeline.py", line 76, in build
+            placement.windows_path_limit_explained("app name or package name"),
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\contextlib.py", line 224, in __exit__
+            self.gen.throw(value)
+            ~~~~~~~~~~~~~~^^^^^^^
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\placement.py", line 77, in windows_path_limit_explained
+            raise _past_windows_limit(
+                f"Windows refused a path of {_windows_length(path)} characters: {path}.", shorter
+            ) from error
+        genkit.core.target.RenderError: Windows refused a path of 249 characters: C:\Users\CRAZYH~1\AppData\Local\Temp\TestIntegrationRealGenerator1204689960\001\android-286798251\android-gen-6jjfxc57\Integration\.agents\skills\display-glasses-with-jetpack-compose-glimmer\references\android\design\ui\ai-glasses\guides\interaction. With long paths off Windows takes 259 at most for a file and 247 for a folder. Turn long paths on (LongPathsEnabled), which building the project needs too, or choose a shorter app name or package name.
+=== RUN   TestIntegrationRealGenerator/no_UI_components
+    integration_test.go:149: internal_error: The generator failed.
+        Traceback (most recent call last):
+          File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 1210, in mkdir
+            os.mkdir(self, mode)
+            ~~~~~~~~^^^^^^^^^^^^
+        FileNotFoundError: [WinError 206] The filename or extension is too long: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\TestIntegrationRealGenerator1204689960\\001\\android-296235575\\android-gen-_2hkyddo\\Integration\\.agents\\skills\\display-glasses-with-jetpack-compose-glimmer\\references\\android\\design\\ui\\ai-glasses\\guides\\interaction'
+        
+        During handling of the above exception, another exception occurred:
+        
+        Traceback (most recent call last):
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\placement.py", line 72, in windows_path_limit_explained
+            yield
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\pipeline.py", line 81, in build
+            warnings = render_template(project, spec, target)
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\pipeline.py", line 116, in render_template
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 1219, in mkdir
+            self.mkdir(mode, parents=False, exist_ok=exist_ok)
+            ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 1210, in mkdir
+            os.mkdir(self, mode)
+            ~~~~~~~~^^^^^^^^^^^^
+        FileNotFoundError: [WinError 206] The filename or extension is too long: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\TestIntegrationRealGenerator1204689960\\001\\android-296235575\\android-gen-_2hkyddo\\Integration\\.agents\\skills\\display-glasses-with-jetpack-compose-glimmer\\references\\android\\design\\ui\\ai-glasses\\guides\\interaction'
+        
+        The above exception was the direct cause of the following exception:
+        
+        Traceback (most recent call last):
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\headless.py", line 50, in run
+            result = _generate(raw, target_key, output)
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\headless.py", line 99, in _generate
+            generated = pipeline.build(spec, target, output, zip_output=True, commit=commit)
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\pipeline.py", line 76, in build
+            placement.windows_path_limit_explained("app name or package name"),
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\contextlib.py", line 224, in __exit__
+            self.gen.throw(value)
+            ~~~~~~~~~~~~~~^^^^^^^
+          File "D:\projects\tools\.overhaul\wt\NOUI\generator\genkit\core\placement.py", line 77, in windows_path_limit_explained
+            raise _past_windows_limit(
+                f"Windows refused a path of {_windows_length(path)} characters: {path}.", shorter
+            ) from error
+        genkit.core.target.RenderError: Windows refused a path of 249 characters: C:\Users\CRAZYH~1\AppData\Local\Temp\TestIntegrationRealGenerator1204689960\001\android-296235575\android-gen-_2hkyddo\Integration\.agents\skills\display-glasses-with-jetpack-compose-glimmer\references\android\design\ui\ai-glasses\guides\interaction. With long paths off Windows takes 259 at most for a file and 247 for a folder. Turn long paths on (LongPathsEnabled), which building the project needs too, or choose a shorter app name or package name.
+=== RUN   TestIntegrationRealGenerator/v1_spec
+    integration_test.go:173: internal_error: The generator failed.
+--- FAIL: TestIntegrationRealGenerator (9.13s)
+    --- FAIL: TestIntegrationRealGenerator/android (1.47s)
+    --- FAIL: TestIntegrationRealGenerator/multiplatform (1.27s)
+    --- FAIL: TestIntegrationRealGenerator/resolution (2.06s)
+    --- FAIL: TestIntegrationRealGenerator/no_UI_components (2.02s)
+    --- FAIL: TestIntegrationRealGenerator/v1_spec (1.54s)
+FAIL
+FAIL	github.com/base-android/generator-api/internal/generate	9.832s
+FAIL
+# end: Sun Oct 25 08:45:02 IST 2026
+EXIT=1

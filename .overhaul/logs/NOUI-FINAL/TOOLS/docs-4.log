@@ -1,0 +1,9 @@
+# tree: febf31200 + uncommitted F14 incl. the ARCHITECTURE.md Testing sentences
+# command: memwait python.exe -m unittest tests.test_docs tests.test_android_truth.PreviewTesterTest
+# start: Sun Oct 25 22:59:06 IST 2026
+...................
+----------------------------------------------------------------------
+Ran 19 tests in 145.969s
+
+OK
+# exit: 0 end: Sun Oct 25 23:01:34 IST 2026

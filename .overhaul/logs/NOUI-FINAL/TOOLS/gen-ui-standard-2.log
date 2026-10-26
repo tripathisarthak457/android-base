@@ -1,0 +1,34 @@
+# head: 796d3e31d + 0 uncommitted paths
+# command: create_project.py --spec D:/projects/tools/.overhaul/out/NOUI-FINAL/TOOLS/specs/ui-standard.json --preset standard --out D:/projects/tools/.overhaul/out/NOUI-FINAL/TOOLS/ui-standard --no-zip --force
+# start: Sun Oct 25 23:29:08 IST 2026
+
+Summary
+───────
+           App  Final Tools Ui Standard (FinalToolsUiStandard)
+       Package  com.example.finaltools.uistandard
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  auth, browser, catalog, ci, coil, database, deeplink,
+                devtools, flags, forms, googlefonts, language, leakcanary,
+                network, onboarding, perfhud, sample, settings
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\ui-standard
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\ui-standard and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+
+# exit: 0 end: Sun Oct 25 23:29:14 IST 2026

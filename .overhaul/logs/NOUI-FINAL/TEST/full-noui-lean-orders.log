@@ -1,0 +1,8 @@
+# cwd: D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/noui-lean
+# project: gen-noui-lean.log (head 0a69446f0; lean has no core/notification, so a371ff9e1 does not change it) + add-feature-noui-lean.log (add_feature.py orders)
+# command: locked gradle ./gradlew check assembleDevDebug --continue
+# start: Sun Oct 25 18:12:45 IST 2026
+[locked:gradle] waiting for the lock (pid 9376 since 2026-10-25 18:12:46: ./gradlew :feature:auth:testDebugUnitTest :feature:settings:testDebugUnitTest :feature:onboarding:testDebugUnitTest :fea)
+[locked:gradle] waiting for the lock (pid 14824 since 2026-10-25 18:16:25: ./gradlew check assembleDevDebug --continue)
+lidationErrorTextTest (fixed in 692c4a708); rebuilt from a fresh generation in full-noui-lean.log
+# Sun Oct 25 18:14:18 IST 2026: the orphaned test folder core/ui/src/test/.../core/ui/form was moved out of ui-lean and noui-lean (to scratch/moved/), as a generation from 692c4a708 leaves it out; the lock waiter left by the stopped task then runs this project's check below

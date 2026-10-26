@@ -1,0 +1,10 @@
+# Findings verifyCodeRules accepts in code written before its rule existed: `<path> <rule> <count>`.
+# A file may break the rule at most `count` times. An entry higher than what the file breaks fails
+# the build too, so the list only shrinks: lower or delete a line when you fix the code. New code
+# never goes here; fix it, or put a reasoned `// allow(<rule>): <why>` on the line above.
+
+# Screens
+
+# Design system and catalog
+
+# Navigation shell

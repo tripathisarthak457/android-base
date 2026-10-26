@@ -1,0 +1,70 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI/generator
+# command: D:/projects/tools/.overhaul/bin/memwait python create_project.py --spec D:/projects/tools/.overhaul/out/NOUI/gate-1/specs/noui-everything-modular.json --out D:/projects/tools/.overhaul/out/NOUI/gate-1/noui-everything-modular --no-zip --json --force --preset everything --no-ui-components
+# start: Sun Oct 25 08:29:08 IST 2026
+[locked:memwait] 1495 MB available, 8318 MB commit left; waiting for 1500 MB
+  ! 'catalog' was left out: The catalog app shows the design system's components, and this project has none.
+  ! 'collections' was left out: Carousels, reorderable lists and the image viewer are components; build yours on the theme skeleton.
+  ! 'datadisplay' was left out: Stat tiles, charts and tables are components; build yours on the theme skeleton.
+  ! 'formfields' was left out: Code, money and phone fields are components; form state and validation (forms) stay.
+  ! 'pickers' was left out: Calendars and wheel pickers are components; build yours on the theme skeleton.
+  ! 'liquidglass' was left out: Glass is drawn by components and the shell, which this project leaves to your design system.
+{
+  "ok": true,
+  "target": "android",
+  "project_name": "GateOne",
+  "path": "D:\\projects\\tools\\.overhaul\\out\\NOUI\\gate-1\\noui-everything-modular",
+  "resolved_features": [
+    "analytics",
+    "applock",
+    "appstatus",
+    "auth",
+    "browser",
+    "ci",
+    "coil",
+    "coverage",
+    "crashlytics",
+    "database",
+    "deeplink",
+    "depsanalysis",
+    "devtools",
+    "firebase",
+    "firebaseanalytics",
+    "flags",
+    "formatting",
+    "forms",
+    "googlefonts",
+    "googlesignin",
+    "language",
+    "leakcanary",
+    "licenses",
+    "media",
+    "network",
+    "offlinequeue",
+    "onboarding",
+    "paging",
+    "perfhud",
+    "performance",
+    "playstore",
+    "profile",
+    "push",
+    "remoteconfig",
+    "sample",
+    "search",
+    "settings",
+    "websocket"
+  ],
+  "feature_modules": [],
+  "notes": [
+    "'catalog' was left out: The catalog app shows the design system's components, and this project has none.",
+    "'collections' was left out: Carousels, reorderable lists and the image viewer are components; build yours on the theme skeleton.",
+    "'datadisplay' was left out: Stat tiles, charts and tables are components; build yours on the theme skeleton.",
+    "'formfields' was left out: Code, money and phone fields are components; form state and validation (forms) stay.",
+    "'pickers' was left out: Calendars and wheel pickers are components; build yours on the theme skeleton.",
+    "'liquidglass' was left out: Glass is drawn by components and the shell, which this project leaves to your design system."
+  ],
+  "warnings": [],
+  "ignored_fields": [],
+  "summary": []
+}
+# end: Sun Oct 25 08:29:25 IST 2026
+EXIT=0

@@ -1,0 +1,48 @@
+== 20:31:16 source 1e0077a22
+== 20:31:16 generate D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/specs/ui-everything.json preset everything -> D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-rules from D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/src-r/generator (archive)
+
+Summary
+───────
+           App  Final Core Ui (FinalCoreUi)
+       Package  com.example.finalcore.uieverything
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, appstatus, auth, browser, catalog, ci,
+                coil, collections, coverage, crashlytics, database,
+                datadisplay, deeplink, depsanalysis, devtools, firebase,
+                firebaseanalytics, flags, formatting, formfields, forms,
+                googlefonts, googlesignin, language, leakcanary, licenses,
+                liquidglass, media, network, offlinequeue, onboarding,
+                paging, perfhud, performance, pickers, playstore, profile,
+                push, remoteconfig, sample, search, settings, websocket
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\CORE\ui-rules
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\CORE\ui-rules and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json: the included one is a placeholder.
+
+EXIT 0
+patched
+== 20:31:32 :core:designsystem:verifyCodeRules with the No-UI theming and component rules
+[locked:gradle] waiting for the lock (pid 17604 since 2026-10-25 20:16:16: ./gradlew check assembleDevDebug --continue)
+[locked:gradle] waiting for the lock (pid 14152 since 2026-10-25 20:34:21: ./gradlew :core:navigation:testDebugUnitTest :core:navigation:shell:testDebugUnitTest :app:testDevDebugUnitTest :catalog)
+[locked:gradle] waiting for the lock (pid 12820 since 2026-10-25 20:37:50: ./gradlew --continue :core:designsystem:verifyCodeRules :core:designsystem:testDebugUnitTest)
+[locked:gradle] waiting for the lock (pid 12820 since 2026-10-25 20:37:50: ./gradlew --continue :core:designsystem:verifyCodeRules :core:designsystem:testDebugUnitTest)
+[locked:gradle] waiting for the lock (pid 12820 since 2026-10-25 20:37:50: ./gradlew --continue :core:designsystem:verifyCodeRules :core:designsystem:testDebugUnitTest)
+EXIT rules 0
+== 20:53:01 done

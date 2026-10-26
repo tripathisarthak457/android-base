@@ -1,0 +1,64 @@
+06:56:48
+5ef85c345
+
+======================================================================
+FAIL: test_the_new_project_stays_when_the_old_one_cannot_all_be_deleted (tests.test_golden.PlacementTest.test_the_new_project_stays_when_the_old_one_cannot_all_be_deleted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_golden.py", line 429, in test_the_new_project_stays_when_the_old_one_cannot_all_be_deleted
+    self.assertEqual(tree(GOLDEN / "mini-none"), tree(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'ass[692 chars]p")\n\n', 'src/main/kotlin/io/bare/min/BareApp[369 chars]p\n'} != {'ass[692 chars]p")\n', 'src/main/kotlin/io/bare/min/BareAppli[367 chars]p\n'}
+Diff is 2069 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_a_failed_replace_at_the_deepest_destination_leaves_only_the_old_project (tests.test_golden.WindowsPathLimitTest.test_a_failed_replace_at_the_deepest_destination_leaves_only_the_old_project)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_golden.py", line 550, in test_a_failed_replace_at_the_deepest_destination_leaves_only_the_old_project
+    self.assertEqual(tree(GOLDEN / "mini-none"), tree(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'ass[692 chars]p")\n\n', 'src/main/kotlin/io/bare/min/BareApp[369 chars]p\n'} != {'ass[692 chars]p")\n', 'src/main/kotlin/io/bare/min/BareAppli[367 chars]p\n'}
+Diff is 2069 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_a_zip_is_written_wherever_it_fits_and_nowhere_else (tests.test_golden.WindowsPathLimitTest.test_a_zip_is_written_wherever_it_fits_and_nowhere_else) (length=259)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_golden.py", line 489, in test_a_zip_is_written_wherever_it_fits_and_nowhere_else
+    self.assertEqual(tree(GOLDEN / "mini-none"), unzipped(destination))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'assets/logo.png': b'\x89PNG\r\n\x1a\nBase[1069 chars]p\n'} != {'README.md': b'# Bare\n\nPackage `io.bare.[1067 chars]p\n'}
+Diff is 2069 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_an_old_project_goes_whole_however_deep_its_files (tests.test_golden.WindowsPathLimitTest.test_an_old_project_goes_whole_however_deep_its_files)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_golden.py", line 531, in test_an_old_project_goes_whole_however_deep_its_files
+    self.assertEqual(tree(GOLDEN / "mini-none"), tree(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'ass[692 chars]p")\n\n', 'src/main/kotlin/io/bare/min/BareApp[369 chars]p\n'} != {'ass[692 chars]p")\n', 'src/main/kotlin/io/bare/min/BareAppli[367 chars]p\n'}
+Diff is 2069 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_the_templates_are_in_sync (tests.test_sync.RepositoryTest.test_the_templates_are_in_sync)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_sync.py", line 50, in test_the_templates_are_in_sync
+    self.assertEqual([], sync_check.check(sync_check.load(REPOSITORY)))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ["core/common/result/RunSuspendCatching.kt[4002 chars]t,'"]
+
+Second list contains 40 additional elements.
+First extra element 0:
+"core/common/result/RunSuspendCatching.kt: only the Android copy has   'Result.failure(throwable)'"
+
+Diff is 4366 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 668 tests in 533.144s
+
+FAILED (failures=17, skipped=9)
+EXIT 1
+07:05:43

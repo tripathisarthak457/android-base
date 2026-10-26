@@ -1,0 +1,328 @@
+05:12:36
+D free GB: 76.6
+./gradlew --offline --continue --no-parallel spotlessApply --rerun-tasks
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as configuration cache cannot be reused because an input to unknown location has changed.
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :spotlessKotlinGradle
+> Task :spotlessKotlinGradleApply
+> Task :spotlessKotlin
+Format was not able to resolve all violations which (theoretically) can be autocorrected in file D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\rawtpl\core\network\src\main\kotlin\com\base\app\core\network\di\HttpClientModule.kt in 3 consecutive runs of format.
+Format was not able to resolve all violations which (theoretically) can be autocorrected in file D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\rawtpl\core\network\src\main\kotlin\com\base\app\core\network\di\HttpClientModule.kt in 3 consecutive runs of format.
+
+> Task :spotlessKotlinApply FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':spotlessKotlinApply' (registered in build file 'build.gradle.kts').
+> There were 281 lint error(s), they must be fixed or suppressed.
+  app/src/main/kotlin/com/base/app/BaseAppApplication.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  app/src/main/kotlin/com/base/app/MainActivity.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  app/src/main/kotlin/com/base/app/di/CoroutinesModule.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  app/src/main/kotlin/com/base/app/session/SessionCoordinator.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  app/src/main/kotlin/com/base/app/startup/LaunchHook.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  app/src/main/kotlin/com/base/app/ui/AppDestinations.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  app/src/main/kotlin/com/base/app/ui/AppRoot.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  app/src/test/kotlin/com/base/app/navigation/NavKeyRegistrationTest.kt:L139 ktlint(standard:max-line-length) Exceeded max line length (100)
+  app/src/test/kotlin/com/base/app/navigation/SharedDestinationsTest.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  app/src/test/kotlin/com/base/app/session/SessionCoordinatorTest.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  app/src/test/kotlin/com/base/app/startup/StartupViewModelTest.kt:L74 ktlint(standard:max-line-length) Exceeded max line length (100)
+  benchmark/src/main/kotlin/com/base/app/benchmark/startup/StartupBenchmark.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  build-logic/convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt:L1 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  build-logic/convention/src/main/kotlin/AndroidApplicationFlavorsConventionPlugin.kt:L1 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  build-logic/convention/src/main/kotlin/AndroidFirebaseConventionPlugin.kt:L1 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  build-logic/convention/src/main/kotlin/AndroidLibraryConventionPlugin.kt:L1 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  build-logic/convention/src/main/kotlin/AndroidScreenshotsConventionPlugin.kt:L62 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/JvmLibraryConventionPlugin.kt:L1 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/android/ComposeStability.kt:L121 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/AdaptiveRules.kt:L21 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/CodeRules.kt:L109 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/ComposeRules.kt:L21 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/Declarations.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/DevToolingGuard.kt:L66 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/KotlinRules.kt:L23 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/ManifestRules.kt:L77 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/ModuleGraph.kt:L176 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/ScrollRules.kt:L21 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/SheetRules.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/StructureRules.kt:L15 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/android/ComposeStabilityTest.kt:L134 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/CodeRuleCasesTest.kt:L211 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/CodeRulesBaselineTest.kt:L26 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/CodeRulesTest.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/CodeRulesWiringTest.kt:L17 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/ComponentRuleCasesTest.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/ManifestRulesTest.kt:L19 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/ModuleGraphTest.kt:L111 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/ModuleGraphWiringTest.kt:L48 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/SheetRuleCasesTest.kt:L112 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/CatalogApp.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  catalog/src/main/kotlin/com/base/app/catalog/CatalogSection.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  catalog/src/main/kotlin/com/base/app/catalog/FrameTimes.kt:L107 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogAdaptive.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogBars.kt:L60 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogButtons.kt:L23 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogCollections.kt:L38 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogContainers.kt:L35 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogData.kt:L55 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogFeedback.kt:L49 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogFeel.kt:L54 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogFields.kt:L29 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogFoundations.kt:L50 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogInputs.kt:L31 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogLists.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogMotion.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogOverlays.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogPickers.kt:L25 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogSelection.kt:L33 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogText.kt:L47 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/sheets/CatalogSheets.kt:L33 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/sheets/SheetBehaviourDemos.kt:L54 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/sheets/SheetDetentDemos.kt:L69 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/sheets/SheetPlacementDemos.kt:L45 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/sheets/SheetPresetDemos.kt:L34 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/sheets/SheetStyleDemos.kt:L50 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/analytics/src/main/kotlin/com/base/app/core/analytics/di/AnalyticsModule.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/analytics/src/main/kotlin/com/base/app/core/analytics/di/CrashModule.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/applock/src/main/kotlin/com/base/app/core/applock/AppLockGate.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/applock/src/test/kotlin/com/base/app/core/applock/AppLockGateTest.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/database/src/main/kotlin/com/base/app/core/database/AppDatabase.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/database/src/main/kotlin/com/base/app/core/database/di/DatabaseModule.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/database/src/main/kotlin/com/base/app/core/database/queue/QueuedRequestDao.kt:L36 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/datastore/src/test/kotlin/com/base/app/core/datastore/session/AuthTokenStoreTest.kt:L59 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/animation/AppTransitions.kt:L116 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/animation/SymbolEffects.kt:L119 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/collections/AppCarousel.kt:L86 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/collections/AppImageViewer.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/collections/AppReorderableList.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/container/AppCard.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/datadisplay/AppDataTable.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/datadisplay/AppRating.kt:L81 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/datadisplay/AppSparkline.kt:L98 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/datadisplay/AppStatTile.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/datadisplay/AppTimeline.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppAvatar.kt:L157 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppBanner.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppProgress.kt:L114 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppSkeleton.kt:L137 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/formfields/AppDecimalFields.kt:L179 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/formfields/AppRangeSlider.kt:L247 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/formfields/AppSelectField.kt:L166 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/formfields/AppStepper.kt:L140 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/input/AppSecureField.kt:L69 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/list/AppSwipeActions.kt:L384 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabBar.kt:L155 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabRow.kt:L146 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTopBar.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/BarLook.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/TabRail.kt:L106 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppActionSheet.kt:L39 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppAlert.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppContextMenu.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppMenu.kt:L254 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppToast.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/pickers/AppDatePicker.kt:L277 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/pickers/AppWheelPicker.kt:L199 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/refresh/AppPullToRefresh.kt:L414 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/refresh/RefreshSpinner.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppCheckbox.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppSegmentedControl.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppSlider.kt:L177 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppSwitch.kt:L210 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/AppSheetProperties.kt:L79 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/action/ActionCard.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/choice/AppChoiceSheet.kt:L74 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/chrome/AppSheetGrabber.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/chrome/AppSheetHeader.kt:L126 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/chrome/SheetGrabberNode.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/content/SheetColumn.kt:L75 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/gesture/SheetStretch.kt:L41 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/layout/DetentResolution.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/layout/SheetBodyPolicy.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/layout/SheetEffects.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/layout/SheetLayers.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/layout/SheetLayout.kt:L114 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/layout/SheetSession.kt:L141 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/stack/SheetStack.kt:L204 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/surface/SheetScrim.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/surface/SheetShadow.kt:L103 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/surface/SheetSurfaceNode.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/text/AppExpandableText.kt:L56 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/text/AppText.kt:L216 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/draw/Bones.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/draw/DisabledAlpha.kt:L9 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/draw/ShimmerClock.kt:L84 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/draw/Sweep.kt:L98 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/glass/DeviceGlassSignals.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/glass/GlassStage.kt:L71 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/glass/GlassSurface.kt:L146 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/glass/GlassVerdictStore.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/glass/GpuVerdict.kt:L108 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/glass/LiquidLens.kt:L78 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/glass/LiquidLensState.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/interaction/PressableNode.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/interaction/RowHighlight.kt:L42 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/layout/Bleed.kt:L16 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/scroll/AppOverscroll.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/scroll/AppScrollDefaults.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/scroll/ScrollEdge.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/scroll/ScrollIndicator.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/scroll/ScrollToTop.kt:L26 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/icon/glyph/GlyphBuilder.kt:L18 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppColors.kt:L136 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppFonts.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppMotion.kt:L264 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppTypography.kt:L33 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/tokens/DesignTokens.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/RecompositionJourneysTest.kt:L270 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/Themed.kt:L9 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/ChromeInsetsTest.kt:L111 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/button/AppButtonTest.kt:L55 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/collections/AppCarouselTest.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/feedback/LoadingSwapTest.kt:L87 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/feedback/RedactedGeometryTest.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/feedback/RedactedInputTest.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/feedback/SkeletonScreenshotTest.kt:L143 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/formfields/MoneyFieldTest.kt:L22 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/navigation/LargeTitleTopBarTest.kt:L92 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/overlay/OverlayBackTest.kt:L66 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/overlay/OverlayHostTest.kt:L57 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/refresh/PullToRefreshTest.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/sheet/SheetAdaptiveTest.kt:L35 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/sheet/SheetGestureTest.kt:L64 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/sheet/SheetReduceMotionTest.kt:L69 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/sheet/SheetScreenshotTest.kt:L113 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/sheet/SheetShots.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/sheet/SheetWindowScreenshotTest.kt:L79 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/sheet/layout/DetentResolutionTest.kt:L155 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/sheet/layout/SheetGeometryTest.kt:L49 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/sheet/shape/SheetApiShapeTest.kt:L158 ktlint(standard:class-naming) Class or object name should start with an uppercase letter and use camel case
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/sheet/surface/SheetFooterBackingTest.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/adaptive/PostureTest.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/draw/ShimmerClockTest.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/draw/SkeletonCoherenceTest.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/draw/SkeletonDrawAllocationTest.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/draw/SkeletonStillnessTest.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/draw/SweepGeometryTest.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/glass/LiquidLensStateTest.kt:L713 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/glass/LiquidLensTest.kt:L593 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/glass/RobolectricSdk.kt:L4 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/scroll/AppFlingCurveTest.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/scroll/AppFlingTest.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/scroll/AppOverscrollTest.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/scroll/ScrollDirectionTest.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/scroll/ScrollToTopTest.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/theme/FontPreloadTest.kt:L75 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/theme/PaletteContrastTest.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/devtools/src/main/kotlin/com/base/app/core/devtools/DevTools.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/devtools/src/main/kotlin/com/base/app/core/devtools/badge/BadgePosition.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/devtools/src/main/kotlin/com/base/app/core/devtools/badge/DevToolsOverlay.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/devtools/src/main/kotlin/com/base/app/core/devtools/di/DevToolsModule.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/devtools/src/main/kotlin/com/base/app/core/devtools/panel/DevToolsPanel.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/devtools/src/main/kotlin/com/base/app/core/devtools/panel/FlagsTab.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/devtools/src/test/kotlin/com/base/app/core/devtools/badge/DevToolsOverlayTest.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/flags/src/main/kotlin/com/base/app/core/flags/di/FlagsModule.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/navigation/shell/src/main/kotlin/com/base/app/core/navigation/shell/WindowChromeWriter.kt:L49 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/main/kotlin/com/base/app/core/navigation/shell/back/BackCard.kt:L196 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/main/kotlin/com/base/app/core/navigation/shell/tabs/TabWarmUp.kt:L92 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/main/kotlin/com/base/app/core/navigation/shell/transition/NavTransitions.kt:L50 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/test/kotlin/com/base/app/core/navigation/shell/ChromeLayeringTest.kt:L169 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/test/kotlin/com/base/app/core/navigation/shell/TabBarTest.kt:L110 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/test/kotlin/com/base/app/core/navigation/shell/back/BackCardDrawingTest.kt:L134 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/test/kotlin/com/base/app/core/navigation/shell/back/BackCardDuringPushDrawingTest.kt:L70 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/test/kotlin/com/base/app/core/navigation/shell/back/BackCardStateTest.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/navigation/shell/src/test/kotlin/com/base/app/core/navigation/shell/stack/PaneTest.kt:L118 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/test/kotlin/com/base/app/core/navigation/shell/stack/RepeatedKeyTest.kt:L95 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/test/kotlin/com/base/app/core/navigation/shell/stack/SlideRecordingTest.kt:L134 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/src/test/kotlin/com/base/app/core/navigation/AppNavigatorTest.kt:L61 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/network/src/main/kotlin/com/base/app/core/network/appstatus/ApiSignals.kt:L60 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/network/src/main/kotlin/com/base/app/core/network/client/KtorNetworkClient.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/network/src/main/kotlin/com/base/app/core/network/di/HttpClientModule.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/network/src/main/kotlin/com/base/app/core/network/di/NetworkModule.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/network/src/test/kotlin/com/base/app/core/network/client/KtorNetworkClientTest.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/notification/src/main/kotlin/com/base/app/core/notification/push/PushRegistration.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/notification/src/test/kotlin/com/base/app/core/notification/push/PushRegistrationTest.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/checks/StrictModeWatch.kt:L107 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/frame/FrameFeed.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/memory/MemoryLog.kt:L148 ktlint(standard:value-parameter-comment) A comment inside or on same line after a 'value_parameter' is not allowed. It may be placed on a separate line above.
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/overlay/LineFormat.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/overlay/PerformancePill.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/overlay/PillText.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/overlay/RedrawDuringFrames.kt:L77 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/DetailSections.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/FrameSections.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/PerformanceTab.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/ScoreSection.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/graph/FpsGraph.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/graph/FrameTimeGraph.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/graph/HistogramGraph.kt:L107 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/panel/graph/MemoryGraph.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/score/OptimisationScore.kt:L105 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/perfhud/src/test/kotlin/com/base/app/core/perfhud/frame/FrameFeedTest.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/perfhud/src/test/kotlin/com/base/app/core/perfhud/frame/FrameFeeds.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/playstore/src/main/kotlin/com/base/app/core/playstore/PlayStorePrompts.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/playstore/src/test/kotlin/com/base/app/core/playstore/review/ReviewPolicyTest.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/testing/compose/src/main/kotlin/com/base/app/core/testing/compose/preview/AccessibilityPreviewTester.kt:L75 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/ui/src/main/kotlin/com/base/app/core/ui/appstatus/AppStatusGate.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  core/ui/src/main/kotlin/com/base/app/core/ui/browser/AppBrowser.kt:L63 ktlint(standard:max-line-length) Exceeded max line length (100)
+  data/auth/src/main/kotlin/com/base/app/data/auth/DefaultAuthRepository.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  data/profile/src/main/kotlin/com/base/app/data/profile/DefaultProfileRepository.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  data/profile/src/main/kotlin/com/base/app/data/profile/api/ProfileRepository.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  data/profile/src/main/kotlin/com/base/app/data/profile/di/ProfileDataModule.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  data/profile/src/test/kotlin/com/base/app/data/profile/DefaultProfileRepositoryTest.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  data/profile/src/testFixtures/kotlin/com/base/app/data/profile/api/FakeProfileRepository.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  data/sample/src/main/kotlin/com/base/app/data/sample/di/SampleDataModule.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  data/sample/src/test/kotlin/com/base/app/data/sample/OfflineFirstSampleRepositoryTest.kt:L41 ktlint(standard:max-line-length) Exceeded max line length (100)
+  feature/auth/src/main/kotlin/com/base/app/feature/auth/signin/GoogleSignIn.kt:L1 ktlint(standard:filename) File 'GoogleSignIn.kt' contains a single class, and possibly related top level declarations for that class. The file should be named after the class, 'GoogleOutcome.kt'
+  feature/auth/src/main/kotlin/com/base/app/feature/auth/signin/SignInRoute.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/auth/src/main/kotlin/com/base/app/feature/auth/signin/SignInScreen.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/auth/src/main/kotlin/com/base/app/feature/auth/signin/SignInViewModel.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/feed/src/main/kotlin/com/base/app/feature/feed/FeedRoute.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/feed/src/main/kotlin/com/base/app/feature/feed/FeedScreen.kt:L164 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  feature/feed/src/main/kotlin/com/base/app/feature/feed/api/FeedKeys.kt:L1 ktlint(standard:filename) File 'FeedKeys.kt' contains a single top level declaration and should be named 'FeedKey.kt'
+  feature/onboarding/src/main/kotlin/com/base/app/feature/onboarding/OnboardingContract.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/onboarding/src/main/kotlin/com/base/app/feature/onboarding/OnboardingRoute.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/onboarding/src/main/kotlin/com/base/app/feature/onboarding/OnboardingScreen.kt:L137 ktlint(standard:max-line-length) Exceeded max line length (100)
+  feature/onboarding/src/main/kotlin/com/base/app/feature/onboarding/api/OnboardingKeys.kt:L1 ktlint(standard:filename) File 'OnboardingKeys.kt' contains a single top level declaration and should be named 'OnboardingKey.kt'
+  feature/profile/src/main/kotlin/com/base/app/feature/profile/ProfileScreen.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/profile/src/main/kotlin/com/base/app/feature/profile/ProfileViewModel.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/profile/src/main/kotlin/com/base/app/feature/profile/api/ProfileKeys.kt:L1 ktlint(standard:filename) File 'ProfileKeys.kt' contains a single top level declaration and should be named 'ProfileKey.kt'
+  feature/sample/src/main/kotlin/com/base/app/feature/sample/list/SampleListScreen.kt:L77 ktlint(standard:max-line-length) Exceeded max line length (100)
+  feature/sample/src/main/kotlin/com/base/app/feature/sample/navigation/SampleNavigation.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/search/src/main/kotlin/com/base/app/feature/search/SearchScreen.kt:L1 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  feature/search/src/main/kotlin/com/base/app/feature/search/SearchViewModel.kt:L94 ktlint(standard:max-line-length) Exceeded max line length (100)
+  feature/search/src/main/kotlin/com/base/app/feature/search/result/SearchResultScreen.kt:L101 ktlint(standard:max-line-length) Exceeded max line length (100)
+  feature/settings/src/main/kotlin/com/base/app/feature/settings/SettingsRoute.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/settings/src/main/kotlin/com/base/app/feature/settings/SettingsScreen.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/settings/src/main/kotlin/com/base/app/feature/settings/navigation/SettingsNavigation.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  feature/settings/src/test/kotlin/com/base/app/feature/settings/SettingsViewModelTest.kt:L3 ktlint(standard:import-ordering) Imports must be ordered in lexicographic order without any empty lines in-between -- no autocorrection due to comments in the import list
+  Resolve these lints or suppress with `suppressLintsFor`
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 54s
+8 actionable tasks: 8 executed
+Configuration cache entry stored.
+EXIT 1
+05:13:31

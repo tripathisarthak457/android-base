@@ -1,0 +1,64 @@
+== catalog\build\test-results\testDebugUnitTest\TEST-com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests.xml SheetPreviewsKt_TwoDetentSheetPreview
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException: There was 1 accessibility result:
+    View sheet_grabber: This item's height is 37dp. Consider making the height of this touch target 48dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+== catalog\build\test-results\testDebugUnitTest\TEST-com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests.xml SheetPreviewsKt_PersistentSheetPreview
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException: There was 1 accessibility result:
+    View sheet_grabber: This item's height is 42dp. Consider making the height of this touch target 48dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+== core\designsystem\build\test-results\testDebugUnitTest\TEST-com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests.xml AppButtonKt_AppButtonPreview
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException: There were 2 accessibility results:
+    View with bounds: [154,430][176,470]: This item's width is 22dp. Consider making the width of this touch target 48dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck,
+    View with bounds: [142,430][154,470]: This item's width is 12dp. Consider making the width of this touch target 48dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+== core\designsystem\build\test-results\testDebugUnitTest\TEST-com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests.xml AppDecimalFieldsKt_AppDecimalFieldsPreview
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException: There were 2 accessibility results:
+    View with bounds: [16,430][304,470]: This item may not have a label readable by screen readers. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.SpeakableTextPresentCheck,
+    View with bounds: [16,409][304,430]: This item's height is 21dp. Consider making the height of this touch target 48dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+== core\designsystem\build\test-results\testDebugUnitTest\TEST-com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests.xml AppSelectFieldKt_AppSelectFieldPreview
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException: There were 2 accessibility results:
+    View with bounds: [16,394][124,430]: This item's height is 36dp. Consider making the height of this touch target 48dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck,
+    View with bounds: [132,394][304,430]: This item's height is 36dp. Consider making the height of this touch target 48dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+== core\designsystem\build\test-results\testDebugUnitTest\TEST-com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests.xml AppTagFieldKt_AppTagFieldPreview
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException: There was 1 accessibility result:
+    View with bounds: [16,99][51,147]: This item's width is 35dp. Consider making the width of this touch target 48dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+== core\designsystem\build\test-results\testDebugUnitTest\TEST-com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests.xml AppTextFieldKt_AppTextFieldPreview
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException: There was 1 accessibility result:
+    View with bounds: [16,394][304,430]: This item's height is 36dp. Consider making the height of this touch target 48dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+== core\designsystem\build\test-results\testDebugUnitTest\TEST-com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests.xml AppRowKt_AppRowPreview
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException: There were 2 accessibility results:
+    View with bounds: [0,391][320,438]: This item's height is 47dp. Consider making the height of this touch target 48dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck,
+    View with bounds: [0,446][320,470]: This item's height is 24dp. Consider making the height of this touch target 32dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+== core\designsystem\build\test-results\testDebugUnitTest\TEST-com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests.xml AppSwipeActionsKt_AppSwipeActionsPreview
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException: There were 3 accessibility results:
+    View with bounds: [0,0][24,62]: This item's width is 24dp. Consider making the width of this touch target 32dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck,
+    View with bounds: [296,0][320,62]: This item's width is 24dp. Consider making the width of this touch target 32dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck,
+    View with bounds: [296,62][320,110]: This item's width is 24dp. Consider making the width of this touch target 32dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+== core\designsystem\build\test-results\testDebugUnitTest\TEST-com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests.xml AppDatePickerKt_AppDatePickerPreview
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException: There were 20 accessibility results:
+    View with bounds: [55,134][96,178]: This item's size is 41dp x 44dp. Consider making this touch target 48dp wide and 48dp high or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck,
+    View with bounds: [96,134][137,178]: This item's size is 41dp x 44dp. Consider making this touch target 48dp wide and 48dp high or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck,
+    View with bounds: [137,134][178,178]: This item's size is 41dp x 44dp. Consider making this touch target 48dp wide and 48dp high or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck,
+    View with bounds: [178,134][219,178]: This item's size is 41dp x 44dp. Consider making this touch target 48dp wide and 48dp high or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck,
+    View with bounds: [219,134][260,178]: This item's size is 41dp x 44dp. Consider making this touch target 48dp wide and 48dp high or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck,
+    View with bounds: [55,178][96,222]: This item's size is 41dp x 44dp. Consider making this touch target 48dp wide and 48dp high or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck,
+    View with bounds: [96,178][137,222]: This item's size is 41dp x 44dp. Consider making this touch target 48dp wide and 48dp high or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck,
+    View with bounds: [137,178][178,222]: This item's size is 41dp x 44dp. Consider making this touch target 48dp wide and 48dp high or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck,
+    View with bounds: [178,178][219,222]: This item's size is 41dp x 44dp. Consider making this touch target 48dp wide and 48dp high or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck,
+    View with bounds: [219,178][260,222]: This item's size is 41dp x 44dp. Consider making this touch target 48dp wide and 48dp high or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck,
+    View with bounds: [55,222][96,266]: This item's size is 41dp x 44dp. Consider making this touch target 48dp wide and 48dp high or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck,
+== core\designsystem\build\test-results\testDebugUnitTest\TEST-com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests.xml AppSheetKt_AppSheetPreview
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException: There was 1 accessibility result:
+    View sheet_scrim: This item's height is 10dp. Consider making the height of this touch target 32dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+== core\designsystem\build\test-results\testDebugUnitTest\TEST-com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests.xml AppChoiceSheetKt_AppChoiceSheetPreview
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException: There was 1 accessibility result:
+    View sheet_grabber: This item's height is 44dp. Consider making the height of this touch target 48dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+== core\designsystem\build\test-results\testDebugUnitTest\TEST-com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests.xml AppSheetCloseButtonKt_AppSheetCloseButtonPreview
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException: There was 1 accessibility result:
+    View sheet_scrim: This item's height is 10dp. Consider making the height of this touch target 32dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+== core\designsystem\build\test-results\testDebugUnitTest\TEST-com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests.xml SheetColumnKt_SheetColumnPreview
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException: There was 1 accessibility result:
+    View sheet_scrim: This item's height is 10dp. Consider making the height of this touch target 32dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+== core\designsystem\build\test-results\testDebugUnitTest\TEST-com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests.xml SheetLayoutKt_SheetLayoutPreview
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException: There was 1 accessibility result:
+    View sheet_scrim: This item's height is 10dp. Consider making the height of this touch target 32dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+== feature\auth\build\test-results\testDebugUnitTest\TEST-com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests.xml SignUpKt_SignUpPreview
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException: There was 1 accessibility result:
+    View with bounds: [16,16][304,87]: This item may not have a label readable by screen readers. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.SpeakableTextPresentCheck

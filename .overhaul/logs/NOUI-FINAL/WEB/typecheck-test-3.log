@@ -1,0 +1,22 @@
+Sun Oct 25 17:47:51 IST 2026
+$ memwait npm run typecheck
+
+> android-generator-web@1.0.0 typecheck
+> tsc --noEmit
+
+typecheck exit=0
+$ npm test
+✔ viewport buckets match the API's (0.2463ms)
+✔ a long queue is split into batches the API accepts (0.9069ms)
+✔ the size limit is counted in bytes, so text outside ASCII still fits (1.0979ms)
+✔ session ids are random UUID v4s, the form the generate headers pass on (8.8275ms)
+ℹ tests 260
+ℹ suites 0
+ℹ pass 260
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1505.6458
+test exit=0
+Sun Oct 25 17:47:57 IST 2026

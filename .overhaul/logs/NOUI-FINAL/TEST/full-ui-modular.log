@@ -1,0 +1,9 @@
+# cwd: D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/ui-modular-final
+# project: gen-ui-modular-final.log (head 207a12d2f)
+# command: locked gradle ./gradlew check assembleDevDebug --continue
+# start: Sun Oct 25 18:35:54 IST 2026
+[locked:gradle] waiting for the lock (pid 9420 since 2026-10-25 18:35:54: ./gradlew :core:designsystem:testDebugUnitTest --continue)
+[locked:gradle] waiting for the lock (pid 9296 since 2026-10-25 18:39:08: ./gradlew :core:navigation:testDebugUnitTest :core:navigation:shell:testDebugUnitTest :app:testDevDebugUnitTest :catalog)
+[locked:gradle] waiting for the lock (pid 16440 since 2026-10-25 18:41:45: ./gradlew :core:designsystem:recordRoborazziDebug)
+EXIT=0
+# end: Sun Oct 25 18:48:24 IST 2026

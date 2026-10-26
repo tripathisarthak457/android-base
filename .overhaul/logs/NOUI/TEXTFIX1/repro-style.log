@@ -1,0 +1,60 @@
+  ! 'design_style' was left at its default, Utility: Your design system decides corners, surfaces and type voice; the theme starts from neutral values.
+  ! 'motion_style' was left at its default, Standard: Your components decide their motion; the theme keeps neutral springs and reduce-motion.
+
+Summary
+───────
+           App  Lean Style (LeanStyle)
+       Package  com.example.leanstyle
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  ci, coil, deeplink, googlefonts, leakcanary, network
+       Options  ui_components off
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #AA3355 · #895463 (derived) · #AA8833 (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI\textfix-1\repro-style-playful
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI\textfix-1\repro-style-playful and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+
+
+Summary
+───────
+           App  Lean Style (LeanStyle)
+       Package  com.example.leanstyle
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  ci, coil, deeplink, googlefonts, leakcanary, network
+       Options  ui_components off
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #AA3355 · #895463 (derived) · #AA8833 (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI\textfix-1\repro-style-utility
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI\textfix-1\repro-style-utility and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+

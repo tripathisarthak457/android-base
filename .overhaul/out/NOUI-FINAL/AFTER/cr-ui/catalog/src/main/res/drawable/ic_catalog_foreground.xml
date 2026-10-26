@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A swatch grid: distinct from the app icon at a glance, which matters because both are
+     installed side by side. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path android:fillColor="#FFFFFFFF" android:pathData="M32,32h18v18h-18z" />
+    <path android:fillColor="#CCFFFFFF" android:pathData="M58,32h18v18h-18z" />
+    <path android:fillColor="#99FFFFFF" android:pathData="M32,58h18v18h-18z" />
+    <path android:fillColor="#66FFFFFF" android:pathData="M58,58h18v18h-18z" />
+</vector>

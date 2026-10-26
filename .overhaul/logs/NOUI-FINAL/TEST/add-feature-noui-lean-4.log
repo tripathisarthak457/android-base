@@ -1,0 +1,15 @@
+# cwd: D:/projects/tools/.overhaul/wt/NOUI-NEXT-TEST/generator
+# command: memwait <python> add_feature.py orders --project D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/noui-lean-4
+# start: Sun Oct 25 22:55:53 IST 2026
+
+  Done.
+
+    Added :data:orders and :feature:orders with its ViewModel and a placeholder route.
+    No UI components: build the screen on your design system.
+
+  Next
+    1. Sync Gradle.
+    2. Open it from your own navigation by its keys, or by a deep link.
+
+EXIT=0
+# end: Sun Oct 25 22:55:55 IST 2026

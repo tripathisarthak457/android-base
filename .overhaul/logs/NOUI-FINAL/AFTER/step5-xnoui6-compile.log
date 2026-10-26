@@ -1,0 +1,88 @@
+04:42:02
+D free GB: 77.1
+./gradlew --offline --continue :core:designsystem:compileDebugKotlin :core:designsystem:compileDebugUnitTestKotlin
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:designsystem:compileDebugKotlin :core:designsystem:compileDebugUnitTestKotlin
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:common:verifyModuleDependencies
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyApiPurity
+> Task :core:designsystem:verifyApiPurity
+> Task :core:testing:verifyApiPurity
+> Task :core:testing:verifyModuleDependencies
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :core:designsystem:generateDebugComposePreviewRobolectricTests
+> Task :core:testing:compose:verifyApiPurity
+> Task :core:testing:compose:verifyModuleDependencies
+> Task :core:testing:compose:preBuild
+> Task :core:testing:compose:preDebugBuild
+> Task :core:testing:writeDebugAarMetadata
+> Task :core:testing:compose:writeDebugAarMetadata
+> Task :core:testing:generateDebugEmptyResourceFiles
+> Task :core:testing:compose:generateDebugEmptyResourceFiles
+> Task :core:designsystem:verifyCodeRules
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:testing:compose:processDebugManifest
+> Task :core:testing:processDebugManifest
+> Task :core:designsystem:processDebugNavigationResources
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:designsystem:generateDebugResources
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:designsystem:javaPreCompileDebug
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths
+> Task :core:designsystem:generateDebugUnitTestResources
+> Task :core:designsystem:extractDeepLinksDebug
+> Task :core:designsystem:processDebugManifest
+> Task :core:designsystem:packageDebugResources
+> Task :core:designsystem:parseDebugLocalResources
+> Task :core:designsystem:generateDebugRFile
+> Task :core:common:compileKotlin
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar
+> Task :core:designsystem:compileDebugLibraryResources
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:testing:compileDebugKotlin
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :core:designsystem:checkDebugUnitTestAarMetadata
+> Task :core:testing:compose:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:mergeDebugUnitTestManifest
+> Task :core:designsystem:processDebugUnitTestManifest
+> Task :core:designsystem:mergeDebugUnitTestResources
+> Task :core:testing:compose:compileDebugKotlin
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:bundleLibCompileToJarDebug
+> Task :core:designsystem:processDebugUnitTestResources
+> Task :core:designsystem:compileDebugUnitTestKotlin
+
+BUILD SUCCESSFUL in 38s
+49 actionable tasks: 47 executed, 2 from cache
+Configuration cache entry stored.
+EXIT 0
+04:42:41

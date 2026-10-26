@@ -1,0 +1,97 @@
+== 18:11:51 generate D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/specs/ui-everything.json preset everything -> D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-golden from D:/projects/tools/.overhaul/wt/NOUI-NEXT-CORE/generator (d5937e8a6)
+[locked:memwait] 1297 MB available, 7884 MB commit left; waiting for 1500 MB
+
+Summary
+───────
+           App  Final Core Ui (FinalCoreUi)
+       Package  com.example.finalcore.uieverything
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, appstatus, auth, browser, catalog, ci,
+                coil, collections, coverage, crashlytics, database,
+                datadisplay, deeplink, depsanalysis, devtools, firebase,
+                firebaseanalytics, flags, formatting, formfields, forms,
+                googlefonts, googlesignin, language, leakcanary, licenses,
+                liquidglass, media, network, offlinequeue, onboarding,
+                paging, perfhud, performance, pickers, playstore, profile,
+                push, remoteconfig, sample, search, settings, websocket
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\CORE\ui-golden
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\CORE\ui-golden and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json: the included one is a placeholder.
+
+EXIT 0
+== 18:12:20 compile
+[locked:gradle] waiting for the lock (pid 15992 since 2026-10-25 18:07:26: ./gradlew check assembleDevDebug --continue)
+[locked:gradle] waiting for the lock (pid 14824 since 2026-10-25 18:16:25: ./gradlew check assembleDevDebug --continue)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:designsystem:compileDebugKotlin
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin FROM-CACHE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:designsystem:verifyModuleDependencies FROM-CACHE
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:designsystem:packageDebugResources FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:generateDebugRFile FROM-CACHE
+
+> Task :core:designsystem:compileDebugKotlin FAILED
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-golden/core/designsystem/src/main/kotlin/com/example/finalcore/uieverything/core/designsystem/animation/AppTransitions.kt:252:58 Candidate 'fun LazyItemScope.appAnimateItem(modifier: Modifier = ...): Modifier' is inapplicable because of a receiver type mismatch.
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-golden/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:designsystem:compileDebugKotlin' (registered by plugin 'com.android.internal.library').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: UNRESOLVED_REFERENCE_WRONG_RECEIVER
+       Kotlin compiler error
+         Candidate 'fun LazyItemScope.appAnimateItem(modifier: Modifier = ...): Modifier' is inapplicable because of a receiver type mismatch.
+         Location: D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-golden/core/designsystem/src/main/kotlin/com/example/finalcore/uieverything/core/designsystem/animation/AppTransitions.kt line 252
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 23s
+12 actionable tasks: 5 executed, 7 from cache
+Configuration cache entry stored.
+EXIT compile 1
+== 18:21:20 recordRoborazziDebug
+[locked:gradle] waiting for the lock (pid 5920 since 2026-10-25 18:21:20: ./gradlew --continue :core:designsystem:testDebugUnitTest :core:mvi:testDebugUnitTest :data:sample:testDebugUnitTest :da)

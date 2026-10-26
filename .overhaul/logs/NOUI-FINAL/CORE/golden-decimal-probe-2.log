@@ -1,0 +1,4 @@
+== 20:39:02 record mode, decimal preview only
+[locked:gradle] waiting for the lock (pid 12820 since 2026-10-25 20:37:50: ./gradlew --continue :core:designsystem:verifyCodeRules :core:designsystem:testDebugUnitTest)
+[locked:gradle] waiting for the lock (pid 12820 since 2026-10-25 20:37:50: ./gradlew --continue :core:designsystem:verifyCodeRules :core:designsystem:testDebugUnitTest)
+[locked:gradle] waiting for the lock (pid 12820 since 2026-10-25 20:37:50: ./gradlew --continue :core:designsystem:verifyCodeRules :core:designsystem:testDebugUnitTest)

@@ -1,0 +1,17 @@
+✔ with the box ticked, no preset or feature promises what a project without UI components lacks (4.4333ms)
+✔ a setup-only site, whatever the visitor asked for, promises none of it either (1.4623ms)
+✔ with the box unticked every preset and feature reads as the catalogue writes it (2.0261ms)
+✔ with the box ticked a feature module reads as such a project gets it; unticked the site keeps its own words (1.8733ms)
+✔ the option describes only features it keeps, and presets the target has (1.1075ms)
+✔ with the box ticked the haptics toggle says what the value sets; unticked the site keeps its own words (2.2472ms)
+✔ on a setup-only site the Project step's summary names no tab and no home module, whatever was picked (2.0545ms)
+✔ with UI components the summary still lists the tabs, and the home module scaffolded when nothing gives one (1.2437ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 172.3938
+exit 0

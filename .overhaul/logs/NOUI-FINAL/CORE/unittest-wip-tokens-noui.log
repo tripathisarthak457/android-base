@@ -1,0 +1,16 @@
+14:05:20
+.....................................................
+----------------------------------------------------------------------
+Ran 53 tests in 35.031s
+
+OK
+[locked:memwait] 1003 MB available, 7350 MB commit left; waiting for 1500 MB
+[locked:memwait] 314 MB available, 5359 MB commit left; waiting for 1500 MB
+[locked:memwait] 493 MB available, 5811 MB commit left; waiting for 1500 MB
+[locked:memwait] 423 MB available, 4341 MB commit left; waiting for 1500 MB
+[locked:memwait] 422 MB available, 2435 MB commit left; waiting for 1500 MB
+[locked:memwait] 820 MB available, 3649 MB commit left; waiting for 1500 MB
+[locked:memwait] 347 MB available, 4143 MB commit left; waiting for 1500 MB
+[locked:memwait] 414 MB available, 3620 MB commit left; waiting for 1500 MB
+[locked:memwait] 870 MB available, 731 MB commit left; waiting for 1500 MB
+[locked:memwait] 821 MB available, 1421 MB commit left; waiting for 3500 MB

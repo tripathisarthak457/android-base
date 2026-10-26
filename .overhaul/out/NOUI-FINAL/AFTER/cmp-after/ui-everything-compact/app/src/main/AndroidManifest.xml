@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permissions, services and providers are declared by the module whose code needs them, and
+         manifest merging brings them here: INTERNET from :core:network, POST_NOTIFICATIONS from
+         :core:notification. -->
+    <application
+        android:name=".FinalAfterApplication"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
+        android:fullBackupContent="@xml/backup_rules"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.FinalAfter">
+
+        <!-- Lets the system offer "New window" (taskbar, desktop mode) on Android 15 and later. -->
+        <property
+            android:name="android.window.PROPERTY_SUPPORTS_MULTI_INSTANCE_SYSTEM_UI"
+            android:value="true" />
+
+        <!--
+          singleTop: a link, a notification or the launcher reaches the running instance through
+          onNewIntent instead of stacking a second copy of the app in the same task. A second
+          window opened on purpose (multi-instance, desktop mode) is a task of its own, with its
+          own navigator and back stacks.
+        -->
+        <!--
+          configChanges: a resize, a fold, a rotation or a keyboard attached is a new window size,
+          which Compose lays out again in place. Recreating the activity for it would rebuild every
+          tab and replay its first frames. Night mode is handled the same way: every colour comes
+          from AppTheme, which recomposes, and the app's own night mode (MainActivity sets it from
+          the theme setting, so the splash matches) would otherwise recreate the activity behind a
+          crossfade the moment the setting changes. Density, locale and font scale still recreate:
+          resources have to load again for those.
+        -->
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboard|keyboardHidden|navigation|uiMode"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.FinalAfter.Starting"
+            android:windowSoftInputMode="adjustResize">
+
+            <!-- The window a desktop opens the app in, and the smallest it may be resized to. -->
+            <layout
+                android:defaultHeight="720dp"
+                android:defaultWidth="1024dp"
+                android:minHeight="400dp"
+                android:minWidth="320dp" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
+          Links land here and are held for MainActivity, which is then started the way the launcher
+          starts it (see LinkActivity). No task of its own and no place in Recents.
+        -->
+        <activity
+            android:name=".deeplink.LinkActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.NoDisplay">
+
+            <!--
+              Custom scheme. Always works, never verified, and any app can claim the same scheme —
+              so it is the fallback, not the primary route in.
+            -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/deeplink_scheme" />
+            </intent-filter>
+
+            <!--
+              App Links. `autoVerify` makes Android check /.well-known/assetlinks.json on the host
+              at install time; when it matches, these URLs open the app directly with no chooser.
+              Without a correctly served assetlinks.json the filter still works, but the user gets
+              a disambiguation dialog every time — which most of them will answer with "browser".
+            -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="@string/deeplink_host"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+
+        <!--
+          WorkManager starts the first time the offline queue asks for it, through
+          FinalAfterApplication's Configuration.Provider, instead of at every launch from App Startup:
+          most launches queue nothing, and its start-up opens a database. The removal sits with the
+          Application that takes over from it.
+        -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+    </application>
+
+</manifest>

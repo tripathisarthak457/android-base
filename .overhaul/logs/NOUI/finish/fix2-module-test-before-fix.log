@@ -1,0 +1,42 @@
+FFFF
+======================================================================
+FAIL: test_every_module_the_docs_name_is_in_the_build (tests.test_docs.GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build) (case='noui-lean', page='README.md', module=':catalog')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_docs.py", line 278, in test_every_module_the_docs_name_is_in_the_build
+    self.assertTrue(any(module == token or module.startswith(token + ":") for module in modules))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_every_module_the_docs_name_is_in_the_build (tests.test_docs.GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build) (case='noui-standard', page='README.md', module=':catalog')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_docs.py", line 278, in test_every_module_the_docs_name_is_in_the_build
+    self.assertTrue(any(module == token or module.startswith(token + ":") for module in modules))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_every_module_the_docs_name_is_in_the_build (tests.test_docs.GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build) (case='noui-everything', page='README.md', module=':catalog')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_docs.py", line 278, in test_every_module_the_docs_name_is_in_the_build
+    self.assertTrue(any(module == token or module.startswith(token + ":") for module in modules))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_every_module_the_docs_name_is_in_the_build (tests.test_docs.GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build) (case='noui-everything-modular', page='README.md', module=':catalog')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_docs.py", line 278, in test_every_module_the_docs_name_is_in_the_build
+    self.assertTrue(any(module == token or module.startswith(token + ":") for module in modules))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 1 test in 117.660s
+
+FAILED (failures=4)
+exit 1

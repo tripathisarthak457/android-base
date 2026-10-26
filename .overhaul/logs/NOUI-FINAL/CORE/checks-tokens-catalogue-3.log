@@ -1,0 +1,8 @@
+23:12:09
+e559bc82b
+== tokens --check
+3 token copies current.
+EXIT 0
+== catalogue --check
+web/frontend/lib/catalogue.json is current.
+EXIT 0

@@ -1,0 +1,26 @@
+Sun Oct 25 17:47:26 IST 2026
+$ memwait npm ci
+
+added 53 packages, and audited 54 packages in 20s
+
+9 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn install-scripts   @tailwindcss/oxide@4.1.13 (postinstall: node ./scripts/install.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+ci exit=0
+$ npm ls next
+android-generator-web@1.0.0 D:\projects\tools\.overhaul\wt\NOUI-FINAL-WEB\web\frontend
+`-- next@15.5.28
+
+ls exit=0
+$ npm audit --omit=dev
+found 0 vulnerabilities
+audit exit=0
+$ npm audit (all, for the record)
+found 0 vulnerabilities
+audit-all exit=0
+Sun Oct 25 17:47:51 IST 2026

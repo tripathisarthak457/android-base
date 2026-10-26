@@ -1,0 +1,39 @@
+06:04:28
+5ef85c345
+
+Summary
+───────
+           App  Final After (FinalAfter)
+       Package  com.example.finalafter.f8cuilean
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  ci, coil, deeplink, formatting, googlefonts, leakcanary,
+                network
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\f8c-ui-lean
+
+  ! No feature gives the app a tab, so a 'home' module was scaffolded under
+  ! feature/home and data/home. Its repository has no source yet: give it one,
+  ! or rename the module.
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\f8c-ui-lean and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Commit app/dependencies/ after the first ./gradlew check: it is the list of libraries the prod
+       release ships, which every later check compares against.
+
+EXIT 0
+06:04:31

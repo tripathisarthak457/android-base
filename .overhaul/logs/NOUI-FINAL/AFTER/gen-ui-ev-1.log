@@ -1,0 +1,46 @@
+02:07:07
+585542469
+ M tests/test_android_truth.py
+ M ../templates/android/build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/CodeRules.kt
+ M ../templates/android/build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/StructureRules.kt
+ M ../templates/android/build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/CodeRulesTest.kt
+
+Summary
+───────
+           App  Final After (FinalAfter)
+       Package  com.example.finalafter.uiev
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, appstatus, auth, browser, catalog, ci,
+                coil, collections, coverage, crashlytics, database,
+                datadisplay, deeplink, depsanalysis, devtools, firebase,
+                firebaseanalytics, flags, formatting, formfields, forms,
+                googlefonts, googlesignin, language, leakcanary, licenses,
+                liquidglass, media, network, offlinequeue, onboarding,
+                paging, perfhud, performance, pickers, playstore, profile,
+                push, remoteconfig, sample, search, settings, websocket
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\ui-ev
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\ui-ev and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Commit app/dependencies/ after the first ./gradlew check: it is the list of libraries the prod
+       release ships, which every later check compares against.
+    4. Replace app/google-services.json: the included one is a placeholder.
+
+EXIT 0
+02:07:12

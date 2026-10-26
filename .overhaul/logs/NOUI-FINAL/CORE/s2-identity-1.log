@@ -1,0 +1,55 @@
+== 20:03:17 generate D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/specs/ui-everything.json preset everything -> D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/s2-ui-everything from D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/src-s2/generator (archive)
+[locked:memwait] 3393 MB available, 12733 MB commit left; waiting for 3500 MB
+[locked:memwait] 3364 MB available, 12717 MB commit left; waiting for 3500 MB
+[locked:memwait] 3366 MB available, 12655 MB commit left; waiting for 3500 MB
+[locked:memwait] 3317 MB available, 12665 MB commit left; waiting for 3500 MB
+[locked:memwait] 3346 MB available, 12627 MB commit left; waiting for 3500 MB
+[locked:memwait] 3246 MB available plus 3652 MB of system cache Windows will trim; continuing
+
+Summary
+───────
+           App  Final Core Ui (FinalCoreUi)
+       Package  com.example.finalcore.uieverything
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, appstatus, auth, browser, catalog, ci,
+                coil, collections, coverage, crashlytics, database,
+                datadisplay, deeplink, depsanalysis, devtools, firebase,
+                firebaseanalytics, flags, formatting, formfields, forms,
+                googlefonts, googlesignin, language, leakcanary, licenses,
+                liquidglass, media, network, offlinequeue, onboarding,
+                paging, perfhud, performance, pickers, playstore, profile,
+                push, remoteconfig, sample, search, settings, websocket
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\CORE\s2-ui-everything
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\CORE\s2-ui-everything and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json: the included one is a placeholder.
+
+EXIT 0
+== 20:08:26 diff base-ui-everything s2-ui-everything
+Only in D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/s2-ui-everything/core/designsystem/src/main/kotlin/com/example/finalcore/uieverything/core/designsystem/preview: AppComponentPreviews.kt
+Files D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/base-ui-everything/core/mvi/src/main/kotlin/com/example/finalcore/uieverything/core/mvi/UiMessage.kt and D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/s2-ui-everything/core/mvi/src/main/kotlin/com/example/finalcore/uieverything/core/mvi/UiMessage.kt differ
+Only in D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/s2-ui-everything/core/mvi/src/test/kotlin/com/example/finalcore/uieverything/core/mvi: UiMessageTest.kt
+Files D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/base-ui-everything/core/network/src/main/kotlin/com/example/finalcore/uieverything/core/network/client/KtorNetworkClient.kt and D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/s2-ui-everything/core/network/src/main/kotlin/com/example/finalcore/uieverything/core/network/client/KtorNetworkClient.kt differ
+Files D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/base-ui-everything/core/network/src/test/kotlin/com/example/finalcore/uieverything/core/network/client/KtorNetworkClientTest.kt and D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/s2-ui-everything/core/network/src/test/kotlin/com/example/finalcore/uieverything/core/network/client/KtorNetworkClientTest.kt differ
+Files D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/base-ui-everything/data/auth/src/main/kotlin/com/example/finalcore/uieverything/data/auth/DefaultAuthRepository.kt and D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/s2-ui-everything/data/auth/src/main/kotlin/com/example/finalcore/uieverything/data/auth/DefaultAuthRepository.kt differ
+Files D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/base-ui-everything/data/auth/src/test/kotlin/com/example/finalcore/uieverything/data/auth/DefaultAuthRepositoryTest.kt and D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/s2-ui-everything/data/auth/src/test/kotlin/com/example/finalcore/uieverything/data/auth/DefaultAuthRepositoryTest.kt differ
+Files D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/base-ui-everything/data/sample/src/main/kotlin/com/example/finalcore/uieverything/data/sample/OfflineFirstSampleRepository.kt and D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/s2-ui-everything/data/sample/src/main/kotlin/com/example/finalcore/uieverything/data/sample/OfflineFirstSampleRepository.kt differ
+Files D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/base-ui-everything/data/sample/src/test/kotlin/com/example/finalcore/uieverything/data/sample/OfflineFirstSampleRepositoryTest.kt and D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/s2-ui-everything/data/sample/src/test/kotlin/com/example/finalcore/uieverything/data/sample/OfflineFirstSampleRepositoryTest.kt differ
+EXIT diff 1

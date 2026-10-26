@@ -1,0 +1,8 @@
+== 20:37:51 consistency --quick at 265fedbc8 + 3 uncommitted (host API on apply)
+C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\python.exe: Error while finding module specification for 'tests.consistency' (ModuleNotFoundError: No module named 'tests')
+== 20:37:52 EXIT 1
+== 20:48:08 consistency --quick at 265fedbc8 + 3 uncommitted (host API on apply), without -I so the module is found
+
+81 projects in 169 s: 0 new issues, 188 known (2 of 2 known-issue lines seen).
+CONSISTENCY OK
+== 20:50:59 EXIT 0

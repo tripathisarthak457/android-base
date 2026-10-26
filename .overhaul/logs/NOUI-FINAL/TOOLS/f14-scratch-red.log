@@ -1,0 +1,97 @@
+# project: D:/projects/tools/.overhaul/out/NOUI-FINAL/TOOLS/noui-lean
+# generated from:  (+ the uncommitted tree at generation, see the gen log)
+# command: locked gradle ./gradlew :core:designsystem:testDebugUnitTest --continue
+# start: Sun Oct 25 18:18:56 IST 2026
+[locked:gradle] waiting for the lock (pid 11828 since 2026-10-25 18:17:58: ./gradlew :feature:auth:testDebugUnitTest :feature:settings:testDebugUnitTest :feature:onboarding:testDebugUnitTest :fea)
+[locked:gradle] waiting for the lock (pid 5920 since 2026-10-25 18:21:20: ./gradlew --continue :core:designsystem:testDebugUnitTest :core:mvi:testDebugUnitTest :data:sample:testDebugUnitTest :da)
+[locked:gradle] waiting for the lock (pid 19280 since 2026-10-25 18:25:09: ./gradlew check assembleDevDebug --continue)
+[locked:gradle] waiting for the lock (pid 19280 since 2026-10-25 18:25:09: ./gradlew check assembleDevDebug --continue)
+[locked:gradle] 1006 MB available, 7071 MB commit left; waiting for 1500 MB
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Starting a Gradle Daemon, 3 stopped Daemons could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:designsystem:testDebugUnitTest
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+A problem occurred configuring project ':core:designsystem'.
+> includePrivatePreviews / annotationFilter cannot be set automatically when using a custom tester.
+  
+  When using a custom tester, if you override testParameters(), you must manually handle
+  the includePrivatePreviews option in your scanner configuration.
+  
+  You have two options:
+  1. Remove 'includePrivatePreviews = true' / annotationFilter option from generateComposePreviewRobolectricTests configuration
+     and call '.includePrivatePreviews()' / '.excludeIfAnnotatedWithAnyOf()' / '.includeIfAnnotatedWithAnyOf()' directly in your custom tester's testParameters() method.
+  
+  2. Set 'useScanOptionParametersInTester = true' in generateComposePreviewRobolectricTests configuration
+     and check 'options.scanOptions.includePrivatePreviews' / 'opts.scanOptions.annotationFilter' in your testParameters() implementation.
+  
+  Example for option 1:
+    // In your custom tester:
+    override fun testParameters(): List<TestParameter> {
+      return AndroidComposablePreviewScanner()
+        .scanPackageTrees(*options().scanOptions.packages.toTypedArray())
+        // exclude annotated previews (or .includeIfAnnotatedWithAnyOf() to include)
+        .excludeIfAnnotatedWithAnyOf(RoboPreviewExclude::class.java)
+        // include private previews
+        .includePrivatePreviews()
+        .getPreviews()
+        // ... rest of your implementation
+    }
+  
+  Example for option 2:
+    // In build.gradle.kts:
+    generateComposePreviewRobolectricTests {
+      enable = true
+      packages = listOf("your.package")
+      testerQualifiedClassName = "com.example.CustomTester"
+      includePrivatePreviews = true
+      annotationFilter = Filter.RoboPreviewExclude // or Filter.RoboPreviewInclude
+      useScanOptionParametersInTester = true
+    }
+  
+    // In your custom tester:
+    override fun testParameters(): List<TestParameter> {
+      val opts = options()
+      return AndroidComposablePreviewScanner()
+        .scanPackageTrees(*opts.scanOptions.packages.toTypedArray())
+        .let {
+            when (val filter = opts.scanOptions.annotationFilter) {
+              is AnnotationFilter.Exclude -> it.excludeIfAnnotatedWithAnyOf(*filter.annotations.map { Class.forName(it) as Class<out Annotation> }.toTypedArray())
+              is AnnotationFilter.Include -> it.includeIfAnnotatedWithAnyOf(*filter.annotations.map { Class.forName(it) as Class<out Annotation> }.toTypedArray())
+              else -> it
+            }
+        }
+        .let {
+          if (opts.scanOptions.includePrivatePreviews) {
+            it.includePrivatePreviews()  // Conditionally call based on plugin config
+          } else {
+            it
+          }
+        }
+        .getPreviews()
+        // ... rest of your implementation
+    }
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1m 46s
+4 actionable tasks: 4 executed
+Configuration cache entry stored.
+# exit: 1 end: Sun Oct 25 18:37:52 IST 2026

@@ -1,0 +1,266 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: checkComposeStability
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:verifyApiPurity UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity UP-TO-DATE
+> Task :core:common:processResources NO-SOURCE
+> Task :core:designsystem:verifyCodeRules UP-TO-DATE
+> Task :core:designsystem:preBuild UP-TO-DATE
+> Task :core:designsystem:preDebugBuild UP-TO-DATE
+> Task :core:navigation:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:navigation:verifyApiPurity UP-TO-DATE
+> Task :core:navigation:preBuild UP-TO-DATE
+> Task :core:navigation:preDebugBuild UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:datastore:verifyModuleDependencies UP-TO-DATE
+> Task :core:datastore:verifyApiPurity UP-TO-DATE
+> Task :core:datastore:preBuild UP-TO-DATE
+> Task :core:datastore:preDebugBuild UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:datastore:javaPreCompileDebug UP-TO-DATE
+> Task :core:mvi:verifyModuleDependencies UP-TO-DATE
+> Task :core:mvi:verifyApiPurity UP-TO-DATE
+> Task :core:mvi:preBuild UP-TO-DATE
+> Task :core:mvi:preDebugBuild UP-TO-DATE
+> Task :core:mvi:javaPreCompileDebug UP-TO-DATE
+> Task :core:navigation:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:database:verifyModuleDependencies UP-TO-DATE
+> Task :core:database:verifyApiPurity UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:database:preBuild UP-TO-DATE
+> Task :core:database:preDebugBuild UP-TO-DATE
+> Task :core:database:javaPreCompileDebug UP-TO-DATE
+> Task :core:network:verifyModuleDependencies UP-TO-DATE
+> Task :core:network:verifyApiPurity UP-TO-DATE
+> Task :core:network:preBuild UP-TO-DATE
+> Task :core:network:preDebugBuild UP-TO-DATE
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :core:network:javaPreCompileDebug UP-TO-DATE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:ui:verifyApiPurity UP-TO-DATE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:ui:verifyModuleDependencies UP-TO-DATE
+> Task :core:ui:preBuild UP-TO-DATE
+> Task :core:ui:preDebugBuild UP-TO-DATE
+> Task :core:common:jar UP-TO-DATE
+> Task :core:ui:generateDebugResources UP-TO-DATE
+> Task :data:auth:verifyApiPurity
+> Task :core:mvi:compileDebugKotlin UP-TO-DATE
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:datastore:kspDebugKotlin UP-TO-DATE
+> Task :core:database:kspDebugKotlin UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+> Task :core:navigation:kspDebugKotlin UP-TO-DATE
+> Task :core:designsystem:checkComposeStability
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:ui:packageDebugResources UP-TO-DATE
+> Task :core:ui:processDebugNavigationResources UP-TO-DATE
+> Task :core:ui:parseDebugLocalResources UP-TO-DATE
+> Task :core:ui:generateDebugRFile UP-TO-DATE
+> Task :core:ui:javaPreCompileDebug UP-TO-DATE
+> Task :data:auth:verifyModuleDependencies
+> Task :data:auth:preBuild
+> Task :data:auth:preDebugBuild
+> Task :core:datastore:compileDebugKotlin UP-TO-DATE
+> Task :core:database:compileDebugKotlin UP-TO-DATE
+> Task :core:datastore:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:database:compileDebugJavaWithJavac UP-TO-DATE
+> Task :data:auth:javaPreCompileDebug FROM-CACHE
+> Task :core:database:copyRoomSchemas NO-SOURCE
+> Task :core:datastore:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:database:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:auth:verifyModuleDependencies
+> Task :core:navigation:compileDebugKotlin UP-TO-DATE
+> Task :feature:auth:verifyApiPurity
+> Task :core:navigation:checkComposeStability
+> Task :feature:auth:preBuild
+> Task :feature:auth:preDebugBuild
+> Task :data:feed:verifyApiPurity
+> Task :core:navigation:compileDebugJavaWithJavac UP-TO-DATE
+> Task :feature:auth:processDebugNavigationResources
+> Task :data:feed:verifyModuleDependencies
+> Task :data:feed:preBuild
+> Task :data:feed:preDebugBuild
+> Task :feature:auth:generateDebugResources
+> Task :data:feed:javaPreCompileDebug FROM-CACHE
+> Task :feature:feed:verifyApiPurity
+> Task :feature:feed:verifyModuleDependencies
+> Task :feature:feed:preBuild
+> Task :feature:feed:preDebugBuild
+> Task :feature:feed:generateDebugResources
+> Task :core:network:kspDebugKotlin UP-TO-DATE
+> Task :core:navigation:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:navigation:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:feed:processDebugNavigationResources
+> Task :core:notification:verifyApiPurity
+> Task :core:notification:verifyModuleDependencies
+> Task :core:notification:preBuild
+> Task :core:notification:preDebugBuild
+> Task :feature:feed:packageDebugResources
+> Task :feature:auth:packageDebugResources
+> Task :core:network:compileDebugKotlin UP-TO-DATE
+> Task :core:notification:generateDebugResources
+> Task :core:network:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:network:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:notification:packageDebugResources
+> Task :feature:auth:parseDebugLocalResources
+> Task :feature:feed:parseDebugLocalResources
+> Task :core:ui:kspDebugKotlin UP-TO-DATE
+> Task :feature:auth:generateDebugRFile
+> Task :feature:feed:generateDebugRFile
+> Task :core:notification:processDebugNavigationResources
+> Task :core:notification:parseDebugLocalResources
+> Task :core:ui:compileDebugKotlin UP-TO-DATE
+> Task :core:notification:generateDebugRFile
+> Task :core:ui:checkComposeStability
+> Task :core:datastore:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:ui:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:ui:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:notification:javaPreCompileDebug FROM-CACHE
+> Task :feature:onboarding:verifyApiPurity
+> Task :feature:onboarding:verifyModuleDependencies
+> Task :feature:onboarding:preBuild
+> Task :feature:onboarding:preDebugBuild
+> Task :feature:onboarding:generateDebugResources
+> Task :feature:onboarding:packageDebugResources
+> Task :feature:onboarding:processDebugNavigationResources
+> Task :feature:onboarding:parseDebugLocalResources
+> Task :feature:onboarding:generateDebugRFile
+> Task :core:media:verifyApiPurity
+> Task :core:media:verifyModuleDependencies
+> Task :core:media:preBuild
+> Task :core:media:preDebugBuild
+> Task :core:media:generateDebugResources
+> Task :core:media:packageDebugResources
+> Task :core:media:processDebugNavigationResources
+> Task :core:media:parseDebugLocalResources
+> Task :core:media:generateDebugRFile
+> Task :core:media:kspDebugKotlin
+> Task :data:auth:kspDebugKotlin
+> Task :data:feed:kspDebugKotlin
+> Task :data:auth:compileDebugKotlin
+> Task :core:media:compileDebugKotlin
+> Task :core:media:javaPreCompileDebug FROM-CACHE
+> Task :data:auth:compileDebugJavaWithJavac
+> Task :data:auth:bundleLibCompileToJarDebug
+> Task :data:feed:compileDebugKotlin
+> Task :core:media:compileDebugJavaWithJavac
+> Task :core:media:bundleLibCompileToJarDebug
+> Task :data:feed:compileDebugJavaWithJavac
+> Task :data:feed:bundleLibCompileToJarDebug
+> Task :core:notification:kspDebugKotlin
+> Task :data:profile:kspDebugKotlin
+> Task :data:profile:verifyApiPurity
+> Task :data:profile:verifyModuleDependencies
+> Task :data:profile:preBuild
+> Task :data:profile:preDebugBuild
+> Task :feature:feed:kspDebugKotlin
+> Task :data:profile:compileDebugKotlin
+> Task :data:profile:javaPreCompileDebug FROM-CACHE
+> Task :data:profile:compileDebugJavaWithJavac
+> Task :data:profile:bundleLibCompileToJarDebug
+> Task :feature:profile:verifyApiPurity
+> Task :feature:profile:verifyModuleDependencies
+> Task :feature:profile:preBuild
+> Task :feature:profile:preDebugBuild
+> Task :feature:profile:generateDebugResources
+> Task :feature:profile:packageDebugResources
+> Task :feature:profile:processDebugNavigationResources
+> Task :feature:profile:parseDebugLocalResources
+> Task :feature:profile:generateDebugRFile
+> Task :core:notification:compileDebugKotlin
+> Task :feature:feed:compileDebugKotlin
+> Task :feature:feed:checkComposeStability
+> Task :core:notification:compileDebugJavaWithJavac
+> Task :feature:auth:kspDebugKotlin
+> Task :core:notification:transformDebugClassesWithAsm
+> Task :core:notification:bundleLibCompileToJarDebug
+> Task :data:sample:kspDebugKotlin
+> Task :data:sample:verifyApiPurity
+> Task :data:sample:verifyModuleDependencies
+> Task :data:sample:preBuild
+> Task :data:sample:preDebugBuild
+> Task :feature:profile:kspDebugKotlin
+> Task :feature:auth:compileDebugKotlin
+> Task :feature:auth:checkComposeStability
+> Task :data:sample:javaPreCompileDebug FROM-CACHE
+> Task :feature:sample:verifyApiPurity
+> Task :feature:sample:verifyModuleDependencies
+> Task :feature:sample:preBuild
+> Task :feature:sample:preDebugBuild
+> Task :feature:sample:generateDebugResources
+> Task :feature:sample:packageDebugResources
+> Task :feature:sample:processDebugNavigationResources
+> Task :feature:sample:parseDebugLocalResources
+> Task :feature:sample:generateDebugRFile
+> Task :feature:onboarding:kspDebugKotlin
+> Task :data:sample:compileDebugKotlin
+> Task :feature:profile:compileDebugKotlin
+> Task :feature:profile:checkComposeStability
+> Task :data:search:verifyApiPurity
+> Task :data:search:verifyModuleDependencies
+> Task :data:search:preBuild
+> Task :data:search:preDebugBuild
+> Task :data:search:javaPreCompileDebug FROM-CACHE
+> Task :feature:search:verifyApiPurity
+> Task :feature:search:verifyModuleDependencies
+> Task :feature:search:preBuild
+> Task :feature:search:preDebugBuild
+> Task :feature:search:generateDebugResources
+> Task :feature:search:packageDebugResources
+> Task :feature:search:processDebugNavigationResources
+> Task :feature:search:parseDebugLocalResources
+> Task :feature:search:generateDebugRFile
+> Task :feature:settings:verifyApiPurity
+> Task :feature:settings:verifyModuleDependencies
+> Task :feature:settings:preBuild
+> Task :feature:settings:preDebugBuild
+> Task :feature:settings:generateDebugResources
+> Task :feature:settings:packageDebugResources
+> Task :feature:settings:processDebugNavigationResources
+> Task :feature:settings:parseDebugLocalResources
+> Task :feature:settings:generateDebugRFile
+> Task :data:sample:compileDebugJavaWithJavac
+> Task :data:sample:bundleLibCompileToJarDebug
+> Task :feature:onboarding:compileDebugKotlin
+> Task :feature:onboarding:checkComposeStability
+> Task :data:search:kspDebugKotlin
+> Task :data:search:compileDebugKotlin
+> Task :feature:settings:kspDebugKotlin
+> Task :data:search:compileDebugJavaWithJavac
+> Task :data:search:bundleLibCompileToJarDebug
+> Task :feature:sample:kspDebugKotlin
+> Task :feature:search:kspDebugKotlin
+> Task :feature:settings:compileDebugKotlin
+> Task :feature:settings:checkComposeStability
+> Task :feature:sample:compileDebugKotlin
+> Task :feature:sample:checkComposeStability
+> Task :feature:search:compileDebugKotlin
+> Task :feature:search:checkComposeStability
+
+BUILD SUCCESSFUL in 43s
+199 actionable tasks: 126 executed, 7 from cache, 66 up-to-date
+Configuration cache entry stored.

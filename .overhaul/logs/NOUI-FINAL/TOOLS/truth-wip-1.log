@@ -1,0 +1,47 @@
+# head: 1f2fd6c85 + WIP
+# start: Sun Oct 25 18:05:50 IST 2026
+[locked:memwait] 851 MB available, 8819 MB commit left; waiting for 1500 MB
+[locked:memwait] 1168 MB available, 8746 MB commit left; waiting for 1500 MB
+test_nothing_sends_a_reader_to_the_harness_the_project_left_out (tests.test_android_truth.HarnessAdviceTest.test_nothing_sends_a_reader_to_the_harness_the_project_left_out) ... ok
+test_the_overlay_advises_the_measurements_the_project_has (tests.test_android_truth.HarnessAdviceTest.test_the_overlay_advises_the_measurements_the_project_has) ... ok
+test_the_profiles_name_only_classes_the_project_has (tests.test_android_truth.ProfileTest.test_the_profiles_name_only_classes_the_project_has) ... ok
+test_every_push_shape_is_held (tests.test_android_truth.PushPermissionTest.test_every_push_shape_is_held) ... ok
+test_the_kdoc_and_the_manifest_name_only_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_kdoc_and_the_manifest_name_only_screens_that_ask) ... 
+  test_the_kdoc_and_the_manifest_name_only_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_kdoc_and_the_manifest_name_only_screens_that_ask) (case='everything-compact', where='KDoc') ... FAIL
+  test_the_kdoc_and_the_manifest_name_only_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_kdoc_and_the_manifest_name_only_screens_that_ask) (case='everything-modular', where='KDoc') ... FAIL
+  test_the_kdoc_and_the_manifest_name_only_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_kdoc_and_the_manifest_name_only_screens_that_ask) (case='push-alone', where='KDoc') ... FAIL
+test_the_push_passage_names_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_push_passage_names_the_screens_that_ask) ... ok
+test_what_the_docs_say_asks_or_opens_is_what_the_code_does (tests.test_android_truth.PushPermissionTest.test_what_the_docs_say_asks_or_opens_is_what_the_code_does) ... ok
+
+======================================================================
+FAIL: test_the_kdoc_and_the_manifest_name_only_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_kdoc_and_the_manifest_name_only_screens_that_ask) (case='everything-compact', where='KDoc')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-TOOLS\generator\tests\test_android_truth.py", line 148, in test_the_kdoc_and_the_manifest_name_only_screens_that_ask
+    self.assertEqual(settings, "in settings" in text)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True != False
+
+======================================================================
+FAIL: test_the_kdoc_and_the_manifest_name_only_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_kdoc_and_the_manifest_name_only_screens_that_ask) (case='everything-modular', where='KDoc')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-TOOLS\generator\tests\test_android_truth.py", line 148, in test_the_kdoc_and_the_manifest_name_only_screens_that_ask
+    self.assertEqual(settings, "in settings" in text)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True != False
+
+======================================================================
+FAIL: test_the_kdoc_and_the_manifest_name_only_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_kdoc_and_the_manifest_name_only_screens_that_ask) (case='push-alone', where='KDoc')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-TOOLS\generator\tests\test_android_truth.py", line 149, in test_the_kdoc_and_the_manifest_name_only_screens_that_ask
+    self.assertEqual(not (onboarding or settings), "nothing asks yet" in text.lower() or "calls this yet" in text)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True != False
+
+----------------------------------------------------------------------
+Ran 7 tests in 49.756s
+
+FAILED (failures=3)
+# exit: 1 end: Sun Oct 25 18:08:22 IST 2026

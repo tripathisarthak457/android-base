@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "target": "android",
+  "project_name": "GateOne",
+  "path": "D:\\projects\\tools\\.overhaul\\out\\NOUI\\gate-1\\v10-tab",
+  "resolved_features": [
+    "ci",
+    "coil",
+    "deeplink",
+    "googlefonts",
+    "leakcanary",
+    "network"
+  ],
+  "feature_modules": [],
+  "notes": [],
+  "warnings": [],
+  "ignored_fields": [],
+  "summary": []
+}

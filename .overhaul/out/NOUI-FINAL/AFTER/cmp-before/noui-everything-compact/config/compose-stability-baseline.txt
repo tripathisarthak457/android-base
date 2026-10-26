@@ -1,0 +1,3 @@
+# Composable parameters the Compose compiler compares by identity, accepted with a reason:
+# `fqName(parameter)  # why it has to stay`. Deleting a line records a fix, and a line that matches
+# nothing fails the check, so the list only shrinks; the check fails again if the parameter comes back.

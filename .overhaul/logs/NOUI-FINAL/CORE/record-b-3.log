@@ -1,0 +1,182 @@
+== patch 01-tabcells-preview.patch
+patching file templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/TabCells.kt
+Hunk #1 succeeded at 461 (offset 6 lines).
+== patch 02-money-currency.patch
+patching file templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/formfields/AppDecimalFields.kt
+== 22:49:44 generate D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/specs/ui-everything.json preset everything -> D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-golden from D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/src-g/generator (archive)
+
+Summary
+───────
+           App  Final Core Ui (FinalCoreUi)
+       Package  com.example.finalcore.uieverything
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, appstatus, auth, browser, catalog, ci,
+                coil, collections, coverage, crashlytics, database,
+                datadisplay, deeplink, depsanalysis, devtools, firebase,
+                firebaseanalytics, flags, formatting, formfields, forms,
+                googlefonts, googlesignin, language, leakcanary, licenses,
+                liquidglass, media, network, offlinequeue, onboarding,
+                paging, perfhud, performance, pickers, playstore, profile,
+                push, remoteconfig, sample, search, settings, websocket
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\CORE\ui-golden
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\CORE\ui-golden and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json: the included one is a placeholder.
+
+EXIT 0
+== 22:49:51 recordRoborazziDebug
+[locked:gradle] waiting for the lock (pid 13944 since 2026-10-25 22:49:43: ./gradlew :core:navigation:testDebugUnitTest :core:navigation:shell:testDebugUnitTest :app:testDevDebugUnitTest :feature)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:designsystem:recordRoborazziDebug
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin FROM-CACHE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies FROM-CACHE
+> Task :core:designsystem:verifyModuleDependencies FROM-CACHE
+> Task :core:common:verifyApiPurity FROM-CACHE
+> Task :core:testing:verifyApiPurity FROM-CACHE
+> Task :core:designsystem:generateDebugComposePreviewRobolectricTests FROM-CACHE
+> Task :core:testing:verifyModuleDependencies FROM-CACHE
+> Task :core:testing:preBuild UP-TO-DATE
+> Task :core:testing:preDebugBuild UP-TO-DATE
+> Task :core:testing:compose:verifyApiPurity FROM-CACHE
+> Task :core:testing:compose:verifyModuleDependencies FROM-CACHE
+> Task :core:testing:compose:preBuild UP-TO-DATE
+> Task :core:testing:compose:preDebugBuild UP-TO-DATE
+> Task :core:testing:writeDebugAarMetadata
+> Task :core:testing:compose:writeDebugAarMetadata
+> Task :core:testing:compose:generateDebugEmptyResourceFiles
+> Task :core:testing:generateDebugEmptyResourceFiles
+> Task :core:testing:processDebugManifest FROM-CACHE
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:compose:processDebugManifest FROM-CACHE
+> Task :core:testing:compose:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:mergeDebugAssets
+> Task :core:testing:compose:generateDebugAssets UP-TO-DATE
+> Task :core:common:compileKotlin FROM-CACHE
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:common:jar
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:designsystem:generateDebugUnitTestResources FROM-CACHE
+> Task :core:designsystem:extractDeepLinksDebug FROM-CACHE
+> Task :core:designsystem:packageDebugResources FROM-CACHE
+> Task :core:designsystem:processDebugManifest FROM-CACHE
+> Task :core:designsystem:compileDebugLibraryResources FROM-CACHE
+> Task :core:designsystem:checkDebugUnitTestAarMetadata
+> Task :core:designsystem:mergeDebugUnitTestManifest
+> Task :core:designsystem:processDebugUnitTestManifest
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:generateDebugRFile FROM-CACHE
+> Task :core:testing:compose:compileDebugKotlin FROM-CACHE
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:mergeDebugUnitTestResources FROM-CACHE
+> Task :core:testing:compose:bundleLibCompileToJarDebug
+> Task :core:designsystem:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:designsystem:mergeDebugAssets
+> Task :core:testing:compose:mergeDebugAssets
+> Task :core:designsystem:mergeDebugUnitTestAssets
+> Task :core:designsystem:koverFindJar
+> Task :core:testing:compose:bundleLibRuntimeToJarDebug
+> Task :core:testing:compose:processDebugJavaRes
+> Task :core:designsystem:processDebugUnitTestResources FROM-CACHE
+> Task :core:designsystem:packageDebugUnitTestForUnitTest
+> Task :core:designsystem:generateDebugUnitTestConfig
+> Task :core:testing:compileDebugKotlin FROM-CACHE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibRuntimeToJarDebug
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :core:testing:processDebugJavaRes
+
+> Task :core:designsystem:compileDebugKotlin
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-golden/core/designsystem/src/main/kotlin/com/example/finalcore/uieverything/core/designsystem/component/feedback/AppSkeleton.kt:145:9 'fun AppSkeletonLine(modifier: Modifier = ..., widthFraction: Float = ..., height: Dp): Unit' is deprecated. A fixed height ignores the font scale. Pass the text style the line stands for.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-golden/core/designsystem/src/main/kotlin/com/example/finalcore/uieverything/core/designsystem/component/feedback/AppSkeleton.kt:147:9 'fun AppSkeletonListItem(modifier: Modifier = ..., showLeading: Boolean = ...): Unit' is deprecated. Its shape matches no real row, so content jumps when it arrives. Redact the real row instead.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-golden/core/designsystem/src/main/kotlin/com/example/finalcore/uieverything/core/designsystem/component/feedback/AppSkeleton.kt:148:9 'fun AppSkeletonListItem(modifier: Modifier = ..., showLeading: Boolean = ...): Unit' is deprecated. Its shape matches no real row, so content jumps when it arrives. Redact the real row instead.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-golden/core/designsystem/src/main/kotlin/com/example/finalcore/uieverything/core/designsystem/component/overlay/AppActionSheet.kt:72:9 'fun AppActionSheet(actions: List<SheetAction>, onDismissRequest: () -> Unit, modifier: Modifier = ..., title: String? = ..., message: String? = ..., cancelLabel: String? = ...): Unit' is deprecated. Keep the action sheet composed and drive visible, so it can slide away before it leaves.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-golden/core/designsystem/src/main/kotlin/com/example/finalcore/uieverything/core/designsystem/component/overlay/AppActionSheet.kt:74:17 'constructor(label: String, onClick: () -> Unit, icon: ImageVector? = ..., isDestructive: Boolean = ..., enabled: Boolean = ...): SheetAction' is deprecated. Moved to the sheet package, where destructive is spelt without the is.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-golden/core/designsystem/src/main/kotlin/com/example/finalcore/uieverything/core/designsystem/component/overlay/AppActionSheet.kt:75:17 'constructor(label: String, onClick: () -> Unit, icon: ImageVector? = ..., isDestructive: Boolean = ..., enabled: Boolean = ...): SheetAction' is deprecated. Moved to the sheet package, where destructive is spelt without the is.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-golden/core/designsystem/src/main/kotlin/com/example/finalcore/uieverything/core/designsystem/component/overlay/AppActionSheet.kt:76:17 'constructor(label: String, onClick: () -> Unit, icon: ImageVector? = ..., isDestructive: Boolean = ..., enabled: Boolean = ...): SheetAction' is deprecated. Moved to the sheet package, where destructive is spelt without the is.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-golden/core/designsystem/src/main/kotlin/com/example/finalcore/uieverything/core/designsystem/component/overlay/AppActionSheet.kt:77:17 'constructor(label: String, onClick: () -> Unit, icon: ImageVector? = ..., isDestructive: Boolean = ..., enabled: Boolean = ...): SheetAction' is deprecated. Moved to the sheet package, where destructive is spelt without the is.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-golden/core/designsystem/src/main/kotlin/com/example/finalcore/uieverything/core/designsystem/component/overlay/AppBottomSheet.kt:65:9 'fun AppBottomSheet(onDismissRequest: () -> Unit, modifier: Modifier = ..., title: String? = ..., showHandle: Boolean = ..., dismissOnClickOutside: Boolean = ..., content: ComposableFunction1<ColumnScope, Unit>): Unit' is deprecated. Keep the sheet composed and drive visible, so it can slide away before it leaves.
+
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugJavaRes
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:bundleLibCompileToJarDebug
+
+> Task :core:designsystem:compileDebugUnitTestKotlin
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-golden/core/designsystem/src/test/kotlin/com/example/finalcore/uieverything/core/designsystem/foundation/glass/GlassQualityTest.kt:22:16 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-golden/core/designsystem/src/test/kotlin/com/example/finalcore/uieverything/core/designsystem/foundation/glass/GlassStageTest.kt:62:16 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-golden/core/designsystem/src/test/kotlin/com/example/finalcore/uieverything/core/designsystem/foundation/glass/GlassSurfaceTest.kt:34:16 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+
+> Task :core:designsystem:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugUnitTestJavaRes
+
+> Task :core:designsystem:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by androidx.test.espresso.core.internal.deps.guava.util.concurrent.AbstractFuture$UnsafeAtomicHelper
+WARNING: Please consider reporting this to the maintainers of class androidx.test.espresso.core.internal.deps.guava.util.concurrent.AbstractFuture$UnsafeAtomicHelper
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+
+> Task :core:designsystem:recordRoborazziDebug
+> Task :core:designsystem:finalizeTestRoborazziDebug
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-golden/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 2m 58s
+65 actionable tasks: 36 executed, 29 from cache
+Configuration cache entry stored.
+EXIT record 0 seconds=218
+goldens: 395 files
+== 22:53:29 done

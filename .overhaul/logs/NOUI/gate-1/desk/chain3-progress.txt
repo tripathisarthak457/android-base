@@ -1,0 +1,5 @@
+D8-build-noui-everything-compact-continue exit 1
+D8-build-noui-everything-modular-2-strict exit 1
+D8-build-noui-everything-modular-2-continue exit 1
+D8-spotless-base-ui-everything exit 1
+chain3 done

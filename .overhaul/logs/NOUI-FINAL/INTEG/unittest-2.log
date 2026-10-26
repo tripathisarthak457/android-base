@@ -1,0 +1,52 @@
+00:56:10
+35
+..............................................................................................................................................................F................s..............................................................s...........................................ss.............................................................................................................................................................................................................s...........s.........................s..........s..............................................................................................s.............................
+======================================================================
+FAIL: test_options_follow_the_contract_the_website_and_the_api_read (tests.test_catalogue.ShapeTest.test_options_follow_the_contract_the_website_and_the_api_read)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_catalogue.py", line 84, in test_options_follow_the_contract_the_website_and_the_api_read
+    self.assertEqual(["haptics_enabled"], [entry["field"] for entry in option["field_copy"]])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['haptics_enabled'] != ['haptics_enabled', 'languages']
+
+Second list contains 1 additional elements.
+First extra element 1:
+'languages'
+
+- ['haptics_enabled']
++ ['haptics_enabled', 'languages']
+
+----------------------------------------------------------------------
+Ran 663 tests in 880.036s
+
+FAILED (failures=1, skipped=9)
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+EXIT 1

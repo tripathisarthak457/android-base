@@ -1,0 +1,21 @@
+# tree: D:/projects/tools/.overhaul/wt/NOUI-FINAL-TOOLS (e5d1e5e7c)
+# command: memwait python -m unittest tests.test_add_component -v
+# start: Sun Oct 25 18:31:15 IST 2026
+test_a_component_the_design_system_has (tests.test_add_component.RefusesTest.test_a_component_the_design_system_has) ... ok
+test_a_folder_that_is_not_a_project (tests.test_add_component.RefusesTest.test_a_folder_that_is_not_a_project) ... ok
+test_a_group_that_is_not_a_package_name (tests.test_add_component.RefusesTest.test_a_group_that_is_not_a_package_name) ... ok
+test_a_name_that_is_not_pascal_case (tests.test_add_component.RefusesTest.test_a_name_that_is_not_pascal_case) ... ok
+test_a_name_with_the_app_prefix_says_the_name_to_use (tests.test_add_component.RefusesTest.test_a_name_with_the_app_prefix_says_the_name_to_use) ... ok
+test_a_project_without_a_design_system (tests.test_add_component.RefusesTest.test_a_project_without_a_design_system) ... ok
+test_a_template_that_uses_a_name_it_cannot_import (tests.test_add_component.RefusesTest.test_a_template_that_uses_a_name_it_cannot_import) ... ok
+test_a_dry_run_says_what_it_would_write_and_writes_nothing (tests.test_add_component.WritesTest.test_a_dry_run_says_what_it_would_write_and_writes_nothing) ... ok
+test_a_group_puts_it_in_that_package (tests.test_add_component.WritesTest.test_a_group_puts_it_in_that_package) ... ok
+test_a_name_of_several_words_renames_every_name_and_the_comments (tests.test_add_component.WritesTest.test_a_name_of_several_words_renames_every_name_and_the_comments) ... ok
+test_every_import_is_used_and_each_of_the_project_s_own_names_is_declared_where_it_is_imported_from (tests.test_add_component.WritesTest.test_every_import_is_used_and_each_of_the_project_s_own_names_is_declared_where_it_is_imported_from) ... ok
+test_the_component_and_its_test_are_the_project_s_own_templates (tests.test_add_component.WritesTest.test_the_component_and_its_test_are_the_project_s_own_templates) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 45.281s
+
+OK
+# exit: 0 end: Sun Oct 25 18:32:03 IST 2026

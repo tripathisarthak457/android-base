@@ -1,0 +1,23 @@
+.EE
+======================================================================
+ERROR: test_a_component_add_component_refuses_is_an_issue_of_its_run (tests.test_consistency.RunnerTest.test_a_component_add_component_refuses_is_an_issue_of_its_run)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_consistency.py", line 173, in test_a_component_add_component_refuses_is_an_issue_of_its_run
+    name, issues = worker.run_one("refused", raw, temp, keep=False, components=("Button",))
+                   ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: run_one() got an unexpected keyword argument 'components'
+
+======================================================================
+ERROR: test_the_quick_run_adds_a_component_with_and_without_ui_components (tests.test_consistency.RunnerTest.test_the_quick_run_adds_a_component_with_and_without_ui_components)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_consistency.py", line 167, in test_the_quick_run_adds_a_component_with_and_without_ui_components
+    added = {name: raw for name, raw in quick.items() if runner.COMPONENTS.get(name)}
+                                                         ^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.consistency.__main__' has no attribute 'COMPONENTS'
+
+----------------------------------------------------------------------
+Ran 3 tests in 1.100s
+
+FAILED (errors=2)

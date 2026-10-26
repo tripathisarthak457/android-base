@@ -1,0 +1,44 @@
+Sun Oct 25 13:51:00 IST 2026
+1f2fd6c85d30e21b61db16733249cb800753d3d9
+$ go test ./internal/store/ ./internal/httpapi/ -run "UIComponents|Rollup|WeeklyAdoption" -count=1
+# github.com/base-android/generator-api/internal/store [github.com/base-android/generator-api/internal/store.test]
+internal\store\admin_test.go:14:61: unknown field UIComponents in struct literal of type Filter
+internal\store\admin_test.go:18:34: undefined: uiComponents
+internal\store\admin_test.go:23:104: undefined: uiComponents
+internal\store\admin_test.go:29:46: (Filter{…}).rollupCovers undefined (type Filter has no field or method rollupCovers)
+internal\store\admin_test.go:32:46: unknown field UIComponents in struct literal of type Filter
+internal\store\admin_test.go:33:8: f.rollupCovers undefined (type Filter has no field or method rollupCovers)
+internal\store\admin_test.go:44:24: undefined: weeklyAdoption
+internal\store\admin_test.go:48:23: undefined: weeklyAdoption
+internal\store\admin_test.go:48:39: undefined: uiComponents
+internal\store\admin_test.go:51:24: undefined: UIComponentsValues
+internal\store\admin_test.go:51:24: too many errors
+FAIL	github.com/base-android/generator-api/internal/store [build failed]
+# github.com/base-android/generator-api/internal/httpapi [github.com/base-android/generator-api/internal/httpapi.test]
+internal\httpapi\admin_filter_test.go:15:22: f.UIComponents undefined (type store.Filter has no field or method UIComponents)
+FAIL	github.com/base-android/generator-api/internal/httpapi [build failed]
+FAIL
+exit=1
+
+== with the field and names in place, nothing wired ==
+Sun Oct 25 13:51:56 IST 2026
+$ go test ./internal/store/ ./internal/httpapi/ -run "UIComponents|Rollup|WeeklyAdoption" -count=1 -v
+fork/exec C:\Users\CRAZYH~1\AppData\Local\Temp\go-build89767006\b253\store.test.exe: An Application Control policy has blocked this file.
+FAIL	github.com/base-android/generator-api/internal/store	2.438s
+=== RUN   TestTheUIComponentsFilterIsWithOrWithout
+    admin_filter_test.go:16: "with": filter {From:2026-09-26 00:00:00 +0000 UTC To:2026-10-26 00:00:00 +0000 UTC Target: Preset: Outcome: Country: DeviceClass: Source: UIComponents:}, error <nil>
+--- FAIL: TestTheUIComponentsFilterIsWithOrWithout (0.00s)
+=== RUN   TestAnUnknownUIComponentsFilterIsABadRequestBeforeTheDatabase
+    admin_filter_test.go:36: overview: got 503 {Error:The database is not reachable right now. Code:unavailable Field:}
+--- FAIL: TestAnUnknownUIComponentsFilterIsABadRequestBeforeTheDatabase (0.01s)
+FAIL
+FAIL	github.com/base-android/generator-api/internal/httpapi	3.309s
+FAIL
+exit=1
+
+== store again (its binary was blocked by Smart App Control above) ==
+Sun Oct 25 13:52:07 IST 2026
+fork/exec C:\Users\CRAZYH~1\AppData\Local\Temp\go-build2015836030\b001\store.test.exe: An Application Control policy has blocked this file.
+FAIL	github.com/base-android/generator-api/internal/store	2.720s
+FAIL
+exit=1

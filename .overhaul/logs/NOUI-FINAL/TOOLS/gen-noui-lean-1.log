@@ -1,0 +1,18 @@
+# head: 8d99907e1 + uncommitted F14/push/harness work
+# command: create_project.py --spec D:/projects/tools/.overhaul/out/NOUI-FINAL/TOOLS/specs/noui-lean.json --preset lean --out D:/projects/tools/.overhaul/out/NOUI-FINAL/TOOLS/noui-lean --no-zip --force
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\noui-lean
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\noui-lean and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+
+# exit: 0

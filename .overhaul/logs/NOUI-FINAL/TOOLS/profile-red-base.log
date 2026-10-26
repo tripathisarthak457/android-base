@@ -1,0 +1,68 @@
+# tree: D:/projects/tools/.overhaul/out/NOUI-FINAL/TOOLS/base-src (base-src copy of 1f2fd6c85)
+# command: memwait python -m unittest tests.test_android_truth -v
+# start: Sun Oct 25 18:09:57 IST 2026
+[locked:memwait] 615 MB available, 7975 MB commit left; waiting for 1500 MB
+[locked:memwait] 752 MB available, 7292 MB commit left; waiting for 1500 MB
+test_the_profiles_name_only_classes_the_project_has (tests.test_android_truth.ProfileTest.test_the_profiles_name_only_classes_the_project_has) ... 
+  test_the_profiles_name_only_classes_the_project_has (tests.test_android_truth.ProfileTest.test_the_profiles_name_only_classes_the_project_has) (module='app') ... FAIL
+  test_the_profiles_name_only_classes_the_project_has (tests.test_android_truth.ProfileTest.test_the_profiles_name_only_classes_the_project_has) (name='AcmeUiApplication') ... FAIL
+  test_the_profiles_name_only_classes_the_project_has (tests.test_android_truth.ProfileTest.test_the_profiles_name_only_classes_the_project_has) (name='Hilt_AcmeUiApplication') ... FAIL
+  test_the_profiles_name_only_classes_the_project_has (tests.test_android_truth.ProfileTest.test_the_profiles_name_only_classes_the_project_has) (name='DaggerAcmeUiApplication_HiltComponents_SingletonC') ... FAIL
+  test_the_profiles_name_only_classes_the_project_has (tests.test_android_truth.ProfileTest.test_the_profiles_name_only_classes_the_project_has) (name='injectAcmeUiApplication') ... FAIL
+
+======================================================================
+FAIL: test_the_profiles_name_only_classes_the_project_has (tests.test_android_truth.ProfileTest.test_the_profiles_name_only_classes_the_project_has) (module='app')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\base-src\generator\tests\test_android_truth.py", line 63, in test_the_profiles_name_only_classes_the_project_has
+    self.assertEqual([], [line for line in profile if not kept(line, known, PKG)][:10])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['Lcom/acme/ui/DaggerEverythingApplication[890 chars]$1;']
+
+Second list contains 10 additional elements.
+First extra element 0:
+'Lcom/acme/ui/DaggerEverythingApplication_HiltComponents_SingletonC$ActivityCBuilder;'
+
+Diff is 972 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_the_profiles_name_only_classes_the_project_has (tests.test_android_truth.ProfileTest.test_the_profiles_name_only_classes_the_project_has) (name='AcmeUiApplication')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\base-src\generator\tests\test_android_truth.py", line 67, in test_the_profiles_name_only_classes_the_project_has
+    self.assertTrue(any(f"L{PKG}/{name};" in line for line in profiles["app"]))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_the_profiles_name_only_classes_the_project_has (tests.test_android_truth.ProfileTest.test_the_profiles_name_only_classes_the_project_has) (name='Hilt_AcmeUiApplication')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\base-src\generator\tests\test_android_truth.py", line 67, in test_the_profiles_name_only_classes_the_project_has
+    self.assertTrue(any(f"L{PKG}/{name};" in line for line in profiles["app"]))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_the_profiles_name_only_classes_the_project_has (tests.test_android_truth.ProfileTest.test_the_profiles_name_only_classes_the_project_has) (name='DaggerAcmeUiApplication_HiltComponents_SingletonC')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\base-src\generator\tests\test_android_truth.py", line 67, in test_the_profiles_name_only_classes_the_project_has
+    self.assertTrue(any(f"L{PKG}/{name};" in line for line in profiles["app"]))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_the_profiles_name_only_classes_the_project_has (tests.test_android_truth.ProfileTest.test_the_profiles_name_only_classes_the_project_has) (name='injectAcmeUiApplication')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\base-src\generator\tests\test_android_truth.py", line 69, in test_the_profiles_name_only_classes_the_project_has
+    self.assertTrue(any(f"->injectAcmeUiApplication(L{PKG}/AcmeUiApplication;)" in line for line in profiles["app"]))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 1 test in 12.164s
+
+FAILED (failures=5)
+# exit: 1 end: Sun Oct 25 18:12:20 IST 2026

@@ -1,0 +1,20 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+> Task :convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :convention:compileKotlin UP-TO-DATE
+> Task :convention:compileJava NO-SOURCE
+> Task :convention:pluginDescriptors UP-TO-DATE
+> Task :convention:processResources UP-TO-DATE
+> Task :convention:classes UP-TO-DATE
+> Task :convention:jar UP-TO-DATE
+> Task :convention:pluginUnderTestMetadata
+> Task :convention:processTestResources NO-SOURCE
+> Task :convention:compileTestKotlin
+> Task :convention:compileTestJava NO-SOURCE
+> Task :convention:testClasses UP-TO-DATE
+
+> Task :convention:test
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+BUILD SUCCESSFUL in 10s
+7 actionable tasks: 3 executed, 4 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.7.1/userguide/configuration_cache_enabling.html

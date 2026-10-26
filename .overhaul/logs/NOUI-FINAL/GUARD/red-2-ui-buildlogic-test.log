@@ -1,0 +1,74 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/red-ui-bl
+# command: locked gradle ./gradlew -p build-logic :convention:test --continue
+# start: Sun Oct 25 21:57:32 IST 2026
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+> Task :convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :convention:compileKotlin UP-TO-DATE
+> Task :convention:compileJava NO-SOURCE
+> Task :convention:pluginDescriptors UP-TO-DATE
+> Task :convention:processResources UP-TO-DATE
+> Task :convention:classes UP-TO-DATE
+> Task :convention:jar UP-TO-DATE
+> Task :convention:pluginUnderTestMetadata UP-TO-DATE
+> Task :convention:processTestResources NO-SOURCE
+> Task :convention:compileTestKotlin
+> Task :convention:compileTestJava NO-SOURCE
+> Task :convention:testClasses UP-TO-DATE
+
+> Task :convention:test
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+CodeRulesTest > every rule fires on its fixture, on the right line FAILED
+    java.lang.AssertionError at CodeRulesTest.kt:209
+
+CodeRulesTest > an allow marker with a reason on the line above silences each rule FAILED
+    java.lang.AssertionError at CodeRulesTest.kt:222
+
+CodeRulesWiringTest > the design system's rules run before it builds, so an IDE run shows a component's finding FAILED
+    java.lang.AssertionError at CodeRulesWiringTest.kt:22
+
+ComponentRuleCasesTest > only a feature's Route reaches for its ViewModel FAILED
+    java.lang.AssertionError at ComponentRuleCasesTest.kt:61
+
+ComponentRuleCasesTest > a component takes values and callbacks, never a ViewModel, data or a Flow FAILED
+    java.lang.AssertionError at ComponentRuleCasesTest.kt:43
+
+ComponentRuleCasesTest > an animated value is read in a layer, layout or draw lambda, not in composition FAILED
+    java.lang.AssertionError at ComponentRuleCasesTest.kt:129
+
+ComponentRuleCasesTest > a component sees Compose and its own design system, nothing else of the project's FAILED
+    java.lang.AssertionError at ComponentRuleCasesTest.kt:24
+
+ComponentRuleCasesTest > the modifier a composable takes is used FAILED
+    java.lang.AssertionError at ComponentRuleCasesTest.kt:111
+
+ComponentRuleCasesTest > the design system keys its lazy rows, collects with the lifecycle and loads images without subcomposition FAILED
+    java.lang.AssertionError at ComponentRuleCasesTest.kt:147
+
+ComponentRuleCasesTest > a description is null for decoration, never empty FAILED
+    java.lang.AssertionError at ComponentRuleCasesTest.kt:176
+
+ComponentRuleCasesTest > a value the whole tree reads is the theme's, so features and core ui create no composition local FAILED
+    java.lang.AssertionError at ComponentRuleCasesTest.kt:160
+
+ComponentRuleCasesTest > a feature and core ui read type from the theme FAILED
+    java.lang.AssertionError at ComponentRuleCasesTest.kt:72
+
+73 tests completed, 12 failed
+
+> Task :convention:test FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':convention:test'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/red-ui-bl/build-logic/convention/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 7s
+7 actionable tasks: 2 executed, 5 up-to-date
+# exit: 1
+# end: Sun Oct 25 21:57:40 IST 2026
+# seconds: 8

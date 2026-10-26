@@ -1,0 +1,767 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI/generator
+# HEAD: ccd9c3c9bd8085ac88c45335941518d0f6807a17
+# command: memwait python -I -m unittest discover -s tests -t .
+# start: Sun Oct 25 10:13:51 IST 2026
+[locked:memwait] 455 MB available, 3269 MB commit left; waiting for 1500 MB
+[locked:memwait] 586 MB available, 3593 MB commit left; waiting for 1500 MB
+[locked:memwait] 392 MB available, 2615 MB commit left; waiting for 1500 MB
+[locked:memwait] 471 MB available, 2399 MB commit left; waiting for 1500 MB
+[locked:memwait] 654 MB available, 1670 MB commit left; waiting for 1500 MB
+...................................................................................................................................EFFFFFEsFFFEFFEFFFFF....FFFFF................................F..s............................FFFFFFFFFFF........Ess.FFF.F......................................................................................................................................................................................s...........s.........................s..........s........................................................................................s...........EEEEEEEEFFF..FEssFFF.F
+======================================================================
+ERROR: test_a_preset_replaces_a_specs_features (tests.test_cli.CliTest.test_a_preset_replaces_a_specs_features)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 187, in test_a_preset_replaces_a_specs_features
+    ["ci", "coil", "deeplink", "googlefonts", "leakcanary", "network"], json.loads(result.stdout)["enabled"]
+                                                                        ~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\json\__init__.py", line 371, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\json\decoder.py", line 358, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\json\decoder.py", line 376, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_force_replaces_a_junction_and_not_the_directory_it_points_at (tests.test_cli.CliTest.test_force_replaces_a_junction_and_not_the_directory_it_points_at)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 133, in test_force_replaces_a_junction_and_not_the_directory_it_points_at
+    junction(link, real)
+    ~~~~~~~~^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\links.py", line 38, in junction
+    raise OSError(f"mklink /J {link} {directory} failed: {(result.stderr or result.stdout).strip()}")
+OSError: mklink /J C:\Users\CRAZYH~1\AppData\Local\Temp\tmp66xo19up\junction C:\Users\CRAZYH~1\AppData\Local\Temp\tmp66xo19up\real failed: 
+
+======================================================================
+ERROR: test_list_features_json (tests.test_cli.CliTest.test_list_features_json)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 206, in test_list_features_json
+    features = json.loads(run("--list-features", "--json").stdout)
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\json\__init__.py", line 371, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\json\decoder.py", line 358, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\json\decoder.py", line 376, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_list_features_without_ui_components_lists_them_as_such_a_project_has_them (tests.test_cli.CliTest.test_list_features_without_ui_components_lists_them_as_such_a_project_has_them)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 219, in test_list_features_without_ui_components_lists_them_as_such_a_project_has_them
+    features = {feature["key"]: feature for feature in json.loads(run("--list-features", "--json", "--no-ui-components").stdout)}
+                                                       ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\json\__init__.py", line 371, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\json\decoder.py", line 358, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\json\decoder.py", line 376, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_a_junction_is_a_link (tests.test_host.LinkTest.test_a_junction_is_a_link)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_host.py", line 167, in test_a_junction_is_a_link
+    junction(link, self.directory)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\links.py", line 38, in junction
+    raise OSError(f"mklink /J {link} {directory} failed: {(result.stderr or result.stdout).strip()}")
+OSError: mklink /J C:\Users\CRAZYH~1\AppData\Local\Temp\tmp2cv3s0em\junction C:\Users\CRAZYH~1\AppData\Local\Temp\tmp2cv3s0em\directory failed: 
+
+======================================================================
+ERROR: test_a_link_upstream_is_refused (tests.test_vendored_skills.ToolTest.test_a_link_upstream_is_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_vendored_skills.py", line 148, in setUp
+    self.git("init", "--quiet")
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_vendored_skills.py", line 153, in git
+    result = subprocess.run(
+        ["git", "-C", str(self.checkout), "-c", "user.name=Test", "-c", "user.email=test@example.com", *command],
+        input=stdin, capture_output=True, check=True,
+    )
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\subprocess.py", line 692, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', '-C', 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpk0qrhbnq\\upstream', '-c', 'user.name=Test', '-c', 'user.email=test@example.com', 'init', '--quiet']' returned non-zero exit status 3221225794.
+
+======================================================================
+ERROR: test_files_come_from_git_objects_not_the_converted_checkout (tests.test_vendored_skills.ToolTest.test_files_come_from_git_objects_not_the_converted_checkout)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_vendored_skills.py", line 148, in setUp
+    self.git("init", "--quiet")
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_vendored_skills.py", line 153, in git
+    result = subprocess.run(
+        ["git", "-C", str(self.checkout), "-c", "user.name=Test", "-c", "user.email=test@example.com", *command],
+        input=stdin, capture_output=True, check=True,
+    )
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\subprocess.py", line 692, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', '-C', 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpesg1vu5r\\upstream', '-c', 'user.name=Test', '-c', 'user.email=test@example.com', 'init', '--quiet']' returned non-zero exit status 3221225794.
+
+======================================================================
+ERROR: test_the_project_tool_leaves_the_projects_own_skills_alone (tests.test_vendored_skills.ToolTest.test_the_project_tool_leaves_the_projects_own_skills_alone)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_vendored_skills.py", line 148, in setUp
+    self.git("init", "--quiet")
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_vendored_skills.py", line 153, in git
+    result = subprocess.run(
+        ["git", "-C", str(self.checkout), "-c", "user.name=Test", "-c", "user.email=test@example.com", *command],
+        input=stdin, capture_output=True, check=True,
+    )
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\subprocess.py", line 692, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', '-C', 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpqgcu63xk\\upstream', '-c', 'user.name=Test', '-c', 'user.email=test@example.com', 'init', '--quiet']' returned non-zero exit status 3221225794.
+
+======================================================================
+ERROR: test_the_project_tool_refreshes_what_the_project_ships_and_names_what_is_new (tests.test_vendored_skills.ToolTest.test_the_project_tool_refreshes_what_the_project_ships_and_names_what_is_new)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_vendored_skills.py", line 148, in setUp
+    self.git("init", "--quiet")
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_vendored_skills.py", line 153, in git
+    result = subprocess.run(
+        ["git", "-C", str(self.checkout), "-c", "user.name=Test", "-c", "user.email=test@example.com", *command],
+        input=stdin, capture_output=True, check=True,
+    )
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\subprocess.py", line 692, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', '-C', 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpv6xpelqb\\upstream', '-c', 'user.name=Test', '-c', 'user.email=test@example.com', 'init', '--quiet']' returned non-zero exit status 3221225794.
+
+======================================================================
+ERROR: test_the_project_tool_refuses_a_checkout_at_another_tag (tests.test_vendored_skills.ToolTest.test_the_project_tool_refuses_a_checkout_at_another_tag)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_vendored_skills.py", line 148, in setUp
+    self.git("init", "--quiet")
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_vendored_skills.py", line 153, in git
+    result = subprocess.run(
+        ["git", "-C", str(self.checkout), "-c", "user.name=Test", "-c", "user.email=test@example.com", *command],
+        input=stdin, capture_output=True, check=True,
+    )
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\subprocess.py", line 692, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', '-C', 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmp3m5_hire\\upstream', '-c', 'user.name=Test', '-c', 'user.email=test@example.com', 'init', '--quiet']' returned non-zero exit status 3221225794.
+
+======================================================================
+ERROR: test_the_project_tool_refuses_to_write_over_a_skill_it_did_not_vendor (tests.test_vendored_skills.ToolTest.test_the_project_tool_refuses_to_write_over_a_skill_it_did_not_vendor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_vendored_skills.py", line 148, in setUp
+    self.git("init", "--quiet")
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_vendored_skills.py", line 153, in git
+    result = subprocess.run(
+        ["git", "-C", str(self.checkout), "-c", "user.name=Test", "-c", "user.email=test@example.com", *command],
+        input=stdin, capture_output=True, check=True,
+    )
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\subprocess.py", line 692, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', '-C', 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmp6sdg0953\\upstream', '-c', 'user.name=Test', '-c', 'user.email=test@example.com', 'init', '--quiet']' returned non-zero exit status 3221225794.
+
+======================================================================
+ERROR: test_the_repository_tool_stops_on_an_upstream_skill_it_has_no_plan_for (tests.test_vendored_skills.ToolTest.test_the_repository_tool_stops_on_an_upstream_skill_it_has_no_plan_for)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_vendored_skills.py", line 148, in setUp
+    self.git("init", "--quiet")
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_vendored_skills.py", line 153, in git
+    result = subprocess.run(
+        ["git", "-C", str(self.checkout), "-c", "user.name=Test", "-c", "user.email=test@example.com", *command],
+        input=stdin, capture_output=True, check=True,
+    )
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\subprocess.py", line 692, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', '-C', 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmppveh1wcg\\upstream', '-c', 'user.name=Test', '-c', 'user.email=test@example.com', 'init', '--quiet']' returned non-zero exit status 3221225794.
+
+======================================================================
+ERROR: test_upstream_skills_are_found_by_their_skill_file (tests.test_vendored_skills.ToolTest.test_upstream_skills_are_found_by_their_skill_file)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_vendored_skills.py", line 148, in setUp
+    self.git("init", "--quiet")
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_vendored_skills.py", line 153, in git
+    result = subprocess.run(
+        ["git", "-C", str(self.checkout), "-c", "user.name=Test", "-c", "user.email=test@example.com", *command],
+        input=stdin, capture_output=True, check=True,
+    )
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\subprocess.py", line 692, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', '-C', 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpz0hxofh2\\upstream', '-c', 'user.name=Test', '-c', 'user.email=test@example.com', 'init', '--quiet']' returned non-zero exit status 3221225794.
+
+======================================================================
+ERROR: test_the_commit_is_the_same_whatever_git_variables_the_caller_has (tests.test_zip.ZipTest.test_the_commit_is_the_same_whatever_git_variables_the_caller_has)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_zip.py", line 136, in test_the_commit_is_the_same_whatever_git_variables_the_caller_has
+    subprocess.run(["git", "init", "--template=", str(other)], capture_output=True, check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\subprocess.py", line 692, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', 'init', '--template=', 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmp8vvr545o\\other']' returned non-zero exit status 3221225794.
+
+======================================================================
+FAIL: test_a_refusal_with_json_is_the_headless_shape (tests.test_cli.CliTest.test_a_refusal_with_json_is_the_headless_shape)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 84, in test_a_refusal_with_json_is_the_headless_shape
+    self.assertEqual(2, result.returncode)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 3221225794
+
+======================================================================
+FAIL: test_a_zip_path_must_say_zip (tests.test_cli.CliTest.test_a_zip_path_must_say_zip)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 100, in test_a_zip_path_must_say_zip
+    self.assertEqual(2, result.returncode)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 3221225794
+
+======================================================================
+FAIL: test_an_unknown_preset_names_the_ones_that_exist (tests.test_cli.CliTest.test_an_unknown_preset_names_the_ones_that_exist)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 192, in test_an_unknown_preset_names_the_ones_that_exist
+    self.assertEqual(2, result.returncode)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 3221225794
+
+======================================================================
+FAIL: test_force_never_deletes_the_current_directory (tests.test_cli.CliTest.test_force_never_deletes_the_current_directory)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 157, in test_force_never_deletes_the_current_directory
+    self.assertIn("the current directory", result.stderr + result.stdout)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'the current directory' not found in ''
+
+======================================================================
+FAIL: test_force_never_deletes_the_current_directory_spelled_in_another_case (tests.test_cli.CliTest.test_force_never_deletes_the_current_directory_spelled_in_another_case)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 168, in test_force_never_deletes_the_current_directory_spelled_in_another_case
+    self.assertIn("the current directory", result.stderr + result.stdout)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'the current directory' not found in ''
+
+======================================================================
+FAIL: test_force_replaces_exactly_the_destination (tests.test_cli.CliTest.test_force_replaces_exactly_the_destination)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 118, in test_force_replaces_exactly_the_destination
+    self.assertEqual(0, forced.returncode, forced.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3221225794 : 
+
+======================================================================
+FAIL: test_json_means_only_json_on_stdout (tests.test_cli.CliTest.test_json_means_only_json_on_stdout)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 57, in test_json_means_only_json_on_stdout
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3221225794 : 
+
+======================================================================
+FAIL: test_json_without_out_is_refused_rather_than_asked (tests.test_cli.CliTest.test_json_without_out_is_refused_rather_than_asked)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 95, in test_json_without_out_is_refused_rather_than_asked
+    self.assertEqual(2, result.returncode)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 3221225794
+
+======================================================================
+FAIL: test_list_features_names_the_option_and_what_it_leaves_out (tests.test_cli.CliTest.test_list_features_names_the_option_and_what_it_leaves_out)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 211, in test_list_features_names_the_option_and_what_it_leaves_out
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3221225794 : 
+
+======================================================================
+FAIL: test_list_features_without_ui_components_is_refused_for_a_target_without_them (tests.test_cli.CliTest.test_list_features_without_ui_components_is_refused_for_a_target_without_them)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 232, in test_list_features_without_ui_components_is_refused_for_a_target_without_them
+    self.assertEqual(2, result.returncode)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 3221225794
+
+======================================================================
+FAIL: test_out_is_the_zip_itself (tests.test_cli.CliTest.test_out_is_the_zip_itself)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 89, in test_out_is_the_zip_itself
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3221225794 : 
+
+======================================================================
+FAIL: test_set_overrides_after_the_spec_is_read (tests.test_cli.CliTest.test_set_overrides_after_the_spec_is_read)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 176, in test_set_overrides_after_the_spec_is_read
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3221225794 : 
+
+======================================================================
+FAIL: test_the_reported_path_spells_out_a_short_name (tests.test_cli.CliTest.test_the_reported_path_spells_out_a_short_name)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 78, in test_the_reported_path_spells_out_a_short_name
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3221225794 : 
+
+======================================================================
+FAIL: test_the_reported_path_spells_the_directories_one_way (tests.test_cli.CliTest.test_the_reported_path_spells_the_directories_one_way)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 67, in test_the_reported_path_spells_the_directories_one_way
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3221225794 : 
+
+======================================================================
+FAIL: test_the_summary_says_when_the_build_desugars (tests.test_cli.CliTest.test_the_summary_says_when_the_build_desugars)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 201, in test_the_summary_says_when_the_build_desugars
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3221225794 : 
+
+======================================================================
+FAIL: test_another_platform_exits_2 (tests.test_cli.NoUiComponentsFlagTest.test_another_platform_exits_2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 272, in test_another_platform_exits_2
+    self.assertEqual(2, result.returncode)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 3221225794
+
+======================================================================
+FAIL: test_the_human_dry_run_names_the_option (tests.test_cli.NoUiComponentsFlagTest.test_the_human_dry_run_names_the_option)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 267, in test_the_human_dry_run_names_the_option
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3221225794 : 
+
+======================================================================
+FAIL: test_the_plan_says_the_option_is_off_and_drops_what_it_disables (tests.test_cli.NoUiComponentsFlagTest.test_the_plan_says_the_option_is_off_and_drops_what_it_disables)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 251, in test_the_plan_says_the_option_is_off_and_drops_what_it_disables
+    plan = self.plan("--preset", "everything", "--no-ui-components")
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 247, in plan
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3221225794 : 
+
+======================================================================
+FAIL: test_the_project_records_it (tests.test_cli.NoUiComponentsFlagTest.test_the_project_records_it)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 280, in test_the_project_records_it
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3221225794 : 
+
+======================================================================
+FAIL: test_without_the_flag_the_plan_is_what_it_was (tests.test_cli.NoUiComponentsFlagTest.test_without_the_flag_the_plan_is_what_it_was)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 260, in test_without_the_flag_the_plan_is_what_it_was
+    plan = self.plan("--preset", "standard")
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_cli.py", line 247, in plan
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3221225794 : 
+
+======================================================================
+FAIL: test_the_commit_marks_the_wrapper_script_executable_and_nothing_else (tests.test_golden.GoldenTest.test_the_commit_marks_the_wrapper_script_executable_and_nothing_else)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_golden.py", line 250, in test_the_commit_marks_the_wrapper_script_executable_and_nothing_else
+    self.assertEqual(["a warning"], result.warnings)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['a warning'] != ['a warning', '`git init` failed (exit code 322122579[28 chars]ne.']
+
+Second list contains 1 additional elements.
+First extra element 1:
+'`git init` failed (exit code 3221225794). The project itself is fine.'
+
+- ['a warning']
+?             ^
+
++ ['a warning',
+?             ^
+
++  '`git init` failed (exit code 3221225794). The project itself is fine.']
+
+======================================================================
+FAIL: test_a_good_spec_writes_a_zip_and_says_so (tests.test_headless.ScriptTest.test_a_good_spec_writes_a_zip_and_says_so)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 40, in test_a_good_spec_writes_a_zip_and_says_so
+    code, result = run_script(json.dumps({**SPEC, "features": ["offlinequeue"]}).encode(), "--target", "android", str(self.out))
+                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_a_path_on_the_server_is_never_read (tests.test_headless.ScriptTest.test_a_path_on_the_server_is_never_read)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 78, in test_a_path_on_the_server_is_never_read
+    code, result = run_script(json.dumps({**SPEC, "android": {"keystores": [keystore]}}).encode(), str(self.out))
+                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_a_schema_one_spec_reports_what_it_ignored (tests.test_headless.ScriptTest.test_a_schema_one_spec_reports_what_it_ignored)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 53, in test_a_schema_one_spec_reports_what_it_ignored
+    code, result = run_script(
+                   ~~~~~~~~~~^
+        json.dumps({"app_name": "Old", "package_name": "com.example.old", "colour": "red"}).encode(), str(self.out)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_an_unknown_target_and_bad_arguments_are_refusals (tests.test_headless.ScriptTest.test_an_unknown_target_and_bad_arguments_are_refusals)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 89, in test_an_unknown_target_and_bad_arguments_are_refusals
+    self.assertEqual(2, run_script(json.dumps(SPEC).encode(), "--target", "symbian", str(self.out))[0])
+                        ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_more_than_32_kb_is_refused_before_it_is_parsed (tests.test_headless.ScriptTest.test_more_than_32_kb_is_refused_before_it_is_parsed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 84, in test_more_than_32_kb_is_refused_before_it_is_parsed
+    code, result = run_script(b" " * (32 * 1024 + 1), str(self.out))
+                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_refusals_exit_2_with_the_field (tests.test_headless.ScriptTest.test_refusals_exit_2_with_the_field) (stdin=b'{"schema": 2, "platform": "android", "app_name": "x"}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 71, in test_refusals_exit_2_with_the_field
+    code, result = run_script(stdin, "--target", "android", str(self.out))
+                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_refusals_exit_2_with_the_field (tests.test_headless.ScriptTest.test_refusals_exit_2_with_the_field) (stdin=b'{"schema": 2, "platform": "android", "app_name": "Head Less"')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 71, in test_refusals_exit_2_with_the_field
+    code, result = run_script(stdin, "--target", "android", str(self.out))
+                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_refusals_exit_2_with_the_field (tests.test_headless.ScriptTest.test_refusals_exit_2_with_the_field) (stdin=b'[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 71, in test_refusals_exit_2_with_the_field
+    code, result = run_script(stdin, "--target", "android", str(self.out))
+                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_refusals_exit_2_with_the_field (tests.test_headless.ScriptTest.test_refusals_exit_2_with_the_field) (stdin=b'null')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 71, in test_refusals_exit_2_with_the_field
+    code, result = run_script(stdin, "--target", "android", str(self.out))
+                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_refusals_exit_2_with_the_field (tests.test_headless.ScriptTest.test_refusals_exit_2_with_the_field) (stdin=b'not json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 71, in test_refusals_exit_2_with_the_field
+    code, result = run_script(stdin, "--target", "android", str(self.out))
+                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_refusals_exit_2_with_the_field (tests.test_headless.ScriptTest.test_refusals_exit_2_with_the_field) (stdin=b'\xff\xfe')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 71, in test_refusals_exit_2_with_the_field
+    code, result = run_script(stdin, "--target", "android", str(self.out))
+                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_a_differing_key_password_is_dropped_with_a_warning_and_the_key_opens (tests.test_keystores.GenerationTest.test_a_differing_key_password_is_dropped_with_a_warning_and_the_key_opens)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_keystores.py", line 146, in test_a_differing_key_password_is_dropped_with_a_warning_and_the_key_opens
+    self.assertEqual((["prod"], []), (generated, skipped))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (['prod'], []) != ([], ['prod'])
+
+First differing element 0:
+['prod']
+[]
+
+- (['prod'], [])
++ ([], ['prod'])
+
+======================================================================
+FAIL: test_a_password_the_properties_file_escapes_round_trips (tests.test_keystores.GenerationTest.test_a_password_the_properties_file_escapes_round_trips)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_keystores.py", line 155, in test_a_password_the_properties_file_escapes_round_trips
+    self.assertEqual([], warnings)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ["Keystore 'prod' could not be created: unknown error"]
+
+Second list contains 1 additional elements.
+First extra element 0:
+"Keystore 'prod' could not be created: unknown error"
+
+- []
++ ["Keystore 'prod' could not be created: unknown error"]
+
+======================================================================
+FAIL: test_keytool_s_refusal_names_a_non_ascii_path_as_it_is (tests.test_keystores.GenerationTest.test_keytool_s_refusal_names_a_non_ascii_path_as_it_is)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_keystores.py", line 179, in test_keytool_s_refusal_names_a_non_ascii_path_as_it_is
+    self.assertIn(str(project / "keys" / "prod.jks"), warning)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpc_qq7uv7\\Ána\\keys\\prod.jks' not found in "Keystore 'prod' could not be created: unknown error"
+
+======================================================================
+FAIL: test_reusing_the_dev_key_for_staging_copies_it (tests.test_keystores.GenerationTest.test_reusing_the_dev_key_for_staging_copies_it)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_keystores.py", line 185, in test_reusing_the_dev_key_for_staging_copies_it
+    self.assertEqual(["dev", "staging"], generated)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['dev', 'staging'] != []
+
+First list contains 2 additional elements.
+First extra element 0:
+'dev'
+
+- ['dev', 'staging']
++ []
+
+======================================================================
+FAIL: test_a_template_the_repository_cannot_take_whole_is_a_warning (tests.test_zip.ZipTest.test_a_template_the_repository_cannot_take_whole_is_a_warning) (case='a copy refused')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_zip.py", line 246, in test_a_template_the_repository_cannot_take_whole_is_a_warning
+    self.assertIn(reason, warnings[0])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Access is denied' not found in '`git init` failed (exit code 3221225794). The project itself is fine.'
+
+======================================================================
+FAIL: test_a_template_the_repository_cannot_take_whole_is_a_warning (tests.test_zip.ZipTest.test_a_template_the_repository_cannot_take_whole_is_a_warning) (case='a configuration git cannot read')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_zip.py", line 246, in test_a_template_the_repository_cannot_take_whole_is_a_warning
+    self.assertIn(reason, warnings[0])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '`git config` failed' not found in '`git init` failed (exit code 3221225794). The project itself is fine.'
+
+======================================================================
+FAIL: test_a_template_the_repository_cannot_take_whole_is_a_warning (tests.test_zip.ZipTest.test_a_template_the_repository_cannot_take_whole_is_a_warning) (case='a template with a configuration')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_zip.py", line 246, in test_a_template_the_repository_cannot_take_whole_is_a_warning
+    self.assertIn(reason, warnings[0])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmp2wvjwq87\\configured\\config' not found in '`git init` failed (exit code 3221225794). The project itself is fine.'
+
+======================================================================
+FAIL: test_the_commit_holds_a_file_past_windows_path_limit (tests.test_zip.ZipTest.test_the_commit_holds_a_file_past_windows_path_limit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_zip.py", line 170, in test_the_commit_holds_a_file_past_windows_path_limit
+    self.assertEqual([], git_init(self.project, "Initial commit", EXECUTABLE))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'`git init` failed (exit code 3221225794). The project itself is fine.'
+
+- []
++ ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+======================================================================
+FAIL: test_the_commit_marks_the_scripts_it_holds_and_leaves_out_the_ignored_one (tests.test_zip.ZipTest.test_the_commit_marks_the_scripts_it_holds_and_leaves_out_the_ignored_one)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_zip.py", line 75, in test_the_commit_marks_the_scripts_it_holds_and_leaves_out_the_ignored_one
+    self.assertEqual([], git_init(self.project, "Initial commit", EXECUTABLE))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'`git init` failed (exit code 3221225794). The project itself is fine.'
+
+- []
++ ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+======================================================================
+FAIL: test_the_repository_gets_the_users_template_once_the_commit_is_made (tests.test_zip.ZipTest.test_the_repository_gets_the_users_template_once_the_commit_is_made) (route='init.templateDir')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_zip.py", line 198, in test_the_repository_gets_the_users_template_once_the_commit_is_made
+    self.assertEqual([], git_init(project, "Initial commit", EXECUTABLE))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'`git init` failed (exit code 3221225794). The project itself is fine.'
+
+- []
++ ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+======================================================================
+FAIL: test_the_repository_gets_the_users_template_once_the_commit_is_made (tests.test_zip.ZipTest.test_the_repository_gets_the_users_template_once_the_commit_is_made) (route='GIT_TEMPLATE_DIR')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_zip.py", line 198, in test_the_repository_gets_the_users_template_once_the_commit_is_made
+    self.assertEqual([], git_init(project, "Initial commit", EXECUTABLE))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'`git init` failed (exit code 3221225794). The project itself is fine.'
+
+- []
++ ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+======================================================================
+FAIL: test_the_tree_is_clean_and_the_scripts_run_right_after_the_commit (tests.test_zip.ZipTest.test_the_tree_is_clean_and_the_scripts_run_right_after_the_commit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI\generator\tests\test_zip.py", line 89, in test_the_tree_is_clean_and_the_scripts_run_right_after_the_commit
+    self.assertEqual([], git_init(self.project, "Initial commit", EXECUTABLE))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'`git init` failed (exit code 3221225794). The project itself is fine.'
+
+- []
++ ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+----------------------------------------------------------------------
+Ran 597 tests in 715.022s
+
+FAILED (failures=44, errors=14, skipped=11)
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.

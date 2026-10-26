@@ -1,0 +1,29 @@
+# Line endings.
+#
+# Gradle's wrapper script is executed by /bin/sh. A CRLF `gradlew` fails on macOS and Linux with
+# "bad interpreter: No such file or directory", which is the least informative message in the
+# entire toolchain — and it happens the first time a Windows developer's commit is cloned by
+# anyone else. Forcing LF on the text files, and marking the wrapper explicitly, removes it.
+* text=auto eol=lf
+
+gradlew text eol=lf
+*.sh text eol=lf
+gradlew.bat text eol=crlf
+*.bat text eol=crlf
+
+# Binary, so git never rewrites bytes inside them or tries to merge them.
+*.jar binary
+*.jks binary
+*.keystore binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ttf binary
+*.otf binary
+*.ico binary
+*.pdf binary
+
+# Generated, and noise in a diff. Still committed — the wrapper jar has to be — but collapsed in
+# review and excluded from language statistics.
+gradle/wrapper/gradle-wrapper.jar binary linguist-generated

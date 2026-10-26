@@ -1,0 +1,28 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/vui-lean
+# command: locked gradle ./gradlew spotlessCheck --continue
+# start: Sun Oct 25 23:56:56 IST 2026
+[locked:gradle] waiting for the lock (pid 9356 since 2026-10-25 23:56:56: ./gradlew :core:testing:compose:verifyCodeRules :core:testing:compose:testDebugUnitTest :core:designsystem:testDebugUnit)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: spotlessCheck
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :spotlessKotlin
+> Task :spotlessKotlinCheck
+> Task :spotlessCheck
+
+BUILD SUCCESSFUL in 47s
+6 actionable tasks: 6 executed
+Configuration cache entry stored.
+# exit: 0
+# end: Sun Oct 25 23:58:21 IST 2026
+# seconds: 85

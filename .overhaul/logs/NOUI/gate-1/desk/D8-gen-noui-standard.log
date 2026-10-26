@@ -1,0 +1,38 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI/generator
+# command: D:/projects/tools/.overhaul/bin/memwait python create_project.py --spec D:/projects/tools/.overhaul/out/NOUI/gate-1/specs/noui-standard.json --out D:/projects/tools/.overhaul/out/NOUI/gate-1/noui-standard --no-zip --json --force --preset standard --no-ui-components
+# start: Sun Oct 25 08:27:50 IST 2026
+  ! 'catalog' was left out: The catalog app shows the design system's components, and this project has none.
+{
+  "ok": true,
+  "target": "android",
+  "project_name": "GateOne",
+  "path": "D:\\projects\\tools\\.overhaul\\out\\NOUI\\gate-1\\noui-standard",
+  "resolved_features": [
+    "auth",
+    "browser",
+    "ci",
+    "coil",
+    "database",
+    "deeplink",
+    "devtools",
+    "flags",
+    "forms",
+    "googlefonts",
+    "language",
+    "leakcanary",
+    "network",
+    "onboarding",
+    "perfhud",
+    "sample",
+    "settings"
+  ],
+  "feature_modules": [],
+  "notes": [
+    "'catalog' was left out: The catalog app shows the design system's components, and this project has none."
+  ],
+  "warnings": [],
+  "ignored_fields": [],
+  "summary": []
+}
+# end: Sun Oct 25 08:28:01 IST 2026
+EXIT=0

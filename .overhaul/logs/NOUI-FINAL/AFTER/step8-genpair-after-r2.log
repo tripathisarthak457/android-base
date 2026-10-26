@@ -1,0 +1,9 @@
+after ui-lean-compact 0
+after ui-standard-compact 0
+after ui-everything-compact 0
+after ui-everything-modular 0
+after noui-lean-compact 0
+after noui-standard-compact 0
+after noui-everything-compact 0
+after noui-everything-modular 0
+done

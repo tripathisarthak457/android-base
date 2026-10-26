@@ -1,0 +1,174 @@
+== 23:20:59 L9 modules' tests, restored code
+[locked:gradle] waiting for the lock (pid 13972 since 2026-10-25 23:20:59: ./gradlew :core:designsystem:testDebugUnitTest :catalog:testDebugUnitTest :feature:auth:testDebugUnitTest :feature:sampl)
+[locked:gradle] waiting for the lock (pid 13972 since 2026-10-25 23:20:59: ./gradlew :core:designsystem:testDebugUnitTest :catalog:testDebugUnitTest :feature:auth:testDebugUnitTest :feature:sampl)
+[locked:gradle] waiting for the lock (pid 18588 since 2026-10-25 23:30:15: ./gradlew --continue :core:designsystem:verifyCodeRules :core:designsystem:testDebugUnitTest :app:compileDevDebugKotlin )
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :data:sample:testDebugUnitTest :core:mvi:testDebugUnitTest :data:auth:testDebugUnitTest :core:network:testDebugUnitTest
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:database:verifyModuleDependencies UP-TO-DATE
+> Task :core:datastore:verifyModuleDependencies UP-TO-DATE
+> Task :core:database:verifyApiPurity UP-TO-DATE
+> Task :core:database:preBuild UP-TO-DATE
+> Task :core:database:preDebugBuild UP-TO-DATE
+> Task :core:datastore:verifyApiPurity UP-TO-DATE
+> Task :core:datastore:preBuild UP-TO-DATE
+> Task :core:datastore:preDebugBuild UP-TO-DATE
+> Task :core:common:verifyApiPurity UP-TO-DATE
+> Task :core:database:javaPreCompileDebug UP-TO-DATE
+> Task :core:network:verifyModuleDependencies UP-TO-DATE
+> Task :core:datastore:javaPreCompileDebug UP-TO-DATE
+> Task :core:testing:verifyModuleDependencies UP-TO-DATE
+> Task :core:testing:verifyApiPurity UP-TO-DATE
+> Task :core:testing:preBuild UP-TO-DATE
+> Task :core:testing:preDebugBuild UP-TO-DATE
+> Task :core:network:verifyApiPurity UP-TO-DATE
+> Task :core:network:preBuild UP-TO-DATE
+> Task :core:network:preDebugBuild UP-TO-DATE
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+> Task :data:sample:verifyModuleDependencies UP-TO-DATE
+> Task :data:sample:koverFindJar UP-TO-DATE
+> Task :core:network:javaPreCompileDebug UP-TO-DATE
+> Task :core:mvi:verifyApiPurity
+> Task :core:mvi:verifyModuleDependencies
+> Task :core:mvi:preBuild
+> Task :core:mvi:preDebugBuild
+> Task :data:sample:verifyApiPurity
+> Task :data:sample:preBuild
+> Task :data:sample:preDebugBuild
+> Task :data:sample:javaPreCompileDebug UP-TO-DATE
+> Task :data:sample:preDebugUnitTestBuild
+> Task :core:mvi:koverFindJar
+> Task :core:mvi:preDebugUnitTestBuild
+> Task :core:mvi:javaPreCompileDebug FROM-CACHE
+> Task :data:sample:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:mvi:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :data:auth:verifyModuleDependencies
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :data:auth:koverFindJar
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar UP-TO-DATE
+> Task :core:database:writeDebugAarMetadata
+> Task :core:datastore:writeDebugAarMetadata
+> Task :data:auth:verifyApiPurity
+> Task :core:testing:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:testing:processDebugJavaRes UP-TO-DATE
+> Task :core:testing:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:auth:preBuild
+> Task :data:auth:preDebugBuild
+> Task :data:auth:javaPreCompileDebug FROM-CACHE
+> Task :data:auth:preDebugUnitTestBuild
+> Task :data:auth:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:network:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:network:writeDebugAarMetadata
+> Task :core:testing:writeDebugAarMetadata UP-TO-DATE
+> Task :core:mvi:compileDebugKotlin FROM-CACHE
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:datastore:kspDebugKotlin UP-TO-DATE
+> Task :core:database:kspDebugKotlin UP-TO-DATE
+> Task :core:mvi:bundleLibRuntimeToJarDebug
+> Task :core:mvi:bundleLibCompileToJarDebug
+> Task :core:datastore:compileDebugKotlin UP-TO-DATE
+> Task :core:database:compileDebugKotlin UP-TO-DATE
+> Task :core:database:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:database:copyRoomSchemas NO-SOURCE
+> Task :core:database:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:datastore:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:datastore:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:database:processDebugJavaRes UP-TO-DATE
+> Task :core:database:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:datastore:processDebugJavaRes UP-TO-DATE
+> Task :core:datastore:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:mvi:processDebugJavaRes
+> Task :core:mvi:compileDebugUnitTestKotlin FROM-CACHE
+> Task :core:mvi:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:network:mapDebugUnitTestSourceSetPaths
+> Task :core:database:generateDebugEmptyResourceFiles
+> Task :core:mvi:processDebugUnitTestJavaRes
+> Task :core:datastore:generateDebugEmptyResourceFiles
+> Task :core:network:generateDebugEmptyResourceFiles
+> Task :core:network:generateDebugUnitTestResources FROM-CACHE
+> Task :core:testing:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:mvi:testDebugUnitTest FROM-CACHE
+> Task :core:database:processDebugManifest FROM-CACHE
+> Task :core:datastore:processDebugManifest FROM-CACHE
+> Task :core:network:checkDebugUnitTestAarMetadata
+> Task :core:testing:processDebugManifest UP-TO-DATE
+> Task :core:network:processDebugManifest FROM-CACHE
+> Task :core:network:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:database:generateDebugAssets UP-TO-DATE
+> Task :core:network:kspDebugKotlin UP-TO-DATE
+> Task :core:database:mergeDebugAssets
+> Task :core:datastore:generateDebugAssets UP-TO-DATE
+> Task :core:datastore:mergeDebugAssets
+> Task :core:network:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:network:generateDebugAssets UP-TO-DATE
+> Task :core:network:mergeDebugAssets
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:mergeDebugAssets UP-TO-DATE
+> Task :core:network:mergeDebugUnitTestAssets
+> Task :core:network:mergeDebugUnitTestResources FROM-CACHE
+> Task :core:network:koverFindJar
+> Task :core:network:compileDebugKotlin UP-TO-DATE
+> Task :core:network:processDebugJavaRes UP-TO-DATE
+> Task :core:network:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:network:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:network:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :data:auth:kspDebugKotlin FROM-CACHE
+> Task :data:sample:kspDebugKotlin FROM-CACHE
+> Task :data:auth:compileDebugKotlin FROM-CACHE
+> Task :core:network:mergeDebugUnitTestManifest
+> Task :data:auth:compileDebugJavaWithJavac FROM-CACHE
+> Task :data:auth:processDebugJavaRes
+> Task :data:auth:bundleLibRuntimeToJarDebug
+> Task :data:auth:bundleLibCompileToJarDebug
+> Task :core:network:processDebugUnitTestManifest
+> Task :data:auth:kspDebugUnitTestKotlin FROM-CACHE
+> Task :data:sample:compileDebugKotlin FROM-CACHE
+> Task :data:sample:processDebugJavaRes UP-TO-DATE
+> Task :data:sample:compileDebugJavaWithJavac FROM-CACHE
+> Task :data:sample:bundleLibRuntimeToJarDebug
+> Task :data:sample:bundleLibCompileToJarDebug
+> Task :data:sample:kspDebugUnitTestKotlin FROM-CACHE
+> Task :data:auth:compileDebugUnitTestKotlin FROM-CACHE
+> Task :data:auth:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:auth:processDebugUnitTestJavaRes
+> Task :core:network:processDebugUnitTestResources FROM-CACHE
+> Task :data:sample:compileDebugUnitTestKotlin FROM-CACHE
+> Task :data:sample:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:network:packageDebugUnitTestForUnitTest
+> Task :data:sample:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:network:generateDebugUnitTestConfig
+> Task :core:network:kspDebugUnitTestKotlin FROM-CACHE
+> Task :data:sample:testDebugUnitTest FROM-CACHE
+> Task :data:auth:testDebugUnitTest FROM-CACHE
+> Task :core:network:compileDebugUnitTestKotlin FROM-CACHE
+> Task :core:network:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:network:processDebugUnitTestJavaRes
+> Task :core:network:testDebugUnitTest FROM-CACHE
+
+BUILD SUCCESSFUL in 17s
+116 actionable tasks: 35 executed, 29 from cache, 52 up-to-date
+Configuration cache entry stored.
+EXIT l9-green 0
+== 23:35:29 done

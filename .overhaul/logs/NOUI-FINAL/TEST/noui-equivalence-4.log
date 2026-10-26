@@ -1,0 +1,13 @@
+# head: 1f20d595e; a fresh No-UI everything compared with out/NOUI-FINAL/TEST/noui-everything-4 (generated at 7cf006758, tested by narrow-noui-everything-4.log), Gradle output ignored
+# start: Mon Oct 26 00:07:01 IST 2026
+[33m  ! 'catalog' was left out: The catalog app shows the design system's components, and this project has none.[0m
+[33m  ! 'collections' was left out: Carousels, reorderable lists and the image viewer are components; build yours on the theme skeleton.[0m
+[33m  ! 'datadisplay' was left out: Stat tiles, charts and tables are components; build yours on the theme skeleton.[0m
+[33m  ! 'formfields' was left out: Code, money and phone fields are components; form state and validation (forms) stay.[0m
+[33m  ! 'pickers' was left out: Calendars and wheel pickers are components; build yours on the theme skeleton.[0m
+[33m  ! 'liquidglass' was left out: Glass is drawn by components and the shell, which this project leaves to your design system.[0m
+gen EXIT=0
+only tested: []
+only fresh: []
+differ: ['generator-spec.json']
+# end: Mon Oct 26 00:07:10 IST 2026

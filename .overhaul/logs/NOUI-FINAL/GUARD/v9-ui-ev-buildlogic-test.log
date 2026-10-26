@@ -1,0 +1,39 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/vui-ev
+# command: locked gradle ./gradlew :build-logic:convention:test
+# start: Mon Oct 26 00:20:53 IST 2026
+[locked:gradle] waiting for the lock (pid 1248 since 2026-10-26 00:20:46: ./gradlew spotlessKotlinCheck buildHealth --continue)
+[locked:gradle] waiting for the lock (pid 3280 since 2026-10-26 00:23:51: ./gradlew :core:designsystem:recordRoborazziDebug)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Starting a Gradle Daemon, 3 busy and 5 stopped Daemons could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :build-logic:convention:test
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :build-logic:convention:processTestResources NO-SOURCE
+> Task :build-logic:convention:pluginUnderTestMetadata
+> Task :build-logic:convention:compileTestKotlin
+> Task :build-logic:convention:compileTestJava NO-SOURCE
+> Task :build-logic:convention:testClasses UP-TO-DATE
+
+> Task :build-logic:convention:test
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+BUILD SUCCESSFUL in 1m 26s
+7 actionable tasks: 3 executed, 4 up-to-date
+Configuration cache entry stored.
+# exit: 0
+# end: Mon Oct 26 00:31:44 IST 2026
+# seconds: 651

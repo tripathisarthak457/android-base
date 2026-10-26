@@ -1,0 +1,155 @@
+
+Project
+───────
+App name [My App]:   The launcher label. Any characters; Enter to use the app name.
+Display name: Package name (applicationId) [com.example.myapp]: 
+Features
+────────
+  Using the everything preset.
+  No UI components, per the command line.
+
+Architecture
+────────────
+  1. Compact
+     One module per feature and per data source. Simple, and what most apps
+     need.
+  2. Modular
+     Each feature and data module split into :api and :impl, for larger
+     teams.
+
+  Which [1]: 
+Android versions
+────────────────
+  Anything below API 26 turns on core-library desugaring automatically.
+
+  API 24 · Android 7.0 (Nougat)
+  API 25 · Android 7.1 (Nougat)
+  API 26 · Android 8.0 (Oreo) ← default
+  API 27 · Android 8.1 (Oreo)
+  API 28 · Android 9 (Pie)
+  API 29 · Android 10 (Quince Tart)
+  API 30 · Android 11 (Red Velvet Cake)
+  API 31 · Android 12 (Snow Cone)
+  API 32 · Android 12L (Snow Cone v2)
+  API 33 · Android 13 (Tiramisu)
+  API 34 · Android 14 (Upside Down Cake)
+  API 35 · Android 15 (Vanilla Ice Cream)
+  API 36 · Android 16 (Baklava)
+  API 37 · Android 17 (Cinnamon Bun)
+
+minSdk [26]: targetSdk [37]: compileSdk [37]: 
+Version
+───────
+  dev and staging builds are stamped 1.0.0-devDebug and so on; prod and playstore
+  releases stay a bare 1.0.0, because that string ends up on a store listing.
+
+versionName [1.0.0]: versionCode [1]: 
+Backend URLs
+────────────
+  One per environment. They become BuildConfig fields, so switching environment is
+  a variant switch, with no code change.
+
+  dev API base URL [https://dev.example.com/api/]:   staging API base URL [https://staging.example.com/api/]:   prod API base URL [https://api.example.com/api/]: 
+  dev WebSocket URL [wss://dev.example.com/api/ws]:   staging WebSocket URL [wss://staging.example.com/api/ws]:   prod WebSocket URL [wss://api.example.com/api/ws]: 
+Deep links
+──────────
+  The custom scheme always works. App Links also need an assetlinks.json served
+  from https://<host>/.well-known/; without it the user gets a chooser.
+
+  Custom scheme [myapp]:   App Links host [example.com]: 
+Signing keys
+────────────
+  Four keys: dev, staging, prod and playstore. dev and staging may share one.
+  prod and playstore must not share with anything. The Play upload key is the one
+  credential whose loss cannot be undone.
+
+  Skip this and every variant falls back to the debug key; the build says so.
+
+  Set up signing keys now? [Y/n]:   Organisation (for the certificate) [Unknown]:   Country code (two letters) [US]: 
+  dev
+    Use an existing .jks instead of generating one? [y/N]:     Key alias [myapp-dev]:     Keystore password (Enter to generate one):     Generated: 68a6GZ2LQ5kmVmdVsyDP   Save it in your password manager now.
+
+  staging
+    Reuse the dev key for staging? [Y/n]: 
+  prod
+    Use an existing .jks instead of generating one? [y/N]:     Key alias [myapp-prod]:     Keystore password (Enter to generate one):     Generated: grPvrvZWgQ93pYMUiQw5   Save it in your password manager now.
+
+  playstore
+    Use an existing .jks instead of generating one? [y/N]:     Key alias [myapp-playstore]:     Keystore password (Enter to generate one):     Generated: cgFPkVPa3ha7jfUViobG   Save it in your password manager now.
+
+Typeface
+────────
+  Any family name from fonts.google.com, spelled as it is on the family's page.
+
+  DM Sans            geometric, large x-height, reads well from 11sp to 32sp
+  Inter              the safe choice; designed for screens, very neutral
+  Plus Jakarta Sans  a little more character, good for consumer apps
+  Manrope            rounder and friendlier, slightly less good at small sizes
+  Figtree            warm and open; strong at display sizes
+
+Font [DM Sans]: Monospace font [JetBrains Mono]: 
+Look and feel
+─────────────
+  The brand colours. Every shade of each, pressed, subtle and the dark-theme
+  versions, is derived from these, with the launcher icon's background and
+  whether text on each is black or white.
+
+Primary hex [#2C6BED]: 
+  Leave either blank and it is worked out from the primary: the same hue with
+  the chroma taken out for the secondary, a sixth of a turn round the wheel for
+  the tertiary.
+
+Secondary hex: Tertiary hex: 
+  Haptics are a light vibration when a control responds. The device's own setting
+  always applies on top.
+  Haptics on by default? [Y/n]: 
+Feature modules
+───────────────
+  Comma-separated, lowercase, e.g. home, orders. Each produces a working screen, its
+  navigation wiring and a test. Leave blank to add them later.
+
+  Modules: 
+Languages
+─────────
+  English is always included. Add others as comma-separated tags; the language
+  picker in Settings lists them.
+  de (Deutsch), es (Español), fr (Français), hi (हिन्दी), pt-BR (Português (Brasil))
+
+  Languages: 
+Summary
+───────
+           App  My App (MyApp)
+       Package  com.example.noui.phone
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, appstatus, auth, browser, ci, coil,
+                coverage, crashlytics, database, deeplink, depsanalysis,
+                devtools, firebase, firebaseanalytics, flags, formatting,
+                forms, googlefonts, googlesignin, language, leakcanary,
+                licenses, media, network, offlinequeue, onboarding, paging,
+                perfhud, performance, playstore, profile, push,
+                remoteconfig, sample, search, settings, websocket
+       Options  ui_components off
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  dev, staging, prod, playstore
+
+Generate? [Y/n]: 
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI\phone
+  Keystores: dev, staging, prod, playstore
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI\phone and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json: the included one is a placeholder.
+

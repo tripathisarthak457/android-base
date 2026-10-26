@@ -1,0 +1,220 @@
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.fixcmp.app.core.navigation.shell.AppNavigationHost(
+  stable backStack: AppBackStack
+  registry: NavRegistry
+  navigator: AppNavigator
+  stable modifier: Modifier? = @static <expression>
+  stable config: ShellConfig? = @static <expression>
+  stable receivesCommands: Boolean = @static true
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable]]") fun com.example.fixcmp.app.core.navigation.shell.AppShell(
+  tabs: List<ShellTab>
+  stable state: ShellState
+  registry: NavRegistry
+  navigator: AppNavigator
+  stable modifier: Modifier? = @static <expression>
+  stable config: ShellConfig? = @static <expression>
+  stable receivesCommands: Boolean = @static true
+  stable sheetStrategy: SceneStrategy<AppNavKey>? = @static null
+  stable trailingAction: @[ExtensionFunctionType] Function3<BarActionScope, Composer, Int, Unit>? = @static null
+  stable accessory: Function2<Composer, Int, Unit>? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.fixcmp.app.core.navigation.shell.BottomEdgeFade(
+  stable state: ShellState
+  stable parallax: Float
+  stable scrolledUnder: Function0<Float>
+  stable modifier: Modifier? = @static <expression>
+)
+fun com.example.fixcmp.app.core.navigation.shell.ChromeSlide.toggle(
+  stable state: ShellState
+  stable chrome: NavigationChrome
+  stable <this>: ChromeSlide
+): Function0<Unit>
+fun com.example.fixcmp.app.core.navigation.shell.rememberChromeSlide()
+restartable skippable fun com.example.fixcmp.app.core.navigation.shell.HostCrossfade(
+  target: T
+  stable modifier: Modifier? = @static <expression>
+  stable content: Function4<@[ParameterName(name = 'host')] T, @[ParameterName(name = 'receivesCommands')] Boolean, Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.fixcmp.app.core.navigation.shell.MoreList(
+  tabs: List<ShellTab>
+  stable labels: List<String>
+  stable from: Int
+  stable onSelect: Function1<Int, Unit>
+)
+restartable skippable fun com.example.fixcmp.app.core.navigation.shell.OpenDeepLinks(
+  stable state: ShellState
+  pending: PendingDeepLink
+)
+fun com.example.fixcmp.app.core.navigation.shell.rememberScrolledUnder(
+  stable state: ShellState
+): Function0<Float>
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable]]") fun com.example.fixcmp.app.core.navigation.shell.ShellBar(
+  stable chrome: NavigationChrome
+  tabs: List<ShellTab>
+  stable labels: List<String>
+  stable state: ShellState
+  stable barState: AppTabBarState
+  stable config: ShellConfig
+  stable trailingAction: @[ExtensionFunctionType] Function3<BarActionScope, Composer, Int, Unit>?
+  stable accessory: Function2<Composer, Int, Unit>?
+  stable motion: ScreenMotion
+  stable scrolledUnder: Function0<Float>
+  stable onToggleSidebar: Function0<Unit>?
+  stable modifier: Modifier? = @static <expression>
+)
+fun com.example.fixcmp.app.core.navigation.shell.sidebarWidth()
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable]]") fun com.example.fixcmp.app.core.navigation.shell.ShellChrome(
+  stable chrome: @[ExtensionFunctionType] Function3<BoxScope, Composer, Int, Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable fun com.example.fixcmp.app.core.navigation.shell.ShellShortcuts(
+  stable labels: List<String>
+  stable state: ShellState
+  stable onToggleSidebar: Function0<Unit>?
+)
+fun com.example.fixcmp.app.core.navigation.shell.rememberShellState(
+  stable tabs: List<ShellTab>
+  registry: NavRegistry
+  serialization: NavKeySerialization
+  stable generation: Int = @static 0
+): ShellState
+restartable skippable fun com.example.fixcmp.app.core.navigation.shell.WindowChromeWriter(
+  stable state: ShellState
+  stable barState: AppTabBarState
+  stable wide: Boolean
+)
+restartable skippable fun com.example.fixcmp.app.core.navigation.shell.back.BackHandlerEffect(
+  unstable handler: NavigationEventHandler<*>
+  stable enabled: Function0<Boolean>
+)
+restartable skippable fun com.example.fixcmp.app.core.navigation.shell.back.GateSettle(
+  stable gate: BackGate
+  stable pop: Function1<Int, Int>
+)
+restartable skippable fun com.example.fixcmp.app.core.navigation.shell.back.ShellRootBack(
+  stable state: ShellState
+)
+restartable skippable fun com.example.fixcmp.app.core.navigation.shell.back.StackBackHandler(
+  stable stack: AppBackStack
+  host: BackCardHost
+  stable pop: Function1<Int, Int>
+  stable cardEnabled: Boolean
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.fixcmp.app.core.navigation.shell.presentation.PresentationHost(
+  stable state: ShellState
+  registry: NavRegistry
+  stable motion: ScreenMotion
+  stable sheetStrategy: SceneStrategy<AppNavKey>?
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.fixcmp.app.core.navigation.shell.presentation.PresentedFrame(
+  stable key: AppNavKey
+  stable contentKey: String
+  stable motion: ScreenMotion
+  stable gate: BackGate
+  stable card: BackCardState
+  stable screens: ScreenChromes
+  stable onLive: Function1<Int, Unit>
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.fixcmp.app.core.navigation.shell.stack.EntryFrame(
+  stable contentKey: String
+  stable hidesBar: Boolean
+  stable screens: ScreenChromes?
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.fixcmp.app.core.navigation.shell.stack.StackHost(
+  stable stack: AppBackStack
+  registry: NavRegistry
+  stable motion: ScreenMotion
+  stable modifier: Modifier? = @static <expression>
+  stable hidesBar: Function1<AppNavKey, Boolean>? = @static <expression>
+  stable anchor: BarAnchor? = @static null
+  stable screens: ScreenChromes? = @static null
+)
+fun com.example.fixcmp.app.core.navigation.shell.stack.rememberEntryDecorators()
+fun com.example.fixcmp.app.core.navigation.shell.stack.rememberEntryProvider(
+  registry: NavRegistry
+  stable hidesBar: Function1<AppNavKey, Boolean>
+  stable screens: ScreenChromes?
+): Function2<AppNavKey, String, NavEntry<AppNavKey>>
+fun com.example.fixcmp.app.core.navigation.shell.stack.rememberScreenChrome(
+  stable screens: ScreenChromes?
+  stable contentKey: String
+): ScreenChrome
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.fixcmp.app.core.navigation.shell.stack.StackLayout(
+  stable scene: StackScene
+  plan: StackPlan
+  stable shown: List<NavEntry<AppNavKey>>
+  stable listPaneWidth: Dp
+  stable modifier: Modifier? = @static <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.fixcmp.app.core.navigation.shell.stack.EntrySlot(
+  stable entry: NavEntry<AppNavKey>
+  stable scene: StackScene
+  plan: StackPlan
+  stable onTop: Boolean
+  stable pane: PaneContext
+  stable tab: TabVisibility
+  stable isLight: Boolean
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.fixcmp.app.core.navigation.shell.stack.EmptyDetailSlot(
+  key: EmptyDetail
+  stable scene: StackScene
+  plan: StackPlan
+  stable isLight: Boolean
+)
+fun com.example.fixcmp.app.core.navigation.shell.stack.rememberPaneContexts(
+  plan: StackPlan
+  stable shown: List<NavEntry<AppNavKey>>
+): Map<Any, PaneContext>
+fun com.example.fixcmp.app.core.navigation.shell.stack.rememberEntryLifecycle(
+  stable scene: StackScene
+  unstable key: Any
+): LifecycleOwner
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.fixcmp.app.core.navigation.shell.tabs.KeptTabs(
+  stable selected: Function0<Int>
+  stable generation: Int
+  stable modifier: Modifier? = @static <expression>
+  stable revealSwitch: Function0<Boolean>? = @static <expression>
+  stable positionOf: Function1<@[ParameterName(name = 'index')] Int, Int>? = @static <expression>
+  stable warmUp: List<Int>? = @static <expression>
+  stable content: Function3<@[ParameterName(name = 'index')] Int, Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.example.fixcmp.app.core.navigation.shell.tabs.KeptTab(
+  stable index: Int
+  stable selected: Function0<Int>
+  stable reveal: TabReveal
+  stable warming: TabWarmUp
+  stable content: Function2<Composer, Int, Unit>
+)
+fun com.example.fixcmp.app.core.navigation.shell.tabs.rememberTabBackDispatcher(
+  stable active: Boolean
+): Array<ProvidedValue<*>>
+fun com.example.fixcmp.app.core.navigation.shell.tabs.rememberTabLifecycle(
+  stable active: Boolean
+): LifecycleOwner
+restartable skippable scheme("[0, [0: [_]]]") fun com.example.fixcmp.app.core.navigation.shell.tabs.WarmUpTabs(
+  stable warming: TabWarmUp
+  stable tabs: List<Int>
+  stable opened: SnapshotStateList<Int>
+  stable content: Function1<@[ParameterName(name = 'index')] Int, Function2<Composer, Int, Unit>>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.fixcmp.app.core.navigation.shell.tabs.TabbedNavHost(
+  tabs: List<ShellTab>
+  stable labels: List<String>
+  stable state: ShellState
+  registry: NavRegistry
+  stable motion: ScreenMotion
+  stable hidesBar: Function1<AppNavKey, Boolean>
+  stable modifier: Modifier? = @static <expression>
+)
+fun com.example.fixcmp.app.core.navigation.shell.transition.arrival(
+  stable <this>: Transition<EnterExitState>
+  stable motion: ScreenMotion
+): State<Float>
+restartable skippable fun com.example.fixcmp.app.core.navigation.shell.transition.ReportMotion(
+  stable transition: Transition<EnterExitState>
+  stable arrival: Function0<Float>
+  stable gate: BackGate
+)

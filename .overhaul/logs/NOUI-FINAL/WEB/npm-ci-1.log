@@ -1,0 +1,26 @@
+Sun Oct 25 13:58:12 IST 2026
+npm_config_cache=D:\.caches\npm
+$ memwait npm ci
+[locked:memwait] 1211 MB available, 13096 MB commit left; waiting for 3500 MB
+[locked:memwait] 1310 MB available, 13029 MB commit left; waiting for 3500 MB
+[locked:memwait] 980 MB available, 12722 MB commit left; waiting for 3500 MB
+[locked:memwait] 490 MB available, 11444 MB commit left; waiting for 1500 MB
+[locked:memwait] 438 MB available, 9162 MB commit left; waiting for 1500 MB
+
+added 53 packages, and audited 54 packages in 4m
+
+9 packages are looking for funding
+  run `npm fund` for details
+
+1 critical severity vulnerability
+
+To address all issues, run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn install-scripts   @tailwindcss/oxide@4.1.13 (postinstall: node ./scripts/install.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+exit=0
+Sun Oct 25 14:07:54 IST 2026

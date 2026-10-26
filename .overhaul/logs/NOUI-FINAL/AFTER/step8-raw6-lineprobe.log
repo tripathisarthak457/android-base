@@ -1,0 +1,59 @@
+07:00:12
+D free GB: 74
+./gradlew --offline --continue spotlessKotlinCheck
+[locked:gradle] waiting for the lock (pid 4768 since 2026-10-26 06:59:14: ./gradlew --offline --continue spotlessCheck)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: spotlessKotlinCheck
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin FROM-CACHE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :spotlessKotlin
+> Task :spotlessKotlinCheck FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':spotlessKotlinCheck' (registered in build file 'build.gradle.kts').
+> The following files had format violations:
+      core\common\src\main\kotlin\com\base\app\core\common\probe\LineProbe.kt
+          @@ -1,5 +1,12 @@
+           package·com.base.app.core.common.probe
+           
+          -internal·fun·lineProbe(first:·String,·second:·String,·third:·String,·fourth:·String,·fifth:·String):·Int·=·1
+          +internal·fun·lineProbe(
+          +····first:·String,
+          +····second:·String,
+          +····third:·String,
+          +····fourth:·String,
+          +····fifth:·String,
+          +):·Int·=·1
+           
+          -internal·fun·lineProbeCall():·Int·=·lineProbe("aaaaaaaaaaaaa",·"bbbbbbbbbbbbbbbbbb",·"cccccccccccccccccc",·"ddddddddd",·"eeee")
+          +internal·fun·lineProbeCall():·Int·=
+          +····lineProbe("aaaaaaaaaaaaa",·"bbbbbbbbbbbbbbbbbb",·"cccccccccccccccccc",·"ddddddddd",·"eeee")
+  Run 'gradlew.bat spotlessApply' to fix all violations.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1m 1s
+6 actionable tasks: 5 executed, 1 from cache
+Configuration cache entry stored.
+EXIT 1
+07:01:53

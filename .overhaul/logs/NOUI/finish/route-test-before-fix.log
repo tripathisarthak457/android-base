@@ -1,0 +1,105 @@
+FFFF
+======================================================================
+FAIL: test_the_docs_call_onboarding_and_sign_in_routes_only_where_the_project_has_them (tests.test_docs.GeneratedDocsTest.test_the_docs_call_onboarding_and_sign_in_routes_only_where_the_project_has_them) (case='noui-lean', page='README.md', feature='onboarding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_docs.py", line 394, in test_the_docs_call_onboarding_and_sign_in_routes_only_where_the_project_has_them
+    self.assertEqual([], [
+    ~~~~~~~~~~~~~~~~^^^^^^
+        sentence for sentence in sentences
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        if re.search(rf"\b{word}\b", sentence, re.IGNORECASE)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        and re.search(r"\b(?:routes?|placeholders?)\b", sentence)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ])
+    ^^
+AssertionError: Lists differ: [] != ['Onboarding, sign-in and every other scre[62 chars]ks.']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'Onboarding, sign-in and every other screen are placeholder routes reachable by navigation and deep links.'
+
+- []
++ ['Onboarding, sign-in and every other screen are placeholder routes reachable '
++  'by navigation and deep links.']
+
+======================================================================
+FAIL: test_the_docs_call_onboarding_and_sign_in_routes_only_where_the_project_has_them (tests.test_docs.GeneratedDocsTest.test_the_docs_call_onboarding_and_sign_in_routes_only_where_the_project_has_them) (case='noui-lean', page='docs/ARCHITECTURE.md', feature='onboarding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_docs.py", line 394, in test_the_docs_call_onboarding_and_sign_in_routes_only_where_the_project_has_them
+    self.assertEqual([], [
+    ~~~~~~~~~~~~~~~~^^^^^^
+        sentence for sentence in sentences
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        if re.search(rf"\b{word}\b", sentence, re.IGNORECASE)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        and re.search(r"\b(?:routes?|placeholders?)\b", sentence)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ])
+    ^^
+AssertionError: Lists differ: [] != ['onboarding and sign-in are routes reacha[78 chars]et.']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'onboarding and sign-in are routes reachable by navigation and deep links, and their placeholders have no way forward yet.'
+
+- []
++ ['onboarding and sign-in are routes reachable by navigation and deep links, '
++  'and their placeholders have no way forward yet.']
+
+======================================================================
+FAIL: test_the_docs_call_onboarding_and_sign_in_routes_only_where_the_project_has_them (tests.test_docs.GeneratedDocsTest.test_the_docs_call_onboarding_and_sign_in_routes_only_where_the_project_has_them) (case='noui-lean', page='README.md', feature='auth')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_docs.py", line 394, in test_the_docs_call_onboarding_and_sign_in_routes_only_where_the_project_has_them
+    self.assertEqual([], [
+    ~~~~~~~~~~~~~~~~^^^^^^
+        sentence for sentence in sentences
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        if re.search(rf"\b{word}\b", sentence, re.IGNORECASE)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        and re.search(r"\b(?:routes?|placeholders?)\b", sentence)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ])
+    ^^
+AssertionError: Lists differ: [] != ['Onboarding, sign-in and every other scre[62 chars]ks.']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'Onboarding, sign-in and every other screen are placeholder routes reachable by navigation and deep links.'
+
+- []
++ ['Onboarding, sign-in and every other screen are placeholder routes reachable '
++  'by navigation and deep links.']
+
+======================================================================
+FAIL: test_the_docs_call_onboarding_and_sign_in_routes_only_where_the_project_has_them (tests.test_docs.GeneratedDocsTest.test_the_docs_call_onboarding_and_sign_in_routes_only_where_the_project_has_them) (case='noui-lean', page='docs/ARCHITECTURE.md', feature='auth')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_docs.py", line 394, in test_the_docs_call_onboarding_and_sign_in_routes_only_where_the_project_has_them
+    self.assertEqual([], [
+    ~~~~~~~~~~~~~~~~^^^^^^
+        sentence for sentence in sentences
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        if re.search(rf"\b{word}\b", sentence, re.IGNORECASE)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        and re.search(r"\b(?:routes?|placeholders?)\b", sentence)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ])
+    ^^
+AssertionError: Lists differ: [] != ['onboarding and sign-in are routes reacha[78 chars]et.']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'onboarding and sign-in are routes reachable by navigation and deep links, and their placeholders have no way forward yet.'
+
+- []
++ ['onboarding and sign-in are routes reachable by navigation and deep links, '
++  'and their placeholders have no way forward yet.']
+
+----------------------------------------------------------------------
+Ran 1 test in 32.622s
+
+FAILED (failures=4)

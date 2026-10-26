@@ -1,0 +1,423 @@
+
+Project
+───────
+App name [My App]:   The launcher label. Any characters; Enter to use the app name.
+Display name: Package name (applicationId) [com.example.wizthree]: 
+Features
+────────
+  No UI components, per the command line.
+
+  Start from a preset, or answer for each feature.
+
+  1. Lean
+     The architecture, a theme skeleton and every build guard, with
+     networking, image loading, your font, leak detection in debug builds,
+     deep links and CI. The app opens on a blank start screen for your
+     design system to build on.
+  2. Standard
+     The lean set plus the logic of sign-in, onboarding, settings and the
+     app's own language, each behind a placeholder route, with the in-app
+     browser, feature flags, the developer panel with its performance
+     overlay, a local database and the reference list-detail feature to
+     copy. What most products want on day one, ready for your own design
+     system.
+  3. Everything
+     Every feature that does not need UI components, working together: the
+     template's own proof that they coexist without them. Delete what you
+     do not need.
+  4. Choose individually
+     One question per feature.
+
+  Which [2]:   Anything you skip can be added later; each is one module or one file.
+
+  Forced update and maintenance screens
+    The server can require an update (HTTP 426, or a minimum-version header)
+    or announce maintenance (503), whichever screen made the call, and the app
+    covers itself with a placeholder for either: a tap opens the store listing
+    for an update and retries during maintenance, until your own design
+    replaces the placeholder.
+    Requires: network
+  Include? [y/N]: 
+  Image loading (Coil)
+    Coil's image loader on the app's own HTTP client, sharing its connections
+    and its certificate pins, ready for the image component your design system
+    draws.
+  Include? [Y/n]: 
+  App database (Room 3)
+    A Room 3 database with a table per domain, emptied when the person signs
+    out. With the reference feature, its list is offline-first: the list's
+    state holds what was fetched last at once, and a refresh writes the
+    server's answer into the table.
+  Include? [y/N]: 
+  REST networking (Ktor)
+    One HTTP client for the whole app: typed results, the session's token read
+    for every request and refreshed one call at a time, every failure
+    classified (offline, timeout, the server's own error code, an unreadable
+    body), and the connection state as a hint a screen can show.
+  Include? [Y/n]: 
+  Offline request queue
+    Changes made without a connection are queued and sent when one returns, by
+    a WorkManager worker that waits for the network. Refusals are kept with
+    the server's answer; rate limits and timeouts are retried. WorkManager
+    carries a copy of Room of its own, so this adds more code than it looks.
+    Requires: network, database
+    You left out database; including this adds it back.
+  Include? [y/N]: 
+  Paged feed
+    The feed's data on Paging 3, behind its ViewModel and a placeholder route:
+    pages load as the list asks for them, a failed page keeps what is already
+    loaded and can be retried, and a refresh reloads from where the reader is.
+    The list it pages into is yours to build.
+    Requires: network
+  Include? [y/N]: 
+  WebSocket
+    One long-lived socket that is open while the app is in front: pings, a
+    backoff that grows until a frame gets through, the new token after an
+    account change, and a connection state a screen can render.
+    Requires: network
+  Include? [y/N]: 
+  Biometric app lock
+    A fingerprint, face or screen-lock prompt at launch and after half a
+    minute away, over a placeholder cover that asks again on a tap, and the
+    app kept out of the task switcher's thumbnail while the lock is on. It
+    starts off: the settings ViewModel's AppLockToggled turns it on, from the
+    switch your settings screen draws.
+    Requires: settings
+  Include? [y/N]: 
+  Sign in, sign up and password reset
+    Sign-in, sign-up and password-reset ViewModels against your auth
+    endpoints, behind three placeholder routes, writing the encrypted token
+    store. Their form state holds each field's text and error, with the
+    server's field errors mapped back onto the field that caused them, for the
+    inputs your sign-in screen draws.
+    Requires: network, forms
+  Include? [y/N]: 
+  Sign in with Google
+    Credential Manager's Google sign-in, ready for the control your sign-in
+    screen draws to hand its ID token to the sign-in ViewModel. The token goes
+    to your backend, which answers with its own tokens like any sign-in.
+    Requires: auth
+    You left out auth; including this adds it back.
+  Include? [y/N]: 
+  Profile screen
+    A name, a bio and an avatar, saved on the device per user, behind the
+    profile's ViewModel and a placeholder route. With the media picker on, the
+    ViewModel takes a picked photo for the avatar.
+  Include? [y/N]: 
+  Form state and validation
+    Each field's text lives in a TextFieldState the ViewModel owns, so typing
+    never waits on a state update and survives process death; validators
+    return error codes the screen turns into copy, and server-side errors map
+    back onto the fields that caused them.
+  Include? [y/N]: 
+  In-app language picker
+    AppLocales sets and reads the app's own language: the system's per-app
+    language on Android 13+, so the choice also appears in the phone's
+    settings, applied by hand on older releases. The settings ViewModel holds
+    it in its state and applies a choice through its route, for the picker
+    your settings screen draws.
+    Requires: settings
+  Include? [y/N]: 
+  Open source licences screen
+    The real dependency list, generated from the resolved classpath at build
+    time and loaded by its ViewModel behind a placeholder route. The build
+    also fails on a licence the project has not allowed.
+    Requires: settings
+  Include? [y/N]: 
+  Onboarding flow
+    An onboarding ViewModel over three pages of copy in resources, behind a
+    placeholder route: finishing and skipping both record it in the preference
+    store, so a person goes through it once. A first launch still opens on the
+    blank start screen; AppRoot can open onboarding instead once you draw its
+    pages.
+  Include? [y/N]: 
+  Reference feature
+    A list + detail feature against a live public API, with its tests: keys,
+    ViewModels, repository and navigation behind two placeholder routes that
+    load and open items as the finished ones will. Copy its shape for your
+    first feature, then delete it.
+    Requires: network
+  Include? [y/N]: 
+  Search screen
+    Results as you type with a debounce, and recent searches kept per user,
+    behind the search ViewModel and a placeholder route; its state holds the
+    results, whether they are loading and why they failed.
+    Requires: network
+  Include? [y/N]: 
+  Settings screen
+    The settings ViewModel, wired to the preference store and the session:
+    theme, analytics opt-out, haptics and sign-out, with the build version in
+    its state, behind a placeholder route. Your settings screen draws the
+    switches and asks before it sends sign-out.
+  Include? [y/N]: 
+  In-app browser
+    Web pages open in a Custom Tab coloured like the app rather than in the
+    browser, through rememberInAppBrowser() in core:ui, for the links you
+    draw. With settings on, the settings module's resources hold the privacy
+    and terms addresses for the links your settings screen draws.
+  Include? [y/N]: 
+  Deep linking
+    A custom scheme plus verified App Links. Each feature maps its own links
+    to a destination; a link is held until start-up has read the settings and
+    the session, then opens on the back stack, which survives process death,
+    over the start screen, whether or not anyone is signed in: the project has
+    no entry gates until you add yours. A link is never replayed from Recents
+    or after rotation.
+  Include? [Y/n]: 
+  Photo picker, camera and compression
+    rememberMediaPicker() for the screen that asks: the system photo picker
+    and the camera app, with no permissions to ask for, and one image
+    compressor that turns a picked photo upright, scales it and writes a copy
+    the app owns.
+  Include? [y/N]: 
+  Play in-app update and review prompts
+    A newer build offered once per launch through Play's own sheet and never
+    offered again once turned down, and a rating prompt on a schedule Play
+    honours. A downloaded update installs when the app next goes to the
+    background; the offer to restart into it at once goes to
+    LocalMessagePresenter, which logs it until your design system shows
+    messages.
+  Include? [y/N]: 
+  Push notifications (FCM)
+    Firebase Cloud Messaging alone: notification channels, a tap that opens
+    the app, a lock-screen-safe preview, and registration that is renewed only
+    when it changes and removed at sign-out. Nothing asks for the notification
+    permission yet: rememberNotificationPermission() is ready for the screen
+    you build to ask from, and on Android 13 and up notifications stay off
+    until it does.
+    Requires: firebase
+  Include? [y/N]: 
+  Analytics and crash-reporting seam
+    AnalyticsTracker and CrashReporter interfaces that write nothing until a
+    vendor is bound, the settings opt-out applied to both, logged errors kept
+    as breadcrumbs, and janky frames counted on the device.
+  Include? [y/N]: 
+  Firebase Crashlytics
+    Crashlytics behind the crash-reporting seam: crashes and unhandled errors
+    are reported, every logged error is a breadcrumb, and the R8 mapping is
+    uploaded only by a release build that asks for it.
+    Requires: analytics, firebase
+    You left out analytics; including this adds it back.
+  Include? [y/N]: 
+  On-device inspector
+    A badge docked to the screen's edge in dev and debug builds, which can be
+    dragged out of the way, and a panel behind it with the last 200 requests
+    (credentials redacted), their timing and failure rate, and the build's
+    details. Absent from a production build rather than hidden in one.
+  Include? [y/N]: 
+  Firebase Analytics
+    Firebase Analytics behind the analytics seam, switched off by the
+    analytics opt-out in the preference store; the switch that sets it is your
+    settings screen's to draw. It brings the advertising-id permissions with
+    it, which is why it is a choice of its own.
+    Requires: analytics, firebase
+    You left out analytics; including this adds it back.
+  Include? [y/N]: 
+  Feature flag seam
+    Typed flags declared in one file with their defaults beside them, read or
+    observed through an interface that resolves locally until a vendor is
+    bound, and overridable by hand in the inspector.
+  Include? [y/N]: 
+  Live performance overlay
+    Frames per second at the display's real rate and the janky-frame share
+    under the DEV badge, and a Performance tab in the inspector: frame times
+    against the 60, 90 and 120 Hz budgets, frames per second over time, a
+    main-thread time histogram, jank by screen, memory over time, start-up and
+    request timings, and an optimisation score from 0 to 100 with a fix for
+    every lost point. A structured logcat summary and an exported JSON and
+    Markdown report. On in debug builds, a switch away in dev release builds,
+    and absent from production builds; while it is off it puts nothing on the
+    window. It lives in the on-device inspector, so it is on by default
+    wherever the inspector is chosen, as in the Standard preset.
+    Requires: devtools
+    You left out devtools; including this adds it back.
+  Include? [y/N]: 
+  Firebase Remote Config
+    Feature flags read from Remote Config: fetched at start-up, updated while
+    the app is open when the console publishes a change, and fetched on every
+    start in a debug build.
+    Requires: flags, firebase
+    You left out flags; including this adds it back.
+  Include? [y/N]: 
+  Downloadable Google Font
+    The typefaces the spec names (DM Sans and JetBrains Mono unless you choose
+    others), downloaded through the Play Services font provider in exactly the
+    weights the design style draws with. They are fetched while the splash is
+    up; a launch where they take longer than 150 ms draws in the platform font
+    throughout, so text never swaps under the reader.
+  Include? [Y/n]: 
+  Continuous integration
+    A GitHub Actions workflow that runs `check` (unit tests, lint, the code
+    rules, the module graph and the Compose stability gate) and assembles the
+    debug and release builds on every push and pull request, uploading the
+    reports when something fails.
+  Include? [Y/n]: 
+  Coverage floor (Kover)
+    One merged coverage number for the whole project with a floor the build
+    enforces, generated code excluded so the report is about code somebody
+    wrote.
+  Include? [y/N]: 
+  Dependency health report
+    Names every module declaring a dependency it never uses, or using one it
+    only gets transitively — the second being the failure that surfaces months
+    later as an unrelated module breaking. `./gradlew buildHealth` writes the
+    report; it is advice rather than a gate, because two of this template's
+    own decisions produce advice it is right to ignore.
+  Include? [y/N]: 
+  Formatting (Spotless + ktlint)
+    Spotless runs ktlint's Android Studio style over every Kotlin and Gradle
+    file: `check` fails on a file that is not formatted and `spotlessApply`
+    fixes it. The rules live in .editorconfig, which Android Studio reads too.
+  Include? [y/N]: 
+  LeakCanary (debug only)
+    Memory-leak detection in debug builds.
+  Include? [Y/n]: 
+  Performance harness
+    A macrobenchmark module for cold and warm start to the start screen, with
+    and without the baseline profile, run against the dev flavour, and the
+    baseline profile generator that records the profile every build ships. The
+    journey benchmarks and the frame-time scripts come with the components
+    they measure.
+  Include? [y/N]: 
+Architecture
+────────────
+  1. Compact
+     One module per feature and per data source. Simple, and what most apps
+     need.
+  2. Modular
+     Each feature and data module split into :api and :impl, for larger
+     teams.
+
+  Which [1]: 
+Android versions
+────────────────
+  Anything below API 26 turns on core-library desugaring automatically.
+
+  API 24 · Android 7.0 (Nougat)
+  API 25 · Android 7.1 (Nougat)
+  API 26 · Android 8.0 (Oreo) ← default
+  API 27 · Android 8.1 (Oreo)
+  API 28 · Android 9 (Pie)
+  API 29 · Android 10 (Quince Tart)
+  API 30 · Android 11 (Red Velvet Cake)
+  API 31 · Android 12 (Snow Cone)
+  API 32 · Android 12L (Snow Cone v2)
+  API 33 · Android 13 (Tiramisu)
+  API 34 · Android 14 (Upside Down Cake)
+  API 35 · Android 15 (Vanilla Ice Cream)
+  API 36 · Android 16 (Baklava)
+  API 37 · Android 17 (Cinnamon Bun)
+
+minSdk [26]: targetSdk [37]: compileSdk [37]: 
+Version
+───────
+  dev and staging builds are stamped 1.0.0-devDebug and so on; prod and playstore
+  releases stay a bare 1.0.0, because that string ends up on a store listing.
+
+versionName [1.0.0]: versionCode [1]: 
+Backend URLs
+────────────
+  One per environment. They become BuildConfig fields, so switching environment is
+  a variant switch, with no code change.
+
+  dev API base URL [https://dev.example.com/api/]:   staging API base URL [https://staging.example.com/api/]:   prod API base URL [https://api.example.com/api/]: 
+Deep links
+──────────
+  The custom scheme always works. App Links also need an assetlinks.json served
+  from https://<host>/.well-known/; without it the user gets a chooser.
+
+  Custom scheme [wizthree]:   App Links host [example.com]: 
+Signing keys
+────────────
+  Four keys: dev, staging, prod and playstore. dev and staging may share one.
+  prod and playstore must not share with anything. The Play upload key is the one
+  credential whose loss cannot be undone.
+
+  Skip this and every variant falls back to the debug key; the build says so.
+
+  Set up signing keys now? [Y/n]:   Organisation (for the certificate) [Unknown]:   Country code (two letters) [US]: 
+  dev
+    Use an existing .jks instead of generating one? [y/N]:     Key alias [wizthree-dev]:     Keystore password (Enter to generate one):     Generated: <redacted throwaway test password>   Save it in your password manager now.
+
+  staging
+    Reuse the dev key for staging? [Y/n]: 
+  prod
+    Use an existing .jks instead of generating one? [y/N]:     Key alias [wizthree-prod]:     Keystore password (Enter to generate one):     Generated: <redacted throwaway test password>   Save it in your password manager now.
+
+  playstore
+    Use an existing .jks instead of generating one? [y/N]:     Key alias [wizthree-playstore]:     Keystore password (Enter to generate one):     Generated: <redacted throwaway test password>   Save it in your password manager now.
+
+Typeface
+────────
+  Any family name from fonts.google.com, spelled as it is on the family's page.
+
+  DM Sans            geometric, large x-height, reads well from 11sp to 32sp
+  Inter              the safe choice; designed for screens, very neutral
+  Plus Jakarta Sans  a little more character, good for consumer apps
+  Manrope            rounder and friendlier, slightly less good at small sizes
+  Figtree            warm and open; strong at display sizes
+
+Font [DM Sans]: Monospace font [JetBrains Mono]: 
+Look and feel
+─────────────
+  The brand colours. Every shade of each, pressed, subtle and the dark-theme
+  versions, is derived from these, with the launcher icon's background and
+  whether text on each is black or white.
+
+Primary hex [#2C6BED]: 
+  Leave either blank and it is worked out from the primary: the same hue with
+  the chroma taken out for the secondary, a sixth of a turn round the wheel for
+  the tertiary.
+
+Secondary hex: Tertiary hex: 
+  The default behind AppTheme.hapticsEnabled, which the components you build
+  read before they play a tick: nothing in the project plays one yet. A person
+  who turns haptics off in the preference store turns it off too, and the
+  phone's own setting still applies on top.
+  Haptics on by default? [Y/n]: 
+Feature modules
+───────────────
+  Comma-separated, lowercase, e.g. home, orders.
+  Each gets a :data module with its repository and a :feature module with list
+  and detail ViewModels behind placeholder routes, their keys and navigation
+  wiring, and a ViewModel test.
+  Leave blank to add them later.
+
+  Modules: 
+Languages
+─────────
+  English is always included. Add others as comma-separated tags; the language
+  picker in Settings lists them.
+  de (Deutsch), es (Español), fr (Français), hi (हिन्दी), pt-BR (Português (Brasil))
+
+  Languages: 
+Summary
+───────
+           App  Wiz Three (WizThree)
+       Package  com.example.wizthree
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  ci, coil, deeplink, googlefonts, leakcanary, network
+       Options  ui_components off
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  dev, staging, prod, playstore
+
+Generate? [Y/n]: 
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI\finish-review-2\wizard
+  Keystores: dev, staging, prod, playstore
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI\finish-review-2\wizard and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+

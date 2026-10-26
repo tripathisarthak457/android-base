@@ -1,0 +1,96 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/ui-ev
+# command: locked gradle ./gradlew spotlessKotlinCheck --continue
+# start: Sun Oct 25 22:16:48 IST 2026
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as configuration cache cannot be reused because an input to unknown location has changed.
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :spotlessKotlin UP-TO-DATE
+> Task :spotlessKotlinCheck FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':spotlessKotlinCheck' (registered in build file 'build.gradle.kts').
+> The following files had format violations:
+      core\designsystem\src\main\kotlin\com\example\finalguard\uieverything\core\designsystem\component\formfields\AppStepIndicator.kt
+          @@ -88,7 +88,7 @@
+           }
+           
+           @Composable
+          -private·fun·ConnectorHalf(visible:·Boolean,·done:·Boolean,·modifier:·Modifier)·{
+          +private·fun·ConnectorHalf(visible:·Boolean,·done:·Boolean,·modifier:·Modifier·=·Modifier)·{
+           ····val·colour·=·animateColorAsState(
+           ········targetValue·=·when·{
+           ············!visible·->·Color.Transparent
+      core\designsystem\src\main\kotlin\com\example\finalguard\uieverything\core\designsystem\component\list\AppSection.kt
+          @@ -111,7 +111,7 @@
+           
+           /**·Children·stacked·top·to·bottom,·with·a·hairline·between·each·pair·drawn·by·the·column·itself.·*/
+           @Composable
+          -private·fun·SeparatedColumn(modifier:·Modifier,·content:·@Composable·()·->·Unit)·{
+          +private·fun·SeparatedColumn(modifier:·Modifier·=·Modifier,·content:·@Composable·()·->·Unit)·{
+           ····val·lines·=·remember·{·SeparatorLines()·}
+           ····val·color·=·AppTheme.colors.separator
+           ····val·defaultInset·=·AppTheme.spacing.lg
+      core\designsystem\src\main\kotlin\com\example\finalguard\uieverything\core\designsystem\component\navigation\AppTabBar.kt
+          @@ -310,7 +310,7 @@
+           private·const·val·TranslucentAlpha·=·0.88f
+           
+           @Composable
+          -internal·fun·BarSurface(look:·BarLook,·modifier:·Modifier,·content:·@Composable·()·->·Unit)·{
+          +internal·fun·BarSurface(look:·BarLook,·modifier:·Modifier·=·Modifier,·content:·@Composable·()·->·Unit)·{
+           ····val·surface·=·if·(look.floating)·{
+           ········modifier
+           ············.then(if·(look.shadow)·Modifier.dropShadow(look.shape,·BarShadow)·else·Modifier)
+      core\designsystem\src\main\kotlin\com\example\finalguard\uieverything\core\designsystem\component\navigation\TabCells.kt
+          @@ -219,7 +219,7 @@
+           ····showLabel:·Boolean,
+           ····uppercase:·Boolean,
+           ····scale:·()·->·Float,
+          -····modifier:·Modifier,
+          +····modifier:·Modifier·=·Modifier,
+           )·{
+           ····Layout(
+           ········modifier·=·modifier,
+      core\designsystem\src\main\kotlin\com\example\finalguard\uieverything\core\designsystem\component\navigation\TabRail.kt
+          @@ -48,7 +48,7 @@
+           ····onTap:·(Int)·->·Unit,
+           ····header:·(@Composable·BarActionScope.()·->·Unit)?,
+           ····footer:·(@Composable·()·->·Unit)?,
+          -····modifier:·Modifier,
+          +····modifier:·Modifier·=·Modifier,
+           )·{
+           ····val·current·=·rememberUpdatedState(selected)
+           ····val·measure·=·remember·{·TabMeasure(vertical·=·true,·state·=·null,·{·current.value·},·mutableStateOf(PillSlots.Empty))·}
+  Violations also present in:
+      core\ui\src\main\kotlin\com\example\finalguard\uieverything\core\ui\paging\AppPagingList.kt
+      feature\auth\src\main\kotlin\com\example\finalguard\uieverything\feature\auth\AuthFrame.kt
+  Run 'gradlew.bat spotlessApply' to fix all violations.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 13s
+6 actionable tasks: 1 executed, 5 up-to-date
+Configuration cache entry stored.
+# exit: 1
+# end: Sun Oct 25 22:17:02 IST 2026
+# seconds: 14

@@ -1,0 +1,40 @@
+01:36:56
+170f895cf
+component-everything:
+  UNUSED-IMPORT feature/search/src/test/kotlin/{pkg}/feature/search/SearchViewModelTest.kt: {package}.core.common.result.AppResult
+everything-modules:
+  UNUSED-IMPORT feature/search/src/test/kotlin/{pkg}/feature/search/SearchViewModelTest.kt: {package}.core.common.result.AppResult
+noui-component-everything:
+  UNUSED-IMPORT feature/search/src/test/kotlin/{pkg}/feature/search/SearchViewModelTest.kt: {package}.core.common.result.AppResult
+  NOUI-OWNED core/designsystem/src/main/kotlin/{pkg}/core/designsystem/component is still there
+  NOUI-OWNED core/designsystem/src/test/kotlin/{pkg}/core/designsystem/component is still there
+  NOUI-REACH core/designsystem/src/main/kotlin/{pkg}/core/designsystem/component/tag/AppTag.kt:1: package {package}.core.designsystem.component.tag
+  NOUI-REACH core/designsystem/src/test/kotlin/{pkg}/core/designsystem/component/tag/AppTagTest.kt:1: package {package}.core.designsystem.component.tag
+noui-everything-modules:
+  UNUSED-IMPORT feature/search/src/test/kotlin/{pkg}/feature/search/SearchViewModelTest.kt: {package}.core.common.result.AppResult
+noui-preset-everything-compact:
+  UNUSED-IMPORT feature/search/src/test/kotlin/{pkg}/feature/search/SearchViewModelTest.kt: {package}.core.common.result.AppResult
+noui-preset-everything-modular:
+  UNUSED-IMPORT feature/search/impl/src/test/kotlin/{pkg}/feature/search/SearchViewModelTest.kt: {package}.core.common.result.AppResult
+only-search:
+  UNUSED-IMPORT feature/search/src/test/kotlin/{pkg}/feature/search/SearchViewModelTest.kt: {package}.core.common.result.AppResult
+pair-0:
+  UNUSED-IMPORT feature/search/src/test/kotlin/{pkg}/feature/search/SearchViewModelTest.kt: {package}.core.common.result.AppResult
+pair-13:
+  UNUSED-IMPORT feature/search/src/test/kotlin/{pkg}/feature/search/SearchViewModelTest.kt: {package}.core.common.result.AppResult
+pair-14:
+  UNUSED-IMPORT feature/search/src/test/kotlin/{pkg}/feature/search/SearchViewModelTest.kt: {package}.core.common.result.AppResult
+pair-6:
+  UNUSED-IMPORT feature/search/src/test/kotlin/{pkg}/feature/search/SearchViewModelTest.kt: {package}.core.common.result.AppResult
+pair-8:
+  UNUSED-IMPORT feature/search/src/test/kotlin/{pkg}/feature/search/SearchViewModelTest.kt: {package}.core.common.result.AppResult
+pair-9:
+  UNUSED-IMPORT feature/search/src/test/kotlin/{pkg}/feature/search/SearchViewModelTest.kt: {package}.core.common.result.AppResult
+preset-everything-compact:
+  UNUSED-IMPORT feature/search/src/test/kotlin/{pkg}/feature/search/SearchViewModelTest.kt: {package}.core.common.result.AppResult
+preset-everything-modular:
+  UNUSED-IMPORT feature/search/impl/src/test/kotlin/{pkg}/feature/search/SearchViewModelTest.kt: {package}.core.common.result.AppResult
+
+83 projects in 418 s: 19 new issues, 190 known (2 of 2 known-issue lines seen).
+EXIT 1
+01:43:56

@@ -1,0 +1,139 @@
+# cwd: D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/ui-everything
+# project: gen-ui-everything-2.log, plus core/notification/build.gradle.kts given isIncludeAndroidResources (the template fix after green-unit-1.log's 6 Resources$NotFoundException failures)
+# command: locked gradle ./gradlew :core:notification:testDebugUnitTest
+# start: Sun Oct 25 18:03:25 IST 2026
+[locked:gradle] waiting for the lock (pid 9004 since 2026-10-25 18:03:20: ./gradlew --continue :core:mvi:testDebugUnitTest :data:sample:testDebugUnitTest :data:auth:testDebugUnitTest :core:netwo)
+[locked:gradle] waiting for the lock (pid 15992 since 2026-10-25 18:07:26: ./gradlew check assembleDevDebug --continue)
+[locked:gradle] waiting for the lock (pid 9376 since 2026-10-25 18:12:46: ./gradlew :feature:auth:testDebugUnitTest :feature:settings:testDebugUnitTest :feature:onboarding:testDebugUnitTest :fea)
+[locked:gradle] waiting for the lock (pid 11828 since 2026-10-25 18:17:58: ./gradlew :feature:auth:testDebugUnitTest :feature:settings:testDebugUnitTest :feature:onboarding:testDebugUnitTest :fea)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:notification:testDebugUnitTest
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:datastore:verifyModuleDependencies UP-TO-DATE
+> Task :core:notification:verifyModuleDependencies UP-TO-DATE
+> Task :core:datastore:generateDebugAssets UP-TO-DATE
+> Task :core:datastore:generateDebugTestFixturesAssets UP-TO-DATE
+> Task :core:notification:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:notification:generateDebugAssets UP-TO-DATE
+> Task :core:datastore:verifyApiPurity UP-TO-DATE
+> Task :core:datastore:preBuild UP-TO-DATE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:datastore:preDebugBuild UP-TO-DATE
+> Task :core:datastore:preDebugTestFixturesBuild UP-TO-DATE
+> Task :core:datastore:javaPreCompileDebugTestFixtures UP-TO-DATE
+> Task :core:common:verifyApiPurity UP-TO-DATE
+> Task :core:datastore:javaPreCompileDebug UP-TO-DATE
+> Task :core:datastore:mergeDebugAssets UP-TO-DATE
+> Task :core:datastore:mergeDebugTestFixturesAssets UP-TO-DATE
+> Task :core:notification:verifyApiPurity UP-TO-DATE
+> Task :core:notification:preBuild UP-TO-DATE
+> Task :core:notification:preDebugBuild UP-TO-DATE
+> Task :core:testing:verifyModuleDependencies UP-TO-DATE
+> Task :core:notification:generateDebugResources UP-TO-DATE
+> Task :core:testing:verifyApiPurity UP-TO-DATE
+> Task :core:notification:processDebugNavigationResources UP-TO-DATE
+> Task :core:notification:javaPreCompileDebug UP-TO-DATE
+> Task :core:notification:mergeDebugAssets UP-TO-DATE
+> Task :core:testing:preBuild UP-TO-DATE
+> Task :core:notification:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:testing:preDebugBuild UP-TO-DATE
+> Task :core:datastore:writeDebugAarMetadata UP-TO-DATE
+> Task :core:datastore:writeDebugTestFixturesAarMetadata UP-TO-DATE
+> Task :core:testing:mergeDebugAssets UP-TO-DATE
+> Task :core:notification:writeDebugAarMetadata UP-TO-DATE
+> Task :core:testing:writeDebugAarMetadata UP-TO-DATE
+> Task :core:notification:packageDebugResources UP-TO-DATE
+> Task :core:notification:parseDebugLocalResources UP-TO-DATE
+> Task :core:notification:generateDebugRFile UP-TO-DATE
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :core:notification:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:notification:compileDebugLibraryResources UP-TO-DATE
+> Task :core:common:jar UP-TO-DATE
+> Task :core:notification:mapDebugUnitTestSourceSetPaths
+> Task :core:datastore:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:datastore:generateDebugTestFixturesEmptyResourceFiles UP-TO-DATE
+> Task :core:notification:generateDebugUnitTestResources FROM-CACHE
+> Task :core:datastore:kspDebugKotlin UP-TO-DATE
+> Task :core:testing:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:datastore:compileDebugKotlin UP-TO-DATE
+> Task :core:datastore:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:datastore:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:datastore:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:notification:mergeDebugUnitTestAssets
+> Task :core:datastore:kspDebugTestFixturesKotlin UP-TO-DATE
+> Task :core:datastore:processDebugJavaRes UP-TO-DATE
+> Task :core:notification:checkDebugUnitTestAarMetadata
+> Task :core:datastore:processDebugManifest UP-TO-DATE
+> Task :core:datastore:processDebugTestFixturesManifest UP-TO-DATE
+> Task :core:notification:extractDeepLinksDebug UP-TO-DATE
+> Task :core:notification:kspDebugKotlin UP-TO-DATE
+> Task :core:notification:processDebugManifest UP-TO-DATE
+> Task :core:datastore:compileDebugTestFixturesKotlin UP-TO-DATE
+> Task :core:datastore:compileDebugTestFixturesJavaWithJavac NO-SOURCE
+> Task :core:testing:processDebugManifest UP-TO-DATE
+> Task :core:datastore:bundleLibRuntimeToJarDebugTestFixtures UP-TO-DATE
+> Task :core:datastore:processDebugTestFixturesJavaRes UP-TO-DATE
+> Task :core:notification:koverFindJar UP-TO-DATE
+> Task :core:datastore:bundleLibCompileToJarDebugTestFixtures UP-TO-DATE
+> Task :core:testing:compileDebugKotlin UP-TO-DATE
+> Task :core:notification:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+> Task :core:notification:processDebugJavaRes UP-TO-DATE
+> Task :core:notification:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:notification:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:testing:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:testing:processDebugJavaRes UP-TO-DATE
+> Task :core:notification:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:notification:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:notification:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:notification:mergeDebugUnitTestManifest
+> Task :core:notification:processDebugUnitTestManifest
+> Task :core:notification:mergeDebugUnitTestResources FROM-CACHE
+> Task :core:notification:processDebugUnitTestResources FROM-CACHE
+> Task :core:notification:packageDebugUnitTestForUnitTest
+> Task :core:notification:generateDebugUnitTestConfig
+> Task :core:notification:kspDebugUnitTestKotlin
+> Task :core:notification:compileDebugUnitTestKotlin FROM-CACHE
+> Task :core:notification:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:notification:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :core:notification:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:notification:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :core:notification:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :core:notification:transformDebugUnitTestClassesWithAsm
+
+> Task :core:notification:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+BUILD SUCCESSFUL in 30s
+81 actionable tasks: 10 executed, 4 from cache, 67 up-to-date
+Configuration cache entry stored.
+EXIT=0
+# end: Sun Oct 25 18:20:55 IST 2026

@@ -1,0 +1,62 @@
+02:31:08
+3784613e1
+ M variants/noui/app/src/main/baseline-prof.txt
+ M ../templates/android/app/src/main/baseline-prof.txt
+ M ../templates/android/config/code-rules-baseline.txt
+ M ../templates/android/feature/auth/src/main/kotlin/com/base/app/feature/auth/navigation/AuthNavigation.kt
+ M ../templates/android/feature/auth/src/main/kotlin/com/base/app/feature/auth/passwordreset/PasswordResetScreen.kt
+ M ../templates/android/feature/auth/src/main/kotlin/com/base/app/feature/auth/signin/GoogleSignIn.kt
+ M ../templates/android/feature/auth/src/main/kotlin/com/base/app/feature/auth/signin/SignInScreen.kt
+ M ../templates/android/feature/auth/src/main/kotlin/com/base/app/feature/auth/signup/SignUpViewModel.kt
+ M ../templates/android/feature/auth/src/test/kotlin/com/base/app/feature/auth/passwordreset/PasswordResetViewModelTest.kt
+ M ../templates/android/feature/auth/src/test/kotlin/com/base/app/feature/auth/signin/SignInViewModelTest.kt
+ M ../templates/android/feature/auth/src/test/kotlin/com/base/app/feature/auth/signup/SignUpViewModelTest.kt
+ M ../templates/android/feature/feed/src/main/kotlin/com/base/app/feature/feed/FeedScreen.kt
+ M ../templates/android/feature/feed/src/main/kotlin/com/base/app/feature/feed/FeedViewModel.kt
+ M ../templates/android/feature/onboarding/src/main/kotlin/com/base/app/feature/onboarding/OnboardingScreen.kt
+ M ../templates/android/feature/profile/src/main/kotlin/com/base/app/feature/profile/ProfileScreen.kt
+ M ../templates/android/feature/profile/src/main/kotlin/com/base/app/feature/profile/ProfileViewModel.kt
+ M ../templates/android/feature/search/src/main/kotlin/com/base/app/feature/search/SearchScreen.kt
+ M ../templates/android/feature/search/src/main/kotlin/com/base/app/feature/search/SearchViewModel.kt
+ M ../templates/android/feature/search/src/main/kotlin/com/base/app/feature/search/navigation/SearchNavigation.kt
+ M ../templates/android/feature/search/src/main/kotlin/com/base/app/feature/search/result/SearchResultScreen.kt
+
+Summary
+───────
+           App  Final After (FinalAfter)
+       Package  com.example.finalafter.uiev
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, appstatus, auth, browser, catalog, ci,
+                coil, collections, coverage, crashlytics, database,
+                datadisplay, deeplink, depsanalysis, devtools, firebase,
+                firebaseanalytics, flags, formatting, formfields, forms,
+                googlefonts, googlesignin, language, leakcanary, licenses,
+                liquidglass, media, network, offlinequeue, onboarding,
+                paging, perfhud, performance, pickers, playstore, profile,
+                push, remoteconfig, sample, search, settings, websocket
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\ui-ev
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\ui-ev and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Commit app/dependencies/ after the first ./gradlew check: it is the list of libraries the prod
+       release ships, which every later check compares against.
+    4. Replace app/google-services.json: the included one is a placeholder.
+
+EXIT 0
+02:31:13

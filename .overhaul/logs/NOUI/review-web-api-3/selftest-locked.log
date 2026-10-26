@@ -1,0 +1,6 @@
+[locked:memwait] 1115 MB available, 6618 MB commit left; waiting for 1500 MB
+[locked:memwait] 701 MB available, 6347 MB commit left; waiting for 1500 MB
+[locked:memwait] 1096 MB available, 5732 MB commit left; waiting for 1500 MB
+{"time":"2026-10-25T07:55:30.3210296+05:30","level":"INFO","msg":"selftest","target":"android","zip_entries":705}
+{"time":"2026-10-25T07:55:30.3210296+05:30","level":"INFO","msg":"selftest passed","targets":1,"generator_commit":"ccd9c3c9bd80"}
+selftest exit=0

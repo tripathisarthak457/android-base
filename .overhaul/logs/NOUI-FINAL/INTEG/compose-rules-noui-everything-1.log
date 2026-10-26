@@ -1,0 +1,33 @@
+01:13:56
+[locked:gradle] waiting for the lock (pid 16240 since 2026-10-26 01:13:29: ./gradlew check assembleDevDebug assembleProdRelease --continue)
+[locked:gradle] waiting for the lock (pid 16240 since 2026-10-26 01:13:29: ./gradlew check assembleDevDebug assembleProdRelease --continue)
+[locked:gradle] waiting for the lock (pid 16240 since 2026-10-26 01:13:29: ./gradlew check assembleDevDebug assembleProdRelease --continue)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Starting a Gradle Daemon, 3 busy and 2 stopped Daemons could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: spotlessKotlinCheck spotlessKotlinGradleCheck
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :spotlessKotlin
+> Task :spotlessKotlinCheck
+> Task :spotlessKotlinGradle
+> Task :spotlessKotlinGradleCheck
+
+BUILD SUCCESSFUL in 1m 9s
+8 actionable tasks: 4 executed, 4 up-to-date
+Configuration cache entry stored.
+EXIT 0
+01:30:03

@@ -1,0 +1,57 @@
+✖ with the box ticked, no preset or feature promises what a project without UI components lacks (4.3376ms)
+✖ a setup-only site, whatever the visitor asked for, promises none of it either (1.0574ms)
+✔ with the box unticked every preset and feature reads as the catalogue writes it (2.0034ms)
+✔ with the box ticked a feature module reads as such a project gets it; unticked the site keeps its own words (1.745ms)
+✔ the option describes only features it keeps, and presets the target has (0.9945ms)
+✖ with the box ticked the haptics toggle says what the value sets; unticked the site keeps its own words (0.9648ms)
+✔ on a setup-only site the Project step's summary names no tab and no home module, whatever was picked (3.4607ms)
+✔ with UI components the summary still lists the tabs, and the home module scaffolded when nothing gives one (1.3958ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 5
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 178.2855
+
+✖ failing tests:
+
+test at features\catalogue\copy.test.ts:60:1
+✖ with the box ticked, no preset or feature promises what a project without UI components lacks (4.3376ms)
+  TypeError: Cannot read properties of undefined (reading 'find')
+      at fieldCopy (file:///D:/projects/tools/.overhaul/wt/NOUI-FIX/web/frontend/features/catalogue/options.ts:59:28)
+      at hapticsHint (file:///D:/projects/tools/.overhaul/wt/NOUI-FIX/web/frontend/features/configurator/uiComponents.ts:79:10)
+      at copyOf (file:///D:/projects/tools/.overhaul/wt/NOUI-FIX/web/frontend/features/catalogue/copy.test.ts:41:30)
+      at assertPromisesNothingMissing (file:///D:/projects/tools/.overhaul/wt/NOUI-FIX/web/frontend/features/catalogue/copy.test.ts:53:32)
+      at TestContext.<anonymous> (file:///D:/projects/tools/.overhaul/wt/NOUI-FIX/web/frontend/features/catalogue/copy.test.ts:61:3)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+
+test at features\catalogue\copy.test.ts:64:1
+✖ a setup-only site, whatever the visitor asked for, promises none of it either (1.0574ms)
+  TypeError: Cannot read properties of undefined (reading 'find')
+      at fieldCopy (file:///D:/projects/tools/.overhaul/wt/NOUI-FIX/web/frontend/features/catalogue/options.ts:59:28)
+      at hapticsHint (file:///D:/projects/tools/.overhaul/wt/NOUI-FIX/web/frontend/features/configurator/uiComponents.ts:79:10)
+      at copyOf (file:///D:/projects/tools/.overhaul/wt/NOUI-FIX/web/frontend/features/catalogue/copy.test.ts:41:30)
+      at assertPromisesNothingMissing (file:///D:/projects/tools/.overhaul/wt/NOUI-FIX/web/frontend/features/catalogue/copy.test.ts:53:32)
+      at TestContext.<anonymous> (file:///D:/projects/tools/.overhaul/wt/NOUI-FIX/web/frontend/features/catalogue/copy.test.ts:66:3)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+
+test at features\catalogue\copy.test.ts:108:1
+✖ with the box ticked the haptics toggle says what the value sets; unticked the site keeps its own words (0.9648ms)
+  TypeError: Cannot read properties of undefined (reading 'find')
+      at TestContext.<anonymous> (file:///D:/projects/tools/.overhaul/wt/NOUI-FIX/web/frontend/features/catalogue/copy.test.ts:112:33)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+exit 1

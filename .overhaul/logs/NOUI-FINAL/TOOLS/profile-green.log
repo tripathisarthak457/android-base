@@ -1,0 +1,10 @@
+# tree: D:/projects/tools/.overhaul/wt/NOUI-FINAL-TOOLS (1f2fd6c85)
+# command: memwait python -m unittest tests.test_android_truth -v
+# start: Sun Oct 25 18:12:21 IST 2026
+test_the_profiles_name_only_classes_the_project_has (tests.test_android_truth.ProfileTest.test_the_profiles_name_only_classes_the_project_has) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 8.190s
+
+OK
+# exit: 0 end: Sun Oct 25 18:12:32 IST 2026

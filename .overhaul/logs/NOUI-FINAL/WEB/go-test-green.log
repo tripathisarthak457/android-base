@@ -1,0 +1,38 @@
+Sun Oct 25 13:54:48 IST 2026
+$ gofmt -l .
+gofmt exit=0
+$ go vet ./...
+vet exit=0
+$ go build ./...
+build exit=0
+$ go test ./internal/store/ ./internal/httpapi/ -run "UIComponents|Rollup|WeeklyAdoption|Export" -count=1 -v
+fork/exec C:\Users\CRAZYH~1\AppData\Local\Temp\go-build3134235119\b253\store.test.exe: An Application Control policy has blocked this file.
+FAIL	github.com/base-android/generator-api/internal/store	2.171s
+=== RUN   TestTheUIComponentsFilterIsWithOrWithout
+--- PASS: TestTheUIComponentsFilterIsWithOrWithout (0.00s)
+=== RUN   TestTheExportPutsUIComponentsUnderItsColumn
+--- PASS: TestTheExportPutsUIComponentsUnderItsColumn (0.00s)
+=== RUN   TestAnUnknownUIComponentsFilterIsABadRequestBeforeTheDatabase
+--- PASS: TestAnUnknownUIComponentsFilterIsABadRequestBeforeTheDatabase (0.01s)
+PASS
+ok  	github.com/base-android/generator-api/internal/httpapi	2.325s
+FAIL
+test exit=1
+
+== after reflowing ==
+Sun Oct 25 13:55:47 IST 2026
+$ gofmt -l .
+$ go vet ./...
+vet exit=0
+$ go build ./...
+build exit=0
+$ go test ./internal/httpapi/ -run "UIComponents|Export" -count=1 -v
+=== RUN   TestTheUIComponentsFilterIsWithOrWithout
+--- PASS: TestTheUIComponentsFilterIsWithOrWithout (0.00s)
+=== RUN   TestTheExportPutsUIComponentsUnderItsColumn
+--- PASS: TestTheExportPutsUIComponentsUnderItsColumn (0.00s)
+=== RUN   TestAnUnknownUIComponentsFilterIsABadRequestBeforeTheDatabase
+--- PASS: TestAnUnknownUIComponentsFilterIsABadRequestBeforeTheDatabase (0.01s)
+PASS
+ok  	github.com/base-android/generator-api/internal/httpapi	2.403s
+test exit=0

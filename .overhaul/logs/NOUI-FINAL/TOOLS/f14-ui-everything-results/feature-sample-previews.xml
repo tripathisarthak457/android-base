@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-25T17:54:22.064Z" hostname="SARTHAK-PC" time="42.413">
+  <properties/>
+  <testcase name="test[JUnit4TestParameter(preview=com.example.finaltools.uieverything.feature.sample.detail.SampleDetailScreenKt_SampleDetailPreview)]" classname="com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests" time="31.714"/>
+  <testcase name="test[JUnit4TestParameter(preview=com.example.finaltools.uieverything.feature.sample.list.SampleListScreenKt_SampleListContentPreview)]" classname="com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests" time="3.345"/>
+  <testcase name="test[JUnit4TestParameter(preview=com.example.finaltools.uieverything.feature.sample.list.SampleListScreenKt_SampleListLoadingPreview)]" classname="com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests" time="1.033"/>
+  <testcase name="test[JUnit4TestParameter(preview=com.example.finaltools.uieverything.feature.sample.list.SampleListScreenKt_SampleListLoadingPreview)]" classname="com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests" time="0.898"/>
+  <testcase name="test[JUnit4TestParameter(preview=com.example.finaltools.uieverything.feature.sample.list.SampleListScreenKt_SampleListLoadingPreview)]" classname="com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests" time="0.76"/>
+  <testcase name="test[JUnit4TestParameter(preview=com.example.finaltools.uieverything.feature.sample.list.SampleListScreenKt_SampleListLoadingPreview)]" classname="com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests" time="0.786"/>
+  <testcase name="test[JUnit4TestParameter(preview=com.example.finaltools.uieverything.feature.sample.list.SampleListScreenKt_SampleListLoadingPreview)]" classname="com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests" time="0.678"/>
+  <testcase name="test[JUnit4TestParameter(preview=com.example.finaltools.uieverything.feature.sample.list.SampleListScreenKt_SampleListLoadingPreview)]" classname="com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests" time="0.802"/>
+  <testcase name="test[JUnit4TestParameter(preview=com.example.finaltools.uieverything.feature.sample.list.SampleListScreenKt_SampleListLoadingPreview)]" classname="com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests" time="0.652"/>
+  <testcase name="test[JUnit4TestParameter(preview=com.example.finaltools.uieverything.feature.sample.list.SampleListScreenKt_SampleListEmptyPreview)]" classname="com.github.takahirom.roborazzi.RoborazziPreviewParameterizedTests" time="0.507"/>
+  <system-out><![CDATA[Roborazzi: Info: [AccessibilityViewCheckResult check=AccessibilityHierarchyCheckResult INFO DuplicateSpeakableTextCheck 2 [ViewHierarchyElement class=android.widget.TextView text=A sample title bounds=Rect(16, 94 - 148, 119)] {KEY_CONFLICTING_VIEW_COUNT=1, KEY_SPEAKABLE_TEXT=A sample title} num_answers:0 view=null]
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

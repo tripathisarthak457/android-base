@@ -1,0 +1,45 @@
+02:55:10
+D free GB: 78.7
+./gradlew --offline --continue verifyCodeRules
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Reusing configuration cache.
+> Task :catalog:verifyCodeRules UP-TO-DATE
+> Task :core:applock:verifyCodeRules UP-TO-DATE
+> Task :core:analytics:verifyCodeRules UP-TO-DATE
+> Task :app:verifyCodeRules UP-TO-DATE
+> Task :core:database:verifyCodeRules UP-TO-DATE
+> Task :core:common:verifyCodeRules UP-TO-DATE
+> Task :core:datastore:verifyCodeRules UP-TO-DATE
+> Task :core:media:verifyCodeRules UP-TO-DATE
+> Task :core:devtools:verifyCodeRules UP-TO-DATE
+> Task :core:flags:verifyCodeRules UP-TO-DATE
+> Task :core:mvi:verifyCodeRules UP-TO-DATE
+> Task :core:navigation:verifyCodeRules UP-TO-DATE
+> Task :core:network:verifyCodeRules UP-TO-DATE
+> Task :core:notification:verifyCodeRules UP-TO-DATE
+> Task :core:playstore:verifyCodeRules UP-TO-DATE
+> Task :core:testing:verifyCodeRules UP-TO-DATE
+> Task :core:perfhud:verifyCodeRules UP-TO-DATE
+> Task :core:ui:verifyCodeRules UP-TO-DATE
+> Task :data:auth:verifyCodeRules UP-TO-DATE
+> Task :data:feed:verifyCodeRules UP-TO-DATE
+> Task :data:profile:verifyCodeRules UP-TO-DATE
+> Task :data:sample:verifyCodeRules UP-TO-DATE
+> Task :data:search:verifyCodeRules UP-TO-DATE
+> Task :feature:onboarding:verifyCodeRules UP-TO-DATE
+> Task :feature:feed:verifyCodeRules UP-TO-DATE
+> Task :feature:auth:verifyCodeRules UP-TO-DATE
+> Task :feature:sample:verifyCodeRules UP-TO-DATE
+> Task :feature:profile:verifyCodeRules UP-TO-DATE
+> Task :feature:search:verifyCodeRules UP-TO-DATE
+> Task :feature:settings:verifyCodeRules UP-TO-DATE
+> Task :core:testing:compose:verifyCodeRules UP-TO-DATE
+> Task :core:navigation:shell:verifyCodeRules UP-TO-DATE
+> Task :core:designsystem:verifyCodeRules
+
+BUILD SUCCESSFUL in 4s
+33 actionable tasks: 1 executed, 32 up-to-date
+Configuration cache entry reused.
+EXIT 0
+02:55:16

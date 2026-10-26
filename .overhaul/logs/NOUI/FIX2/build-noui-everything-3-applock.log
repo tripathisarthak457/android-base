@@ -1,0 +1,245 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:applock:testDebugUnitTest
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin FROM-CACHE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:applock:verifyModuleDependencies FROM-CACHE
+> Task :core:common:verifyModuleDependencies FROM-CACHE
+> Task :core:common:verifyApiPurity FROM-CACHE
+> Task :core:datastore:verifyModuleDependencies FROM-CACHE
+> Task :core:applock:verifyApiPurity
+> Task :core:applock:preBuild
+> Task :core:applock:preDebugBuild
+> Task :core:datastore:verifyApiPurity FROM-CACHE
+> Task :core:applock:processDebugNavigationResources FROM-CACHE
+> Task :core:datastore:preBuild UP-TO-DATE
+> Task :core:datastore:preDebugBuild UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity FROM-CACHE
+> Task :core:designsystem:verifyModuleDependencies FROM-CACHE
+> Task :core:applock:generateDebugResources FROM-CACHE
+> Task :core:designsystem:preBuild UP-TO-DATE
+> Task :core:designsystem:preDebugBuild UP-TO-DATE
+> Task :core:datastore:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:mvi:verifyApiPurity FROM-CACHE
+> Task :core:applock:packageDebugResources FROM-CACHE
+> Task :core:mvi:verifyModuleDependencies FROM-CACHE
+> Task :core:mvi:preBuild UP-TO-DATE
+> Task :core:mvi:preDebugBuild UP-TO-DATE
+> Task :core:mvi:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:packageDebugResources FROM-CACHE
+> Task :core:navigation:verifyApiPurity FROM-CACHE
+> Task :core:navigation:verifyModuleDependencies FROM-CACHE
+> Task :core:navigation:preBuild UP-TO-DATE
+> Task :core:navigation:preDebugBuild UP-TO-DATE
+> Task :core:navigation:javaPreCompileDebug FROM-CACHE
+> Task :core:database:verifyApiPurity FROM-CACHE
+> Task :core:database:verifyModuleDependencies FROM-CACHE
+> Task :core:database:preBuild UP-TO-DATE
+> Task :core:database:preDebugBuild UP-TO-DATE
+> Task :core:database:javaPreCompileDebug FROM-CACHE
+> Task :core:common:compileKotlin FROM-CACHE
+> Task :core:network:verifyApiPurity FROM-CACHE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:network:verifyModuleDependencies FROM-CACHE
+> Task :core:network:preBuild UP-TO-DATE
+> Task :core:network:preDebugBuild UP-TO-DATE
+> Task :core:network:javaPreCompileDebug FROM-CACHE
+> Task :core:common:jar
+> Task :core:ui:verifyApiPurity FROM-CACHE
+> Task :core:applock:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:applock:generateDebugRFile FROM-CACHE
+> Task :core:designsystem:generateDebugRFile FROM-CACHE
+> Task :core:datastore:kspDebugKotlin FROM-CACHE
+> Task :core:navigation:kspDebugKotlin FROM-CACHE
+> Task :core:mvi:compileDebugKotlin FROM-CACHE
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibCompileToJarDebug
+> Task :core:database:kspDebugKotlin FROM-CACHE
+> Task :core:datastore:compileDebugKotlin FROM-CACHE
+> Task :core:navigation:compileDebugKotlin FROM-CACHE
+> Task :core:designsystem:compileDebugKotlin FROM-CACHE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:ui:verifyModuleDependencies FROM-CACHE
+> Task :core:ui:preBuild UP-TO-DATE
+> Task :core:ui:preDebugBuild UP-TO-DATE
+> Task :core:database:compileDebugKotlin FROM-CACHE
+> Task :core:ui:generateDebugResources FROM-CACHE
+> Task :core:ui:packageDebugResources FROM-CACHE
+> Task :core:ui:processDebugNavigationResources FROM-CACHE
+> Task :core:ui:parseDebugLocalResources FROM-CACHE
+> Task :core:ui:generateDebugRFile FROM-CACHE
+> Task :core:ui:javaPreCompileDebug FROM-CACHE
+> Task :core:applock:javaPreCompileDebug FROM-CACHE
+> Task :core:applock:preDebugUnitTestBuild
+> Task :core:applock:writeDebugAarMetadata
+> Task :core:database:writeDebugAarMetadata
+> Task :core:datastore:writeDebugAarMetadata
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:mvi:writeDebugAarMetadata
+> Task :core:navigation:writeDebugAarMetadata
+> Task :core:network:writeDebugAarMetadata
+> Task :core:testing:verifyApiPurity FROM-CACHE
+> Task :core:testing:verifyModuleDependencies FROM-CACHE
+> Task :core:testing:preBuild UP-TO-DATE
+> Task :core:testing:preDebugBuild UP-TO-DATE
+> Task :core:testing:writeDebugAarMetadata
+> Task :core:ui:writeDebugAarMetadata
+> Task :core:datastore:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:datastore:bundleLibCompileToJarDebug
+> Task :core:applock:mapDebugSourceSetPaths
+> Task :core:applock:compileDebugLibraryResources FROM-CACHE
+> Task :core:applock:mapDebugUnitTestSourceSetPaths
+> Task :core:applock:generateDebugUnitTestResources FROM-CACHE
+> Task :core:navigation:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:database:generateDebugEmptyResourceFiles
+> Task :core:datastore:generateDebugEmptyResourceFiles
+> Task :core:mvi:generateDebugEmptyResourceFiles
+> Task :core:navigation:generateDebugEmptyResourceFiles
+> Task :core:database:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:network:generateDebugEmptyResourceFiles
+> Task :core:applock:checkDebugUnitTestAarMetadata
+> Task :core:database:copyRoomSchemas NO-SOURCE
+> Task :core:applock:extractDeepLinksDebug FROM-CACHE
+> Task :core:testing:generateDebugEmptyResourceFiles
+> Task :core:database:bundleLibCompileToJarDebug
+> Task :core:applock:processDebugManifest FROM-CACHE
+> Task :core:navigation:transformDebugClassesWithAsm FROM-CACHE
+> Task :core:database:processDebugManifest FROM-CACHE
+> Task :core:navigation:bundleLibCompileToJarDebug
+> Task :core:network:kspDebugKotlin FROM-CACHE
+> Task :core:designsystem:extractDeepLinksDebug FROM-CACHE
+> Task :core:datastore:processDebugManifest FROM-CACHE
+> Task :core:designsystem:processDebugManifest FROM-CACHE
+> Task :core:mvi:processDebugManifest FROM-CACHE
+> Task :core:navigation:processDebugManifest FROM-CACHE
+> Task :core:network:processDebugManifest FROM-CACHE
+> Task :core:ui:extractDeepLinksDebug FROM-CACHE
+> Task :core:testing:processDebugManifest FROM-CACHE
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:ui:processDebugManifest FROM-CACHE
+> Task :core:designsystem:compileDebugLibraryResources FROM-CACHE
+> Task :core:ui:mapDebugSourceSetPaths
+> Task :core:ui:compileDebugLibraryResources FROM-CACHE
+> Task :core:testing:compileDebugKotlin FROM-CACHE
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :core:applock:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:applock:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:applock:generateDebugAssets UP-TO-DATE
+> Task :core:applock:mergeDebugAssets
+> Task :core:applock:mergeDebugUnitTestManifest
+> Task :core:database:generateDebugAssets UP-TO-DATE
+> Task :core:database:mergeDebugAssets
+> Task :core:datastore:generateDebugAssets UP-TO-DATE
+> Task :core:applock:processDebugUnitTestManifest
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:datastore:mergeDebugAssets
+> Task :core:designsystem:mergeDebugAssets
+> Task :core:mvi:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:network:compileDebugKotlin FROM-CACHE
+> Task :core:navigation:mergeDebugAssets
+> Task :core:mvi:mergeDebugAssets
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:network:generateDebugAssets UP-TO-DATE
+> Task :core:network:mergeDebugAssets
+> Task :core:testing:mergeDebugAssets
+> Task :core:ui:generateDebugAssets UP-TO-DATE
+> Task :core:applock:koverFindJar
+> Task :core:ui:mergeDebugAssets
+> Task :core:database:bundleLibRuntimeToJarDebug
+> Task :core:applock:mergeDebugUnitTestAssets
+> Task :core:database:processDebugJavaRes
+> Task :core:datastore:bundleLibRuntimeToJarDebug
+> Task :core:datastore:processDebugJavaRes
+> Task :core:applock:mergeDebugUnitTestResources FROM-CACHE
+> Task :core:network:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:processDebugJavaRes
+> Task :core:mvi:bundleLibRuntimeToJarDebug
+> Task :core:mvi:processDebugJavaRes
+> Task :core:navigation:bundleLibRuntimeToJarDebug
+> Task :core:navigation:processDebugJavaRes
+> Task :core:network:bundleLibCompileToJarDebug
+> Task :core:network:processDebugJavaRes
+> Task :core:network:bundleLibRuntimeToJarDebug
+> Task :core:testing:bundleLibRuntimeToJarDebug
+> Task :core:testing:processDebugJavaRes
+> Task :core:ui:kspDebugKotlin FROM-CACHE
+> Task :core:applock:processDebugUnitTestResources FROM-CACHE
+> Task :core:applock:packageDebugUnitTestForUnitTest
+> Task :core:ui:compileDebugKotlin FROM-CACHE
+> Task :core:applock:generateDebugUnitTestConfig
+> Task :core:ui:processDebugJavaRes
+> Task :core:ui:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:ui:bundleLibRuntimeToJarDebug
+> Task :core:ui:bundleLibCompileToJarDebug
+> Task :core:applock:kspDebugKotlin
+> Task :core:applock:compileDebugKotlin
+> Task :core:applock:processDebugJavaRes
+> Task :core:applock:compileDebugJavaWithJavac
+> Task :core:applock:bundleLibRuntimeToJarDebug
+> Task :core:applock:bundleLibCompileToJarDebug
+> Task :core:applock:kspDebugUnitTestKotlin
+> Task :core:applock:compileDebugUnitTestKotlin FROM-CACHE
+> Task :core:applock:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:applock:processDebugUnitTestJavaRes
+
+> Task :core:applock:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:applock:testDebugUnitTest
+
+AppLockGateTest > Tab reaches the cover, and the content underneath cannot take focus off it FAILED
+    java.lang.AssertionError at AppLockGateTest.kt:146
+
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by androidx.datastore.preferences.protobuf.UnsafeUtil$MemoryAccessor (file:/D:/.caches/gradle/caches/modules-2/files-2.1/androidx.datastore/datastore-preferences-external-protobuf/1.2.1/200a891fd29602b4bcff8e197d243a372fb026d5/datastore-preferences-external-protobuf-1.2.1.jar)
+WARNING: Please consider reporting this to the maintainers of class androidx.datastore.preferences.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+> Task :core:applock:testDebugUnitTest FAILED
+
+14 tests completed, 1 failed
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:applock:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/out/NOUI/fix2-noui-everything/core/applock/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 32s
+157 actionable tasks: 73 executed, 84 from cache
+Configuration cache entry stored.
+exit=1

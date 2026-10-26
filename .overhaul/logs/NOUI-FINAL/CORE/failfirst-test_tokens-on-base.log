@@ -1,0 +1,26 @@
+17:57:14
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\CORE\failfirst\generator\tests\test_tokens.py", line 499, in test_every_theme_type_the_tokens_import_is_declared_in_that_design_system
+    types, entries = _theme_types(target)
+                     ~~~~~~~~~~~~^^^^^^^^
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\CORE\failfirst\generator\tests\test_tokens.py", line 540, in _theme_types
+    for path in get(target).template_dir.glob("core/designsystem/src/*/kotlin/com/base/app/core/designsystem/theme/*.kt"):
+                ~~~^^^^^^^^
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\CORE\failfirst\generator\genkit\targets\__init__.py", line 53, in get
+    raise SpecError(
+        f"Unknown target '{key}'. This generator has: {', '.join(REGISTRY)}.", "platform"
+    ) from None
+genkit.core.spec.SpecError: Unknown target 'multiplatform'. This generator has: android.
+
+======================================================================
+ERROR: setUpClass (tests.test_tokens.SkeletonEmitterTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\CORE\failfirst\generator\tests\test_tokens.py", line 414, in setUpClass
+    cls.kotlin = kotlin.emit_skeleton(cls.resolved, "com.acme.x")
+                 ^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'genkit.tokens.kotlin' has no attribute 'emit_skeleton'
+
+----------------------------------------------------------------------
+Ran 48 tests in 3.274s
+
+FAILED (errors=3)

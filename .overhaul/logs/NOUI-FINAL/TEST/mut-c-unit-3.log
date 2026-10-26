@@ -1,0 +1,13 @@
+# cwd: D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/mut-c
+# project: gen-mut-c.log (head 207a12d2f + add_feature orders), mutated by set C as it stands in mutate.log (busy raised as false; onFirstObserved runs its block at construction; SignUp's showErrors starts true; SignUp's name rule without its minimum length)
+# command: locked gradle ./gradlew :core:mvi:testDebugUnitTest :feature:auth:testDebugUnitTest :feature:sample:testDebugUnitTest :feature:profile:testDebugUnitTest :feature:search:testDebugUnitTest :feature:settings:testDebugUnitTest :feature:orders:testDebugUnitTest --continue
+# start: Sun Oct 25 20:10:19 IST 2026
+[locked:gradle] waiting for the lock (pid 2740 since 2026-10-25 20:09:33: ./gradlew :core:testing:compose:compileDebugKotlin)
+[locked:gradle] waiting for the lock (pid 2740 since 2026-10-25 20:09:33: ./gradlew :core:testing:compose:compileDebugKotlin)
+[locked:gradle] waiting for the lock (pid 17604 since 2026-10-25 20:16:16: ./gradlew check assembleDevDebug --continue)
+[locked:gradle] waiting for the lock (pid 17604 since 2026-10-25 20:16:16: ./gradlew check assembleDevDebug --continue)
+[locked:gradle] waiting for the lock (pid 17604 since 2026-10-25 20:16:16: ./gradlew check assembleDevDebug --continue)
+[locked:gradle] waiting for the lock (pid 14152 since 2026-10-25 20:34:21: ./gradlew :core:navigation:testDebugUnitTest :core:navigation:shell:testDebugUnitTest :app:testDevDebugUnitTest :catalog)
+[locked:gradle] waiting for the lock (pid 12820 since 2026-10-25 20:37:50: ./gradlew --continue :core:designsystem:verifyCodeRules :core:designsystem:testDebugUnitTest)
+[locked:gradle] waiting for the lock (pid 12820 since 2026-10-25 20:37:50: ./gradlew --continue :core:designsystem:verifyCodeRules :core:designsystem:testDebugUnitTest)
+[locked:gradle] waiting for the lock (pid 12820 since 2026-10-25 20:37:50: ./gradlew --continue :core:designsystem:verifyCodeRules :core:designsystem:testDebugUnitTest)

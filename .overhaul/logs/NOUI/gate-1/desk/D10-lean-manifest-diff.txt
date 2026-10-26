@@ -1,0 +1,27 @@
+before add vs after add:
+added 20, removed 0, changed 2
+  added: data/orders/build.gradle.kts
+  added: data/orders/src/main/kotlin/com/example/gateone/data/orders/DefaultOrdersRepository.kt
+  added: data/orders/src/main/kotlin/com/example/gateone/data/orders/api/OrdersItem.kt
+  added: data/orders/src/main/kotlin/com/example/gateone/data/orders/api/OrdersRepository.kt
+  added: data/orders/src/main/kotlin/com/example/gateone/data/orders/di/OrdersDataModule.kt
+  added: data/orders/src/main/kotlin/com/example/gateone/data/orders/remote/OrdersDto.kt
+  added: data/orders/src/test/kotlin/com/example/gateone/data/orders/remote/OrdersDtoTest.kt
+  added: data/orders/src/test/resources/orders.json
+  added: data/orders/src/testFixtures/kotlin/com/example/gateone/data/orders/api/FakeOrdersRepository.kt
+  added: feature/orders/build.gradle.kts
+  added: feature/orders/src/main/kotlin/com/example/gateone/feature/orders/api/OrdersKeys.kt
+  added: feature/orders/src/main/kotlin/com/example/gateone/feature/orders/detail/OrdersDetailContract.kt
+  added: feature/orders/src/main/kotlin/com/example/gateone/feature/orders/detail/OrdersDetailRoute.kt
+  added: feature/orders/src/main/kotlin/com/example/gateone/feature/orders/detail/OrdersDetailViewModel.kt
+  added: feature/orders/src/main/kotlin/com/example/gateone/feature/orders/list/OrdersListContract.kt
+  added: feature/orders/src/main/kotlin/com/example/gateone/feature/orders/list/OrdersListRoute.kt
+  added: feature/orders/src/main/kotlin/com/example/gateone/feature/orders/list/OrdersListViewModel.kt
+  added: feature/orders/src/main/kotlin/com/example/gateone/feature/orders/navigation/OrdersNavigation.kt
+  added: feature/orders/src/main/res/values/strings.xml
+  added: feature/orders/src/test/kotlin/com/example/gateone/feature/orders/list/OrdersListViewModelTest.kt
+  changed: app/build.gradle.kts
+  changed: settings.gradle.kts
+
+before add vs after remove:
+added 0, removed 0, changed 0

@@ -1,0 +1,32 @@
+FAIL: test_a_domain_module_joins_a_modular_project (tests.test_android_noui.ProjectScriptsTest.test_a_domain_module_joins_a_modular_project)
+AssertionError: 'include(":domain:pricing")' != ''
+FAIL: test_a_folder_that_cannot_be_deleted_is_already_out_of_the_build_and_goes_next_time (tests.test_android_noui.ProjectScriptsTest.test_a_folder_that_cannot_be_deleted_is_already_out_of_the_build_and_goes_next_time)
+AssertionError: 1 != 0
+FAIL: test_a_module_brings_its_logic_and_a_placeholder_route_and_says_so (tests.test_android_noui.ProjectScriptsTest.test_a_module_brings_its_logic_and_a_placeholder_route_and_says_so) (tier='data')
+AssertionError: 'include(":data:orders")' != ''
+FAIL: test_a_module_brings_its_logic_and_a_placeholder_route_and_says_so (tests.test_android_noui.ProjectScriptsTest.test_a_module_brings_its_logic_and_a_placeholder_route_and_says_so) (tier='feature')
+AssertionError: 'include(":feature:orders")' != ''
+FAIL: test_a_removal_cut_short_is_finished_by_the_next (tests.test_android_noui.ProjectScriptsTest.test_a_removal_cut_short_is_finished_by_the_next)
+AssertionError: {'.ag[27987 chars]e, 'docs': None, 'generator-spec.json': b'{\n [5938489 chars] />'} != {'.ag[27987 chars]e, 'data': None, 'docs': None, 'generator-spec[5938523 chars] />'}
+FAIL: test_a_tier_left_with_only_its_build_output_goes_with_its_last_module (tests.test_android_noui.ProjectScriptsTest.test_a_tier_left_with_only_its_build_output_goes_with_its_last_module)
+AssertionError: 'data/  (no module left in it)' not found in '\nRemoving\n────────\n  delete  data/orders/\n  delete  feature/orders/\n\n  and the lines naming them in:\n    settings.gradle.kts, app/build.gradle.kts, ui/AppDestinations.kt\n\n  Nothing was deleted. Drop --dry-run to do it.\n\n'
+FAIL: test_nothing_sends_a_reader_to_the_harness_the_option_leaves_out (tests.test_android_noui.ProjectShapeTest.test_nothing_sends_a_reader_to_the_harness_the_option_leaves_out) (project='lean-compact')
+AssertionError: Lists differ: [] != ['app/src/main/kotlin/com/acme/noui/startup/LaunchHook.kt:10']
+FAIL: test_nothing_sends_a_reader_to_the_harness_the_option_leaves_out (tests.test_android_noui.ProjectShapeTest.test_nothing_sends_a_reader_to_the_harness_the_option_leaves_out) (project='lean-modular')
+AssertionError: Lists differ: [] != ['app/src/main/kotlin/com/acme/noui/startup/LaunchHook.kt:10']
+FAIL: test_nothing_sends_a_reader_to_the_harness_the_option_leaves_out (tests.test_android_noui.ProjectShapeTest.test_nothing_sends_a_reader_to_the_harness_the_option_leaves_out) (project='standard-compact')
+AssertionError: Lists differ: [] != ['app/src/main/kotlin/com/acme/noui/startu[762 chars]:36']
+FAIL: test_nothing_sends_a_reader_to_the_harness_the_option_leaves_out (tests.test_android_noui.ProjectShapeTest.test_nothing_sends_a_reader_to_the_harness_the_option_leaves_out) (project='standard-modular')
+AssertionError: Lists differ: [] != ['app/src/main/kotlin/com/acme/noui/startu[762 chars]:36']
+FAIL: test_nothing_sends_a_reader_to_the_harness_the_option_leaves_out (tests.test_android_noui.ProjectShapeTest.test_nothing_sends_a_reader_to_the_harness_the_option_leaves_out) (project='everything-compact')
+AssertionError: Lists differ: [] != ['app/src/main/kotlin/com/acme/noui/startu[762 chars]:36']
+FAIL: test_nothing_sends_a_reader_to_the_harness_the_option_leaves_out (tests.test_android_noui.ProjectShapeTest.test_nothing_sends_a_reader_to_the_harness_the_option_leaves_out) (project='everything-modular')
+AssertionError: Lists differ: [] != ['app/src/main/kotlin/com/acme/noui/startu[762 chars]:36']
+FAIL: test_nothing_sends_a_reader_to_the_harness_the_option_leaves_out (tests.test_android_noui.ProjectShapeTest.test_nothing_sends_a_reader_to_the_harness_the_option_leaves_out) (project='none-modules')
+AssertionError: Lists differ: [] != ['app/src/main/kotlin/com/acme/noui/startup/LaunchHook.kt:10']
+Ran 24 tests in 91.696s
+FAILED (failures=13)
+held tests on 4e5c7446f's remove_feature: FAIL: test_a_folder_that_cannot_be_deleted_is_already_out_of_the_build_and_goes_next_time (tests.test_android_noui_held.ProjectScriptsTest.test_a_folder_that_cannot_be_deleted_is_already_out_of_the_build_and_goes_next_time)
+held tests on 4e5c7446f's remove_feature: FAIL: test_a_removal_cut_short_is_finished_by_the_next (tests.test_android_noui_held.ProjectScriptsTest.test_a_removal_cut_short_is_finished_by_the_next)
+held tests on 4e5c7446f's remove_feature: Ran 2 tests in 51.840s
+held tests on 4e5c7446f's remove_feature: FAILED (failures=2)

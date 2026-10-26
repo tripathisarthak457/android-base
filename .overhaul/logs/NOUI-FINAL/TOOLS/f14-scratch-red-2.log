@@ -1,0 +1,7 @@
+# project: D:/projects/tools/.overhaul/out/NOUI-FINAL/TOOLS/noui-lean
+# generated from:  (+ the uncommitted tree at generation, see the gen log)
+# command: locked gradle ./gradlew :core:designsystem:testDebugUnitTest --continue
+# start: Sun Oct 25 18:39:53 IST 2026
+[locked:gradle] waiting for the lock (pid 9296 since 2026-10-25 18:39:08: ./gradlew :core:navigation:testDebugUnitTest :core:navigation:shell:testDebugUnitTest :app:testDevDebugUnitTest :catalog)
+[locked:gradle] waiting for the lock (pid 16440 since 2026-10-25 18:41:45: ./gradlew :core:designsystem:recordRoborazziDebug)
+# exit: 0 end: Sun Oct 25 18:48:25 IST 2026

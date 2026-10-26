@@ -1,0 +1,16 @@
+20:20:02
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-NEXT-CORE\generator\tests\test_tokens.py", line 193, in test_the_components_white_and_black_stay_pure_in_every_tone_and_brand
+    self.assertEqual(set(), set(expected) - set(kotlin.COMPONENT_ROLES))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'onMedia'
+'mediaBackdrop'
+'thumb'
+'shade'
+'sheen'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.051s
+
+FAILED (failures=1, errors=16)

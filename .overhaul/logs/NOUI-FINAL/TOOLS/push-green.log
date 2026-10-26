@@ -1,0 +1,13 @@
+# tree: D:/projects/tools/.overhaul/wt/NOUI-FINAL-TOOLS (8d99907e1)
+# command: memwait python -m unittest tests.test_android_truth -v
+# start: Sun Oct 25 18:15:12 IST 2026
+test_the_profiles_name_only_classes_the_project_has (tests.test_android_truth.ProfileTest.test_the_profiles_name_only_classes_the_project_has) ... ok
+test_every_mix_of_asking_screens_is_held (tests.test_android_truth.PushPermissionTest.test_every_mix_of_asking_screens_is_held) ... ok
+test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) ... ok
+test_what_the_docs_say_asks_or_opens_is_what_the_code_does (tests.test_android_truth.PushPermissionTest.test_what_the_docs_say_asks_or_opens_is_what_the_code_does) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 22.490s
+
+OK
+# exit: 0 end: Sun Oct 25 18:15:35 IST 2026

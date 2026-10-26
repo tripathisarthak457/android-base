@@ -1,0 +1,3 @@
+inserted public: 57 in 5 files
+SKIPPED AppColors.kt:111: fun appColors(dark: Boolean): AppColors = if (dark) DesignTokens.Palette.dark else DesignTokens.Palette.light
+SKIPPED AppFonts.kt:97: val AppFontPreload = FontPreload(

@@ -1,0 +1,30 @@
+deleting D:/projects/tools/.overhaul/out/Full
+deleting D:/projects/tools/.overhaul/out/FullDevtools
+deleting D:/projects/tools/.overhaul/out/HUD
+Traceback (most recent call last):
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\shutil.py", line 693, in _rmtree_unsafe
+    os.rmdir(fullname)
+    ~~~~~~~~^^^^^^^^^^
+OSError: [WinError 145] The directory is not empty: 'D:/projects/tools/.overhaul/out/HUD\\base\\core\\designsystem\\build\\intermediates\\built_in_kotlinc\\release\\compileReleaseKotlin\\classes\\com\\example\\hud\\everything\\core\\designsystem\\component\\refresh'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\scripts\free_space.py", line 91, in <module>
+    main()
+    ~~~~^^
+  File "D:\projects\tools\.overhaul\scripts\free_space.py", line 86, in main
+    shutil.rmtree(path, onexc=force_writable)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\shutil.py", line 859, in rmtree
+    _rmtree_impl(path, dir_fd, onexc)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\shutil.py", line 697, in _rmtree_unsafe
+    onexc(os.rmdir, fullname, err)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\shutil.py", line 857, in onexc
+    return _onexc(func, path, err)
+  File "D:\projects\tools\.overhaul\scripts\free_space.py", line 69, in force_writable
+    func(path)
+    ~~~~^^^^^^
+OSError: [WinError 145] The directory is not empty: 'D:/projects/tools/.overhaul/out/HUD\\base\\core\\designsystem\\build\\intermediates\\built_in_kotlinc\\release\\compileReleaseKotlin\\classes\\com\\example\\hud\\everything\\core\\designsystem\\component\\refresh'

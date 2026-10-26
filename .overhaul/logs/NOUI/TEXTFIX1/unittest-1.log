@@ -1,0 +1,49 @@
+...............................E...........................................................................................................s.........................................................s...........................................ss.....................................................................................................................................................................................................s...........s.........................s..........s........................................................................................s.............................
+======================================================================
+ERROR: test_every_feature_whose_ui_the_option_takes_reads_in_the_option_s_words (tests.test_android_noui.ProjectShapeTest.test_every_feature_whose_ui_the_option_takes_reads_in_the_option_s_words)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_android_noui.py", line 221, in test_every_feature_whose_ui_the_option_takes_reads_in_the_option_s_words
+    taken = ui_the_option_takes()
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_android_noui.py", line 115, in ui_the_option_takes
+    for text in _MARKER.findall(path.read_text(encoding="utf-8")):
+                                ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 987, in read_text
+    return f.read()
+           ~~~~~~^^
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xbc in position 8: invalid start byte
+
+----------------------------------------------------------------------
+Ran 608 tests in 697.211s
+
+FAILED (errors=1, skipped=9)
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+exit 1

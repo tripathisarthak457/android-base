@@ -1,0 +1,595 @@
+# baselines and template.toml at 1f2fd6c85, test_android_guards.py and the WIP build logic
+Sun Oct 25 22:01:37 IST 2026
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF.
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='ui-lean-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 101, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['feature/auth/src/main/kotlin/com/acme/gu[1818 chars]e 2']
+
+Second list contains 18 additional elements.
+First extra element 0:
+'feature/auth/src/main/kotlin/com/acme/guards/feature/auth/AuthFrame.kt adaptive-box-constraints 1'
+
+Diff is 2032 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='ui-lean-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 101, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['feature/auth/src/main/kotlin/com/acme/gu[1818 chars]e 2']
+
+Second list contains 18 additional elements.
+First extra element 0:
+'feature/auth/src/main/kotlin/com/acme/guards/feature/auth/AuthFrame.kt adaptive-box-constraints 1'
+
+Diff is 2032 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='ui-standard-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 101, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['feature/feed/src/main/kotlin/com/acme/gu[830 chars]e 2']
+
+Second list contains 8 additional elements.
+First extra element 0:
+'feature/feed/src/main/kotlin/com/acme/guards/feature/feed/FeedScreen.kt adaptive-preview 1'
+
+Diff is 954 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='ui-standard-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 101, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['feature/auth/src/main/kotlin/com/acme/gu[1713 chars]e 2']
+
+Second list contains 17 additional elements.
+First extra element 0:
+'feature/auth/src/main/kotlin/com/acme/guards/feature/auth/AuthFrame.kt adaptive-box-constraints 1'
+
+Diff is 1918 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='ui-everything-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 101, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['feature/auth/src/main/kotlin/com/acme/gu[1326 chars]w 1']
+
+Second list contains 14 additional elements.
+First extra element 0:
+'feature/auth/src/main/kotlin/com/acme/guards/feature/auth/AuthFrame.kt adaptive-box-constraints 1'
+
+Diff is 1504 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='ui-none-modules')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 101, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['feature/auth/src/main/kotlin/com/acme/gu[1818 chars]e 2']
+
+Second list contains 18 additional elements.
+First extra element 0:
+'feature/auth/src/main/kotlin/com/acme/guards/feature/auth/AuthFrame.kt adaptive-box-constraints 1'
+
+Diff is 2032 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='noui-lean-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 101, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['feature/auth/src/main/kotlin/com/acme/gu[1206 chars]e 1']
+
+Second list contains 11 additional elements.
+First extra element 0:
+'feature/auth/src/main/kotlin/com/acme/guards/feature/auth/AuthFrame.kt adaptive-box-constraints 1'
+
+Diff is 1357 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='noui-lean-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 101, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['feature/auth/src/main/kotlin/com/acme/gu[1206 chars]e 1']
+
+Second list contains 11 additional elements.
+First extra element 0:
+'feature/auth/src/main/kotlin/com/acme/guards/feature/auth/AuthFrame.kt adaptive-box-constraints 1'
+
+Diff is 1357 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='noui-standard-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 101, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['feature/auth/src/main/kotlin/com/acme/gu[1206 chars]e 1']
+
+Second list contains 11 additional elements.
+First extra element 0:
+'feature/auth/src/main/kotlin/com/acme/guards/feature/auth/AuthFrame.kt adaptive-box-constraints 1'
+
+Diff is 1357 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='noui-standard-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 101, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['feature/auth/src/main/kotlin/com/acme/gu[1206 chars]e 1']
+
+Second list contains 11 additional elements.
+First extra element 0:
+'feature/auth/src/main/kotlin/com/acme/guards/feature/auth/AuthFrame.kt adaptive-box-constraints 1'
+
+Diff is 1357 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='noui-everything-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 101, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['feature/auth/src/main/kotlin/com/acme/gu[1206 chars]e 1']
+
+Second list contains 11 additional elements.
+First extra element 0:
+'feature/auth/src/main/kotlin/com/acme/guards/feature/auth/AuthFrame.kt adaptive-box-constraints 1'
+
+Diff is 1357 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='noui-everything-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 101, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['feature/auth/src/main/kotlin/com/acme/gu[1206 chars]e 1']
+
+Second list contains 11 additional elements.
+First extra element 0:
+'feature/auth/src/main/kotlin/com/acme/guards/feature/auth/AuthFrame.kt adaptive-box-constraints 1'
+
+Diff is 1357 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='noui-none-modules')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 101, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['feature/auth/src/main/kotlin/com/acme/gu[1206 chars]e 1']
+
+Second list contains 11 additional elements.
+First extra element 0:
+'feature/auth/src/main/kotlin/com/acme/guards/feature/auth/AuthFrame.kt adaptive-box-constraints 1'
+
+Diff is 1357 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_every_name_the_rules_advise_is_in_the_project (tests.test_android_guards.GuardConfigurationTest.test_every_name_the_rules_advise_is_in_the_project) (project='ui-lean-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 96, in test_every_name_the_rules_advise_is_in_the_project
+    self.assertEqual(set(), unreachable_advice(project, PKG))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'dispatchRawDelta'
+'SheetShadow'
+'graphicsLayer'
+
+======================================================================
+FAIL: test_every_name_the_rules_advise_is_in_the_project (tests.test_android_guards.GuardConfigurationTest.test_every_name_the_rules_advise_is_in_the_project) (project='ui-lean-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 96, in test_every_name_the_rules_advise_is_in_the_project
+    self.assertEqual(set(), unreachable_advice(project, PKG))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'dispatchRawDelta'
+'SheetShadow'
+'graphicsLayer'
+
+======================================================================
+FAIL: test_every_name_the_rules_advise_is_in_the_project (tests.test_android_guards.GuardConfigurationTest.test_every_name_the_rules_advise_is_in_the_project) (project='ui-standard-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 96, in test_every_name_the_rules_advise_is_in_the_project
+    self.assertEqual(set(), unreachable_advice(project, PKG))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'dispatchRawDelta'
+'SheetShadow'
+'graphicsLayer'
+
+======================================================================
+FAIL: test_every_name_the_rules_advise_is_in_the_project (tests.test_android_guards.GuardConfigurationTest.test_every_name_the_rules_advise_is_in_the_project) (project='ui-standard-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 96, in test_every_name_the_rules_advise_is_in_the_project
+    self.assertEqual(set(), unreachable_advice(project, PKG))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'dispatchRawDelta'
+'SheetShadow'
+'graphicsLayer'
+
+======================================================================
+FAIL: test_every_name_the_rules_advise_is_in_the_project (tests.test_android_guards.GuardConfigurationTest.test_every_name_the_rules_advise_is_in_the_project) (project='ui-everything-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 96, in test_every_name_the_rules_advise_is_in_the_project
+    self.assertEqual(set(), unreachable_advice(project, PKG))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'dispatchRawDelta'
+'SheetShadow'
+'graphicsLayer'
+
+======================================================================
+FAIL: test_every_name_the_rules_advise_is_in_the_project (tests.test_android_guards.GuardConfigurationTest.test_every_name_the_rules_advise_is_in_the_project) (project='ui-everything-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 96, in test_every_name_the_rules_advise_is_in_the_project
+    self.assertEqual(set(), unreachable_advice(project, PKG))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'dispatchRawDelta'
+'SheetShadow'
+'graphicsLayer'
+
+======================================================================
+FAIL: test_every_name_the_rules_advise_is_in_the_project (tests.test_android_guards.GuardConfigurationTest.test_every_name_the_rules_advise_is_in_the_project) (project='ui-none-modules')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 96, in test_every_name_the_rules_advise_is_in_the_project
+    self.assertEqual(set(), unreachable_advice(project, PKG))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'dispatchRawDelta'
+'SheetShadow'
+'graphicsLayer'
+
+======================================================================
+FAIL: test_every_name_the_rules_advise_is_in_the_project (tests.test_android_guards.GuardConfigurationTest.test_every_name_the_rules_advise_is_in_the_project) (project='noui-lean-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 96, in test_every_name_the_rules_advise_is_in_the_project
+    self.assertEqual(set(), unreachable_advice(project, PKG))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'graphicsLayer'
+
+======================================================================
+FAIL: test_every_name_the_rules_advise_is_in_the_project (tests.test_android_guards.GuardConfigurationTest.test_every_name_the_rules_advise_is_in_the_project) (project='noui-lean-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 96, in test_every_name_the_rules_advise_is_in_the_project
+    self.assertEqual(set(), unreachable_advice(project, PKG))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'graphicsLayer'
+
+======================================================================
+FAIL: test_every_name_the_rules_advise_is_in_the_project (tests.test_android_guards.GuardConfigurationTest.test_every_name_the_rules_advise_is_in_the_project) (project='noui-standard-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 96, in test_every_name_the_rules_advise_is_in_the_project
+    self.assertEqual(set(), unreachable_advice(project, PKG))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'graphicsLayer'
+
+======================================================================
+FAIL: test_every_name_the_rules_advise_is_in_the_project (tests.test_android_guards.GuardConfigurationTest.test_every_name_the_rules_advise_is_in_the_project) (project='noui-standard-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 96, in test_every_name_the_rules_advise_is_in_the_project
+    self.assertEqual(set(), unreachable_advice(project, PKG))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'graphicsLayer'
+
+======================================================================
+FAIL: test_every_name_the_rules_advise_is_in_the_project (tests.test_android_guards.GuardConfigurationTest.test_every_name_the_rules_advise_is_in_the_project) (project='noui-everything-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 96, in test_every_name_the_rules_advise_is_in_the_project
+    self.assertEqual(set(), unreachable_advice(project, PKG))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'graphicsLayer'
+
+======================================================================
+FAIL: test_every_name_the_rules_advise_is_in_the_project (tests.test_android_guards.GuardConfigurationTest.test_every_name_the_rules_advise_is_in_the_project) (project='noui-everything-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 96, in test_every_name_the_rules_advise_is_in_the_project
+    self.assertEqual(set(), unreachable_advice(project, PKG))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'graphicsLayer'
+
+======================================================================
+FAIL: test_every_name_the_rules_advise_is_in_the_project (tests.test_android_guards.GuardConfigurationTest.test_every_name_the_rules_advise_is_in_the_project) (project='noui-none-modules')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 96, in test_every_name_the_rules_advise_is_in_the_project
+    self.assertEqual(set(), unreachable_advice(project, PKG))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'graphicsLayer'
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='ui-lean-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 106, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)'
+
+- []
++ ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='ui-lean-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 106, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)'
+
+- []
++ ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='ui-standard-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 106, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)'
+
+- []
++ ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='ui-standard-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 106, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)'
+
+- []
++ ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='ui-everything-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 106, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)'
+
+- []
++ ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='ui-everything-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 106, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)'
+
+- []
++ ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='ui-none-modules')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 106, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)'
+
+- []
++ ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='noui-lean-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 106, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.designsystem.compon[168 chars]ey)']
+
+Second list contains 3 additional elements.
+First extra element 0:
+'com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)'
+
+- []
++ ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)',
++  'com.acme.guards.core.navigation.back.BackHandlerEffect(handler)',
++  'com.acme.guards.core.navigation.stack.rememberEntryLifecycle(key)']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='noui-lean-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 106, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.designsystem.compon[168 chars]ey)']
+
+Second list contains 3 additional elements.
+First extra element 0:
+'com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)'
+
+- []
++ ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)',
++  'com.acme.guards.core.navigation.back.BackHandlerEffect(handler)',
++  'com.acme.guards.core.navigation.stack.rememberEntryLifecycle(key)']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='noui-standard-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 106, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.designsystem.compon[168 chars]ey)']
+
+Second list contains 3 additional elements.
+First extra element 0:
+'com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)'
+
+- []
++ ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)',
++  'com.acme.guards.core.navigation.back.BackHandlerEffect(handler)',
++  'com.acme.guards.core.navigation.stack.rememberEntryLifecycle(key)']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='noui-standard-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 106, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.designsystem.compon[168 chars]ey)']
+
+Second list contains 3 additional elements.
+First extra element 0:
+'com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)'
+
+- []
++ ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)',
++  'com.acme.guards.core.navigation.back.BackHandlerEffect(handler)',
++  'com.acme.guards.core.navigation.stack.rememberEntryLifecycle(key)']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='noui-everything-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 106, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.designsystem.compon[168 chars]ey)']
+
+Second list contains 3 additional elements.
+First extra element 0:
+'com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)'
+
+- []
++ ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)',
++  'com.acme.guards.core.navigation.back.BackHandlerEffect(handler)',
++  'com.acme.guards.core.navigation.stack.rememberEntryLifecycle(key)']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='noui-everything-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 106, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.designsystem.compon[168 chars]ey)']
+
+Second list contains 3 additional elements.
+First extra element 0:
+'com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)'
+
+- []
++ ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)',
++  'com.acme.guards.core.navigation.back.BackHandlerEffect(handler)',
++  'com.acme.guards.core.navigation.stack.rememberEntryLifecycle(key)']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='noui-none-modules')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 106, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.designsystem.compon[168 chars]ey)']
+
+Second list contains 3 additional elements.
+First extra element 0:
+'com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)'
+
+- []
++ ['com.acme.guards.core.designsystem.component.list.AppSwipeToAction(resetKey)',
++  'com.acme.guards.core.navigation.back.BackHandlerEffect(handler)',
++  'com.acme.guards.core.navigation.stack.rememberEntryLifecycle(key)']
+
+----------------------------------------------------------------------
+Ran 4 tests in 31.148s
+
+FAILED (failures=41)
+exit 1

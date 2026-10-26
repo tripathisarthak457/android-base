@@ -1,0 +1,16 @@
+
+Removing
+────────
+  delete  data/invoices/
+  delete  feature/invoices/
+
+  and the lines naming them in:
+    settings.gradle.kts, app/build.gradle.kts, ui/AppDestinations.kt
+
+
+  The modules are out of the build, but these folders could not all be deleted:
+    data/invoices/
+    feature/invoices/
+  Something still holds files in them open, usually the Gradle daemon (./gradlew --stop)
+  or the IDE. Delete them once it lets go.
+

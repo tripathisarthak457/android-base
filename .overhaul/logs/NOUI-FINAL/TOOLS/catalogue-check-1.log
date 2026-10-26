@@ -1,0 +1,4 @@
+# tree: febf31200 + uncommitted F14
+# command: python.exe -m genkit.core.catalogue --check
+web/frontend/lib/catalogue.json is current.
+# exit: 0

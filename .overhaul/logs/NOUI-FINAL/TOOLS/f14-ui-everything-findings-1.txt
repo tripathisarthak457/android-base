@@ -1,0 +1,29 @@
+== :catalog: 21 preview tests, 8 failed, 0 errors, 59.198 s
+  FAIL SheetPreviewsKt_TwoDetentSheetPreview [1.185 s] AccessibilityViewCheckException
+      View sheet_grabber: This item's height is 37dp. Consider making the height of this touch target 48dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+  FAIL SheetPreviewsKt_PersistentSheetPreview [0.806 s] AccessibilityViewCheckException
+      View sheet_grabber: This item's height is 42dp. Consider making the height of this touch target 48dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+  FAIL SheetPreviewsKt_PersistentSheetPreview [0.783 s] AccessibilityViewCheckException
+      View sheet_grabber: This item's height is 43dp. Consider making the height of this touch target 48dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+  FAIL SheetPreviewsKt_PersistentSheetPreview [0.579 s] AccessibilityViewCheckException
+      View sheet_grabber: This item's height is 43dp. Consider making the height of this touch target 48dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+  FAIL SheetPreviewsKt_PersistentSheetPreview [0.898 s] AccessibilityViewCheckException
+      View sheet_grabber: This item's height is 43dp. Consider making the height of this touch target 48dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+  FAIL SheetPreviewsKt_PersistentSheetPreview [0.948 s] AccessibilityViewCheckException
+      View sheet_grabber: This item's height is 43dp. Consider making the height of this touch target 48dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+  FAIL SheetPreviewsKt_PersistentSheetPreview [0.944 s] AccessibilityViewCheckException
+      View sheet_grabber: This item's height is 35dp. Consider making the height of this touch target 48dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+  FAIL SheetPreviewsKt_PersistentSheetPreview [0.699 s] AccessibilityViewCheckException
+      View sheet_grabber: This item's height is 43dp. Consider making the height of this touch target 48dp or larger. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.TouchTargetSizeCheck
+== :feature:auth: 3 preview tests, 1 failed, 0 errors, 20.915 s
+  FAIL SignUpKt_SignUpPreview [2.099 s] AccessibilityViewCheckException
+      View with bounds: [16,16][304,87]: This item may not have a label readable by screen readers. Reported by com.google.android.apps.common.testing.accessibility.framework.checks.SpeakableTextPresentCheck
+  ERROR SpeakableTextPresentCheck EditText text=''
+  WARNING DuplicateSpeakableTextCheck View text=''
+  WARNING TextContrastCheck TextView text='Create account'
+  WARNING TextContrastCheck TextView text='Send reset link'
+  WARNING TextContrastCheck TextView text='Sign in'
+  WARNING TextContrastCheck TextView text='or'
+== :feature:onboarding: 1 preview tests, 0 failed, 0 errors, 22.844 s
+== :feature:sample: 10 preview tests, 0 failed, 0 errors, 42.413 s
+== :feature:settings: 1 preview tests, 0 failed, 0 errors, 29.008 s

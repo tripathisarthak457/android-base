@@ -1,0 +1,42 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/red3-ui
+# command: locked gradle ./gradlew -p build-logic :convention:test --tests *SheetRuleCasesTest*
+# start: Mon Oct 26 00:10:12 IST 2026
+[locked:gradle] waiting for the lock (pid 3036 since 2026-10-26 00:08:32: ./gradlew :core:designsystem:testDebugUnitTest --rerun)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+> Task :convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :convention:compileKotlin FROM-CACHE
+> Task :convention:compileJava NO-SOURCE
+> Task :convention:pluginDescriptors
+> Task :convention:processResources
+> Task :convention:classes
+> Task :convention:jar
+> Task :convention:pluginUnderTestMetadata
+> Task :convention:processTestResources NO-SOURCE
+> Task :convention:compileTestKotlin
+> Task :convention:compileTestJava NO-SOURCE
+> Task :convention:testClasses UP-TO-DATE
+
+> Task :convention:test
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+SheetRuleCasesTest > a modifier inside the sheet's slots belongs to their content, not to the sheet FAILED
+    java.lang.AssertionError at SheetRuleCasesTest.kt:92
+
+9 tests completed, 1 failed
+
+> Task :convention:test FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':convention:test'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/red3-ui/build-logic/convention/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 14s
+7 actionable tasks: 6 executed, 1 from cache
+# exit: 1
+# end: Mon Oct 26 00:12:33 IST 2026
+# seconds: 141

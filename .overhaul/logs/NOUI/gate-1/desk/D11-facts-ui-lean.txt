@@ -1,0 +1,3 @@
+ui-lean: test result files in 10 modules; tests=655 failures=0 errors=0 skipped=0
+modules with failures/errors: none
+apk: app/build/outputs/apk/dev/debug/app-dev-debug.apk 17200718

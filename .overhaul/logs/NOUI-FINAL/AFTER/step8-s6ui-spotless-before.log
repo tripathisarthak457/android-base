@@ -1,0 +1,129 @@
+04:59:46
+D free GB: 76.9
+./gradlew --offline --continue spotlessCheck
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: spotlessCheck
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :spotlessKotlinGradle
+> Task :spotlessKotlinGradleCheck FAILED
+> Task :spotlessKotlin
+Format was not able to resolve all violations which (theoretically) can be autocorrected in file D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\s6ui\core\navigation\shell\src\test\kotlin\com\example\finalafter\s6ui\core\navigation\shell\tabs\KeptTabsTest.kt in 3 consecutive runs of format.
+Format was not able to resolve all violations which (theoretically) can be autocorrected in file D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\s6ui\core\network\src\main\kotlin\com\example\finalafter\s6ui\core\network\di\HttpClientModule.kt in 3 consecutive runs of format.
+Format was not able to resolve all violations which (theoretically) can be autocorrected in file D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\s6ui\core\network\src\main\kotlin\com\example\finalafter\s6ui\core\network\di\HttpClientModule.kt in 3 consecutive runs of format.
+
+> Task :spotlessKotlinCheck FAILED
+
+FAILURE: Build completed with 2 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':spotlessKotlinGradleCheck' (registered in build file 'build.gradle.kts').
+> The following files had format violations:
+      benchmark\build.gradle.kts
+          @@ -56,7 +56,9 @@
+           ········variant.instrumentationRunnerArguments.put(
+           ············"targetAppId",
+           ············variant.testedApks.map·{·apks·->
+          -················checkNotNull(loader.load(apks)?.applicationId)·{·"The·tested·APK·has·no·application·id."·}
+          +················checkNotNull(loader.load(apks)?.applicationId)·{
+          +····················"The·tested·APK·has·no·application·id."
+          +················}
+           ············},
+           ········)
+           ····}
+  Run 'gradlew.bat spotlessApply' to fix all violations.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+2: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':spotlessKotlinCheck' (registered in build file 'build.gradle.kts').
+> The following files had format violations:
+      app\src\dev\kotlin\com\example\finalafter\s6ui\perf\DevLaunchOptions.kt
+          @@ -38,7 +38,8 @@
+           class·DevLaunchOptions·@Inject·constructor(
+           ····private·val·settings:·AppSettingsStore,
+           ····private·val·tokens:·AuthTokenStore,
+          -)·:·LaunchHook,·ShellConfigOverride·{
+          +)·:·LaunchHook,
+          +····ShellConfigOverride·{
+           
+           ····private·var·screenResponse:·Float?·=·null
+           ····private·var·barMinimize:·BarMinimize?·=·null
+          @@ -50,11 +51,27 @@
+           ········//·Whether·a·session·is·stored,·not·what·it·holds:·reading·the·token·decrypts·it·through·the
+           ········//·Keystore,·binder·calls·on·the·main·thread·before·the·first·frame·that·every·measured·cold
+           ········//·start·would·pay·and·no·user's·start·does.
+          -········if·(fakeSession·&&·!tokens.isAuthenticated.first())·tokens.save(AuthTokens(SYNTHETIC_TOKEN,·SYNTHETIC_TOKEN,·owner·=·SYNTHETIC_OWNER))
+          +········if·(fakeSession·&&
+          +············!tokens.isAuthenticated.first()
+          +········)·{
+          +············tokens.save(AuthTokens(SYNTHETIC_TOKEN,·SYNTHETIC_TOKEN,·owner·=·SYNTHETIC_OWNER))
+          +········}
+           ········intent.getStringExtra(THEME)?.takeIf·{·it·in·THEMES·}?.let·{·settings.setThemeMode(it)·}
+           ········screenResponse·=·intent.getStringExtra(SCREEN_RESPONSE)?.toFloatOrNull()?.takeIf·{·it·>·0f·}
+          -········barMinimize·=·intent.getStringExtra(BAR_MINIMIZE)?.let·{·name·->·BarMinimize.entries.firstOrNull·{·it.name·==·name·}·}
+          -········barLabels·=·intent.getStringExtra(BAR_LABELS)?.let·{·name·->·TabLabels.entries.firstOrNull·{·it.name·==·name·}·}
+          +········barMinimize·=
+          +············intent.getStringExtra(BAR_MINIMIZE)?.let·{·name·->
+          +················BarMinimize.entries.firstOrNull·{
+          +····················it.name·==
+          +························name
+          +················}
+          +············}
+          +········barLabels·=
+          +············intent.getStringExtra(BAR_LABELS)?.let·{·name·->
+          +················TabLabels.entries.firstOrNull·{
+          +····················it.name·==
+          +························name
+          +················}
+          +············}
+           ····}
+           
+           ····override·fun·adjust(config:·ShellConfig):·ShellConfig·=·config.copy(
+          @@ -72,7 +89,8 @@
+           ········const·val·BAR_MINIMIZE·=·"perf.barMinimize"
+           ········const·val·BAR_LABELS·=·"perf.barLabels"
+           ········const·val·THEME·=·"perf.theme"
+          -········val·THEMES·=·setOf(AppSettings.THEME_SYSTEM,·AppSettings.THEME_LIGHT,·AppSettings.THEME_DARK)
+          +········val·THEMES·=
+          +············setOf(AppSettings.THEME_SYSTEM,·AppSettings.THEME_LIGHT,·AppSettings.THEME_DARK)
+           ········const·val·SYNTHETIC_TOKEN·=·"perf-session"
+      ... (2 more lines that didn't fit)
+  Violations also present in 373 other files.
+  Run 'gradlew.bat spotlessApply' to fix all violations.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+BUILD FAILED in 1m 34s
+8 actionable tasks: 8 executed
+Configuration cache entry stored.
+EXIT 1
+05:01:22

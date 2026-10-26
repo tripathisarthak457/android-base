@@ -1,0 +1,6 @@
+D MviViewModel.kt: MVI: nothing first-observed runs before collection; per screen: list, detail, profile, search, search result and the scaffold's list load nothing before the screen collects
+D MviViewModel.kt: MVI: the busy flag is up while an exclusive run works; SignIn, SignUp, PasswordReset: busy while in flight
+D SignUp.kt: SignUp: nothing is judged until the first submit
+D SignUp.kt: SignUp: a short name and a weak password are each reported on their own field
+D SignIn.kt: SignIn: a Google ID token signs in (the token the repository is handed)
+EXIT=0

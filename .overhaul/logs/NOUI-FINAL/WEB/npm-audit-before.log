@@ -1,0 +1,91 @@
+Sun Oct 25 13:59:32 IST 2026
+$ npm audit --omit=dev --package-lock-only (lock at 1f2fd6c85, next 15.5.27)
+# npm audit report
+
+next  10.0.0 - 15.5.27
+Severity: critical
+Next.js: Unauthenticated Remote Code Execution in Image Optimization API when SVG files are used - https://github.com/advisories/GHSA-2464-fhr4-w9xw
+Next.js: Denial of Service in App Router using Server Actions - https://github.com/advisories/GHSA-p3m5-59mp-jv5r
+fix available via `npm audit fix --force`
+Will install next@15.5.28, which is outside the stated dependency range
+node_modules/next
+
+1 critical severity vulnerability
+
+To address all issues, run:
+  npm audit fix --force
+exit=1
+
+$ npm audit --omit=dev --package-lock-only --json
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "next": {
+      "name": "next",
+      "severity": "critical",
+      "isDirect": true,
+      "via": [
+        {
+          "source": 1242817,
+          "name": "next",
+          "dependency": "next",
+          "title": "Next.js: Unauthenticated Remote Code Execution in Image Optimization API when SVG files are used",
+          "url": "https://github.com/advisories/GHSA-2464-fhr4-w9xw",
+          "severity": "critical",
+          "cwe": [
+            "CWE-1395"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": ">=10.0.0 <=15.5.27"
+        },
+        {
+          "source": 1242819,
+          "name": "next",
+          "dependency": "next",
+          "title": "Next.js: Denial of Service in App Router using Server Actions",
+          "url": "https://github.com/advisories/GHSA-p3m5-59mp-jv5r",
+          "severity": "high",
+          "cwe": [
+            "CWE-770"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": ">=13.0.0 <=15.5.27"
+        }
+      ],
+      "effects": [],
+      "range": "10.0.0 - 15.5.27",
+      "nodes": [
+        "node_modules/next"
+      ],
+      "fixAvailable": {
+        "name": "next",
+        "version": "15.5.28",
+        "isSemVerMajor": false
+      }
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 1,
+      "total": 1
+    },
+    "dependencies": {
+      "prod": 19,
+      "dev": 50,
+      "optional": 60,
+      "peer": 0,
+      "peerOptional": 0,
+      "total": 106
+    }
+  }
+}

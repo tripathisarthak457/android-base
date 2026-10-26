@@ -1,0 +1,37 @@
+EXIT 0
+06:56:12
+EXIT 0
+06:56:16
+EXIT 0
+06:56:22
+EXIT 0
+06:56:24
+EXIT 0
+06:56:27
+EXIT 0
+06:56:31
+== f8h-ui-lean
+> Task :spotlessKotlinCheck FAILED
+BUILD FAILED in 1m 22s
+EXIT 1
+== f8h-ui-standard
+> Task :spotlessKotlinCheck FAILED
+BUILD FAILED in 1m 17s
+EXIT 1
+== f8h-ui-everything
+> Task :spotlessKotlinCheck FAILED
+BUILD FAILED in 1m 35s
+EXIT 1
+== f8h-noui-lean
+> Task :spotlessKotlinCheck FAILED
+BUILD FAILED in 34s
+EXIT 1
+== f8h-noui-standard
+> Task :spotlessKotlinCheck FAILED
+BUILD FAILED in 40s
+EXIT 1
+== f8h-noui-everything
+> Task :spotlessKotlinCheck FAILED
+BUILD FAILED in 53s
+EXIT 1
+ALLDONE

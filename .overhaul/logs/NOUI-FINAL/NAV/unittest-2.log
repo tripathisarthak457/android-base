@@ -1,0 +1,41 @@
+== 20:09:12 generator suite at e31dc2b6d + working tree (docs rewrap, split_profile docstring, host API on apply)
+[locked:memwait] 3333 MB available, 12705 MB commit left; waiting for 3500 MB
+[locked:memwait] 3261 MB available, 12598 MB commit left; waiting for 3500 MB
+[locked:memwait] 3227 MB available, 12512 MB commit left; waiting for 3500 MB
+[locked:memwait] 3138 MB available, 12347 MB commit left; waiting for 3500 MB
+[locked:memwait] 2540 MB available, 12316 MB commit left; waiting for 3500 MB
+[locked:memwait] 886 MB available plus 6276 MB of system cache Windows will trim; continuing
+................................................................................................................................................s...........................................................s...........................................ss.....................................................................................................................................................................................................s...........s.........................s..........s........................................................................................s.............................
+----------------------------------------------------------------------
+Ran 615 tests in 410.839s
+
+OK (skipped=9)
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+== 20:21:07 EXIT 0

@@ -1,0 +1,10 @@
+test_a_destination_is_registered_in_one_step (tests.test_android_navigation.NavigationShapeTest.test_a_destination_is_registered_in_one_step) ... ok
+test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) ... ok
+test_no_feature_reaches_the_shell_or_opts_in_to_the_host_api (tests.test_android_navigation.NavigationShapeTest.test_no_feature_reaches_the_shell_or_opts_in_to_the_host_api) ... ok
+test_the_runtime_never_depends_on_the_design_system_or_the_shell (tests.test_android_navigation.NavigationShapeTest.test_the_runtime_never_depends_on_the_design_system_or_the_shell) ... ok
+test_the_shell_is_a_module_of_its_own_only_with_ui_components (tests.test_android_navigation.NavigationShapeTest.test_the_shell_is_a_module_of_its_own_only_with_ui_components) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 36.064s
+
+OK

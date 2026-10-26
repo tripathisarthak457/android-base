@@ -1,0 +1,20 @@
+# tree: febf31200 + uncommitted F14
+# command: add_component.py Tag --project out/NOUI-FINAL/TOOLS/ui-lean (dry run, then for real)
+
+  Would write
+    core/designsystem/src/main/kotlin/com/example/finaltools/uilean/core/designsystem/component/tag/AppTag.kt
+    core/designsystem/src/test/kotlin/com/example/finaltools/uilean/core/designsystem/component/tag/AppTagTest.kt
+
+# exit: 0
+
+  Done.
+
+    core/designsystem/src/main/kotlin/com/example/finaltools/uilean/core/designsystem/component/tag/AppTag.kt
+    core/designsystem/src/test/kotlin/com/example/finaltools/uilean/core/designsystem/component/tag/AppTagTest.kt
+
+  Next
+    1. Make it yours: what AppTag draws, its sizes and colours in AppTagDefaults, its KDoc and its test,
+       keeping it stateless and every value from AppTheme (docs/DESIGN-SYSTEM.md).
+    2. ./gradlew :core:designsystem:verifyCodeRules :core:designsystem:testDebugUnitTest
+
+# exit: 0

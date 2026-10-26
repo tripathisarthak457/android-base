@@ -1,0 +1,47 @@
+08:06:02
+356e81d21
+[locked:memwait] 1445 MB available, 8316 MB commit left; waiting for 1500 MB
+  ! 'catalog' was left out: The catalog app shows the design system's components, and this project has none.
+  ! 'collections' was left out: Carousels, reorderable lists and the image viewer are components; build yours on the theme skeleton.
+  ! 'datadisplay' was left out: Stat tiles, charts and tables are components; build yours on the theme skeleton.
+  ! 'formfields' was left out: Code, money and phone fields are components; form state and validation (forms) stay.
+  ! 'pickers' was left out: Calendars and wheel pickers are components; build yours on the theme skeleton.
+  ! 'liquidglass' was left out: Glass is drawn by components and the shell, which this project leaves to your design system.
+
+Summary
+───────
+           App  Base App (BaseApp)
+       Package  com.base.app
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, appstatus, auth, browser, ci, coil,
+                coverage, crashlytics, database, deeplink, depsanalysis,
+                devtools, firebase, firebaseanalytics, flags, formatting,
+                forms, googlefonts, googlesignin, language, leakcanary,
+                licenses, media, network, offlinequeue, onboarding, paging,
+                perfhud, performance, playstore, profile, push,
+                remoteconfig, sample, search, settings, websocket
+       Options  ui_components off
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\profile\noui-everything
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\profile\noui-everything and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Commit app/dependencies/ after the first ./gradlew check: it is the list of libraries the prod
+       release ships, which every later check compares against.
+    4. Replace app/google-services.json: the included one is a placeholder.
+

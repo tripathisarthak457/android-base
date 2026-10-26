@@ -1,0 +1,48 @@
+== 18:26:58 test_docs on the L1 tree (uncommitted)
+[locked:memwait] 937 MB available, 8562 MB commit left; waiting for 1500 MB
+[locked:memwait] 662 MB available, 7968 MB commit left; waiting for 1500 MB
+[locked:memwait] 879 MB available, 7462 MB commit left; waiting for 1500 MB
+[locked:memwait] 633 MB available, 6877 MB commit left; waiting for 1500 MB
+E
+======================================================================
+ERROR: tests (unittest.loader._FailedTest.tests)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: tests
+Traceback (most recent call last):
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\unittest\loader.py", line 141, in loadTestsFromName
+    module = __import__(module_name)
+ModuleNotFoundError: No module named 'tests'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (errors=1)
+== EXIT 1
+== 18:32:19 test_docs on the L1 tree (uncommitted), discover
+[locked:memwait] 1414 MB available, 7296 MB commit left; waiting for 1500 MB
+E...
+======================================================================
+ERROR: setUpClass (tests.test_docs.GeneratedDocsTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_docs.py", line 230, in setUpClass
+    pipeline.build(pipeline.read_spec(raw, ANDROID)[0].spec, ANDROID, project, zip_output=False, commit="test")
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\genkit\core\pipeline.py", line 84, in build
+    warnings += target.finish(project, spec, context)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\genkit\targets\android\target.py", line 143, in finish
+    strings.write(project, spec)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\genkit\targets\android\strings.py", line 64, in write
+    raise TranslationError(
+    ...<2 lines>...
+    )
+genkit.core.translations.TranslationError: No de translation for navigation_more, navigation_back, navigation_show_sidebar, navigation_hide_sidebar in core/navigation/shell. Add them to generator/translations/android/de/core-navigation-shell.json.
+
+----------------------------------------------------------------------
+Ran 3 tests in 95.189s
+
+FAILED (errors=1)
+== EXIT 1

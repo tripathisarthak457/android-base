@@ -1,0 +1,71 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI-NEXT-TEST/generator
+# head: 0a69446f0
+# command: memwait <python> -I -m unittest discover -s tests -t .
+# start: Sun Oct 25 17:55:44 IST 2026
+............................................................................................................................................s.........................................................s...........................................ss...............................................................F....................................................................................................................................Fs...........s.........................s..........s........................................................................................s.............................
+======================================================================
+FAIL: test_no_test_outlives_the_main_source_it_tests (tests.test_manifest.OrphanedTestTest.test_no_test_outlives_the_main_source_it_tests) (target='android', feature='forms', test='core/ui/src/test/kotlin/com/base/app/core/ui/form/ValidationErrorTextTest.kt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-NEXT-TEST\generator\tests\test_manifest.py", line 123, in test_no_test_outlives_the_main_source_it_tests
+    self.assertEqual([], removed, f"'{key}' removes what this test compiles against")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['core/ui/src/main/kotlin/com/base/app/cor[82 chars].kt']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'core/ui/src/main/kotlin/com/base/app/core/ui/form'
+
+- []
++ ['core/ui/src/main/kotlin/com/base/app/core/ui/form',
++  'core/ui/src/main/kotlin/com/base/app/core/ui/form/ValidationErrorText.kt'] : 'forms' removes what this test compiles against
+
+======================================================================
+FAIL: test_the_templates_are_in_sync (tests.test_sync.RepositoryTest.test_the_templates_are_in_sync)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-NEXT-TEST\generator\tests\test_sync.py", line 50, in test_the_templates_are_in_sync
+    self.assertEqual([], sync_check.check(sync_check.load(REPOSITORY)))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ["core/mvi/MviViewModel.kt: only the Andro[4567 chars]].'"]
+
+Second list contains 46 additional elements.
+First extra element 0:
+"core/mvi/MviViewModel.kt: only the Android copy has   ''"
+
+Diff is 4943 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 609 tests in 676.925s
+
+FAILED (failures=2, skipped=9)
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+EXIT=1
+# end: Sun Oct 25 18:07:03 IST 2026

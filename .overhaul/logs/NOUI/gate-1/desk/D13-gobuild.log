@@ -1,0 +1,5 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI/web/api
+# command: D:/projects/tools/.overhaul/bin/memwait go build ./...
+# start: Sun Oct 25 08:44:22 IST 2026
+# end: Sun Oct 25 08:44:23 IST 2026
+EXIT=0

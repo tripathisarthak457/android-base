@@ -1,0 +1,17 @@
+head 079579f7e
+wrote web/frontend/lib/catalogue.json
+catalogue write exit 0
+tokens write exit 0
+--- status after --write
+ M web/frontend/lib/catalogue.json
+--- diff
+ web/frontend/lib/catalogue.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+diff --git a/web/frontend/lib/catalogue.json b/web/frontend/lib/catalogue.json
+index 70739ca63..566391002 100644
+--- a/web/frontend/lib/catalogue.json
++++ b/web/frontend/lib/catalogue.json
+@@ -2 +2 @@
+-  "generator_commit": "7610744f6281",
++  "generator_commit": "079579f7ed73",
+done

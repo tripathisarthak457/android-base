@@ -1,0 +1,8 @@
+# head: 7cf006758; a fresh ui-lean + add_feature orders compared with out/NOUI-FINAL/TEST/ui-lean (built at 207a12d2f by full-ui-lean-orders-2.log), build output and the moved orphan test ignored
+# start: Sun Oct 25 22:56:30 IST 2026
+gen EXIT=0
+add_feature EXIT=0
+only built: []
+only fresh: []
+differ: ['core/datastore/src/testFixtures/kotlin/com/example/finaltest/uilean/core/datastore/session/FakeAuthTokenStore.kt', 'docs/ARCHITECTURE.md', 'generator-spec.json']
+# end: Sun Oct 25 22:56:54 IST 2026

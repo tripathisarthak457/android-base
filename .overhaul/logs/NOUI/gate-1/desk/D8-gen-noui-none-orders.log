@@ -1,0 +1,19 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI/generator
+# command: D:/projects/tools/.overhaul/bin/memwait python create_project.py --spec D:/projects/tools/.overhaul/out/NOUI/gate-1/specs/noui-none-orders.json --out D:/projects/tools/.overhaul/out/NOUI/gate-1/noui-none-orders --no-zip --json --force --no-ui-components
+# start: Sun Oct 25 08:29:25 IST 2026
+{
+  "ok": true,
+  "target": "android",
+  "project_name": "GateOne",
+  "path": "D:\\projects\\tools\\.overhaul\\out\\NOUI\\gate-1\\noui-none-orders",
+  "resolved_features": [],
+  "feature_modules": [
+    "orders"
+  ],
+  "notes": [],
+  "warnings": [],
+  "ignored_fields": [],
+  "summary": []
+}
+# end: Sun Oct 25 08:29:28 IST 2026
+EXIT=0

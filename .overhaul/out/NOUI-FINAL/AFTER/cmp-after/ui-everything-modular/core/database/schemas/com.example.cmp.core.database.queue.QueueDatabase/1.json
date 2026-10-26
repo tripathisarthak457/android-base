@@ -1,0 +1,91 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "e09874473549d743247cc7b90269ce98",
+    "entities": [
+      {
+        "tableName": "queued_requests",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `owner` TEXT, `method` TEXT NOT NULL, `path` TEXT NOT NULL, `headersJson` TEXT NOT NULL, `body` TEXT, `createdAtEpochMillis` INTEGER NOT NULL, `attempts` INTEGER NOT NULL, `refusedAtEpochMillis` INTEGER, `refusedStatus` INTEGER, `refusedCode` TEXT, `refusedMessage` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "owner",
+            "columnName": "owner",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "method",
+            "columnName": "method",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "path",
+            "columnName": "path",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "headersJson",
+            "columnName": "headersJson",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "body",
+            "columnName": "body",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "attempts",
+            "columnName": "attempts",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "refusedAtEpochMillis",
+            "columnName": "refusedAtEpochMillis",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "refusedStatus",
+            "columnName": "refusedStatus",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "refusedCode",
+            "columnName": "refusedCode",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "refusedMessage",
+            "columnName": "refusedMessage",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e09874473549d743247cc7b90269ce98')"
+    ]
+  }
+}

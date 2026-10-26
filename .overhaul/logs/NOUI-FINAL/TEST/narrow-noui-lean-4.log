@@ -1,0 +1,315 @@
+# cwd: D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/noui-lean-4
+# project: gen-noui-lean-4.log (head 7cf006758)
+# command: locked gradle ./gradlew :data:orders:testDebugUnitTest :feature:orders:testDebugUnitTest :app:assembleDevDebug --continue
+# D: free before: 78 GB
+# start: Sun Oct 25 23:38:01 IST 2026
+[locked:gradle] waiting for the lock (pid 5576 since 2026-10-25 23:38:01: ./gradlew :core:designsystem:recordRoborazziDebug --continue)
+[locked:gradle] waiting for the lock (pid 10212 since 2026-10-25 23:42:50: ./gradlew verifyCodeRules verifyModuleDependencies verifyApiPurity :core:navigation:checkComposeStability :core:navigati)
+[locked:gradle] waiting for the lock (pid 4228 since 2026-10-25 23:44:54: ./gradlew :core:perfhud:testDebugUnitTest :core:perfhud:lintDebug :app:compileDevDebugKotlin --continue)
+[locked:gradle] waiting for the lock (pid 9200 since 2026-10-25 23:49:21: ./gradlew :build-logic:convention:test verifyCodeRules verifyModuleDependencies checkComposeStability spotlessKotlinChec)
+[locked:gradle] waiting for the lock (pid 16756 since 2026-10-25 23:57:33: ./gradlew spotlessCheck --continue)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :data:orders:testDebugUnitTest :feature:orders:testDebugUnitTest :app:assembleDevDebug
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies
+> Task :core:datastore:verifyModuleDependencies
+> Task :core:datastore:verifyApiPurity
+> Task :core:datastore:preBuild
+> Task :core:datastore:preDebugBuild
+> Task :core:common:verifyApiPurity
+> Task :core:network:verifyModuleDependencies
+> Task :core:datastore:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:verifyModuleDependencies
+> Task :core:network:verifyApiPurity
+> Task :core:network:preBuild
+> Task :core:network:preDebugBuild
+> Task :core:testing:verifyApiPurity
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :core:network:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :data:orders:verifyApiPurity
+> Task :data:orders:verifyModuleDependencies
+> Task :data:orders:preBuild
+> Task :data:orders:preDebugBuild
+> Task :core:designsystem:verifyModuleDependencies
+> Task :data:orders:preDebugTestFixturesBuild
+> Task :data:orders:javaPreCompileDebugTestFixtures FROM-CACHE
+> Task :data:orders:javaPreCompileDebug FROM-CACHE
+> Task :data:orders:preDebugUnitTestBuild
+> Task :data:orders:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:mvi:verifyModuleDependencies
+> Task :core:designsystem:verifyApiPurity
+> Task :core:mvi:verifyApiPurity
+> Task :core:designsystem:preBuild
+> Task :core:mvi:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:mvi:preDebugBuild
+> Task :core:navigation:verifyApiPurity
+> Task :core:mvi:javaPreCompileDebug FROM-CACHE
+> Task :core:navigation:verifyModuleDependencies
+> Task :core:navigation:preBuild
+> Task :core:navigation:preDebugBuild
+> Task :core:navigation:javaPreCompileDebug FROM-CACHE
+> Task :core:ui:verifyModuleDependencies
+> Task :core:ui:verifyApiPurity
+> Task :core:ui:preBuild
+> Task :core:ui:preDebugBuild
+> Task :core:ui:generateDebugResources FROM-CACHE
+> Task :feature:orders:verifyApiPurity
+> Task :core:ui:processDebugNavigationResources FROM-CACHE
+> Task :core:ui:javaPreCompileDebug FROM-CACHE
+> Task :feature:orders:verifyModuleDependencies
+> Task :feature:orders:preBuild
+> Task :feature:orders:preDebugBuild
+> Task :feature:orders:generateDebugResources FROM-CACHE
+> Task :core:ui:packageDebugResources
+> Task :feature:orders:packageDebugResources
+> Task :core:designsystem:packageDebugResources
+> Task :feature:orders:processDebugNavigationResources FROM-CACHE
+> Task :core:ui:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :feature:orders:parseDebugLocalResources FROM-CACHE
+> Task :core:ui:generateDebugRFile
+> Task :feature:orders:generateDebugRFile
+> Task :core:designsystem:generateDebugRFile
+> Task :feature:orders:preDebugUnitTestBuild
+> Task :feature:orders:javaPreCompileDebug FROM-CACHE
+> Task :feature:orders:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDevDebugBuild UP-TO-DATE
+> Task :app:mergeDevDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateDevDebugBuildConfig
+> Task :app:generateDevDebugResources FROM-CACHE
+> Task :app:packageDevDebugResources
+> Task :core:datastore:generateDebugEmptyResourceFiles
+> Task :core:mvi:generateDebugEmptyResourceFiles
+> Task :core:navigation:generateDebugEmptyResourceFiles
+> Task :core:network:generateDebugEmptyResourceFiles
+> Task :data:orders:generateDebugEmptyResourceFiles
+> Task :core:common:compileKotlin
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar
+> Task :app:processDevDebugNavigationResources
+> Task :feature:orders:generateDebugUnitTestStubRFile
+> Task :core:testing:compileDebugKotlin
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibRuntimeToJarDebug
+> Task :core:testing:processDebugJavaRes
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :core:mvi:compileDebugKotlin
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibRuntimeToJarDebug
+> Task :core:mvi:processDebugJavaRes
+> Task :core:mvi:bundleLibCompileToJarDebug
+> Task :app:parseDevDebugLocalResources FROM-CACHE
+> Task :app:generateDevDebugRFile
+> Task :app:javaPreCompileDevDebug FROM-CACHE
+> Task :app:generateDevDebugAssets UP-TO-DATE
+> Task :core:datastore:generateDebugAssets UP-TO-DATE
+> Task :core:datastore:mergeDebugAssets
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets
+> Task :core:mvi:generateDebugAssets UP-TO-DATE
+> Task :core:mvi:mergeDebugAssets
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:mergeDebugAssets
+> Task :core:network:generateDebugAssets UP-TO-DATE
+> Task :core:network:mergeDebugAssets
+> Task :core:ui:generateDebugAssets UP-TO-DATE
+> Task :core:ui:mergeDebugAssets
+> Task :data:orders:generateDebugAssets UP-TO-DATE
+> Task :data:orders:mergeDebugAssets
+> Task :feature:orders:generateDebugAssets UP-TO-DATE
+> Task :feature:orders:mergeDebugAssets
+> Task :app:mergeDevDebugAssets
+> Task :app:compressDevDebugAssets FROM-CACHE
+> Task :app:generateDevDebugGlobalSynthetics FROM-CACHE
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:processDebugJavaRes
+> Task :app:checkDevDebugDuplicateClasses
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :app:desugarDevDebugFileDependencies FROM-CACHE
+> Task :core:mvi:bundleLibRuntimeToDirDebug
+> Task :app:mergeExtDexDevDebug FROM-CACHE
+> Task :core:datastore:writeDebugAarMetadata
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:mvi:writeDebugAarMetadata
+> Task :core:navigation:writeDebugAarMetadata
+> Task :core:network:writeDebugAarMetadata
+> Task :core:ui:writeDebugAarMetadata
+> Task :data:orders:writeDebugAarMetadata
+> Task :feature:orders:writeDebugAarMetadata
+> Task :core:designsystem:bundleLibRuntimeToDirDebug
+> Task :core:navigation:kspDebugKotlin
+> Task :core:datastore:kspDebugKotlin
+> Task :app:checkDevDebugAarMetadata
+> Task :app:mapDevDebugSourceSetPaths
+> Task :app:compileDevDebugNavigationResources FROM-CACHE
+> Task :app:createDevDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDevDebug
+> Task :core:datastore:processDebugManifest
+> Task :core:designsystem:extractDeepLinksDebug FROM-CACHE
+> Task :core:designsystem:processDebugManifest
+> Task :core:mvi:processDebugManifest
+> Task :core:navigation:processDebugManifest
+> Task :core:network:processDebugManifest
+> Task :core:ui:extractDeepLinksDebug FROM-CACHE
+> Task :core:ui:processDebugManifest
+> Task :core:datastore:compileDebugKotlin
+> Task :data:orders:processDebugManifest
+> Task :core:datastore:processDebugJavaRes
+> Task :feature:orders:extractDeepLinksDebug FROM-CACHE
+> Task :feature:orders:processDebugManifest
+> Task :core:datastore:compileDebugJavaWithJavac
+> Task :core:datastore:bundleLibRuntimeToJarDebug
+> Task :core:datastore:bundleLibCompileToJarDebug
+> Task :app:processDevDebugMainManifest
+> Task :core:navigation:compileDebugKotlin
+> Task :core:datastore:bundleLibRuntimeToDirDebug
+> Task :core:navigation:processDebugJavaRes
+> Task :app:mergeDevDebugResources
+> Task :core:navigation:compileDebugJavaWithJavac
+> Task :app:processDevDebugManifest
+> Task :app:processDevDebugManifestForPackage
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:designsystem:compileDebugLibraryResources FROM-CACHE
+> Task :core:ui:mapDebugSourceSetPaths
+> Task :core:ui:compileDebugLibraryResources FROM-CACHE
+> Task :feature:orders:mapDebugSourceSetPaths
+> Task :feature:orders:compileDebugLibraryResources FROM-CACHE
+> Task :app:mergeDevDebugJniLibFolders
+> Task :core:datastore:mergeDebugJniLibFolders
+> Task :core:datastore:mergeDebugNativeLibs NO-SOURCE
+> Task :core:datastore:copyDebugJniLibsProjectOnly
+> Task :core:designsystem:mergeDebugJniLibFolders
+> Task :core:designsystem:mergeDebugNativeLibs NO-SOURCE
+> Task :core:designsystem:copyDebugJniLibsProjectOnly
+> Task :core:mvi:mergeDebugJniLibFolders
+> Task :core:mvi:mergeDebugNativeLibs NO-SOURCE
+> Task :core:mvi:copyDebugJniLibsProjectOnly
+> Task :core:navigation:mergeDebugJniLibFolders
+> Task :core:navigation:mergeDebugNativeLibs NO-SOURCE
+> Task :core:navigation:copyDebugJniLibsProjectOnly
+> Task :core:network:mergeDebugJniLibFolders
+> Task :core:network:mergeDebugNativeLibs NO-SOURCE
+> Task :core:network:copyDebugJniLibsProjectOnly
+> Task :core:ui:mergeDebugJniLibFolders
+> Task :core:ui:mergeDebugNativeLibs NO-SOURCE
+> Task :core:ui:copyDebugJniLibsProjectOnly
+> Task :data:orders:mergeDebugJniLibFolders
+> Task :data:orders:mergeDebugNativeLibs NO-SOURCE
+> Task :data:orders:copyDebugJniLibsProjectOnly
+> Task :feature:orders:mergeDebugJniLibFolders
+> Task :feature:orders:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:orders:copyDebugJniLibsProjectOnly
+> Task :core:navigation:transformDebugClassesWithAsm
+> Task :core:navigation:bundleLibRuntimeToJarDebug
+> Task :core:navigation:bundleLibCompileToJarDebug
+> Task :app:mergeDevDebugNativeLibs
+> Task :core:navigation:bundleLibRuntimeToDirDebug
+
+> Task :app:stripDevDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so. Run with --info option to learn more.
+
+> Task :core:network:kspDebugKotlin
+> Task :app:processDevDebugResources
+> Task :app:writeDevDebugAppMetadata
+> Task :app:validateSigningDevDebug
+> Task :app:writeDevDebugSigningConfigVersions
+> Task :core:ui:compileDebugKotlin
+> Task :core:ui:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:ui:bundleLibRuntimeToJarDebug
+> Task :core:ui:processDebugJavaRes
+> Task :core:ui:bundleLibCompileToJarDebug
+> Task :core:ui:bundleLibRuntimeToDirDebug
+The Daemon will expire after the build after running out of JVM Metaspace.
+The project memory settings are likely not configured or are configured to an insufficient value.
+The daemon will restart for the next build, which may increase subsequent build times.
+These settings can be adjusted by setting 'org.gradle.jvmargs' in 'gradle.properties'.
+The currently configured max heap space is '2 GiB' and the configured max metaspace is '1 GiB'.
+For more information on how to set these values, please refer to https://docs.gradle.org/9.7.1/userguide/build_environment.html#sec:configuring_jvm_memory in the Gradle documentation.
+To disable this warning, set 'org.gradle.daemon.performance.disable-logging=true'.
+Daemon will be stopped at the end of the build after running out of JVM Metaspace
+> Task :core:network:compileDebugKotlin
+> Task :core:network:processDebugJavaRes
+> Task :core:network:compileDebugJavaWithJavac
+> Task :core:network:bundleLibRuntimeToJarDebug
+> Task :core:network:bundleLibCompileToJarDebug
+> Task :core:network:bundleLibRuntimeToDirDebug
+> Task :data:orders:kspDebugKotlin
+> Task :data:orders:compileDebugKotlin
+> Task :data:orders:processDebugJavaRes
+> Task :data:orders:compileDebugJavaWithJavac
+> Task :data:orders:bundleLibRuntimeToJarDebug
+> Task :data:orders:bundleLibCompileToJarDebug
+> Task :data:orders:kspDebugTestFixturesKotlin
+> Task :data:orders:bundleLibRuntimeToDirDebug
+> Task :data:orders:compileDebugTestFixturesKotlin
+> Task :data:orders:compileDebugTestFixturesJavaWithJavac NO-SOURCE
+> Task :data:orders:bundleLibCompileToJarDebugTestFixtures
+> Task :data:orders:bundleLibRuntimeToJarDebugTestFixtures
+> Task :data:orders:processDebugTestFixturesJavaRes
+> Task :data:orders:kspDebugUnitTestKotlin
+> Task :data:orders:compileDebugUnitTestKotlin
+> Task :data:orders:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:orders:processDebugUnitTestJavaRes
+> Task :feature:orders:kspDebugKotlin
+
+> Task :data:orders:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :feature:orders:compileDebugKotlin
+> Task :feature:orders:processDebugJavaRes
+> Task :feature:orders:compileDebugJavaWithJavac
+> Task :feature:orders:bundleLibRuntimeToJarDebug
+> Task :feature:orders:bundleLibCompileToJarDebug
+> Task :feature:orders:kspDebugUnitTestKotlin
+> Task :feature:orders:bundleLibRuntimeToDirDebug
+> Task :feature:orders:compileDebugUnitTestKotlin
+> Task :feature:orders:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:orders:processDebugUnitTestJavaRes
+> Task :app:mergeLibDexDevDebug
+
+> Task :feature:orders:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :app:kspDevDebugKotlin
+> Task :app:compileDevDebugKotlin
+> Task :app:processDevDebugJavaRes
+> Task :app:compileDevDebugJavaWithJavac
+> Task :app:hiltCollectClassesDevDebug
+> Task :app:hiltAggregateDepsDevDebug
+> Task :app:mergeDevDebugJavaResource
+> Task :app:hiltJavaCompileDevDebug
+> Task :app:transformDevDebugClassesWithAsm
+> Task :app:dexBuilderDevDebug
+> Task :app:mergeProjectDexDevDebug
+> Task :app:packageDevDebug
+> Task :app:assembleDevDebug
+> Task :app:createDevDebugApkListingFileRedirect
+
+BUILD SUCCESSFUL in 1m 6s
+218 actionable tasks: 183 executed, 35 from cache
+Configuration cache entry stored.
+EXIT=0
+# end: Mon Oct 26 00:00:03 IST 2026

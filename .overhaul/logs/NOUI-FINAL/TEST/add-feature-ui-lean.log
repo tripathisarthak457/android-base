@@ -1,0 +1,15 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI-NEXT-TEST/generator
+# command: memwait <python> add_feature.py orders --project D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/ui-lean
+# start: Sun Oct 25 18:01:59 IST 2026
+
+  Done.
+
+    :data:orders
+    :feature:orders
+
+  Next
+    1. Sync Gradle.
+    2. Register the screen where it belongs, or re-run with --tab.
+
+EXIT=0
+# end: Sun Oct 25 18:02:00 IST 2026

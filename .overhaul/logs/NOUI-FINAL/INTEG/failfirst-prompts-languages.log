@@ -1,0 +1,28 @@
+EE
+======================================================================
+ERROR: test_with_ui_components_the_languages_keep_their_words (tests.test_prompts.AskLanguagesTest.test_with_ui_components_the_languages_keep_their_words)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_prompts.py", line 201, in test_with_ui_components_the_languages_keep_their_words
+    self.shown({}),
+    ~~~~~~~~~~^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_prompts.py", line 187, in shown
+    self.assertEqual([], prompts.ask_languages(targets.get("android"), described))
+                         ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ask_languages() takes 1 positional argument but 2 were given
+
+======================================================================
+ERROR: test_without_ui_components_the_languages_read_as_what_a_choice_brings (tests.test_prompts.AskLanguagesTest.test_without_ui_components_the_languages_read_as_what_a_choice_brings)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_prompts.py", line 193, in test_without_ui_components_the_languages_read_as_what_a_choice_brings
+    shown = self.shown(described)
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_prompts.py", line 187, in shown
+    self.assertEqual([], prompts.ask_languages(targets.get("android"), described))
+                         ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ask_languages() takes 1 positional argument but 2 were given
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.024s
+
+FAILED (errors=2)

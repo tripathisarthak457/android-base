@@ -1,0 +1,47 @@
+> Task :core:designsystem:compileDebugKotlin FAILED
+BUILD FAILED in 33s
+EXIT 1
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:202:5 Modifier 'public' is not applicable to 'local variable'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:203:5 Modifier 'public' is not applicable to 'local variable'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:206:5 Modifier 'public' is not applicable to 'local variable'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:207:5 Modifier 'public' is not applicable to 'local variable'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:209:5 Modifier 'public' is not applicable to 'local function'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:210:5 Modifier 'public' is not applicable to 'local function'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:213:5 Modifier 'public' is not applicable to 'local function'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:214:5 Modifier 'public' is not applicable to 'local function'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:220:5 Modifier 'public' is not applicable to 'local function'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:224:5 Modifier 'public' is not applicable to 'local function'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:228:5 Modifier 'public' is not applicable to 'local variable'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:229:5 Modifier 'public' is not applicable to 'local variable'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:230:5 Modifier 'public' is not applicable to 'local variable'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:233:5 Modifier 'public' is not applicable to 'local variable'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:236:5 Modifier 'public' is not applicable to 'local variable'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:239:5 Modifier 'public' is not applicable to 'local variable'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:242:5 Modifier 'public' is not applicable to 'local variable'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:245:5 Modifier 'public' is not applicable to 'local variable'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:248:5 Modifier 'public' is not applicable to 'local function'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:251:5 Modifier 'public' is not applicable to 'local function'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:253:5 Modifier 'public' is not applicable to 'local variable'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:255:5 Modifier 'public' is not applicable to 'local variable'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:285:14 Unresolved reference 'AppSpring'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:285:70 Unresolved reference 'dampingRatio'.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xui2/core/designsystem/src/main/kotlin/com/example/finalafter/xui2/core/designsystem/theme/AppMotion.kt:285:84 Unresolved reference 'stiffness'.
+> Task :core:designsystem:compileDebugKotlin FAILED
+BUILD FAILED in 1m 14s
+EXIT 1
+UNMAPPED AppColors.kt:111:1: fun appColors(dark: Boolean): AppColors = if (dark) DesignTokens.Palette.dark else DesignTokens.Palette.light
+UNMAPPED AppFonts.kt:97:1: val AppFontPreload = FontPreload(
+inserted public: 57 in 5 files
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui2/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui2/core/designsystem/theme/AppFonts.kt:97:5 Return type must be specified in explicit API mode.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui2/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui2/core/designsystem/theme/AppMotion.kt:55:9 Return type must be specified in explicit API mode.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui2/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui2/core/designsystem/theme/AppMotion.kt:58:9 Return type must be specified in explicit API mode.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui2/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui2/core/designsystem/theme/AppMotion.kt:61:9 Return type must be specified in explicit API mode.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui2/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui2/core/designsystem/theme/AppMotion.kt:64:9 Return type must be specified in explicit API mode.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui2/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui2/core/designsystem/theme/AppMotion.kt:67:9 Return type must be specified in explicit API mode.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui2/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui2/core/designsystem/theme/AppMotion.kt:70:9 Return type must be specified in explicit API mode.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui2/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui2/core/designsystem/theme/AppMotion.kt:73:9 Return type must be specified in explicit API mode.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui2/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui2/core/designsystem/theme/AppMotion.kt:76:9 Return type must be specified in explicit API mode.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui2/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui2/core/designsystem/theme/AppMotion.kt:79:9 Return type must be specified in explicit API mode.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui2/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui2/core/designsystem/theme/AppMotion.kt:85:9 Return type must be specified in explicit API mode.
+OTHER e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui2/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui2/core/designsystem/theme/AppTheme.kt:136:9 Return type must be specified in explicit API mode.
+done

@@ -1,0 +1,17 @@
+head 7779aab27
+everything exit 0
+standard exit 0
+lean exit 0
+everything-modular exit 0
+none exit 0
+mods exit 0
+push exit 0
+list exit 0
+listjson exit 0
+dryrun exit 0
+wizard exit 0
+gen-done
+checks-done
+unittest-done
+web-done
+done

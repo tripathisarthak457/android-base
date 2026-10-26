@@ -1,0 +1,5 @@
+noui-everything-modular-2: test result files in 25 modules; tests=468 failures=0 errors=0 skipped=0
+modules with failures/errors: none
+DesignSystemDocTest: ('build-logic:convention', 'TEST-com.example.gatemodular.buildlogic.guard.DesignSystemDocTest.xml', '3', '0', '0', '0')
+apk: app/build/outputs/apk/dev/debug/app-dev-debug.apk 21715235
+apk: app/build/outputs/apk/prod/release/app-prod-release.apk 2875267

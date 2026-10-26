@@ -1,0 +1,80 @@
+07:03:11
+D free GB: 73.9
+./gradlew --offline --continue spotlessCheck
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: spotlessCheck
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :spotlessKotlinGradle
+> Task :spotlessKotlinGradleCheck
+> Task :spotlessKotlin
+> Task :spotlessKotlinCheck FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':spotlessKotlinCheck' (registered in build file 'build.gradle.kts').
+> The following files had format violations:
+      core\network\src\main\kotlin\com\example\finalafter\f8hnouieverything\core\network\di\HttpClientModule.kt
+          @@ -70,7 +70,11 @@
+           ········OkHttpClient.Builder()
+           ············.cache(cache)
+           ············.apply·{
+          -················if·(config.certificatePins.isNotEmpty())·certificatePinner(config.certificatePinner())
+          +················if·(config.certificatePins.isNotEmpty())·{
+          +····················certificatePinner(
+          +························config.certificatePinner(),
+          +····················)
+          +················}
+           ············}
+           ············.build()
+           
+          @@ -105,13 +109,14 @@
+           ····@Provides
+           ····@Singleton
+           ····@RealtimeClient
+          -····fun·provideRealtimeClient(okHttp:·OkHttpClient,·config:·NetworkConfig):·HttpClient·=·HttpClient(OkHttp)·{
+          -········engine·{·preconfigured·=·okHttp·}
+          -········//·Without·pings·a·connection·a·NAT·dropped·in·silence·is·never·noticed,·and·the·socket·waits
+          -········//·for·frames·that·cannot·arrive.
+          -········install(WebSockets)·{·pingInterval·=·PING_INTERVAL·}
+          -········installUserAgent(config)
+          -····}
+          +····fun·provideRealtimeClient(okHttp:·OkHttpClient,·config:·NetworkConfig):·HttpClient·=
+          +········HttpClient(OkHttp)·{
+          +············engine·{·preconfigured·=·okHttp·}
+          +············//·Without·pings·a·connection·a·NAT·dropped·in·silence·is·never·noticed,·and·the·socket·waits
+          +············//·for·frames·that·cannot·arrive.
+          +············install(WebSockets)·{·pingInterval·=·PING_INTERVAL·}
+          +············installUserAgent(config)
+          +········}
+           
+           ····/**
+           ·····*·Responses·the·server·marks·cacheable,·kept·on·disk·and·revalidated·with·ETag·or·Last-Modified,
+  Run 'gradlew.bat spotlessApply' to fix all violations.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 53s
+8 actionable tasks: 8 executed
+Configuration cache entry stored.
+EXIT 1
+07:04:05

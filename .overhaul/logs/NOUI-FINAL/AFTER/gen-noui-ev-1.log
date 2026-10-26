@@ -1,0 +1,68 @@
+02:31:13
+3784613e1
+ M variants/noui/app/src/main/baseline-prof.txt
+ M ../templates/android/app/src/main/baseline-prof.txt
+ M ../templates/android/config/code-rules-baseline.txt
+ M ../templates/android/feature/auth/src/main/kotlin/com/base/app/feature/auth/navigation/AuthNavigation.kt
+ M ../templates/android/feature/auth/src/main/kotlin/com/base/app/feature/auth/passwordreset/PasswordResetScreen.kt
+ M ../templates/android/feature/auth/src/main/kotlin/com/base/app/feature/auth/signin/GoogleSignIn.kt
+ M ../templates/android/feature/auth/src/main/kotlin/com/base/app/feature/auth/signin/SignInScreen.kt
+ M ../templates/android/feature/auth/src/main/kotlin/com/base/app/feature/auth/signup/SignUpViewModel.kt
+ M ../templates/android/feature/auth/src/test/kotlin/com/base/app/feature/auth/passwordreset/PasswordResetViewModelTest.kt
+ M ../templates/android/feature/auth/src/test/kotlin/com/base/app/feature/auth/signin/SignInViewModelTest.kt
+ M ../templates/android/feature/auth/src/test/kotlin/com/base/app/feature/auth/signup/SignUpViewModelTest.kt
+ M ../templates/android/feature/feed/src/main/kotlin/com/base/app/feature/feed/FeedScreen.kt
+ M ../templates/android/feature/feed/src/main/kotlin/com/base/app/feature/feed/FeedViewModel.kt
+ M ../templates/android/feature/onboarding/src/main/kotlin/com/base/app/feature/onboarding/OnboardingScreen.kt
+ M ../templates/android/feature/profile/src/main/kotlin/com/base/app/feature/profile/ProfileScreen.kt
+ M ../templates/android/feature/profile/src/main/kotlin/com/base/app/feature/profile/ProfileViewModel.kt
+ M ../templates/android/feature/search/src/main/kotlin/com/base/app/feature/search/SearchScreen.kt
+ M ../templates/android/feature/search/src/main/kotlin/com/base/app/feature/search/SearchViewModel.kt
+ M ../templates/android/feature/search/src/main/kotlin/com/base/app/feature/search/navigation/SearchNavigation.kt
+ M ../templates/android/feature/search/src/main/kotlin/com/base/app/feature/search/result/SearchResultScreen.kt
+  ! 'catalog' was left out: The catalog app shows the design system's components, and this project has none.
+  ! 'collections' was left out: Carousels, reorderable lists and the image viewer are components; build yours on the theme skeleton.
+  ! 'datadisplay' was left out: Stat tiles, charts and tables are components; build yours on the theme skeleton.
+  ! 'formfields' was left out: Code, money and phone fields are components; form state and validation (forms) stay.
+  ! 'pickers' was left out: Calendars and wheel pickers are components; build yours on the theme skeleton.
+  ! 'liquidglass' was left out: Glass is drawn by components and the shell, which this project leaves to your design system.
+
+Summary
+───────
+           App  Final After (FinalAfter)
+       Package  com.example.finalafter.nouiev
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, appstatus, auth, browser, ci, coil,
+                coverage, crashlytics, database, deeplink, depsanalysis,
+                devtools, firebase, firebaseanalytics, flags, formatting,
+                forms, googlefonts, googlesignin, language, leakcanary,
+                licenses, media, network, offlinequeue, onboarding, paging,
+                perfhud, performance, playstore, profile, push,
+                remoteconfig, sample, search, settings, websocket
+       Options  ui_components off
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\noui-ev
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\noui-ev and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Commit app/dependencies/ after the first ./gradlew check: it is the list of libraries the prod
+       release ships, which every later check compares against.
+    4. Replace app/google-services.json: the included one is a placeholder.
+
+EXIT 0
+02:31:16

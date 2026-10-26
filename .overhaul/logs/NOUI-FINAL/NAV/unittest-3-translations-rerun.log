@@ -1,0 +1,7 @@
+== 23:14:34 tests.test_translations again at 4929ad29a (unittest-3's one error was os.rename refused by Windows, WinError 5, on a temp folder)
+..............
+----------------------------------------------------------------------
+Ran 14 tests in 83.019s
+
+OK
+== 23:15:58 EXIT 0

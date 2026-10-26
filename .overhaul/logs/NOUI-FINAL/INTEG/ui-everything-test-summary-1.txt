@@ -1,0 +1,17 @@
+tests 1555 failures 68 errors 0 skipped 0
+catalog  SheetPreviewsKt_TwoDetentSheetPreview  x1  TouchTargetSizeCheck
+catalog  SheetPreviewsKt_PersistentSheetPreview  x7  TouchTargetSizeCheck
+core/designsystem  AppButtonKt_AppButtonPreview  x5  TouchTargetSizeCheck
+core/designsystem  AppDecimalFieldsKt_AppDecimalFieldsPreview  x1  SpeakableTextPresentCheck, TouchTargetSizeCheck
+core/designsystem  AppSelectFieldKt_AppSelectFieldPreview  x4  TouchTargetSizeCheck
+core/designsystem  AppTagFieldKt_AppTagFieldPreview  x4  TouchTargetSizeCheck
+core/designsystem  AppTextFieldKt_AppTextFieldPreview  x5  TouchTargetSizeCheck
+core/designsystem  AppRowKt_AppRowPreview  x5  TouchTargetSizeCheck
+core/designsystem  AppSwipeActionsKt_AppSwipeActionsPreview  x5  TouchTargetSizeCheck
+core/designsystem  AppDatePickerKt_AppDatePickerPreview  x5  TouchTargetSizeCheck
+core/designsystem  AppSheetKt_AppSheetPreview  x5  TouchTargetSizeCheck
+core/designsystem  AppChoiceSheetKt_AppChoiceSheetPreview  x5  TouchTargetSizeCheck
+core/designsystem  AppSheetCloseButtonKt_AppSheetCloseButtonPreview  x5  TouchTargetSizeCheck
+core/designsystem  SheetColumnKt_SheetColumnPreview  x5  TouchTargetSizeCheck
+core/designsystem  SheetLayoutKt_SheetLayoutPreview  x5  TouchTargetSizeCheck
+feature/auth  SignUpKt_SignUpPreview  x1  SpeakableTextPresentCheck

@@ -1,0 +1,32 @@
+00:48:46
++                                                      'app/src/dev/kotlin/com/acme/ui/perf/ShellLog.kt:39']}
+
+======================================================================
+FAIL: test_nothing_sends_a_reader_to_the_harness_the_project_left_out (tests.test_android_truth.HarnessAdviceTest.test_nothing_sends_a_reader_to_the_harness_the_project_left_out) (case='everything-compact-without-performance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_android_truth.py", line 216, in test_nothing_sends_a_reader_to_the_harness_the_project_left_out
+    self.assertEqual({}, named)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^
+AssertionError: {} != {'app/src/dev/kotlin/com/acme/ui/perf/Shel[114 chars]39']}
+- {}
++ {'app/src/dev/kotlin/com/acme/ui/perf/ShellLog.kt': ['app/src/dev/kotlin/com/acme/ui/perf/ShellLog.kt:17',
++                                                      'app/src/dev/kotlin/com/acme/ui/perf/ShellLog.kt:39']}
+
+======================================================================
+FAIL: test_nothing_sends_a_reader_to_the_harness_the_project_left_out (tests.test_android_truth.HarnessAdviceTest.test_nothing_sends_a_reader_to_the_harness_the_project_left_out) (case='everything-modular-without-performance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_android_truth.py", line 216, in test_nothing_sends_a_reader_to_the_harness_the_project_left_out
+    self.assertEqual({}, named)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^
+AssertionError: {} != {'app/src/dev/kotlin/com/acme/ui/perf/Shel[114 chars]39']}
+- {}
++ {'app/src/dev/kotlin/com/acme/ui/perf/ShellLog.kt': ['app/src/dev/kotlin/com/acme/ui/perf/ShellLog.kt:17',
++                                                      'app/src/dev/kotlin/com/acme/ui/perf/ShellLog.kt:39']}
+
+----------------------------------------------------------------------
+Ran 14 tests in 66.386s
+
+FAILED (failures=4)
+EXIT

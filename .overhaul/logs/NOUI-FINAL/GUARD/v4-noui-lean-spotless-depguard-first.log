@@ -1,0 +1,35 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/vno-lean
+# command: locked gradle ./gradlew spotlessCheck :app:dependencyGuard --continue
+# start: Sun Oct 25 23:58:21 IST 2026
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: spotlessCheck :app:dependencyGuard
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :app:dependencyGuard
+[33mDependency Guard baseline created for :app for configuration prodReleaseRuntimeClasspath.
+File: file://D:\projects\tools\.overhaul\out\NOUI-FINAL\GUARD\vno-lean\app\dependencies\prodReleaseRuntimeClasspath.txt[0m
+
+> Task :spotlessKotlin
+> Task :spotlessKotlinCheck
+> Task :spotlessCheck
+
+BUILD SUCCESSFUL in 17s
+7 actionable tasks: 7 executed
+Configuration cache entry stored.
+# exit: 0
+# end: Sun Oct 25 23:58:40 IST 2026
+# seconds: 19
+total 12
+drwxr-xr-x 1 crazyhusir 197609    0 Oct 25 23:58 .
+drwxr-xr-x 1 crazyhusir 197609    0 Oct 25 23:58 ..
+-rw-r--r-- 1 crazyhusir 197609 9489 Oct 25 23:58 prodReleaseRuntimeClasspath.txt

@@ -1,0 +1,87 @@
+E...E.....F.......FF.......F......s........................
+======================================================================
+ERROR: test_an_option_left_out_of_a_spec_takes_its_default (tests.test_manifest.OptionTest.test_an_option_left_out_of_a_spec_takes_its_default)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_manifest.py", line 289, in test_an_option_left_out_of_a_spec_takes_its_default
+    self.assertEqual({}, self.manifest.hidden_fields({"visuals": True}))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'TemplateManifest' object has no attribute 'hidden_fields'
+
+======================================================================
+ERROR: test_an_option_that_is_off_hides_its_fields (tests.test_manifest.OptionTest.test_an_option_that_is_off_hides_its_fields)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_manifest.py", line 283, in test_an_option_that_is_off_hides_its_fields
+    {"design_style": "Nothing is drawn, so there is no style to choose."}, self.manifest.hidden_fields(off)
+                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'TemplateManifest' object has no attribute 'hidden_fields'
+
+======================================================================
+FAIL: test_a_set_override_of_a_hidden_field_is_left_at_its_default_too (tests.test_spec.UiComponentsOptionTest.test_a_set_override_of_a_hidden_field_is_left_at_its_default_too)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_spec.py", line 337, in test_a_set_override_of_a_hidden_field_is_left_at_its_default_too
+    self.assertEqual((DEFAULT_DESIGN_STYLE, DEFAULT_MOTION_STYLE), (parsed.spec.design_style, parsed.spec.motion_style))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: ('Utility', 'Standard') != ('Editorial', 'Snappy')
+
+First differing element 0:
+'Utility'
+'Editorial'
+
+- ('Utility', 'Standard')
++ ('Editorial', 'Snappy')
+
+======================================================================
+FAIL: test_the_fields_it_hides_are_left_at_their_defaults_with_one_note_each (tests.test_spec.UiComponentsOptionTest.test_the_fields_it_hides_are_left_at_their_defaults_with_one_note_each) (given={'schema': 2, 'platform': 'android', 'app_name': 'Acme Field', 'package_name': 'com.acme.field', 'ui_components': False, 'design_style': 'Playful', 'motion_style': 'Bouncy'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_spec.py", line 327, in test_the_fields_it_hides_are_left_at_their_defaults_with_one_note_each
+    self.assertEqual((DEFAULT_DESIGN_STYLE, DEFAULT_MOTION_STYLE), (parsed.spec.design_style, parsed.spec.motion_style))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: ('Utility', 'Standard') != ('Playful', 'Bouncy')
+
+First differing element 0:
+'Utility'
+'Playful'
+
+- ('Utility', 'Standard')
++ ('Playful', 'Bouncy')
+
+======================================================================
+FAIL: test_the_fields_it_hides_are_left_at_their_defaults_with_one_note_each (tests.test_spec.UiComponentsOptionTest.test_the_fields_it_hides_are_left_at_their_defaults_with_one_note_each) (given={'app_name': 'Acme Field', 'package_name': 'com.acme.field', 'ui_components': False, 'design_style': 'Social'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_spec.py", line 327, in test_the_fields_it_hides_are_left_at_their_defaults_with_one_note_each
+    self.assertEqual((DEFAULT_DESIGN_STYLE, DEFAULT_MOTION_STYLE), (parsed.spec.design_style, parsed.spec.motion_style))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: ('Utility', 'Standard') != ('Social', 'Standard')
+
+First differing element 0:
+'Utility'
+'Social'
+
+- ('Utility', 'Standard')
+?   ^^  ---
+
++ ('Social', 'Standard')
+?   ^^^ +
+
+
+======================================================================
+FAIL: test_an_option_off_leaves_the_field_it_hides_at_its_default (tests.test_golden.GoldenTest.test_an_option_off_leaves_the_field_it_hides_at_its_default)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_golden.py", line 293, in test_an_option_off_leaves_the_field_it_hides_at_its_default
+    self.assertEqual(Spec.design_style, parsed.spec.design_style)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Utility' != 'Playful'
+- Utility
++ Playful
+
+
+----------------------------------------------------------------------
+Ran 58 tests in 9.157s
+
+FAILED (failures=4, errors=2, skipped=1)

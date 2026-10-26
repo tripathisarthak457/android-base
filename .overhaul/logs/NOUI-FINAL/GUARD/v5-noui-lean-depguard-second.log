@@ -1,0 +1,28 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/vno-lean
+# command: locked gradle ./gradlew :app:dependencyGuard
+# start: Sun Oct 25 23:58:40 IST 2026
+[locked:gradle] waiting for the lock (pid 10020 since 2026-10-25 23:58:40: ./gradlew :data:orders:testDebugUnitTest :feature:orders:testDebugUnitTest :app:assembleDevDebug --continue)
+[locked:gradle] waiting for the lock (pid 13332 since 2026-10-26 00:00:04: ./gradlew testDebugUnitTest testDevDebugUnitTest --continue)
+[locked:gradle] waiting for the lock (pid 3036 since 2026-10-26 00:08:32: ./gradlew :core:designsystem:testDebugUnitTest --rerun)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :app:dependencyGuard
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :app:dependencyGuard
+
+BUILD SUCCESSFUL in 10s
+5 actionable tasks: 1 executed, 4 up-to-date
+Configuration cache entry stored.
+# exit: 0
+# end: Mon Oct 26 00:10:58 IST 2026
+# seconds: 738

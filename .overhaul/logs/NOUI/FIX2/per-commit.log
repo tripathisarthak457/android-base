@@ -1,0 +1,20 @@
+48669ade4: Ran 19 tests in 27.409s
+48669ade4: 
+48669ade4: OK
+c17a931ce: Ran 20 tests in 28.993s
+c17a931ce: 
+c17a931ce: OK
+4e5c7446f: Ran 22 tests in 32.021s
+4e5c7446f: 
+4e5c7446f: OK
+608c61941: Ran 24 tests in 33.574s
+608c61941: 
+608c61941: OK
+df1e6a008 test_manifest.py: Ran 57 tests in 1.336s
+df1e6a008 test_manifest.py: OK
+df1e6a008 test_catalogue.py: Ran 14 tests in 0.180s
+df1e6a008 test_catalogue.py: OK
+df1e6a008 test_cli.py: Ran 30 tests in 23.866s
+df1e6a008 test_cli.py: OK (skipped=1)
+df1e6a008 test_prompts.py: Ran 10 tests in 0.029s
+df1e6a008 test_prompts.py: OK

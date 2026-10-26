@@ -1,0 +1,4 @@
+== 14:08:51 build ui-everything: :core:navigation:testDebugUnitTest --tests *NavKeyRestoreTest*
+[locked:gradle] waiting for the lock (pid 4128 since 2026-10-25 14:07:40: ./gradlew -p build-logic :convention:test --continue)
+[locked:gradle] waiting for the lock (pid 4128 since 2026-10-25 14:07:40: ./gradlew -p build-logic :convention:test --continue)
+== 14:15:27 EXIT 0

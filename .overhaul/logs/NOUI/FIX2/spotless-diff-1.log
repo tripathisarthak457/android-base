@@ -1,0 +1,31 @@
+== core/ui/src/main/kotlin/com/example/fixtwo/core/ui/appstatus/AppStatusGate.kt (exit 0)
+IS DIRTY
+@@ -62,7 +62,11 @@
+== core/ui/src/test/kotlin/com/example/fixtwo/core/ui/appstatus/AppStatusGateTest.kt (exit 1)
+L130: (standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+Step 'ktlint' found problem in 'AppStatusGateTest.kt':
+== core/applock/src/main/kotlin/com/example/fixtwo/core/applock/AppLockGate.kt (exit 1)
+L1: (standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+Step 'ktlint' found problem in 'AppLockGate.kt':
+== core/applock/src/test/kotlin/com/example/fixtwo/core/applock/AppLockGateTest.kt (exit 1)
+L265: (standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+Step 'ktlint' found problem in 'AppLockGateTest.kt':
+== app/src/test/kotlin/com/example/fixtwo/navigation/SharedDestinationsTest.kt (exit 0)
+IS DIRTY
+@@ -18,7 +18,12 @@
+@@ -62,9 +67,13 @@
+== core/perfhud/src/main/kotlin/com/example/fixtwo/core/perfhud/frame/FrameIntake.kt (exit 0)
+IS DIRTY
+@@ -29,10 +29,12 @@
+== core/perfhud/src/main/kotlin/com/example/fixtwo/core/perfhud/recording/PerformanceRecorder.kt (exit 0)
+IS DIRTY
+@@ -175,7 +175,9 @@
+@@ -210,7 +212,9 @@
+@@ -258,8 +262,8 @@
+@@ -270,7 +274,8 @@
+== core/perfhud/src/main/kotlin/com/example/fixtwo/core/perfhud/score/OptimisationScore.kt (exit 1)
+L92: (standard:max-line-length) Exceeded max line length (100)
+Step 'ktlint' found problem in 'OptimisationScore.kt':
+== core/perfhud/src/test/kotlin/com/example/fixtwo/core/perfhud/recording/PerformanceRecorderTest.kt (exit 0)
+IS DIRTY
+@@ -165,7 +165,10 @@

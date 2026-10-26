@@ -1,0 +1,9 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI/web/frontend
+# command: D:/projects/tools/.overhaul/bin/memwait npm run typecheck
+# start: Sun Oct 25 09:58:41 IST 2026
+
+> android-generator-web@1.0.0 typecheck
+> tsc --noEmit
+
+# end: Sun Oct 25 09:59:05 IST 2026
+EXIT=0

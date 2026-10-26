@@ -1,0 +1,484 @@
+00:38:42
+43a2462ae
+.......................FFFFFFF.FFFFFFF.........................................................................................................................F...........................s.................................FFF..FFFFFFFFFFFFFF......................s...........................................ss...........................................................................................................................................................................................................s...........s.........................s..........s..............................................................................................s.............................
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='ui-lean-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_android_guards.py", line 109, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['core/navigation/src/main/kotlin/com/acme[410 chars]e 1']
+
+Second list contains 4 additional elements.
+First extra element 0:
+'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationCard.kt layer-package 1'
+
+- []
++ ['core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationCard.kt '
++  'layer-package 1',
++  'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationHost.kt '
++  'layer-package 1',
++  'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/shell/ShellShortcuts.kt '
++  'legacy-back 1',
++  'core/navigation/src/test/kotlin/com/acme/guards/core/navigation/presentation/PresentationCardTest.kt '
++  'layer-package 1']
+
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='ui-lean-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_android_guards.py", line 109, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['core/navigation/src/main/kotlin/com/acme[410 chars]e 1']
+
+Second list contains 4 additional elements.
+First extra element 0:
+'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationCard.kt layer-package 1'
+
+- []
++ ['core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationCard.kt '
++  'layer-package 1',
++  'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationHost.kt '
++  'layer-package 1',
++  'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/shell/ShellShortcuts.kt '
++  'legacy-back 1',
++  'core/navigation/src/test/kotlin/com/acme/guards/core/navigation/presentation/PresentationCardTest.kt '
++  'layer-package 1']
+
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='ui-standard-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_android_guards.py", line 109, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['core/navigation/src/main/kotlin/com/acme[410 chars]e 1']
+
+Second list contains 4 additional elements.
+First extra element 0:
+'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationCard.kt layer-package 1'
+
+- []
++ ['core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationCard.kt '
++  'layer-package 1',
++  'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationHost.kt '
++  'layer-package 1',
++  'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/shell/ShellShortcuts.kt '
++  'legacy-back 1',
++  'core/navigation/src/test/kotlin/com/acme/guards/core/navigation/presentation/PresentationCardTest.kt '
++  'layer-package 1']
+
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='ui-standard-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_android_guards.py", line 109, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['core/navigation/src/main/kotlin/com/acme[410 chars]e 1']
+
+Second list contains 4 additional elements.
+First extra element 0:
+'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationCard.kt layer-package 1'
+
+- []
++ ['core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationCard.kt '
++  'layer-package 1',
++  'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationHost.kt '
++  'layer-package 1',
++  'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/shell/ShellShortcuts.kt '
++  'legacy-back 1',
++  'core/navigation/src/test/kotlin/com/acme/guards/core/navigation/presentation/PresentationCardTest.kt '
++  'layer-package 1']
+
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='ui-everything-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_android_guards.py", line 109, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['core/navigation/src/main/kotlin/com/acme[410 chars]e 1']
+
+Second list contains 4 additional elements.
+First extra element 0:
+'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationCard.kt layer-package 1'
+
+- []
++ ['core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationCard.kt '
++  'layer-package 1',
++  'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationHost.kt '
++  'layer-package 1',
++  'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/shell/ShellShortcuts.kt '
++  'legacy-back 1',
++  'core/navigation/src/test/kotlin/com/acme/guards/core/navigation/presentation/PresentationCardTest.kt '
++  'layer-package 1']
+
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='ui-everything-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_android_guards.py", line 109, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['core/navigation/src/main/kotlin/com/acme[410 chars]e 1']
+
+Second list contains 4 additional elements.
+First extra element 0:
+'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationCard.kt layer-package 1'
+
+- []
++ ['core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationCard.kt '
++  'layer-package 1',
++  'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationHost.kt '
++  'layer-package 1',
++  'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/shell/ShellShortcuts.kt '
++  'legacy-back 1',
++  'core/navigation/src/test/kotlin/com/acme/guards/core/navigation/presentation/PresentationCardTest.kt '
++  'layer-package 1']
+
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='ui-none-modules')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_android_guards.py", line 109, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['core/navigation/src/main/kotlin/com/acme[410 chars]e 1']
+
+Second list contains 4 additional elements.
+First extra element 0:
+'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationCard.kt layer-package 1'
+
+- []
++ ['core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationCard.kt '
++  'layer-package 1',
++  'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/presentation/PresentationHost.kt '
++  'layer-package 1',
++  'core/navigation/src/main/kotlin/com/acme/guards/core/navigation/shell/ShellShortcuts.kt '
++  'legacy-back 1',
++  'core/navigation/src/test/kotlin/com/acme/guards/core/navigation/presentation/PresentationCardTest.kt '
++  'layer-package 1']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='ui-lean-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_android_guards.py", line 114, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.navigation.back.Bac[89 chars]ey)']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'com.acme.guards.core.navigation.back.BackHandlerEffect(handler)'
+
+- []
++ ['com.acme.guards.core.navigation.back.BackHandlerEffect(handler)',
++  'com.acme.guards.core.navigation.stack.rememberEntryLifecycle(key)']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='ui-lean-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_android_guards.py", line 114, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.navigation.back.Bac[89 chars]ey)']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'com.acme.guards.core.navigation.back.BackHandlerEffect(handler)'
+
+- []
++ ['com.acme.guards.core.navigation.back.BackHandlerEffect(handler)',
++  'com.acme.guards.core.navigation.stack.rememberEntryLifecycle(key)']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='ui-standard-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_android_guards.py", line 114, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.navigation.back.Bac[89 chars]ey)']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'com.acme.guards.core.navigation.back.BackHandlerEffect(handler)'
+
+- []
++ ['com.acme.guards.core.navigation.back.BackHandlerEffect(handler)',
++  'com.acme.guards.core.navigation.stack.rememberEntryLifecycle(key)']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='ui-standard-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_android_guards.py", line 114, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.navigation.back.Bac[89 chars]ey)']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'com.acme.guards.core.navigation.back.BackHandlerEffect(handler)'
+
+- []
++ ['com.acme.guards.core.navigation.back.BackHandlerEffect(handler)',
++  'com.acme.guards.core.navigation.stack.rememberEntryLifecycle(key)']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='ui-everything-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_android_guards.py", line 114, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.navigation.back.Bac[89 chars]ey)']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'com.acme.guards.core.navigation.back.BackHandlerEffect(handler)'
+
+- []
++ ['com.acme.guards.core.navigation.back.BackHandlerEffect(handler)',
++  'com.acme.guards.core.navigation.stack.rememberEntryLifecycle(key)']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='ui-everything-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_android_guards.py", line 114, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.navigation.back.Bac[89 chars]ey)']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'com.acme.guards.core.navigation.back.BackHandlerEffect(handler)'
+
+- []
++ ['com.acme.guards.core.navigation.back.BackHandlerEffect(handler)',
++  'com.acme.guards.core.navigation.stack.rememberEntryLifecycle(key)']
+
+======================================================================
+FAIL: test_every_stability_baseline_entry_is_for_a_composable_the_project_declares (tests.test_android_guards.GuardConfigurationTest.test_every_stability_baseline_entry_is_for_a_composable_the_project_declares) (project='ui-none-modules')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_android_guards.py", line 114, in test_every_stability_baseline_entry_is_for_a_composable_the_project_declares
+    self.assertEqual([], undeclared_stability_entries(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['com.acme.guards.core.navigation.back.Bac[89 chars]ey)']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'com.acme.guards.core.navigation.back.BackHandlerEffect(handler)'
+
+- []
++ ['com.acme.guards.core.navigation.back.BackHandlerEffect(handler)',
++  'com.acme.guards.core.navigation.stack.rememberEntryLifecycle(key)']
+
+======================================================================
+FAIL: test_the_profiles_name_only_classes_the_project_has (tests.test_android_truth.ProfileTest.test_the_profiles_name_only_classes_the_project_has) (module='app')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_android_truth.py", line 148, in test_the_profiles_name_only_classes_the_project_has
+    self.assertEqual([], [line for line in profile if not kept(line, known, PKG)][:10])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['Lcom/acme/ui/feature/auth/AuthNavModule$[684 chars]ry;']
+
+Second list contains 10 additional elements.
+First extra element 0:
+'Lcom/acme/ui/feature/auth/AuthNavModule$$ExternalSyntheticLambda0;'
+
+Diff is 766 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_each_doc_keeps_to_its_budget (tests.test_docs.GeneratedDocsTest.test_each_doc_keeps_to_its_budget) (case='noui-standard', page='CLAUDE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_docs.py", line 265, in test_each_doc_keeps_to_its_budget
+    self.assertLessEqual(len((project / page).read_text(encoding="utf-8").splitlines()), limit)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 121 not less than or equal to 120
+
+======================================================================
+FAIL: test_each_doc_keeps_to_its_budget (tests.test_docs.GeneratedDocsTest.test_each_doc_keeps_to_its_budget) (case='noui-everything', page='CLAUDE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_docs.py", line 265, in test_each_doc_keeps_to_its_budget
+    self.assertLessEqual(len((project / page).read_text(encoding="utf-8").splitlines()), limit)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 121 not less than or equal to 120
+
+======================================================================
+FAIL: test_each_doc_keeps_to_its_budget (tests.test_docs.GeneratedDocsTest.test_each_doc_keeps_to_its_budget) (case='noui-everything-modular', page='CLAUDE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_docs.py", line 265, in test_each_doc_keeps_to_its_budget
+    self.assertLessEqual(len((project / page).read_text(encoding="utf-8").splitlines()), limit)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 121 not less than or equal to 120
+
+======================================================================
+FAIL: test_every_module_the_docs_name_is_in_the_build (tests.test_docs.GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build) (case='ui-none', page='docs/ARCHITECTURE.md', module=':catalog')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_docs.py", line 278, in test_every_module_the_docs_name_is_in_the_build
+    self.assertTrue(any(module == token or module.startswith(token + ":") for module in modules))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_every_module_the_docs_name_is_in_the_build (tests.test_docs.GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build) (case='ui-none', page='docs/ARCHITECTURE.md', module=':catalog')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_docs.py", line 278, in test_every_module_the_docs_name_is_in_the_build
+    self.assertTrue(any(module == token or module.startswith(token + ":") for module in modules))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_every_module_the_docs_name_is_in_the_build (tests.test_docs.GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build) (case='ui-none', page='docs/ARCHITECTURE.md', module=':api')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_docs.py", line 278, in test_every_module_the_docs_name_is_in_the_build
+    self.assertTrue(any(module == token or module.startswith(token + ":") for module in modules))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_every_module_the_docs_name_is_in_the_build (tests.test_docs.GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build) (case='ui-lean', page='docs/ARCHITECTURE.md', module=':catalog')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_docs.py", line 278, in test_every_module_the_docs_name_is_in_the_build
+    self.assertTrue(any(module == token or module.startswith(token + ":") for module in modules))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_every_module_the_docs_name_is_in_the_build (tests.test_docs.GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build) (case='ui-lean', page='docs/ARCHITECTURE.md', module=':catalog')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_docs.py", line 278, in test_every_module_the_docs_name_is_in_the_build
+    self.assertTrue(any(module == token or module.startswith(token + ":") for module in modules))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_every_module_the_docs_name_is_in_the_build (tests.test_docs.GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build) (case='ui-lean', page='docs/ARCHITECTURE.md', module=':api')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_docs.py", line 278, in test_every_module_the_docs_name_is_in_the_build
+    self.assertTrue(any(module == token or module.startswith(token + ":") for module in modules))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_every_module_the_docs_name_is_in_the_build (tests.test_docs.GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build) (case='ui-standard', page='docs/ARCHITECTURE.md', module=':api')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_docs.py", line 278, in test_every_module_the_docs_name_is_in_the_build
+    self.assertTrue(any(module == token or module.startswith(token + ":") for module in modules))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_every_module_the_docs_name_is_in_the_build (tests.test_docs.GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build) (case='ui-everything', page='docs/ARCHITECTURE.md', module=':api')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_docs.py", line 278, in test_every_module_the_docs_name_is_in_the_build
+    self.assertTrue(any(module == token or module.startswith(token + ":") for module in modules))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_every_module_the_docs_name_is_in_the_build (tests.test_docs.GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build) (case='ui-everything-modular', page='docs/ARCHITECTURE.md', module=':api')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_docs.py", line 278, in test_every_module_the_docs_name_is_in_the_build
+    self.assertTrue(any(module == token or module.startswith(token + ":") for module in modules))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_every_module_the_docs_name_is_in_the_build (tests.test_docs.GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build) (case='ui-everything-languages', page='docs/ARCHITECTURE.md', module=':api')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_docs.py", line 278, in test_every_module_the_docs_name_is_in_the_build
+    self.assertTrue(any(module == token or module.startswith(token + ":") for module in modules))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_every_module_the_docs_name_is_in_the_build (tests.test_docs.GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build) (case='noui-lean', page='docs/ARCHITECTURE.md', module=':api')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_docs.py", line 278, in test_every_module_the_docs_name_is_in_the_build
+    self.assertTrue(any(module == token or module.startswith(token + ":") for module in modules))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_every_module_the_docs_name_is_in_the_build (tests.test_docs.GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build) (case='noui-standard', page='docs/ARCHITECTURE.md', module=':api')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_docs.py", line 278, in test_every_module_the_docs_name_is_in_the_build
+    self.assertTrue(any(module == token or module.startswith(token + ":") for module in modules))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_every_module_the_docs_name_is_in_the_build (tests.test_docs.GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build) (case='noui-everything', page='docs/ARCHITECTURE.md', module=':api')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_docs.py", line 278, in test_every_module_the_docs_name_is_in_the_build
+    self.assertTrue(any(module == token or module.startswith(token + ":") for module in modules))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_every_module_the_docs_name_is_in_the_build (tests.test_docs.GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build) (case='noui-everything-modular', page='docs/ARCHITECTURE.md', module=':api')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_docs.py", line 278, in test_every_module_the_docs_name_is_in_the_build
+    self.assertTrue(any(module == token or module.startswith(token + ":") for module in modules))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 658 tests in 397.185s
+
+FAILED (failures=32, skipped=9)
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+EXIT 1

@@ -1,0 +1,7 @@
+# project: D:/projects/tools/.overhaul/out/NOUI-FINAL/TOOLS/noui-lean
+# generated from:  (+ the uncommitted tree at generation, see the gen log)
+# command: locked gradle ./gradlew :core:designsystem:recordRoborazziDebug --continue
+# start: Sun Oct 25 18:34:59 IST 2026
+[locked:gradle] waiting for the lock (pid 19280 since 2026-10-25 18:25:09: ./gradlew check assembleDevDebug --continue)
+Terminated                 D:/projects/tools/.overhaul/bin/locked gradle ./gradlew "$@" 2>&1
+# exit: 143 end: Sun Oct 25 18:38:40 IST 2026

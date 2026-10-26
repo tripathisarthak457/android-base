@@ -1,0 +1,14 @@
+F
+======================================================================
+FAIL: test_the_next_steps_say_to_commit_the_dependency_list (tests.test_cli.CliTest.test_the_next_steps_say_to_commit_the_dependency_list)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_cli.py", line 208, in test_the_next_steps_say_to_commit_the_dependency_list
+    self.assertIn("3. Commit app/dependencies/ after the first ./gradlew check", result.stdout)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '3. Commit app/dependencies/ after the first ./gradlew check' not found in "\nSummary\n───────\n           App  Json Check (JsonCheck)\n       Package  com.example.jsoncheck\n        Target  android\n  Architecture  compact\n       Min SDK  API 26 · Android 8.0 (Oreo)\n    Target SDK  API 37 · Android 17 (Cinnamon Bun)\n       Version  1.0.0 (1)\n    Desugaring  off\n      Features  none\n       Modules  none\n     Languages  en\n      Typeface  DM Sans · JetBrains Mono\n       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)\n         Style  Utility\n        Motion  Standard, haptics on\n          Keys  debug key only\n\n  Done.\n\n  Project: C:\\Users\\crazyhusir\\AppData\\Local\\Temp\\tmpj8y_q_n_\\p\n\n  ! No feature gives the app a tab, so a 'home' module was scaffolded under\n  ! feature/home and data/home. Its repository has no source yet: give it one,\n  ! or rename the module.\n\n  Next\n    1. cd C:\\Users\\crazyhusir\\AppData\\Local\\Temp\\tmpj8y_q_n_\\p and open it in Android Studio.\n    2. ./gradlew :app:installDevDebug\n\n"
+
+----------------------------------------------------------------------
+Ran 1 test in 3.520s
+
+FAILED (failures=1)

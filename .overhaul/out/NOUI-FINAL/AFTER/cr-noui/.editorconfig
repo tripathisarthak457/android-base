@@ -1,0 +1,54 @@
+# Formatting, read by Android Studio, by most other editors without a plugin, and by ktlint, which
+# Spotless runs on every build: one set of rules, so a file reformatted in the IDE passes the check
+# unchanged.
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+[*.{kt,kts}]
+ktlint_standard = disabled
+max_line_length = 100
+ktlint_code_style = android_studio
+# Composables are nouns in PascalCase, which ktlint's function-naming rule would otherwise reject.
+ktlint_function_naming_ignore_when_annotated_with = Composable
+ij_kotlin_code_style_defaults = KOTLIN_OFFICIAL
+ij_kotlin_allow_trailing_comma = true
+ij_kotlin_allow_trailing_comma_on_call_site = true
+ij_kotlin_imports_layout = *
+ij_kotlin_name_count_to_use_star_import = 2147483647
+ij_kotlin_name_count_to_use_star_import_for_members = 2147483647
+
+# Compose Rules (io.nlopez.compose.rules), which Spotless runs in every project. A rule not named
+# here runs. Each one turned off says why: a check of the build's own already guards it (a
+# verifyCodeRules id from docs/DESIGN-SYSTEM.md, or a Compose lint check raised to an error), or
+# this project differs on purpose.
+# vm-forwarding: only a route takes the ViewModel, and it hands it to MviScreen.
+# feature-composition-local keeps them out of features and core:ui; the theme, the navigation host
+# and the developer tools provide theirs to the whole tree on purpose.
+# composed, and lint's UnnecessaryComposedModifier.
+# lint's AutoboxingStateCreation, an error here.
+# The previews are AppComponentPreviews and AppScreenPreviews, the names the rules and docs use.
+# Not wanted here: material refuses every Material import, not only Material 2; List, Set and Map
+# are stable through config/compose-stability.conf; preview names are the project's to choose.
+# Off until the code they find is fixed, in every project: AppRoot takes no modifier, the developer
+# panel and the overlay's detail sections emit more than one root, and AdaptiveLayout calls one
+# slot from two branches and gives a private part's modifier no default.
+
+[*.{xml,json,yml,yaml,toml}]
+indent_size = 4
+
+[*.md]
+trim_trailing_whitespace = false
+
+[{gradlew,*.sh}]
+end_of_line = lf
+
+[*.bat]
+end_of_line = crlf

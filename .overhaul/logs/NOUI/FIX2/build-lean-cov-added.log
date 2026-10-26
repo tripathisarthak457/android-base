@@ -1053,3 +1053,13 @@ Wrote SARIF report to file:///D:/projects/tools/.overhaul/out/NOUI/fix2-lean-cov
 > Task :app:lint
 > Task :app:check
 > Task :app:mergeExtDexDevDebug
+> Task :app:packageDevDebug
+> Task :app:assembleDevDebug
+> Task :app:createDevDebugApkListingFileRedirect
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/out/NOUI/fix2-lean-cov/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 5m 26s
+787 actionable tasks: 680 executed, 107 from cache
+Configuration cache entry stored.
+exit=0

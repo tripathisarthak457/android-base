@@ -1,0 +1,25 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/ui-ev
+# command: locked gradle ./gradlew -p build-logic :convention:test --continue
+# start: Sun Oct 25 22:14:06 IST 2026
+[locked:gradle] waiting for the lock (pid 17896 since 2026-10-25 22:13:59: ./gradlew spotlessKotlinCheck --continue)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+> Task :convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :convention:compileKotlin UP-TO-DATE
+> Task :convention:compileJava NO-SOURCE
+> Task :convention:pluginDescriptors UP-TO-DATE
+> Task :convention:processResources UP-TO-DATE
+> Task :convention:classes UP-TO-DATE
+> Task :convention:jar UP-TO-DATE
+> Task :convention:compileTestKotlin UP-TO-DATE
+> Task :convention:compileTestJava NO-SOURCE
+> Task :convention:pluginUnderTestMetadata UP-TO-DATE
+> Task :convention:processTestResources NO-SOURCE
+> Task :convention:testClasses UP-TO-DATE
+> Task :convention:test UP-TO-DATE
+
+BUILD SUCCESSFUL in 2s
+7 actionable tasks: 7 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.7.1/userguide/configuration_cache_enabling.html
+# exit: 0
+# end: Sun Oct 25 22:16:48 IST 2026
+# seconds: 162

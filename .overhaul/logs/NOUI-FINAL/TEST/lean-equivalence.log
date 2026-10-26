@@ -1,0 +1,10 @@
+# head: 207a12d2f
+# fresh ui-lean and noui-lean (+ add_feature orders) from head into scratch/lean-head-*, compared with the built ui-lean and noui-lean after the orphaned test was moved out
+# start: Sun Oct 25 18:14:35 IST 2026
+[locked:memwait] 954 MB available, 7294 MB commit left; waiting for 1500 MB
+gen ui-lean EXIT=0
+add_feature ui-lean EXIT=0
+gen noui-lean EXIT=0
+add_feature noui-lean EXIT=0
+ui-lean only built: [] only fresh: [] differ: ['generator-spec.json']
+noui-lean only built: [] only fresh: [] differ: ['generator-spec.json']

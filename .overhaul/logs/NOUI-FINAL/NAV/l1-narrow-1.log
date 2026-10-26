@@ -1,0 +1,767 @@
+== 18:24:10 generate ui-everything from the worktree (L1 split, uncommitted)
+
+Summary
+───────
+           App  Final Nav (FinalNav)
+       Package  com.example.finalnav.uieverything
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, appstatus, auth, browser, catalog, ci,
+                coil, collections, coverage, crashlytics, database,
+                datadisplay, deeplink, depsanalysis, devtools, firebase,
+                firebaseanalytics, flags, formatting, formfields, forms,
+                googlefonts, googlesignin, language, leakcanary, licenses,
+                liquidglass, media, network, offlinequeue, onboarding,
+                paging, perfhud, performance, pickers, playstore, profile,
+                push, remoteconfig, sample, search, settings, websocket
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\NAV\ui-everything
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\NAV\ui-everything and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json: the included one is a placeholder.
+
+== 18:25:06 build ui-everything: :core:navigation:testDebugUnitTest :core:navigation:shell:testDebugUnitTest :app:testDevDebugUnitTest :catalog:compileDebugKotlin --continue
+[locked:gradle] waiting for the lock (pid 5920 since 2026-10-25 18:21:20: ./gradlew --continue :core:designsystem:testDebugUnitTest :core:mvi:testDebugUnitTest :data:sample:testDebugUnitTest :da)
+[locked:gradle] waiting for the lock (pid 19280 since 2026-10-25 18:25:09: ./gradlew check assembleDevDebug --continue)
+[locked:gradle] waiting for the lock (pid 19280 since 2026-10-25 18:25:09: ./gradlew check assembleDevDebug --continue)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:navigation:testDebugUnitTest :core:navigation:shell:testDebugUnitTest :app:testDevDebugUnitTest :catalog:compileDebugKotlin
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin FROM-CACHE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies FROM-CACHE
+> Task :core:navigation:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:verifyModuleDependencies
+> Task :core:testing:verifyModuleDependencies FROM-CACHE
+> Task :core:testing:verifyApiPurity FROM-CACHE
+> Task :core:common:verifyApiPurity FROM-CACHE
+> Task :core:testing:preBuild UP-TO-DATE
+> Task :core:testing:preDebugBuild UP-TO-DATE
+> Task :core:navigation:koverFindJar
+> Task :core:testing:mergeDebugAssets
+> Task :core:testing:writeDebugAarMetadata
+> Task :core:testing:generateDebugEmptyResourceFiles
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:processDebugManifest FROM-CACHE
+> Task :core:navigation:verifyApiPurity
+> Task :core:navigation:preBuild
+> Task :core:navigation:preDebugBuild
+> Task :core:designsystem:verifyModuleDependencies FROM-CACHE
+> Task :core:navigation:mergeDebugAssets
+> Task :core:navigation:preDebugUnitTestBuild
+> Task :core:navigation:javaPreCompileDebug FROM-CACHE
+> Task :core:navigation:writeDebugAarMetadata
+> Task :core:designsystem:verifyApiPurity FROM-CACHE
+> Task :core:navigation:mapDebugUnitTestSourceSetPaths
+> Task :core:navigation:generateDebugEmptyResourceFiles
+> Task :core:navigation:generateDebugUnitTestResources FROM-CACHE
+> Task :core:common:compileKotlin FROM-CACHE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar
+> Task :core:navigation:mergeDebugUnitTestAssets
+> Task :core:navigation:checkDebugUnitTestAarMetadata
+> Task :core:navigation:processDebugManifest FROM-CACHE
+> Task :core:testing:compileDebugKotlin FROM-CACHE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :core:navigation:mergeDebugUnitTestManifest
+> Task :core:navigation:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:testing:bundleLibRuntimeToJarDebug
+> Task :core:testing:processDebugJavaRes
+> Task :core:navigation:processDebugUnitTestManifest
+> Task :core:designsystem:preBuild UP-TO-DATE
+> Task :core:designsystem:preDebugBuild UP-TO-DATE
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:designsystem:packageDebugResources FROM-CACHE
+> Task :core:navigation:shell:verifyApiPurity
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:navigation:shell:verifyModuleDependencies
+> Task :core:navigation:shell:preBuild
+> Task :core:navigation:shell:preDebugBuild
+> Task :core:navigation:shell:generateDebugResources FROM-CACHE
+> Task :core:designsystem:generateDebugRFile FROM-CACHE
+> Task :core:navigation:shell:packageDebugResources
+> Task :core:navigation:shell:processDebugNavigationResources FROM-CACHE
+> Task :core:navigation:shell:parseDebugLocalResources FROM-CACHE
+> Task :core:navigation:shell:generateDebugRFile
+> Task :core:navigation:shell:javaPreCompileDebug FROM-CACHE
+> Task :core:navigation:shell:preDebugUnitTestBuild
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:designsystem:compileDebugLibraryResources FROM-CACHE
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:navigation:shell:writeDebugAarMetadata
+> Task :core:navigation:shell:checkDebugUnitTestAarMetadata
+> Task :core:navigation:shell:mapDebugSourceSetPaths
+> Task :core:navigation:shell:compileDebugLibraryResources FROM-CACHE
+> Task :core:navigation:shell:mapDebugUnitTestSourceSetPaths
+> Task :core:navigation:shell:generateDebugUnitTestResources FROM-CACHE
+> Task :core:navigation:mergeDebugUnitTestResources
+> Task :core:designsystem:compileDebugKotlin FROM-CACHE
+> Task :core:navigation:kspDebugKotlin
+> Task :core:navigation:shell:mergeDebugUnitTestResources
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugJavaRes
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:extractDeepLinksDebug FROM-CACHE
+> Task :core:designsystem:processDebugManifest FROM-CACHE
+> Task :core:navigation:shell:extractDeepLinksDebug FROM-CACHE
+> Task :core:navigation:shell:processDebugManifest
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:navigation:shell:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets
+> Task :core:navigation:shell:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:navigation:shell:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:shell:mergeDebugAssets
+> Task :core:navigation:shell:mergeDebugUnitTestAssets
+> Task :core:navigation:shell:koverFindJar
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDevDebugBuild UP-TO-DATE
+> Task :app:generateDevDebugBuildConfig FROM-CACHE
+> Task :app:injectCrashlyticsMappingFileIdDevDebug
+> Task :app:injectCrashlyticsVersionControlInfoDevDebug FROM-CACHE
+> Task :app:processDevDebugGoogleServices FROM-CACHE
+> Task :app:extractDevDebugSupportedLocales FROM-CACHE
+> Task :app:mapDevDebugSourceSetPaths
+> Task :core:navigation:shell:mergeDebugUnitTestManifest
+> Task :core:analytics:verifyApiPurity FROM-CACHE
+> Task :core:analytics:verifyModuleDependencies FROM-CACHE
+> Task :core:analytics:preBuild UP-TO-DATE
+> Task :core:analytics:preDebugBuild UP-TO-DATE
+> Task :core:analytics:extractDebugSupportedLocales FROM-CACHE
+> Task :core:applock:verifyApiPurity FROM-CACHE
+> Task :core:applock:verifyModuleDependencies FROM-CACHE
+> Task :core:applock:preBuild UP-TO-DATE
+> Task :core:applock:preDebugBuild UP-TO-DATE
+> Task :core:applock:extractDebugSupportedLocales FROM-CACHE
+> Task :core:database:verifyApiPurity FROM-CACHE
+> Task :core:database:verifyModuleDependencies FROM-CACHE
+> Task :core:database:preBuild UP-TO-DATE
+> Task :core:database:preDebugBuild UP-TO-DATE
+> Task :core:database:extractDebugSupportedLocales FROM-CACHE
+> Task :core:navigation:shell:processDebugUnitTestManifest
+> Task :core:datastore:verifyApiPurity FROM-CACHE
+> Task :core:datastore:verifyModuleDependencies FROM-CACHE
+> Task :core:datastore:preBuild UP-TO-DATE
+> Task :core:datastore:preDebugBuild UP-TO-DATE
+> Task :core:datastore:extractDebugSupportedLocales FROM-CACHE
+> Task :core:designsystem:extractDebugSupportedLocales FROM-CACHE
+> Task :core:devtools:verifyApiPurity FROM-CACHE
+> Task :core:devtools:verifyModuleDependencies FROM-CACHE
+> Task :core:devtools:preBuild UP-TO-DATE
+> Task :core:devtools:preDebugBuild UP-TO-DATE
+> Task :core:devtools:extractDebugSupportedLocales FROM-CACHE
+> Task :core:flags:verifyApiPurity FROM-CACHE
+> Task :core:flags:verifyModuleDependencies FROM-CACHE
+> Task :core:flags:preBuild UP-TO-DATE
+> Task :core:flags:preDebugBuild UP-TO-DATE
+> Task :core:flags:extractDebugSupportedLocales FROM-CACHE
+> Task :core:media:verifyApiPurity FROM-CACHE
+> Task :core:media:verifyModuleDependencies FROM-CACHE
+> Task :core:media:preBuild UP-TO-DATE
+> Task :core:media:preDebugBuild UP-TO-DATE
+> Task :core:media:extractDebugSupportedLocales FROM-CACHE
+> Task :core:mvi:verifyApiPurity FROM-CACHE
+> Task :core:mvi:verifyModuleDependencies FROM-CACHE
+> Task :core:mvi:preBuild UP-TO-DATE
+> Task :core:mvi:preDebugBuild UP-TO-DATE
+> Task :core:mvi:extractDebugSupportedLocales FROM-CACHE
+> Task :core:navigation:extractDebugSupportedLocales FROM-CACHE
+> Task :core:network:verifyApiPurity FROM-CACHE
+> Task :core:network:verifyModuleDependencies FROM-CACHE
+> Task :core:network:preBuild UP-TO-DATE
+> Task :core:network:preDebugBuild UP-TO-DATE
+> Task :core:network:extractDebugSupportedLocales FROM-CACHE
+> Task :core:notification:verifyApiPurity FROM-CACHE
+> Task :core:notification:verifyModuleDependencies FROM-CACHE
+> Task :core:notification:preBuild UP-TO-DATE
+> Task :core:notification:preDebugBuild UP-TO-DATE
+> Task :core:notification:extractDebugSupportedLocales FROM-CACHE
+> Task :core:perfhud:verifyApiPurity FROM-CACHE
+> Task :core:navigation:processDebugUnitTestResources
+> Task :core:perfhud:verifyModuleDependencies FROM-CACHE
+> Task :core:perfhud:preBuild UP-TO-DATE
+> Task :core:perfhud:preDebugBuild UP-TO-DATE
+> Task :core:perfhud:extractDebugSupportedLocales FROM-CACHE
+> Task :core:playstore:verifyApiPurity FROM-CACHE
+> Task :core:playstore:verifyModuleDependencies FROM-CACHE
+> Task :core:playstore:preBuild UP-TO-DATE
+> Task :core:playstore:preDebugBuild UP-TO-DATE
+> Task :core:playstore:extractDebugSupportedLocales FROM-CACHE
+> Task :core:ui:verifyApiPurity FROM-CACHE
+> Task :core:ui:verifyModuleDependencies FROM-CACHE
+> Task :core:ui:preBuild UP-TO-DATE
+> Task :core:ui:preDebugBuild UP-TO-DATE
+> Task :core:ui:extractDebugSupportedLocales FROM-CACHE
+> Task :data:auth:verifyApiPurity FROM-CACHE
+> Task :data:auth:verifyModuleDependencies FROM-CACHE
+> Task :data:auth:preBuild UP-TO-DATE
+> Task :data:auth:preDebugBuild UP-TO-DATE
+> Task :data:auth:extractDebugSupportedLocales FROM-CACHE
+> Task :core:navigation:packageDebugUnitTestForUnitTest
+> Task :core:navigation:generateDebugUnitTestConfig
+> Task :data:feed:verifyModuleDependencies FROM-CACHE
+> Task :data:profile:verifyApiPurity FROM-CACHE
+> Task :data:profile:verifyModuleDependencies FROM-CACHE
+> Task :data:profile:preBuild UP-TO-DATE
+> Task :data:profile:preDebugBuild UP-TO-DATE
+> Task :data:profile:extractDebugSupportedLocales FROM-CACHE
+> Task :data:feed:verifyApiPurity FROM-CACHE
+> Task :data:feed:preBuild UP-TO-DATE
+> Task :data:feed:preDebugBuild UP-TO-DATE
+> Task :data:feed:extractDebugSupportedLocales FROM-CACHE
+> Task :data:sample:verifyModuleDependencies FROM-CACHE
+> Task :data:sample:verifyApiPurity FROM-CACHE
+> Task :data:sample:preBuild UP-TO-DATE
+> Task :data:sample:preDebugBuild UP-TO-DATE
+> Task :data:sample:extractDebugSupportedLocales FROM-CACHE
+> Task :data:search:verifyModuleDependencies FROM-CACHE
+> Task :data:search:verifyApiPurity FROM-CACHE
+> Task :data:search:preBuild UP-TO-DATE
+> Task :data:search:preDebugBuild UP-TO-DATE
+> Task :data:search:extractDebugSupportedLocales FROM-CACHE
+> Task :feature:auth:verifyModuleDependencies FROM-CACHE
+> Task :feature:auth:verifyApiPurity
+> Task :feature:auth:preBuild
+> Task :feature:auth:preDebugBuild
+> Task :feature:auth:extractDebugSupportedLocales FROM-CACHE
+> Task :feature:feed:verifyApiPurity
+> Task :feature:feed:verifyModuleDependencies FROM-CACHE
+> Task :feature:feed:preBuild
+> Task :feature:feed:preDebugBuild
+> Task :feature:feed:extractDebugSupportedLocales FROM-CACHE
+> Task :feature:onboarding:verifyApiPurity
+> Task :feature:onboarding:verifyModuleDependencies FROM-CACHE
+> Task :feature:onboarding:preBuild
+> Task :feature:onboarding:preDebugBuild
+> Task :feature:onboarding:extractDebugSupportedLocales FROM-CACHE
+> Task :feature:profile:verifyModuleDependencies FROM-CACHE
+> Task :feature:profile:verifyApiPurity
+> Task :feature:profile:preBuild
+> Task :feature:profile:preDebugBuild
+> Task :feature:profile:extractDebugSupportedLocales FROM-CACHE
+> Task :feature:sample:verifyModuleDependencies FROM-CACHE
+> Task :feature:sample:verifyApiPurity
+> Task :feature:sample:preBuild
+> Task :feature:sample:preDebugBuild
+> Task :feature:sample:extractDebugSupportedLocales FROM-CACHE
+> Task :feature:search:verifyApiPurity
+> Task :feature:search:verifyModuleDependencies FROM-CACHE
+> Task :feature:search:preBuild
+> Task :feature:search:preDebugBuild
+> Task :feature:search:extractDebugSupportedLocales FROM-CACHE
+> Task :feature:settings:verifyApiPurity
+> Task :feature:settings:verifyModuleDependencies FROM-CACHE
+> Task :feature:settings:preBuild
+> Task :feature:settings:preDebugBuild
+> Task :core:navigation:shell:extractDebugSupportedLocales FROM-CACHE
+> Task :feature:settings:extractDebugSupportedLocales FROM-CACHE
+> Task :app:generateDevDebugResources FROM-CACHE
+> Task :core:analytics:generateDebugEmptyResourceFiles
+> Task :core:applock:processDebugNavigationResources FROM-CACHE
+> Task :core:database:generateDebugEmptyResourceFiles
+> Task :core:datastore:generateDebugEmptyResourceFiles
+> Task :core:devtools:generateDebugEmptyResourceFiles
+> Task :core:flags:generateDebugEmptyResourceFiles
+> Task :core:media:processDebugNavigationResources FROM-CACHE
+> Task :core:mvi:generateDebugEmptyResourceFiles
+> Task :core:network:generateDebugEmptyResourceFiles
+> Task :core:notification:processDebugNavigationResources FROM-CACHE
+> Task :core:perfhud:processDebugNavigationResources FROM-CACHE
+> Task :core:playstore:processDebugNavigationResources FROM-CACHE
+> Task :core:ui:processDebugNavigationResources FROM-CACHE
+> Task :data:auth:generateDebugEmptyResourceFiles
+> Task :data:feed:generateDebugEmptyResourceFiles
+> Task :data:profile:generateDebugEmptyResourceFiles
+> Task :data:sample:generateDebugEmptyResourceFiles
+> Task :data:search:generateDebugEmptyResourceFiles
+> Task :feature:auth:processDebugNavigationResources FROM-CACHE
+> Task :feature:feed:processDebugNavigationResources FROM-CACHE
+> Task :feature:onboarding:processDebugNavigationResources FROM-CACHE
+> Task :feature:profile:processDebugNavigationResources FROM-CACHE
+> Task :feature:sample:processDebugNavigationResources FROM-CACHE
+> Task :feature:search:processDebugNavigationResources FROM-CACHE
+> Task :feature:settings:processDebugNavigationResources FROM-CACHE
+> Task :core:navigation:shell:processDebugUnitTestResources
+> Task :core:navigation:shell:packageDebugUnitTestForUnitTest
+> Task :core:navigation:shell:generateDebugUnitTestConfig
+> Task :app:generateDevDebugLocaleConfig
+> Task :app:packageDevDebugResources FROM-CACHE
+> Task :core:analytics:javaPreCompileDebug FROM-CACHE
+> Task :core:applock:generateDebugResources FROM-CACHE
+> Task :core:applock:packageDebugResources FROM-CACHE
+> Task :core:applock:parseDebugLocalResources FROM-CACHE
+> Task :core:analytics:kspDebugKotlin FROM-CACHE
+> Task :core:applock:generateDebugRFile FROM-CACHE
+> Task :core:datastore:kspDebugKotlin FROM-CACHE
+> Task :core:datastore:compileDebugKotlin FROM-CACHE
+> Task :core:datastore:javaPreCompileDebug FROM-CACHE
+> Task :core:analytics:compileDebugKotlin FROM-CACHE
+> Task :core:datastore:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:datastore:bundleLibCompileToJarDebug
+> Task :app:processDevDebugNavigationResources FROM-CACHE
+> Task :app:parseDevDebugLocalResources FROM-CACHE
+> Task :app:generateDevDebugRFile FROM-CACHE
+> Task :core:applock:javaPreCompileDebug FROM-CACHE
+> Task :core:applock:kspDebugKotlin FROM-CACHE
+> Task :core:database:kspDebugKotlin FROM-CACHE
+> Task :core:database:compileDebugKotlin FROM-CACHE
+> Task :core:database:javaPreCompileDebug FROM-CACHE
+> Task :core:database:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:database:copyRoomSchemas NO-SOURCE
+> Task :core:database:bundleLibCompileToJarDebug
+> Task :core:flags:kspDebugKotlin FROM-CACHE
+> Task :core:analytics:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:analytics:bundleLibCompileToJarDebug
+> Task :core:flags:javaPreCompileDebug FROM-CACHE
+> Task :core:applock:compileDebugKotlin FROM-CACHE
+> Task :core:flags:compileDebugKotlin FROM-CACHE
+> Task :core:flags:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:flags:bundleLibCompileToJarDebug
+> Task :core:mvi:javaPreCompileDebug FROM-CACHE
+> Task :core:applock:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:applock:bundleLibCompileToJarDebug
+> Task :core:network:javaPreCompileDebug FROM-CACHE
+> Task :core:ui:generateDebugResources FROM-CACHE
+> Task :core:network:kspDebugKotlin FROM-CACHE
+> Task :core:ui:packageDebugResources FROM-CACHE
+> Task :core:ui:parseDebugLocalResources FROM-CACHE
+> Task :core:ui:generateDebugRFile FROM-CACHE
+> Task :core:ui:javaPreCompileDebug FROM-CACHE
+> Task :core:devtools:javaPreCompileDebug FROM-CACHE
+> Task :core:notification:generateDebugResources FROM-CACHE
+> Task :core:notification:packageDebugResources FROM-CACHE
+> Task :core:notification:parseDebugLocalResources FROM-CACHE
+> Task :core:mvi:compileDebugKotlin FROM-CACHE
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:notification:generateDebugRFile FROM-CACHE
+> Task :core:mvi:bundleLibCompileToJarDebug
+> Task :core:datastore:bundleLibRuntimeToJarDebug
+> Task :core:notification:javaPreCompileDebug FROM-CACHE
+> Task :core:perfhud:generateDebugResources FROM-CACHE
+> Task :core:notification:kspDebugKotlin FROM-CACHE
+> Task :core:perfhud:packageDebugResources FROM-CACHE
+> Task :core:perfhud:parseDebugLocalResources FROM-CACHE
+> Task :core:perfhud:generateDebugRFile FROM-CACHE
+> Task :core:analytics:bundleLibRuntimeToJarDebug
+> Task :core:database:bundleLibRuntimeToJarDebug
+> Task :core:flags:bundleLibRuntimeToJarDebug
+> Task :core:mvi:bundleLibRuntimeToJarDebug
+> Task :core:perfhud:javaPreCompileDebug FROM-CACHE
+> Task :core:playstore:generateDebugResources FROM-CACHE
+> Task :core:playstore:packageDebugResources FROM-CACHE
+> Task :core:playstore:parseDebugLocalResources FROM-CACHE
+> Task :core:network:compileDebugKotlin FROM-CACHE
+> Task :core:playstore:generateDebugRFile FROM-CACHE
+> Task :core:playstore:kspDebugKotlin FROM-CACHE
+> Task :core:network:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:network:bundleLibCompileToJarDebug
+> Task :core:network:bundleLibRuntimeToJarDebug
+> Task :core:playstore:javaPreCompileDebug FROM-CACHE
+> Task :data:auth:kspDebugKotlin FROM-CACHE
+> Task :core:playstore:compileDebugKotlin FROM-CACHE
+> Task :core:playstore:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:playstore:bundleLibCompileToJarDebug
+> Task :data:auth:javaPreCompileDebug FROM-CACHE
+> Task :feature:auth:generateDebugResources FROM-CACHE
+> Task :core:notification:compileDebugKotlin FROM-CACHE
+> Task :data:auth:compileDebugKotlin FROM-CACHE
+> Task :feature:auth:packageDebugResources FROM-CACHE
+> Task :feature:auth:parseDebugLocalResources FROM-CACHE
+> Task :core:notification:compileDebugJavaWithJavac FROM-CACHE
+> Task :feature:auth:generateDebugRFile FROM-CACHE
+> Task :feature:auth:javaPreCompileDebug FROM-CACHE
+> Task :data:auth:compileDebugJavaWithJavac FROM-CACHE
+> Task :data:auth:bundleLibCompileToJarDebug
+> Task :data:feed:javaPreCompileDebug FROM-CACHE
+> Task :data:feed:kspDebugKotlin FROM-CACHE
+> Task :feature:feed:generateDebugResources FROM-CACHE
+> Task :feature:feed:packageDebugResources FROM-CACHE
+> Task :feature:feed:parseDebugLocalResources FROM-CACHE
+> Task :feature:feed:generateDebugRFile FROM-CACHE
+> Task :feature:feed:javaPreCompileDebug FROM-CACHE
+> Task :feature:onboarding:generateDebugResources FROM-CACHE
+> Task :feature:onboarding:packageDebugResources FROM-CACHE
+> Task :feature:onboarding:parseDebugLocalResources FROM-CACHE
+> Task :feature:onboarding:generateDebugRFile FROM-CACHE
+> Task :feature:onboarding:javaPreCompileDebug FROM-CACHE
+> Task :core:media:generateDebugResources FROM-CACHE
+> Task :data:feed:compileDebugKotlin FROM-CACHE
+> Task :core:media:packageDebugResources FROM-CACHE
+> Task :core:media:parseDebugLocalResources FROM-CACHE
+> Task :core:notification:transformDebugClassesWithAsm FROM-CACHE
+> Task :data:feed:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:media:generateDebugRFile FROM-CACHE
+> Task :core:notification:bundleLibCompileToJarDebug
+> Task :data:feed:bundleLibCompileToJarDebug
+> Task :core:media:javaPreCompileDebug FROM-CACHE
+> Task :data:profile:javaPreCompileDebug FROM-CACHE
+> Task :feature:profile:generateDebugResources FROM-CACHE
+> Task :feature:profile:javaPreCompileDebug FROM-CACHE
+> Task :core:media:kspDebugKotlin FROM-CACHE
+> Task :data:sample:kspDebugKotlin FROM-CACHE
+> Task :feature:profile:packageDebugResources FROM-CACHE
+> Task :feature:profile:parseDebugLocalResources FROM-CACHE
+> Task :feature:profile:generateDebugRFile FROM-CACHE
+> Task :data:sample:javaPreCompileDebug FROM-CACHE
+> Task :feature:sample:generateDebugResources FROM-CACHE
+> Task :feature:sample:packageDebugResources FROM-CACHE
+> Task :feature:sample:parseDebugLocalResources FROM-CACHE
+> Task :feature:sample:generateDebugRFile FROM-CACHE
+> Task :feature:sample:javaPreCompileDebug FROM-CACHE
+> Task :core:media:compileDebugKotlin FROM-CACHE
+> Task :data:search:kspDebugKotlin FROM-CACHE
+> Task :core:media:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:media:bundleLibCompileToJarDebug
+> Task :data:profile:kspDebugKotlin FROM-CACHE
+> Task :data:sample:compileDebugKotlin FROM-CACHE
+> Task :data:sample:compileDebugJavaWithJavac FROM-CACHE
+> Task :data:sample:bundleLibCompileToJarDebug
+> Task :data:search:javaPreCompileDebug FROM-CACHE
+> Task :feature:search:generateDebugResources FROM-CACHE
+> Task :feature:search:packageDebugResources FROM-CACHE
+> Task :feature:search:parseDebugLocalResources FROM-CACHE
+> Task :data:profile:compileDebugKotlin FROM-CACHE
+> Task :feature:search:generateDebugRFile FROM-CACHE
+> Task :feature:search:javaPreCompileDebug FROM-CACHE
+> Task :data:profile:compileDebugJavaWithJavac FROM-CACHE
+> Task :feature:settings:generateDebugResources FROM-CACHE
+> Task :data:profile:bundleLibCompileToJarDebug
+> Task :feature:settings:javaPreCompileDebug FROM-CACHE
+> Task :app:javaPreCompileDevDebug FROM-CACHE
+> Task :feature:settings:packageDebugResources FROM-CACHE
+> Task :feature:settings:parseDebugLocalResources FROM-CACHE
+> Task :feature:settings:generateDebugRFile FROM-CACHE
+> Task :data:sample:bundleLibRuntimeToJarDebug
+> Task :data:auth:bundleLibRuntimeToJarDebug
+> Task :data:feed:bundleLibRuntimeToJarDebug
+> Task :core:notification:bundleLibRuntimeToJarDebug
+> Task :core:applock:bundleLibRuntimeToJarDebug
+> Task :data:profile:bundleLibRuntimeToJarDebug
+> Task :core:playstore:bundleLibRuntimeToJarDebug
+> Task :data:search:compileDebugKotlin FROM-CACHE
+> Task :core:media:bundleLibRuntimeToJarDebug
+> Task :core:analytics:writeDebugAarMetadata
+> Task :core:applock:writeDebugAarMetadata
+> Task :core:database:writeDebugAarMetadata
+> Task :core:datastore:writeDebugAarMetadata
+> Task :core:devtools:writeDebugAarMetadata
+> Task :core:flags:writeDebugAarMetadata
+> Task :core:media:writeDebugAarMetadata
+> Task :core:mvi:writeDebugAarMetadata
+> Task :core:network:writeDebugAarMetadata
+> Task :core:notification:writeDebugAarMetadata
+> Task :core:playstore:writeDebugAarMetadata
+> Task :core:perfhud:writeDebugAarMetadata
+> Task :data:search:compileDebugJavaWithJavac FROM-CACHE
+> Task :data:auth:writeDebugAarMetadata
+> Task :core:ui:writeDebugAarMetadata
+> Task :data:feed:writeDebugAarMetadata
+> Task :data:profile:writeDebugAarMetadata
+> Task :data:sample:writeDebugAarMetadata
+> Task :data:search:bundleLibCompileToJarDebug
+> Task :feature:auth:writeDebugAarMetadata
+> Task :data:search:bundleLibRuntimeToJarDebug
+> Task :feature:feed:writeDebugAarMetadata
+> Task :feature:onboarding:writeDebugAarMetadata
+> Task :feature:profile:writeDebugAarMetadata
+> Task :data:search:writeDebugAarMetadata
+> Task :feature:sample:writeDebugAarMetadata
+> Task :feature:search:writeDebugAarMetadata
+> Task :feature:settings:writeDebugAarMetadata
+> Task :app:compileDevDebugNavigationResources FROM-CACHE
+> Task :app:createDevDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDevDebug FROM-CACHE
+> Task :core:analytics:processDebugManifest FROM-CACHE
+> Task :core:applock:extractDeepLinksDebug FROM-CACHE
+> Task :core:applock:processDebugManifest FROM-CACHE
+> Task :core:database:processDebugManifest FROM-CACHE
+> Task :core:datastore:processDebugManifest FROM-CACHE
+> Task :core:devtools:processDebugManifest FROM-CACHE
+> Task :core:flags:processDebugManifest FROM-CACHE
+> Task :core:media:extractDeepLinksDebug FROM-CACHE
+> Task :core:media:processDebugManifest FROM-CACHE
+> Task :core:mvi:processDebugManifest FROM-CACHE
+> Task :core:network:processDebugManifest FROM-CACHE
+> Task :core:navigation:compileDebugKotlin
+> Task :core:notification:extractDeepLinksDebug FROM-CACHE
+> Task :core:navigation:processDebugJavaRes
+> Task :core:notification:processDebugManifest FROM-CACHE
+> Task :core:perfhud:extractDeepLinksDebug FROM-CACHE
+> Task :core:perfhud:processDebugManifest FROM-CACHE
+> Task :core:playstore:extractDeepLinksDebug FROM-CACHE
+> Task :app:checkDevDebugAarMetadata
+> Task :core:ui:extractDeepLinksDebug FROM-CACHE
+> Task :core:playstore:processDebugManifest FROM-CACHE
+> Task :core:ui:processDebugManifest FROM-CACHE
+> Task :data:auth:processDebugManifest FROM-CACHE
+> Task :data:feed:processDebugManifest FROM-CACHE
+> Task :data:profile:processDebugManifest FROM-CACHE
+> Task :data:sample:processDebugManifest FROM-CACHE
+> Task :feature:auth:extractDeepLinksDebug FROM-CACHE
+> Task :data:search:processDebugManifest FROM-CACHE
+> Task :feature:feed:extractDeepLinksDebug FROM-CACHE
+> Task :feature:auth:processDebugManifest FROM-CACHE
+> Task :feature:onboarding:extractDeepLinksDebug FROM-CACHE
+> Task :feature:feed:processDebugManifest FROM-CACHE
+> Task :feature:onboarding:processDebugManifest FROM-CACHE
+> Task :feature:profile:extractDeepLinksDebug FROM-CACHE
+> Task :feature:sample:extractDeepLinksDebug FROM-CACHE
+> Task :feature:profile:processDebugManifest FROM-CACHE
+> Task :feature:search:extractDeepLinksDebug FROM-CACHE
+> Task :feature:sample:processDebugManifest FROM-CACHE
+> Task :feature:search:processDebugManifest FROM-CACHE
+> Task :feature:settings:extractDeepLinksDebug FROM-CACHE
+> Task :core:applock:mapDebugSourceSetPaths
+> Task :core:applock:compileDebugLibraryResources FROM-CACHE
+> Task :feature:settings:processDebugManifest FROM-CACHE
+> Task :core:media:mapDebugSourceSetPaths
+> Task :core:media:compileDebugLibraryResources FROM-CACHE
+> Task :core:notification:mapDebugSourceSetPaths
+> Task :core:notification:compileDebugLibraryResources FROM-CACHE
+> Task :core:perfhud:mapDebugSourceSetPaths
+> Task :core:perfhud:compileDebugLibraryResources FROM-CACHE
+> Task :core:playstore:mapDebugSourceSetPaths
+> Task :core:playstore:compileDebugLibraryResources FROM-CACHE
+> Task :core:ui:mapDebugSourceSetPaths
+> Task :core:ui:compileDebugLibraryResources FROM-CACHE
+> Task :feature:auth:mapDebugSourceSetPaths
+> Task :feature:auth:compileDebugLibraryResources FROM-CACHE
+> Task :feature:feed:mapDebugSourceSetPaths
+> Task :feature:feed:compileDebugLibraryResources FROM-CACHE
+> Task :feature:onboarding:mapDebugSourceSetPaths
+> Task :feature:onboarding:compileDebugLibraryResources FROM-CACHE
+> Task :feature:profile:mapDebugSourceSetPaths
+> Task :feature:profile:compileDebugLibraryResources FROM-CACHE
+> Task :feature:sample:mapDebugSourceSetPaths
+> Task :feature:sample:compileDebugLibraryResources FROM-CACHE
+> Task :feature:search:mapDebugSourceSetPaths
+> Task :feature:search:compileDebugLibraryResources FROM-CACHE
+> Task :feature:settings:mapDebugSourceSetPaths
+> Task :feature:settings:compileDebugLibraryResources FROM-CACHE
+> Task :app:koverFindJar
+> Task :app:preDevDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileDevDebugUnitTest FROM-CACHE
+> Task :core:analytics:processDebugJavaRes
+> Task :core:applock:processDebugJavaRes
+> Task :core:database:processDebugJavaRes
+> Task :app:processDevDebugMainManifest
+> Task :app:mergeDevDebugResources FROM-CACHE
+> Task :core:datastore:processDebugJavaRes
+> Task :app:processDevDebugManifest FROM-CACHE
+> Task :core:flags:processDebugJavaRes
+> Task :app:processDevDebugManifestForPackage FROM-CACHE
+> Task :core:mvi:processDebugJavaRes
+> Task :core:media:processDebugJavaRes
+> Task :core:network:processDebugJavaRes
+> Task :core:playstore:processDebugJavaRes
+> Task :core:notification:processDebugJavaRes
+> Task :data:auth:processDebugJavaRes
+> Task :data:feed:processDebugJavaRes
+> Task :data:profile:processDebugJavaRes
+> Task :data:search:processDebugJavaRes
+> Task :catalog:preBuild UP-TO-DATE
+> Task :catalog:preDebugBuild UP-TO-DATE
+> Task :data:sample:processDebugJavaRes
+> Task :catalog:generateDebugBuildConfig
+> Task :catalog:generateDebugResources
+> Task :catalog:processDebugNavigationResources
+> Task :catalog:packageDebugResources
+> Task :core:navigation:compileDebugJavaWithJavac
+> Task :catalog:parseDebugLocalResources
+> Task :catalog:generateDebugRFile
+> Task :core:navigation:transformDebugClassesWithAsm
+> Task :core:navigation:bundleLibCompileToJarDebug
+> Task :core:navigation:bundleLibRuntimeToJarDebug
+> Task :app:processDevDebugResources
+> Task :core:ui:kspDebugKotlin
+> Task :core:navigation:kspDebugUnitTestKotlin
+> Task :core:ui:compileDebugKotlin
+> Task :core:ui:processDebugJavaRes
+> Task :core:ui:compileDebugJavaWithJavac
+> Task :core:ui:bundleLibRuntimeToJarDebug
+> Task :core:ui:bundleLibCompileToJarDebug
+> Task :core:devtools:kspDebugKotlin FROM-CACHE
+> Task :core:devtools:compileDebugKotlin FROM-CACHE
+> Task :core:devtools:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:devtools:bundleLibCompileToJarDebug
+> Task :core:devtools:bundleLibRuntimeToJarDebug
+> Task :core:perfhud:kspDebugKotlin FROM-CACHE
+> Task :core:perfhud:compileDebugKotlin FROM-CACHE
+> Task :core:perfhud:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:perfhud:transformDebugClassesWithAsm
+> Task :core:perfhud:bundleLibCompileToJarDebug
+> Task :feature:feed:kspDebugKotlin
+> Task :feature:auth:kspDebugKotlin
+
+> Task :core:navigation:compileDebugUnitTestKotlin
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/NavKeyRestoreTest.kt:31:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/ShortcutsTest.kt:25:16 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/TabStacksTest.kt:24:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/TabStacksTest.kt:94:17 Unnecessary non-null assertion (!!) on a non-null receiver of type 'TabStacks'.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/TabStacksTest.kt:95:17 Unnecessary non-null assertion (!!) on a non-null receiver of type 'TabStacks'.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/TabStacksTest.kt:123:29 Unnecessary non-null assertion (!!) on a non-null receiver of type 'TabStacks'.
+
+> Task :feature:feed:compileDebugKotlin
+> Task :feature:feed:compileDebugJavaWithJavac
+> Task :feature:auth:compileDebugKotlin
+> Task :core:navigation:processDebugUnitTestJavaRes
+> Task :feature:feed:bundleLibCompileToJarDebug
+> Task :feature:auth:compileDebugJavaWithJavac
+> Task :feature:auth:bundleLibCompileToJarDebug
+> Task :core:navigation:compileDebugUnitTestJavaWithJavac
+> Task :core:navigation:hiltCollectClassesDebugUnitTest
+> Task :feature:onboarding:kspDebugKotlin
+> Task :core:navigation:shell:compileDebugKotlin
+> Task :feature:profile:kspDebugKotlin
+> Task :core:navigation:hiltAggregateDepsDebugUnitTest
+> Task :feature:onboarding:compileDebugKotlin
+> Task :feature:profile:compileDebugKotlin
+> Task :feature:profile:compileDebugJavaWithJavac
+> Task :feature:profile:bundleLibCompileToJarDebug
+> Task :feature:onboarding:compileDebugJavaWithJavac
+> Task :feature:onboarding:bundleLibCompileToJarDebug
+> Task :feature:sample:kspDebugKotlin
+> Task :feature:search:kspDebugKotlin
+> Task :core:navigation:shell:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:navigation:shell:bundleLibRuntimeToJarDebug
+> Task :core:navigation:hiltJavaCompileDebugUnitTest
+> Task :core:navigation:shell:bundleLibCompileToJarDebug
+> Task :feature:sample:compileDebugKotlin
+> Task :core:navigation:shell:processDebugJavaRes
+> Task :core:navigation:transformDebugUnitTestClassesWithAsm
+> Task :feature:sample:compileDebugJavaWithJavac
+> Task :feature:sample:bundleLibCompileToJarDebug
+
+> Task :core:navigation:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :feature:search:compileDebugKotlin
+> Task :feature:settings:kspDebugKotlin
+> Task :feature:settings:compileDebugKotlin
+> Task :feature:search:compileDebugJavaWithJavac
+> Task :feature:search:bundleLibCompileToJarDebug
+> Task :feature:settings:compileDebugJavaWithJavac
+> Task :feature:settings:bundleLibCompileToJarDebug
+> Task :core:perfhud:bundleLibRuntimeToJarDebug
+> Task :feature:auth:bundleLibRuntimeToJarDebug
+> Task :feature:sample:bundleLibRuntimeToJarDebug
+> Task :feature:settings:bundleLibRuntimeToJarDebug
+> Task :feature:onboarding:bundleLibRuntimeToJarDebug
+> Task :feature:feed:bundleLibRuntimeToJarDebug
+> Task :feature:search:bundleLibRuntimeToJarDebug
+> Task :feature:profile:bundleLibRuntimeToJarDebug
+> Task :core:devtools:processDebugJavaRes
+> Task :core:perfhud:processDebugJavaRes
+> Task :feature:auth:processDebugJavaRes
+> Task :feature:feed:processDebugJavaRes
+> Task :feature:onboarding:processDebugJavaRes
+> Task :feature:profile:processDebugJavaRes
+> Task :feature:sample:processDebugJavaRes
+> Task :feature:search:processDebugJavaRes
+> Task :feature:settings:processDebugJavaRes
+> Task :app:kspDevDebugKotlin
+
+> Task :core:navigation:shell:compileDebugUnitTestKotlin FAILED
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/shell/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/shell/presentation/PresentationCardTest.kt:15:58 Unresolved reference 'screenNode'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/shell/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/shell/presentation/PresentationCardTest.kt:25:58 Unresolved reference 'texturesAround'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/shell/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/shell/presentation/PresentationCardTest.kt:119:26 Unresolved reference 'screenNode' on receiver of type 'AndroidComposeTestRule<ActivityScenarioRule<ComponentActivity>, ComponentActivity>'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/shell/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/shell/presentation/PresentationCardTest.kt:120:67 Unresolved reference 'texturesAround' on receiver of type 'AndroidComposeTestRule<ActivityScenarioRule<ComponentActivity>, ComponentActivity>'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/shell/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/shell/presentation/PresentationCardTest.kt:123:85 Unresolved reference 'texturesAround' on receiver of type 'AndroidComposeTestRule<ActivityScenarioRule<ComponentActivity>, ComponentActivity>'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/shell/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/shell/presentation/PresentationCardTest.kt:131:65 Unresolved reference 'texturesAround' on receiver of type 'AndroidComposeTestRule<ActivityScenarioRule<ComponentActivity>, ComponentActivity>'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/shell/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/shell/stack/SlideRecordingTest.kt:18:58 Unresolved reference 'screenNode'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/shell/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/shell/stack/SlideRecordingTest.kt:24:58 Unresolved reference 'texturesAround'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/shell/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/shell/stack/SlideRecordingTest.kt:160:24 Unresolved reference 'screenNode' on receiver of type 'AndroidComposeTestRule<ActivityScenarioRule<ComponentActivity>, ComponentActivity>'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/shell/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/shell/stack/SlideRecordingTest.kt:161:28 Unresolved reference 'screenNode' on receiver of type 'AndroidComposeTestRule<ActivityScenarioRule<ComponentActivity>, ComponentActivity>'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/shell/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/shell/stack/SlideRecordingTest.kt:188:24 Unresolved reference 'screenNode' on receiver of type 'AndroidComposeTestRule<ActivityScenarioRule<ComponentActivity>, ComponentActivity>'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/shell/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/shell/stack/SlideRecordingTest.kt:199:21 Unresolved reference 'texturesAround' on receiver of type 'AndroidComposeTestRule<ActivityScenarioRule<ComponentActivity>, ComponentActivity>'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/shell/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/shell/stack/SlideRecordingTest.kt:211:29 Unresolved reference 'texturesAround' on receiver of type 'AndroidComposeTestRule<ActivityScenarioRule<ComponentActivity>, ComponentActivity>'.
+
+> Task :app:compileDevDebugKotlin
+> Task :app:processDevDebugJavaRes
+> Task :app:compileDevDebugJavaWithJavac
+> Task :app:hiltCollectClassesDevDebug
+> Task :app:hiltAggregateDepsDevDebug
+> Task :app:hiltJavaCompileDevDebug
+> Task :app:bundleDevDebugClassesToCompileJar
+> Task :app:kspDevDebugUnitTestKotlin
+> Task :catalog:compileDebugKotlin
+> Task :app:transformDevDebugClassesWithAsm
+> Task :app:bundleDevDebugClassesToRuntimeJar
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :app:compileDevDebugUnitTestKotlin
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/app/src/test/kotlin/com/example/finalnav/uieverything/navigation/NavKeyRegistrationTest.kt:152:30 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'ProtectionDomain?'.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/app/src/test/kotlin/com/example/finalnav/uieverything/navigation/NavKeyRegistrationTest.kt:154:16 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'String?'.
+
+> Task :app:compileDevDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:hiltCollectClassesDevDebugUnitTest
+> Task :app:processDevDebugUnitTestJavaRes
+> Task :app:hiltAggregateDepsDevDebugUnitTest
+> Task :app:hiltJavaCompileDevDebugUnitTest NO-SOURCE
+> Task :app:transformDevDebugUnitTestClassesWithAsm
+
+> Task :app:testDevDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:navigation:shell:compileDebugUnitTestKotlin' (registered by plugin 'com.android.internal.library').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: UNRESOLVED_IMPORT
+       Kotlin compiler error
+         Unresolved reference 'screenNode'.
+         Location: D:/projects/tools/.overhaul/out/NOUI-FINAL/NAV/ui-everything/core/navigation/shell/src/test/kotlin/com/example/finalnav/uieverything/core/navigation/shell/presentation/PresentationCardTest.kt line 15
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 2m 34s
+567 actionable tasks: 256 executed, 311 from cache
+Configuration cache entry stored.
+== 18:41:44 EXIT 1

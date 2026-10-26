@@ -1,0 +1,6 @@
+before: 705 ac619e56e48c2029e3abc0aebb247b8ef492dca9
+This project has no tab bar (it was generated without UI components). The module is reachable by its keys and deep links; add it to your own navigation once you build one.
+exit code: 1
+after:  705 ac619e56e48c2029e3abc0aebb247b8ef492dca9
+ls: cannot access 'D:/projects/tools/.overhaul/out/NOUI/gate-1/d10-lean-compact/feature': No such file or directory
+ls: cannot access 'D:/projects/tools/.overhaul/out/NOUI/gate-1/d10-lean-compact/data': No such file or directory

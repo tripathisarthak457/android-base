@@ -1,0 +1,9 @@
+{"time":"2026-10-25T17:52:54.7408831+05:30","level":"INFO","msg":"configuration","summary":"addr=127.0.0.1:8080 generator=../../generator python=C:/Users/crazyhusir/AppData/Local/Python/pythoncore-3.15-64/python.exe persistent=false origins=[http://localhost:3000] targets=[android] proxy=none concurrency=4"}
+{"time":"2026-10-25T17:52:57.4026601+05:30","level":"WARN","msg":"DATABASE_URL is unset: nothing will be recorded and the admin portal is off"}
+{"time":"2026-10-25T17:52:57.4037359+05:30","level":"INFO","msg":"listening","addr":"127.0.0.1:8080","targets":["android"]}
+{"time":"2026-10-25T17:52:58.5528205+05:30","level":"INFO","msg":"request","route":"legacy.health","method":"GET","status":200,"ms":0,"bytes":98}
+{"time":"2026-10-25T17:52:58.8207422+05:30","level":"INFO","msg":"request","route":"legacy.health","method":"GET","status":200,"ms":0,"bytes":98}
+{"time":"2026-10-25T17:52:58.9811203+05:30","level":"INFO","msg":"request","route":"legacy.options","method":"GET","status":200,"ms":0,"bytes":141507}
+{"time":"2026-10-25T17:53:38.2621326+05:30","level":"INFO","msg":"request","route":"targets","method":"GET","status":200,"ms":0,"bytes":498}
+{"time":"2026-10-25T17:53:39.8190397+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-25T17:54:07.5534879+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}

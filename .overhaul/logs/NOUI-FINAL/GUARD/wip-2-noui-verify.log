@@ -1,0 +1,105 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/no-ev
+# command: locked gradle ./gradlew verifyModuleDependencies verifyCodeRules --continue
+# start: Sun Oct 25 21:58:52 IST 2026
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: verifyModuleDependencies verifyCodeRules
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:verifyModuleDependencies
+> Task :core:applock:verifyModuleDependencies
+> Task :core:database:verifyModuleDependencies
+> Task :core:analytics:verifyModuleDependencies
+> Task :core:devtools:verifyModuleDependencies
+> Task :core:flags:verifyModuleDependencies
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:datastore:verifyModuleDependencies
+> Task :core:navigation:verifyModuleDependencies
+> Task :core:network:verifyModuleDependencies
+> Task :core:media:verifyModuleDependencies
+> Task :core:mvi:verifyModuleDependencies
+> Task :core:testing:verifyModuleDependencies
+> Task :core:notification:verifyModuleDependencies
+> Task :core:perfhud:verifyModuleDependencies
+> Task :core:playstore:verifyModuleDependencies
+> Task :data:auth:verifyModuleDependencies
+> Task :data:feed:verifyModuleDependencies
+> Task :data:profile:verifyModuleDependencies
+> Task :core:ui:verifyModuleDependencies
+> Task :feature:feed:verifyModuleDependencies
+> Task :data:search:verifyModuleDependencies
+> Task :feature:auth:verifyModuleDependencies
+> Task :data:sample:verifyModuleDependencies
+> Task :feature:sample:verifyModuleDependencies
+> Task :feature:onboarding:verifyModuleDependencies
+> Task :feature:profile:verifyModuleDependencies
+> Task :feature:search:verifyModuleDependencies
+> Task :core:testing:compose:verifyModuleDependencies
+> Task :feature:settings:verifyModuleDependencies
+> Task :core:analytics:verifyCodeRules
+> Task :core:common:verifyCodeRules
+> Task :core:applock:verifyCodeRules
+> Task :core:database:verifyCodeRules
+> Task :core:datastore:verifyCodeRules
+> Task :core:flags:verifyCodeRules
+> Task :app:verifyCodeRules
+> Task :core:media:verifyCodeRules
+> Task :core:devtools:verifyCodeRules
+> Task :core:mvi:verifyCodeRules
+> Task :core:notification:verifyCodeRules
+> Task :core:navigation:verifyCodeRules
+> Task :core:playstore:verifyCodeRules
+> Task :core:testing:verifyCodeRules
+> Task :core:network:verifyCodeRules
+> Task :data:auth:verifyCodeRules
+> Task :core:designsystem:verifyCodeRules
+> Task :data:profile:verifyCodeRules
+> Task :data:feed:verifyCodeRules
+> Task :core:ui:verifyCodeRules FAILED
+> Task :data:sample:verifyCodeRules
+> Task :data:search:verifyCodeRules
+> Task :feature:feed:verifyCodeRules
+> Task :feature:onboarding:verifyCodeRules
+> Task :core:perfhud:verifyCodeRules
+> Task :feature:profile:verifyCodeRules
+> Task :feature:auth:verifyCodeRules
+> Task :feature:search:verifyCodeRules
+> Task :feature:sample:verifyCodeRules
+> Task :core:testing:compose:verifyCodeRules
+> Task :feature:settings:verifyCodeRules
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:ui:verifyCodeRules' (registered by plugin 'com.example.finalguard.noeverything.android.library').
+> Code rules broken:
+  
+    core/ui/src/main/kotlin/com/example/finalguard/noeverything/core/ui/MessagePresenter.kt:34 feature-composition-local: pass configuration as a parameter; a value the whole tree reads is a theme token in core:designsystem
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; AGENTS.md and docs/PERFORMANCE.md say why. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 24s
+65 actionable tasks: 61 executed, 4 up-to-date
+Configuration cache entry stored.
+# exit: 1
+# end: Sun Oct 25 21:59:17 IST 2026
+# seconds: 25

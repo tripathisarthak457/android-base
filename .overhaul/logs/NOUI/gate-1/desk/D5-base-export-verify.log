@@ -1,0 +1,5 @@
+commit files: 2071 directory files: 2071
+differs: templates/android/gradlew.bat
+differs: templates/multiplatform/gradlew.bat
+differences: 2
+note: both differences are gradlew.bat, CRLF in the export by the repository's .gitattributes (*.bat eol=crlf); content equal after CRLF normalisation (sha1 55ce1e38...)

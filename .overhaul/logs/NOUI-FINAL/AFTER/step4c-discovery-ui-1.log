@@ -1,0 +1,103 @@
+03:06:02
+D free GB: 78.5
+./gradlew --offline --continue spotlessKotlinCheck
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: spotlessKotlinCheck
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+The Daemon will expire after the build after running out of JVM Metaspace.
+The project memory settings are likely not configured or are configured to an insufficient value.
+The daemon will restart for the next build, which may increase subsequent build times.
+These settings can be adjusted by setting 'org.gradle.jvmargs' in 'gradle.properties'.
+The currently configured max heap space is '2 GiB' and the configured max metaspace is '1 GiB'.
+For more information on how to set these values, please refer to https://docs.gradle.org/9.7.1/userguide/build_environment.html#sec:configuring_jvm_memory in the Gradle documentation.
+To disable this warning, set 'org.gradle.daemon.performance.disable-logging=true'.
+Daemon will be stopped at the end of the build after running out of JVM Metaspace
+
+> Task :spotlessKotlin
+> Task :spotlessKotlinCheck FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':spotlessKotlinCheck' (registered in build file 'build.gradle.kts').
+> The following files had format violations:
+      core\designsystem\src\main\kotlin\com\example\finalafter\crui\core\designsystem\component\formfields\AppStepIndicator.kt
+          @@ -89,7 +89,7 @@
+           }
+           
+           @Composable
+          -private·fun·ConnectorHalf(visible:·Boolean,·done:·Boolean,·modifier:·Modifier)·{
+          +private·fun·ConnectorHalf(visible:·Boolean,·done:·Boolean,·modifier:·Modifier·=·Modifier)·{
+           ····val·colour·=·animateColorAsState(
+           ········targetValue·=·when·{
+           ············!visible·->·Color.Transparent
+      core\designsystem\src\main\kotlin\com\example\finalafter\crui\core\designsystem\component\list\AppSection.kt
+          @@ -112,7 +112,7 @@
+           
+           /**·Children·stacked·top·to·bottom,·with·a·hairline·between·each·pair·drawn·by·the·column·itself.·*/
+           @Composable
+          -private·fun·SeparatedColumn(modifier:·Modifier,·content:·@Composable·()·->·Unit)·{
+          +private·fun·SeparatedColumn(modifier:·Modifier·=·Modifier,·content:·@Composable·()·->·Unit)·{
+           ····val·lines·=·remember·{·SeparatorLines()·}
+           ····val·color·=·AppTheme.colors.separator
+           ····val·defaultInset·=·AppTheme.spacing.lg
+      core\designsystem\src\main\kotlin\com\example\finalafter\crui\core\designsystem\component\navigation\AppTabBar.kt
+          @@ -288,7 +288,7 @@
+           }
+           
+           @Composable
+          -internal·fun·BarSurface(look:·BarLook,·modifier:·Modifier,·content:·@Composable·()·->·Unit)·{
+          +internal·fun·BarSurface(look:·BarLook,·modifier:·Modifier·=·Modifier,·content:·@Composable·()·->·Unit)·{
+           ····val·surface·=·if·(look.floating)·{
+           ········modifier
+           ············.then(if·(look.shadow)·Modifier.dropShadow(look.shape,·AppTabBarDefaults.BarShadow)·else·Modifier)
+      core\designsystem\src\main\kotlin\com\example\finalafter\crui\core\designsystem\component\navigation\TabCells.kt
+          @@ -223,7 +223,7 @@
+           ····showLabel:·Boolean,
+           ····uppercase:·Boolean,
+           ····scale:·()·->·Float,
+          -····modifier:·Modifier,
+          +····modifier:·Modifier·=·Modifier,
+           )·{
+           ····Layout(
+           ········modifier·=·modifier,
+      core\designsystem\src\main\kotlin\com\example\finalafter\crui\core\designsystem\component\navigation\TabRail.kt
+          @@ -51,7 +51,7 @@
+           ····onTap:·(Int)·->·Unit,
+           ····header:·(@Composable·BarActionScope.()·->·Unit)?,
+           ····footer:·(@Composable·()·->·Unit)?,
+          -····modifier:·Modifier,
+          +····modifier:·Modifier·=·Modifier,
+           )·{
+           ····val·current·=·rememberUpdatedState(selected)
+           ····val·measure·=·remember·{·TabMeasure(vertical·=·true,·state·=·null,·{·current.value·},·mutableStateOf(PillSlots.Empty))·}
+  Violations also present in:
+      core\ui\src\main\kotlin\com\example\finalafter\crui\core\ui\paging\AppPagingList.kt
+      feature\auth\src\main\kotlin\com\example\finalafter\crui\feature\auth\AuthFrame.kt
+  Run 'gradlew.bat spotlessApply' to fix all violations.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 46s
+6 actionable tasks: 6 executed
+Configuration cache entry stored.
+EXIT 1
+03:06:49

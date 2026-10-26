@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_error_generic">Something went wrong. Please try again.</string>
+    <string name="ui_error_offline">You are offline. Check your connection and try again.</string>
+    <string name="ui_error_unreachable">Could not reach the server. Try again in a moment.</string>
+</resources>

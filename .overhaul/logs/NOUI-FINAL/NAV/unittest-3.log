@@ -1,0 +1,61 @@
+== 22:51:50 generator suite at 4929ad29a + 0 uncommitted
+[locked:memwait] 842 MB available, 9457 MB commit left; waiting for 1500 MB
+[locked:memwait] 383 MB available, 9248 MB commit left; waiting for 1500 MB
+................................................................................................................................................s...........................................................s...........................................ss.....................................................................................................................................................................................................s...........s.........................s..........s........................................................................E...............s.............................
+======================================================================
+ERROR: test_a_feature_that_is_off_leaves_no_translation_behind (tests.test_translations.GenerationTest.test_a_feature_that_is_off_leaves_no_translation_behind)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_translations.py", line 148, in test_a_feature_that_is_off_leaves_no_translation_behind
+    project = self.generate(features=["network"], feature_modules=[], languages=["de"])
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_translations.py", line 124, in generate
+    pipeline.build(parsed.spec, ANDROID, self.project, zip_output=False, commit="test")
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\genkit\core\pipeline.py", line 93, in build
+    warnings += placement.place(
+                ~~~~~~~~~~~~~~~^
+        project, destination, zip_output=zip_output, replace=replace, executable=manifest.executable
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\genkit\core\placement.py", line 53, in place
+    _move(project, finished)
+    ~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\genkit\core\placement.py", line 164, in _move
+    os.rename(project, finished)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\android-gen-ph3c6nl2\\Check' -> 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmppvauvyk4\\.k7'
+
+----------------------------------------------------------------------
+Ran 615 tests in 892.305s
+
+FAILED (errors=1, skipped=9)
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+PyYAML is not installed: project.yml was checked as text only.
+== 23:08:16 EXIT 0

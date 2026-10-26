@@ -1,0 +1,5 @@
+D12-npm-ci exit 0
+D12-typecheck exit 0
+D12-test exit 0
+D12-next-build exit 0
+chain4 done

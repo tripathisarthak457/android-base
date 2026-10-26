@@ -1,0 +1,5 @@
+restartable skippable fun com.example.fixcmp.app.core.navigation.shell.ShellShortcuts(
+  stable labels: List<String>
+  stable state: ShellState
+  stable onToggleSidebar: Function0<Unit>?
+)

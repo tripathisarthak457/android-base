@@ -471,3 +471,305 @@ Open, for the orchestrator and the user:
 - Housekeeping: this round left generated projects in `out/NOUI/fix1-noui-lean`, `out/NOUI/fix1-ui-devtools` and
   `out/NOUI/fix1-read-std` (specs `out/NOUI/fix1-noui-lean.json`, `fix1-ui-devtools.json`), kept as evidence; nothing was
   written outside the workspace, the worktree and the scratchpad, and no setting or system state was changed.
+
+## Fix round 2
+
+Fixer in `wt/NOUI` (`staging-wp/NOUI`), from `b7eeb6c9a`, for the eight blocking findings of the second generator,
+template and web reviews. **Head `ccd9c3c9b`.** Eight commits, one per cause: finding 5 turned out to be two causes,
+finding 8 needs the user, not code. Every cause that is code has a test. The new app-lock, harness, tier, held-folder
+and include tests were seen failing on the old code; the status-cover and copy tests were not run against it (the old
+cover has no action to call, and the old option no tables to read). Nothing pushed; `main`, other branches, worktrees and history untouched; no stash; `wt/STAGING` not touched; the
+phone not used (no finding needed it). Logs under `logs/NOUI/FIX2/`.
+
+| # | Finding | Commit | What changed, and the proof |
+|---|---|---|---|
+| 1 | No-UI status cover swallowed every tap, never called `onRetry` | `48669ade4` | Without components the cover is `PlaceholderScreen(...).clickable(onClickLabel = <the UI button's string>)`: maintenance calls `onRetry`, an update opens the store listing as the UI's Update button does (both strings were already translated). `openStoreListing`, `LocalContext` and the four imports it needs are shared instead of UI-only; the generator sorts imports, so the UI file renders byte for byte as before (D5 below). In `core:ui` the `bare-clickable` rule applies, so the line carries `// allow(bare-clickable): the cover is the whole screen, which no press may scale or dim` (the template forbids scaling or fading whole screens; the No-UI theme's indication draws nothing). KDoc's `@param onRetry` is now true in both modes. New No-UI variant test `core/ui/.../appstatus/AppStatusGateTest.kt` (4 tests): maintenance tap calls `onRetry` once under the retry label and reaches nothing underneath; update tap starts `ACTION_VIEW market://details?id=<package>` and never retries; `Available` composes no cover and the content takes taps; the cover goes when the status clears. The file is fenced whole by `<opt:appstatus>`, so it is dropped as hollow with that feature like the code it tests; `test_every_variant_file_is_there` learned such files (`whole_file_fence`). 4/4 green in `build-noui-everything-6-targeted.log` (and in `-5.log` before the constants were renamed). |
+| 2 | Perf tab advice and KDoc named `tools/perf/perf.sh`, which no No-UI project has | `c17a931ce` | `perfhud_fix_cold_start` and `perfhud_fix_baseline_profile` (XML `opt`/`opt-else`, the `<!--~ ... -->` fallback form) now give Macrobenchmark's `StartupTimingMetric` or the median `TotalTime` of `adb shell am start -W` on devRelease, and `adb shell cmd package compile -f -m speed-profile` (what PERFORMANCE-OVERLAY.md's No-UI branch says). Whole KDoc blocks fenced, as `StartupBenchmark.kt` already does: `PerformanceRecorder`, `OptimisationScore` (two), `FrameIntake`, `MemorySummary.appPssMb`, `PerformanceRecorderTest`, and `LaunchHook.kt`'s seam comment (also named tools/perf). UI lines unchanged. New `ProjectShapeTest.test_nothing_sends_a_reader_to_the_harness_the_option_leaves_out`: no generated No-UI file outside the manifest's `verbatim` paths names `tools/perf`, `tools/adaptive`, `perf.sh` or `gates.toml`, in all seven shapes. On `b7eeb6c9a` it fails in all seven: `LaunchHook.kt` in every one, the overlay's strings and KDoc wherever the overlay is (`new-tests-on-old-code.log`). UI projects without `performance` keep the same untrue advice; that waits for the UI release, as the review said. |
+| 3 | `AppLockGateTest`'s focus test fenced out of No-UI with nothing in its place; the No-UI tap path untested | `cfccdf97b` | Three No-UI tests (`opt-else` blocks in the same file): Tab reaches the cover (found by its tag `placeholder`) and `clearFocus()` leaves it focused; the cover's `OnClick` action is labelled with `applock_action` and a tap reaches nothing underneath; and, with `Instrumentation.setInTouchMode(true)` (the test asserts Compose really is in `InputMode.Touch`), a field focused when the app locks loses focus to the cover. **The tests found a real defect:** against the old cover the first and the third fail (`build-noui-everything-2-targeted.log`: "The field kept focus, and the keyboard with it."). A bare `clickable` cannot take focus in touch mode, so on a phone a focused field kept focus behind the No-UI lock, the keyboard stayed up and typing reached the locked content; and with `onExit` on the only focus target, Tab took focus off the cover. Fix (No-UI branch only): `.focusProperties { onExit = cancel }.focusGroup().focusProperties { canFocus = true }` before the clickable, so focus sits inside a closed group as Unlock does in the drawn cover. AppLockGateTest 7/7 (`-4-applock.log`, `-5.log`, `-6-targeted.log`). Robolectric's touch mode only: not checked on the phone. |
+| 4 | Kept features and presets promised tools/perf, tabs, the shell and core/ui's list component with the box ticked | `df1e6a008` | The words live in the option's data (59 m): `options/ui_components.toml` gains `[feature_copy.<feature>]` (description, optional headline) and `[preset_copy]`. Covered: `performance`, `paging`, `profile`, `search`, `deeplink` (each named a tab, the harness or the list component), `coil` (its skeleton and failure glyph are `AppNetworkImage`, which the option owns), `licenses` ("rendered by the design system"), `googlesignin` (a button); presets `lean` and `everything` ("every feature the template offers" is false with six left out). `manifest.py` loads them (presets now load before options), checks them like `[disables]` (a feature nobody can choose, a feature the option leaves out, an unknown preset, a blank text, an unknown key: each a `TemplateError`, `BrokenOptionTest`), and offers `feature_copy(feature, values)` and `preset_description(preset, values)`; the catalogue option emits `feature_copy` and `preset_copy`; `catalogue.json` rewritten with `--write`. Site: `featureCopy`/`presetDescription` in `options.ts`; FeaturesStep (cards, preset tooltip and line) and Review's tooltips use them. CLI: `--list-features --no-ui-components` (human and `--json`) lists the features as such a project has them (the left-out ones gone, the option's words); plain `--list-features` and its JSON are unchanged except one dim hint line under the option. Wizard: the option is now asked **before** the preset, as the site shows its box above the presets, so presets and per-feature questions read as the project will have them. Tests: `copy.test.ts` (with the box ticked and on `lockedCatalogue()`, no preset or feature text names tools/perf, tools/adaptive, a tab (a browser's Custom Tab and "Performance tab in the inspector" excepted), the navigation shell, a home screen or a list component; unticked every text is the catalogue's own), `test_manifest` (load and resolve, seven broken files), `test_catalogue` (contract keys, normalised text, only kept features and real presets), `test_cli` (both listings, refusal for multiplatform), `test_prompts` (option first; presets and features in the option's words). The Go API reads the catalogue with `encoding/json`, which ignores the new fields: no Go change. |
+| 5a | `SharedDestinationsTest`'s No-UI guard counted any folder; a tier left holding only `build/` | `4e5c7446f` | The guard reads `../settings.gradle.kts` (`^\s*include\(":feature:`): a module is what Gradle builds. Not "a folder with a build file", the review's first option: the repro below left `feature/orders/` with its `build.gradle.kts` and sources but no include, which that rule would still count. `remove_feature.emptied_tiers` takes a tier whose only other entry is a `build` folder with its last module, and the plan lists it ("delete feature/ (no module left in it)") before asking. Tests: `test_a_tier_left_with_only_its_build_output_goes_with_its_last_module` (kover artifacts in both tiers, dry-run names both, the project is byte-identical to before the add) and `test_a_tier_keeps_its_other_modules_and_their_build_output`; the first fails on `b7eeb6c9a` (`new-tests-on-old-code.log`). |
+| 5b | (found while reproducing 5) remove_feature died halfway on Windows | `608c61941` | Repro on `out/NOUI/fix2-lean-cov` (No-UI lean + coverage, `add_feature orders`, `check assembleDevDebug` green in `build-lean-cov-added.log`, then `remove_feature orders --yes`): `shutil.rmtree` stopped with WinError 145 at the first `.dex` under `feature/orders/build/.transforms` that a process still holds (the idle Gradle daemon, most likely), after deleting `data/orders` and before touching `settings.gradle.kts` or `app/build.gradle.kts`: a half-deleted module the build still included. Now the edits come first, deletion goes on past a held file (`ignore_errors`), the folders still there are named with what usually holds them, and the run exits 1; tiers are counted over every named module, so the next run finishes a cut-short one. Real runs: `remove-lean-cov-2.log` (edits made, held folders named), `-3.log` (the next run took the `data/` tier the crash had left), `-4.log` (only 23 held `.dex` files remain). Tests: a mocked held folder leaves the module out of settings and the app's dependencies, exits 1 naming it, and a second run restores the project exactly; and a removal cut short (one module gone, `data/build` left) is finished. Both fail on `4e5c7446f`'s script and on `b7eeb6c9a`'s (`new-tests-on-old-code.log`). |
+| 5 | (proof for 5a with the real leftovers) | | With the includes gone and `feature/orders/` (build file, sources, held build output), `feature/build/` and `data/build/` still on disk, `locked gradle ./gradlew check assembleDevDebug --continue` in `out/NOUI/fix2-lean-cov`: BUILD SUCCESSFUL, `SharedDestinationsTest` 2 tests, the scan check skipped "No feature module yet" (`build-lean-cov-leftovers.log`). |
+| 6 | First includes appended under `// ── tooling ──` | `07cf4b105` | `insert_include`: after the tier's last include as before, or, with none, right under the section's heading (`// ── data ──`, `// ── feature ──`), at the end only when the heading is gone too. `--domain` follows the last domain include, else the last data include, else the data heading. Seen in `out/NOUI/fix2-lean-cov/settings.gradle.kts` after `add_feature orders`. Tests: in `test_a_module_brings_...` each include is the line right after its heading; in `test_a_domain_module_joins_a_modular_project` the domain include opens the data section. Both fail on `b7eeb6c9a` (`new-tests-on-old-code.log`). |
+| 7 | README.md and AGENTS.md never mentioned the option | `ccd9c3c9b` | README: `py create_project.py --preset lean --no-ui-components` in "Faster ways in" with what it leaves out and keeps; `--list-features --no-ui-components`; add_feature on a No-UI project (placeholder route, `--tab` refused); remove_feature taking an emptied tier. AGENTS.md: the `ui_components` spec field (Android only, what it drops, the flag, the listing); an **Options** paragraph under "Changing the template" (where options live, `disables`/`hides`/`owns`/`variant`/`feature_copy`/`preset_copy`, the `opt`/`opt-else` pair with the `//~` fallback, variants under `generator/variants/noui/`, `owns` for whole files, and the proofs: `test_android_noui.py`, the `noui-*` matrix runs, `compare_generations.py`). `web/README.md` names the copy tables (in `df1e6a008`). |
+| 8 | D7, generation time | none | The user's decision (below); not re-measured, not reported as passing. |
+
+Checks at the head (logs in `logs/NOUI/FIX2/`):
+
+| Check | Result | Log |
+|---|---|---|
+| D1 generator suite, `memwait python -I -m unittest discover -s tests -t .` | 597 tests OK, 9 skipped (581 at `b7eeb6c9a`) | `unittest-2.log` (working tree before the commits), `unittest-3.log` (head) |
+| Each commit's own tests, in an export of that commit (`git archive` to `out/NOUI/fix2-commits/<sha>`) | `test_android_noui` green at `48669ade4` (19), `c17a931ce` (20), `4e5c7446f` (22), `608c61941` (24); `test_manifest`, `test_catalogue`, `test_cli`, `test_prompts` green at `df1e6a008` | `per-commit.log` |
+| HEAD's `test_android_noui.py` on `b7eeb6c9a`'s code (export), and the two held-folder tests on `4e5c7446f`'s script | 13 failures on `b7eeb6c9a`: the harness test in all seven shapes, the tier, held-folder, cut-short and include tests; both held-folder tests fail on `4e5c7446f` | `new-tests-on-old-code.log` |
+| D2 `catalogue --check`, `tokens --check` | current | `catalogue-tokens-check.log`, `-2.log` |
+| D3 `memwait python -m tests.consistency --quick` | 81 projects in 168 s, 0 new issues, 188 known | `consistency-quick-1.log` |
+| D5 `compare_generations.py --before out/NOUI/base --after wt/NOUI` (105 specs) | identical outside 1.6's globs; the `CodeRules.kt` hunk is the message only, as before | `compare-1.log` |
+| No-UI everything (`out/NOUI/fix2-noui-everything`, spec `out/NOUI/fix2-noui.json` + `--preset everything --no-ui-components`), `locked gradle ./gradlew check assembleDevDebug --continue` | every task green except `:spotlessKotlinCheck` and `:spotlessKotlinGradleCheck`, the WP02 carry-over as in every earlier round; `AppStatusGateTest` 4/4, `AppLockGateTest` 7/7, `SharedDestinationsTest` 2/2, `PerformanceRecorderTest` 10/10, 31 `verifyCodeRules`, lint, `assembleDevDebug` | `build-noui-everything-5.log`; the first run (`-1.log`) failed on a missing `getOrNull` import and on `bare-clickable`, both fixed before the commits |
+| The same project after the last edits (renamed test constants), `:core:ui` and `:core:applock` tests and code rules | BUILD SUCCESSFUL | `build-noui-everything-6-targeted.log` |
+| No-UI lean + coverage add, build, remove, build | see rows 5, 5a, 5b, 6 | `build-lean-cov-added.log`, `remove-lean-cov-2..4.log`, `build-lean-cov-leftovers.log` |
+| Spotless (IDE hook, nothing written) on the eleven Kotlin files this round touched, in the No-UI project | every reported change or lint is in a line this round did not write (the same long lines and `ContentTag`/`NotPrompted` constants in the base output, the carry-over); the new `AppStatusGateTest` is clean once its constants are `CONTENT_TAG`/`PLACEHOLDER_TAG` | `spotless-ide-hook.log`, `spotless-diff-1.log`, `spotless-diff-2.log` |
+| D12 `npm run typecheck`, `npm test`, `memwait npx next build` | ok; 253 tests, 0 fail | `web-typecheck-test.log`, `web-next-build.log` |
+
+Not run: D4 (the full matrix; the quick run covers the No-UI shapes), D7, D8-D11 beyond the builds above, D13 (no Go
+change), the phone rows.
+
+Where reality differed from the findings, and why:
+
+- Finding 1 asked for the change "only in the `opt-else` branch". The No-UI branch needs the store helper and the
+  context the UI branch already had, so those are shared instead of copied into a fallback; D5 proves the UI file is
+  unchanged.
+- Finding 3 asked only for tests; one of them found the touch-mode defect, fixed in the same commit since the tests are
+  its proof. `AppLockGateTest` keeps its file's `PascalCase` constants for the new `PlaceholderTag` (ktlint flags them
+  all, a carry-over); the new standalone test file follows ktlint.
+- Finding 5's fix "count folders with build.gradle.kts" would not have held: see row 5a.
+- The GEN section's note above ("The app-status placeholders have no actions until components exist") is superseded
+  by row 1.
+
+Open, for the orchestrator and the user:
+
+- **D7, generation time (REQUIREMENTS 59 g against m): the user decides.** Unchanged since fix round 1: UI generation
+  measured 2.14 s against 1.84 s at the base (+16 %, about 0.3 s per project), almost all of it the 459 vendored skill
+  files. Options, recommended first: (a) accept the cost of the full skills set and waive D7's +10 % bar in the gate
+  report (catch: "as fast as before" is then not literally true); (b) ship fewer skill files (catch: the vendored copies
+  stop being upstream's unmodified set, and it may still miss +10 %); (c) leave a skill out (catch: (g) asks for the
+  latest official set). The review's re-run beside two builds measured noise; a quiet-machine re-measurement is needed
+  only if the user picks (b) or (c).
+- The touch-mode focus fix of row 3 is proven under Robolectric's touch mode, not on the phone.
+- 23 `.dex` files under `out/NOUI/fix2-lean-cov/feature/orders/build/.transforms` are still held open by a process this
+  round did not start (most likely the shared Gradle daemon, which is never stopped by an agent); the folder is out of
+  that project's build. They go when the daemon exits.
+- Unchanged from earlier rounds: the Spotless carry-over; the UI template profile's `EverythingApplication` names; UI
+  projects without `performance` still advise `tools/perf/perf.sh` (UI release); `next` 15.5.27's advisory; WEB's
+  incidents 1 and 2; the private names in pushed history.
+- Housekeeping: generated evidence kept in `out/NOUI/fix2-noui-everything`, `out/NOUI/fix2-lean-cov` (specs
+  `out/NOUI/fix2-noui.json`, `fix2-lean-cov.json`) and the commit exports `out/NOUI/fix2-commits/`; edit scripts,
+  staged file versions and commit messages in the scratchpad (`fix2/`). The handoff before this section:
+  `C:/Users/CRAZYH~1/AppData/Local/Temp/claude/D--projects-tools/8d80ef9d-4533-47d0-b348-d4c6caaeb696/scratchpad/NOUI.md.before-fix2`.
+  Nothing was written outside the workspace, the worktree and the scratchpad; no setting or system state was changed.
+
+## Text fix round 1
+
+Fixer in `wt/NOUI-FIX` (`staging-wp/NOUI-FIX`), from `ccd9c3c9b`, for the five blocking findings in
+`release/noui-review3-blocking.json` (two of them the same cause: No-UI copy promising UI). **State at 09:38: done,
+head `f5a773e74`.** Seven
+commits, one per cause; every code cause has a test seen failing first. Nothing pushed; `main`, other branches,
+worktrees and history untouched; no stash; `wt/NOUI` (the gate) not touched; Gradle and the phone not used. Logs under
+`logs/NOUI/TEXTFIX1/`; generated evidence under `out/NOUI/textfix-1/`.
+
+| # | Finding | Commit | What changed, and the proof |
+|---|---|---|---|
+| 5 | AGENTS.md: the No-UI theme "does not use design_style or motion_style", but a spec, `--set` or API request still gave it Playful/Bouncy | `e5158930c` | **Decision: the generator enforces the option's `[hides]`**, not the text. Evidence: only the clients enforced it (the wizard skips the questions, the site's `stylesFor` resets); AGENTS.md, both `[hides]` reasons and the No-UI README already promise neutral values; REQUIREMENTS 59 (b) and (e) ask for exactly that, and (m) wants the option in the generator's own mechanisms, which `[hides]` is. The other way (say a spec can still pick the style) would keep a hidden field that changes the output and a record saying "Style Playful" for a project whose UI is the user's. `spec.parse` now gives every field an off option hides the value a spec without the field gets (`manifest.hidden_fields(values)`, data from the option), with a note per field that held another value: `'design_style' was left at its default, Utility: <reason>`. The wizard reads the same method. UI specs are untouched. Tests (all failed first, `hides-tests-before-fix.log`): `UiComponentsOptionTest` (spec, schema-1 spec, `--set`, a default value needs no note, unticked styles kept), the mini-template golden case `option-off` with a hidden field (golden trees unchanged), `OptionTest.hidden_fields`. The review's repro (`cmpspecs/lean-style.json --no-ui-components`, with and without `--set design_style=Utility motion_style=Standard`) now generates two byte-identical projects (`repro-style.log`, `out/NOUI/textfix-1/repro-style-*`). AGENTS.md, README.md and web/README.md say so. |
+| 1, 4 | Kept features' No-UI copy promised screens, rows, a walkthrough, a permission prompt at the end of onboarding, settings links | `00cfd3f63` | Every claim checked against a generated No-UI everything project (`out/NOUI/textfix-1/everything`). New `[feature_copy]` for applock, appstatus, auth, browser, language, media, onboarding, push, sample, settings, and also database ("on screen"), firebaseanalytics ("opts out in settings"), playstore (a restart the person can ask for; in No-UI the offer goes to `LocalMessagePresenter`, which only logs); profile's photo sentence corrected; `[preset_copy].standard` (no language picker). Each says the ViewModel/state, the placeholder route, and what the user's own screen must draw or call (push: nothing asks for `POST_NOTIFICATIONS` yet, `rememberNotificationPermission()` is ready, notifications stay off on Android 13+ until a screen asks). **Structural guard:** `ProjectShapeTest.test_every_feature_whose_ui_the_option_takes_reads_in_the_option_s_words` finds the features from the template (a fence needing the feature and `ui_components`; an option-owned path the feature owns or fences) and from the seven generated shapes (a feature-owned main file drawing `PlaceholderScreen`), and fails for any without `feature_copy`; before the copy it named exactly applock, appstatus, auth, browser, language, media, onboarding, push, sample, settings (`copy-guard-before-copy.log`). Site: `copy.test.ts`'s `MISSING` also refuses screens, rows, walkthrough, working screen, already drawn, language picker, end of onboarding, and a link held until onboarding or sign-in; run against the old catalogue it matches seven old texts (`copy-test-missing-on-old-catalogue.log`). `catalogue.json` rewritten with `--write`. |
+| 3 | `[feature_copy.deeplink]` promised a link held until onboarding and sign-in; the No-UI `PendingDeepLink` KDoc said "after the gates are past" | `00cfd3f63` (copy), `1920b6829` (KDoc), `f5a773e74` (LinkActivity) | Copy: held until start-up has read the settings and the session, then opened on the back stack over the start screen whether or not anyone is signed in, with no entry gates until the project adds its own. KDoc (No-UI `opt-else` only): taken as soon as the root composes after start-up, beneath the app lock's and the API status's covers, signed in or not. `LinkActivity`'s KDoc said the same sign-in-gate thing ("opens it once the tabs are up, as it does for one that arrived before sign-in"); its No-UI branch is fenced the way `PendingDeepLink` is. Rendered in `out/NOUI/textfix-1/everything-head` (diff with the round's base: only these two KDocs and the record stamp). |
+| 4 (wizard) | The wizard's Feature modules question said "Each produces a working screen" | `a23218316` | Data in the option, like its other copy: `module_copy` in `ui_components.toml` (manifest-checked, `manifest.module_description(values)`, emitted in the catalogue). The wizard passes the option values to `ask_feature_modules`; **the site's Identity-step hint**, which promised "a screen ... and a tab" (and tab overflow) to every setup-only visitor, uses `moduleCopy()` with the box ticked. Unticked, both keep their words. Tests: `test_manifest` (described while off, not while on; blank refused), `test_catalogue` (contract keys), `test_prompts` (both wordings), `copy.test.ts` (ticked, unticked, locked; the hint is held to `MISSING` too). Each failed before (`module-copy-tests-before.log`). The Go API ignores the new field (`encoding/json`). |
+| 2 | web/README.md: "The boot selftest asks for the locked value"; selftest.go: "CI runs it against the built container" | `ea2cd386c` | Both false (the Dockerfile's CMD is `/app/server`, CI's api job runs gofmt, vet, build, test). README: at boot the API only refuses a lock it cannot read; `server -selftest` sends the locked value through the route's checks and the generator, but nothing runs it on its own: run it against an image before deploying. The comment says only `server -selftest` runs it. Not taken: the review's "(gate row D16)", because D16 is an API smoke run, not `-selftest`. `gofmt -l` clean. |
+| - | (found while testing) the guard read `templates/android/tools/__pycache__` | `6513de150` | The first full suite failed with a `UnicodeDecodeError` (`unittest-1.log`): another test leaves android_skills' bytecode there. The guard now walks `genkit.core.copy.template_files`, the generator's own file list; green with the `__pycache__` present (`noui-markers-2.log`). |
+
+Checks at the head (logs in `logs/NOUI/TEXTFIX1/`):
+
+| Check | Result | Log |
+|---|---|---|
+| D1 generator suite, `memwait python -I -m unittest discover -s tests -t .` | 608 tests OK, 9 skipped (597 at `ccd9c3c9b`; 11 new) | `unittest-2.log` (`unittest-1.log`: the `__pycache__` error above) |
+| D2 `catalogue --check`, `tokens --check` | both current | `catalogue-tokens-check.log` |
+| D5 `compare_generations.py --before out/NOUI/base --after wt/NOUI-FIX` (105 specs) | 105 specs identical outside 1.6's globs; the reviewed `CodeRules.kt` hunk is the message only, as before | `compare-1.log` |
+| Website `npm run typecheck`, `npm test` (after `memwait npm ci`) | ok; 254 tests, 0 fail | `npm-ci.log`, `web-typecheck-test.log` |
+| `gofmt -l` in `web/api` | clean | (run inline) |
+
+Not run: `npx next build` (no page structure changed; one hint string and a helper), `go vet`/`go build`/`go test` (a comment changed; `go test` is blocked by Smart App Control anyway, and `memwait` sets no `GOPATH`, so a Go build could create `~\go\pkg`), D3/D4 consistency, Gradle builds (no Kotlin code changed, only two KDocs in `opt-else` branches), the phone.
+
+Open, for the orchestrator:
+
+- **Code comments in No-UI output that still describe the shell** (not in the findings; same class as the KDoc fixed above, each needs an `opt-else` KDoc in a shared template file): `StartupViewModel.kt` (EntryIdentity: "nothing pushes the sign-in screen into a tab"), `SignIn.kt` and `Onboarding.kt` route comments and `OnboardingNav.kt` ("moves on to sign-in or the tabs ... each host"; in No-UI the identity change starts a fresh stack on the start screen), `NotificationPermission.kt` ("onboarding asks once at its end, and settings offers it again"), `Shortcuts.kt` ("Ctrl+1...9 for the tabs"), `core/ui/browser/AppBrowser.kt` (KDoc example calls `AppRow`, which no No-UI `core:ui` has). The wizard's language question also says "the language picker in Settings lists them" in every mode.
+- The copy guard is a lower bound: it finds UI the option takes by fences, owned paths and placeholder routes. A feature whose UI goes through a seam the option leaves empty (playstore's restart offer through `LocalMessagePresenter`) is only caught by reading the generated project, as this round did for playstore, database and firebaseanalytics; no
+  test holds those three beyond the site's `MISSING` words.
+- Unchanged from earlier rounds: D7 (the user's decision), the Spotless carry-over, the UI profile's `EverythingApplication` names, `next` 15.5.27's advisory, WEB's incidents 1 and 2, the private names in pushed history.
+- Housekeeping: `web/frontend/node_modules` in this worktree is from `npm ci` (git-ignored); `templates/android/tools/__pycache__` (git-ignored) was left by a test; generated evidence in `out/NOUI/textfix-1/`; commit messages and scripts in the scratchpad's `textfix/`; the handoff
+  before this section: `C:/Users/CRAZYH~1/AppData/Local/Temp/claude/D--projects-tools/8d80ef9d-4533-47d0-b348-d4c6caaeb696/scratchpad/NOUI.md.before-textfix1`. Nothing was written outside the workspace, the worktree and the scratchpad; no setting or system state was changed.
+
+## Finish fix 1
+
+Fixer in `wt/NOUI-FIX` (`staging-wp/NOUI-FIX`), from `f5a773e74`, for the one remaining finding (the No-UI push
+sentence in `docs/ARCHITECTURE.md`). The earlier text fix round 2 was cut by the power cut after it had only generated
+`out/NOUI/textfix-2/everything-before` and `none-before`: no commit and a clean tree, so nothing needed recovering and
+this round started from the head. **State at 11:08: done, head `1f2fd6c85`.** Two commits, one per cause, each with a
+test seen failing first. Nothing pushed; `main`, other branches, worktrees and history untouched; no stash; `wt/NOUI`
+not touched; Gradle and the phone not used. Logs under `logs/NOUI/finish/`; generated evidence under
+`out/NOUI/finish-fix-1/`.
+
+| # | Finding | Commit | What changed, and the proof |
+|---|---|---|---|
+| 1 | A No-UI project with push said "The permission is asked at the end of onboarding and offered again in settings" (`docs/ARCHITECTURE.md`, fenced only by `push`), but nothing asks: the onboarding request is in `<opt:push&ui_components>`, `NotificationsRow.kt` is owned by the option, and `rememberNotificationPermission` has no caller | `af663958d` | The UI lines are fenced with `ui_components`, bytes unchanged. A No-UI project now says that nothing asks yet; that on Android 13 and up no notification is shown (`AppNotifications.post` logs and drops it) until one of the project's own screens calls `rememberNotificationPermission()` from `:core:notification` and `request()`s it where the person can see why; and that `request()` opens the notification settings once the system will not ask again. The helper's own KDoc, which the doc now sends readers to, made the same false claim ("onboarding asks once at its end, and settings offers it again"). Its No-UI `opt-else` now says nothing in the project calls it yet. Test: `GeneratedDocsTest.test_what_the_docs_say_asks_or_opens_is_what_the_code_does` checks each claim against the generated code. "asked at the end of onboarding" needs a call in `feature/onboarding/`, "offered again in settings" needs one in `feature/settings/`, and "Nothing asks ..." needs no call anywhere outside the declaring file. It failed on the old template for `noui-everything` and `noui-everything-modular` (`new-test-before-fix.log`) and passes after the fix (`new-tests-after-fix.log`). |
+| - | Found while checking every onboarding claim, as the finding asked. Every No-UI README said "Onboarding, sign-in and every other screen are placeholder routes reachable by navigation and deep links", and ARCHITECTURE.md said "onboarding and sign-in are routes reachable by navigation and deep links". Both are false in a No-UI lean project: lean has neither feature, and it is a preset production generates. In every project, no `DeepLinkRoute` maps a link to either route | `1f2fd6c85` | ARCHITECTURE.md (No-UI block only) now has one sentence per pair (`onboarding&auth`, `onboarding&!auth`, `auth&!onboarding`). Each says that nothing opens onboarding, sign-in or both yet, that the routes are registered, and that a link reaches them only once a `DeepLinkRoute` maps it. With neither feature, the sentence is left out. The README now speaks of every destination a feature registers, which is true with any features, and points to the identity recipe for "once you have onboarding and sign-in screens". Tests: `test_the_docs_call_onboarding_and_sign_in_routes_only_where_the_project_has_them` failed on the old text in `noui-lean`, for both README and ARCHITECTURE (`route-test-before-fix.log`). The claims test also checks "Nothing opens onboarding / sign-in" against the code: the feature is there, and no main source outside it names `OnboardingKey` / `SignInKey`. |
+
+Every push, notification and onboarding claim in the generated No-UI docs was read against the code of
+`out/NOUI/finish-fix-1/everything` (No-UI, preset everything, generated at the head; before: `everything-before`, from
+`f5a773e74`; the two differ only in README.md, docs/ARCHITECTURE.md and NotificationPermission.kt). To read each fenced
+variant, `lean`, `onboarding-push` (onboarding and push only) and `auth` (auth only) were also generated:
+
+- The `:core:notification` row ("Notification channels, the permission check and push-token registration") is true:
+  `NotificationChannels`, `NotificationPermission`, `AppNotifications.hasPermission`, `PushRegistration`.
+- The entry identity paragraph and the README's "Where the app starts" are fixed (`1f2fd6c85`). Each variant was read
+  in `everything`, `onboarding-push`, `auth` and `lean`.
+- "`@SettingsDataStore` holds ... onboarding progress" is true (`AppSettingsStore.onboardingCompleted`).
+- The session-scoped stores do include "the push registration" (`bindPushRegistrationAsSessionScoped`).
+- The Notifications paragraph is fixed (`af663958d`). Its other claims hold as before: channels are created at start-up
+  in the application scope (`appScope.launch { notificationChannels.create() }`), and the token reaches
+  `PushTokenSink` only when it changes.
+- The KDoc of `rememberNotificationPermission` is fixed (`af663958d`).
+- CLAUDE.md and AGENTS.md: the only match is the skills row ("touch the manifest, deep links, notifications or
+  permissions"), a pointer, and true. README's feature list: names only. "push" in PERFORMANCE.md and
+  PERFORMANCE-OVERLAY.md means a navigation push, not a notification.
+
+Checks (logs in `logs/NOUI/finish/`):
+
+| Check | Result | Log |
+|---|---|---|
+| Generator suite at the head `1f2fd6c85`, `memwait python -I -m unittest discover -s tests -t .` | 610 tests OK, 9 skipped (608 at `f5a773e74`; 2 new). An earlier run with the template fix and the first new test gave 609 OK. | `unittest-2.log`, `unittest-1.log` |
+| `catalogue --check`, `tokens --check` | both current. No catalogue text changed, so the website's typecheck and tests were not needed. | `catalogue-tokens-check.log` |
+| D5 `compare_generations.py --before out/NOUI/base --after wt/NOUI-FIX` (105 specs; the template as committed) | identical outside 1.6's globs. The `CodeRules.kt` hunk is the reviewed message only, as before. | `compare-1.log` |
+| The three changed template files, rendered at `f5a773e74` and now with UI components, for lean, standard, everything, none, push, onboarding, auth and settings alone, push+onboarding, and push+settings. Run because the compare's `docs/*` and `README.md` exceptions would hide a UI change there. | 30 renders, 0 differences. Control run without UI components: 30 of 30 differ. | `ui-render-identical.log`, `noui-render-differs.log` |
+
+Not run: Gradle builds (only docs and one KDoc inside an `opt-else` comment changed, no code), D3/D4 consistency, the
+website (no catalogue or site text changed), the phone.
+
+Open, for the orchestrator:
+
+- **A UI project with push but without onboarding or settings** has the same problem. No preset has that combination,
+  but a custom selection can. Such a project still says "asked at the end of onboarding and offered again in settings"
+  in `docs/ARCHITECTURE.md`, in the `rememberNotificationPermission` KDoc and in `features/push.toml`'s description
+  (the catalogue and the site), and nothing asks there either. Not changed here: the KDoc and the catalogue text are UI
+  bytes outside the compare's exceptions, so this is a UI decision. Fences on `onboarding` and `settings` would fix the
+  doc and the KDoc; the catalogue description is a single text shared by every selection.
+- Code comments in No-UI output that still describe the shell. This is Text fix round 1's list minus
+  `NotificationPermission.kt`: `StartupViewModel.kt`, `SignIn.kt`, `Onboarding.kt` ("Both 'Get started' and 'Skip'",
+  "The completed flag moves the app on to sign-in or the tabs"), `OnboardingNav.kt`, `Shortcuts.kt`,
+  `core/ui/browser/AppBrowser.kt`.
+- Unchanged from earlier rounds: D7 (the user's decision), the Spotless carry-over, the UI profile's
+  `EverythingApplication` names, `next` 15.5.27's advisory, WEB's incidents 1 and 2, the private names in pushed history.
+- Housekeeping: a test leaves `templates/android/tools/__pycache__` (git-ignored), as before. Generated evidence is in
+  `out/NOUI/finish-fix-1/`. The commit messages, the step files used to split the two commits, and the render check are
+  in the scratchpad's `finishfix1/`. The handoff before this section:
+  `C:/Users/CRAZYH~1/AppData/Local/Temp/claude/D--projects-tools/8d80ef9d-4533-47d0-b348-d4c6caaeb696/scratchpad/finishfix1/NOUI.md.before-finishfix1`.
+  Nothing was written outside the workspace, the worktree and the scratchpad, and no setting or system state was
+  changed.
+
+## Finish fix 2
+
+Fixer in `wt/NOUI-FIX` (`staging-wp/NOUI-FIX`), from `1f2fd6c85`, for the three findings of the second finish review
+(evidence `out/NOUI/finish-review-1/r2-*`). The earlier attempt at this round was cut by the power cut before it wrote
+anything: a clean tree at `1f2fd6c85`, no commit since, no `out/NOUI/finish-fix-2`, no scratch files, so this round
+started from the head. **State at 13:42: done, head `7779aab27`.** Three commits, one per finding, each with a test seen
+failing first. Nothing pushed; `main`, other branches, worktrees and history untouched; no stash; `wt/NOUI` not touched;
+Gradle and the phone not used. Logs under `logs/NOUI/finish/fix2-*`; generated evidence under `out/NOUI/finish-fix-2/`.
+
+| # | Finding | Commit | What changed, and the proof |
+|---|---|---|---|
+| 2 | Every No-UI README said "Only `:app` and `:catalog` carry flavours", unfenced; no No-UI project has `:catalog` | `7a8835d64` | The sentence is fenced `<opt:ui_components>`, and an `<opt:!ui_components>` variant says "Only `:app` carries flavours. Every library module builds once, ...". Confirmed in the code first: only `app/build.gradle.kts` applies the flavours convention, `benchmark` uses `missingDimensionStrategy`. **Structural test:** `GeneratedDocsTest.test_every_module_the_docs_name_is_in_the_build` read only two-part module paths (`:core:ui`), so a root module (`:app`, `:catalog`, `:benchmark`) was never checked; it now reads them too. Before the fence it failed in exactly the four No-UI cases, on README's `:catalog` and nothing else (`fix2-module-test-before-fix.log`). The UI cases without the catalog (`ui-lean`, `ui-none`) carry the same untrue sentence; they get a named exception, `UI_STALE_MODULES = {("README.md", ":catalog")}`, for UI cases only, until the UI decision below. UI bytes: the README rendered at `1f2fd6c85` and now with UI components, for lean, standard, everything, none, push, onboarding, auth and settings alone, push+onboarding and push+settings: 10 renders, 0 differences (`fix2-readme-ui-render-identical.log`); without components all 10 differ (`fix2-readme-noui-render-differs.log`). |
+| 1 | The site's Project-step panel "What that produces" always ended with the `planTabs` line: on the locked site the default answers showed "Tabs: Home · Settings", lean "Tabs: Home" and a scaffolded home module | `7610744f6` | The line is worked out in `producesNote(state)` in `features/configurator/uiComponents.ts`, beside the step's other No-UI wording. Without components it says "The app opens on a blank start screen, for your design system to build on." (the README's and the lean preset copy's own words; it names no tab bar, so the line can be held to `MISSING`). With components it is the old text, character for character. `IdentityStep.tsx` renders `{producesNote(state)}`. Tests in `copy.test.ts`: on `lockedCatalogue()` the line for the default answers, lean, everything with two modules and six modules says "blank start screen" and matches nothing in `MISSING`, which now also names `home module`; with components it is still `Tabs: Home · Settings` (standard) and the scaffolded-home sentence (lean). Run against the old panel the locked test fails on `'Tabs: Home · Settings'` (`fix2-copy-test-old-site.log`). The site at this commit alone: typecheck ok, 256 tests (`fix2-web-at-commit2.log`). |
+| 3 | The Motion step's haptics text promised "a light tick when a selection changes, a switch flips or a pull reaches its threshold" with the box ticked; nothing in a No-UI project plays haptics | `7779aab27` | Confirmed in `out/NOUI/finish-review-1/r2-everything` and `r2-lean`: no `performHapticFeedback` anywhere; the value is `DesignTokens.Defaults.hapticsEnabled` → `AppTheme.defaults.hapticsEnabled`, which `AppRoot` ANDs with the preference store's `hapticsEnabled` into `AppTheme.hapticsEnabled`. **Option data, shared by the wizard and the site**, as the finding preferred: `[field_copy]` in `options/ui_components.toml` (spec field → what it does while the option is off; `haptics_enabled`: "The default behind AppTheme.hapticsEnabled, which the components you build read before they play a tick: nothing in the project plays one yet. A person who turns haptics off in the preference store turns it off too, and the phone's own setting still applies on top."). `manifest.py` loads and checks it (a field the spec does not have, a field `[hides]` leaves unasked, a blank text: each a `TemplateError`) and offers `field_descriptions(values)`; the catalogue option emits `field_copy` (a list of `{field, description}`, after `module_copy`); `catalogue.json` rewritten with `--write`. Wizard: `ask_look(features, hidden, described)` prints the option's words for the haptics question (it said "a light vibration when a control responds", the same class); site: `fieldCopy()` in `options.ts`, `hapticsHint()` in `uiComponents.ts`, used by `MotionStep.tsx`. With components both keep their words. Tests: `test_manifest` (described while off, `{}` while on; three broken files), `test_catalogue` (contract key order, normalised text, only fields still asked), `test_prompts` (each wording in its mode), `copy.test.ts` (ticked, unticked, locked; the haptics text joins `copyOf`, so it is held to `MISSING`, which now names `selection changes|switch flips|pull reaches`). Before the field existed: the mini manifest refused the fixture (46 manifest failures and errors), catalogue 2, prompts 2 (`fix2-field-copy-tests-before.log`); the site test crashed on the missing field (`fix2-copy-test-before-data.log`) and, with `fieldCopy` returning null, fails on the old words (`fix2-copy-test-old-site.log`). The Go API reads the catalogue with `encoding/json`, which ignores the field: no Go change. AGENTS.md and web/README.md name `field_copy`; web/README.md also says what the Project summary shows without components. |
+
+Every push, notification and onboarding claim in the docs of `out/NOUI/finish-fix-2/everything` (No-UI, preset
+everything, generated at `7779aab27` from `spec-noui.json`; `lean` beside it) was read against its code:
+
+- README "Only `:app` carries flavours": true in both (`everything/README.md:92`, `lean/README.md:60`).
+- ARCHITECTURE's `:core:notification` row ("channels, the permission check and push-token registration"): true
+  (`NotificationChannels`, `AppNotifications.hasPermission`, `NotificationPermission`, `PushRegistration`).
+- "Channels are the `NotificationChannelSpec` enum, created at start-up off the main thread": true (`enum class
+  NotificationChannelSpec`; `appScope.launch { notificationChannels.create() }` in the Application, and `create()` runs
+  in `withContext(dispatchers.io)`).
+- "The push token is handed to `PushTokenSink` only when it changes, and sign-out unregisters it": true.
+  `onRegistered` returns when the stored `submitted_installation_id` equals the new one, and `clear()` (a
+  `SessionScopedStore`) calls `FirebaseMessaging.unregister()`. What it hands over is FCM's installation id, which the
+  sink's own KDoc calls the install's push address.
+- "Nothing asks for the permission ... `AppNotifications.post` logs and drops it ... call
+  `rememberNotificationPermission()` ... `request()` ... opens the app's notification settings once the system will not
+  ask again": true. No main source outside `NotificationPermission.kt` calls the helper. `post` returns after
+  `Log.w(...)` while `hasPermission` is false, and `hasPermission` is true below API 33. `request()` starts
+  `ACTION_APP_NOTIFICATION_SETTINGS` when access is `Blocked`.
+- "the push registration" among the session-scoped stores: true (`bindPushRegistrationAsSessionScoped`).
+- Entry identity: `EntryIdentity.Onboarding`, `SignedOut` and `SignedIn(generation)` exist. "Nothing opens onboarding
+  or sign-in yet": no main source outside `feature/onboarding/` names `OnboardingKey`, and none outside `feature/auth/`
+  names `SignInKey`. The only `DeepLinkRoute` is the sample's `items` route. Both placeholders are a bare
+  `PlaceholderScreen(title)`, so "no way forward" holds.
+- "`@SettingsDataStore` holds ... onboarding progress": true (`AppSettingsStore.onboardingCompleted`).
+- README's pointer to the identity recipe, the feature list (names only) and CLAUDE.md's skills row (a pointer) make no
+  other claim. "push" in PERFORMANCE.md means a navigation push.
+
+Checks (logs in `logs/NOUI/finish/`):
+
+| Check | Result | Log |
+|---|---|---|
+| Generator suite at `7779aab27`, `memwait python -I -B -m unittest discover -s tests -t .` | 616 tests OK, 9 skipped (610 at `1f2fd6c85`; 6 new). The same on the working tree before the commits. | `fix2-unittest-2.log`, `fix2-unittest-1.log` |
+| `catalogue --check`, `tokens --check` at the head | both current | `fix2-catalogue-tokens-check-2.log` |
+| Website `npm run typecheck`, `npm test` at the head (catalogue text changed) | ok; 257 tests, 0 fail (254 before; 3 new) | `fix2-web-typecheck-test-2.log` |
+| The site at `7610744f6` alone (step files in place, then the head's files back, byte-checked) | typecheck ok; 256 tests, 0 fail | `fix2-web-at-commit2.log` |
+| D5 `compare_generations.py --before out/NOUI/base --after wt/NOUI-FIX` (105 specs) | identical outside 1.6's globs; the only hunk is the reviewed `CodeRules.kt` message, the same as in Finish fix 1 | `fix2-compare-1.log` |
+| README rendered with and without UI components, `1f2fd6c85` against now | UI: 10 renders, 0 differences. No-UI: 10 of 10 differ | `fix2-readme-ui-render-identical.log`, `fix2-readme-noui-render-differs.log` |
+| Generation of `out/NOUI/finish-fix-2/everything` and `lean` | exit 0 | `fix2-generate-everything.log`, `fix2-generate-lean.log` |
+
+Not run: Gradle builds (no Kotlin, Gradle or resource file changed; one README paragraph and option data), `npx next
+build` (no page structure changed: two texts now come from helpers), Go (no change), D3/D4 consistency, the phone.
+
+Open, for the orchestrator and the user:
+
+- **UI projects without the catalog** (lean, none, and any selection without `catalog`) still say "Only `:app` and
+  `:catalog` carry flavours". Fencing it on `catalog` changes UI projects' bytes, which the gate holds identical, so
+  this is the UI release's decision. When it is fenced, drop `UI_STALE_MODULES` in `test_docs.py`.
+- **Same class, not in the findings:** the site's Languages hint on the Project step, shown to every setup-only
+  visitor, says "Each one you pick translates every screen and joins the language picker"; a No-UI project draws no
+  picker (`feature_copy.language`: "for the picker your settings screen draws"). The wizard's language question says
+  "the language picker in Settings lists them" in every mode. `[field_copy].languages` would fit both, as
+  `languages` is a field still asked.
+- Comments, not docs: every No-UI `settings.gradle.kts` opens with "`:app / :catalog   composition roots`" (so do UI
+  projects without the catalog), beside Finish fix 1's list of code comments that still describe the shell
+  (`StartupViewModel.kt`, `SignIn.kt`, `Onboarding.kt`, `OnboardingNav.kt`, `Shortcuts.kt`, `AppBrowser.kt`).
+  `ModuleGraph.kt`'s KDoc names `:catalog` as a rule of the guard, which stays true.
+- `docs/PERFORMANCE-OVERLAY.md` (with `perfhud`) reports how the overlay's cost was measured on the template with
+  components ("switching every tab and pushing and popping a screen"). It records that measurement and claims nothing
+  about the project, so it was left alone.
+- Unchanged from earlier rounds: D7 (the user's decision), a UI project with push but without onboarding or settings
+  (Finish fix 1), the Spotless carry-over, the UI profile's `EverythingApplication` names, `next` 15.5.27's advisory,
+  WEB's incidents 1 and 2, the private names in pushed history.
+- Housekeeping: a test leaves `templates/android/tools/__pycache__` (git-ignored), as before. Generated evidence:
+  `out/NOUI/finish-fix-2/` (`everything`, `lean`, `spec-noui.json`). The scratchpad's `finishfix2/` holds the commit
+  messages, the step files used to split commits 2 and 3, the chain script, the old-site patch script and the render
+  check. The handoff before this section is
+  `C:/Users/CRAZYH~1/AppData/Local/Temp/claude/D--projects-tools/8d80ef9d-4533-47d0-b348-d4c6caaeb696/scratchpad/finishfix2/NOUI.md.before-finishfix2`.
+  Nothing was written outside the workspace, the worktree and the scratchpad, and no setting or system state was
+  changed.
+
+## Merge after the power cut
+
+Integrator in `wt/NOUI` (`staging-wp/NOUI`), from `ccd9c3c9b`, merging `staging-wp/NOUI-FIX` at `7779aab27`. **State
+at 14:22: done, head `db2617930`.** Two commits. Nothing pushed; `main`, other branches, worktrees and history
+untouched; no stash; `wt/NOUI-FIX` not touched; Gradle and the phone not used. Logs under `logs/NOUI/finish/merge-*`.
+
+Starting state: a clean tree at `ccd9c3c9b` with no merge in progress (no `MERGE_HEAD`), so the power cut left nothing
+to recover here. `locked status`: gradle and adb free, no `java.exe`; the gate's last log (`gate-1/verify`) is from
+10:31, so nothing was running from this tree.
+
+| Commit | What, and why |
+|---|---|
+| `079579f7e` | `git merge --no-ff staging-wp/NOUI-FIX`. The branch's 12 commits were made beside the gate, in `wt/NOUI-FIX`, so this branch's tree did not move while the gate ran from it. They are Text fix round 1's seven (`e5158930c`..`f5a773e74`, review 3's five blocking findings in `release/noui-review3-blocking.json`), Finish fix 1's two (`af663958d`, `1f2fd6c85`, the docs fix for the No-UI push sentence plus the onboarding and sign-in route claims) and Finish fix 2's three (`7a8835d64`, `7610744f6`, `7779aab27`, the second finish review's findings). The task named "the five review-3 findings and the last docs fix". The branch also carries Finish fix 2, so the message names all three rounds. No conflict: the merge base is `ccd9c3c9b` and this branch had nothing the fix branch lacked, so the merge's tree is `7779aab27`'s tree (`6cc480aa2`), byte for byte. |
+| `db2617930` | `catalogue --write` and `tokens --write` after the merge (`merge-write.log`). The content was already current, because the fix branch wrote it, and the token copies did not change. Only the catalogue's `generator_commit` stamp moved, from `7610744f6` to the merge, which is the generator the catalogue now describes. Committed separately, as `39f71cca7` was after the lane merges. |
+
+Checks at the head `db2617930` (logs in `logs/NOUI/finish/`):
+
+| Check | Result | Log |
+|---|---|---|
+| `catalogue --check`, `tokens --check` | both current (3 token copies) | `merge-catalogue-tokens-check.log` |
+| Generator suite, `memwait python -I -m unittest discover -s tests -t .` in `generator/` (the real interpreter `pythoncore-3.15-64/python.exe`) | 616 tests OK, 9 skipped, the same as `wt/NOUI-FIX` at `7779aab27` (`fix2-unittest-2.log`) | `merge-unittest.log` |
+| Tree after the checks | clean. Only git-ignored `__pycache__` folders were added, because the suite was run without `-B`. | `merge-status-after.log` |
+
+Not run: Gradle builds, the website's typecheck and tests, D5 compare and the phone. Apart from the one stamp line,
+the tree is the one Finish fix 2 checked at `7779aab27`: website typecheck ok, 257 tests; D5 identical outside 1.6's
+globs. The gate's own rows are the orchestrator's to re-run or carry over.
+
+Open: unchanged from Finish fix 2's list (UI projects without the catalog and the flavours sentence, the Languages
+hint and wizard question, the code comments that still describe the shell, D7, a UI project with push but without
+onboarding or settings, the Spotless carry-over, the UI profile's `EverythingApplication` names, `next` 15.5.27's
+advisory, WEB's incidents 1 and 2, the private names in pushed history). Housekeeping: the merge and stamp messages
+and the two scripts are in the scratchpad's `mergefix/`. The handoff before this section is
+`C:/Users/CRAZYH~1/AppData/Local/Temp/claude/D--projects-tools/8d80ef9d-4533-47d0-b348-d4c6caaeb696/scratchpad/mergefix/NOUI.md.before-merge`.
+Nothing was written outside the workspace, the worktree and the scratchpad, and no setting or system state was
+changed.

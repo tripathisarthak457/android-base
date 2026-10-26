@@ -1,0 +1,182 @@
+05:16:19
+D free GB: 76.6
+./gradlew --offline --continue --no-parallel --no-daemon --no-configuration-cache spotlessApply --rerun-tasks
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.7.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :spotlessKotlin
+Format was not able to resolve all violations which (theoretically) can be autocorrected in file D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\rawtpl\core\network\src\main\kotlin\com\base\app\core\network\di\HttpClientModule.kt in 3 consecutive runs of format.
+Format was not able to resolve all violations which (theoretically) can be autocorrected in file D:\projects\tools\.overhaul\out\NOUI-FINAL\AFTER\rawtpl\core\network\src\main\kotlin\com\base\app\core\network\di\HttpClientModule.kt in 3 consecutive runs of format.
+
+> Task :spotlessKotlinApply FAILED
+> Task :spotlessKotlinGradle
+> Task :spotlessKotlinGradleApply
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':spotlessKotlinApply' (registered in build file 'build.gradle.kts').
+> There were 136 lint error(s), they must be fixed or suppressed.
+  app/src/test/kotlin/com/base/app/navigation/NavKeyRegistrationTest.kt:L142 ktlint(standard:max-line-length) Exceeded max line length (100)
+  app/src/test/kotlin/com/base/app/startup/StartupViewModelTest.kt:L74 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/AndroidScreenshotsConventionPlugin.kt:L62 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/android/ComposeStability.kt:L120 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/AdaptiveRules.kt:L21 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/CodeRules.kt:L109 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/ComposeRules.kt:L21 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/Declarations.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/DevToolingGuard.kt:L66 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/KotlinRules.kt:L23 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/ManifestRules.kt:L77 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/ModuleGraph.kt:L185 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/ScrollRules.kt:L21 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/SheetRules.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/StructureRules.kt:L15 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/android/ComposeStabilityTest.kt:L138 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/CodeRuleCasesTest.kt:L211 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/CodeRulesBaselineTest.kt:L26 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/CodeRulesTest.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/CodeRulesWiringTest.kt:L17 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/ComponentRuleCasesTest.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/ManifestRulesTest.kt:L19 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/ModuleGraphTest.kt:L115 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/ModuleGraphWiringTest.kt:L48 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/com/base/app/buildlogic/guard/SheetRuleCasesTest.kt:L113 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/CatalogApp.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogAdaptive.kt:L63 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogBars.kt:L60 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogButtons.kt:L23 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogCollections.kt:L38 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogContainers.kt:L35 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogData.kt:L55 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogFeedback.kt:L49 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogFeel.kt:L54 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogFields.kt:L29 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogFoundations.kt:L50 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogInputs.kt:L31 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogLists.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogMotion.kt:L60 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogOverlays.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogPickers.kt:L25 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogSelection.kt:L33 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogText.kt:L47 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/sheets/CatalogSheets.kt:L33 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/sheets/SheetBehaviourDemos.kt:L54 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/sheets/SheetDetentDemos.kt:L69 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/sheets/SheetPlacementDemos.kt:L45 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/sheets/SheetPresetDemos.kt:L34 ktlint(standard:max-line-length) Exceeded max line length (100)
+  catalog/src/main/kotlin/com/base/app/catalog/sections/sheets/SheetStyleDemos.kt:L50 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/database/src/main/kotlin/com/base/app/core/database/queue/QueuedRequestDao.kt:L36 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/datastore/src/test/kotlin/com/base/app/core/datastore/session/AuthTokenStoreTest.kt:L59 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/collections/AppCarousel.kt:L86 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/container/AppCard.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/datadisplay/AppDataTable.kt:L195 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/datadisplay/AppStatTile.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/datadisplay/AppTimeline.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppBanner.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/input/AppSecureField.kt:L69 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabBar.kt:L157 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTopBar.kt:L187 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/TabRail.kt:L106 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppActionSheet.kt:L39 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppAlert.kt:L119 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppMenu.kt:L254 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppToast.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/pickers/AppDatePicker.kt:L280 ktlint(standard:kdoc) A dangling toplevel KDoc is not allowed
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppCheckbox.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppSegmentedControl.kt:L152 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/AppSheetProperties.kt:L79 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/action/ActionCard.kt:L166 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/choice/AppChoiceSheet.kt:L74 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/chrome/AppSheetGrabber.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/chrome/SheetGrabberNode.kt:L107 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/layout/SheetBodyPolicy.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/layout/SheetLayers.kt:L49 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/layout/SheetLayout.kt:L114 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/layout/SheetSession.kt:L141 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/surface/SheetSurfaceNode.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/text/AppExpandableText.kt:L56 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/text/AppText.kt:L230 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/interaction/PressableNode.kt:L392 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/interaction/RowHighlight.kt:L43 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/layout/Bleed.kt:L16 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/scroll/ScrollIndicator.kt:L103 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppColors.kt:L137 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppTypography.kt:L33 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/RecompositionJourneysTest.kt:L269 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/ChromeInsetsTest.kt:L111 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/collections/AppCarouselTest.kt:L154 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/feedback/RedactedGeometryTest.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/feedback/SkeletonScreenshotTest.kt:L143 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/formfields/MoneyFieldTest.kt:L22 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/navigation/LargeTitleTopBarTest.kt:L92 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/overlay/OverlayBackTest.kt:L66 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/overlay/OverlayHostTest.kt:L57 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/sheet/SheetAdaptiveTest.kt:L35 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/sheet/SheetGestureTest.kt:L64 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/sheet/SheetScreenshotTest.kt:L113 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/sheet/SheetShots.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/sheet/SheetWindowScreenshotTest.kt:L79 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/sheet/layout/DetentResolutionTest.kt:L155 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/sheet/layout/SheetGeometryTest.kt:L49 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/sheet/shape/SheetApiShapeTest.kt:L158 ktlint(standard:class-naming) Class or object name should start with an uppercase letter and use camel case
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/draw/ShimmerClockTest.kt:L56 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/scroll/AppOverscrollTest.kt:L125 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/scroll/ScrollDirectionTest.kt:L380 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/theme/FontPreloadTest.kt:L75 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/devtools/src/main/kotlin/com/base/app/core/devtools/panel/FlagsTab.kt:L83 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/main/kotlin/com/base/app/core/navigation/shell/WindowChromeWriter.kt:L49 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/main/kotlin/com/base/app/core/navigation/shell/back/BackCard.kt:L195 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/main/kotlin/com/base/app/core/navigation/shell/tabs/TabWarmUp.kt:L92 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/main/kotlin/com/base/app/core/navigation/shell/transition/NavTransitions.kt:L50 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/test/kotlin/com/base/app/core/navigation/shell/ChromeLayeringTest.kt:L171 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/test/kotlin/com/base/app/core/navigation/shell/TabBarTest.kt:L110 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/test/kotlin/com/base/app/core/navigation/shell/back/BackCardDrawingTest.kt:L134 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/test/kotlin/com/base/app/core/navigation/shell/back/BackCardDuringPushDrawingTest.kt:L70 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/test/kotlin/com/base/app/core/navigation/shell/back/BackCardStateTest.kt:L66 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/test/kotlin/com/base/app/core/navigation/shell/stack/PaneTest.kt:L118 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/test/kotlin/com/base/app/core/navigation/shell/stack/RepeatedKeyTest.kt:L95 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/shell/src/test/kotlin/com/base/app/core/navigation/shell/stack/SlideRecordingTest.kt:L134 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/navigation/src/test/kotlin/com/base/app/core/navigation/AppNavigatorTest.kt:L60 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/network/src/main/kotlin/com/base/app/core/network/appstatus/ApiSignals.kt:L60 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/network/src/main/kotlin/com/base/app/core/network/client/KtorNetworkClient.kt:L115 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/network/src/main/kotlin/com/base/app/core/network/di/HttpClientModule.kt:L78 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/network/src/test/kotlin/com/base/app/core/network/client/KtorNetworkClientTest.kt:L194 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/checks/StrictModeWatch.kt:L107 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/memory/MemoryLog.kt:L148 ktlint(standard:value-parameter-comment) A comment inside or on same line after a 'value_parameter' is not allowed. It may be placed on a separate line above.
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/score/OptimisationScore.kt:L105 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/playstore/src/test/kotlin/com/base/app/core/playstore/review/ReviewPolicyTest.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/testing/compose/src/main/kotlin/com/base/app/core/testing/compose/preview/AccessibilityPreviewTester.kt:L74 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/ui/src/main/kotlin/com/base/app/core/ui/browser/AppBrowser.kt:L63 ktlint(standard:max-line-length) Exceeded max line length (100)
+  data/sample/src/test/kotlin/com/base/app/data/sample/OfflineFirstSampleRepositoryTest.kt:L41 ktlint(standard:max-line-length) Exceeded max line length (100)
+  feature/onboarding/src/main/kotlin/com/base/app/feature/onboarding/OnboardingScreen.kt:L137 ktlint(standard:max-line-length) Exceeded max line length (100)
+  feature/sample/src/main/kotlin/com/base/app/feature/sample/list/SampleListScreen.kt:L77 ktlint(standard:max-line-length) Exceeded max line length (100)
+  feature/search/src/main/kotlin/com/base/app/feature/search/SearchViewModel.kt:L95 ktlint(standard:max-line-length) Exceeded max line length (100)
+  feature/search/src/main/kotlin/com/base/app/feature/search/result/SearchResultScreen.kt:L101 ktlint(standard:max-line-length) Exceeded max line length (100)
+  Resolve these lints or suppress with `suppressLintsFor`
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1m 22s
+8 actionable tasks: 8 executed
+EXIT 1
+05:17:43

@@ -1,0 +1,26 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/no-ev
+# command: locked gradle ./gradlew -p build-logic :convention:test --continue
+# start: Sun Oct 25 21:58:05 IST 2026
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+> Task :convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :convention:pluginDescriptors
+> Task :convention:processResources
+> Task :convention:processTestResources NO-SOURCE
+> Task :convention:compileKotlin
+> Task :convention:compileJava NO-SOURCE
+> Task :convention:classes
+> Task :convention:jar
+> Task :convention:pluginUnderTestMetadata
+> Task :convention:compileTestKotlin
+> Task :convention:compileTestJava NO-SOURCE
+> Task :convention:testClasses UP-TO-DATE
+
+> Task :convention:test
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+BUILD SUCCESSFUL in 11s
+7 actionable tasks: 7 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.7.1/userguide/configuration_cache_enabling.html
+# exit: 0
+# end: Sun Oct 25 21:58:17 IST 2026
+# seconds: 13

@@ -1,0 +1,60 @@
+03:01:01
+D free GB: 77.6
+./gradlew --offline --continue verifyCodeRules
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: verifyCodeRules
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:analytics:verifyCodeRules
+> Task :core:applock:verifyCodeRules
+> Task :core:database:verifyCodeRules
+> Task :core:common:verifyCodeRules
+> Task :core:datastore:verifyCodeRules
+> Task :catalog:verifyCodeRules
+> Task :app:verifyCodeRules
+> Task :core:devtools:verifyCodeRules
+> Task :core:flags:verifyCodeRules
+> Task :core:media:verifyCodeRules
+> Task :core:mvi:verifyCodeRules
+> Task :core:notification:verifyCodeRules
+> Task :core:navigation:verifyCodeRules
+> Task :core:network:verifyCodeRules
+> Task :core:testing:verifyCodeRules
+> Task :core:playstore:verifyCodeRules
+> Task :data:auth:verifyCodeRules
+> Task :data:feed:verifyCodeRules
+> Task :core:ui:verifyCodeRules
+> Task :data:profile:verifyCodeRules
+> Task :core:perfhud:verifyCodeRules
+> Task :data:sample:verifyCodeRules
+> Task :data:search:verifyCodeRules
+> Task :feature:feed:verifyCodeRules
+> Task :feature:onboarding:verifyCodeRules
+> Task :feature:profile:verifyCodeRules
+> Task :feature:auth:verifyCodeRules
+> Task :feature:sample:verifyCodeRules
+> Task :feature:search:verifyCodeRules
+> Task :core:testing:compose:verifyCodeRules
+> Task :feature:settings:verifyCodeRules
+> Task :core:navigation:shell:verifyCodeRules
+> Task :core:designsystem:verifyCodeRules
+
+BUILD SUCCESSFUL in 34s
+37 actionable tasks: 37 executed
+Configuration cache entry stored.
+EXIT 0
+03:01:37

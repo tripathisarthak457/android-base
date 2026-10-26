@@ -1,0 +1,141 @@
+# project: D:/projects/tools/.overhaul/out/NOUI-FINAL/TOOLS/noui-lean
+# tree: 796d3e31d + 2 uncommitted paths at generation (see the gen log)
+# command: locked gradle ./gradlew :core:testing:compose:verifyCodeRules :core:testing:compose:testDebugUnitTest :core:designsystem:testDebugUnitTest --continue
+# D: free GB: 78.0026969909668
+# start: Sun Oct 25 23:44:54 IST 2026
+[locked:gradle] waiting for the lock (pid 4228 since 2026-10-25 23:44:54: ./gradlew :core:perfhud:testDebugUnitTest :core:perfhud:lintDebug :app:compileDevDebugKotlin --continue)
+[locked:gradle] waiting for the lock (pid 9200 since 2026-10-25 23:49:21: ./gradlew :build-logic:convention:test verifyCodeRules verifyModuleDependencies checkComposeStability spotlessKotlinChec)
+[locked:gradle] waiting for the lock (pid 2588 since 2026-10-25 23:54:45: ./gradlew :core:navigation:shell:testDebugUnitTest :app:testDevDebugUnitTest :catalog:compileDebugKotlin --continue)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:testing:compose:verifyCodeRules :core:testing:compose:testDebugUnitTest :core:designsystem:testDebugUnitTest
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:testing:verifyModuleDependencies UP-TO-DATE
+> Task :core:testing:verifyApiPurity UP-TO-DATE
+> Task :core:common:verifyApiPurity UP-TO-DATE
+> Task :core:testing:preBuild UP-TO-DATE
+> Task :core:testing:preDebugBuild UP-TO-DATE
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+> Task :core:testing:compose:verifyModuleDependencies UP-TO-DATE
+> Task :core:testing:compose:verifyApiPurity
+> Task :core:testing:compose:preBuild
+> Task :core:testing:compose:preDebugBuild
+> Task :core:testing:writeDebugAarMetadata UP-TO-DATE
+> Task :core:testing:compose:javaPreCompileDebug UP-TO-DATE
+> Task :core:testing:compose:preDebugUnitTestBuild
+> Task :core:testing:compose:writeDebugAarMetadata UP-TO-DATE
+> Task :core:testing:compose:verifyCodeRules
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :core:testing:compose:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar UP-TO-DATE
+> Task :core:testing:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:testing:compose:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:testing:compose:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:testing:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:testing:processDebugJavaRes UP-TO-DATE
+> Task :core:testing:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:testing:processDebugManifest UP-TO-DATE
+> Task :core:testing:compose:processDebugManifest UP-TO-DATE
+> Task :core:testing:compose:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:testing:compose:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:compose:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:testing:compose:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:testing:mergeDebugAssets UP-TO-DATE
+> Task :core:testing:compose:generateDebugAssets UP-TO-DATE
+> Task :core:testing:compose:mergeDebugAssets UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:verifyModuleDependencies FROM-CACHE
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:designsystem:packageDebugResources FROM-CACHE
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:generateDebugRFile FROM-CACHE
+> Task :core:testing:compose:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:testing:compose:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:testing:compose:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:generateDebugComposePreviewRobolectricTests FROM-CACHE
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:designsystem:checkDebugUnitTestAarMetadata
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:designsystem:compileDebugLibraryResources FROM-CACHE
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths
+> Task :core:designsystem:generateDebugUnitTestResources FROM-CACHE
+> Task :core:testing:compose:processDebugUnitTestResources UP-TO-DATE
+> Task :core:testing:compose:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:testing:compose:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug FROM-CACHE
+> Task :core:designsystem:processDebugManifest FROM-CACHE
+> Task :core:designsystem:mergeDebugUnitTestResources FROM-CACHE
+> Task :core:designsystem:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:designsystem:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets
+> Task :core:designsystem:mergeDebugUnitTestAssets
+> Task :core:designsystem:mergeDebugUnitTestManifest
+> Task :core:designsystem:processDebugUnitTestManifest
+> Task :core:designsystem:processDebugUnitTestResources FROM-CACHE
+> Task :core:designsystem:packageDebugUnitTestForUnitTest
+> Task :core:designsystem:generateDebugUnitTestConfig
+> Task :core:testing:compose:compileDebugKotlin
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:processDebugJavaRes UP-TO-DATE
+> Task :core:testing:compose:bundleLibRuntimeToJarDebug
+> Task :core:testing:compose:bundleLibCompileToJarDebug
+> Task :core:testing:compose:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :core:testing:compose:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:processDebugUnitTestJavaRes UP-TO-DATE
+
+> Task :core:testing:compose:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugJavaRes
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:compileDebugUnitTestKotlin
+> Task :core:designsystem:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugUnitTestJavaRes
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:designsystem:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:designsystem:finalizeTestRoborazziDebug SKIPPED
+
+BUILD SUCCESSFUL in 35s
+78 actionable tasks: 24 executed, 15 from cache, 39 up-to-date
+Configuration cache entry stored.
+# exit: 0 end: Sun Oct 25 23:57:33 IST 2026

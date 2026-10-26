@@ -1,0 +1,1191 @@
+== 13:56:49 test_android_navigation at 1f2fd6c85 (before the change)
+[locked:memwait] 1154 MB available, 12720 MB commit left; waiting for 3500 MB
+[locked:memwait] 933 MB available, 12432 MB commit left; waiting for 3500 MB
+[locked:memwait] 1357 MB available, 13101 MB commit left; waiting for 3500 MB
+[locked:memwait] 995 MB available, 12718 MB commit left; waiting for 3500 MB
+[locked:memwait] 885 MB available, 12155 MB commit left; waiting for 1500 MB
+[locked:memwait] 657 MB available plus 5475 MB of system cache Windows will trim; continuing
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF.FFFFFFFFFFFFFF
+======================================================================
+FAIL: test_a_destination_is_registered_in_one_step (tests.test_android_navigation.NavigationShapeTest.test_a_destination_is_registered_in_one_step) (project='ui-lean-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 163, in test_a_destination_is_registered_in_one_step
+    self.assertEqual([], lines_matching(files, NAV_KEYS, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['app/src/test/kotlin/com/acme/nav/navigat[973 chars]s {']
+
+Second list contains 7 additional elements.
+First extra element 0:
+'app/src/test/kotlin/com/acme/nav/navigation/NavKeyRegistrationTest.kt:51: assertTrue("Not in any navKeys { } block: $missing", missing.isEmpty())'
+
+Diff is 1100 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_a_destination_is_registered_in_one_step (tests.test_android_navigation.NavigationShapeTest.test_a_destination_is_registered_in_one_step) (project='ui-lean-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 163, in test_a_destination_is_registered_in_one_step
+    self.assertEqual([], lines_matching(files, NAV_KEYS, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['app/src/test/kotlin/com/acme/nav/navigat[983 chars]s {']
+
+Second list contains 7 additional elements.
+First extra element 0:
+'app/src/test/kotlin/com/acme/nav/navigation/NavKeyRegistrationTest.kt:51: assertTrue("Not in any navKeys { } block: $missing", missing.isEmpty())'
+
+Diff is 1110 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_a_destination_is_registered_in_one_step (tests.test_android_navigation.NavigationShapeTest.test_a_destination_is_registered_in_one_step) (project='ui-standard-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 163, in test_a_destination_is_registered_in_one_step
+    self.assertEqual([], lines_matching(files, NAV_KEYS, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['app/src/test/kotlin/com/acme/nav/navigat[1990 chars]s {']
+
+Second list contains 15 additional elements.
+First extra element 0:
+'app/src/test/kotlin/com/acme/nav/navigation/NavKeyRegistrationTest.kt:51: assertTrue("Not in any navKeys { } block: $missing", missing.isEmpty())'
+
+Diff is 2189 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_a_destination_is_registered_in_one_step (tests.test_android_navigation.NavigationShapeTest.test_a_destination_is_registered_in_one_step) (project='ui-standard-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 163, in test_a_destination_is_registered_in_one_step
+    self.assertEqual([], lines_matching(files, NAV_KEYS, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['app/src/test/kotlin/com/acme/nav/navigat[2030 chars]s {']
+
+Second list contains 15 additional elements.
+First extra element 0:
+'app/src/test/kotlin/com/acme/nav/navigation/NavKeyRegistrationTest.kt:51: assertTrue("Not in any navKeys { } block: $missing", missing.isEmpty())'
+
+Diff is 2229 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_a_destination_is_registered_in_one_step (tests.test_android_navigation.NavigationShapeTest.test_a_destination_is_registered_in_one_step) (project='ui-everything-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 163, in test_a_destination_is_registered_in_one_step
+    self.assertEqual([], lines_matching(files, NAV_KEYS, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['app/src/test/kotlin/com/acme/nav/navigat[2793 chars]s {']
+
+Second list contains 21 additional elements.
+First extra element 0:
+'app/src/test/kotlin/com/acme/nav/navigation/NavKeyRegistrationTest.kt:51: assertTrue("Not in any navKeys { } block: $missing", missing.isEmpty())'
+
+Diff is 3046 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_a_destination_is_registered_in_one_step (tests.test_android_navigation.NavigationShapeTest.test_a_destination_is_registered_in_one_step) (project='ui-everything-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 163, in test_a_destination_is_registered_in_one_step
+    self.assertEqual([], lines_matching(files, NAV_KEYS, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['app/src/test/kotlin/com/acme/nav/navigat[2863 chars]s {']
+
+Second list contains 21 additional elements.
+First extra element 0:
+'app/src/test/kotlin/com/acme/nav/navigation/NavKeyRegistrationTest.kt:51: assertTrue("Not in any navKeys { } block: $missing", missing.isEmpty())'
+
+Diff is 3116 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_a_destination_is_registered_in_one_step (tests.test_android_navigation.NavigationShapeTest.test_a_destination_is_registered_in_one_step) (project='noui-lean-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 163, in test_a_destination_is_registered_in_one_step
+    self.assertEqual([], lines_matching(files, NAV_KEYS, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['app/src/main/kotlin/com/acme/nav/ui/star[605 chars]s {']
+
+Second list contains 5 additional elements.
+First extra element 0:
+'app/src/main/kotlin/com/acme/nav/ui/start/StartNavigation.kt:5: import com.acme.nav.core.navigation.navKeys'
+
+Diff is 708 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_a_destination_is_registered_in_one_step (tests.test_android_navigation.NavigationShapeTest.test_a_destination_is_registered_in_one_step) (project='noui-lean-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 163, in test_a_destination_is_registered_in_one_step
+    self.assertEqual([], lines_matching(files, NAV_KEYS, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['app/src/main/kotlin/com/acme/nav/ui/star[605 chars]s {']
+
+Second list contains 5 additional elements.
+First extra element 0:
+'app/src/main/kotlin/com/acme/nav/ui/start/StartNavigation.kt:5: import com.acme.nav.core.navigation.navKeys'
+
+Diff is 708 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_a_destination_is_registered_in_one_step (tests.test_android_navigation.NavigationShapeTest.test_a_destination_is_registered_in_one_step) (project='noui-standard-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 163, in test_a_destination_is_registered_in_one_step
+    self.assertEqual([], lines_matching(files, NAV_KEYS, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['app/src/main/kotlin/com/acme/nav/ui/star[1677 chars]s {']
+
+Second list contains 13 additional elements.
+First extra element 0:
+'app/src/main/kotlin/com/acme/nav/ui/start/StartNavigation.kt:5: import com.acme.nav.core.navigation.navKeys'
+
+Diff is 1852 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_a_destination_is_registered_in_one_step (tests.test_android_navigation.NavigationShapeTest.test_a_destination_is_registered_in_one_step) (project='noui-standard-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 163, in test_a_destination_is_registered_in_one_step
+    self.assertEqual([], lines_matching(files, NAV_KEYS, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['app/src/main/kotlin/com/acme/nav/ui/star[1717 chars]s {']
+
+Second list contains 13 additional elements.
+First extra element 0:
+'app/src/main/kotlin/com/acme/nav/ui/start/StartNavigation.kt:5: import com.acme.nav.core.navigation.navKeys'
+
+Diff is 1892 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_a_destination_is_registered_in_one_step (tests.test_android_navigation.NavigationShapeTest.test_a_destination_is_registered_in_one_step) (project='noui-everything-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 163, in test_a_destination_is_registered_in_one_step
+    self.assertEqual([], lines_matching(files, NAV_KEYS, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['app/src/main/kotlin/com/acme/nav/ui/star[2480 chars]s {']
+
+Second list contains 19 additional elements.
+First extra element 0:
+'app/src/main/kotlin/com/acme/nav/ui/start/StartNavigation.kt:5: import com.acme.nav.core.navigation.navKeys'
+
+Diff is 2709 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_a_destination_is_registered_in_one_step (tests.test_android_navigation.NavigationShapeTest.test_a_destination_is_registered_in_one_step) (project='noui-everything-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 163, in test_a_destination_is_registered_in_one_step
+    self.assertEqual([], lines_matching(files, NAV_KEYS, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['app/src/main/kotlin/com/acme/nav/ui/star[2550 chars]s {']
+
+Second list contains 19 additional elements.
+First extra element 0:
+'app/src/main/kotlin/com/acme/nav/ui/start/StartNavigation.kt:5: import com.acme.nav.core.navigation.navKeys'
+
+Diff is 2779 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_a_destination_is_registered_in_one_step (tests.test_android_navigation.NavigationShapeTest.test_a_destination_is_registered_in_one_step) (project='ui-everything-modules')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 163, in test_a_destination_is_registered_in_one_step
+    self.assertEqual([], lines_matching(files, NAV_KEYS, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['app/src/test/kotlin/com/acme/nav/navigat[3081 chars]s {']
+
+Second list contains 23 additional elements.
+First extra element 0:
+'app/src/test/kotlin/com/acme/nav/navigation/NavKeyRegistrationTest.kt:51: assertTrue("Not in any navKeys { } block: $missing", missing.isEmpty())'
+
+Diff is 3352 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_a_destination_is_registered_in_one_step (tests.test_android_navigation.NavigationShapeTest.test_a_destination_is_registered_in_one_step) (project='noui-none-modules')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 163, in test_a_destination_is_registered_in_one_step
+    self.assertEqual([], lines_matching(files, NAV_KEYS, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['app/src/main/kotlin/com/acme/nav/ui/star[939 chars]s {']
+
+Second list contains 7 additional elements.
+First extra element 0:
+'app/src/main/kotlin/com/acme/nav/ui/start/StartNavigation.kt:5: import com.acme.nav.core.navigation.navKeys'
+
+Diff is 1060 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-standard-compact', feature='auth')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/auth/navigation/AuthNavigation.kt'] != ['com/acme/nav/feature/auth/AuthNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/auth/navigation/AuthNavigation.kt'
+'com/acme/nav/feature/auth/AuthNav.kt'
+
+- ['com/acme/nav/feature/auth/navigation/AuthNavigation.kt']
+?                             -----------       -------
+
++ ['com/acme/nav/feature/auth/AuthNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-standard-compact', feature='onboarding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt'] != ['com/acme/nav/feature/onboarding/OnboardingNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt'
+'com/acme/nav/feature/onboarding/OnboardingNav.kt'
+
+- ['com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt']
+?                                   -----------             -------
+
++ ['com/acme/nav/feature/onboarding/OnboardingNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-standard-compact', feature='settings')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/settings/navigation/SettingsNavigation.kt'] != ['com/acme/nav/feature/settings/SettingsNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/settings/navigation/SettingsNavigation.kt'
+'com/acme/nav/feature/settings/SettingsNav.kt'
+
+- ['com/acme/nav/feature/settings/navigation/SettingsNavigation.kt']
+?                                 -----------           -------
+
++ ['com/acme/nav/feature/settings/SettingsNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-standard-modular', feature='auth')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/auth/navigation/AuthNavigation.kt'] != ['com/acme/nav/feature/auth/AuthNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/auth/navigation/AuthNavigation.kt'
+'com/acme/nav/feature/auth/AuthNav.kt'
+
+- ['com/acme/nav/feature/auth/navigation/AuthNavigation.kt']
+?                             -----------       -------
+
++ ['com/acme/nav/feature/auth/AuthNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-standard-modular', feature='onboarding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt'] != ['com/acme/nav/feature/onboarding/OnboardingNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt'
+'com/acme/nav/feature/onboarding/OnboardingNav.kt'
+
+- ['com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt']
+?                                   -----------             -------
+
++ ['com/acme/nav/feature/onboarding/OnboardingNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-standard-modular', feature='settings')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/settings/navigation/SettingsNavigation.kt'] != ['com/acme/nav/feature/settings/SettingsNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/settings/navigation/SettingsNavigation.kt'
+'com/acme/nav/feature/settings/SettingsNav.kt'
+
+- ['com/acme/nav/feature/settings/navigation/SettingsNavigation.kt']
+?                                 -----------           -------
+
++ ['com/acme/nav/feature/settings/SettingsNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-everything-compact', feature='auth')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/auth/navigation/AuthNavigation.kt'] != ['com/acme/nav/feature/auth/AuthNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/auth/navigation/AuthNavigation.kt'
+'com/acme/nav/feature/auth/AuthNav.kt'
+
+- ['com/acme/nav/feature/auth/navigation/AuthNavigation.kt']
+?                             -----------       -------
+
++ ['com/acme/nav/feature/auth/AuthNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-everything-compact', feature='feed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/feed/navigation/FeedNavigation.kt'] != ['com/acme/nav/feature/feed/di/FeedNavModule.kt']
+
+First differing element 0:
+'com/acme/nav/feature/feed/navigation/FeedNavigation.kt'
+'com/acme/nav/feature/feed/di/FeedNavModule.kt'
+
+- ['com/acme/nav/feature/feed/navigation/FeedNavigation.kt']
+?                             ^^^ ------        ^^^^^ ^
+
++ ['com/acme/nav/feature/feed/di/FeedNavModule.kt']
+?                             ^         ^ ^^^^
+
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-everything-compact', feature='onboarding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt'] != ['com/acme/nav/feature/onboarding/OnboardingNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt'
+'com/acme/nav/feature/onboarding/OnboardingNav.kt'
+
+- ['com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt']
+?                                   -----------             -------
+
++ ['com/acme/nav/feature/onboarding/OnboardingNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-everything-compact', feature='profile')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/profile/navigation/ProfileNavigation.kt'] != ['com/acme/nav/feature/profile/di/ProfileNavModule.kt']
+
+First differing element 0:
+'com/acme/nav/feature/profile/navigation/ProfileNavigation.kt'
+'com/acme/nav/feature/profile/di/ProfileNavModule.kt'
+
+- ['com/acme/nav/feature/profile/navigation/ProfileNavigation.kt']
+?                                ^^^ ------           ^^^^^ ^
+
++ ['com/acme/nav/feature/profile/di/ProfileNavModule.kt']
+?                                ^            ^ ^^^^
+
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-everything-compact', feature='search')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/search/navigation/SearchNavigation.kt'] != ['com/acme/nav/feature/search/di/SearchNavModule.kt']
+
+First differing element 0:
+'com/acme/nav/feature/search/navigation/SearchNavigation.kt'
+'com/acme/nav/feature/search/di/SearchNavModule.kt'
+
+- ['com/acme/nav/feature/search/navigation/SearchNavigation.kt']
+?                               ^^^ ------          ^^^^^ ^
+
++ ['com/acme/nav/feature/search/di/SearchNavModule.kt']
+?                               ^           ^ ^^^^
+
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-everything-compact', feature='settings')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/settings/navigation/SettingsNavigation.kt'] != ['com/acme/nav/feature/settings/SettingsNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/settings/navigation/SettingsNavigation.kt'
+'com/acme/nav/feature/settings/SettingsNav.kt'
+
+- ['com/acme/nav/feature/settings/navigation/SettingsNavigation.kt']
+?                                 -----------           -------
+
++ ['com/acme/nav/feature/settings/SettingsNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-everything-modular', feature='auth')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/auth/navigation/AuthNavigation.kt'] != ['com/acme/nav/feature/auth/AuthNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/auth/navigation/AuthNavigation.kt'
+'com/acme/nav/feature/auth/AuthNav.kt'
+
+- ['com/acme/nav/feature/auth/navigation/AuthNavigation.kt']
+?                             -----------       -------
+
++ ['com/acme/nav/feature/auth/AuthNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-everything-modular', feature='feed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/feed/navigation/FeedNavigation.kt'] != ['com/acme/nav/feature/feed/di/FeedNavModule.kt']
+
+First differing element 0:
+'com/acme/nav/feature/feed/navigation/FeedNavigation.kt'
+'com/acme/nav/feature/feed/di/FeedNavModule.kt'
+
+- ['com/acme/nav/feature/feed/navigation/FeedNavigation.kt']
+?                             ^^^ ------        ^^^^^ ^
+
++ ['com/acme/nav/feature/feed/di/FeedNavModule.kt']
+?                             ^         ^ ^^^^
+
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-everything-modular', feature='onboarding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt'] != ['com/acme/nav/feature/onboarding/OnboardingNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt'
+'com/acme/nav/feature/onboarding/OnboardingNav.kt'
+
+- ['com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt']
+?                                   -----------             -------
+
++ ['com/acme/nav/feature/onboarding/OnboardingNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-everything-modular', feature='profile')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/profile/navigation/ProfileNavigation.kt'] != ['com/acme/nav/feature/profile/di/ProfileNavModule.kt']
+
+First differing element 0:
+'com/acme/nav/feature/profile/navigation/ProfileNavigation.kt'
+'com/acme/nav/feature/profile/di/ProfileNavModule.kt'
+
+- ['com/acme/nav/feature/profile/navigation/ProfileNavigation.kt']
+?                                ^^^ ------           ^^^^^ ^
+
++ ['com/acme/nav/feature/profile/di/ProfileNavModule.kt']
+?                                ^            ^ ^^^^
+
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-everything-modular', feature='search')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/search/navigation/SearchNavigation.kt'] != ['com/acme/nav/feature/search/di/SearchNavModule.kt']
+
+First differing element 0:
+'com/acme/nav/feature/search/navigation/SearchNavigation.kt'
+'com/acme/nav/feature/search/di/SearchNavModule.kt'
+
+- ['com/acme/nav/feature/search/navigation/SearchNavigation.kt']
+?                               ^^^ ------          ^^^^^ ^
+
++ ['com/acme/nav/feature/search/di/SearchNavModule.kt']
+?                               ^           ^ ^^^^
+
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-everything-modular', feature='settings')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/settings/navigation/SettingsNavigation.kt'] != ['com/acme/nav/feature/settings/SettingsNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/settings/navigation/SettingsNavigation.kt'
+'com/acme/nav/feature/settings/SettingsNav.kt'
+
+- ['com/acme/nav/feature/settings/navigation/SettingsNavigation.kt']
+?                                 -----------           -------
+
++ ['com/acme/nav/feature/settings/SettingsNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='noui-standard-compact', feature='auth')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/auth/navigation/AuthNavigation.kt'] != ['com/acme/nav/feature/auth/AuthNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/auth/navigation/AuthNavigation.kt'
+'com/acme/nav/feature/auth/AuthNav.kt'
+
+- ['com/acme/nav/feature/auth/navigation/AuthNavigation.kt']
+?                             -----------       -------
+
++ ['com/acme/nav/feature/auth/AuthNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='noui-standard-compact', feature='onboarding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt'] != ['com/acme/nav/feature/onboarding/OnboardingNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt'
+'com/acme/nav/feature/onboarding/OnboardingNav.kt'
+
+- ['com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt']
+?                                   -----------             -------
+
++ ['com/acme/nav/feature/onboarding/OnboardingNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='noui-standard-compact', feature='settings')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/settings/navigation/SettingsNavigation.kt'] != ['com/acme/nav/feature/settings/SettingsNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/settings/navigation/SettingsNavigation.kt'
+'com/acme/nav/feature/settings/SettingsNav.kt'
+
+- ['com/acme/nav/feature/settings/navigation/SettingsNavigation.kt']
+?                                 -----------           -------
+
++ ['com/acme/nav/feature/settings/SettingsNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='noui-standard-modular', feature='auth')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/auth/navigation/AuthNavigation.kt'] != ['com/acme/nav/feature/auth/AuthNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/auth/navigation/AuthNavigation.kt'
+'com/acme/nav/feature/auth/AuthNav.kt'
+
+- ['com/acme/nav/feature/auth/navigation/AuthNavigation.kt']
+?                             -----------       -------
+
++ ['com/acme/nav/feature/auth/AuthNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='noui-standard-modular', feature='onboarding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt'] != ['com/acme/nav/feature/onboarding/OnboardingNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt'
+'com/acme/nav/feature/onboarding/OnboardingNav.kt'
+
+- ['com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt']
+?                                   -----------             -------
+
++ ['com/acme/nav/feature/onboarding/OnboardingNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='noui-standard-modular', feature='settings')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/settings/navigation/SettingsNavigation.kt'] != ['com/acme/nav/feature/settings/SettingsNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/settings/navigation/SettingsNavigation.kt'
+'com/acme/nav/feature/settings/SettingsNav.kt'
+
+- ['com/acme/nav/feature/settings/navigation/SettingsNavigation.kt']
+?                                 -----------           -------
+
++ ['com/acme/nav/feature/settings/SettingsNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='noui-everything-compact', feature='auth')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/auth/navigation/AuthNavigation.kt'] != ['com/acme/nav/feature/auth/AuthNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/auth/navigation/AuthNavigation.kt'
+'com/acme/nav/feature/auth/AuthNav.kt'
+
+- ['com/acme/nav/feature/auth/navigation/AuthNavigation.kt']
+?                             -----------       -------
+
++ ['com/acme/nav/feature/auth/AuthNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='noui-everything-compact', feature='feed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/feed/navigation/FeedNavigation.kt'] != ['com/acme/nav/feature/feed/di/FeedNavModule.kt']
+
+First differing element 0:
+'com/acme/nav/feature/feed/navigation/FeedNavigation.kt'
+'com/acme/nav/feature/feed/di/FeedNavModule.kt'
+
+- ['com/acme/nav/feature/feed/navigation/FeedNavigation.kt']
+?                             ^^^ ------        ^^^^^ ^
+
++ ['com/acme/nav/feature/feed/di/FeedNavModule.kt']
+?                             ^         ^ ^^^^
+
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='noui-everything-compact', feature='onboarding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt'] != ['com/acme/nav/feature/onboarding/OnboardingNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt'
+'com/acme/nav/feature/onboarding/OnboardingNav.kt'
+
+- ['com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt']
+?                                   -----------             -------
+
++ ['com/acme/nav/feature/onboarding/OnboardingNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='noui-everything-compact', feature='profile')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/profile/navigation/ProfileNavigation.kt'] != ['com/acme/nav/feature/profile/di/ProfileNavModule.kt']
+
+First differing element 0:
+'com/acme/nav/feature/profile/navigation/ProfileNavigation.kt'
+'com/acme/nav/feature/profile/di/ProfileNavModule.kt'
+
+- ['com/acme/nav/feature/profile/navigation/ProfileNavigation.kt']
+?                                ^^^ ------           ^^^^^ ^
+
++ ['com/acme/nav/feature/profile/di/ProfileNavModule.kt']
+?                                ^            ^ ^^^^
+
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='noui-everything-compact', feature='search')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/search/navigation/SearchNavigation.kt'] != ['com/acme/nav/feature/search/di/SearchNavModule.kt']
+
+First differing element 0:
+'com/acme/nav/feature/search/navigation/SearchNavigation.kt'
+'com/acme/nav/feature/search/di/SearchNavModule.kt'
+
+- ['com/acme/nav/feature/search/navigation/SearchNavigation.kt']
+?                               ^^^ ------          ^^^^^ ^
+
++ ['com/acme/nav/feature/search/di/SearchNavModule.kt']
+?                               ^           ^ ^^^^
+
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='noui-everything-compact', feature='settings')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/settings/navigation/SettingsNavigation.kt'] != ['com/acme/nav/feature/settings/SettingsNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/settings/navigation/SettingsNavigation.kt'
+'com/acme/nav/feature/settings/SettingsNav.kt'
+
+- ['com/acme/nav/feature/settings/navigation/SettingsNavigation.kt']
+?                                 -----------           -------
+
++ ['com/acme/nav/feature/settings/SettingsNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='noui-everything-modular', feature='auth')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/auth/navigation/AuthNavigation.kt'] != ['com/acme/nav/feature/auth/AuthNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/auth/navigation/AuthNavigation.kt'
+'com/acme/nav/feature/auth/AuthNav.kt'
+
+- ['com/acme/nav/feature/auth/navigation/AuthNavigation.kt']
+?                             -----------       -------
+
++ ['com/acme/nav/feature/auth/AuthNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='noui-everything-modular', feature='feed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/feed/navigation/FeedNavigation.kt'] != ['com/acme/nav/feature/feed/di/FeedNavModule.kt']
+
+First differing element 0:
+'com/acme/nav/feature/feed/navigation/FeedNavigation.kt'
+'com/acme/nav/feature/feed/di/FeedNavModule.kt'
+
+- ['com/acme/nav/feature/feed/navigation/FeedNavigation.kt']
+?                             ^^^ ------        ^^^^^ ^
+
++ ['com/acme/nav/feature/feed/di/FeedNavModule.kt']
+?                             ^         ^ ^^^^
+
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='noui-everything-modular', feature='onboarding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt'] != ['com/acme/nav/feature/onboarding/OnboardingNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt'
+'com/acme/nav/feature/onboarding/OnboardingNav.kt'
+
+- ['com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt']
+?                                   -----------             -------
+
++ ['com/acme/nav/feature/onboarding/OnboardingNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='noui-everything-modular', feature='profile')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/profile/navigation/ProfileNavigation.kt'] != ['com/acme/nav/feature/profile/di/ProfileNavModule.kt']
+
+First differing element 0:
+'com/acme/nav/feature/profile/navigation/ProfileNavigation.kt'
+'com/acme/nav/feature/profile/di/ProfileNavModule.kt'
+
+- ['com/acme/nav/feature/profile/navigation/ProfileNavigation.kt']
+?                                ^^^ ------           ^^^^^ ^
+
++ ['com/acme/nav/feature/profile/di/ProfileNavModule.kt']
+?                                ^            ^ ^^^^
+
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='noui-everything-modular', feature='search')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/search/navigation/SearchNavigation.kt'] != ['com/acme/nav/feature/search/di/SearchNavModule.kt']
+
+First differing element 0:
+'com/acme/nav/feature/search/navigation/SearchNavigation.kt'
+'com/acme/nav/feature/search/di/SearchNavModule.kt'
+
+- ['com/acme/nav/feature/search/navigation/SearchNavigation.kt']
+?                               ^^^ ------          ^^^^^ ^
+
++ ['com/acme/nav/feature/search/di/SearchNavModule.kt']
+?                               ^           ^ ^^^^
+
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='noui-everything-modular', feature='settings')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/settings/navigation/SettingsNavigation.kt'] != ['com/acme/nav/feature/settings/SettingsNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/settings/navigation/SettingsNavigation.kt'
+'com/acme/nav/feature/settings/SettingsNav.kt'
+
+- ['com/acme/nav/feature/settings/navigation/SettingsNavigation.kt']
+?                                 -----------           -------
+
++ ['com/acme/nav/feature/settings/SettingsNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-everything-modules', feature='auth')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/auth/navigation/AuthNavigation.kt'] != ['com/acme/nav/feature/auth/AuthNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/auth/navigation/AuthNavigation.kt'
+'com/acme/nav/feature/auth/AuthNav.kt'
+
+- ['com/acme/nav/feature/auth/navigation/AuthNavigation.kt']
+?                             -----------       -------
+
++ ['com/acme/nav/feature/auth/AuthNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-everything-modules', feature='feed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/feed/navigation/FeedNavigation.kt'] != ['com/acme/nav/feature/feed/di/FeedNavModule.kt']
+
+First differing element 0:
+'com/acme/nav/feature/feed/navigation/FeedNavigation.kt'
+'com/acme/nav/feature/feed/di/FeedNavModule.kt'
+
+- ['com/acme/nav/feature/feed/navigation/FeedNavigation.kt']
+?                             ^^^ ------        ^^^^^ ^
+
++ ['com/acme/nav/feature/feed/di/FeedNavModule.kt']
+?                             ^         ^ ^^^^
+
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-everything-modules', feature='onboarding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt'] != ['com/acme/nav/feature/onboarding/OnboardingNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt'
+'com/acme/nav/feature/onboarding/OnboardingNav.kt'
+
+- ['com/acme/nav/feature/onboarding/navigation/OnboardingNavigation.kt']
+?                                   -----------             -------
+
++ ['com/acme/nav/feature/onboarding/OnboardingNav.kt']
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-everything-modules', feature='profile')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/profile/navigation/ProfileNavigation.kt'] != ['com/acme/nav/feature/profile/di/ProfileNavModule.kt']
+
+First differing element 0:
+'com/acme/nav/feature/profile/navigation/ProfileNavigation.kt'
+'com/acme/nav/feature/profile/di/ProfileNavModule.kt'
+
+- ['com/acme/nav/feature/profile/navigation/ProfileNavigation.kt']
+?                                ^^^ ------           ^^^^^ ^
+
++ ['com/acme/nav/feature/profile/di/ProfileNavModule.kt']
+?                                ^            ^ ^^^^
+
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-everything-modules', feature='search')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/search/navigation/SearchNavigation.kt'] != ['com/acme/nav/feature/search/di/SearchNavModule.kt']
+
+First differing element 0:
+'com/acme/nav/feature/search/navigation/SearchNavigation.kt'
+'com/acme/nav/feature/search/di/SearchNavModule.kt'
+
+- ['com/acme/nav/feature/search/navigation/SearchNavigation.kt']
+?                               ^^^ ------          ^^^^^ ^
+
++ ['com/acme/nav/feature/search/di/SearchNavModule.kt']
+?                               ^           ^ ^^^^
+
+
+======================================================================
+FAIL: test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation (tests.test_android_navigation.NavigationShapeTest.test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation) (project='ui-everything-modules', feature='settings')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 155, in test_every_feature_s_navigation_is_one_object_at_navigation_feature_navigation
+    self.assertEqual([expected], [path.as_posix().split("/src/main/kotlin/")[1] for path in registering])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['com/acme/nav/feature/settings/navigation/SettingsNavigation.kt'] != ['com/acme/nav/feature/settings/SettingsNav.kt']
+
+First differing element 0:
+'com/acme/nav/feature/settings/navigation/SettingsNavigation.kt'
+'com/acme/nav/feature/settings/SettingsNav.kt'
+
+- ['com/acme/nav/feature/settings/navigation/SettingsNavigation.kt']
+?                                 -----------           -------
+
++ ['com/acme/nav/feature/settings/SettingsNav.kt']
+
+======================================================================
+FAIL: test_the_runtime_never_depends_on_the_design_system_or_the_shell (tests.test_android_navigation.NavigationShapeTest.test_the_runtime_never_depends_on_the_design_system_or_the_shell) (project='ui-lean-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 115, in test_the_runtime_never_depends_on_the_design_system_or_the_shell
+    self.assertEqual([], lines_matching([build], DESIGN_SYSTEM, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['core/navigation/build.gradle.kts:18: imp[39 chars]"))']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'core/navigation/build.gradle.kts:18: implementation(project(":core:designsystem"))'
+
+- []
++ ['core/navigation/build.gradle.kts:18: '
++  'implementation(project(":core:designsystem"))']
+
+======================================================================
+FAIL: test_the_runtime_never_depends_on_the_design_system_or_the_shell (tests.test_android_navigation.NavigationShapeTest.test_the_runtime_never_depends_on_the_design_system_or_the_shell) (project='ui-lean-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 115, in test_the_runtime_never_depends_on_the_design_system_or_the_shell
+    self.assertEqual([], lines_matching([build], DESIGN_SYSTEM, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['core/navigation/build.gradle.kts:18: imp[39 chars]"))']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'core/navigation/build.gradle.kts:18: implementation(project(":core:designsystem"))'
+
+- []
++ ['core/navigation/build.gradle.kts:18: '
++  'implementation(project(":core:designsystem"))']
+
+======================================================================
+FAIL: test_the_runtime_never_depends_on_the_design_system_or_the_shell (tests.test_android_navigation.NavigationShapeTest.test_the_runtime_never_depends_on_the_design_system_or_the_shell) (project='ui-standard-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 115, in test_the_runtime_never_depends_on_the_design_system_or_the_shell
+    self.assertEqual([], lines_matching([build], DESIGN_SYSTEM, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['core/navigation/build.gradle.kts:18: imp[39 chars]"))']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'core/navigation/build.gradle.kts:18: implementation(project(":core:designsystem"))'
+
+- []
++ ['core/navigation/build.gradle.kts:18: '
++  'implementation(project(":core:designsystem"))']
+
+======================================================================
+FAIL: test_the_runtime_never_depends_on_the_design_system_or_the_shell (tests.test_android_navigation.NavigationShapeTest.test_the_runtime_never_depends_on_the_design_system_or_the_shell) (project='ui-standard-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 115, in test_the_runtime_never_depends_on_the_design_system_or_the_shell
+    self.assertEqual([], lines_matching([build], DESIGN_SYSTEM, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['core/navigation/build.gradle.kts:18: imp[39 chars]"))']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'core/navigation/build.gradle.kts:18: implementation(project(":core:designsystem"))'
+
+- []
++ ['core/navigation/build.gradle.kts:18: '
++  'implementation(project(":core:designsystem"))']
+
+======================================================================
+FAIL: test_the_runtime_never_depends_on_the_design_system_or_the_shell (tests.test_android_navigation.NavigationShapeTest.test_the_runtime_never_depends_on_the_design_system_or_the_shell) (project='ui-everything-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 115, in test_the_runtime_never_depends_on_the_design_system_or_the_shell
+    self.assertEqual([], lines_matching([build], DESIGN_SYSTEM, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['core/navigation/build.gradle.kts:18: imp[39 chars]"))']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'core/navigation/build.gradle.kts:18: implementation(project(":core:designsystem"))'
+
+- []
++ ['core/navigation/build.gradle.kts:18: '
++  'implementation(project(":core:designsystem"))']
+
+======================================================================
+FAIL: test_the_runtime_never_depends_on_the_design_system_or_the_shell (tests.test_android_navigation.NavigationShapeTest.test_the_runtime_never_depends_on_the_design_system_or_the_shell) (project='ui-everything-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 115, in test_the_runtime_never_depends_on_the_design_system_or_the_shell
+    self.assertEqual([], lines_matching([build], DESIGN_SYSTEM, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['core/navigation/build.gradle.kts:18: imp[39 chars]"))']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'core/navigation/build.gradle.kts:18: implementation(project(":core:designsystem"))'
+
+- []
++ ['core/navigation/build.gradle.kts:18: '
++  'implementation(project(":core:designsystem"))']
+
+======================================================================
+FAIL: test_the_runtime_never_depends_on_the_design_system_or_the_shell (tests.test_android_navigation.NavigationShapeTest.test_the_runtime_never_depends_on_the_design_system_or_the_shell) (project='ui-everything-modules')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 115, in test_the_runtime_never_depends_on_the_design_system_or_the_shell
+    self.assertEqual([], lines_matching([build], DESIGN_SYSTEM, project, strip_comments=True))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['core/navigation/build.gradle.kts:18: imp[39 chars]"))']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'core/navigation/build.gradle.kts:18: implementation(project(":core:designsystem"))'
+
+- []
++ ['core/navigation/build.gradle.kts:18: '
++  'implementation(project(":core:designsystem"))']
+
+======================================================================
+FAIL: test_the_shell_is_a_module_of_its_own_only_with_ui_components (tests.test_android_navigation.NavigationShapeTest.test_the_shell_is_a_module_of_its_own_only_with_ui_components) (project='ui-lean-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 130, in test_the_shell_is_a_module_of_its_own_only_with_ui_components
+    self.assertIn('include(":core:navigation:shell")', settings)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'include(":core:navigation:shell")' not found in '/*\n * Module graph. Four tiers, and the dependency direction between them is one-way:\n *\n *   :app / :catalog   composition roots — wire everything, own no logic\n *        ↓\n *   :feature:*        presentation only. Never depends on another :feature:*.\n *        ↓\n *   :data:*           one business domain end to end. Never depends on another :data:*.\n *        ↓\n *   :core:*           infrastructure. Never depends on :data:* or :feature:*.\n */\n\npluginManagement {\n    includeBuild("build-logic")\n    repositories {\n        google {\n            content {\n                includeGroupByRegex("com\\\\.android.*")\n                includeGroupByRegex("com\\\\.google.*")\n                includeGroupByRegex("androidx.*")\n            }\n        }\n        mavenCentral()\n        gradlePluginPortal()\n    }\n}\n\ndependencyResolutionManagement {\n    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)\n    repositories {\n        // Google\'s repository is asked only for Google\'s groups, so a Ktor or Kotlin artifact goes\n        // straight to Maven Central instead of a lookup that always misses first.\n        google {\n            content {\n                includeGroupByRegex("com\\\\.android.*")\n                includeGroupByRegex("com\\\\.google.*")\n                includeGroupByRegex("androidx.*")\n            }\n        }\n        mavenCentral()\n    }\n}\n\nrootProject.name = "AcmeNav"\n\ninclude(":app")\n\n// ── core ─────────────────────────────────────────────────────────────────────\ninclude(":core:common")\ninclude(":core:mvi")\ninclude(":core:datastore")\ninclude(":core:designsystem")\ninclude(":core:navigation")\ninclude(":core:ui")\ninclude(":core:testing")\ninclude(":core:testing:compose")\ninclude(":core:network")\n\n// ── data ─────────────────────────────────────────────────────────────────────\ninclude(":data:home")\n\n// ── feature ──────────────────────────────────────────────────────────────────\ninclude(":feature:home")\n\n// ── tooling ──────────────────────────────────────────────────────────────────\n'
+
+======================================================================
+FAIL: test_the_shell_is_a_module_of_its_own_only_with_ui_components (tests.test_android_navigation.NavigationShapeTest.test_the_shell_is_a_module_of_its_own_only_with_ui_components) (project='ui-lean-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 130, in test_the_shell_is_a_module_of_its_own_only_with_ui_components
+    self.assertIn('include(":core:navigation:shell")', settings)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'include(":core:navigation:shell")' not found in '/*\n * Module graph. Four tiers, and the dependency direction between them is one-way:\n *\n *   :app / :catalog   composition roots — wire everything, own no logic\n *        ↓\n *   :feature:*        presentation only. Never depends on another :feature:*.\n *        ↓\n *   :data:*           one business domain end to end. Never depends on another :data:*.\n *        ↓\n *   :core:*           infrastructure. Never depends on :data:* or :feature:*.\n */\n\npluginManagement {\n    includeBuild("build-logic")\n    repositories {\n        google {\n            content {\n                includeGroupByRegex("com\\\\.android.*")\n                includeGroupByRegex("com\\\\.google.*")\n                includeGroupByRegex("androidx.*")\n            }\n        }\n        mavenCentral()\n        gradlePluginPortal()\n    }\n}\n\ndependencyResolutionManagement {\n    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)\n    repositories {\n        // Google\'s repository is asked only for Google\'s groups, so a Ktor or Kotlin artifact goes\n        // straight to Maven Central instead of a lookup that always misses first.\n        google {\n            content {\n                includeGroupByRegex("com\\\\.android.*")\n                includeGroupByRegex("com\\\\.google.*")\n                includeGroupByRegex("androidx.*")\n            }\n        }\n        mavenCentral()\n    }\n}\n\nrootProject.name = "AcmeNav"\n\ninclude(":app")\n\n// ── core ─────────────────────────────────────────────────────────────────────\ninclude(":core:common")\ninclude(":core:mvi")\ninclude(":core:datastore")\ninclude(":core:designsystem")\ninclude(":core:navigation")\ninclude(":core:ui")\ninclude(":core:testing")\ninclude(":core:testing:compose")\ninclude(":core:network")\n\n// ── data ─────────────────────────────────────────────────────────────────────\ninclude(":data:home:api")\ninclude(":data:home:impl")\n// ── feature ──────────────────────────────────────────────────────────────────\ninclude(":feature:home:api")\ninclude(":feature:home:impl")\n// ── tooling ──────────────────────────────────────────────────────────────────\n'
+
+======================================================================
+FAIL: test_the_shell_is_a_module_of_its_own_only_with_ui_components (tests.test_android_navigation.NavigationShapeTest.test_the_shell_is_a_module_of_its_own_only_with_ui_components) (project='ui-standard-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 130, in test_the_shell_is_a_module_of_its_own_only_with_ui_components
+    self.assertIn('include(":core:navigation:shell")', settings)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'include(":core:navigation:shell")' not found in '/*\n * Module graph. Four tiers, and the dependency direction between them is one-way:\n *\n *   :app / :catalog   composition roots — wire everything, own no logic\n *        ↓\n *   :feature:*        presentation only. Never depends on another :feature:*.\n *        ↓\n *   :data:*           one business domain end to end. Never depends on another :data:*.\n *        ↓\n *   :core:*           infrastructure. Never depends on :data:* or :feature:*.\n */\n\npluginManagement {\n    includeBuild("build-logic")\n    repositories {\n        google {\n            content {\n                includeGroupByRegex("com\\\\.android.*")\n                includeGroupByRegex("com\\\\.google.*")\n                includeGroupByRegex("androidx.*")\n            }\n        }\n        mavenCentral()\n        gradlePluginPortal()\n    }\n}\n\ndependencyResolutionManagement {\n    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)\n    repositories {\n        // Google\'s repository is asked only for Google\'s groups, so a Ktor or Kotlin artifact goes\n        // straight to Maven Central instead of a lookup that always misses first.\n        google {\n            content {\n                includeGroupByRegex("com\\\\.android.*")\n                includeGroupByRegex("com\\\\.google.*")\n                includeGroupByRegex("androidx.*")\n            }\n        }\n        mavenCentral()\n    }\n}\n\nrootProject.name = "AcmeNav"\n\ninclude(":app")\ninclude(":catalog")\n\n// ── core ─────────────────────────────────────────────────────────────────────\ninclude(":core:common")\ninclude(":core:mvi")\ninclude(":core:datastore")\ninclude(":core:designsystem")\ninclude(":core:navigation")\ninclude(":core:ui")\ninclude(":core:testing")\ninclude(":core:testing:compose")\ninclude(":core:network")\ninclude(":core:flags")\ninclude(":core:devtools")\ninclude(":core:perfhud")\ninclude(":core:database")\n\n// ── data ─────────────────────────────────────────────────────────────────────\ninclude(":data:auth")\ninclude(":data:sample")\n\n// ── feature ──────────────────────────────────────────────────────────────────\ninclude(":feature:auth")\ninclude(":feature:sample")\ninclude(":feature:settings")\ninclude(":feature:onboarding")\n\n// ── tooling ──────────────────────────────────────────────────────────────────\n'
+
+======================================================================
+FAIL: test_the_shell_is_a_module_of_its_own_only_with_ui_components (tests.test_android_navigation.NavigationShapeTest.test_the_shell_is_a_module_of_its_own_only_with_ui_components) (project='ui-standard-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 130, in test_the_shell_is_a_module_of_its_own_only_with_ui_components
+    self.assertIn('include(":core:navigation:shell")', settings)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'include(":core:navigation:shell")' not found in '/*\n * Module graph. Four tiers, and the dependency direction between them is one-way:\n *\n *   :app / :catalog   composition roots — wire everything, own no logic\n *        ↓\n *   :feature:*        presentation only. Never depends on another :feature:*.\n *        ↓\n *   :data:*           one business domain end to end. Never depends on another :data:*.\n *        ↓\n *   :core:*           infrastructure. Never depends on :data:* or :feature:*.\n */\n\npluginManagement {\n    includeBuild("build-logic")\n    repositories {\n        google {\n            content {\n                includeGroupByRegex("com\\\\.android.*")\n                includeGroupByRegex("com\\\\.google.*")\n                includeGroupByRegex("androidx.*")\n            }\n        }\n        mavenCentral()\n        gradlePluginPortal()\n    }\n}\n\ndependencyResolutionManagement {\n    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)\n    repositories {\n        // Google\'s repository is asked only for Google\'s groups, so a Ktor or Kotlin artifact goes\n        // straight to Maven Central instead of a lookup that always misses first.\n        google {\n            content {\n                includeGroupByRegex("com\\\\.android.*")\n                includeGroupByRegex("com\\\\.google.*")\n                includeGroupByRegex("androidx.*")\n            }\n        }\n        mavenCentral()\n    }\n}\n\nrootProject.name = "AcmeNav"\n\ninclude(":app")\ninclude(":catalog")\n\n// ── core ─────────────────────────────────────────────────────────────────────\ninclude(":core:common")\ninclude(":core:mvi")\ninclude(":core:datastore")\ninclude(":core:designsystem")\ninclude(":core:navigation")\ninclude(":core:ui")\ninclude(":core:testing")\ninclude(":core:testing:compose")\ninclude(":core:network")\ninclude(":core:flags")\ninclude(":core:devtools")\ninclude(":core:perfhud")\ninclude(":core:database")\n\n// ── data ─────────────────────────────────────────────────────────────────────\ninclude(":data:auth:api")\ninclude(":data:auth:impl")\ninclude(":data:sample:api")\ninclude(":data:sample:impl")\n// ── feature ──────────────────────────────────────────────────────────────────\ninclude(":feature:auth:api")\ninclude(":feature:auth:impl")\ninclude(":feature:sample:api")\ninclude(":feature:sample:impl")\ninclude(":feature:settings:api")\ninclude(":feature:settings:impl")\ninclude(":feature:onboarding:api")\ninclude(":feature:onboarding:impl")\n// ── tooling ──────────────────────────────────────────────────────────────────\n'
+
+======================================================================
+FAIL: test_the_shell_is_a_module_of_its_own_only_with_ui_components (tests.test_android_navigation.NavigationShapeTest.test_the_shell_is_a_module_of_its_own_only_with_ui_components) (project='ui-everything-compact')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 130, in test_the_shell_is_a_module_of_its_own_only_with_ui_components
+    self.assertIn('include(":core:navigation:shell")', settings)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'include(":core:navigation:shell")' not found in '/*\n * Module graph. Four tiers, and the dependency direction between them is one-way:\n *\n *   :app / :catalog   composition roots — wire everything, own no logic\n *        ↓\n *   :feature:*        presentation only. Never depends on another :feature:*.\n *        ↓\n *   :data:*           one business domain end to end. Never depends on another :data:*.\n *        ↓\n *   :core:*           infrastructure. Never depends on :data:* or :feature:*.\n */\n\npluginManagement {\n    includeBuild("build-logic")\n    repositories {\n        google {\n            content {\n                includeGroupByRegex("com\\\\.android.*")\n                includeGroupByRegex("com\\\\.google.*")\n                includeGroupByRegex("androidx.*")\n            }\n        }\n        mavenCentral()\n        gradlePluginPortal()\n    }\n}\n\ndependencyResolutionManagement {\n    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)\n    repositories {\n        // Google\'s repository is asked only for Google\'s groups, so a Ktor or Kotlin artifact goes\n        // straight to Maven Central instead of a lookup that always misses first.\n        google {\n            content {\n                includeGroupByRegex("com\\\\.android.*")\n                includeGroupByRegex("com\\\\.google.*")\n                includeGroupByRegex("androidx.*")\n            }\n        }\n        mavenCentral()\n    }\n}\n\nrootProject.name = "AcmeNav"\n\ninclude(":app")\ninclude(":catalog")\n\n// ── core ─────────────────────────────────────────────────────────────────────\ninclude(":core:common")\ninclude(":core:mvi")\ninclude(":core:datastore")\ninclude(":core:designsystem")\ninclude(":core:navigation")\ninclude(":core:ui")\ninclude(":core:testing")\ninclude(":core:testing:compose")\ninclude(":core:network")\ninclude(":core:notification")\ninclude(":core:analytics")\ninclude(":core:media")\ninclude(":core:flags")\ninclude(":core:devtools")\ninclude(":core:perfhud")\ninclude(":core:database")\ninclude(":core:applock")\ninclude(":core:playstore")\n\n// ── data ─────────────────────────────────────────────────────────────────────\ninclude(":data:auth")\ninclude(":data:sample")\ninclude(":data:feed")\ninclude(":data:search")\ninclude(":data:profile")\n\n// ── feature ──────────────────────────────────────────────────────────────────\ninclude(":feature:auth")\ninclude(":feature:sample")\ninclude(":feature:feed")\ninclude(":feature:search")\ninclude(":feature:profile")\ninclude(":feature:settings")\ninclude(":feature:onboarding")\n\n// ── tooling ──────────────────────────────────────────────────────────────────\ninclude(":benchmark")\n'
+
+======================================================================
+FAIL: test_the_shell_is_a_module_of_its_own_only_with_ui_components (tests.test_android_navigation.NavigationShapeTest.test_the_shell_is_a_module_of_its_own_only_with_ui_components) (project='ui-everything-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 130, in test_the_shell_is_a_module_of_its_own_only_with_ui_components
+    self.assertIn('include(":core:navigation:shell")', settings)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'include(":core:navigation:shell")' not found in '/*\n * Module graph. Four tiers, and the dependency direction between them is one-way:\n *\n *   :app / :catalog   composition roots — wire everything, own no logic\n *        ↓\n *   :feature:*        presentation only. Never depends on another :feature:*.\n *        ↓\n *   :data:*           one business domain end to end. Never depends on another :data:*.\n *        ↓\n *   :core:*           infrastructure. Never depends on :data:* or :feature:*.\n */\n\npluginManagement {\n    includeBuild("build-logic")\n    repositories {\n        google {\n            content {\n                includeGroupByRegex("com\\\\.android.*")\n                includeGroupByRegex("com\\\\.google.*")\n                includeGroupByRegex("androidx.*")\n            }\n        }\n        mavenCentral()\n        gradlePluginPortal()\n    }\n}\n\ndependencyResolutionManagement {\n    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)\n    repositories {\n        // Google\'s repository is asked only for Google\'s groups, so a Ktor or Kotlin artifact goes\n        // straight to Maven Central instead of a lookup that always misses first.\n        google {\n            content {\n                includeGroupByRegex("com\\\\.android.*")\n                includeGroupByRegex("com\\\\.google.*")\n                includeGroupByRegex("androidx.*")\n            }\n        }\n        mavenCentral()\n    }\n}\n\nrootProject.name = "AcmeNav"\n\ninclude(":app")\ninclude(":catalog")\n\n// ── core ─────────────────────────────────────────────────────────────────────\ninclude(":core:common")\ninclude(":core:mvi")\ninclude(":core:datastore")\ninclude(":core:designsystem")\ninclude(":core:navigation")\ninclude(":core:ui")\ninclude(":core:testing")\ninclude(":core:testing:compose")\ninclude(":core:network")\ninclude(":core:notification")\ninclude(":core:analytics")\ninclude(":core:media")\ninclude(":core:flags")\ninclude(":core:devtools")\ninclude(":core:perfhud")\ninclude(":core:database")\ninclude(":core:applock")\ninclude(":core:playstore")\n\n// ── data ─────────────────────────────────────────────────────────────────────\ninclude(":data:auth:api")\ninclude(":data:auth:impl")\ninclude(":data:sample:api")\ninclude(":data:sample:impl")\ninclude(":data:feed:api")\ninclude(":data:feed:impl")\ninclude(":data:search:api")\ninclude(":data:search:impl")\ninclude(":data:profile:api")\ninclude(":data:profile:impl")\n// ── feature ──────────────────────────────────────────────────────────────────\ninclude(":feature:auth:api")\ninclude(":feature:auth:impl")\ninclude(":feature:sample:api")\ninclude(":feature:sample:impl")\ninclude(":feature:feed:api")\ninclude(":feature:feed:impl")\ninclude(":feature:search:api")\ninclude(":feature:search:impl")\ninclude(":feature:profile:api")\ninclude(":feature:profile:impl")\ninclude(":feature:settings:api")\ninclude(":feature:settings:impl")\ninclude(":feature:onboarding:api")\ninclude(":feature:onboarding:impl")\n// ── tooling ──────────────────────────────────────────────────────────────────\ninclude(":benchmark")\n'
+
+======================================================================
+FAIL: test_the_shell_is_a_module_of_its_own_only_with_ui_components (tests.test_android_navigation.NavigationShapeTest.test_the_shell_is_a_module_of_its_own_only_with_ui_components) (project='ui-everything-modules')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-NAV\generator\tests\test_android_navigation.py", line 130, in test_the_shell_is_a_module_of_its_own_only_with_ui_components
+    self.assertIn('include(":core:navigation:shell")', settings)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'include(":core:navigation:shell")' not found in '/*\n * Module graph. Four tiers, and the dependency direction between them is one-way:\n *\n *   :app / :catalog   composition roots — wire everything, own no logic\n *        ↓\n *   :feature:*        presentation only. Never depends on another :feature:*.\n *        ↓\n *   :data:*           one business domain end to end. Never depends on another :data:*.\n *        ↓\n *   :core:*           infrastructure. Never depends on :data:* or :feature:*.\n */\n\npluginManagement {\n    includeBuild("build-logic")\n    repositories {\n        google {\n            content {\n                includeGroupByRegex("com\\\\.android.*")\n                includeGroupByRegex("com\\\\.google.*")\n                includeGroupByRegex("androidx.*")\n            }\n        }\n        mavenCentral()\n        gradlePluginPortal()\n    }\n}\n\ndependencyResolutionManagement {\n    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)\n    repositories {\n        // Google\'s repository is asked only for Google\'s groups, so a Ktor or Kotlin artifact goes\n        // straight to Maven Central instead of a lookup that always misses first.\n        google {\n            content {\n                includeGroupByRegex("com\\\\.android.*")\n                includeGroupByRegex("com\\\\.google.*")\n                includeGroupByRegex("androidx.*")\n            }\n        }\n        mavenCentral()\n    }\n}\n\nrootProject.name = "AcmeNav"\n\ninclude(":app")\ninclude(":catalog")\n\n// ── core ─────────────────────────────────────────────────────────────────────\ninclude(":core:common")\ninclude(":core:mvi")\ninclude(":core:datastore")\ninclude(":core:designsystem")\ninclude(":core:navigation")\ninclude(":core:ui")\ninclude(":core:testing")\ninclude(":core:testing:compose")\ninclude(":core:network")\ninclude(":core:notification")\ninclude(":core:analytics")\ninclude(":core:media")\ninclude(":core:flags")\ninclude(":core:devtools")\ninclude(":core:perfhud")\ninclude(":core:database")\ninclude(":core:applock")\ninclude(":core:playstore")\n\n// ── data ─────────────────────────────────────────────────────────────────────\ninclude(":data:auth")\ninclude(":data:sample")\ninclude(":data:feed")\ninclude(":data:search")\ninclude(":data:profile")\ninclude(":data:orders")\n\n// ── feature ──────────────────────────────────────────────────────────────────\ninclude(":feature:auth")\ninclude(":feature:sample")\ninclude(":feature:feed")\ninclude(":feature:search")\ninclude(":feature:profile")\ninclude(":feature:settings")\ninclude(":feature:onboarding")\ninclude(":feature:orders")\n\n// ── tooling ──────────────────────────────────────────────────────────────────\ninclude(":benchmark")\n'
+
+----------------------------------------------------------------------
+Ran 5 tests in 221.797s
+
+FAILED (failures=70)
+== EXIT 1

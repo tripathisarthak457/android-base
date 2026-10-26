@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  From Android 12, allowBackup="false" turns off cloud backup but not device-to-device transfer, so
+  these rules are in force whenever the app moves to a new phone. The session's tokens stay behind:
+  the Keystore key that seals them never leaves the device.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="file" path="datastore/session_tokens.preferences_pb" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="file" path="datastore/session_tokens.preferences_pb" />
+    </device-transfer>
+</data-extraction-rules>

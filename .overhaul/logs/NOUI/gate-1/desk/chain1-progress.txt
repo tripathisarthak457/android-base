@@ -1,0 +1,6 @@
+D8-build-noui-standard exit 0
+D8-build-noui-everything-compact exit 1
+D8-build-noui-everything-modular exit 1
+D9-build-noui-none-orders exit 0
+D11-build-ui-lean exit 0
+chain1 done

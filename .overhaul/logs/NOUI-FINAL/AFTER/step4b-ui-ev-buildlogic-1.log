@@ -1,0 +1,41 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+> Task :convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :convention:compileKotlin UP-TO-DATE
+> Task :convention:compileJava NO-SOURCE
+> Task :convention:pluginDescriptors UP-TO-DATE
+> Task :convention:processResources UP-TO-DATE
+> Task :convention:classes UP-TO-DATE
+> Task :convention:jar UP-TO-DATE
+> Task :convention:pluginUnderTestMetadata
+> Task :convention:processTestResources NO-SOURCE
+> Task :convention:compileTestKotlin
+> Task :convention:compileTestJava NO-SOURCE
+> Task :convention:testClasses UP-TO-DATE
+
+> Task :convention:test
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+CodeRuleCasesTest > alpha on a small layer, or with ModulateAlpha, is not a full-screen fade FAILED
+    java.lang.AssertionError at CodeRuleCasesTest.kt:264
+
+CodeRulesTest > every rule fires on its fixture, on the right line FAILED
+    java.lang.AssertionError at CodeRulesTest.kt:225
+
+CodeRulesTest > an allow marker with a reason on the line above silences each rule FAILED
+    java.lang.AssertionError at CodeRulesTest.kt:233
+
+109 tests completed, 3 failed
+
+> Task :convention:test FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':convention:test'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/ui-ev/build-logic/convention/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 7s
+7 actionable tasks: 3 executed, 4 up-to-date

@@ -1,0 +1,11 @@
+705 files
+D10-lean-add-orders exit 0
+725 files
+D10-lean-build-after-add exit 0
+D10-lean-remove-orders exit 1
+705 files
+D10-lean-build-after-remove exit 0
+D10-everything-add-orders exit 0
+D10-everything-add-domain-pricing exit 0
+D10-everything-build-after-add exit 1
+chain2 done

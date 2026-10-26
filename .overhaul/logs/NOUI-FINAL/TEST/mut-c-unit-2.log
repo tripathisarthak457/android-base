@@ -1,0 +1,7 @@
+# cwd: D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/mut-c
+# project: gen-mut-c.log (head 207a12d2f + add_feature orders), mutated by set C with the busy mutation replaced (mutate.log)
+# command: locked gradle ./gradlew :core:mvi:testDebugUnitTest :feature:auth:testDebugUnitTest :feature:sample:testDebugUnitTest :feature:profile:testDebugUnitTest :feature:search:testDebugUnitTest :feature:orders:testDebugUnitTest --continue
+# start: Sun Oct 25 18:40:00 IST 2026
+[locked:gradle] waiting for the lock (pid 9296 since 2026-10-25 18:39:08: ./gradlew :core:navigation:testDebugUnitTest :core:navigation:shell:testDebugUnitTest :app:testDevDebugUnitTest :catalog)
+[locked:gradle] waiting for the lock (pid 16440 since 2026-10-25 18:41:45: ./gradlew :core:designsystem:recordRoborazziDebug)
+[locked:gradle] 3071 MB available, 11149 MB commit left; waiting for 3500 MB

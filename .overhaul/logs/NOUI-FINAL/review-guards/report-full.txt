@@ -1,0 +1,84 @@
+fun com.example.reviewguard.nouilean.core.designsystem.foundation.adaptive.<get-shouldUseTwoPanes>()
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable], [androidx.compose.ui.UiComposable]]") fun com.example.reviewguard.nouilean.core.designsystem.foundation.adaptive.AppTwoPane(
+  stable first: Function2<Composer, Int, Unit>
+  stable second: Function2<Composer, Int, Unit>
+  stable modifier: Modifier? = @static <expression>
+  stable firstWeight: Float = @static 0.5f
+  stable sideBySide: Boolean = @dynamic <expression>
+  stable spacing: Dp = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [_], [_]]") fun com.example.reviewguard.nouilean.core.designsystem.foundation.adaptive.HingeSplit(
+  stable first: Function2<Composer, Int, Unit>
+  stable second: Function2<Composer, Int, Unit>
+  stable hinge: Rect
+  stable vertical: Boolean
+  stable modifier: Modifier? = @static <expression>
+)
+fun com.example.reviewguard.nouilean.core.designsystem.foundation.adaptive.rememberWindowClass()
+fun com.example.reviewguard.nouilean.core.designsystem.foundation.adaptive.rememberWindowMetrics()
+restartable skippable scheme("[0, [0]]") fun com.example.reviewguard.nouilean.core.designsystem.foundation.adaptive.ProvideContainerWidth(
+  stable width: Dp
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable open scheme("[0, [0]]") fun com.example.reviewguard.nouilean.core.designsystem.preview.AppPreviewTheme.Wrap(
+  stable content: Function2<Composer, Int, Unit>
+  unused stable <this>: AppPreviewTheme
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.reviewguard.nouilean.core.designsystem.preview.ThemeSlotsPreview()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.reviewguard.nouilean.core.designsystem.preview.ThemeSlotsPreviewContent()
+readonly fun com.example.reviewguard.nouilean.core.designsystem.theme.ThemeMode.isDark(
+  stable <this>: ThemeMode
+): Boolean
+restartable skippable scheme("[0, [0]]") fun com.example.reviewguard.nouilean.core.designsystem.theme.AppTheme(
+  stable mode: ThemeMode? = @static <expression>
+  stable colors: AppColors? = @dynamic <expression>
+  stable fonts: AppFonts? = @dynamic <expression>
+  stable hapticsEnabled: Boolean = @static <expression>
+  stable reduceMotion: Boolean? = @static null
+  stable posture: WindowPosture? = @dynamic <expression>
+  stable input: InputTraits? = @dynamic <expression>
+  stable content: Function2<Composer, Int, Unit>
+)
+readonly fun com.example.reviewguard.nouilean.core.designsystem.theme.AppTheme.<get-colors>(
+  unused stable <this>: AppTheme
+): AppColors
+readonly fun com.example.reviewguard.nouilean.core.designsystem.theme.AppTheme.<get-typography>(
+  unused stable <this>: AppTheme
+): AppTypography
+readonly fun com.example.reviewguard.nouilean.core.designsystem.theme.AppTheme.<get-spacing>(
+  unused stable <this>: AppTheme
+): AppSpacing
+readonly fun com.example.reviewguard.nouilean.core.designsystem.theme.AppTheme.<get-shapes>(
+  unused stable <this>: AppTheme
+): AppShapes
+readonly fun com.example.reviewguard.nouilean.core.designsystem.theme.AppTheme.<get-elevation>(
+  unused stable <this>: AppTheme
+): AppElevation
+readonly fun com.example.reviewguard.nouilean.core.designsystem.theme.AppTheme.<get-sizes>(
+  unused stable <this>: AppTheme
+): AppSizes
+readonly fun com.example.reviewguard.nouilean.core.designsystem.theme.AppTheme.<get-springs>(
+  unused stable <this>: AppTheme
+): AppSprings
+fun com.example.reviewguard.nouilean.core.designsystem.theme.AppTheme.<get-reduceMotion>(
+  unused stable <this>: AppTheme
+): Boolean
+readonly fun com.example.reviewguard.nouilean.core.designsystem.theme.AppTheme.<get-hapticsEnabled>(
+  unused stable <this>: AppTheme
+): Boolean
+readonly fun com.example.reviewguard.nouilean.core.designsystem.theme.AppTheme.<get-windowClass>(
+  unused stable <this>: AppTheme
+): SizeClass
+readonly fun com.example.reviewguard.nouilean.core.designsystem.theme.AppTheme.<get-containerClass>(
+  unused stable <this>: AppTheme
+): SizeClass
+readonly fun com.example.reviewguard.nouilean.core.designsystem.theme.AppTheme.<get-posture>(
+  unused stable <this>: AppTheme
+): WindowPosture
+readonly fun com.example.reviewguard.nouilean.core.designsystem.theme.AppTheme.<get-input>(
+  unused stable <this>: AppTheme
+): InputTraits
+readonly fun com.example.reviewguard.nouilean.core.designsystem.theme.AppTheme.<get-layout>(
+  unused stable <this>: AppTheme
+): AppLayout
+fun com.example.reviewguard.nouilean.core.designsystem.theme.rememberSystemReduceMotion()

@@ -28,6 +28,15 @@
 - /research/district/phone/
 # Telegram and exteraGram source (GPL-2.0, third party, read-only study copy, Oct 19); never in the backup.
 - /research/telegram/src/
+# Lists of the apps installed on the user's phone (a phone session's before/after package check, Oct 25): personal data, local only.
+- /perf/NOUI/*/state/
+- *-packages.txt
+# Raw logcat dumps of a phone session name the user's other apps; local only.
+- /perf/NOUI/*/p7-logcat*
+- *logcat-events*
+# The setup-only phone sessions' raw outputs (logcat, device state, screenshots); the verified results are in release/NOUI-GATE.md.
+- /perf/NOUI/
+- /perf/NOUI-NEXT/
 # PeriFlow secrets (none are in the workspace; kept as a guard)
 - PeriFlow-Postman/
 - periflow-recovery-codes.txt
@@ -351,6 +360,8 @@
 - /out/WP12-KNOW/base/*
 - /audit/security/*
 - /out/NOUI/*
+- /out/NOUI-FINAL/*
+- /perf/NOUI-FINAL/
 - /verify-gen/out/authonly/*
 - /verify-gen/out/bare/A/*
 - /verify-gen/out/com.base.app.demo/*

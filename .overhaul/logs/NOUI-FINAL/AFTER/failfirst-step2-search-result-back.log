@@ -1,0 +1,197 @@
+02:31:25
+D free GB: 79
+./gradlew --offline :feature:search:testDebugUnitTest --tests *SearchResultViewModelTest*
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :feature:search:testDebugUnitTest --tests *SearchResultViewModelTest*
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies
+> Task :core:database:verifyModuleDependencies
+> Task :core:datastore:verifyModuleDependencies
+> Task :core:common:verifyApiPurity
+> Task :core:database:verifyApiPurity
+> Task :core:database:preBuild
+> Task :core:database:preDebugBuild
+> Task :core:datastore:verifyApiPurity
+> Task :core:datastore:preBuild
+> Task :core:datastore:preDebugBuild
+> Task :core:datastore:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:verifyApiPurity
+> Task :core:database:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:mvi:verifyApiPurity
+> Task :core:mvi:verifyModuleDependencies
+> Task :core:mvi:preBuild
+> Task :core:mvi:preDebugBuild
+> Task :core:mvi:javaPreCompileDebug FROM-CACHE
+> Task :core:navigation:verifyModuleDependencies
+> Task :core:navigation:verifyApiPurity
+> Task :core:navigation:preBuild
+> Task :core:navigation:preDebugBuild
+> Task :core:navigation:javaPreCompileDebug FROM-CACHE
+> Task :core:network:verifyModuleDependencies
+> Task :core:network:verifyApiPurity
+> Task :core:testing:verifyApiPurity
+> Task :core:network:preBuild
+> Task :core:network:preDebugBuild
+> Task :core:network:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:verifyModuleDependencies
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :core:ui:verifyModuleDependencies
+> Task :core:ui:verifyApiPurity
+> Task :core:ui:preBuild
+> Task :core:ui:preDebugBuild
+> Task :core:ui:generateDebugResources FROM-CACHE
+> Task :data:search:verifyApiPurity
+> Task :core:ui:processDebugNavigationResources FROM-CACHE
+> Task :core:ui:javaPreCompileDebug FROM-CACHE
+> Task :data:search:verifyModuleDependencies
+> Task :data:search:preBuild
+> Task :data:search:preDebugBuild
+> Task :data:search:javaPreCompileDebug FROM-CACHE
+> Task :data:search:preDebugTestFixturesBuild
+> Task :data:search:javaPreCompileDebugTestFixtures FROM-CACHE
+> Task :feature:search:verifyApiPurity
+> Task :feature:search:verifyModuleDependencies
+> Task :feature:search:preBuild
+> Task :feature:search:preDebugBuild
+> Task :feature:search:generateDebugResources FROM-CACHE
+> Task :core:designsystem:verifyCodeRules
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :feature:search:packageDebugResources
+> Task :core:ui:packageDebugResources
+> Task :core:designsystem:packageDebugResources
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :feature:search:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :feature:search:parseDebugLocalResources FROM-CACHE
+> Task :core:ui:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:generateDebugRFile
+> Task :feature:search:generateDebugRFile
+> Task :core:ui:generateDebugRFile
+> Task :feature:search:preDebugUnitTestBuild
+> Task :feature:search:javaPreCompileDebug FROM-CACHE
+> Task :feature:search:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :feature:search:koverFindJar
+> Task :core:common:compileKotlin
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar
+> Task :feature:search:generateDebugUnitTestStubRFile
+> Task :core:mvi:compileDebugKotlin
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibRuntimeToJarDebug
+> Task :core:mvi:processDebugJavaRes
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:processDebugJavaRes
+> Task :core:testing:compileDebugKotlin
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibRuntimeToJarDebug
+> Task :core:testing:processDebugJavaRes
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:mvi:bundleLibCompileToJarDebug
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :core:datastore:kspDebugKotlin
+> Task :core:navigation:kspDebugKotlin
+> Task :core:datastore:compileDebugKotlin
+> Task :core:datastore:processDebugJavaRes
+> Task :core:navigation:compileDebugKotlin
+> Task :core:database:kspDebugKotlin
+> Task :core:navigation:processDebugJavaRes
+> Task :core:datastore:compileDebugJavaWithJavac
+> Task :core:database:compileDebugKotlin
+> Task :core:datastore:bundleLibCompileToJarDebug
+> Task :core:datastore:bundleLibRuntimeToJarDebug
+> Task :core:navigation:compileDebugJavaWithJavac
+> Task :core:database:processDebugJavaRes
+> Task :core:database:compileDebugJavaWithJavac
+> Task :core:database:copyRoomSchemas NO-SOURCE
+> Task :core:database:bundleLibCompileToJarDebug
+> Task :core:database:bundleLibRuntimeToJarDebug
+> Task :core:navigation:transformDebugClassesWithAsm
+> Task :core:navigation:bundleLibCompileToJarDebug
+> Task :core:navigation:bundleLibRuntimeToJarDebug
+> Task :core:network:kspDebugKotlin
+> Task :core:network:compileDebugKotlin
+> Task :core:network:processDebugJavaRes
+> Task :core:network:compileDebugJavaWithJavac
+> Task :core:network:bundleLibCompileToJarDebug
+> Task :core:network:bundleLibRuntimeToJarDebug
+> Task :core:ui:kspDebugKotlin
+> Task :data:search:kspDebugKotlin
+> Task :data:search:compileDebugKotlin
+> Task :data:search:processDebugJavaRes
+> Task :core:ui:compileDebugKotlin
+> Task :core:ui:processDebugJavaRes
+> Task :data:search:compileDebugJavaWithJavac
+> Task :data:search:bundleLibCompileToJarDebug
+> Task :data:search:bundleLibRuntimeToJarDebug
+> Task :data:search:kspDebugTestFixturesKotlin
+> Task :core:ui:compileDebugJavaWithJavac
+> Task :core:ui:bundleLibRuntimeToJarDebug
+> Task :core:ui:bundleLibCompileToJarDebug
+> Task :data:search:compileDebugTestFixturesKotlin
+> Task :data:search:compileDebugTestFixturesJavaWithJavac NO-SOURCE
+> Task :data:search:bundleLibRuntimeToJarDebugTestFixtures
+> Task :data:search:processDebugTestFixturesJavaRes
+> Task :data:search:bundleLibCompileToJarDebugTestFixtures
+> Task :feature:search:kspDebugKotlin
+> Task :feature:search:compileDebugKotlin
+> Task :feature:search:processDebugJavaRes
+> Task :feature:search:compileDebugJavaWithJavac
+> Task :feature:search:bundleLibRuntimeToJarDebug
+> Task :feature:search:bundleLibCompileToJarDebug
+> Task :feature:search:kspDebugUnitTestKotlin
+> Task :feature:search:compileDebugUnitTestKotlin
+> Task :feature:search:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:search:processDebugUnitTestJavaRes
+
+> Task :feature:search:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+SearchResultViewModelTest > back asks the route to go back FAILED
+    app.cash.turbine.TurbineAssertionError at SearchResultViewModelTest.kt:40
+        Caused by: app.cash.turbine.TurbineTimeoutCancellationException at channel.kt:123
+            Caused by: app.cash.turbine.TurbineTimeoutCancellationException at SearchResultViewModelTest.kt:40
+
+2 tests completed, 1 failed
+
+> Task :feature:search:testDebugUnitTest FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':feature:search:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/noui-ev/feature/search/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 1m 1s
+122 actionable tasks: 101 executed, 21 from cache
+Configuration cache entry stored.
+EXIT 1
+02:32:28

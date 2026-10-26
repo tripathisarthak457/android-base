@@ -1,0 +1,10 @@
+# tree: D:/projects/tools/.overhaul/wt/NOUI-FINAL-TOOLS (e5d1e5e7c)
+# command: memwait python -m unittest tests.test_docs tests.test_add_component tests.test_cli
+# start: Sun Oct 25 18:33:32 IST 2026
+[locked:memwait] 1470 MB available, 7291 MB commit left; waiting for 1500 MB
+.....................................s......................
+----------------------------------------------------------------------
+Ran 60 tests in 226.339s
+
+OK (skipped=1)
+# exit: 0 end: Sun Oct 25 18:37:44 IST 2026

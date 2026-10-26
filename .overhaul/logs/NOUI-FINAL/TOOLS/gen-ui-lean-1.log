@@ -1,0 +1,18 @@
+# head: 8d99907e1 + uncommitted F14/push/harness work
+# command: create_project.py --spec D:/projects/tools/.overhaul/out/NOUI-FINAL/TOOLS/specs/ui-lean.json --preset lean --out D:/projects/tools/.overhaul/out/NOUI-FINAL/TOOLS/ui-lean --no-zip --force
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\ui-lean
+
+  ! No feature gives the app a tab, so a 'home' module was scaffolded under
+  ! feature/home and data/home. Its repository has no source yet: give it one,
+  ! or rename the module.
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\ui-lean and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+
+# exit: 0

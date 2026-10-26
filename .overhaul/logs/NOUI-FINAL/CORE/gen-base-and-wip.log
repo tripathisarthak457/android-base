@@ -1,0 +1,88 @@
+== 13:52:03 generate D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/specs/ui-everything.json preset everything -> D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/base-ui-everything from D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/base-src/generator (archive)
+[locked:memwait] 2285 MB available, 12708 MB commit left; waiting for 3500 MB
+[locked:memwait] 919 MB available, 12627 MB commit left; waiting for 3500 MB
+[locked:memwait] 1023 MB available, 12877 MB commit left; waiting for 3500 MB
+[locked:memwait] 1225 MB available, 12822 MB commit left; waiting for 3500 MB
+[locked:memwait] 1116 MB available, 12697 MB commit left; waiting for 3500 MB
+[locked:memwait] 1139 MB available plus 6609 MB of system cache Windows will trim; continuing
+
+Summary
+───────
+           App  Final Core Ui (FinalCoreUi)
+       Package  com.example.finalcore.uieverything
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, appstatus, auth, browser, catalog, ci,
+                coil, collections, coverage, crashlytics, database,
+                datadisplay, deeplink, depsanalysis, devtools, firebase,
+                firebaseanalytics, flags, formatting, formfields, forms,
+                googlefonts, googlesignin, language, leakcanary, licenses,
+                liquidglass, media, network, offlinequeue, onboarding,
+                paging, perfhud, performance, pickers, playstore, profile,
+                push, remoteconfig, sample, search, settings, websocket
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\CORE\base-ui-everything
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\CORE\base-ui-everything and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json: the included one is a placeholder.
+
+EXIT 0
+== 13:57:11 generate D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/specs/ui-everything.json preset everything -> D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/wip-ui-everything from D:/projects/tools/.overhaul/wt/NOUI-NEXT-CORE/generator (aebff213c)
+[locked:memwait] 1095 MB available, 12688 MB commit left; waiting for 3500 MB
+[locked:memwait] 1213 MB available, 13066 MB commit left; waiting for 3500 MB
+[locked:memwait] 1185 MB available, 12872 MB commit left; waiting for 3500 MB
+[locked:memwait] 624 MB available, 12298 MB commit left; waiting for 3500 MB
+[locked:memwait] 736 MB available, 11238 MB commit left; waiting for 1500 MB
+[locked:memwait] 540 MB available plus 4637 MB of system cache Windows will trim; continuing
+
+Summary
+───────
+           App  Final Core Ui (FinalCoreUi)
+       Package  com.example.finalcore.uieverything
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, appstatus, auth, browser, catalog, ci,
+                coil, collections, coverage, crashlytics, database,
+                datadisplay, deeplink, depsanalysis, devtools, firebase,
+                firebaseanalytics, flags, formatting, formfields, forms,
+                googlefonts, googlesignin, language, leakcanary, licenses,
+                liquidglass, media, network, offlinequeue, onboarding,
+                paging, perfhud, performance, pickers, playstore, profile,
+                push, remoteconfig, sample, search, settings, websocket
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\CORE\wip-ui-everything
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\CORE\wip-ui-everything and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json: the included one is a placeholder.
+
+EXIT 0

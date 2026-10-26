@@ -1,0 +1,610 @@
+03:45:50
+D free GB: 77.6
+./gradlew --offline --continue :core:designsystem:testDebugUnitTest :catalog:testDebugUnitTest :feature:auth:testDebugUnitTest :core:testing:compose:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:designsystem:testDebugUnitTest :catalog:testDebugUnitTest :feature:auth:testDebugUnitTest :core:testing:compose:testDebugUnitTest
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin FROM-CACHE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:common:verifyApiPurity
+> Task :core:designsystem:generateDebugComposePreviewRobolectricTests
+> Task :core:testing:verifyApiPurity
+> Task :core:testing:verifyModuleDependencies
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :core:testing:writeDebugAarMetadata
+> Task :core:common:compileKotlin FROM-CACHE
+> Task :core:designsystem:verifyApiPurity
+> Task :core:testing:compose:verifyApiPurity
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:testing:compose:verifyModuleDependencies
+> Task :core:testing:compose:preBuild
+> Task :core:testing:compose:preDebugBuild
+> Task :core:testing:generateDebugEmptyResourceFiles
+> Task :core:testing:compose:writeDebugAarMetadata
+> Task :core:testing:compose:generateDebugEmptyResourceFiles
+> Task :core:testing:processDebugManifest FROM-CACHE
+> Task :core:common:jar
+> Task :core:testing:compose:processDebugManifest FROM-CACHE
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:compose:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:mergeDebugAssets
+> Task :core:testing:compose:generateDebugAssets UP-TO-DATE
+> Task :core:testing:compose:mergeDebugAssets
+> Task :core:designsystem:koverFindJar
+> Task :catalog:preBuild UP-TO-DATE
+> Task :catalog:preDebugBuild UP-TO-DATE
+> Task :catalog:generateDebugBuildConfig
+> Task :catalog:generateDebugResources FROM-CACHE
+> Task :catalog:packageDebugResources
+> Task :core:navigation:verifyApiPurity
+> Task :core:navigation:verifyModuleDependencies
+> Task :core:navigation:preBuild
+> Task :core:navigation:preDebugBuild
+> Task :core:navigation:generateDebugEmptyResourceFiles
+> Task :core:navigation:shell:verifyApiPurity
+> Task :core:navigation:shell:verifyModuleDependencies
+> Task :core:navigation:shell:preBuild
+> Task :core:navigation:shell:preDebugBuild
+> Task :core:navigation:shell:processDebugNavigationResources FROM-CACHE
+> Task :core:testing:compileDebugKotlin FROM-CACHE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :core:testing:bundleLibRuntimeToJarDebug
+> Task :core:testing:processDebugJavaRes
+> Task :core:navigation:javaPreCompileDebug FROM-CACHE
+> Task :core:navigation:shell:generateDebugResources FROM-CACHE
+> Task :core:navigation:shell:packageDebugResources FROM-CACHE
+> Task :core:navigation:shell:parseDebugLocalResources FROM-CACHE
+> Task :core:navigation:shell:generateDebugRFile FROM-CACHE
+> Task :core:navigation:shell:javaPreCompileDebug FROM-CACHE
+> Task :catalog:javaPreCompileDebug FROM-CACHE
+> Task :core:navigation:writeDebugAarMetadata
+> Task :core:navigation:shell:writeDebugAarMetadata
+> Task :catalog:mapDebugSourceSetPaths
+> Task :catalog:createDebugCompatibleScreenManifests
+> Task :catalog:extractDeepLinksDebug
+> Task :core:navigation:processDebugManifest FROM-CACHE
+> Task :core:navigation:kspDebugKotlin FROM-CACHE
+> Task :core:navigation:shell:extractDeepLinksDebug FROM-CACHE
+> Task :core:navigation:shell:processDebugManifest FROM-CACHE
+> Task :core:navigation:shell:mapDebugSourceSetPaths
+> Task :core:navigation:shell:compileDebugLibraryResources FROM-CACHE
+> Task :catalog:generateDebugComposePreviewRobolectricTests
+> Task :catalog:preDebugUnitTestBuild UP-TO-DATE
+> Task :catalog:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :catalog:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:mergeDebugAssets
+> Task :core:navigation:shell:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:shell:mergeDebugAssets
+> Task :catalog:koverFindJar
+> Task :core:database:kspDebugKotlin FROM-CACHE
+> Task :core:database:verifyApiPurity
+> Task :core:navigation:compileDebugKotlin FROM-CACHE
+> Task :core:database:verifyModuleDependencies
+> Task :core:navigation:processDebugJavaRes
+> Task :core:database:preBuild
+> Task :core:database:preDebugBuild
+> Task :core:database:compileDebugKotlin FROM-CACHE
+> Task :core:database:javaPreCompileDebug FROM-CACHE
+> Task :core:navigation:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:database:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:database:copyRoomSchemas NO-SOURCE
+> Task :core:designsystem:verifyCodeRules
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:database:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:designsystem:packageDebugResources FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:generateDebugRFile FROM-CACHE
+> Task :core:navigation:transformDebugClassesWithAsm FROM-CACHE
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:designsystem:compileDebugLibraryResources FROM-CACHE
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths
+> Task :core:designsystem:generateDebugUnitTestResources FROM-CACHE
+> Task :core:designsystem:checkDebugUnitTestAarMetadata
+> Task :core:designsystem:extractDeepLinksDebug FROM-CACHE
+> Task :core:designsystem:processDebugManifest FROM-CACHE
+> Task :core:testing:compose:compileDebugKotlin
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:bundleLibCompileToJarDebug
+> Task :core:designsystem:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:designsystem:mergeDebugAssets
+> Task :core:designsystem:mergeDebugUnitTestAssets
+> Task :core:testing:compose:bundleLibRuntimeToJarDebug
+> Task :core:testing:compose:processDebugJavaRes
+> Task :core:designsystem:mergeDebugUnitTestManifest
+> Task :core:designsystem:processDebugUnitTestManifest
+> Task :core:navigation:bundleLibCompileToJarDebug
+> Task :catalog:checkDebugAarMetadata
+> Task :catalog:processDebugNavigationResources
+> Task :catalog:parseDebugLocalResources FROM-CACHE
+> Task :catalog:generateDebugRFile
+> Task :catalog:compileDebugNavigationResources FROM-CACHE
+> Task :catalog:processDebugMainManifest
+> Task :catalog:processDebugManifest
+> Task :catalog:processDebugManifestForPackage
+> Task :catalog:mergeDebugAssets
+> Task :catalog:mergeDebugUnitTestManifest
+> Task :catalog:processDebugUnitTestManifest
+> Task :core:navigation:bundleLibRuntimeToJarDebug
+> Task :core:database:processDebugJavaRes
+> Task :core:datastore:kspDebugKotlin FROM-CACHE
+> Task :core:datastore:verifyApiPurity
+> Task :core:datastore:verifyModuleDependencies
+> Task :core:datastore:preBuild
+> Task :core:datastore:preDebugBuild
+> Task :core:datastore:compileDebugKotlin FROM-CACHE
+> Task :core:datastore:javaPreCompileDebug FROM-CACHE
+> Task :core:datastore:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:datastore:bundleLibRuntimeToJarDebug
+> Task :core:datastore:processDebugJavaRes
+> Task :core:mvi:verifyApiPurity
+> Task :core:mvi:verifyModuleDependencies
+> Task :core:mvi:preBuild
+> Task :core:mvi:preDebugBuild
+> Task :core:mvi:compileDebugKotlin FROM-CACHE
+> Task :core:mvi:javaPreCompileDebug FROM-CACHE
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibRuntimeToJarDebug
+> Task :core:mvi:processDebugJavaRes
+> Task :core:database:bundleLibCompileToJarDebug
+> Task :core:datastore:bundleLibCompileToJarDebug
+> Task :core:designsystem:mergeDebugUnitTestResources
+> Task :catalog:mergeDebugResources
+> Task :core:network:kspDebugKotlin FROM-CACHE
+> Task :core:network:verifyApiPurity
+> Task :core:network:verifyModuleDependencies
+> Task :core:network:preBuild
+> Task :core:network:preDebugBuild
+> Task :core:network:compileDebugKotlin FROM-CACHE
+> Task :core:network:javaPreCompileDebug FROM-CACHE
+> Task :core:network:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:network:bundleLibRuntimeToJarDebug
+> Task :core:network:processDebugJavaRes
+> Task :core:mvi:bundleLibCompileToJarDebug
+> Task :core:network:bundleLibCompileToJarDebug
+> Task :core:ui:verifyApiPurity
+> Task :core:ui:verifyModuleDependencies
+> Task :core:ui:preBuild
+> Task :core:ui:preDebugBuild
+> Task :core:ui:generateDebugResources FROM-CACHE
+> Task :core:ui:packageDebugResources FROM-CACHE
+> Task :core:ui:processDebugNavigationResources FROM-CACHE
+> Task :core:ui:parseDebugLocalResources FROM-CACHE
+> Task :core:ui:generateDebugRFile FROM-CACHE
+> Task :core:ui:javaPreCompileDebug FROM-CACHE
+> Task :data:auth:kspDebugKotlin FROM-CACHE
+> Task :data:auth:verifyApiPurity
+> Task :data:auth:verifyModuleDependencies
+> Task :data:auth:preBuild
+> Task :data:auth:preDebugBuild
+> Task :data:auth:compileDebugKotlin FROM-CACHE
+> Task :data:auth:javaPreCompileDebug FROM-CACHE
+> Task :data:auth:compileDebugJavaWithJavac FROM-CACHE
+> Task :data:auth:bundleLibRuntimeToJarDebug
+> Task :data:auth:bundleLibCompileToJarDebug
+> Task :data:auth:kspDebugTestFixturesKotlin FROM-CACHE
+> Task :data:auth:preDebugTestFixturesBuild
+> Task :data:auth:compileDebugTestFixturesKotlin FROM-CACHE
+> Task :catalog:processDebugResources
+> Task :data:auth:javaPreCompileDebugTestFixtures FROM-CACHE
+> Task :data:auth:compileDebugTestFixturesJavaWithJavac NO-SOURCE
+> Task :data:auth:bundleLibRuntimeToJarDebugTestFixtures
+> Task :catalog:packageDebugUnitTestForUnitTest
+> Task :data:auth:processDebugJavaRes
+> Task :catalog:generateDebugUnitTestConfig
+> Task :data:auth:processDebugTestFixturesJavaRes
+> Task :feature:auth:verifyModuleDependencies
+> Task :feature:auth:verifyApiPurity
+> Task :feature:auth:preBuild
+> Task :feature:auth:preDebugBuild
+> Task :data:auth:bundleLibCompileToJarDebugTestFixtures
+> Task :feature:auth:processDebugNavigationResources FROM-CACHE
+> Task :feature:auth:generateDebugResources FROM-CACHE
+> Task :feature:auth:javaPreCompileDebug FROM-CACHE
+> Task :feature:auth:generateDebugComposePreviewRobolectricTests FROM-CACHE
+> Task :core:ui:mapDebugSourceSetPaths
+> Task :feature:auth:packageDebugResources FROM-CACHE
+> Task :core:ui:compileDebugLibraryResources FROM-CACHE
+> Task :core:database:writeDebugAarMetadata
+> Task :feature:auth:parseDebugLocalResources FROM-CACHE
+> Task :core:datastore:writeDebugAarMetadata
+> Task :core:mvi:writeDebugAarMetadata
+> Task :core:network:writeDebugAarMetadata
+> Task :feature:auth:generateDebugRFile FROM-CACHE
+> Task :core:ui:writeDebugAarMetadata
+> Task :data:auth:writeDebugAarMetadata
+> Task :data:auth:writeDebugTestFixturesAarMetadata
+> Task :feature:auth:preDebugUnitTestBuild
+> Task :feature:auth:mapDebugSourceSetPaths
+> Task :feature:auth:writeDebugAarMetadata
+> Task :feature:auth:compileDebugLibraryResources FROM-CACHE
+> Task :feature:auth:mapDebugUnitTestSourceSetPaths
+> Task :core:database:generateDebugEmptyResourceFiles
+> Task :core:datastore:generateDebugEmptyResourceFiles
+> Task :core:mvi:generateDebugEmptyResourceFiles
+> Task :core:network:generateDebugEmptyResourceFiles
+> Task :data:auth:generateDebugEmptyResourceFiles
+> Task :data:auth:generateDebugTestFixturesEmptyResourceFiles
+> Task :feature:auth:generateDebugUnitTestResources FROM-CACHE
+> Task :core:designsystem:processDebugUnitTestResources
+> Task :core:designsystem:packageDebugUnitTestForUnitTest
+> Task :core:designsystem:generateDebugUnitTestConfig
+> Task :core:database:processDebugManifest FROM-CACHE
+> Task :core:datastore:processDebugManifest FROM-CACHE
+> Task :core:mvi:processDebugManifest FROM-CACHE
+> Task :core:network:processDebugManifest FROM-CACHE
+> Task :core:ui:extractDeepLinksDebug FROM-CACHE
+> Task :core:ui:processDebugManifest FROM-CACHE
+> Task :feature:auth:checkDebugUnitTestAarMetadata
+> Task :data:auth:processDebugManifest FROM-CACHE
+> Task :feature:auth:extractDeepLinksDebug FROM-CACHE
+> Task :data:auth:processDebugTestFixturesManifest FROM-CACHE
+> Task :feature:auth:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:database:generateDebugAssets UP-TO-DATE
+> Task :core:database:mergeDebugAssets
+> Task :core:datastore:generateDebugAssets UP-TO-DATE
+> Task :feature:auth:processDebugManifest FROM-CACHE
+> Task :core:datastore:mergeDebugAssets
+> Task :core:mvi:generateDebugAssets UP-TO-DATE
+> Task :core:mvi:mergeDebugAssets
+> Task :core:network:generateDebugAssets UP-TO-DATE
+> Task :core:network:mergeDebugAssets
+> Task :core:ui:generateDebugAssets UP-TO-DATE
+> Task :core:ui:mergeDebugAssets
+> Task :data:auth:generateDebugAssets UP-TO-DATE
+> Task :data:auth:mergeDebugAssets
+> Task :data:auth:generateDebugTestFixturesAssets UP-TO-DATE
+> Task :data:auth:mergeDebugTestFixturesAssets
+> Task :feature:auth:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:auth:generateDebugAssets UP-TO-DATE
+> Task :feature:auth:mergeDebugAssets
+> Task :feature:auth:mergeDebugUnitTestAssets
+> Task :feature:auth:koverFindJar
+> Task :core:testing:compose:preDebugUnitTestBuild
+> Task :feature:auth:mergeDebugUnitTestManifest
+> Task :feature:auth:processDebugUnitTestManifest
+> Task :core:testing:compose:mapDebugUnitTestSourceSetPaths
+> Task :core:testing:compose:generateDebugUnitTestResources FROM-CACHE
+> Task :core:testing:compose:checkDebugUnitTestAarMetadata
+> Task :feature:auth:mergeDebugUnitTestResources FROM-CACHE
+> Task :core:testing:compose:mergeDebugUnitTestManifest
+> Task :core:testing:compose:processDebugUnitTestManifest
+> Task :core:testing:compose:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:testing:compose:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:testing:compose:mergeDebugUnitTestAssets
+> Task :core:testing:compose:koverFindJar
+> Task :feature:auth:processDebugUnitTestResources FROM-CACHE
+> Task :feature:auth:packageDebugUnitTestForUnitTest
+> Task :feature:auth:generateDebugUnitTestConfig
+> Task :core:testing:compose:mergeDebugUnitTestResources
+> Task :core:testing:compose:processDebugUnitTestResources
+> Task :core:testing:compose:packageDebugUnitTestForUnitTest
+> Task :core:testing:compose:generateDebugUnitTestConfig
+> Task :core:testing:compose:compileDebugUnitTestKotlin
+> Task :core:testing:compose:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:processDebugUnitTestJavaRes
+
+> Task :core:testing:compose:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:designsystem:compileDebugKotlin
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/ui-ev/core/designsystem/src/main/kotlin/com/example/finalafter/uiev/core/designsystem/component/feedback/AppSkeleton.kt:149:9 'fun AppSkeletonLine(height: Dp, modifier: Modifier = ..., widthFraction: Float = ...): Unit' is deprecated. A fixed height ignores the font scale. Pass the text style the line stands for.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/ui-ev/core/designsystem/src/main/kotlin/com/example/finalafter/uiev/core/designsystem/component/feedback/AppSkeleton.kt:151:9 'fun AppSkeletonListItem(modifier: Modifier = ..., showLeading: Boolean = ...): Unit' is deprecated. Its shape matches no real row, so content jumps when it arrives. Redact the real row instead.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/ui-ev/core/designsystem/src/main/kotlin/com/example/finalafter/uiev/core/designsystem/component/feedback/AppSkeleton.kt:152:9 'fun AppSkeletonListItem(modifier: Modifier = ..., showLeading: Boolean = ...): Unit' is deprecated. Its shape matches no real row, so content jumps when it arrives. Redact the real row instead.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/ui-ev/core/designsystem/src/main/kotlin/com/example/finalafter/uiev/core/designsystem/component/overlay/AppActionSheet.kt:72:9 'fun AppActionSheet(actions: List<SheetAction>, onDismissRequest: () -> Unit, modifier: Modifier = ..., title: String? = ..., message: String? = ..., cancelLabel: String? = ...): Unit' is deprecated. Keep the action sheet composed and drive visible, so it can slide away before it leaves.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/ui-ev/core/designsystem/src/main/kotlin/com/example/finalafter/uiev/core/designsystem/component/overlay/AppActionSheet.kt:74:17 'constructor(label: String, onClick: () -> Unit, icon: ImageVector? = ..., isDestructive: Boolean = ..., enabled: Boolean = ...): SheetAction' is deprecated. Moved to the sheet package, where destructive is spelt without the is.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/ui-ev/core/designsystem/src/main/kotlin/com/example/finalafter/uiev/core/designsystem/component/overlay/AppActionSheet.kt:75:17 'constructor(label: String, onClick: () -> Unit, icon: ImageVector? = ..., isDestructive: Boolean = ..., enabled: Boolean = ...): SheetAction' is deprecated. Moved to the sheet package, where destructive is spelt without the is.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/ui-ev/core/designsystem/src/main/kotlin/com/example/finalafter/uiev/core/designsystem/component/overlay/AppActionSheet.kt:76:17 'constructor(label: String, onClick: () -> Unit, icon: ImageVector? = ..., isDestructive: Boolean = ..., enabled: Boolean = ...): SheetAction' is deprecated. Moved to the sheet package, where destructive is spelt without the is.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/ui-ev/core/designsystem/src/main/kotlin/com/example/finalafter/uiev/core/designsystem/component/overlay/AppActionSheet.kt:77:17 'constructor(label: String, onClick: () -> Unit, icon: ImageVector? = ..., isDestructive: Boolean = ..., enabled: Boolean = ...): SheetAction' is deprecated. Moved to the sheet package, where destructive is spelt without the is.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/ui-ev/core/designsystem/src/main/kotlin/com/example/finalafter/uiev/core/designsystem/component/overlay/AppBottomSheet.kt:65:9 'fun AppBottomSheet(onDismissRequest: () -> Unit, modifier: Modifier = ..., title: String? = ..., showHandle: Boolean = ..., dismissOnClickOutside: Boolean = ..., content: ComposableFunction1<ColumnScope, Unit>): Unit' is deprecated. Keep the sheet composed and drive visible, so it can slide away before it leaves.
+
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugJavaRes
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:navigation:shell:compileDebugKotlin
+> Task :core:navigation:shell:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:navigation:shell:bundleLibCompileToJarDebug
+
+> Task :core:designsystem:compileDebugUnitTestKotlin
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/ui-ev/core/designsystem/src/test/kotlin/com/example/finalafter/uiev/core/designsystem/foundation/glass/GlassQualityTest.kt:22:16 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/ui-ev/core/designsystem/src/test/kotlin/com/example/finalafter/uiev/core/designsystem/foundation/glass/GlassStageTest.kt:62:16 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/ui-ev/core/designsystem/src/test/kotlin/com/example/finalafter/uiev/core/designsystem/foundation/glass/GlassSurfaceTest.kt:34:16 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+
+> Task :core:designsystem:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugUnitTestJavaRes
+> Task :core:ui:kspDebugKotlin
+> Task :core:navigation:shell:bundleLibRuntimeToJarDebug
+> Task :core:navigation:shell:processDebugJavaRes
+> Task :catalog:compileDebugKotlin
+
+> Task :core:designsystem:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :catalog:compileDebugJavaWithJavac
+> Task :core:ui:compileDebugKotlin
+> Task :catalog:bundleDebugClassesToRuntimeJar
+> Task :catalog:bundleDebugClassesToCompileJar
+> Task :catalog:processDebugJavaRes
+> Task :core:ui:compileDebugJavaWithJavac
+> Task :core:ui:bundleLibRuntimeToJarDebug
+> Task :core:ui:processDebugJavaRes
+> Task :core:ui:bundleLibCompileToJarDebug
+> Task :catalog:compileDebugUnitTestKotlin
+> Task :catalog:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :catalog:processDebugUnitTestJavaRes
+
+> Task :catalog:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :feature:auth:kspDebugKotlin
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+> Task :feature:auth:compileDebugKotlin
+> Task :feature:auth:compileDebugJavaWithJavac
+> Task :feature:auth:bundleLibRuntimeToJarDebug
+> Task :feature:auth:bundleLibCompileToJarDebug
+> Task :feature:auth:processDebugJavaRes
+> Task :feature:auth:kspDebugUnitTestKotlin
+> Task :feature:auth:compileDebugUnitTestKotlin
+> Task :feature:auth:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:auth:processDebugUnitTestJavaRes
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :feature:auth:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :catalog:testDebugUnitTest
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.catalog.sections.sheets.SheetPreviewsKt_TwoDetentSheetPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.catalog.sections.sheets.SheetPreviewsKt_TwoDetentSheetPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.catalog.sections.sheets.SheetPreviewsKt_PersistentSheetPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.catalog.sections.sheets.SheetPreviewsKt_PersistentSheetPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.catalog.sections.sheets.SheetPreviewsKt_PersistentSheetPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.catalog.sections.sheets.SheetPreviewsKt_PersistentSheetPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.catalog.sections.sheets.SheetPreviewsKt_PersistentSheetPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.catalog.sections.sheets.SheetPreviewsKt_PersistentSheetPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.catalog.sections.sheets.SheetPreviewsKt_PersistentSheetPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.catalog.sections.sheets.SheetPreviewsKt_PersistentSheetPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.catalog.sections.sheets.SheetPreviewsKt_PersistentSheetPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.catalog.sections.sheets.SheetPreviewsKt_PersistentSheetPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.catalog.sections.sheets.SheetPreviewsKt_PersistentSheetPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.catalog.sections.sheets.SheetPreviewsKt_PersistentSheetPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.catalog.sections.sheets.SheetPreviewsKt_PersistentSheetPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.catalog.sections.sheets.SheetPreviewsKt_PersistentSheetPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+> Task :feature:auth:testDebugUnitTest
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.feature.auth.signup.SignUpScreenKt_SignUpPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.feature.auth.signup.SignUpScreenKt_SignUpPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+> Task :catalog:testDebugUnitTest FAILED
+
+21 tests completed, 8 failed
+
+> Task :catalog:finalizeTestRoborazziDebug SKIPPED
+
+> Task :feature:auth:testDebugUnitTest FAILED
+
+43 tests completed, 1 failed
+
+> Task :feature:auth:finalizeTestRoborazziDebug SKIPPED
+
+> Task :core:designsystem:testDebugUnitTest
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.formfields.AppTagFieldKt_AppTagFieldPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.formfields.AppTagFieldKt_AppTagFieldPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.formfields.AppTagFieldKt_AppTagFieldPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.formfields.AppTagFieldKt_AppTagFieldPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.formfields.AppTagFieldKt_AppTagFieldPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.formfields.AppTagFieldKt_AppTagFieldPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.formfields.AppTagFieldKt_AppTagFieldPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.formfields.AppTagFieldKt_AppTagFieldPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.list.AppSwipeActionsKt_AppSwipeActionsPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.list.AppSwipeActionsKt_AppSwipeActionsPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.list.AppSwipeActionsKt_AppSwipeActionsPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.list.AppSwipeActionsKt_AppSwipeActionsPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.list.AppSwipeActionsKt_AppSwipeActionsPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.list.AppSwipeActionsKt_AppSwipeActionsPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.list.AppSwipeActionsKt_AppSwipeActionsPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.list.AppSwipeActionsKt_AppSwipeActionsPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.list.AppSwipeActionsKt_AppSwipeActionsPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.list.AppSwipeActionsKt_AppSwipeActionsPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.pickers.AppDatePickerKt_AppDatePickerPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.pickers.AppDatePickerKt_AppDatePickerPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.pickers.AppDatePickerKt_AppDatePickerPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.pickers.AppDatePickerKt_AppDatePickerPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.pickers.AppDatePickerKt_AppDatePickerPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.pickers.AppDatePickerKt_AppDatePickerPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.pickers.AppDatePickerKt_AppDatePickerPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.pickers.AppDatePickerKt_AppDatePickerPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.pickers.AppDatePickerKt_AppDatePickerPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.pickers.AppDatePickerKt_AppDatePickerPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.AppSheetKt_AppSheetPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.AppSheetKt_AppSheetPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.AppSheetKt_AppSheetPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.AppSheetKt_AppSheetPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.AppSheetKt_AppSheetPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.AppSheetKt_AppSheetPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.AppSheetKt_AppSheetPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.AppSheetKt_AppSheetPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.AppSheetKt_AppSheetPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.AppSheetKt_AppSheetPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.choice.AppChoiceSheetKt_AppChoiceSheetPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.choice.AppChoiceSheetKt_AppChoiceSheetPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.choice.AppChoiceSheetKt_AppChoiceSheetPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.choice.AppChoiceSheetKt_AppChoiceSheetPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.choice.AppChoiceSheetKt_AppChoiceSheetPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.choice.AppChoiceSheetKt_AppChoiceSheetPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.choice.AppChoiceSheetKt_AppChoiceSheetPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.choice.AppChoiceSheetKt_AppChoiceSheetPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.choice.AppChoiceSheetKt_AppChoiceSheetPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.choice.AppChoiceSheetKt_AppChoiceSheetPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.chrome.AppSheetCloseButtonKt_AppSheetCloseButtonPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.chrome.AppSheetCloseButtonKt_AppSheetCloseButtonPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.chrome.AppSheetCloseButtonKt_AppSheetCloseButtonPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.chrome.AppSheetCloseButtonKt_AppSheetCloseButtonPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.chrome.AppSheetCloseButtonKt_AppSheetCloseButtonPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.chrome.AppSheetCloseButtonKt_AppSheetCloseButtonPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.chrome.AppSheetCloseButtonKt_AppSheetCloseButtonPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.chrome.AppSheetCloseButtonKt_AppSheetCloseButtonPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.chrome.AppSheetCloseButtonKt_AppSheetCloseButtonPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.chrome.AppSheetCloseButtonKt_AppSheetCloseButtonPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.content.SheetColumnKt_SheetColumnPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.content.SheetColumnKt_SheetColumnPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.content.SheetColumnKt_SheetColumnPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.content.SheetColumnKt_SheetColumnPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.content.SheetColumnKt_SheetColumnPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.content.SheetColumnKt_SheetColumnPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.content.SheetColumnKt_SheetColumnPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.content.SheetColumnKt_SheetColumnPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.content.SheetColumnKt_SheetColumnPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.content.SheetColumnKt_SheetColumnPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.layout.SheetLayoutKt_SheetLayoutPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.layout.SheetLayoutKt_SheetLayoutPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.layout.SheetLayoutKt_SheetLayoutPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.layout.SheetLayoutKt_SheetLayoutPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.layout.SheetLayoutKt_SheetLayoutPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.layout.SheetLayoutKt_SheetLayoutPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.layout.SheetLayoutKt_SheetLayoutPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.layout.SheetLayoutKt_SheetLayoutPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+RoborazziPreviewParameterizedTests > [JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.layout.SheetLayoutKt_SheetLayoutPreview)] > test[JUnit4TestParameter(preview=com.example.finalafter.uiev.core.designsystem.component.sheet.layout.SheetLayoutKt_SheetLayoutPreview)] FAILED
+    com.google.android.apps.common.testing.accessibility.framework.integrations.espresso.AccessibilityViewCheckException at RoborazziPreviewParameterizedTests.kt:43
+
+831 tests completed, 39 failed
+
+> Task :core:designsystem:testDebugUnitTest FAILED
+> Task :core:designsystem:finalizeTestRoborazziDebug SKIPPED
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/ui-ev/build/reports/problems/problems-report.html
+
+FAILURE: Build completed with 3 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':catalog:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/ui-ev/catalog/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+2: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':feature:auth:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/ui-ev/feature/auth/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+3: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':core:designsystem:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/ui-ev/core/designsystem/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+BUILD FAILED in 4m 28s
+275 actionable tasks: 185 executed, 90 from cache
+Configuration cache entry stored.
+EXIT 1
+03:50:20

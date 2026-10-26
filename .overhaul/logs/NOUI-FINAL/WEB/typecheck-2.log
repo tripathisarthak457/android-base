@@ -1,0 +1,51 @@
+Sun Oct 25 17:45:40 IST 2026
+$ memwait npm run typecheck
+
+> android-generator-web@1.0.0 typecheck
+> tsc --noEmit
+
+typecheck exit=0
+Sun Oct 25 17:45:45 IST 2026
+$ npm test
+✔ a setup-only site promises nothing unmarked that a project without UI components lacks (7.5492ms)
+✔ a site that makes both kinds keeps every promise of a project with UI components (2.1863ms)
+✔ both sites list the same items (7.1323ms)
+✔ the ramps match the generator on its 200 seeded accents (20.4057ms)
+✔ the readable shade matches the catalogue's resolved accent content (2.7699ms)
+✔ hex parsing takes six digits with or without the hash, and nothing else (0.4176ms)
+✔ a stop ends a wait on an animation that never settles (34.5434ms)
+✔ a wait begun after a stop does not wait (62.4422ms)
+✔ the body runs again until the loop is stopped (77.2163ms)
+✔ a failure in the body is reported, not taken for a stop (1.1963ms)
+✔ roles come from the style's palette, brand roles from the visitor's colour (3.9291ms)
+✔ a style or motion style this build does not know falls back instead of throwing (0.9153ms)
+✔ a new style added to the tokens renders with its own tokens (0.5556ms)
+✔ an unfinished hex leaves the template's brand roles in place (0.2193ms)
+✔ type takes the voice's weight and the scale's size (1.0688ms)
+✔ springs carry the token's stiffness and damping ratio (0.49ms)
+✔ colours with alpha are written the CSS way (0.1633ms)
+✔ tabs follow the generator's order: Home, the modules, then the template's other tabs (0.8237ms)
+✔ past five tabs the bar shows four and More, which lists the rest (0.5477ms)
+✔ scaffolded modules get distinct icons (0.513ms)
+✔ with no tab source the generator's home module is the one tab (0.2488ms)
+✔ module titles read like the scaffolded screen's (0.1091ms)
+✔ a style describes itself from its tokens, so a new one needs no copy (0.3813ms)
+✔ buttons read square up to 4 dp of radius and rounded above it (0.3966ms)
+✔ a landing from a campaign is stored as the API's contract says (1.6893ms)
+✔ every other event the site sends has the shape of an accepted one (0.2986ms)
+✔ only the referrer's origin leaves the browser, and never the site's own (0.3309ms)
+✔ a landing with nothing to say sends only the returning flag and viewport (0.2477ms)
+✔ viewport buckets match the API's (0.1802ms)
+✔ a long queue is split into batches the API accepts (0.4845ms)
+✔ the size limit is counted in bytes, so text outside ASCII still fits (0.5678ms)
+✔ session ids are random UUID v4s, the form the generate headers pass on (5.028ms)
+ℹ tests 260
+ℹ suites 0
+ℹ pass 260
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1036.9153
+test exit=0
+Sun Oct 25 17:45:47 IST 2026

@@ -1,0 +1,65 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/TEST/scratch/l7-base/generator
+# command: memwait python create_project.py --spec specs/l7probe.json --preset everything (base f5a773e74 with isReturnDefaultValues removed; tokens/ added to the scratch copy)
+# start: Sun Oct 25 14:00:16 IST 2026
+[locked:memwait] 647 MB available, 12355 MB commit left; waiting for 3500 MB
+[locked:memwait] 723 MB available, 11305 MB commit left; waiting for 1500 MB
+[locked:memwait] 509 MB available, 9048 MB commit left; waiting for 1500 MB
+{
+  "ok": true,
+  "target": "android",
+  "project_name": "FinalTest",
+  "path": "D:\\projects\\tools\\.overhaul\\out\\NOUI-FINAL\\TEST\\l7probe",
+  "resolved_features": [
+    "analytics",
+    "applock",
+    "appstatus",
+    "auth",
+    "browser",
+    "catalog",
+    "ci",
+    "coil",
+    "collections",
+    "coverage",
+    "crashlytics",
+    "database",
+    "datadisplay",
+    "deeplink",
+    "depsanalysis",
+    "devtools",
+    "firebase",
+    "firebaseanalytics",
+    "flags",
+    "formatting",
+    "formfields",
+    "forms",
+    "googlefonts",
+    "googlesignin",
+    "language",
+    "leakcanary",
+    "licenses",
+    "liquidglass",
+    "media",
+    "network",
+    "offlinequeue",
+    "onboarding",
+    "paging",
+    "perfhud",
+    "performance",
+    "pickers",
+    "playstore",
+    "profile",
+    "push",
+    "remoteconfig",
+    "sample",
+    "search",
+    "settings",
+    "websocket"
+  ],
+  "feature_modules": [],
+  "notes": [],
+  "warnings": [],
+  "ignored_fields": [],
+  "summary": []
+}
+EXIT=0
+# end: Sun Oct 25 14:04:16 IST 2026

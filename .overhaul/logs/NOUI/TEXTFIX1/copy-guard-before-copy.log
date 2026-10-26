@@ -1,0 +1,49 @@
+F
+======================================================================
+FAIL: test_every_feature_whose_ui_the_option_takes_reads_in_the_option_s_words (tests.test_android_noui.ProjectShapeTest.test_every_feature_whose_ui_the_option_takes_reads_in_the_option_s_words)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FIX\generator\tests\test_android_noui.py", line 234, in test_every_feature_whose_ui_the_option_takes_reads_in_the_option_s_words
+    self.assertEqual([], [f"{feature}: {why}" for feature, why in sorted(taken.items()) if feature not in OPTION.feature_copy])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['applock: everything-compact: core/apploc[1136 chars]wns']
+
+Second list contains 10 additional elements.
+First extra element 0:
+'applock: everything-compact: core/applock/src/main/kotlin/com/acme/noui/core/applock/AppLockGate.kt draws a placeholder'
+
+- []
++ ['applock: everything-compact: '
++  'core/applock/src/main/kotlin/com/acme/noui/core/applock/AppLockGate.kt draws '
++  'a placeholder',
++  'appstatus: everything-compact: '
++  'core/ui/src/main/kotlin/com/acme/noui/core/ui/appstatus/AppStatusGate.kt '
++  'draws a placeholder',
++  'auth: feature/auth/src/main/kotlin/com/base/app/feature/auth/AuthFrame.kt, '
++  'which the option owns',
++  'browser: '
++  'feature/settings/src/main/kotlin/com/base/app/feature/settings/Settings.kt '
++  '<opt:browser&ui_components>',
++  'language: '
++  'feature/settings/src/main/kotlin/com/base/app/feature/settings/Settings.kt '
++  '<opt:language&ui_components>',
++  'media: '
++  'feature/profile/src/main/kotlin/com/base/app/feature/profile/ProfileScreen.kt '
++  '<opt:media&ui_components>',
++  'onboarding: standard-compact: '
++  'feature/onboarding/src/main/kotlin/com/acme/noui/feature/onboarding/Onboarding.kt '
++  'draws a placeholder',
++  'push: '
++  'feature/onboarding/src/main/kotlin/com/base/app/feature/onboarding/Onboarding.kt '
++  '<opt:push&ui_components>',
++  'sample: '
++  'feature/sample/src/main/kotlin/com/base/app/feature/sample/list/SampleListScreen.kt, '
++  'which the option owns',
++  'settings: '
++  'feature/settings/src/main/kotlin/com/base/app/feature/settings/NotificationsRow.kt, '
++  'which the option owns']
+
+----------------------------------------------------------------------
+Ran 1 test in 11.369s
+
+FAILED (failures=1)

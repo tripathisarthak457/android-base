@@ -1,0 +1,37 @@
+Sun Oct 25 22:03:28 IST 2026
+FF...
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='ui-standard-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 101, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['feature/auth/src/main/kotlin/com/acme/gu[836 chars]w 1']
+
+Second list contains 9 additional elements.
+First extra element 0:
+'feature/auth/src/main/kotlin/com/acme/guards/feature/auth/AuthFrame.kt adaptive-box-constraints 1'
+
+Diff is 969 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_every_code_rule_baseline_entry_is_for_a_file_the_project_has (tests.test_android_guards.GuardConfigurationTest.test_every_code_rule_baseline_entry_is_for_a_file_the_project_has) (project='ui-everything-modular')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL-GUARD\generator\tests\test_android_guards.py", line 101, in test_every_code_rule_baseline_entry_is_for_a_file_the_project_has
+    self.assertEqual([], missing_code_rule_paths(project))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['feature/auth/src/main/kotlin/com/acme/gu[1326 chars]w 1']
+
+Second list contains 14 additional elements.
+First extra element 0:
+'feature/auth/src/main/kotlin/com/acme/guards/feature/auth/AuthFrame.kt adaptive-box-constraints 1'
+
+Diff is 1504 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 4 tests in 44.123s
+
+FAILED (failures=2)
+exit 1

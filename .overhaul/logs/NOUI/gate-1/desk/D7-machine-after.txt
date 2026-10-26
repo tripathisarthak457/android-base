@@ -1,0 +1,6 @@
+adb      free
+apksign  free
+gradle   free
+memory   3040 MB available (+0 MB system cache), 10184 MB commit left
+cpu      zone 97.1 C (wait off), utility 4 %
+java     3 java.exe process(es)

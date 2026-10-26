@@ -1,0 +1,43 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/red3-ui
+# command: locked gradle ./gradlew -p build-logic :convention:test --tests *ModuleGraphTest*
+# start: Sun Oct 25 23:12:14 IST 2026
+[locked:gradle] waiting for the lock (pid 19560 since 2026-10-25 23:11:03: ./gradlew :core:navigation:testDebugUnitTest :app:testDevDebugUnitTest --continue)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Starting a Gradle Daemon, 3 busy and 3 stopped Daemons could not be reused, use --status for details
+> Task :convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :convention:compileKotlin FROM-CACHE
+> Task :convention:compileJava NO-SOURCE
+> Task :convention:pluginDescriptors
+> Task :convention:processResources
+> Task :convention:classes
+> Task :convention:jar
+> Task :convention:pluginUnderTestMetadata
+> Task :convention:processTestResources NO-SOURCE
+> Task :convention:compileTestKotlin
+> Task :convention:compileTestJava NO-SOURCE
+> Task :convention:testClasses UP-TO-DATE
+
+> Task :convention:test
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+ModuleGraphTest > the design system's libraries are Compose, the window, its UI peers and the screenshot test stack FAILED
+    java.lang.AssertionError at ModuleGraphTest.kt:126
+
+14 tests completed, 1 failed
+
+> Task :convention:test FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':convention:test'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/red3-ui/build-logic/convention/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 44s
+7 actionable tasks: 6 executed, 1 from cache
+# exit: 1
+# end: Sun Oct 25 23:16:59 IST 2026
+# seconds: 284

@@ -1,0 +1,6 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/TEST/l7probe
+# command: locked gradle ./gradlew testDebugUnitTest testDevDebugUnitTest --continue
+# start: Sun Oct 25 14:04:17 IST 2026
+[locked:gradle] waiting for the lock (pid 13284 since 2026-10-25 13:55:44: ./gradlew :core:navigation:testDebugUnitTest :app:testDevDebugUnitTest --continue)
+[locked:gradle] waiting for the lock (pid 4128 since 2026-10-25 14:07:40: ./gradlew -p build-logic :convention:test --continue)
+[locked:gradle] waiting for the lock (pid 4128 since 2026-10-25 14:07:40: ./gradlew -p build-logic :convention:test --continue)

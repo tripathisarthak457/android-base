@@ -1,0 +1,16 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI-NEXT-TEST/generator
+# after: forms owns core/ui/src/test/.../core/ui/form; sync.toml allows the MviViewModel difference (uncommitted at the time of this run)
+# command: memwait <python> -I -m unittest discover -s tests -t . -p test_sync.py; then -p test_manifest.py
+# start: Sun Oct 25 18:12:21 IST 2026
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.181s
+
+OK
+EXIT(test_sync.py)=0
+............................................................
+----------------------------------------------------------------------
+Ran 60 tests in 4.980s
+
+OK
+EXIT(test_manifest.py)=0

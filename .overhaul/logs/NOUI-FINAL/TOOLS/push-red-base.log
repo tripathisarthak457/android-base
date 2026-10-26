@@ -1,0 +1,153 @@
+# tree: D:/projects/tools/.overhaul/out/NOUI-FINAL/TOOLS/base-src (base-src copy of 1f2fd6c85)
+# command: memwait python -m unittest tests.test_android_truth.PushPermissionTest -v
+# start: Sun Oct 25 18:13:58 IST 2026
+[locked:memwait] 842 MB available, 7501 MB commit left; waiting for 1500 MB
+test_every_mix_of_asking_screens_is_held (tests.test_android_truth.PushPermissionTest.test_every_mix_of_asking_screens_is_held) ... ok
+test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) ... 
+  test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-alone', place='docs/ARCHITECTURE.md') ... FAIL
+  test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-alone', place="rememberNotificationPermission's KDoc") ... FAIL
+  test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-alone', place="the manifest's comment") ... FAIL
+  test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-onboarding', place='docs/ARCHITECTURE.md') ... FAIL
+  test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-onboarding', place="rememberNotificationPermission's KDoc") ... FAIL
+  test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-onboarding', place="the manifest's comment") ... FAIL
+  test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-settings', place='docs/ARCHITECTURE.md') ... FAIL
+  test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-settings', place="rememberNotificationPermission's KDoc") ... FAIL
+  test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-settings', place="the manifest's comment") ... FAIL
+  test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-no-ui', place="the manifest's comment") ... FAIL
+test_what_the_docs_say_asks_or_opens_is_what_the_code_does (tests.test_android_truth.PushPermissionTest.test_what_the_docs_say_asks_or_opens_is_what_the_code_does) ... 
+  test_what_the_docs_say_asks_or_opens_is_what_the_code_does (tests.test_android_truth.PushPermissionTest.test_what_the_docs_say_asks_or_opens_is_what_the_code_does) (case='push-alone', page='docs/ARCHITECTURE.md', claim='asked at the end of onboarding') ... FAIL
+  test_what_the_docs_say_asks_or_opens_is_what_the_code_does (tests.test_android_truth.PushPermissionTest.test_what_the_docs_say_asks_or_opens_is_what_the_code_does) (case='push-alone', page='docs/ARCHITECTURE.md', claim='offered again in settings') ... FAIL
+  test_what_the_docs_say_asks_or_opens_is_what_the_code_does (tests.test_android_truth.PushPermissionTest.test_what_the_docs_say_asks_or_opens_is_what_the_code_does) (case='push-onboarding', page='docs/ARCHITECTURE.md', claim='offered again in settings') ... FAIL
+  test_what_the_docs_say_asks_or_opens_is_what_the_code_does (tests.test_android_truth.PushPermissionTest.test_what_the_docs_say_asks_or_opens_is_what_the_code_does) (case='push-settings', page='docs/ARCHITECTURE.md', claim='asked at the end of onboarding') ... FAIL
+
+======================================================================
+FAIL: test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-alone', place='docs/ARCHITECTURE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\base-src\generator\tests\test_android_truth.py", line 158, in test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask
+    self.assertIn(PUSH_WORDS[asking][index], text)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Nothing asks for the permission to post notifications yet' not found in '**Notifications.** Channels are the `NotificationChannelSpec` enum, created at start-up off the main thread, so people can mute a category before its first message. The permission is asked at the end of onboarding and offered again in settings. The push token is handed to `PushTokenSink` only when it changes, and sign-out unregisters it. '
+
+======================================================================
+FAIL: test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-alone', place="rememberNotificationPermission's KDoc")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\base-src\generator\tests\test_android_truth.py", line 158, in test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask
+    self.assertIn(PUSH_WORDS[asking][index], text)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Nothing in this project calls this yet' not found in 'The permission to post notifications, asked for in context: onboarding asks once at its end, and settings offers it again. Before Android 13 there is nothing to ask and [NotificationPermission.access] is always granted. [onResult] hears the answer to a request made from here.'
+
+======================================================================
+FAIL: test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-alone', place="the manifest's comment")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\base-src\generator\tests\test_android_truth.py", line 158, in test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask
+    self.assertIn(PUSH_WORDS[asking][index], text)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Nothing asks for it yet' not found in 'Asked for in context on Android 13 and later: at the end of onboarding, and in settings.'
+
+======================================================================
+FAIL: test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-onboarding', place='docs/ARCHITECTURE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\base-src\generator\tests\test_android_truth.py", line 158, in test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask
+    self.assertIn(PUSH_WORDS[asking][index], text)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'The permission is asked at the end of onboarding.' not found in '**Notifications.** Channels are the `NotificationChannelSpec` enum, created at start-up off the main thread, so people can mute a category before its first message. The permission is asked at the end of onboarding and offered again in settings. The push token is handed to `PushTokenSink` only when it changes, and sign-out unregisters it. '
+
+======================================================================
+FAIL: test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-onboarding', place="rememberNotificationPermission's KDoc")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\base-src\generator\tests\test_android_truth.py", line 158, in test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask
+    self.assertIn(PUSH_WORDS[asking][index], text)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'asked for in context: onboarding asks once at its end.' not found in 'The permission to post notifications, asked for in context: onboarding asks once at its end, and settings offers it again. Before Android 13 there is nothing to ask and [NotificationPermission.access] is always granted. [onResult] hears the answer to a request made from here.'
+
+======================================================================
+FAIL: test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-onboarding', place="the manifest's comment")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\base-src\generator\tests\test_android_truth.py", line 158, in test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask
+    self.assertIn(PUSH_WORDS[asking][index], text)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Asked for in context on Android 13 and later: at the end of onboarding.' not found in 'Asked for in context on Android 13 and later: at the end of onboarding, and in settings.'
+
+======================================================================
+FAIL: test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-settings', place='docs/ARCHITECTURE.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\base-src\generator\tests\test_android_truth.py", line 158, in test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask
+    self.assertIn(PUSH_WORDS[asking][index], text)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'The permission is asked from the notifications row in settings.' not found in '**Notifications.** Channels are the `NotificationChannelSpec` enum, created at start-up off the main thread, so people can mute a category before its first message. The permission is asked at the end of onboarding and offered again in settings. The push token is handed to `PushTokenSink` only when it changes, and sign-out unregisters it. '
+
+======================================================================
+FAIL: test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-settings', place="rememberNotificationPermission's KDoc")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\base-src\generator\tests\test_android_truth.py", line 158, in test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask
+    self.assertIn(PUSH_WORDS[asking][index], text)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'asked for in context: the notifications row in settings asks.' not found in 'The permission to post notifications, asked for in context: onboarding asks once at its end, and settings offers it again. Before Android 13 there is nothing to ask and [NotificationPermission.access] is always granted. [onResult] hears the answer to a request made from here.'
+
+======================================================================
+FAIL: test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-settings', place="the manifest's comment")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\base-src\generator\tests\test_android_truth.py", line 158, in test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask
+    self.assertIn(PUSH_WORDS[asking][index], text)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Asked for in context on Android 13 and later: from the notifications row in settings.' not found in 'Asked for in context on Android 13 and later: at the end of onboarding, and in settings.'
+
+======================================================================
+FAIL: test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask (tests.test_android_truth.PushPermissionTest.test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask) (case='push-no-ui', place="the manifest's comment")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\base-src\generator\tests\test_android_truth.py", line 158, in test_the_doc_the_kdoc_and_the_manifest_name_only_the_screens_that_ask
+    self.assertIn(PUSH_WORDS[asking][index], text)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Nothing asks for it yet' not found in 'Asked for in context on Android 13 and later: at the end of onboarding, and in settings.'
+
+======================================================================
+FAIL: test_what_the_docs_say_asks_or_opens_is_what_the_code_does (tests.test_android_truth.PushPermissionTest.test_what_the_docs_say_asks_or_opens_is_what_the_code_does) (case='push-alone', page='docs/ARCHITECTURE.md', claim='asked at the end of onboarding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\base-src\generator\tests\test_docs.py", line 384, in test_what_the_docs_say_asks_or_opens_is_what_the_code_does
+    self.assertTrue(holds(), f"{page} says '{claim}', which the code does not do")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : docs/ARCHITECTURE.md says 'asked at the end of onboarding', which the code does not do
+
+======================================================================
+FAIL: test_what_the_docs_say_asks_or_opens_is_what_the_code_does (tests.test_android_truth.PushPermissionTest.test_what_the_docs_say_asks_or_opens_is_what_the_code_does) (case='push-alone', page='docs/ARCHITECTURE.md', claim='offered again in settings')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\base-src\generator\tests\test_docs.py", line 384, in test_what_the_docs_say_asks_or_opens_is_what_the_code_does
+    self.assertTrue(holds(), f"{page} says '{claim}', which the code does not do")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : docs/ARCHITECTURE.md says 'offered again in settings', which the code does not do
+
+======================================================================
+FAIL: test_what_the_docs_say_asks_or_opens_is_what_the_code_does (tests.test_android_truth.PushPermissionTest.test_what_the_docs_say_asks_or_opens_is_what_the_code_does) (case='push-onboarding', page='docs/ARCHITECTURE.md', claim='offered again in settings')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\base-src\generator\tests\test_docs.py", line 384, in test_what_the_docs_say_asks_or_opens_is_what_the_code_does
+    self.assertTrue(holds(), f"{page} says '{claim}', which the code does not do")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : docs/ARCHITECTURE.md says 'offered again in settings', which the code does not do
+
+======================================================================
+FAIL: test_what_the_docs_say_asks_or_opens_is_what_the_code_does (tests.test_android_truth.PushPermissionTest.test_what_the_docs_say_asks_or_opens_is_what_the_code_does) (case='push-settings', page='docs/ARCHITECTURE.md', claim='asked at the end of onboarding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\base-src\generator\tests\test_docs.py", line 384, in test_what_the_docs_say_asks_or_opens_is_what_the_code_does
+    self.assertTrue(holds(), f"{page} says '{claim}', which the code does not do")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : docs/ARCHITECTURE.md says 'asked at the end of onboarding', which the code does not do
+
+----------------------------------------------------------------------
+Ran 3 tests in 22.512s
+
+FAILED (failures=14)
+# exit: 1 end: Sun Oct 25 18:15:11 IST 2026

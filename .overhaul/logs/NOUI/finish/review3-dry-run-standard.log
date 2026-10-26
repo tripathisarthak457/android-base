@@ -1,0 +1,33 @@
+
+Summary
+───────
+           App  Review Three (ReviewThree)
+       Package  com.example.reviewthree
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  auth, browser, ci, coil, database, deeplink, devtools,
+                flags, forms, googlefonts, language, leakcanary, network,
+                onboarding, perfhud, sample, settings
+       Options  ui_components off
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+Dry run
+───────
+  Project:  ReviewThree
+  Enabled:  17 of 44 features
+  Options:  ui_components off
+  Omitted:  107 paths a disabled feature or option owns
+  ! 'catalog' was left out: The catalog app shows the design system's components, and this project has none.
+
+  Nothing was written. Drop --dry-run to generate.
+

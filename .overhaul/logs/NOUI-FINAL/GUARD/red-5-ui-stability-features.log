@@ -1,0 +1,40 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/red3-ui
+# command: locked gradle ./gradlew -p build-logic :convention:test --tests *ComposeStabilityTest*
+# start: Sun Oct 25 23:17:32 IST 2026
+[locked:gradle] waiting for the lock (pid 13088 since 2026-10-25 23:16:59: ./gradlew :feature:orders:testDebugUnitTest :feature:orders:verifyCodeRules :feature:orders:verifyModuleDependencies :ap)
+[locked:gradle] waiting for the lock (pid 13972 since 2026-10-25 23:20:59: ./gradlew :core:designsystem:testDebugUnitTest :catalog:testDebugUnitTest :feature:auth:testDebugUnitTest :feature:sampl)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+> Task :convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :convention:compileKotlin UP-TO-DATE
+> Task :convention:compileJava NO-SOURCE
+> Task :convention:pluginDescriptors UP-TO-DATE
+> Task :convention:processResources UP-TO-DATE
+> Task :convention:classes UP-TO-DATE
+> Task :convention:jar UP-TO-DATE
+> Task :convention:pluginUnderTestMetadata UP-TO-DATE
+> Task :convention:processTestResources NO-SOURCE
+
+> Task :convention:compileTestKotlin FAILED
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/red3-ui/build-logic/convention/src/test/kotlin/com/example/finalguard/uieverything/buildlogic/android/ComposeStabilityTest.kt:126:48 Unresolved reference 'isStabilityChecked'.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/red3-ui/build-logic/convention/src/test/kotlin/com/example/finalguard/uieverything/buildlogic/android/ComposeStabilityTest.kt:127:62 Unresolved reference 'isStabilityChecked'.
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/red3-ui/build-logic/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':convention:compileTestKotlin' (registered by plugin class 'org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 6s
+6 actionable tasks: 1 executed, 5 up-to-date
+# exit: 1
+# end: Sun Oct 25 23:27:01 IST 2026
+# seconds: 569

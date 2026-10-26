@@ -1,0 +1,48 @@
+Traceback (most recent call last):
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\shutil.py", line 693, in _rmtree_unsafe
+    os.rmdir(fullname)
+    ~~~~~~~~^^^^^^^^^^
+OSError: [WinError 145] The directory is not empty: 'D:\\projects\\tools\\.overhaul\\out\\NOUI-FINAL\\INTEG\\noui-everything\\app\\build\\intermediates\\built_in_kotlinc\\devBenchmarkRelease\\compileDevBenchmarkReleaseKotlin\\classes\\com\\example\\finalinteg\\noui\\ui\\start'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\CRAZYH~1\AppData\Local\Temp\claude\D--projects-tools\8d80ef9d-4533-47d0-b348-d4c6caaeb696\scratchpad\clean_build.py", line 29, in <module>
+    shutil.rmtree(target, onerror=on_error)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\shutil.py", line 859, in rmtree
+    _rmtree_impl(path, dir_fd, onexc)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\shutil.py", line 697, in _rmtree_unsafe
+    onexc(os.rmdir, fullname, err)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\shutil.py", line 852, in onexc
+    return onerror(func, path, exc_info)
+  File "C:\Users\CRAZYH~1\AppData\Local\Temp\claude\D--projects-tools\8d80ef9d-4533-47d0-b348-d4c6caaeb696\scratchpad\clean_build.py", line 19, in on_error
+    function(path)
+    ~~~~~~~~^^^^^^
+OSError: [WinError 145] The directory is not empty: 'D:\\projects\\tools\\.overhaul\\out\\NOUI-FINAL\\INTEG\\noui-everything\\app\\build\\intermediates\\built_in_kotlinc\\devBenchmarkRelease\\compileDevBenchmarkReleaseKotlin\\classes\\com\\example\\finalinteg\\noui\\ui\\start'
+Traceback (most recent call last):
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\shutil.py", line 693, in _rmtree_unsafe
+    os.rmdir(fullname)
+    ~~~~~~~~^^^^^^^^^^
+OSError: [WinError 145] The directory is not empty: 'D:\\projects\\tools\\.overhaul\\out\\NOUI-FINAL\\INTEG\\ui-everything\\app\\build\\intermediates\\built_in_kotlinc\\devBenchmarkRelease\\compileDevBenchmarkReleaseKotlin\\classes\\com\\example\\finalinteg\\ui\\di'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\CRAZYH~1\AppData\Local\Temp\claude\D--projects-tools\8d80ef9d-4533-47d0-b348-d4c6caaeb696\scratchpad\clean_build.py", line 29, in <module>
+    shutil.rmtree(target, onerror=on_error)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\shutil.py", line 859, in rmtree
+    _rmtree_impl(path, dir_fd, onexc)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\shutil.py", line 697, in _rmtree_unsafe
+    onexc(os.rmdir, fullname, err)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\shutil.py", line 852, in onexc
+    return onerror(func, path, exc_info)
+  File "C:\Users\CRAZYH~1\AppData\Local\Temp\claude\D--projects-tools\8d80ef9d-4533-47d0-b348-d4c6caaeb696\scratchpad\clean_build.py", line 19, in on_error
+    function(path)
+    ~~~~~~~~^^^^^^
+OSError: [WinError 145] The directory is not empty: 'D:\\projects\\tools\\.overhaul\\out\\NOUI-FINAL\\INTEG\\ui-everything\\app\\build\\intermediates\\built_in_kotlinc\\devBenchmarkRelease\\compileDevBenchmarkReleaseKotlin\\classes\\com\\example\\finalinteg\\ui\\di'

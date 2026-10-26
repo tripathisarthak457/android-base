@@ -1,0 +1,84 @@
+✖ with the box ticked, no preset or feature promises what a project without UI components lacks (4.2676ms)
+✖ a setup-only site, whatever the visitor asked for, promises none of it either (1.4312ms)
+✔ with the box unticked every preset and feature reads as the catalogue writes it (2.3136ms)
+✔ with the box ticked a feature module reads as such a project gets it; unticked the site keeps its own words (1.9248ms)
+✔ the option describes only features it keeps, and presets the target has (0.9196ms)
+✖ with the box ticked the haptics toggle says what the value sets; unticked the site keeps its own words (0.8829ms)
+✖ on a setup-only site the Project step's summary names no tab and no home module, whatever was picked (2.9099ms)
+✔ with UI components the summary still lists the tabs, and the home module scaffolded when nothing gives one (1.1569ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 4
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 154.8598
+
+✖ failing tests:
+
+test at features\catalogue\copy.test.ts:60:1
+✖ with the box ticked, no preset or feature promises what a project without UI components lacks (4.2676ms)
+  AssertionError [ERR_ASSERTION]: haptics
+      at assertPromisesNothingMissing (file:///D:/projects/tools/.overhaul/wt/NOUI-FIX/web/frontend/features/catalogue/copy.test.ts:55:14)
+      at TestContext.<anonymous> (file:///D:/projects/tools/.overhaul/wt/NOUI-FIX/web/frontend/features/catalogue/copy.test.ts:61:3)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: "A light tick when a selection changes, a switch flips or a pull reaches its threshold, as iOS does; never on an ordinary tap. The phone's own setting still applies on top.",
+    expected: /selection changes|switch flips|pull reaches/i,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at features\catalogue\copy.test.ts:64:1
+✖ a setup-only site, whatever the visitor asked for, promises none of it either (1.4312ms)
+  AssertionError [ERR_ASSERTION]: haptics
+      at assertPromisesNothingMissing (file:///D:/projects/tools/.overhaul/wt/NOUI-FIX/web/frontend/features/catalogue/copy.test.ts:55:14)
+      at TestContext.<anonymous> (file:///D:/projects/tools/.overhaul/wt/NOUI-FIX/web/frontend/features/catalogue/copy.test.ts:66:3)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: "A light tick when a selection changes, a switch flips or a pull reaches its threshold, as iOS does; never on an ordinary tap. The phone's own setting still applies on top.",
+    expected: /selection changes|switch flips|pull reaches/i,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at features\catalogue\copy.test.ts:108:1
+✖ with the box ticked the haptics toggle says what the value sets; unticked the site keeps its own words (0.8829ms)
+  TypeError: Cannot read properties of undefined (reading 'find')
+      at TestContext.<anonymous> (file:///D:/projects/tools/.overhaul/wt/NOUI-FIX/web/frontend/features/catalogue/copy.test.ts:112:33)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+
+test at features\catalogue\copy.test.ts:127:1
+✖ on a setup-only site the Project step's summary names no tab and no home module, whatever was picked (2.9099ms)
+  AssertionError [ERR_ASSERTION]: the default answers
+      at TestContext.<anonymous> (file:///D:/projects/tools/.overhaul/wt/NOUI-FIX/web/frontend/features/catalogue/copy.test.ts:139:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'Tabs: Home · Settings',
+    expected: /blank start screen/,
+    operator: 'match',
+    diff: 'simple'
+  }
+exit 1

@@ -1,0 +1,69 @@
+# cwd: D:/projects/tools/.overhaul/wt/NOUI-NEXT-TEST/generator
+# head: 207a12d2f, uncommitted: 0
+# command: memwait <python> create_project.py --spec D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/specs/ui-modular.json --preset everything --no-zip --force --out D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/ui-modular-3 --json
+# start: Sun Oct 25 20:06:38 IST 2026
+[locked:memwait] 3345 MB available, 12610 MB commit left; waiting for 3500 MB
+[locked:memwait] 3347 MB available, 12624 MB commit left; waiting for 3500 MB
+[locked:memwait] 3221 MB available, 12589 MB commit left; waiting for 3500 MB
+[locked:memwait] 3251 MB available, 12601 MB commit left; waiting for 3500 MB
+[locked:memwait] 3225 MB available, 12545 MB commit left; waiting for 3500 MB
+[locked:memwait] 3230 MB available plus 3566 MB of system cache Windows will trim; continuing
+{
+  "ok": true,
+  "target": "android",
+  "project_name": "FinalTest",
+  "path": "D:\\projects\\tools\\.overhaul\\out\\NOUI-FINAL\\TEST\\ui-modular-3",
+  "resolved_features": [
+    "analytics",
+    "applock",
+    "appstatus",
+    "auth",
+    "browser",
+    "catalog",
+    "ci",
+    "coil",
+    "collections",
+    "coverage",
+    "crashlytics",
+    "database",
+    "datadisplay",
+    "deeplink",
+    "depsanalysis",
+    "devtools",
+    "firebase",
+    "firebaseanalytics",
+    "flags",
+    "formatting",
+    "formfields",
+    "forms",
+    "googlefonts",
+    "googlesignin",
+    "language",
+    "leakcanary",
+    "licenses",
+    "liquidglass",
+    "media",
+    "network",
+    "offlinequeue",
+    "onboarding",
+    "paging",
+    "perfhud",
+    "performance",
+    "pickers",
+    "playstore",
+    "profile",
+    "push",
+    "remoteconfig",
+    "sample",
+    "search",
+    "settings",
+    "websocket"
+  ],
+  "feature_modules": [],
+  "notes": [],
+  "warnings": [],
+  "ignored_fields": [],
+  "summary": []
+}
+EXIT=0
+# end: Sun Oct 25 20:11:45 IST 2026

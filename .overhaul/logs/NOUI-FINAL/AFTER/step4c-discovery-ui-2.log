@@ -1,0 +1,130 @@
+03:08:29
+D free GB: 78.5
+./gradlew --offline --continue spotlessKotlinCheck
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: spotlessKotlinCheck
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :spotlessKotlin
+> Task :spotlessKotlinCheck FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':spotlessKotlinCheck' (registered in build file 'build.gradle.kts').
+> There were 88 lint error(s), they must be fixed or suppressed.
+  app/src/main/kotlin/com/example/finalafter/crui2/ui/AppRoot.kt:L51 ktlint(compose:modifier-missing-check) This @Composable function emits content but doesn't have a modifier parameter. (...)
+  catalog/src/main/kotlin/com/example/finalafter/crui2/catalog/CatalogApp.kt:L68 ktlint(compose:modifier-missing-check) This @Composable function emits content but doesn't have a modifier parameter. (...)
+  catalog/src/main/kotlin/com/example/finalafter/crui2/catalog/CatalogEnvironment.kt:L71 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  catalog/src/main/kotlin/com/example/finalafter/crui2/catalog/sections/CatalogBars.kt:L42 ktlint(compose:modifier-missing-check) This @Composable function emits content but doesn't have a modifier parameter. (...)
+  catalog/src/main/kotlin/com/example/finalafter/crui2/catalog/sections/CatalogButtons.kt:L22 ktlint(compose:modifier-missing-check) This @Composable function emits content but doesn't have a modifier parameter. (...)
+  catalog/src/main/kotlin/com/example/finalafter/crui2/catalog/sections/CatalogCollections.kt:L31 ktlint(compose:modifier-missing-check) This @Composable function emits content but doesn't have a modifier parameter. (...)
+  catalog/src/main/kotlin/com/example/finalafter/crui2/catalog/sections/CatalogContainers.kt:L33 ktlint(compose:modifier-missing-check) This @Composable function emits content but doesn't have a modifier parameter. (...)
+  catalog/src/main/kotlin/com/example/finalafter/crui2/catalog/sections/CatalogData.kt:L30 ktlint(compose:modifier-missing-check) This @Composable function emits content but doesn't have a modifier parameter. (...)
+  catalog/src/main/kotlin/com/example/finalafter/crui2/catalog/sections/CatalogFeedback.kt:L48 ktlint(compose:modifier-missing-check) This @Composable function emits content but doesn't have a modifier parameter. (...)
+  catalog/src/main/kotlin/com/example/finalafter/crui2/catalog/sections/CatalogFeel.kt:L53 ktlint(compose:modifier-missing-check) This @Composable function emits content but doesn't have a modifier parameter. (...)
+  catalog/src/main/kotlin/com/example/finalafter/crui2/catalog/sections/CatalogFields.kt:L30 ktlint(compose:mutable-state-autoboxing) Using mutableIntStateOf is recommended over mutableStateOf<Int>, as it uses the Int primitive directly which is more performant. (...)
+  catalog/src/main/kotlin/com/example/finalafter/crui2/catalog/sections/CatalogFoundations.kt:L47 ktlint(compose:modifier-missing-check) This @Composable function emits content but doesn't have a modifier parameter. (...)
+  catalog/src/main/kotlin/com/example/finalafter/crui2/catalog/sections/CatalogLists.kt:L44 ktlint(compose:modifier-missing-check) This @Composable function emits content but doesn't have a modifier parameter. (...)
+  catalog/src/main/kotlin/com/example/finalafter/crui2/catalog/sections/CatalogLoading.kt:L46 ktlint(compose:modifier-missing-check) This @Composable function emits content but doesn't have a modifier parameter. (...)
+  catalog/src/main/kotlin/com/example/finalafter/crui2/catalog/sections/CatalogMotion.kt:L57 ktlint(compose:modifier-missing-check) This @Composable function emits content but doesn't have a modifier parameter. (...)
+  catalog/src/main/kotlin/com/example/finalafter/crui2/catalog/sections/CatalogNavigation.kt:L59 ktlint(compose:modifier-missing-check) This @Composable function emits content but doesn't have a modifier parameter. (...)
+  catalog/src/main/kotlin/com/example/finalafter/crui2/catalog/sections/CatalogOverlays.kt:L30 ktlint(compose:modifier-missing-check) This @Composable function emits content but doesn't have a modifier parameter. (...)
+  catalog/src/main/kotlin/com/example/finalafter/crui2/catalog/sections/CatalogText.kt:L35 ktlint(compose:modifier-missing-check) This @Composable function emits content but doesn't have a modifier parameter. (...)
+  catalog/src/main/kotlin/com/example/finalafter/crui2/catalog/sections/sheets/CatalogSheets.kt:L71 ktlint(compose:multiple-emitters-check) Composable functions should only be emitting content into the composition from one source at their top level. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/container/AppScaffold.kt:L119 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/feedback/AppSkeleton.kt:L79 ktlint(compose:param-order-check) Parameters in a composable function should be ordered following this pattern: params without defaults, modifiers, params with defaults and optionally, a trailing function that might not have a default param. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/formfields/AppOtpField.kt:L68 ktlint(compose:parameter-naming) Lambda parameters in a composable function should be in present tense, not past tense. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/list/AppRow.kt:L211 ktlint(compose:modifier-naming) Modifier parameters should be called `modifier` or end in `Modifier` if there are more than one in the same @Composable. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/navigation/AppSidebar.kt:L185 ktlint(compose:lambda-param-event-trailing) Lambda parameters in a @Composable that are for events (e.g. onClick, onChange, etc) and are required (they don't have a default value) should not be used as the trailing parameter. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/overlay/AppAlert.kt:L92 ktlint(compose:modifier-not-used-at-root) The main Modifier of a @Composable should be applied once as a first modifier in the chain to the root-most layout in the component implementation. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/overlay/AppMenu.kt:L167 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/overlay/AppOverlayHost.kt:L120 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/overlay/AppToast.kt:L184 ktlint(compose:lambda-param-in-effect) Lambda parameters in a @Composable that are referenced directly inside of restarting effects can cause issues or unpredictable behavior. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/pickers/AppDatePicker.kt:L63 ktlint(compose:parameter-naming) Lambda parameters in a composable function should be in present tense, not past tense. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/sheet/AppSheet.kt:L80 ktlint(compose:parameter-naming) Lambda parameters in a composable function should be in present tense, not past tense. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/sheet/AppSheetScope.kt:L42 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/sheet/action/ActionCard.kt:L94 ktlint(compose:modifier-not-used-at-root) The main Modifier of a @Composable should be applied once as a first modifier in the chain to the root-most layout in the component implementation. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/sheet/chrome/AppSheetGrabber.kt:L68 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/sheet/content/SheetHosts.kt:L113 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/sheet/content/SheetSlots.kt:L138 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/sheet/layout/SheetImeSource.kt:L36 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/sheet/layout/SheetLayout.kt:L98 ktlint(compose:modifier-not-used-at-root) The main Modifier of a @Composable should be applied once as a first modifier in the chain to the root-most layout in the component implementation. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/sheet/layout/SheetSession.kt:L77 ktlint(compose:parameter-naming) Lambda parameters in a composable function should be in present tense, not past tense. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/sheet/stack/SheetStack.kt:L215 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/component/sheet/surface/SheetBackdrop.kt:L64 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/foundation/adaptive/AdaptiveLayout.kt:L60 ktlint(compose:content-slot-reused) Content slots should not be reused in different code branches/scopes of a composable function, to preserve the slot internal state. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/foundation/adaptive/WindowClass.kt:L15 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/foundation/content/ContentColor.kt:L10 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/foundation/draw/ShimmerClock.kt:L98 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/foundation/draw/Skeleton.kt:L63 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/foundation/glass/GlassQuality.kt:L54 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/foundation/glass/GlassStage.kt:L69 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/foundation/interaction/AppHaptics.kt:L70 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/foundation/interaction/ContainerActions.kt:L52 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/foundation/layout/BarFrame.kt:L25 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/foundation/layout/Chrome.kt:L38 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/foundation/layout/EntryVisibility.kt:L54 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/foundation/layout/HostMotion.kt:L19 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/foundation/layout/PaneBounds.kt:L29 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/foundation/layout/PresentationLevel.kt:L12 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/preview/AppComponentPreviews.kt:L35 ktlint(compose:preview-annotation-naming) MultiPreview annotations should start with `Preview` as prefix. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/preview/AppScreenPreviews.kt:L34 ktlint(compose:preview-annotation-naming) MultiPreview annotations should start with `Preview` as prefix. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/theme/AppColors.kt:L139 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/theme/AppDesignStyle.kt:L197 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/theme/AppMetrics.kt:L79 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/theme/AppMotion.kt:L294 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/theme/AppTypography.kt:L96 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/main/kotlin/com/example/finalafter/crui2/core/designsystem/theme/ReduceMotion.kt:L45 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/designsystem/src/test/kotlin/com/example/finalafter/crui2/core/designsystem/component/pickers/WheelPickerTest.kt:L38 ktlint(compose:mutable-state-autoboxing) Using mutableIntStateOf is recommended over mutableStateOf<Int>, as it uses the Int primitive directly which is more performant. (...)
+  core/designsystem/src/test/kotlin/com/example/finalafter/crui2/core/designsystem/component/sheet/SheetScreenshotTest.kt:L322 ktlint(compose:content-slot-reused) Content slots should not be reused in different code branches/scopes of a composable function, to preserve the slot internal state. (...)
+  core/designsystem/src/test/kotlin/com/example/finalafter/crui2/core/designsystem/component/sheet/SheetTestScreen.kt:L48 ktlint(compose:modifier-missing-check) This @Composable function emits content but doesn't have a modifier parameter. (...)
+  core/devtools/src/main/kotlin/com/example/finalafter/crui2/core/devtools/panel/DevToolsPanel.kt:L102 ktlint(compose:multiple-emitters-check) Composable functions should only be emitting content into the composition from one source at their top level. (...)
+  core/navigation/shell/src/main/kotlin/com/example/finalafter/crui2/core/navigation/shell/presentation/PresentationHost.kt:L176 ktlint(compose:lambda-param-in-effect) Lambda parameters in a @Composable that are referenced directly inside of restarting effects can cause issues or unpredictable behavior. (...)
+  core/navigation/shell/src/main/kotlin/com/example/finalafter/crui2/core/navigation/shell/stack/EntryFrame.kt:L27 ktlint(compose:content-slot-reused) Content slots should not be reused in different code branches/scopes of a composable function, to preserve the slot internal state. (...)
+  core/navigation/shell/src/main/kotlin/com/example/finalafter/crui2/core/navigation/shell/tabs/KeptTabs.kt:L122 ktlint(compose:state-param-check) State shouldn't be used as a parameter in a @Composable function, as it encourages components that are not fully stateless. (...)
+  core/navigation/shell/src/main/kotlin/com/example/finalafter/crui2/core/navigation/shell/tabs/TabWarmUp.kt:L68 ktlint(compose:lambda-param-in-effect) Lambda parameters in a @Composable that are referenced directly inside of restarting effects can cause issues or unpredictable behavior. (...)
+  core/navigation/shell/src/main/kotlin/com/example/finalafter/crui2/core/navigation/shell/transition/SceneMotion.kt:L35 ktlint(compose:state-param-check) State shouldn't be used as a parameter in a @Composable function, as it encourages components that are not fully stateless. (...)
+  core/navigation/src/main/kotlin/com/example/finalafter/crui2/core/navigation/NavigationSettled.kt:L23 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/navigation/src/main/kotlin/com/example/finalafter/crui2/core/navigation/ScrollToTopOnReselect.kt:L16 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/navigation/src/main/kotlin/com/example/finalafter/crui2/core/navigation/Shortcuts.kt:L70 ktlint(compose:compositionlocal-allowlist) CompositionLocals are implicit dependencies and creating new ones should be avoided. (...)
+  core/perfhud/src/main/kotlin/com/example/finalafter/crui2/core/perfhud/panel/DetailSections.kt:L37 ktlint(compose:multiple-emitters-check) Composable functions should only be emitting content into the composition from one source at their top level. (...)
+  feature/auth/src/main/kotlin/com/example/finalafter/crui2/feature/auth/passwordreset/PasswordResetRoute.kt:L13 ktlint(compose:vm-forwarding-check) Forwarding a ViewModel/Presenter through multiple @Composable functions should be avoided. Consider using state hoisting. (...)
+  feature/auth/src/main/kotlin/com/example/finalafter/crui2/feature/auth/signin/SignInRoute.kt:L15 ktlint(compose:vm-forwarding-check) Forwarding a ViewModel/Presenter through multiple @Composable functions should be avoided. Consider using state hoisting. (...)
+  feature/auth/src/main/kotlin/com/example/finalafter/crui2/feature/auth/signup/SignUpRoute.kt:L13 ktlint(compose:vm-forwarding-check) Forwarding a ViewModel/Presenter through multiple @Composable functions should be avoided. Consider using state hoisting. (...)
+  feature/feed/src/main/kotlin/com/example/finalafter/crui2/feature/feed/FeedRoute.kt:L11 ktlint(compose:vm-forwarding-check) Forwarding a ViewModel/Presenter through multiple @Composable functions should be avoided. Consider using state hoisting. (...)
+  feature/onboarding/src/main/kotlin/com/example/finalafter/crui2/feature/onboarding/OnboardingRoute.kt:L14 ktlint(compose:vm-forwarding-check) Forwarding a ViewModel/Presenter through multiple @Composable functions should be avoided. Consider using state hoisting. (...)
+  feature/profile/src/main/kotlin/com/example/finalafter/crui2/feature/profile/ProfileRoute.kt:L9 ktlint(compose:vm-forwarding-check) Forwarding a ViewModel/Presenter through multiple @Composable functions should be avoided. Consider using state hoisting. (...)
+  feature/sample/src/main/kotlin/com/example/finalafter/crui2/feature/sample/detail/SampleDetailRoute.kt:L17 ktlint(compose:vm-forwarding-check) Forwarding a ViewModel/Presenter through multiple @Composable functions should be avoided. Consider using state hoisting. (...)
+  feature/sample/src/main/kotlin/com/example/finalafter/crui2/feature/sample/list/SampleListRoute.kt:L15 ktlint(compose:vm-forwarding-check) Forwarding a ViewModel/Presenter through multiple @Composable functions should be avoided. Consider using state hoisting. (...)
+  feature/search/src/main/kotlin/com/example/finalafter/crui2/feature/search/SearchRoute.kt:L12 ktlint(compose:vm-forwarding-check) Forwarding a ViewModel/Presenter through multiple @Composable functions should be avoided. Consider using state hoisting. (...)
+  feature/search/src/main/kotlin/com/example/finalafter/crui2/feature/search/result/SearchResultRoute.kt:L16 ktlint(compose:vm-forwarding-check) Forwarding a ViewModel/Presenter through multiple @Composable functions should be avoided. Consider using state hoisting. (...)
+  feature/settings/src/main/kotlin/com/example/finalafter/crui2/feature/settings/SettingsRoute.kt:L20 ktlint(compose:vm-forwarding-check) Forwarding a ViewModel/Presenter through multiple @Composable functions should be avoided. Consider using state hoisting. (...)
+  feature/settings/src/main/kotlin/com/example/finalafter/crui2/feature/settings/licenses/LicensesRoute.kt:L13 ktlint(compose:vm-forwarding-check) Forwarding a ViewModel/Presenter through multiple @Composable functions should be avoided. Consider using state hoisting. (...)
+  Resolve these lints or suppress with `suppressLintsFor`
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 46s
+6 actionable tasks: 6 executed
+Configuration cache entry stored.
+EXIT 1
+03:09:17

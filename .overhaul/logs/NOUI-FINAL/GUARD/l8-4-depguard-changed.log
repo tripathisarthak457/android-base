@@ -1,0 +1,25 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/GUARD/no-lean
+# command: locked gradle ./gradlew :app:dependencyGuard
+# start: Sun Oct 25 22:18:08 IST 2026
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as configuration cache cannot be reused because file 'app\build.gradle.kts' has changed.
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :app:dependencyGuard
+
+BUILD SUCCESSFUL in 6s
+5 actionable tasks: 1 executed, 4 up-to-date
+Configuration cache entry stored.
+# exit: 0
+# end: Sun Oct 25 22:18:15 IST 2026
+# seconds: 7

@@ -1,0 +1,8 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI/generator
+# command: D:/projects/tools/.overhaul/bin/memwait python -m tests.consistency --quick
+# start: Sun Oct 25 08:20:48 IST 2026
+
+81 projects in 367 s: 0 new issues, 188 known (2 of 2 known-issue lines seen).
+CONSISTENCY OK
+# end: Sun Oct 25 08:26:58 IST 2026
+EXIT=0

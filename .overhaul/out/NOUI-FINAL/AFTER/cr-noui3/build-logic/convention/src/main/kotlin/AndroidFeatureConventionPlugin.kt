@@ -1,0 +1,30 @@
+import com.example.finalafter.crnoui3.buildlogic.library
+import com.example.finalafter.crnoui3.buildlogic.libs
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.project
+
+/**
+ * Every `:feature:*` module: presentation, and nothing else. Only what every screen uses is added
+ * here; a feature that needs images, paging or a data module declares it itself.
+ */
+class AndroidFeatureConventionPlugin : Plugin<Project> {
+    override fun apply(target: Project) = with(target) {
+        pluginManager.apply("com.example.finalafter.crnoui3.android.library")
+        pluginManager.apply("com.example.finalafter.crnoui3.android.hilt")
+        pluginManager.apply("com.example.finalafter.crnoui3.android.compose")
+        // Navigation keys are @Serializable, so the back stack survives process death.
+        pluginManager.apply("org.jetbrains.kotlin.plugin.serialization")
+
+        dependencies {
+            add("implementation", project(":core:mvi"))
+            add("implementation", project(":core:designsystem"))
+            add("implementation", project(":core:ui"))
+            add("implementation", project(":core:navigation"))
+
+            add("implementation", libs.library("androidx-lifecycle-viewmodel-compose"))
+            add("implementation", libs.library("androidx-hilt-lifecycle-viewmodel-compose"))
+        }
+    }
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <!--
+          The overlay's adb path (see ReportReceiver), in debug builds only: adb reaches it through
+          run-as, which works on a debuggable build alone, so a release-like dev build has no use for
+          it. Not exported: only the app's own uid reaches it.
+        -->
+        <receiver
+            android:name="com.example.finalafter.crnoui.core.perfhud.report.ReportReceiver"
+            android:exported="false" />
+    </application>
+
+</manifest>

@@ -15,3 +15,4 @@
 - [VitFleet project](vitfleet-project.md) — Oct 24: cloned to D:\projects\tools\vitfleet for flow changes/bug fixes; no Docker or make here, prod signing key missing
 - [Log times from the clock](log-times-from-clock.md) — run date before writing any time; estimates ran up to 18 min ahead on Oct 19
 - [Python alias needs LOCALAPPDATA](python-alias-needs-localappdata.md) — a bare python in a stripped env made the install manager register a stray Python (Oct 24); keep LOCALAPPDATA or use the full path
+- [Workflow agents: no SendMessage](workflow-agent-sendmessage.md) — messaging a workflow agent resumes a separate copy; resume caches match by call order; use args.done stubs

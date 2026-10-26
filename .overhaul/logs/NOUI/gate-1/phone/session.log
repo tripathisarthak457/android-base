@@ -1,0 +1,95 @@
+[2026-10-25 08:20:29] session start
+[2026-10-25 08:20:29] worktree HEAD: ccd9c3c9bd8085ac88c45335941518d0f6807a17 on staging-wp/NOUI
+[2026-10-25 08:20:30] P1 generate
+[2026-10-25 08:20:35] STEP P1-generate -> 0 (D:/projects/tools/.overhaul/logs/NOUI/gate-1/phone/p1-generate.log)
+[2026-10-25 08:20:35] P1 build
+[2026-10-25 08:28:16] STEP P1-build -> 0 (D:/projects/tools/.overhaul/logs/NOUI/gate-1/phone/p1-build.log)
+[2026-10-25 08:28:17] deep link myapp://example.com/sample/42, app label 'My App'
+[2026-10-25 08:28:17] P2 install devRelease
+[2026-10-25 08:28:18] STEP P2-install -> 0 (D:/projects/tools/.overhaul/perf/NOUI/gate-1/p2-install.txt)
+[2026-10-25 08:28:18] launch component com.example.noui.phone.dev/com.example.noui.phone.MainActivity
+[2026-10-25 08:28:46] STEP P2-cold-start -> 0 (D:/projects/tools/.overhaul/perf/NOUI/gate-1/p2-median.txt)
+D:/projects/tools/.overhaul/perf/NOUI/gate-1/p2-start-1.txt: TotalTime=544 WaitTime=547 ThisTime=- LaunchState=COLD Status=ok
+D:/projects/tools/.overhaul/perf/NOUI/gate-1/p2-start-2.txt: TotalTime=394 WaitTime=396 ThisTime=- LaunchState=COLD Status=ok
+D:/projects/tools/.overhaul/perf/NOUI/gate-1/p2-start-3.txt: TotalTime=420 WaitTime=422 ThisTime=- LaunchState=COLD Status=ok
+D:/projects/tools/.overhaul/perf/NOUI/gate-1/p2-start-4.txt: TotalTime=461 WaitTime=467 ThisTime=- LaunchState=COLD Status=ok
+D:/projects/tools/.overhaul/perf/NOUI/gate-1/p2-start-5.txt: TotalTime=424 WaitTime=426 ThisTime=- LaunchState=COLD Status=ok
+TotalTime values=[544, 394, 420, 461, 424] median=424 min=394 max=544 n=5
+[2026-10-25 08:29:11] STEP P2b-cold-start-speed-profile -> 0 (D:/projects/tools/.overhaul/perf/NOUI/gate-1/p2b-median.txt)
+D:/projects/tools/.overhaul/perf/NOUI/gate-1/p2b-start-1.txt: TotalTime=382 WaitTime=385 ThisTime=- LaunchState=COLD Status=ok
+D:/projects/tools/.overhaul/perf/NOUI/gate-1/p2b-start-2.txt: TotalTime=348 WaitTime=352 ThisTime=- LaunchState=COLD Status=ok
+D:/projects/tools/.overhaul/perf/NOUI/gate-1/p2b-start-3.txt: TotalTime=353 WaitTime=356 ThisTime=- LaunchState=COLD Status=ok
+D:/projects/tools/.overhaul/perf/NOUI/gate-1/p2b-start-4.txt: TotalTime=361 WaitTime=365 ThisTime=- LaunchState=COLD Status=ok
+D:/projects/tools/.overhaul/perf/NOUI/gate-1/p2b-start-5.txt: TotalTime=376 WaitTime=385 ThisTime=- LaunchState=COLD Status=ok
+TotalTime values=[382, 348, 353, 361, 376] median=361 min=348 max=382 n=5
+[2026-10-25 08:29:11] P3 start screen
+/data/local/tmp/noui-start.png: 1 file pulled, 0 skipped. 9.7 MB/s (33186 bytes in 0.003s)
+id=start present=True count=1 texts=[]
+[2026-10-25 08:29:21] STEP P3-start-screen -> 0 (D:/projects/tools/.overhaul/perf/NOUI/gate-1/noui-start.check.txt)
+[2026-10-25 08:29:21] P4 deep link
+/data/local/tmp/noui-deeplink.png: 1 file pulled, 0 skipped. 11.3 MB/s (33186 bytes in 0.003s)
+id=placeholder present=False count=0 texts=[]
+[2026-10-25 08:29:29] STEP P4-deep-link -> 1 (D:/projects/tools/.overhaul/perf/NOUI/gate-1/noui-deeplink.check.txt)
+[2026-10-25 08:29:29] P5 process death
+/data/local/tmp/noui-recents.png: 1 file pulled, 0 skipped. 26.2 MB/s (92587 bytes in 0.003s)
+[2026-10-25 08:29:40] recents card: 540 1084 label:com.google.android.apps.nexuslauncher:id/snapshot
+/data/local/tmp/noui-restored.png: 1 file pulled, 0 skipped. 10.8 MB/s (33098 bytes in 0.003s)
+id=placeholder present=False count=0 texts=[]
+[2026-10-25 08:29:48] P5 recents tap did not restore the placeholder; fallback: am start of the launcher component
+/data/local/tmp/noui-restored-fallback.png: 1 file pulled, 0 skipped. 15.0 MB/s (33186 bytes in 0.002s)
+id=placeholder present=False count=0 texts=[]
+/data/local/tmp/noui-restored-back.png: 1 file pulled, 0 skipped. 39.2 MB/s (1806371 bytes in 0.044s)
+id=start present=False count=0 texts=[]
+[2026-10-25 08:30:04] STEP P5-process-death -> 2 (restored=noui-restored-fallback (placeholder present: rc 1); after Back (start present: rc 1); see D:/projects/tools/.overhaul/perf/NOUI/gate-1/noui-restored-back.check.txt)
+[2026-10-25 08:30:05] P6 prodRelease
+[2026-10-25 08:30:05] STEP P6-install-prod -> 0 (D:/projects/tools/.overhaul/perf/NOUI/gate-1/p6-install-prod.txt)
+/data/local/tmp/noui-dev-contrast.png: 1 file pulled, 0 skipped. 2.4 MB/s (33329 bytes in 0.013s)
+/data/local/tmp/noui-prod.png: 1 file pulled, 0 skipped. 15.4 MB/s (31116 bytes in 0.002s)
+id=start present=True count=1 texts=[]
+[2026-10-25 08:30:24] STEP P6-prod-screen -> 0 (D:/projects/tools/.overhaul/perf/NOUI/gate-1/noui-prod.check.txt)
+[2026-10-25 08:30:45] STEP P6-verify-no-dev-tooling -> 0 (D:/projects/tools/.overhaul/logs/NOUI/gate-1/phone/p6-verify-no-dev-tooling.log)
+[2026-10-25 08:30:45] P7 crash log
+crash buffer lines: 0
+crash buffer first line: 
+crash buffer lines naming com.example.noui.phone: 0
+== D:/projects/tools/.overhaul/perf/NOUI/gate-1/logcat/after-p2.txt lines=40563 first=--------- beginning of events
+   FATAL EXCEPTION lines (all apps): 0
+   'ANR in' lines (all apps): 0
+   'Process: com.example.noui.phone' lines: 0
+   'ANR in com.example.noui.phone' lines: 0
+== D:/projects/tools/.overhaul/perf/NOUI/gate-1/logcat/after-p5.txt lines=37397 first=--------- beginning of events
+   FATAL EXCEPTION lines (all apps): 0
+   'ANR in' lines (all apps): 0
+   'Process: com.example.noui.phone' lines: 0
+   'ANR in com.example.noui.phone' lines: 0
+== D:/projects/tools/.overhaul/perf/NOUI/gate-1/logcat/after-p6.txt lines=36789 first=--------- beginning of events
+   FATAL EXCEPTION lines (all apps): 0
+   'ANR in' lines (all apps): 0
+   'Process: com.example.noui.phone' lines: 0
+   'ANR in com.example.noui.phone' lines: 0
+events buffer am_crash/am_anr naming com.example.noui.phone: 0
+--- FATAL EXCEPTION / ANR lines naming com.example.noui.phone in any snapshot:
+--- end
+[2026-10-25 08:30:47] STEP P7-crash-log -> 0 (D:/projects/tools/.overhaul/perf/NOUI/gate-1/p7-summary.txt)
+[2026-10-25 08:30:47] P8 cleanup
+packages: same as before
+local-tmp: same as before
+android-media: same as before
+settings-system: same as before
+settings-secure: same as before
+settings-global: same as before
+wm: same as before
+[2026-10-25 08:30:50] STEP P8-phone-as-found -> 0 (D:/projects/tools/.overhaul/perf/NOUI/gate-1/p8-diff.txt)
+[2026-10-25 08:30:50] P9 generateBaselineProfile
+[2026-10-25 08:34:26] STEP P9-generate-baseline-profile -> 0 (D:/projects/tools/.overhaul/logs/NOUI/gate-1/phone/p9-generate-baseline-profile.log)
+[2026-10-25 08:34:31] P9 cleanup
+packages: same as before
+local-tmp: same as before
+android-media: same as before
+settings-system: same as before
+settings-secure: same as before
+settings-global: same as before
+wm: same as before
+[2026-10-25 08:34:34] STEP P9-cleanup -> 0 (D:/projects/tools/.overhaul/perf/NOUI/gate-1/p9-diff.txt)
+[2026-10-25 08:34:34] session end
+SESSION EXIT 0

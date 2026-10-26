@@ -1,0 +1,38 @@
+package com.example.cmp.core.designsystem.component.feedback
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.ui.graphics.vector.ImageVector
+import com.example.cmp.core.designsystem.icon.AppIcons
+import com.example.cmp.core.designsystem.theme.AppTheme
+import com.example.cmp.core.designsystem.theme.StatusColors
+
+/** The visual severity of a message, banner or pill. */
+public enum class AppTone {
+    Success,
+    Error,
+    Warning,
+    Info,
+    Neutral,
+    ;
+
+    public val colors: StatusColors
+        @Composable
+        @ReadOnlyComposable
+        get() = when (this) {
+            Success -> AppTheme.colors.success
+            Error -> AppTheme.colors.danger
+            Warning -> AppTheme.colors.warning
+            Info -> AppTheme.colors.info
+            Neutral -> AppTheme.colors.neutral
+        }
+
+    public val icon: ImageVector
+        get() = when (this) {
+            Success -> AppIcons.CheckCircle
+            Error -> AppIcons.XCircle
+            Warning -> AppIcons.AlertTriangle
+            Info -> AppIcons.Info
+            Neutral -> AppIcons.Info
+        }
+}

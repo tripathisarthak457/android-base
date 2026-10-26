@@ -1,0 +1,395 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI/web/api
+# command: D:/projects/tools/.overhaul/bin/memwait go test -count=1 -v ./...
+# start: Sun Oct 25 08:44:34 IST 2026
+=== RUN   TestTheSelftestSpecIsOneTheRouteAccepts
+--- PASS: TestTheSelftestSpecIsOneTheRouteAccepts (0.00s)
+=== RUN   TestTheSelftestSendsTheLockedValueAndNothingElseNew
+--- PASS: TestTheSelftestSendsTheLockedValueAndNothingElseNew (0.00s)
+PASS
+ok  	github.com/base-android/generator-api/cmd/server	0.616s
+=== RUN   TestStringNeverSplitsARune
+--- PASS: TestStringNeverSplitsARune (0.00s)
+=== RUN   TestStringDropsInvalidBytes
+--- PASS: TestStringDropsInvalidBytes (0.00s)
+=== RUN   TestStringDropsNUL
+--- PASS: TestStringDropsNUL (0.00s)
+=== RUN   TestStringLeavesShortTextAlone
+--- PASS: TestStringLeavesShortTextAlone (0.00s)
+PASS
+ok  	github.com/base-android/generator-api/internal/clip	0.424s
+=== RUN   TestParseProxyPolicy
+--- PASS: TestParseProxyPolicy (0.00s)
+=== RUN   TestLoadRefusesContradictions
+--- PASS: TestLoadRefusesContradictions (0.00s)
+=== RUN   TestLoadDefaults
+--- PASS: TestLoadDefaults (0.00s)
+PASS
+ok  	github.com/base-android/generator-api/internal/config	0.411s
+=== RUN   TestParseCatalogueReadsTargetsAndRules
+--- PASS: TestParseCatalogueReadsTargetsAndRules (0.00s)
+=== RUN   TestParseCatalogueRefusesAnotherVersion
+--- PASS: TestParseCatalogueRefusesAnotherVersion (0.00s)
+=== RUN   TestNearestPreset
+=== RUN   TestNearestPreset/exactly_a_preset
+=== RUN   TestNearestPreset/one_picked_on_top
+=== RUN   TestNearestPreset/one_taken_out
+=== RUN   TestNearestPreset/nothing
+=== RUN   TestNearestPreset/tie
+=== RUN   TestNearestPreset/glass_on_lean
+--- PASS: TestNearestPreset (0.00s)
+    --- PASS: TestNearestPreset/exactly_a_preset (0.00s)
+    --- PASS: TestNearestPreset/one_picked_on_top (0.00s)
+    --- PASS: TestNearestPreset/one_taken_out (0.00s)
+    --- PASS: TestNearestPreset/nothing (0.00s)
+    --- PASS: TestNearestPreset/tie (0.00s)
+    --- PASS: TestNearestPreset/glass_on_lean (0.00s)
+=== RUN   TestResolveAddsWhatEachFeatureImplies
+=== RUN   TestResolveAddsWhatEachFeatureImplies/an_implied_feature
+=== RUN   TestResolveAddsWhatEachFeatureImplies/asked_for_as_well
+=== RUN   TestResolveAddsWhatEachFeatureImplies/a_key_the_catalogue_does_not_list
+=== RUN   TestResolveAddsWhatEachFeatureImplies/nothing
+--- PASS: TestResolveAddsWhatEachFeatureImplies (0.00s)
+    --- PASS: TestResolveAddsWhatEachFeatureImplies/an_implied_feature (0.00s)
+    --- PASS: TestResolveAddsWhatEachFeatureImplies/asked_for_as_well (0.00s)
+    --- PASS: TestResolveAddsWhatEachFeatureImplies/a_key_the_catalogue_does_not_list (0.00s)
+    --- PASS: TestResolveAddsWhatEachFeatureImplies/nothing (0.00s)
+=== RUN   TestSmallestPresetFeaturesLeavesOutWhatCannotBeAskedFor
+--- PASS: TestSmallestPresetFeaturesLeavesOutWhatCannotBeAskedFor (0.00s)
+=== RUN   TestParseCatalogueReadsOptionsAndTheirLock
+--- PASS: TestParseCatalogueReadsOptionsAndTheirLock (0.00s)
+=== RUN   TestParseCatalogueRefusesAnOptionItCannotEnforce
+=== RUN   TestParseCatalogueRefusesAnOptionItCannotEnforce/an_option_without_a_default
+=== RUN   TestParseCatalogueRefusesAnOptionItCannotEnforce/an_option_with_a_string_default
+=== RUN   TestParseCatalogueRefusesAnOptionItCannotEnforce/an_option_declared_twice
+=== RUN   TestParseCatalogueRefusesAnOptionItCannotEnforce/a_lock_with_a_string_value
+=== RUN   TestParseCatalogueRefusesAnOptionItCannotEnforce/an_option_without_a_key
+=== RUN   TestParseCatalogueRefusesAnOptionItCannotEnforce/a_lock_that_is_not_an_object
+=== RUN   TestParseCatalogueRefusesAnOptionItCannotEnforce/a_lock_without_a_value
+=== RUN   TestParseCatalogueRefusesAnOptionItCannotEnforce/a_lock_without_a_note
+=== RUN   TestParseCatalogueRefusesAnOptionItCannotEnforce/a_lock_with_a_blank_note
+--- PASS: TestParseCatalogueRefusesAnOptionItCannotEnforce (0.00s)
+    --- PASS: TestParseCatalogueRefusesAnOptionItCannotEnforce/an_option_without_a_default (0.00s)
+    --- PASS: TestParseCatalogueRefusesAnOptionItCannotEnforce/an_option_with_a_string_default (0.00s)
+    --- PASS: TestParseCatalogueRefusesAnOptionItCannotEnforce/an_option_declared_twice (0.00s)
+    --- PASS: TestParseCatalogueRefusesAnOptionItCannotEnforce/a_lock_with_a_string_value (0.00s)
+    --- PASS: TestParseCatalogueRefusesAnOptionItCannotEnforce/an_option_without_a_key (0.00s)
+    --- PASS: TestParseCatalogueRefusesAnOptionItCannotEnforce/a_lock_that_is_not_an_object (0.00s)
+    --- PASS: TestParseCatalogueRefusesAnOptionItCannotEnforce/a_lock_without_a_value (0.00s)
+    --- PASS: TestParseCatalogueRefusesAnOptionItCannotEnforce/a_lock_without_a_note (0.00s)
+    --- PASS: TestParseCatalogueRefusesAnOptionItCannotEnforce/a_lock_with_a_blank_note (0.00s)
+=== RUN   TestChildEnvPassesOnlyWhatPythonNeeds
+--- PASS: TestChildEnvPassesOnlyWhatPythonNeeds (0.00s)
+=== RUN   TestIntegrationRealGenerator
+    integration_test.go:22: GENERATOR_DIR is not set
+--- SKIP: TestIntegrationRealGenerator (0.00s)
+=== RUN   TestCheckOptionsRefusesAValueThatIsNotTrueOrFalse
+--- PASS: TestCheckOptionsRefusesAValueThatIsNotTrueOrFalse (0.00s)
+=== RUN   TestCheckOptionsAcceptsEveryValueWhileUnlocked
+--- PASS: TestCheckOptionsAcceptsEveryValueWhileUnlocked (0.00s)
+=== RUN   TestCheckOptionsHoldsALockedOptionToItsValue
+--- PASS: TestCheckOptionsHoldsALockedOptionToItsValue (0.00s)
+=== RUN   TestCheckOptionsLeavesATargetWithoutOptionsToItsGenerator
+--- PASS: TestCheckOptionsLeavesATargetWithoutOptionsToItsGenerator (0.00s)
+=== RUN   TestLockedValuesAreWhatASelftestMustAskFor
+--- PASS: TestLockedValuesAreWhatASelftestMustAskFor (0.00s)
+=== RUN   TestPrecheckRefusesWhatWouldBeExpensiveOrBroken
+=== RUN   TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/not_JSON
+=== RUN   TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/not_an_object
+=== RUN   TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/trailing_data
+=== RUN   TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/invalid_UTF-8
+=== RUN   TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/too_many_feature_modules
+=== RUN   TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/too_many_features
+=== RUN   TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/too_many_languages
+=== RUN   TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/too_many_keystores_(v1)
+=== RUN   TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/too_many_keystores_(v2)
+=== RUN   TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/identifier_too_long
+=== RUN   TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/module_name_too_long
+=== RUN   TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/string_too_long
+=== RUN   TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/newline_in_a_package
+=== RUN   TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/NUL_in_a_module
+=== RUN   TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/too_deep
+=== RUN   TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/too_many_fields
+=== RUN   TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/platform_of_another_target
+=== RUN   TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/platform_that_is_not_a_string
+--- PASS: TestPrecheckRefusesWhatWouldBeExpensiveOrBroken (0.00s)
+    --- PASS: TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/not_JSON (0.00s)
+    --- PASS: TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/not_an_object (0.00s)
+    --- PASS: TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/trailing_data (0.00s)
+    --- PASS: TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/invalid_UTF-8 (0.00s)
+    --- PASS: TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/too_many_feature_modules (0.00s)
+    --- PASS: TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/too_many_features (0.00s)
+    --- PASS: TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/too_many_languages (0.00s)
+    --- PASS: TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/too_many_keystores_(v1) (0.00s)
+    --- PASS: TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/too_many_keystores_(v2) (0.00s)
+    --- PASS: TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/identifier_too_long (0.00s)
+    --- PASS: TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/module_name_too_long (0.00s)
+    --- PASS: TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/string_too_long (0.00s)
+    --- PASS: TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/newline_in_a_package (0.00s)
+    --- PASS: TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/NUL_in_a_module (0.00s)
+    --- PASS: TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/too_deep (0.00s)
+    --- PASS: TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/too_many_fields (0.00s)
+    --- PASS: TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/platform_of_another_target (0.00s)
+    --- PASS: TestPrecheckRefusesWhatWouldBeExpensiveOrBroken/platform_that_is_not_a_string (0.00s)
+=== RUN   TestPrecheckNamesTheSameFieldEveryTime
+--- PASS: TestPrecheckNamesTheSameFieldEveryTime (0.00s)
+=== RUN   TestPrecheckRefusesAnOversizedBodyAsTooLarge
+--- PASS: TestPrecheckRefusesAnOversizedBodyAsTooLarge (0.00s)
+=== RUN   TestPrecheckTakesItsLimitsFromTheCatalogue
+--- PASS: TestPrecheckTakesItsLimitsFromTheCatalogue (0.00s)
+=== RUN   TestPrecheckAcceptsRealSpecs
+=== RUN   TestPrecheckAcceptsRealSpecs/minimal
+=== RUN   TestPrecheckAcceptsRealSpecs/v1_flat
+=== RUN   TestPrecheckAcceptsRealSpecs/v2_nested
+--- PASS: TestPrecheckAcceptsRealSpecs (0.00s)
+    --- PASS: TestPrecheckAcceptsRealSpecs/minimal (0.00s)
+    --- PASS: TestPrecheckAcceptsRealSpecs/v1_flat (0.00s)
+    --- PASS: TestPrecheckAcceptsRealSpecs/v2_nested (0.00s)
+=== RUN   TestPrecheckReadsTheRecordedFieldsAndDropsSecrets
+--- PASS: TestPrecheckReadsTheRecordedFieldsAndDropsSecrets (0.00s)
+=== RUN   TestPrecheckReadsV1FlatAndroidFields
+--- PASS: TestPrecheckReadsV1FlatAndroidFields (0.00s)
+PASS
+ok  	github.com/base-android/generator-api/internal/generate	0.644s
+=== RUN   TestLimiterRefusesPastTheHourlyAllowanceAndReportsTheFirstRefusal
+--- PASS: TestLimiterRefusesPastTheHourlyAllowanceAndReportsTheFirstRefusal (0.00s)
+=== RUN   TestLimiterForgetsWhenTheWindowRolls
+--- PASS: TestLimiterForgetsWhenTheWindowRolls (0.00s)
+=== RUN   TestClientAddressUnderEachProxyPolicy
+=== RUN   TestClientAddressUnderEachProxyPolicy/no_proxy_ignores_the_header_a_client_can_forge
+=== RUN   TestClientAddressUnderEachProxyPolicy/vercel_overwrites_the_header_with_the_client
+=== RUN   TestClientAddressUnderEachProxyPolicy/vercel_without_the_header_falls_back_to_x-real-ip
+=== RUN   TestClientAddressUnderEachProxyPolicy/two_hops_skips_a_forged_entry
+=== RUN   TestClientAddressUnderEachProxyPolicy/two_hops_across_header_lines
+=== RUN   TestClientAddressUnderEachProxyPolicy/too_few_hops_uses_the_connection
+=== RUN   TestClientAddressUnderEachProxyPolicy/garbage_uses_the_connection
+=== RUN   TestClientAddressUnderEachProxyPolicy/IPv4-mapped_IPv6_is_IPv4
+=== RUN   TestClientAddressUnderEachProxyPolicy/remote_address_without_a_port
+--- PASS: TestClientAddressUnderEachProxyPolicy (0.00s)
+    --- PASS: TestClientAddressUnderEachProxyPolicy/no_proxy_ignores_the_header_a_client_can_forge (0.00s)
+    --- PASS: TestClientAddressUnderEachProxyPolicy/vercel_overwrites_the_header_with_the_client (0.00s)
+    --- PASS: TestClientAddressUnderEachProxyPolicy/vercel_without_the_header_falls_back_to_x-real-ip (0.00s)
+    --- PASS: TestClientAddressUnderEachProxyPolicy/two_hops_skips_a_forged_entry (0.00s)
+    --- PASS: TestClientAddressUnderEachProxyPolicy/two_hops_across_header_lines (0.00s)
+    --- PASS: TestClientAddressUnderEachProxyPolicy/too_few_hops_uses_the_connection (0.00s)
+    --- PASS: TestClientAddressUnderEachProxyPolicy/garbage_uses_the_connection (0.00s)
+    --- PASS: TestClientAddressUnderEachProxyPolicy/IPv4-mapped_IPv6_is_IPv4 (0.00s)
+    --- PASS: TestClientAddressUnderEachProxyPolicy/remote_address_without_a_port (0.00s)
+=== RUN   TestClientKeyGroupsAnIPv6Slash64
+--- PASS: TestClientKeyGroupsAnIPv6Slash64 (0.00s)
+=== RUN   TestRequireAdminRejectsEverythingButTheToken
+=== RUN   TestRequireAdminRejectsEverythingButTheToken/correct_token
+=== RUN   TestRequireAdminRejectsEverythingButTheToken/no_header
+=== RUN   TestRequireAdminRejectsEverythingButTheToken/wrong_token
+=== RUN   TestRequireAdminRejectsEverythingButTheToken/missing_scheme
+=== RUN   TestRequireAdminRejectsEverythingButTheToken/prefix_of_the_token
+=== RUN   TestRequireAdminRejectsEverythingButTheToken/empty_bearer
+--- PASS: TestRequireAdminRejectsEverythingButTheToken (0.00s)
+    --- PASS: TestRequireAdminRejectsEverythingButTheToken/correct_token (0.00s)
+    --- PASS: TestRequireAdminRejectsEverythingButTheToken/no_header (0.00s)
+    --- PASS: TestRequireAdminRejectsEverythingButTheToken/wrong_token (0.00s)
+    --- PASS: TestRequireAdminRejectsEverythingButTheToken/missing_scheme (0.00s)
+    --- PASS: TestRequireAdminRejectsEverythingButTheToken/prefix_of_the_token (0.00s)
+    --- PASS: TestRequireAdminRejectsEverythingButTheToken/empty_bearer (0.00s)
+=== RUN   TestCORSAllowsTheSessionHeadersForTheSiteOnly
+--- PASS: TestCORSAllowsTheSessionHeadersForTheSiteOnly (0.00s)
+=== RUN   TestETagMatching
+--- PASS: TestETagMatching (0.00s)
+=== RUN   TestALockedOptionRefusesEveryOtherValueBeforeTheGenerator
+--- PASS: TestALockedOptionRefusesEveryOtherValueBeforeTheGenerator (0.01s)
+=== RUN   TestAnOptionThatIsNotTrueOrFalseIsAnInvalidSpec
+--- PASS: TestAnOptionThatIsNotTrueOrFalseIsAnInvalidSpec (0.01s)
+PASS
+ok  	github.com/base-android/generator-api/internal/httpapi	1.214s
+=== RUN   TestIntegrationMigratesOnceEvenWhenInstancesRace
+    integration_test.go:89: TEST_DATABASE_URL is not set
+--- SKIP: TestIntegrationMigratesOnceEvenWhenInstancesRace (0.00s)
+=== RUN   TestIntegrationUpgradesADatabaseTheOldRunnerMigrated
+    integration_test.go:128: TEST_DATABASE_URL is not set
+--- SKIP: TestIntegrationUpgradesADatabaseTheOldRunnerMigrated (0.00s)
+=== RUN   TestIntegrationAdminQueriesReadWhatWasRecorded
+    integration_test.go:277: TEST_DATABASE_URL is not set
+--- SKIP: TestIntegrationAdminQueriesReadWhatWasRecorded (0.00s)
+=== RUN   TestIntegrationRejectionsAreGroupedByCauseNotByValue
+    integration_test.go:454: TEST_DATABASE_URL is not set
+--- SKIP: TestIntegrationRejectionsAreGroupedByCauseNotByValue (0.00s)
+=== RUN   TestIntegrationTheWriterRecordsInTheBackground
+    integration_test.go:486: TEST_DATABASE_URL is not set
+--- SKIP: TestIntegrationTheWriterRecordsInTheBackground (0.00s)
+=== RUN   TestIntegrationRetentionForgetsNamesAndOldRows
+    integration_test.go:506: TEST_DATABASE_URL is not set
+--- SKIP: TestIntegrationRetentionForgetsNamesAndOldRows (0.00s)
+=== RUN   TestIntegrationFeedbackNotesCanBeCleared
+    integration_test.go:577: TEST_DATABASE_URL is not set
+--- SKIP: TestIntegrationFeedbackNotesCanBeCleared (0.00s)
+=== RUN   TestEmbeddedMigrationsAreOrderedAndNamed
+--- PASS: TestEmbeddedMigrationsAreOrderedAndNamed (0.00s)
+=== RUN   TestRunnerAppliesOnlyWhatIsMissingInOrderUnderTheLock
+--- PASS: TestRunnerAppliesOnlyWhatIsMissingInOrderUnderTheLock (0.00s)
+=== RUN   TestAFailedMigrationIsRolledBackUnrecordedAndUnlocks
+--- PASS: TestAFailedMigrationIsRolledBackUnrecordedAndUnlocks (0.00s)
+=== RUN   TestNothingToDoTakesAndReleasesTheLock
+--- PASS: TestNothingToDoTakesAndReleasesTheLock (0.00s)
+=== RUN   TestABatchIsOneStatementPerRowPlusTheRollup
+--- PASS: TestABatchIsOneStatementPerRowPlusTheRollup (0.00s)
+=== RUN   TestQueueClipsFreeTextToValidUTF8
+--- PASS: TestQueueClipsFreeTextToValidUTF8 (0.00s)
+=== RUN   TestFingerprintIgnoresWhatVariesBetweenRuns
+--- PASS: TestFingerprintIgnoresWhatVariesBetweenRuns (0.00s)
+=== RUN   TestVisitorHashChangesEveryDay
+--- PASS: TestVisitorHashChangesEveryDay (0.00s)
+=== RUN   TestAFullQueueDropsTheBatchAndCountsIt
+--- PASS: TestAFullQueueDropsTheBatchAndCountsIt (0.06s)
+PASS
+ok  	github.com/base-android/generator-api/internal/store	1.150s
+=== RUN   TestEventsContract
+=== RUN   TestEventsContract/accepts_a_first_batch:_landing_with_a_campaign,_then_the_platform
+=== RUN   TestEventsContract/accepts_a_returning_visitor_with_no_referrer
+=== RUN   TestEventsContract/accepts_the_rest_of_the_funnel
+=== RUN   TestEventsContract/refuses_no_session_id
+=== RUN   TestEventsContract/refuses_a_session_id_that_is_not_a_UUID_v4
+=== RUN   TestEventsContract/refuses_no_events
+=== RUN   TestEventsContract/refuses_a_server_event
+=== RUN   TestEventsContract/refuses_an_unknown_name
+=== RUN   TestEventsContract/refuses_an_unknown_target
+=== RUN   TestEventsContract/refuses_an_unknown_step
+=== RUN   TestEventsContract/refuses_a_preset_of_another_target
+=== RUN   TestEventsContract/refuses_a_step_on_an_event_that_takes_none
+=== RUN   TestEventsContract/refuses_acquisition_fields_on_a_later_event
+=== RUN   TestEventsContract/refuses_a_target_on_landed
+=== RUN   TestEventsContract/refuses_two_landings_in_one_batch
+=== RUN   TestEventsContract/refuses_an_unknown_viewport
+=== RUN   TestEventsContract/refuses_a_field_the_API_does_not_know
+=== RUN   TestEventsContract/refuses_more_than_20_events
+--- PASS: TestEventsContract (0.00s)
+    --- PASS: TestEventsContract/accepts_a_first_batch:_landing_with_a_campaign,_then_the_platform (0.00s)
+    --- PASS: TestEventsContract/accepts_a_returning_visitor_with_no_referrer (0.00s)
+    --- PASS: TestEventsContract/accepts_the_rest_of_the_funnel (0.00s)
+    --- PASS: TestEventsContract/refuses_no_session_id (0.00s)
+    --- PASS: TestEventsContract/refuses_a_session_id_that_is_not_a_UUID_v4 (0.00s)
+    --- PASS: TestEventsContract/refuses_no_events (0.00s)
+    --- PASS: TestEventsContract/refuses_a_server_event (0.00s)
+    --- PASS: TestEventsContract/refuses_an_unknown_name (0.00s)
+    --- PASS: TestEventsContract/refuses_an_unknown_target (0.00s)
+    --- PASS: TestEventsContract/refuses_an_unknown_step (0.00s)
+    --- PASS: TestEventsContract/refuses_a_preset_of_another_target (0.00s)
+    --- PASS: TestEventsContract/refuses_a_step_on_an_event_that_takes_none (0.00s)
+    --- PASS: TestEventsContract/refuses_acquisition_fields_on_a_later_event (0.00s)
+    --- PASS: TestEventsContract/refuses_a_target_on_landed (0.00s)
+    --- PASS: TestEventsContract/refuses_two_landings_in_one_batch (0.00s)
+    --- PASS: TestEventsContract/refuses_an_unknown_viewport (0.00s)
+    --- PASS: TestEventsContract/refuses_a_field_the_API_does_not_know (0.00s)
+    --- PASS: TestEventsContract/refuses_more_than_20_events (0.00s)
+=== RUN   TestReferrerOrigin
+--- PASS: TestReferrerOrigin (0.00s)
+=== RUN   TestUTMValuesAreClippedOnARuneBoundary
+--- PASS: TestUTMValuesAreClippedOnARuneBoundary (0.00s)
+=== RUN   TestReadGeo
+=== RUN   TestReadGeo/plain
+=== RUN   TestReadGeo/encoded
+=== RUN   TestReadGeo/plus_is_literal
+=== RUN   TestReadGeo/lowercase_country
+=== RUN   TestReadGeo/no_country,_no_location
+=== RUN   TestReadGeo/not_a_country_code
+=== RUN   TestReadGeo/bad_region
+=== RUN   TestReadGeo/bad_encoding
+=== RUN   TestReadGeo/control_character
+=== RUN   TestReadGeo/long_city
+--- PASS: TestReadGeo (0.00s)
+    --- PASS: TestReadGeo/plain (0.00s)
+    --- PASS: TestReadGeo/encoded (0.00s)
+    --- PASS: TestReadGeo/plus_is_literal (0.00s)
+    --- PASS: TestReadGeo/lowercase_country (0.00s)
+    --- PASS: TestReadGeo/no_country,_no_location (0.00s)
+    --- PASS: TestReadGeo/not_a_country_code (0.00s)
+    --- PASS: TestReadGeo/bad_region (0.00s)
+    --- PASS: TestReadGeo/bad_encoding (0.00s)
+    --- PASS: TestReadGeo/control_character (0.00s)
+    --- PASS: TestReadGeo/long_city (0.00s)
+=== RUN   TestSessionHeaderContract
+=== RUN   TestSessionHeaderContract/the_website
+=== RUN   TestSessionHeaderContract/a_script_with_no_session_headers
+=== RUN   TestSessionHeaderContract/no_headers_at_all
+=== RUN   TestSessionHeaderContract/an_uppercase_session_id_is_stored_lowercase
+=== RUN   TestSessionHeaderContract/a_version_1_UUID_is_not_a_session_id
+=== RUN   TestSessionHeaderContract/a_UUID_with_the_wrong_variant_is_not_a_session_id
+=== RUN   TestSessionHeaderContract/a_braced_UUID_is_not_a_session_id
+=== RUN   TestSessionHeaderContract/a_UUID_with_text_after_it_is_not_a_session_id
+=== RUN   TestSessionHeaderContract/zero_configurator_time
+=== RUN   TestSessionHeaderContract/the_two-hour_cap_itself
+=== RUN   TestSessionHeaderContract/one_millisecond_over_the_cap_is_ignored,_so_the_site_caps_before_sending
+=== RUN   TestSessionHeaderContract/a_negative_time_is_ignored
+=== RUN   TestSessionHeaderContract/a_fractional_time_is_ignored
+=== RUN   TestSessionHeaderContract/exponent_notation_is_ignored
+=== RUN   TestSessionHeaderContract/a_plus_sign_is_ignored
+=== RUN   TestSessionHeaderContract/leading_zeros_are_still_a_number
+=== RUN   TestSessionHeaderContract/the_site_prefix_without_a_build_is_not_the_site
+=== RUN   TestSessionHeaderContract/the_prefix_is_case-sensitive
+=== RUN   TestSessionHeaderContract/an_X-Client_over_64_characters_is_ignored
+=== RUN   TestSessionHeaderContract/an_X-Client_of_exactly_64_characters_is_the_site
+=== RUN   TestSessionHeaderContract/an_X-Client_that_is_not_printable_ASCII_is_ignored
+=== RUN   TestSessionHeaderContract/a_crawler
+=== RUN   TestSessionHeaderContract/a_headless_browser
+=== RUN   TestSessionHeaderContract/the_site's_own_header_wins_over_a_crawler-like_agent
+=== RUN   TestSessionHeaderContract/python-requests_is_a_script,_not_a_crawler
+--- PASS: TestSessionHeaderContract (0.00s)
+    --- PASS: TestSessionHeaderContract/the_website (0.00s)
+    --- PASS: TestSessionHeaderContract/a_script_with_no_session_headers (0.00s)
+    --- PASS: TestSessionHeaderContract/no_headers_at_all (0.00s)
+    --- PASS: TestSessionHeaderContract/an_uppercase_session_id_is_stored_lowercase (0.00s)
+    --- PASS: TestSessionHeaderContract/a_version_1_UUID_is_not_a_session_id (0.00s)
+    --- PASS: TestSessionHeaderContract/a_UUID_with_the_wrong_variant_is_not_a_session_id (0.00s)
+    --- PASS: TestSessionHeaderContract/a_braced_UUID_is_not_a_session_id (0.00s)
+    --- PASS: TestSessionHeaderContract/a_UUID_with_text_after_it_is_not_a_session_id (0.00s)
+    --- PASS: TestSessionHeaderContract/zero_configurator_time (0.00s)
+    --- PASS: TestSessionHeaderContract/the_two-hour_cap_itself (0.00s)
+    --- PASS: TestSessionHeaderContract/one_millisecond_over_the_cap_is_ignored,_so_the_site_caps_before_sending (0.00s)
+    --- PASS: TestSessionHeaderContract/a_negative_time_is_ignored (0.00s)
+    --- PASS: TestSessionHeaderContract/a_fractional_time_is_ignored (0.00s)
+    --- PASS: TestSessionHeaderContract/exponent_notation_is_ignored (0.00s)
+    --- PASS: TestSessionHeaderContract/a_plus_sign_is_ignored (0.00s)
+    --- PASS: TestSessionHeaderContract/leading_zeros_are_still_a_number (0.00s)
+    --- PASS: TestSessionHeaderContract/the_site_prefix_without_a_build_is_not_the_site (0.00s)
+    --- PASS: TestSessionHeaderContract/the_prefix_is_case-sensitive (0.00s)
+    --- PASS: TestSessionHeaderContract/an_X-Client_over_64_characters_is_ignored (0.00s)
+    --- PASS: TestSessionHeaderContract/an_X-Client_of_exactly_64_characters_is_the_site (0.00s)
+    --- PASS: TestSessionHeaderContract/an_X-Client_that_is_not_printable_ASCII_is_ignored (0.00s)
+    --- PASS: TestSessionHeaderContract/a_crawler (0.00s)
+    --- PASS: TestSessionHeaderContract/a_headless_browser (0.00s)
+    --- PASS: TestSessionHeaderContract/the_site's_own_header_wins_over_a_crawler-like_agent (0.00s)
+    --- PASS: TestSessionHeaderContract/python-requests_is_a_script,_not_a_crawler (0.00s)
+=== RUN   TestClassifyAgent
+=== RUN   TestClassifyAgent/Chrome_on_Android
+=== RUN   TestClassifyAgent/Chrome_on_an_Android_tablet
+=== RUN   TestClassifyAgent/Safari_on_iPhone
+=== RUN   TestClassifyAgent/Safari_on_iPad
+=== RUN   TestClassifyAgent/Chrome_on_iOS
+=== RUN   TestClassifyAgent/Safari_on_a_Mac
+=== RUN   TestClassifyAgent/Edge_on_Windows
+=== RUN   TestClassifyAgent/Firefox_on_Linux
+=== RUN   TestClassifyAgent/Opera_on_Windows
+=== RUN   TestClassifyAgent/Samsung_Internet
+=== RUN   TestClassifyAgent/Chrome_on_a_Chromebook
+=== RUN   TestClassifyAgent/reduced_UA_with_a_mobile_hint
+=== RUN   TestClassifyAgent/curl
+=== RUN   TestClassifyAgent/nothing
+--- PASS: TestClassifyAgent (0.00s)
+    --- PASS: TestClassifyAgent/Chrome_on_Android (0.00s)
+    --- PASS: TestClassifyAgent/Chrome_on_an_Android_tablet (0.00s)
+    --- PASS: TestClassifyAgent/Safari_on_iPhone (0.00s)
+    --- PASS: TestClassifyAgent/Safari_on_iPad (0.00s)
+    --- PASS: TestClassifyAgent/Chrome_on_iOS (0.00s)
+    --- PASS: TestClassifyAgent/Safari_on_a_Mac (0.00s)
+    --- PASS: TestClassifyAgent/Edge_on_Windows (0.00s)
+    --- PASS: TestClassifyAgent/Firefox_on_Linux (0.00s)
+    --- PASS: TestClassifyAgent/Opera_on_Windows (0.00s)
+    --- PASS: TestClassifyAgent/Samsung_Internet (0.00s)
+    --- PASS: TestClassifyAgent/Chrome_on_a_Chromebook (0.00s)
+    --- PASS: TestClassifyAgent/reduced_UA_with_a_mobile_hint (0.00s)
+    --- PASS: TestClassifyAgent/curl (0.00s)
+    --- PASS: TestClassifyAgent/nothing (0.00s)
+=== RUN   TestIsBot
+--- PASS: TestIsBot (0.00s)
+PASS
+ok  	github.com/base-android/generator-api/internal/telemetry	0.583s
+# end: Sun Oct 25 08:44:37 IST 2026
+EXIT=0

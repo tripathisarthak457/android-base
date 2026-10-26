@@ -1,0 +1,33 @@
+package com.example.cmp.feature.auth.navigation
+
+import com.example.cmp.core.navigation.AppNavigator
+import com.example.cmp.core.navigation.NavGraphEntry
+import com.example.cmp.core.navigation.navGraph
+import com.example.cmp.feature.auth.api.PasswordResetKey
+import com.example.cmp.feature.auth.api.SignInKey
+import com.example.cmp.feature.auth.api.SignUpKey
+import com.example.cmp.feature.auth.passwordreset.PasswordResetRoute
+import com.example.cmp.feature.auth.signin.SignInRoute
+import com.example.cmp.feature.auth.signup.SignUpRoute
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityRetainedComponent
+import dagger.multibindings.IntoSet
+
+/**
+ * Nothing here navigates on success: the saved session starts the app's back stack afresh, so Back
+ * can never return to these screens.
+ */
+@Module
+@InstallIn(ActivityRetainedComponent::class)
+internal object AuthNavigation {
+
+    @Provides
+    @IntoSet
+    fun authNavGraph(navigator: AppNavigator): NavGraphEntry = navGraph {
+        entry<SignInKey> { SignInRoute(navigator = navigator) }
+        entry<SignUpKey> { SignUpRoute(navigator = navigator) }
+        entry<PasswordResetKey> { PasswordResetRoute(navigator = navigator) }
+    }
+}

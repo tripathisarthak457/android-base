@@ -1,0 +1,57 @@
+Sun Oct 25 17:45:47 IST 2026
+61dfa2508ac6a8c74a45e7cf97692f402ab557f5
+$ gofmt -l .
+gofmt exit=0
+$ go vet ./...
+vet exit=0
+$ go build ./...
+build exit=0
+$ go test ./... -count=1
+ok  	github.com/base-android/generator-api/cmd/server	2.438s
+ok  	github.com/base-android/generator-api/internal/clip	1.651s
+ok  	github.com/base-android/generator-api/internal/config	1.709s
+ok  	github.com/base-android/generator-api/internal/generate	1.857s
+ok  	github.com/base-android/generator-api/internal/httpapi	0.920s
+ok  	github.com/base-android/generator-api/internal/store	2.153s
+ok  	github.com/base-android/generator-api/internal/telemetry	1.724s
+test exit=0
+Sun Oct 25 17:45:57 IST 2026
+=== RUN   TestTheUIComponentsFilterIsBoundAsAParameter
+--- PASS: TestTheUIComponentsFilterIsBoundAsAParameter (0.00s)
+=== RUN   TestTheDailyRollupIsNotReadUnderAFilterItDoesNotKeep
+--- PASS: TestTheDailyRollupIsNotReadUnderAFilterItDoesNotKeep (0.00s)
+=== RUN   TestWeeklyAdoptionCountsEveryDimension
+--- PASS: TestWeeklyAdoptionCountsEveryDimension (0.00s)
+=== RUN   TestIntegrationMigratesOnceEvenWhenInstancesRace
+    integration_test.go:89: TEST_DATABASE_URL is not set
+--- SKIP: TestIntegrationMigratesOnceEvenWhenInstancesRace (0.00s)
+=== RUN   TestIntegrationUpgradesADatabaseTheOldRunnerMigrated
+    integration_test.go:128: TEST_DATABASE_URL is not set
+--- SKIP: TestIntegrationUpgradesADatabaseTheOldRunnerMigrated (0.00s)
+=== RUN   TestIntegrationAdminQueriesReadWhatWasRecorded
+    integration_test.go:280: TEST_DATABASE_URL is not set
+--- SKIP: TestIntegrationAdminQueriesReadWhatWasRecorded (0.00s)
+=== RUN   TestIntegrationRejectionsAreGroupedByCauseNotByValue
+    integration_test.go:480: TEST_DATABASE_URL is not set
+--- SKIP: TestIntegrationRejectionsAreGroupedByCauseNotByValue (0.00s)
+=== RUN   TestIntegrationTheWriterRecordsInTheBackground
+    integration_test.go:512: TEST_DATABASE_URL is not set
+--- SKIP: TestIntegrationTheWriterRecordsInTheBackground (0.00s)
+=== RUN   TestIntegrationRetentionForgetsNamesAndOldRows
+    integration_test.go:532: TEST_DATABASE_URL is not set
+--- SKIP: TestIntegrationRetentionForgetsNamesAndOldRows (0.00s)
+=== RUN   TestIntegrationFeedbackNotesCanBeCleared
+    integration_test.go:603: TEST_DATABASE_URL is not set
+--- SKIP: TestIntegrationFeedbackNotesCanBeCleared (0.00s)
+=== RUN   TestABatchIsOneStatementPerRowPlusTheRollup
+--- PASS: TestABatchIsOneStatementPerRowPlusTheRollup (0.00s)
+PASS
+ok  	github.com/base-android/generator-api/internal/store	0.597s
+=== RUN   TestTheUIComponentsFilterIsWithOrWithout
+--- PASS: TestTheUIComponentsFilterIsWithOrWithout (0.00s)
+=== RUN   TestTheExportPutsUIComponentsUnderItsColumn
+--- PASS: TestTheExportPutsUIComponentsUnderItsColumn (0.00s)
+=== RUN   TestAnUnknownUIComponentsFilterIsABadRequestBeforeTheDatabase
+--- PASS: TestAnUnknownUIComponentsFilterIsABadRequestBeforeTheDatabase (0.01s)
+PASS
+ok  	github.com/base-android/generator-api/internal/httpapi	0.587s

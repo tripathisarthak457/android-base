@@ -1,0 +1,30 @@
+== 20:02:42 test_android_navigation at 2ec1fe21a + the untracked test
+E
+======================================================================
+ERROR: tests (unittest.loader._FailedTest.tests)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: tests
+Traceback (most recent call last):
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\unittest\loader.py", line 141, in loadTestsFromName
+    module = __import__(module_name)
+ModuleNotFoundError: No module named 'tests'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (errors=1)
+== 20:02:43 EXIT 0
+== 20:02:54 test_android_navigation at 2ec1fe21a + the untracked test (discover -p)
+[locked:memwait] 3443 MB available, 12867 MB commit left; waiting for 3500 MB
+[locked:memwait] 3415 MB available, 12761 MB commit left; waiting for 3500 MB
+[locked:memwait] 3370 MB available, 12702 MB commit left; waiting for 3500 MB
+[locked:memwait] 3347 MB available, 12689 MB commit left; waiting for 3500 MB
+[locked:memwait] 3352 MB available, 12643 MB commit left; waiting for 3500 MB
+[locked:memwait] 3292 MB available plus 3636 MB of system cache Windows will trim; continuing
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 53.531s
+
+OK
+== 20:08:52 EXIT 0

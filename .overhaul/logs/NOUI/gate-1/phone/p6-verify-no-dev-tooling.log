@@ -1,0 +1,21 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: verifyPlaystoreReleaseCarriesNoDevTooling verifyProdReleaseCarriesNoDevTooling verifyStagingReleaseCarriesNoDevTooling
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+> Task :app:verifyStagingReleaseCarriesNoDevTooling
+> Task :app:verifyPlaystoreReleaseCarriesNoDevTooling
+> Task :app:verifyProdReleaseCarriesNoDevTooling UP-TO-DATE
+
+BUILD SUCCESSFUL in 20s
+7 actionable tasks: 2 executed, 5 up-to-date
+Configuration cache entry stored.

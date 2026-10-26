@@ -1,0 +1,18 @@
+
+Removing
+────────
+  delete  feature/orders/
+  delete  data/  (no module left in it)
+  delete  feature/  (no module left in it)
+
+  and the lines naming them in:
+    settings.gradle.kts, app/build.gradle.kts, ui/AppDestinations.kt
+
+
+  The modules are out of the build, but these folders could not all be deleted:
+    feature/orders/
+    feature/
+  Something still holds files in them open, usually the Gradle daemon (./gradlew --stop)
+  or the IDE. Delete them once it lets go.
+
+exit=1

@@ -1,0 +1,63 @@
+# cwd: /d/projects/tools/.overhaul/out/NOUI-FINAL/TEST/scratch/red-src/generator
+# source: HEAD 516491331 exported, templates/android/feature/*/src/main from f5a773e74 (Appeared, flags set by hand), MviViewModel with busy cleared without finally and onFirstObserved running at construction
+# command: memwait <python> create_project.py --spec D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/specs/ui-everything.json --preset everything --no-zip --out D:/projects/tools/.overhaul/out/NOUI-FINAL/TEST/red-2 --json
+# start: Sun Oct 25 17:54:10 IST 2026
+{
+  "ok": true,
+  "target": "android",
+  "project_name": "FinalTest",
+  "path": "D:\\projects\\tools\\.overhaul\\out\\NOUI-FINAL\\TEST\\red-2",
+  "resolved_features": [
+    "analytics",
+    "applock",
+    "appstatus",
+    "auth",
+    "browser",
+    "catalog",
+    "ci",
+    "coil",
+    "collections",
+    "coverage",
+    "crashlytics",
+    "database",
+    "datadisplay",
+    "deeplink",
+    "depsanalysis",
+    "devtools",
+    "firebase",
+    "firebaseanalytics",
+    "flags",
+    "formatting",
+    "formfields",
+    "forms",
+    "googlefonts",
+    "googlesignin",
+    "language",
+    "leakcanary",
+    "licenses",
+    "liquidglass",
+    "media",
+    "network",
+    "offlinequeue",
+    "onboarding",
+    "paging",
+    "perfhud",
+    "performance",
+    "pickers",
+    "playstore",
+    "profile",
+    "push",
+    "remoteconfig",
+    "sample",
+    "search",
+    "settings",
+    "websocket"
+  ],
+  "feature_modules": [],
+  "notes": [],
+  "warnings": [],
+  "ignored_fields": [],
+  "summary": []
+}
+EXIT=0
+# end: Sun Oct 25 17:54:33 IST 2026

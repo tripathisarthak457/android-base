@@ -1,0 +1,174 @@
+04:39:18
+D free GB: 77.2
+./gradlew --offline --continue :core:designsystem:compileDebugKotlin :core:designsystem:compileDebugUnitTestKotlin
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:designsystem:compileDebugKotlin :core:designsystem:compileDebugUnitTestKotlin
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:common:verifyModuleDependencies
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyApiPurity
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:generateDebugComposePreviewRobolectricTests
+> Task :core:testing:verifyApiPurity
+> Task :core:testing:verifyModuleDependencies
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :core:testing:compose:verifyApiPurity
+> Task :core:testing:compose:verifyModuleDependencies
+> Task :core:testing:compose:preBuild
+> Task :core:testing:compose:preDebugBuild
+> Task :core:testing:writeDebugAarMetadata
+> Task :core:testing:compose:writeDebugAarMetadata
+> Task :core:testing:generateDebugEmptyResourceFiles
+> Task :core:testing:compose:generateDebugEmptyResourceFiles
+> Task :core:designsystem:verifyCodeRules
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:testing:processDebugManifest
+> Task :core:testing:compose:processDebugManifest
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths
+> Task :core:designsystem:generateDebugUnitTestResources FROM-CACHE
+> Task :core:designsystem:extractDeepLinksDebug FROM-CACHE
+> Task :core:designsystem:processDebugManifest
+> Task :core:designsystem:packageDebugResources
+> Task :core:designsystem:checkDebugUnitTestAarMetadata
+> Task :core:designsystem:compileDebugLibraryResources FROM-CACHE
+> Task :core:designsystem:mergeDebugUnitTestManifest
+> Task :core:designsystem:processDebugUnitTestManifest
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:generateDebugRFile
+
+> Task :core:designsystem:compileDebugKotlin FAILED
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppColors.kt:111:1 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppFonts.kt:97:1 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppFonts.kt:97:5 Return type must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:27:1 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:27:17 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:27:38 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:30:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:31:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:34:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:37:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:39:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:40:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:41:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:51:1 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:55:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:55:9 Return type must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:58:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:58:9 Return type must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:61:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:61:9 Return type must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:64:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:64:9 Return type must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:67:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:67:9 Return type must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:70:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:70:9 Return type must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:73:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:73:9 Return type must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:76:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:76:9 Return type must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:79:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:79:9 Return type must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:85:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:85:9 Return type must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:92:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:93:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:96:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:97:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:100:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:101:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:103:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppMotion.kt:104:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:35:1 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:43:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:52:1 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:53:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:54:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:55:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:74:1 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:133:1 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:136:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:136:9 Return type must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:142:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:147:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:152:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:157:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:162:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:167:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:172:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:178:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:183:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:193:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:199:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:205:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:211:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTheme.kt:217:5 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTypography.kt:16:1 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTypography.kt:53:1 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTypography.kt:74:1 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTypography.kt:77:1 Visibility must be specified in explicit API mode.
+e: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppTypography.kt:81:1 Visibility must be specified in explicit API mode.
+
+> Task :core:testing:compose:javaPreCompileDebug FROM-CACHE
+> Task :core:common:compileKotlin
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar
+> Task :core:testing:compose:compileDebugKotlin
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:bundleLibCompileToJarDebug
+> Task :core:testing:compileDebugKotlin
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :core:designsystem:mergeDebugUnitTestResources
+> Task :core:designsystem:processDebugUnitTestResources
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:designsystem:compileDebugKotlin' (registered by plugin 'com.android.internal.library').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: NO_EXPLICIT_VISIBILITY_IN_API_MODE
+       Kotlin compiler error
+         Visibility must be specified in explicit API mode.
+         Location: D:/projects/tools/.overhaul/out/NOUI-FINAL/AFTER/xnoui3/core/designsystem/src/main/kotlin/com/example/finalafter/xnoui3/core/designsystem/theme/AppColors.kt line 111
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 31s
+47 actionable tasks: 38 executed, 9 from cache
+Configuration cache entry stored.
+EXIT 1
+04:39:51

@@ -1,0 +1,25 @@
+noui-everything-compact: 1003 before, 1003 after
+noui-everything-modular: 1003 before, 1003 after
+noui-lean-compact: 438 before, 438 after
+noui-lean-modular: 438 before, 438 after
+noui-standard-compact: 822 before, 822 after
+noui-standard-modular: 822 before, 822 after
+ui-everything-compact: 2454 before, 2456 after
+   -  feature/auth private fun requestGoogleIdToken
+   -  feature/auth private interface GoogleOutcome
+   +  feature/auth internal fun requestGoogleIdToken
+   +  feature/auth internal interface GoogleOutcome
+   +  feature/search internal fun SearchResultScreen
+   +  feature/search private fun SearchResultLoadingPreview
+ui-everything-modular: 2454 before, 2456 after
+   -  feature/auth/impl private fun requestGoogleIdToken
+   -  feature/auth/impl private interface GoogleOutcome
+   +  feature/auth/impl internal fun requestGoogleIdToken
+   +  feature/auth/impl internal interface GoogleOutcome
+   +  feature/search/impl internal fun SearchResultScreen
+   +  feature/search/impl private fun SearchResultLoadingPreview
+ui-lean-compact: 1510 before, 1510 after
+ui-lean-modular: 1510 before, 1510 after
+ui-standard-compact: 1998 before, 1998 after
+ui-standard-modular: 1998 before, 1998 after
+differences: 12

@@ -1,0 +1,15 @@
+[locked:gradle] waiting for the lock (pid 18052 since 2026-10-26 08:25:29: ./gradlew check assembleDevDebug assembleProdRelease --continue --console=plain)
+[locked:gradle] waiting for the lock (pid 18052 since 2026-10-26 08:25:29: ./gradlew check assembleDevDebug assembleProdRelease --continue --console=plain)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Reusing configuration cache.
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:verifyCodeRules
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:compileDebugKotlin
+
+BUILD SUCCESSFUL in 8s
+4 actionable tasks: 3 executed, 1 up-to-date
+Configuration cache entry reused.

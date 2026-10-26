@@ -1,0 +1,16 @@
+base everything 0
+base standard 0
+base lean 0
+base push 0
+base styled 0
+== diff everything
+diff exit 0
+== diff standard
+diff exit 0
+== diff lean
+diff exit 0
+== diff push
+diff exit 0
+== diff styled
+diff exit 0
+done

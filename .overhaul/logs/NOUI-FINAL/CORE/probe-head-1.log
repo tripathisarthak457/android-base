@@ -1,0 +1,70 @@
+== 20:11:56 source c6e338530
+== 20:11:56 generate D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/specs/ui-everything.json preset everything -> D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/ui-verify from D:/projects/tools/.overhaul/out/NOUI-FINAL/CORE/src-c/generator (archive)
+[locked:memwait] 3113 MB available, 12329 MB commit left; waiting for 3500 MB
+[locked:memwait] 3087 MB available, 12311 MB commit left; waiting for 3500 MB
+[locked:memwait] 1349 MB available, 12375 MB commit left; waiting for 3500 MB
+[locked:memwait] 717 MB available, 12412 MB commit left; waiting for 1500 MB
+[locked:memwait] 577 MB available, 10699 MB commit left; waiting for 1500 MB
+[locked:memwait] 589 MB available plus 4976 MB of system cache Windows will trim; continuing
+
+Summary
+───────
+           App  Final Core Ui (FinalCoreUi)
+       Package  com.example.finalcore.uieverything
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, appstatus, auth, browser, catalog, ci,
+                coil, collections, coverage, crashlytics, database,
+                datadisplay, deeplink, depsanalysis, devtools, firebase,
+                firebaseanalytics, flags, formatting, formfields, forms,
+                googlefonts, googlesignin, language, leakcanary, licenses,
+                liquidglass, media, network, offlinequeue, onboarding,
+                paging, perfhud, performance, pickers, playstore, profile,
+                push, remoteconfig, sample, search, settings, websocket
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\CORE\ui-verify
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\CORE\ui-verify and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json: the included one is a placeholder.
+
+EXIT 0
+patched
+== 20:17:08 verifyCodeRules (scratch rules) and testDebugUnitTest
+[locked:gradle] waiting for the lock (pid 17604 since 2026-10-25 20:16:16: ./gradlew check assembleDevDebug --continue)
+[locked:gradle] waiting for the lock (pid 17604 since 2026-10-25 20:16:16: ./gradlew check assembleDevDebug --continue)
+[locked:gradle] waiting for the lock (pid 17604 since 2026-10-25 20:16:16: ./gradlew check assembleDevDebug --continue)
+[locked:gradle] waiting for the lock (pid 17604 since 2026-10-25 20:16:16: ./gradlew check assembleDevDebug --continue)
+[locked:gradle] waiting for the lock (pid 10204 since 2026-10-25 20:36:43: ./gradlew :core:designsystem:testDebugUnitTest --tests *AppDecimalFields*)
+[locked:gradle] 1695 MB available, 8673 MB commit left; waiting for 3500 MB
+[locked:gradle] 1543 MB available, 8247 MB commit left; waiting for 3500 MB
+[locked:gradle] 1843 MB available, 8613 MB commit left; waiting for 3500 MB
+[locked:gradle] 2317 MB available, 8708 MB commit left; waiting for 3500 MB
+[locked:gradle] 2480 MB available, 8745 MB commit left; waiting for 3500 MB
+[locked:gradle] 2486 MB available, 8599 MB commit left; waiting for 3500 MB
+[locked:gradle] 2530 MB available, 8589 MB commit left; waiting for 3500 MB
+[locked:gradle] 2544 MB available, 8589 MB commit left; waiting for 3500 MB
+[locked:gradle] 2503 MB available, 8597 MB commit left; waiting for 3500 MB
+[locked:gradle] 2472 MB available, 8648 MB commit left; waiting for 3500 MB
+[locked:gradle] 2547 MB available, 8746 MB commit left; waiting for 3500 MB
+[locked:gradle] 2110 MB available, 8350 MB commit left; waiting for 3500 MB
+[locked:gradle] 2134 MB available, 8491 MB commit left; waiting for 3500 MB
+[locked:gradle] 2023 MB available, 8355 MB commit left; waiting for 3500 MB
+[locked:gradle] 2462 MB available, 8656 MB commit left; waiting for 3500 MB
+[locked:gradle] 2476 MB available, 8768 MB commit left; waiting for 3500 MB
+EXIT probe 0 seconds=2153
+== 20:53:01 done

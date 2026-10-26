@@ -1,0 +1,7 @@
+preset standard -> /language picker/i
+feature auth -> /\bscreens\b/i
+feature language -> /\brows?\b/i
+feature onboarding -> /walkthrough/i
+feature sample -> /working screen/i
+feature deeplink -> /held until[^.]*\b(?:onboarding|sign-in)\b/i
+feature push -> /end of onboarding/i

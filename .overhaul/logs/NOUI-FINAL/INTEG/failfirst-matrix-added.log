@@ -1,0 +1,14 @@
+E
+======================================================================
+ERROR: test_a_component_added_without_ui_components_is_the_developers_not_the_options (tests.test_consistency.RunnerTest.test_a_component_added_without_ui_components_is_the_developers_not_the_options)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\NOUI-FINAL\generator\tests\test_consistency.py", line 191, in test_a_component_added_without_ui_components_is_the_developers_not_the_options
+    self.assertEqual(issues[2:], worker.without_added(issues, root, added))
+                                 ^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.consistency.worker' has no attribute 'without_added'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.034s
+
+FAILED (errors=1)

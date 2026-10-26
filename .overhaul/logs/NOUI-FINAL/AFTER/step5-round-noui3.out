@@ -1,0 +1,8 @@
+> Task :core:designsystem:compileDebugKotlin FAILED
+BUILD FAILED in 31s
+EXIT 1
+visibility: 60 return types: 12
+inserted public: 57 in 5 files
+skipped 2 other 0
+typed: 11
+MANUAL AppFonts.kt:1: val AppFontPreload = FontPreload(

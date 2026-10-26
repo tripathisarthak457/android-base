@@ -1,0 +1,2 @@
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.reviewguard.nouilean.core.designsystem.preview.ThemeSlotsPreview()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.example.reviewguard.nouilean.core.designsystem.preview.ThemeSlotsPreviewContent()

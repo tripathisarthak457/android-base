@@ -1,0 +1,36 @@
+# head: febf31200 + 6 uncommitted paths
+# command: create_project.py --spec D:/projects/tools/.overhaul/out/NOUI-FINAL/TOOLS/specs/ui-lean.json --preset lean --out D:/projects/tools/.overhaul/out/NOUI-FINAL/TOOLS/ui-lean --no-zip --force
+# start: Sun Oct 25 22:54:42 IST 2026
+
+Summary
+───────
+           App  Final Tools Ui Lean (FinalToolsUiLean)
+       Package  com.example.finaltools.uilean
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  ci, coil, deeplink, googlefonts, leakcanary, network
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\ui-lean
+
+  ! No feature gives the app a tab, so a 'home' module was scaffolded under
+  ! feature/home and data/home. Its repository has no source yet: give it one,
+  ! or rename the module.
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\NOUI-FINAL\TOOLS\ui-lean and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+
+# exit: 0 end: Sun Oct 25 22:54:55 IST 2026

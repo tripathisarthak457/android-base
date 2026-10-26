@@ -1,0 +1,73 @@
+== raw-f8i
+BUILD SUCCESSFUL in 1m 8s
+EXIT 0
+== f8i-ui-lean
+BUILD SUCCESSFUL in 1m 14s
+EXIT 0
+== f8i-ui-standard
+BUILD SUCCESSFUL in 1m 19s
+EXIT 0
+== f8i-ui-everything
+BUILD SUCCESSFUL in 1m 35s
+EXIT 0
+== f8i-noui-lean
+BUILD SUCCESSFUL in 35s
+EXIT 0
+== f8i-noui-standard
+BUILD SUCCESSFUL in 41s
+EXIT 0
+== f8i-noui-everything
+BUILD SUCCESSFUL in 50s
+EXIT 0
+after ui-lean-compact 0
+after ui-standard-compact 0
+after ui-everything-compact 0
+after ui-everything-modular 0
+after noui-lean-compact 0
+after noui-standard-compact 0
+after noui-everything-compact 0
+after noui-everything-modular 0
+== compare
+ui-lean-compact: 282 files differ; only before 0, only after 0
+    213  ktlint punctuation
+ui-standard-compact: 375 files differ; only before 0, only after 0
+    291  ktlint punctuation
+ui-everything-compact: 470 files differ; only before 0, only after 0
+    350  ktlint punctuation
+ui-everything-modular: 470 files differ; only before 0, only after 0
+    350  ktlint punctuation
+noui-lean-compact: 97 files differ; only before 0, only after 0
+noui-standard-compact: 177 files differ; only before 0, only after 0
+    126  ktlint punctuation
+noui-everything-compact: 227 files differ; only before 0, only after 0
+    153  ktlint punctuation
+noui-everything-modular: 227 files differ; only before 0, only after 0
+    153  ktlint punctuation
+     48 build-logic/convention/src/main/kotlin/com/example/cmp/buildlogic/guard/CodeRules.kt
+     40 app/src/main/kotlin/com/example/cmp/FinalAfterApplication.kt
+     32 docs/DESIGN-SYSTEM.md
+     14 feature/auth/src/main/kotlin/com/example/cmp/feature/auth/signin/SignInViewModel.kt
+     14 feature/auth/impl/src/main/kotlin/com/example/cmp/feature/auth/signin/SignInViewModel.kt
+     12 build.gradle.kts
+      8 generator-spec.json
+      8 build-logic/convention/src/test/kotlin/com/example/cmp/buildlogic/guard/CodeRulesTest.kt
+      8 build-logic/convention/src/main/kotlin/com/example/cmp/buildlogic/guard/SheetRules.kt
+      8 app/src/main/kotlin/com/example/cmp/MainActivity.kt
+      8 README.md
+      4 feature/onboarding/src/main/kotlin/com/example/cmp/feature/onboarding/api/OnboardingKeys.kt
+      4 core/designsystem/src/test/kotlin/com/example/cmp/core/designsystem/component/sheet/shape/SheetApiShapeTest.kt
+      2 feature/profile/src/main/kotlin/com/example/cmp/feature/profile/api/ProfileKeys.kt
+      2 feature/profile/api/src/main/kotlin/com/example/cmp/feature/profile/api/ProfileKeys.kt
+      2 feature/onboarding/api/src/main/kotlin/com/example/cmp/feature/onboarding/api/OnboardingKeys.kt
+      2 feature/feed/src/main/kotlin/com/example/cmp/feature/feed/api/FeedKeys.kt
+      2 feature/feed/api/src/main/kotlin/com/example/cmp/feature/feed/api/FeedKeys.kt
+      2 feature/auth/src/main/kotlin/com/example/cmp/feature/auth/signin/GoogleSignIn.kt
+      2 feature/auth/impl/src/main/kotlin/com/example/cmp/feature/auth/signin/GoogleSignIn.kt
+raw-f8i: 1 output folders left
+f8i-ui-lean: 1 output folders left
+f8i-ui-standard: 1 output folders left
+f8i-ui-everything: 1 output folders left
+f8i-noui-lean: 1 output folders left
+f8i-noui-standard: 1 output folders left
+f8i-noui-everything: 1 output folders left
+ALLDONE

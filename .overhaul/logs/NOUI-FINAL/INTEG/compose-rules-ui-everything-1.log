@@ -1,0 +1,45 @@
+01:30:16
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: spotlessKotlinCheck spotlessKotlinGradleCheck
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :spotlessKotlin
+> Task :spotlessKotlinCheck FAILED
+> Task :spotlessKotlinGradle
+> Task :spotlessKotlinGradleCheck
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':spotlessKotlinCheck' (registered in build file 'build.gradle.kts').
+> There were 3 lint error(s), they must be fixed or suppressed.
+  core/designsystem/src/main/kotlin/com/example/finalinteg/ui/core/designsystem/component/overlay/AppMenu.kt:L263 ktlint(compose:defaults-visibility) `Defaults` objects should match visibility of the composables they serve. `AppMenuDefaults` is internal but it should be public. (...)
+  core/designsystem/src/main/kotlin/com/example/finalinteg/ui/core/designsystem/component/selection/AppCheckbox.kt:L113 ktlint(compose:defaults-visibility) `Defaults` objects should match visibility of the composables they serve. `AppCheckboxDefaults` is internal but it should be public. (...)
+  core/designsystem/src/main/kotlin/com/example/finalinteg/ui/core/designsystem/component/selection/AppRadio.kt:L57 ktlint(compose:defaults-visibility) `Defaults` objects should match visibility of the composables they serve. `AppRadioDefaults` is internal but it should be public. (...)
+  Resolve these lints or suppress with `suppressLintsFor`
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 52s
+8 actionable tasks: 4 executed, 4 up-to-date
+Configuration cache entry stored.
+EXIT 1
+01:31:10

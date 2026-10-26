@@ -1,0 +1,47 @@
+05:14:22
+D free GB: 76.6
+./gradlew --offline --continue --no-parallel --no-daemon --no-configuration-cache spotlessApply --rerun-tasks
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.7.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :spotlessKotlin
+> Task :spotlessKotlinApply FAILED
+> Task :spotlessKotlinGradle
+> Task :spotlessKotlinGradleApply
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':spotlessKotlinApply' (registered in build file 'build.gradle.kts').
+> There were 4 lint error(s), they must be fixed or suppressed.
+  build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard/SheetRules.kt:L178 ktlint(standard:mixed-condition-operators) A condition with mixed usage of '&&' and '||' is hard to read. Use parenthesis to clarify the (sub)condition.
+  core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/pickers/AppDatePicker.kt:L279 ktlint(standard:kdoc) A dangling toplevel KDoc is not allowed
+  core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/sheet/shape/SheetApiShapeTest.kt:L158 ktlint(standard:class-naming) Class or object name should start with an uppercase letter and use camel case
+  core/perfhud/src/main/kotlin/com/base/app/core/perfhud/memory/MemoryLog.kt:L148 ktlint(standard:value-parameter-comment) A comment inside or on same line after a 'value_parameter' is not allowed. It may be placed on a separate line above.
+  Resolve these lints or suppress with `suppressLintsFor`
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1m 1s
+8 actionable tasks: 8 executed
+EXIT 1
+05:15:25

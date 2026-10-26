@@ -1,0 +1,17 @@
+[2026-10-25 08:19:31] session start
+[2026-10-25 08:19:31] worktree HEAD: ccd9c3c9bd8085ac88c45335941518d0f6807a17 on staging-wp/NOUI
+[2026-10-25 08:19:33] P1 generate
+[2026-10-25 08:19:33] STEP P1-generate -> 130 (D:/projects/tools/.overhaul/logs/NOUI/gate-1/phone/p1-generate.log)
+[2026-10-25 08:19:33] STEP P2-P7 -> skipped (P1 did not produce both APKs)
+[2026-10-25 08:19:34] P8 cleanup
+packages: same as before
+local-tmp: same as before
+android-media: same as before
+settings-system: same as before
+settings-secure: same as before
+settings-global: same as before
+wm: same as before
+[2026-10-25 08:19:35] STEP P8-phone-as-found -> 0 (D:/projects/tools/.overhaul/perf/NOUI/gate-1/p8-diff.txt)
+[2026-10-25 08:19:35] STEP P9 -> skipped (no project to record from)
+[2026-10-25 08:19:35] session end
+SESSION EXIT 0

@@ -1,0 +1,26 @@
+# cwd: /d/projects/tools/.overhaul/wt/NOUI/generator
+# command: D:/projects/tools/.overhaul/bin/memwait python create_project.py --spec D:/projects/tools/.overhaul/out/NOUI/gate-1/specs/ui-lean.json --out D:/projects/tools/.overhaul/out/NOUI/gate-1/ui-lean --no-zip --json --force --preset lean
+# start: Sun Oct 25 08:29:29 IST 2026
+{
+  "ok": true,
+  "target": "android",
+  "project_name": "GateOne",
+  "path": "D:\\projects\\tools\\.overhaul\\out\\NOUI\\gate-1\\ui-lean",
+  "resolved_features": [
+    "ci",
+    "coil",
+    "deeplink",
+    "googlefonts",
+    "leakcanary",
+    "network"
+  ],
+  "feature_modules": [],
+  "notes": [],
+  "warnings": [
+    "No feature gives the app a tab, so a 'home' module was scaffolded under feature/home and data/home. Its repository has no source yet: give it one, or rename the module."
+  ],
+  "ignored_fields": [],
+  "summary": []
+}
+# end: Sun Oct 25 08:29:34 IST 2026
+EXIT=0

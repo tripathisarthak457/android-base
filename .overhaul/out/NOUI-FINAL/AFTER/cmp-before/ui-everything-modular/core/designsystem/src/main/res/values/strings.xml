@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copy the components draw by default. Every parameter that takes one of these can be overridden. -->
+<resources>
+    <string name="designsystem_cancel">Cancel</string>
+    <string name="designsystem_close">Close</string>
+    <string name="designsystem_try_again">Try again</string>
+    <string name="designsystem_offline_title">You are offline</string>
+    <string name="designsystem_error_title">Something went wrong</string>
+    <string name="designsystem_navigate_back">Navigate back</string>
+    <string name="designsystem_hide_password">Hide password</string>
+    <string name="designsystem_show_password">Show password</string>
+    <string name="designsystem_search">Search</string>
+    <string name="designsystem_clear_search">Clear search</string>
+    <string name="designsystem_remove_item">Remove %1$s</string>
+    <string name="designsystem_show_more">Show more</string>
+    <string name="designsystem_show_less">Show less</string>
+    <string name="designsystem_expanded">Expanded</string>
+    <string name="designsystem_collapsed">Collapsed</string>
+    <string name="designsystem_expand">Expand</string>
+    <string name="designsystem_collapse">Collapse</string>
+    <string name="designsystem_page_of">Page %1$d of %2$d</string>
+    <string name="designsystem_loading">Loading</string>
+    <string name="designsystem_refresh">Refresh</string>
+    <string name="designsystem_refreshing">Refreshing</string>
+    <string name="designsystem_show_menu">Show menu</string>
+    <plurals name="designsystem_people_count">
+        <item quantity="one">%1$d person</item>
+        <item quantity="other">%1$d people</item>
+    </plurals>
+    <string name="designsystem_sheet_pane">Sheet</string>
+    <string name="designsystem_sheet_grabber">Resize sheet</string>
+    <string name="designsystem_sheet_expand">Expand sheet</string>
+    <string name="designsystem_sheet_collapse">Collapse sheet</string>
+    <string name="designsystem_sheet_dismiss">Dismiss sheet</string>
+    <string name="designsystem_sheet_close_scrim">Close sheet</string>
+    <string name="designsystem_sheet_state_expanded">Expanded</string>
+    <string name="designsystem_sheet_state_partial">Partially expanded</string>
+    <string name="designsystem_sheet_state_collapsed">Collapsed</string>
+    <string name="designsystem_actions_pane">Actions</string>
+    <string name="designsystem_sheet_discard_title">Discard changes?</string>
+    <string name="designsystem_sheet_discard">Discard</string>
+    <string name="designsystem_sheet_keep_editing">Keep Editing</string>
+    <string name="designsystem_none">None</string>
+    <string name="designsystem_nothing_selected">Nothing selected</string>
+    <string name="designsystem_nothing_selected_message">Choose something from the list to see it here.</string>
+    <string name="designsystem_previous_month">Previous month</string>
+    <string name="designsystem_next_month">Next month</string>
+    <string name="designsystem_decrease">Decrease</string>
+    <string name="designsystem_increase">Increase</string>
+    <string name="designsystem_select">Select</string>
+    <string name="designsystem_phone_number">Phone number</string>
+    <string name="designsystem_dialling_code">Code</string>
+    <string name="designsystem_add_a_tag">Add a tag</string>
+    <string name="designsystem_tag_limit_reached">Limit reached</string>
+    <string name="designsystem_step_of">Step %1$d of %2$d: %3$s</string>
+    <string name="designsystem_range_start">Minimum</string>
+    <string name="designsystem_range_end">Maximum</string>
+    <string name="designsystem_trend_up">Up</string>
+    <string name="designsystem_trend_down">Down</string>
+    <string name="designsystem_rating">%1$.1f out of %2$d</string>
+    <string name="designsystem_total">Total</string>
+    <string name="designsystem_table_cell" translatable="false">%1$s %2$s</string>
+    <string name="designsystem_move_up">Move up</string>
+    <string name="designsystem_move_down">Move down</string>
+</resources>

@@ -1,0 +1,54 @@
+06:57:54
+D free GB: 74.1
+./gradlew --offline --continue spotlessCheck
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: spotlessCheck
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :spotlessKotlinGradle
+> Task :spotlessKotlinGradleCheck
+> Task :spotlessKotlin
+> Task :spotlessKotlinCheck FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':spotlessKotlinCheck' (registered in build file 'build.gradle.kts').
+> The following files had format violations:
+      core\network\src\main\kotlin\com\example\finalafter\f8huistandard\core\network\di\HttpClientModule.kt
+          @@ -62,7 +62,11 @@
+           ········OkHttpClient.Builder()
+           ············.cache(cache)
+           ············.apply·{
+          -················if·(config.certificatePins.isNotEmpty())·certificatePinner(config.certificatePinner())
+          +················if·(config.certificatePins.isNotEmpty())·{
+          +····················certificatePinner(
+          +························config.certificatePinner(),
+          +····················)
+          +················}
+           ············}
+           ············.build()
+           
+  Run 'gradlew.bat spotlessApply' to fix all violations.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1m 17s
+8 actionable tasks: 8 executed
+Configuration cache entry stored.
+EXIT 1
+06:59:13

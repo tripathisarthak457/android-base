@@ -1,0 +1,65 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Reusing configuration cache.
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyApiPurity UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :core:navigation:verifyApiPurity UP-TO-DATE
+> Task :core:navigation:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:navigation:preBuild UP-TO-DATE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar UP-TO-DATE
+> Task :core:navigation:preDebugBuild UP-TO-DATE
+> Task :core:designsystem:verifyCodeRules UP-TO-DATE
+> Task :core:designsystem:preBuild UP-TO-DATE
+> Task :core:designsystem:preDebugBuild UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:navigation:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:navigation:kspDebugKotlin UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:navigation:shell:verifyApiPurity
+> Task :core:navigation:shell:verifyModuleDependencies UP-TO-DATE
+> Task :core:navigation:shell:preBuild
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:navigation:shell:preDebugBuild
+> Task :core:navigation:shell:processDebugNavigationResources UP-TO-DATE
+> Task :core:navigation:shell:generateDebugResources UP-TO-DATE
+> Task :core:navigation:shell:packageDebugResources UP-TO-DATE
+> Task :core:navigation:shell:parseDebugLocalResources UP-TO-DATE
+> Task :core:navigation:shell:generateDebugRFile UP-TO-DATE
+> Task :core:navigation:compileDebugKotlin UP-TO-DATE
+> Task :core:navigation:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:navigation:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:navigation:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:navigation:shell:compileDebugKotlin
+> Task :core:navigation:shell:checkComposeStability FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:navigation:shell:checkComposeStability' (registered by plugin 'com.example.fixcmp.app.android.compose').
+> :core:navigation:shell:checkComposeStability: config/compose-stability-baseline.txt accepts parameters this module no longer compares by identity. Delete these lines, so the next such parameter is reported:
+  
+    com.example.fixcmp.app.core.navigation.shell.back.BackHandlerEffect(handler)
+    com.example.fixcmp.app.core.navigation.shell.stack.rememberEntryLifecycle(key)
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 5s
+32 actionable tasks: 3 executed, 29 up-to-date
+Configuration cache entry reused.
