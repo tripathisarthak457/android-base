@@ -126,16 +126,41 @@ internal object ComposeStability {
 
     class Baseline(val accepted: Set<String>, val unexplained: List<String>)
 
+    /** The functions [reports] describe, by fully qualified name, flagged or not. */
+    fun functions(reports: List<String>): Set<String> =
+        reports.flatMap { it.lines() }.mapNotNull { FUNCTION.find(it)?.groupValues?.get(1) }.toSet()
+
     /**
-     * The entries of [baseline] that belong to a module declaring [packages] and match none of its
-     * [problems]: the parameter was fixed or the composable went, so the line only waits to accept
-     * the next one. An entry belongs to the module whose package holds its function, or the class
-     * the function is a member of.
+     * The entries of [baseline] that belong to the module whose [sources] these are and that it no
+     * longer needs, so the line only waits to accept the next problem: the parameter was fixed, as
+     * the function is [reported] without the entry among its [problems], or the composable went, as
+     * no source declares it. An entry belongs to the module whose package holds its function, or the
+     * class the function is a member of.
+     *
+     * A function the reports leave out keeps its entry while a source declares it: an incremental
+     * compile rewrites the report with the recompiled files' composables only, so its silence about
+     * the others says nothing.
      */
-    fun stale(baseline: Baseline, problems: List<String>, packages: Set<String>): List<String> =
-        baseline.accepted
-            .filter { entry -> owner(entry) in packages && entry !in problems }
+    fun stale(
+        baseline: Baseline,
+        problems: List<String>,
+        reported: Set<String>,
+        sources: List<String>,
+    ): List<String> {
+        val filesByPackage = sources.groupBy { PACKAGE.find(it)?.groupValues?.get(1) }
+        return baseline.accepted
+            .filter { entry ->
+                val files = filesByPackage[owner(entry)] ?: return@filter false
+                val function = entry.substringBefore('(').substringBefore(':')
+                val declaration = declaration(function.substringAfterLast('.'))
+                entry !in problems && (function in reported || files.none(declaration::containsMatchIn))
+            }
             .sorted()
+    }
+
+    /** A declaration of the function [name], generic or an extension included. */
+    private fun declaration(name: String): Regex =
+        Regex("""\bfun\s+(?:<[^>]*>\s*)?(?:[\w.]+\.)?${Regex.escape(name)}\s*\(""")
 
     /** `com.acme.ds.Sheet.Content(state)` → `com.acme.ds`: the function's package, past any class. */
     private fun owner(entry: String): String {
@@ -147,10 +172,6 @@ internal object ComposeStability {
     }
 
     private val PACKAGE = Regex("""^\s*package\s+([\w.]+)""", RegexOption.MULTILINE)
-
-    /** The packages [sources] declare. */
-    fun packages(sources: List<String>): Set<String> =
-        sources.mapNotNull { PACKAGE.find(it)?.groupValues?.get(1) }.toSet()
 
     /** Entries are `fqName(parameter)  # reason`; an entry without a reason is listed as unexplained. */
     fun baseline(text: String): Baseline {
@@ -203,9 +224,14 @@ internal abstract class CheckComposeStabilityTask : DefaultTask() {
             )
         }
 
-        val problems = ComposeStability.problems(present.sortedBy { it.path }.map(File::readText))
-        val packages = ComposeStability.packages(sources.files.filter { it.isFile }.map(File::readText))
-        val stale = ComposeStability.stale(baseline, problems, packages)
+        val texts = present.sortedBy { it.path }.map(File::readText)
+        val problems = ComposeStability.problems(texts)
+        val stale = ComposeStability.stale(
+            baseline,
+            problems,
+            ComposeStability.functions(texts),
+            sources.files.filter { it.isFile }.map(File::readText),
+        )
         if (stale.isNotEmpty()) {
             throw GradleException(
                 "${modulePath.get()}: ${ComposeStability.BASELINE} accepts parameters this module no longer " +

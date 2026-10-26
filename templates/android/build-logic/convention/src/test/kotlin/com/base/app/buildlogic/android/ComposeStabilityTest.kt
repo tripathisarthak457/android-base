@@ -70,19 +70,51 @@ class ComposeStabilityTest {
             com.acme.ds.Stuck: not skippable  # fixed since
             com.acme.ds.Sheet.Content(state)  # a member, fixed since
             com.acme.ds.rememberRow(key)  # fixed since
+            com.acme.ds.Gone(value)  # its composable was deleted since
             com.acme.nav.BackEffect(handler)  # another module's
             """.trimIndent(),
+        )
+        val sources = listOf(
+            """
+            package com.acme.ds
+
+            @Composable fun Foo(items: MutableList<String>) {}
+            @Composable fun Stuck(text: String) {}
+            class Sheet { @Composable fun Content(state: SheetState) {} }
+            @Composable fun rememberRow(key: Any): Row = Row(key)
+            """.trimIndent(),
+            "package com.acme.ds.list\n\n@Composable fun <T> AppPicker(options: List<T>) {}\n",
+        )
+        val reported = setOf(
+            "com.acme.ds.Foo", "com.acme.ds.list.AppPicker", "com.acme.ds.Stuck",
+            "com.acme.ds.Sheet.Content", "com.acme.ds.rememberRow",
         )
 
         assertEquals(
             listOf(
+                "com.acme.ds.Gone(value)",
                 "com.acme.ds.Sheet.Content(state)",
                 "com.acme.ds.Stuck: not skippable",
                 "com.acme.ds.list.AppPicker(options)",
                 "com.acme.ds.rememberRow(key)",
             ),
-            ComposeStability.stale(baseline, listOf("com.acme.ds.Foo(items)"), setOf("com.acme.ds", "com.acme.ds.list")),
+            ComposeStability.stale(baseline, listOf("com.acme.ds.Foo(items)"), reported, sources),
         )
+    }
+
+    @Test
+    fun `the functions a report describes are named whether or not they are flagged`() {
+        val report = """
+            restartable skippable fun com.acme.ds.Foo(
+              unstable items: MutableList<String>
+            )
+            restartable skippable open fun com.acme.ds.Sheet.Content(
+              stable state: SheetState
+            )
+            fun com.acme.ds.<get-isWide>()
+        """.trimIndent()
+
+        assertEquals(setOf("com.acme.ds.Foo", "com.acme.ds.Sheet.Content"), ComposeStability.functions(listOf(report)))
     }
 
     @Test
@@ -113,6 +145,42 @@ class ComposeStabilityTest {
 
         assertTrue(error.message!!, "  com.acme.ds.Bar(key)" in error.message!!.lines())
         assertTrue(error.message!!, "com.acme.ds.Foo(items)" !in error.message!!)
+    }
+
+    @Test
+    fun `an entry stays while a source declares its function, though the report leaves the function out`() {
+        val root = ProjectBuilder.builder().withProjectDir(folder.root).build()
+        // An incremental compile rewrites the report with the recompiled files' composables only.
+        val report = folder.newFile("shell-composables.txt").apply {
+            writeText(
+                """
+                restartable skippable fun com.acme.nav.Host(
+                  stable title: String
+                )
+                """.trimIndent(),
+            )
+        }
+        val host = folder.newFile("Host.kt").apply {
+            writeText("package com.acme.nav\n\n@Composable fun Host(title: String) {}\n")
+        }
+        val back = folder.newFile("BackEffect.kt").apply {
+            writeText("package com.acme.nav\n\n@Composable\nfun BackEffect(handler: BackHandler) {}\n")
+        }
+        val baseline = folder.newFile("compose-stability-baseline.txt").apply {
+            writeText("com.acme.nav.BackEffect(handler)  # compared by identity on purpose\n")
+        }
+        val marker = folder.root.resolve("ok")
+        val check = root.tasks.register("checkComposeStability", CheckComposeStabilityTask::class.java).get().apply {
+            reports.from(report)
+            sources.from(host, back)
+            baselineFile.set(baseline)
+            modulePath.set(":core:navigation:shell")
+            this.marker.set(marker)
+        }
+
+        check.verify()
+
+        assertEquals("ok", marker.readText())
     }
 
     @Test
