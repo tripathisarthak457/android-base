@@ -1,5 +1,6 @@
 package com.base.app.core.navigation
 
+// <opt:ui_components>
 /**
  * Marks what a navigation host needs from the runtime and a feature never does: taking the
  * navigator's commands and applying them to a back stack, a stack's entries and its
@@ -8,6 +9,17 @@ package com.base.app.core.navigation
  * one a project writes) opts in for its whole module; a feature registers with `navGraph { }`,
  * navigates through [AppNavigator] and never opts in.
  */
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ /**
+//~  * Marks what a navigation host needs from the runtime and a feature never does: taking the
+//~  * navigator's commands and applying them to a back stack, a stack's entries and its
+//~  * [back gate][com.base.app.core.navigation.back.BackGate], the rules a command is applied by, and
+//~  * the destination a key renders. A host (this module's [AppNavigationHost], or one a project
+//~  * writes in a module of its own) opts in for its whole module; a feature registers with
+//~  * `navGraph { }`, navigates through [AppNavigator] and never opts in.
+//~  */
+// </opt-else:ui_components>
 @RequiresOptIn(
     "Navigation host API: a feature navigates through AppNavigator",
     RequiresOptIn.Level.ERROR,
