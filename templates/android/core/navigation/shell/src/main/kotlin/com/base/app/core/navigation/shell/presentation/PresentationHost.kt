@@ -219,17 +219,12 @@ private fun PresentedFrame(
                     }
                 }
                 // The cover's own layer: under the back card, a texture the card's pose moves and fades.
-                // allow(offscreen-layer): the back card's subject only, while its gesture lasts
                 .graphicsLayer {
-                    compositingStrategy =
-                        if (card.textures(
-                                key,
-                            )
-                        ) {
-                            CompositingStrategy.Offscreen
-                        } else {
-                            CompositingStrategy.Auto
-                        }
+                    compositingStrategy = when {
+                        // allow(offscreen-layer): the back card's subject only, while its gesture lasts
+                        card.textures(key) -> CompositingStrategy.Offscreen
+                        else -> CompositingStrategy.Auto
+                    }
                 }
                 .background(background),
         ) {
