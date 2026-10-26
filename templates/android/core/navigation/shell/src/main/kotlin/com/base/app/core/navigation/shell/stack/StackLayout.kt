@@ -199,11 +199,11 @@ private fun Modifier.sceneDraw(
         if (divided) drawPaneDivider(divider)
     }
     .graphicsLayer {
-        compositingStrategy = when {
+        compositingStrategy = if (scene.card.textures(key)) {
             // allow(offscreen-layer): the back card's subject only, while its gesture lasts
-            scene.card.textures(key) -> CompositingStrategy.Offscreen
-
-            else -> CompositingStrategy.Auto
+            CompositingStrategy.Offscreen
+        } else {
+            CompositingStrategy.Auto
         }
     }
 
