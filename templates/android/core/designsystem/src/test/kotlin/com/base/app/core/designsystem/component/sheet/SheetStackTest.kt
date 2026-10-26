@@ -44,7 +44,11 @@ class SheetStackTest {
                 upper = rememberAppSheetState(listOf(SheetDetent.Medium, SheetDetent.Large))
                 AppSheet(visible = first, onDismissRequest = { first = false }, state = lower) {
                     SheetColumn { Box(Modifier.fillMaxWidth().height(200.dp)) }
-                    AppSheet(visible = second, onDismissRequest = { second = false }, state = upper) {
+                    AppSheet(
+                        visible = second,
+                        onDismissRequest = { second = false },
+                        state = upper,
+                    ) {
                         SheetColumn { Box(Modifier.fillMaxWidth().height(200.dp)) }
                     }
                 }

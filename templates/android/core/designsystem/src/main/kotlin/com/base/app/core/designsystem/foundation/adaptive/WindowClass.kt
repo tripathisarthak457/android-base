@@ -20,7 +20,8 @@ internal val LocalWindowPosture = staticCompositionLocalOf { WindowPosture() }
 internal val LocalInputTraits = staticCompositionLocalOf { InputTraits() }
 
 /** The window's exact size, for lambdas that run in layout or drawing. See [WindowMetrics]. */
-public val LocalWindowMetrics: ProvidableCompositionLocal<WindowMetrics> = staticCompositionLocalOf { PhoneMetrics }
+public val LocalWindowMetrics: ProvidableCompositionLocal<WindowMetrics> =
+    staticCompositionLocalOf { PhoneMetrics }
 
 /**
  * The window's size class, recomputed as the window changes size but changing only when a

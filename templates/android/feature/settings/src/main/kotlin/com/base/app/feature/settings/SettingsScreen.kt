@@ -26,6 +26,10 @@ import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
 import com.base.app.core.designsystem.component.overlay.AppAlert
 import com.base.app.core.designsystem.component.selection.AppSegmentedControl
 import com.base.app.core.designsystem.component.selection.AppSwitch
+// <opt:language>
+import com.base.app.core.designsystem.component.sheet.action.AppActionSheet
+import com.base.app.core.designsystem.component.sheet.action.SheetAction
+// </opt:language>
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
@@ -34,14 +38,12 @@ import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
-// <opt:language>
-import com.base.app.core.designsystem.component.sheet.action.AppActionSheet
-import com.base.app.core.designsystem.component.sheet.action.SheetAction
-import com.base.app.core.ui.locale.AppLocales
-// </opt:language>
 // <opt:browser>
 import com.base.app.core.ui.browser.rememberInAppBrowser
 // </opt:browser>
+// <opt:language>
+import com.base.app.core.ui.locale.AppLocales
+// </opt:language>
 
 @Composable
 internal fun SettingsScreen(
@@ -62,7 +64,10 @@ internal fun SettingsScreen(
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
         modifier = modifier,
         topBar = {
-            AppLargeTitleTopBar(title = stringResource(R.string.settings_title), scrolled = { scroll.value })
+            AppLargeTitleTopBar(
+                title = stringResource(R.string.settings_title),
+                scrolled = { scroll.value },
+            )
         },
     ) {
         ReportScrollEdge(scroll)
@@ -229,20 +234,36 @@ internal fun SettingsScreen(
                     title = stringResource(R.string.settings_privacy_policy),
                     onClick = { openInApp(privacyUrl) },
                     leading = {
-                        AppIcon(AppIcons.Lock, contentDescription = null, tint = AppTheme.colors.contentTertiary)
+                        AppIcon(
+                            AppIcons.Lock,
+                            contentDescription = null,
+                            tint = AppTheme.colors.contentTertiary,
+                        )
                     },
                     trailing = {
-                        AppIcon(AppIcons.ExternalLink, contentDescription = null, tint = AppTheme.colors.contentTertiary)
+                        AppIcon(
+                            AppIcons.ExternalLink,
+                            contentDescription = null,
+                            tint = AppTheme.colors.contentTertiary,
+                        )
                     },
                 )
                 AppRow(
                     title = stringResource(R.string.settings_terms),
                     onClick = { openInApp(termsUrl) },
                     leading = {
-                        AppIcon(AppIcons.File, contentDescription = null, tint = AppTheme.colors.contentTertiary)
+                        AppIcon(
+                            AppIcons.File,
+                            contentDescription = null,
+                            tint = AppTheme.colors.contentTertiary,
+                        )
                     },
                     trailing = {
-                        AppIcon(AppIcons.ExternalLink, contentDescription = null, tint = AppTheme.colors.contentTertiary)
+                        AppIcon(
+                            AppIcons.ExternalLink,
+                            contentDescription = null,
+                            tint = AppTheme.colors.contentTertiary,
+                        )
                     },
                 )
             }
@@ -264,7 +285,10 @@ internal fun SettingsScreen(
         visible = pickLanguage,
         title = stringResource(R.string.settings_language),
         actions = listOf(
-            SheetAction(label = systemLabel, onClick = { onEvent(SettingsEvent.LanguagePicked(null)) }),
+            SheetAction(
+                label = systemLabel,
+                onClick = { onEvent(SettingsEvent.LanguagePicked(null)) },
+            ),
         ) +
             AppLocales.supported.map { tag ->
                 SheetAction(
@@ -291,7 +315,8 @@ internal fun SettingsScreen(
 }
 
 /** The theme picker's segments, in order. */
-private val THEME_MODES = listOf(AppSettings.THEME_SYSTEM, AppSettings.THEME_LIGHT, AppSettings.THEME_DARK)
+private val THEME_MODES =
+    listOf(AppSettings.THEME_SYSTEM, AppSettings.THEME_LIGHT, AppSettings.THEME_DARK)
 
 @Preview(showBackground = true)
 @Composable

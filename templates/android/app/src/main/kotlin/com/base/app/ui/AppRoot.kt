@@ -11,9 +11,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+// <opt:appstatus>
+import androidx.compose.runtime.getValue
+// </opt:appstatus>
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
+// <opt:appstatus>
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+// </opt:appstatus>
+// <opt:applock>
+import com.base.app.core.applock.AppLock
+import com.base.app.core.applock.AppLockGate
+// </opt:applock>
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.datastore.settings.AppSettings
 import com.base.app.core.designsystem.theme.AppTheme
@@ -31,6 +41,17 @@ import com.base.app.core.navigation.shell.HostCrossfade
 import com.base.app.core.navigation.shell.OpenDeepLinks
 import com.base.app.core.navigation.shell.ShellConfig
 import com.base.app.core.navigation.shell.rememberShellState
+// <opt:appstatus>
+import com.base.app.core.network.appstatus.ApiSignals
+// </opt:appstatus>
+// <opt:playstore>
+import com.base.app.core.playstore.PlayStorePrompts
+import com.base.app.core.playstore.review.ReviewPrompt
+import com.base.app.core.playstore.update.AppUpdates
+// </opt:playstore>
+// <opt:appstatus>
+import com.base.app.core.ui.appstatus.AppStatusGate
+// </opt:appstatus>
 // <opt:devtools>
 import com.base.app.core.ui.tooling.DevTooling
 // </opt:devtools>
@@ -38,21 +59,6 @@ import com.base.app.startup.EntryIdentity
 import com.base.app.startup.ShellObserver
 import com.base.app.startup.Startup
 import kotlinx.coroutines.launch
-// <opt:applock>
-import com.base.app.core.applock.AppLock
-import com.base.app.core.applock.AppLockGate
-// </opt:applock>
-// <opt:appstatus>
-import androidx.compose.runtime.getValue
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.base.app.core.network.appstatus.ApiSignals
-import com.base.app.core.ui.appstatus.AppStatusGate
-// </opt:appstatus>
-// <opt:playstore>
-import com.base.app.core.playstore.PlayStorePrompts
-import com.base.app.core.playstore.review.ReviewPrompt
-import com.base.app.core.playstore.update.AppUpdates
-// </opt:playstore>
 
 /** Everything above the navigation hosts: the theme, the system bars, and which app is showing. */
 @Composable
@@ -121,7 +127,11 @@ internal fun AppRoot(
         }
     }
 
-    AppTheme(mode = themeMode, hapticsEnabled = AppTheme.defaults.hapticsEnabled && settings.hapticsEnabled) {
+    AppTheme(
+        mode = themeMode,
+        hapticsEnabled =
+            AppTheme.defaults.hapticsEnabled && settings.hapticsEnabled,
+    ) {
         SystemBarIcons(dark = !AppTheme.colors.isLight)
         // <opt:applock>
         // Over the inspector too: what the app sent is as private as what it shows.
@@ -150,17 +160,29 @@ private fun EntryHost(
     HostCrossfade(target = identity) { shown, receivesCommands ->
         when (shown) {
             EntryIdentity.Onboarding -> SingleStack(
-                AppDestinations.onboarding, navigator, registry, serialization, shellConfig, receivesCommands,
+                AppDestinations.onboarding,
+                navigator,
+                registry,
+                serialization,
+                shellConfig,
+                receivesCommands,
                 // <opt:devtools>
                 devTooling = devTooling,
                 // </opt:devtools>
             )
+
             EntryIdentity.SignedOut -> SingleStack(
-                AppDestinations.signIn, navigator, registry, serialization, shellConfig, receivesCommands,
+                AppDestinations.signIn,
+                navigator,
+                registry,
+                serialization,
+                shellConfig,
+                receivesCommands,
                 // <opt:devtools>
                 devTooling = devTooling,
                 // </opt:devtools>
             )
+
             is EntryIdentity.SignedIn -> SignedIn(
                 generation = shown.generation,
                 navigator = navigator,
@@ -201,7 +223,11 @@ private fun SingleStack(
     // <opt:devtools>
     // Only the host the app is on reports: during the identity crossfade the departing one is still composed.
     if (devTooling != null && receivesCommands) {
-        ReportCurrentScreen(top = { backStack.current }, serialization = serialization, tooling = devTooling)
+        ReportCurrentScreen(
+            top = { backStack.current },
+            serialization = serialization,
+            tooling = devTooling,
+        )
     }
     // </opt:devtools>
 }
@@ -223,14 +249,25 @@ private fun SignedIn(
     val tabs = AppDestinations.tabs
     if (tabs.isEmpty()) {
         SingleStack(
-            AppDestinations.start, navigator, registry, serialization, shellConfig, receivesCommands,
+            AppDestinations.start,
+            navigator,
+            registry,
+            serialization,
+            shellConfig,
+            receivesCommands,
             // <opt:devtools>
             devTooling = devTooling,
             // </opt:devtools>
         )
         return
     }
-    val shellState = rememberShellState(tabs = tabs, registry = registry, serialization = serialization, generation = generation)
+    val shellState =
+        rememberShellState(
+            tabs = tabs,
+            registry = registry,
+            serialization = serialization,
+            generation = generation,
+        )
     OpenDeepLinks(state = shellState, pending = pendingDeepLink)
     LaunchedEffect(shellState, shellObservers) {
         shellObservers.forEach { observer -> launch { observer.observe(shellState) } }

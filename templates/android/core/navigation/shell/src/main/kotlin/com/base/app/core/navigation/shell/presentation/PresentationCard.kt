@@ -34,7 +34,13 @@ internal class PresentationCard(
         !card.active && !presented.gate.moving && presented.size == 1 && shrinks(presented.current)
 
     override fun startCard(event: NavigationEvent, scope: CoroutineScope) {
-        card.start(event, subject = presented.current, beneath = emptySet(), midPush = false, scope = scope)
+        card.start(
+            event,
+            subject = presented.current,
+            beneath = emptySet(),
+            midPush = false,
+            scope = scope,
+        )
     }
 
     override suspend fun cancelCard() {

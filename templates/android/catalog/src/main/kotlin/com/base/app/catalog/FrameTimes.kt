@@ -54,7 +54,9 @@ class FrameTimes(private val activity: Activity) {
     private var sinceShown = 0
     private val budgetNanos = (1_000_000_000L / refreshRate(activity)).toLong()
     private val thread = HandlerThread("catalog-frames").apply { start() }
-    private val listener = Window.OnFrameMetricsAvailableListener { _, metrics, _ -> record(metrics) }
+    private val listener = Window.OnFrameMetricsAvailableListener { _, metrics, _ ->
+        record(metrics)
+    }
 
     init {
         activity.window.addOnFrameMetricsAvailableListener(listener, Handler(thread.looper))
@@ -89,8 +91,13 @@ class FrameTimes(private val activity: Activity) {
      * shown on time when the pipeline has a buffer queued, so one refresh is only the fallback where
      * the platform does not report the deadline.
      */
-    private fun deadline(metrics: FrameMetrics): Long =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) metrics.getMetric(FrameMetrics.DEADLINE) else budgetNanos
+    private fun deadline(metrics: FrameMetrics): Long = if (Build.VERSION.SDK_INT >=
+        Build.VERSION_CODES.S
+    ) {
+        metrics.getMetric(FrameMetrics.DEADLINE)
+    } else {
+        budgetNanos
+    }
 
     private companion object {
         fun refreshRate(activity: Activity): Float =
@@ -130,7 +137,9 @@ fun FrameTimesReadout(frames: FrameTimes, modifier: Modifier = Modifier) {
 @Composable
 @ReadOnlyComposable
 fun frameTimesReadoutReach(): Dp =
-    with(LocalDensity.current) { AppTheme.typography.caption2.lineHeight.toDp() } + ReadoutPadding * 2 + ReadoutMargin
+    with(LocalDensity.current) { AppTheme.typography.caption2.lineHeight.toDp() } +
+        ReadoutPadding * 2 +
+        ReadoutMargin
 
 private val ReadoutPadding = 3.dp
 private val ReadoutMargin = 4.dp

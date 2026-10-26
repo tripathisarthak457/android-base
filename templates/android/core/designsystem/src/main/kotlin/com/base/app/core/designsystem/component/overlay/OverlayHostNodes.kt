@@ -20,9 +20,11 @@ import kotlinx.coroutines.launch
  * for as long as one is up. The flag is read from a flow and applied by invalidating semantics, so
  * a non-modal sheet crossing into blocking recomposes nothing.
  */
-internal fun Modifier.hiddenBeneathOverlays(state: OverlayHostState): Modifier = this then HiddenBeneathElement(state)
+internal fun Modifier.hiddenBeneathOverlays(state: OverlayHostState): Modifier =
+    this then HiddenBeneathElement(state)
 
-private data class HiddenBeneathElement(val state: OverlayHostState) : ModifierNodeElement<HiddenBeneathNode>() {
+private data class HiddenBeneathElement(val state: OverlayHostState) :
+    ModifierNodeElement<HiddenBeneathNode>() {
     override fun create() = HiddenBeneathNode(state)
 
     override fun update(node: HiddenBeneathNode) {
@@ -34,7 +36,9 @@ private data class HiddenBeneathElement(val state: OverlayHostState) : ModifierN
     }
 }
 
-private class HiddenBeneathNode(var state: OverlayHostState) : Modifier.Node(), SemanticsModifierNode {
+private class HiddenBeneathNode(var state: OverlayHostState) :
+    Modifier.Node(),
+    SemanticsModifierNode {
     private var hidden = false
 
     override val shouldClearDescendantSemantics: Boolean
@@ -63,9 +67,11 @@ private class HiddenBeneathNode(var state: OverlayHostState) : Modifier.Node(), 
  * and drawn at alpha 0, which the renderer skips, and is not announced. Placement reads [away], so it
  * leaves and returns in the frame the change happens.
  */
-internal fun Modifier.parkedOverlay(away: () -> Boolean): Modifier = this then ParkedOverlayElement(away)
+internal fun Modifier.parkedOverlay(away: () -> Boolean): Modifier =
+    this then ParkedOverlayElement(away)
 
-private class ParkedOverlayElement(val away: () -> Boolean) : ModifierNodeElement<ParkedOverlayNode>() {
+private class ParkedOverlayElement(val away: () -> Boolean) :
+    ModifierNodeElement<ParkedOverlayNode>() {
     override fun create() = ParkedOverlayNode(away)
 
     override fun update(node: ParkedOverlayNode) {
@@ -81,7 +87,10 @@ private class ParkedOverlayElement(val away: () -> Boolean) : ModifierNodeElemen
     override fun hashCode(): Int = away.hashCode()
 }
 
-private class ParkedOverlayNode(var away: () -> Boolean) : Modifier.Node(), LayoutModifierNode, SemanticsModifierNode {
+private class ParkedOverlayNode(var away: () -> Boolean) :
+    Modifier.Node(),
+    LayoutModifierNode,
+    SemanticsModifierNode {
     private var hidden = false
 
     override val shouldClearDescendantSemantics: Boolean
@@ -89,7 +98,10 @@ private class ParkedOverlayNode(var away: () -> Boolean) : Modifier.Node(), Layo
 
     override fun SemanticsPropertyReceiver.applySemantics() = Unit
 
-    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+    override fun MeasureScope.measure(
+        measurable: Measurable,
+        constraints: Constraints,
+    ): MeasureResult {
         val placeable = measurable.measure(constraints)
         return layout(placeable.width, placeable.height) {
             val now = away()
@@ -97,7 +109,10 @@ private class ParkedOverlayNode(var away: () -> Boolean) : Modifier.Node(), Layo
                 hidden = now
                 invalidateSemantics()
             }
-            placeable.placeWithLayer(0, if (now) placeable.height * 2 else 0) { alpha = if (now) 0f else 1f }
+            placeable.placeWithLayer(0, if (now) placeable.height * 2 else 0) {
+                alpha =
+                    if (now) 0f else 1f
+            }
         }
     }
 }

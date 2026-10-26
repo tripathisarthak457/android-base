@@ -2,13 +2,13 @@ package com.base.app.feature.onboarding
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
-import com.base.app.core.mvi.UiEffect
-import com.base.app.core.mvi.UiEvent
-import com.base.app.core.mvi.UiState
 // <opt:ui_components>
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.base.app.core.designsystem.icon.AppIcons
 // </opt:ui_components>
+import com.base.app.core.mvi.UiEffect
+import com.base.app.core.mvi.UiEvent
+import com.base.app.core.mvi.UiState
 
 /**
  * One onboarding page. Replace the placeholder copy and icons with your own. Resource ids rather
@@ -16,18 +16,19 @@ import com.base.app.core.designsystem.icon.AppIcons
  * from one.
  */
 @Immutable
+// <opt:ui_components>
 internal data class OnboardingPage(
     @param:StringRes val title: Int,
     @param:StringRes val body: Int,
-    // <opt:ui_components>
     val icon: ImageVector,
-    // </opt:ui_components>
 )
+// </opt:ui_components>
+// <opt-else:ui_components>
+//~ internal data class OnboardingPage(@param:StringRes val title: Int, @param:StringRes val body: Int)
+// </opt-else:ui_components>
 
 @Immutable
-internal data class OnboardingState(
-    val pages: List<OnboardingPage> = DefaultPages,
-) : UiState
+internal data class OnboardingState(val pages: List<OnboardingPage> = DefaultPages) : UiState
 
 internal sealed interface OnboardingEvent : UiEvent {
     data object Completed : OnboardingEvent

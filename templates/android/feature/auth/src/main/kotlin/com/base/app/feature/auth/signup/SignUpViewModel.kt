@@ -21,8 +21,8 @@ import com.base.app.feature.auth.authMessage
 import com.base.app.feature.auth.errorFor
 import com.base.app.feature.auth.fieldError
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.drop
 import javax.inject.Inject
+import kotlinx.coroutines.flow.drop
 
 @HiltViewModel
 internal class SignUpViewModel @Inject constructor(
@@ -31,10 +31,14 @@ internal class SignUpViewModel @Inject constructor(
 ) : MviViewModel<SignUpState, SignUpEvent, SignUpEffect>(SignUpState()) {
 
     @OptIn(SavedStateHandleSaveableApi::class)
-    val name: TextFieldState = savedStateHandle.saveable(NAME, saver = TextFieldState.Saver) { TextFieldState() }
+    val name: TextFieldState = savedStateHandle.saveable(NAME, saver = TextFieldState.Saver) {
+        TextFieldState()
+    }
 
     @OptIn(SavedStateHandleSaveableApi::class)
-    val email: TextFieldState = savedStateHandle.saveable(EMAIL, saver = TextFieldState.Saver) { TextFieldState() }
+    val email: TextFieldState = savedStateHandle.saveable(EMAIL, saver = TextFieldState.Saver) {
+        TextFieldState()
+    }
 
     // Not saved: a password does not belong in the bundle the system writes to disk on process death.
     val password = TextFieldState()
@@ -59,10 +63,18 @@ internal class SignUpViewModel @Inject constructor(
             copy(passwordError = passwordRule.errorFor(it, showErrors))
         }
         // Keyed on both, so changing the password re-checks the confirmation too.
-        observe(snapshotFlow { confirm.text.toString() to password.text.toString() }.drop(1)) { (text, _) ->
+        observe(
+            snapshotFlow {
+                confirm.text.toString() to password.text.toString()
+            }.drop(1),
+        ) { (text, _) ->
             copy(confirmError = confirmError(text))
         }
-        observe(snapshotFlow { listOf(name, email, password, confirm).all { it.text.isNotBlank() } }) {
+        observe(
+            snapshotFlow {
+                listOf(name, email, password, confirm).all { it.text.isNotBlank() }
+            },
+        ) {
             copy(canSubmit = it)
         }
     }
@@ -89,7 +101,11 @@ internal class SignUpViewModel @Inject constructor(
                 error = null,
             )
         }
-        if (nameError != null || emailError != null || passwordError != null || confirmError != null) return
+        if (nameError != null || emailError != null || passwordError != null ||
+            confirmError != null
+        ) {
+            return
+        }
 
         launchExclusive(SUBMIT, busy = { copy(submitting = it) }) {
             val result = authRepository.signUp(

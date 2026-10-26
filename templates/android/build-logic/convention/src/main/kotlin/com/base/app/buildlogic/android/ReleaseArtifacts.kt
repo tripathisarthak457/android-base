@@ -4,6 +4,10 @@ import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import com.android.build.api.variant.BuiltArtifactsLoader
 import com.base.app.buildlogic.config.AppConfig
+import java.io.File
+import java.security.MessageDigest
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.Project
@@ -20,10 +24,6 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.register
 import org.gradle.work.DisableCachingByDefault
-import java.io.File
-import java.security.MessageDigest
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 /**
  * Collects every release artifact into `build/outputs/dist/<variant>/` under a name that says what
@@ -32,7 +32,8 @@ import java.time.format.DateTimeFormatter
 internal fun Project.registerDistributionTasks(components: ApplicationAndroidComponentsExtension) {
     val distAll = tasks.register("dist") {
         group = "distribution"
-        description = "Copies every assembled release artifact into build/outputs/dist, named and checksummed."
+        description =
+            "Copies every assembled release artifact into build/outputs/dist, named and checksummed."
     }
 
     components.onVariants { variant ->
@@ -52,7 +53,8 @@ internal fun Project.registerDistributionTasks(components: ApplicationAndroidCom
 
         val bundleTask = tasks.register<DistributeBundleTask>("dist${capitalised}Bundle") {
             group = "distribution"
-            description = "Names and checksums the ${variant.name} app bundle into build/outputs/dist."
+            description =
+                "Names and checksums the ${variant.name} app bundle into build/outputs/dist."
             bundleFile.set(variant.artifacts.get(SingleArtifact.BUNDLE))
             appName.set(AppConfig.APP_NAME)
             variantName.set(variant.name)
@@ -62,7 +64,8 @@ internal fun Project.registerDistributionTasks(components: ApplicationAndroidCom
         // APKs only: AGP cannot build ABI splits and a bundle in the same invocation.
         val variantTask = tasks.register("dist$capitalised") {
             group = "distribution"
-            description = "Names and checksums the ${variant.name} APKs. Bundle: dist${capitalised}Bundle."
+            description =
+                "Names and checksums the ${variant.name} APKs. Bundle: dist${capitalised}Bundle."
             dependsOn(apkTask)
         }
 
@@ -97,7 +100,9 @@ private fun writeManifest(directory: File, entries: List<Pair<File, String>>) {
     )
 }
 
-@DisableCachingByDefault(because = "Copies finished APKs to a folder; a cached copy would be no faster.")
+@DisableCachingByDefault(
+    because = "Copies finished APKs to a folder; a cached copy would be no faster.",
+)
 internal abstract class DistributeApksTask : DefaultTask() {
 
     @get:InputDirectory
@@ -156,7 +161,9 @@ internal abstract class DistributeApksTask : DefaultTask() {
     }
 }
 
-@DisableCachingByDefault(because = "Copies the finished bundle to a folder; a cached copy would be no faster.")
+@DisableCachingByDefault(
+    because = "Copies the finished bundle to a folder; a cached copy would be no faster.",
+)
 internal abstract class DistributeBundleTask : DefaultTask() {
 
     @get:InputFile
@@ -187,7 +194,9 @@ internal abstract class DistributeBundleTask : DefaultTask() {
         val target = File(destination, name)
         bundleFile.get().asFile.copyTo(target, overwrite = true)
 
-        val existing = File(destination, "checksums.sha256").takeIf { it.exists() }?.readText().orEmpty()
+        val existing = File(destination, "checksums.sha256").takeIf {
+            it.exists()
+        }?.readText().orEmpty()
         File(destination, "checksums.sha256").writeText(
             existing + "${target.sha256()}  ${target.name}  ${target.length()} bytes\n",
         )

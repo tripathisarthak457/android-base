@@ -75,5 +75,35 @@ class GeneratedProjectTest(unittest.TestCase):
             self.assertGreater(checked, 100)
 
 
+class TemplateTest(unittest.TestCase):
+    """
+    The raw template is a project of its own, with its own spotlessCheck, and ktlint cannot reorder an import list
+    that holds comments: the markers. So its imports are in order with every marker's import in its sorted place,
+    which also keeps them in order in every project generated from it.
+    """
+
+    IMPORT = re.compile(r"^(?://~ |// <opt:[^>]+>)?import ([\w.]+)(?: as \w+)?$")
+
+    def test_every_template_and_variant_source_is_in_order_markers_and_all(self):
+        roots = [ANDROID.template_dir, Path(__file__).resolve().parents[1] / "variants"]
+        checked = 0
+        for root in roots:
+            for path in sorted(root.glob("**/src/**/*.kt")):
+                if any(part.startswith(".") for part in path.relative_to(root).parts):
+                    continue
+                lines = path.read_text(encoding="utf-8").splitlines()
+                imports = [index for index, line in enumerate(lines) if self.IMPORT.match(line)]
+                if not imports:
+                    continue
+                block = lines[imports[0]:imports[-1] + 1]
+                paths = [self.IMPORT.match(line).group(1) for line in block if self.IMPORT.match(line)]
+                with self.subTest(file=path.relative_to(root).as_posix()):
+                    self.assertEqual(sorted(paths), paths)
+                    # ktlint's order allows no blank line inside the list; a comment goes with the import below it.
+                    self.assertEqual([], [line for line in block if not line.strip()])
+                checked += 1
+        self.assertGreater(checked, 500)
+
+
 if __name__ == "__main__":
     unittest.main()

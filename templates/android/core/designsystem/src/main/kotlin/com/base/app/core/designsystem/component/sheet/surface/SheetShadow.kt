@@ -45,7 +45,14 @@ internal class NineSlice(
      * surface rect into [out] as left, top, width, height. Returns false for the centre and for an
      * edge with nothing to stretch.
      */
-    fun destination(index: Int, left: Int, top: Int, right: Int, bottom: Int, out: IntArray): Boolean {
+    fun destination(
+        index: Int,
+        left: Int,
+        top: Int,
+        right: Int,
+        bottom: Int,
+        out: IntArray,
+    ): Boolean {
         if (index == 4) return false
         val outerLeft = left - padding
         val outerTop = top - padding
@@ -102,7 +109,10 @@ internal class NineSlice(
 
         fun of(shadow: Shadow, corner: Float, density: Density): NineSlice = with(density) {
             val reach = shadow.radius.toPx() + shadow.spread.toPx() +
-                maxOf(kotlin.math.abs(shadow.offset.x.toPx()), kotlin.math.abs(shadow.offset.y.toPx()))
+                maxOf(
+                    kotlin.math.abs(shadow.offset.x.toPx()),
+                    kotlin.math.abs(shadow.offset.y.toPx()),
+                )
             NineSlice(padding = ceil(reach).toInt(), corner = ceil(corner).toInt().coerceAtLeast(1))
         }
     }
@@ -122,7 +132,15 @@ internal class SheetShadowCache {
     private val source = IntArray(4)
     private val destination = IntArray(4)
 
-    fun DrawScope.drawShadow(shadow: Shadow, left: Float, top: Float, right: Float, bottom: Float, corner: Float, alpha: Float) {
+    fun DrawScope.drawShadow(
+        shadow: Shadow,
+        left: Float,
+        top: Float,
+        right: Float,
+        bottom: Float,
+        corner: Float,
+        alpha: Float,
+    ) {
         if (alpha <= 0f || shadow.alpha <= 0f) return
         val slice = prepare(shadow, corner)
         val image = image ?: return
@@ -146,13 +164,22 @@ internal class SheetShadowCache {
 
     private fun DrawScope.prepare(shadow: Shadow, corner: Float): NineSlice {
         val current = slice
-        if (current != null && key == shadow && keyCorner == corner && keyDensity == density) return current
+        if (current != null && key == shadow && keyCorner == corner &&
+            keyDensity == density
+        ) {
+            return current
+        }
         val made = NineSlice.of(shadow, corner, this)
         val side = made.bitmapSide
         val bitmap = ImageBitmap(side, side)
         val rectSize = Size(made.rectSide.toFloat(), made.rectSide.toFloat())
         val cornerPx = made.corner.toFloat()
-        CanvasDrawScope().draw(this, LayoutDirection.Ltr, Canvas(bitmap), Size(side.toFloat(), side.toFloat())) {
+        CanvasDrawScope().draw(
+            this,
+            LayoutDirection.Ltr,
+            Canvas(bitmap),
+            Size(side.toFloat(), side.toFloat()),
+        ) {
             translate(made.padding.toFloat(), made.padding.toFloat()) {
                 with(DropShadowPainter(RoundedCornerShape(cornerPx), shadow)) { draw(rectSize) }
                 drawRoundRect(

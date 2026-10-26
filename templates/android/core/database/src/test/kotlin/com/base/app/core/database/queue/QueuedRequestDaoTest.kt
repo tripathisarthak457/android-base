@@ -15,7 +15,9 @@ import org.robolectric.annotation.Config
 @Config(sdk = [ROBOLECTRIC_SDK])
 class QueuedRequestDaoTest {
 
-    private val database = Room.inMemoryDatabaseBuilder<QueueDatabase>(RuntimeEnvironment.getApplication())
+    private val database = Room.inMemoryDatabaseBuilder<QueueDatabase>(
+        RuntimeEnvironment.getApplication(),
+    )
         .setDriver(AndroidSQLiteDriver())
         .build()
     private val dao = database.queuedRequests()

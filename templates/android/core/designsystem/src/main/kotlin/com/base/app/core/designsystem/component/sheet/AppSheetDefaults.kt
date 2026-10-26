@@ -27,7 +27,9 @@ public object AppSheetDefaults {
     public fun colors(
         container: Color = AppTheme.colors.surfaceElevated,
         content: Color = AppTheme.colors.contentPrimary,
-        grabber: Color = AppTheme.colors.contentTertiary.copy(alpha = DesignTokens.Sheet.Grabber.alpha),
+        grabber: Color = AppTheme.colors.contentTertiary.copy(
+            alpha = DesignTokens.Sheet.Grabber.alpha,
+        ),
         rim: Color = solidRim(),
         scrim: Color = AppTheme.colors.scrim,
     ): AppSheetColors = AppSheetColors(container, content, grabber, rim, scrim)
@@ -35,7 +37,8 @@ public object AppSheetDefaults {
     /** For inset-grouped content (AppSection): the grouped background, as iOS's grouped sheets. */
     @Composable
     @ReadOnlyComposable
-    public fun groupedColors(): AppSheetColors = colors(container = AppTheme.colors.backgroundGrouped)
+    public fun groupedColors(): AppSheetColors =
+        colors(container = AppTheme.colors.backgroundGrouped)
 
     /**
      * A hairline in dark theme, where a dark sheet on a dark dim would lose its edge; transparent in
@@ -43,8 +46,13 @@ public object AppSheetDefaults {
      */
     @Composable
     @ReadOnlyComposable
-    public fun solidRim(): Color =
-        if (AppTheme.colors.isLight) Color.Transparent else AppTheme.colors.sheen.copy(alpha = DesignTokens.Sheet.Rim.solidDarkAlpha)
+    public fun solidRim(): Color = if (AppTheme.colors.isLight) {
+        Color.Transparent
+    } else {
+        AppTheme.colors.sheen.copy(
+            alpha = DesignTokens.Sheet.Rim.solidDarkAlpha,
+        )
+    }
 
     /** Soft in light theme; null in dark, where the rim shows the edge. */
     @Composable
@@ -78,6 +86,14 @@ public object AppSheetDefaults {
         require(shadow == null || (shadow.brush == null && shadow.blendMode == BlendMode.SrcOver)) {
             "A sheet's shadow is a colour drawn over what is beneath it"
         }
-        return AppSheetStyle(material, colors, containerBrush, cornerRadius, floatingInset, maxWidth, shadow)
+        return AppSheetStyle(
+            material,
+            colors,
+            containerBrush,
+            cornerRadius,
+            floatingInset,
+            maxWidth,
+            shadow,
+        )
     }
 }

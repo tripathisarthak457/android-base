@@ -23,7 +23,6 @@ fun VersionCatalog.library(alias: String): Provider<MinimalExternalModuleDepende
         )
     }
 
-fun VersionCatalog.pluginId(alias: String): String =
-    findPlugin(alias).orElseThrow {
-        IllegalArgumentException("No plugin alias '$alias' in gradle/libs.versions.toml.")
-    }.get().pluginId
+fun VersionCatalog.pluginId(alias: String): String = findPlugin(alias).orElseThrow {
+    IllegalArgumentException("No plugin alias '$alias' in gradle/libs.versions.toml.")
+}.get().pluginId

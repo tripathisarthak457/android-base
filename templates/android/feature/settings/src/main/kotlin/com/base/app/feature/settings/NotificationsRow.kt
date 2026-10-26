@@ -32,7 +32,13 @@ internal fun NotificationsRow() {
                 },
             ),
             onClick = permission::request.takeIf { access != NotificationAccess.Granted },
-            leading = { AppIcon(AppIcons.Bell, contentDescription = null, tint = AppTheme.colors.contentTertiary) },
+            leading = {
+                AppIcon(
+                    AppIcons.Bell,
+                    contentDescription = null,
+                    tint = AppTheme.colors.contentTertiary,
+                )
+            },
         )
     }
 }

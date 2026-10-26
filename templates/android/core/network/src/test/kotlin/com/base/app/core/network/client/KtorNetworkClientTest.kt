@@ -5,9 +5,17 @@ import com.base.app.core.common.result.AppError
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.common.result.errorOrNull
 import com.base.app.core.common.time.AppClock
+// <opt:appstatus>
+import com.base.app.core.network.appstatus.ApiSignals
+import com.base.app.core.network.appstatus.AppStatus
+import com.base.app.core.network.appstatus.AppStatusRules
+// </opt:appstatus>
 import com.base.app.core.network.model.HttpMethodType
 import com.base.app.core.network.model.NetworkRequest
 import com.base.app.core.network.model.RequestBody
+// <opt:offlinequeue>
+import com.base.app.core.network.queue.RequestQueue
+// </opt:offlinequeue>
 import com.base.app.core.network.response.PassthroughUnwrapper
 import com.base.app.core.testing.FakeNetworkMonitor
 import com.base.app.core.testing.testDispatchers
@@ -20,6 +28,10 @@ import io.ktor.client.request.HttpResponseData
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
+import java.io.IOException
+import java.util.Locale
+import kotlin.random.Random
+import kotlin.time.Instant
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.test.TestScope
@@ -30,18 +42,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import java.io.IOException
-import java.util.Locale
-import kotlin.random.Random
-import kotlin.time.Instant
-// <opt:appstatus>
-import com.base.app.core.network.appstatus.ApiSignals
-import com.base.app.core.network.appstatus.AppStatus
-import com.base.app.core.network.appstatus.AppStatusRules
-// </opt:appstatus>
-// <opt:offlinequeue>
-import com.base.app.core.network.queue.RequestQueue
-// </opt:offlinequeue>
 
 class KtorNetworkClientTest {
 

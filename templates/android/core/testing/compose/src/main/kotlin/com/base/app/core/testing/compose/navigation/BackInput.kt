@@ -12,7 +12,9 @@ import androidx.navigationevent.NavigationEvent
  */
 class BackInput(activity: ComponentActivity) {
 
-    private val input = DirectNavigationEventInput().also(activity.navigationEventDispatcher::addInput)
+    private val input = DirectNavigationEventInput().also(
+        activity.navigationEventDispatcher::addInput,
+    )
 
     /** Back with no gesture to preview: the key, the three-button bar, or a swipe too short to start. */
     fun press() = input.backCompleted()
@@ -20,8 +22,17 @@ class BackInput(activity: ComponentActivity) {
     fun start(edge: Int = NavigationEvent.EDGE_LEFT, frameTimeMillis: Long = 0) =
         input.backStarted(NavigationEvent(swipeEdge = edge, frameTimeMillis = frameTimeMillis))
 
-    fun progress(fraction: Float, edge: Int = NavigationEvent.EDGE_LEFT, frameTimeMillis: Long = 0) =
-        input.backProgressed(NavigationEvent(swipeEdge = edge, progress = fraction, frameTimeMillis = frameTimeMillis))
+    fun progress(
+        fraction: Float,
+        edge: Int = NavigationEvent.EDGE_LEFT,
+        frameTimeMillis: Long = 0,
+    ) = input.backProgressed(
+        NavigationEvent(
+            swipeEdge = edge,
+            progress = fraction,
+            frameTimeMillis = frameTimeMillis,
+        ),
+    )
 
     fun cancel() = input.backCancelled()
 

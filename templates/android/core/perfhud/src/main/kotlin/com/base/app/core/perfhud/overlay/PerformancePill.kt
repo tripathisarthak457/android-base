@@ -18,20 +18,18 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontSynthesis
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+// <opt:ui_components>
+import com.base.app.core.designsystem.foundation.interaction.PressFeedback
+import com.base.app.core.designsystem.foundation.interaction.pressable
+// </opt:ui_components>
 import com.base.app.core.designsystem.theme.AppTheme
+// <opt:!ui_components>import com.base.app.core.devtools.kit.PressFeedback
+// <opt:!ui_components>import com.base.app.core.devtools.kit.pressable
 import com.base.app.core.perfhud.R
 import com.base.app.core.perfhud.frame.FrameLog
 import com.base.app.core.perfhud.frame.LiveStats
 import com.base.app.core.perfhud.recording.PerformanceRecorder
 import kotlin.math.roundToInt
-// <opt:ui_components>
-import com.base.app.core.designsystem.foundation.interaction.PressFeedback
-import com.base.app.core.designsystem.foundation.interaction.pressable
-// </opt:ui_components>
-// <opt-else:ui_components>
-//~ import com.base.app.core.devtools.kit.PressFeedback
-//~ import com.base.app.core.devtools.kit.pressable
-// </opt-else:ui_components>
 
 /**
  * Two lines under the DEV badge while recording: frames per second over the last second of
@@ -57,11 +55,19 @@ internal fun PerformancePill(
 }
 
 @Composable
-private fun LivePill(frames: FrameLog, judged: Boolean, onOpen: () -> Unit, modifier: Modifier = Modifier) {
+private fun LivePill(
+    frames: FrameLog,
+    judged: Boolean,
+    onOpen: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     // Filled in the draw phase, on the main thread only.
     val live = remember { LiveStats() }
     val typography = AppTheme.typography
-    val style = remember(typography) { typography.mono.merge(TextStyle(fontSize = typography.caption2.fontSize)) }
+    val style =
+        remember(typography) {
+            typography.mono.merge(TextStyle(fontSize = typography.caption2.fontSize))
+        }
     val fontResolver = LocalFontFamilyResolver.current
     // A downloaded font arrives after the first composition; the text is set up again when it does.
     val typeface by remember(fontResolver, style) {
@@ -114,7 +120,12 @@ private fun LivePill(frames: FrameLog, judged: Boolean, onOpen: () -> Unit, modi
                     else -> poor
                 }
                 with(text) {
-                    drawRate(framesPerSecond = fps, refreshHz = refresh, isIdle = isIdle, color = fpsColor)
+                    drawRate(
+                        framesPerSecond = fps,
+                        refreshHz = refresh,
+                        isIdle = isIdle,
+                        color = fpsColor,
+                    )
                     drawJanky(jankyTenths = janky, color = jankyColor)
                 }
             },

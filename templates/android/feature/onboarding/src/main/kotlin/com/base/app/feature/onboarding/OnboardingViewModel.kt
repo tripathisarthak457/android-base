@@ -4,8 +4,8 @@ import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.datastore.settings.AppSettingsStore
 import com.base.app.core.mvi.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 /**
  * Onboarding, which is finished exactly once. Both "Get started" and "Skip" write the same flag and

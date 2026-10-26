@@ -87,7 +87,11 @@ class TabStacksTest {
         val restoration = StateRestorationTester(rule)
         var tabs: TabStacks? = null
         restoration.setContent {
-            tabs = rememberTabStacks(roots = listOf(FeedTab, ProfileTab), serialization = testSerialization)
+            tabs =
+                rememberTabStacks(
+                    roots = listOf(FeedTab, ProfileTab),
+                    serialization = testSerialization,
+                )
         }
         rule.runOnIdle {
             tabs!!.current.apply(NavCommand.Navigate(Post(1)))
@@ -102,7 +106,12 @@ class TabStacksTest {
         val restored = tabs!!
         assertNotSame("the tabs were rebuilt from what was saved", before, restored)
         assertEquals(1, restored.selectedIndex)
-        assertEquals(listOf(listOf(FeedTab, Post(1)), listOf(ProfileTab, Post(2))), restored.stacks.map { it.keys })
+        assertEquals(
+            listOf(listOf(FeedTab, Post(1)), listOf(ProfileTab, Post(2))),
+            restored.stacks.map {
+                it.keys
+            },
+        )
     }
 
     @Test
@@ -119,7 +128,12 @@ class TabStacksTest {
         restoration.emulateSavedInstanceStateRestore()
         rule.waitForIdle()
 
-        assertEquals(listOf(listOf(ProfileTab), listOf(FeedTab, Post(1))), tabs!!.stacks.map { it.keys })
+        assertEquals(
+            listOf(listOf(ProfileTab), listOf(FeedTab, Post(1))),
+            tabs!!.stacks.map {
+                it.keys
+            },
+        )
         assertEquals(1, tabs!!.selectedIndex)
     }
 }

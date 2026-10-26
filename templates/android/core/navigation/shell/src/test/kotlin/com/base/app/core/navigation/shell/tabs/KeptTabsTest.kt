@@ -55,12 +55,22 @@ class KeptTabsTest {
 
     private fun showTabs(warmUp: List<Int> = emptyList()) {
         rule.setContent {
-            KeptTabs(selected = { selected }, generation = generation, modifier = Modifier.padding(inset), warmUp = warmUp) { index ->
+            KeptTabs(
+                selected = {
+                    selected
+                },
+                generation = generation,
+                modifier = Modifier.padding(
+                    inset,
+                ),
+                warmUp = warmUp,
+            ) { index ->
                 val probe = probes[index]
                 remember { probe.compositions++ }
                 DisposableEffect(Unit) { onDispose { probe.disposals++ } }
                 probe.lifecycle = LocalLifecycleOwner.current.lifecycle
-                probe.dispatcher = LocalNavigationEventDispatcherOwner.current!!.navigationEventDispatcher
+                probe.dispatcher =
+                    LocalNavigationEventDispatcherOwner.current!!.navigationEventDispatcher
                 probe.visibility = LocalTabVisible.current
                 Box(
                     Modifier.fillMaxSize().testTag("tab$index").layout { measurable, constraints ->

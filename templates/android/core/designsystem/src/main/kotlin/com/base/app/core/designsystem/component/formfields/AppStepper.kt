@@ -70,8 +70,14 @@ public fun AppStepper(
         modifier = modifier.semantics {
             stateDescription = value.toString()
             customActions = listOf(
-                CustomAccessibilityAction(decreaseLabel) { change(value - step); true },
-                CustomAccessibilityAction(increaseLabel) { change(value + step); true },
+                CustomAccessibilityAction(decreaseLabel) {
+                    change(value - step)
+                    true
+                },
+                CustomAccessibilityAction(increaseLabel) {
+                    change(value + step)
+                    true
+                },
             )
         },
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.xs),
@@ -81,7 +87,9 @@ public fun AppStepper(
             icon = AppIcons.Minus,
             contentDescription = decreaseLabel,
             onClick = { change(current - increment) },
-            modifier = Modifier.repeatWhileHeld(enabled && value > range.first) { change(current - increment) },
+            modifier = Modifier.repeatWhileHeld(enabled && value > range.first) {
+                change(current - increment)
+            },
             variant = ButtonVariant.Tinted,
             size = ButtonSize.Small,
             enabled = enabled && value > range.first,
@@ -97,7 +105,9 @@ public fun AppStepper(
             icon = AppIcons.Plus,
             contentDescription = increaseLabel,
             onClick = { change(current + increment) },
-            modifier = Modifier.repeatWhileHeld(enabled && value < range.last) { change(current + increment) },
+            modifier = Modifier.repeatWhileHeld(enabled && value < range.last) {
+                change(current + increment)
+            },
             variant = ButtonVariant.Tinted,
             size = ButtonSize.Small,
             enabled = enabled && value < range.last,
@@ -125,7 +135,10 @@ private fun Modifier.repeatWhileHeld(enabled: Boolean, onRepeat: () -> Unit): Mo
                             repeated = true
                             onRepeat()
                             delay(interval)
-                            interval = (interval * RepeatAcceleration).toLong().coerceAtLeast(RepeatFastestMillis)
+                            interval =
+                                (interval * RepeatAcceleration).toLong().coerceAtLeast(
+                                    RepeatFastestMillis,
+                                )
                         }
                     }
                     val up = waitForUpOrCancellation(PointerEventPass.Initial)

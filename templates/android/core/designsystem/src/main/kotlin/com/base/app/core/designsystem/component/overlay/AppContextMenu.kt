@@ -56,8 +56,8 @@ import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
-import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+import kotlinx.coroutines.launch
 
 /**
  * [content] with a menu behind it, as iOS's context menu: a long press lifts the content out of the
@@ -91,7 +91,9 @@ public fun AppContextMenu(
     val outer = LocalContainerActions.current
     val actions = remember(showMenu, enabled, outer) {
         if (enabled) {
-            ContainerActions(showMenu, { state.open(ContextMenuOpening.Lift) }, outer?.actions.orEmpty())
+            ContainerActions(showMenu, {
+                state.open(ContextMenuOpening.Lift)
+            }, outer?.actions.orEmpty())
         } else {
             outer
         }
@@ -174,7 +176,11 @@ private class ContextMenuState {
 }
 
 @Composable
-private fun ContextMenuOverlay(state: ContextMenuState, drawing: GraphicsLayer, menu: @Composable () -> Unit) {
+private fun ContextMenuOverlay(
+    state: ContextMenuState,
+    drawing: GraphicsLayer,
+    menu: @Composable () -> Unit,
+) {
     val opening = state.opening ?: return
     val springs = AppTheme.springs
     val reduceMotion = AppTheme.reduceMotion
@@ -213,7 +219,9 @@ private fun ContextMenuOverlay(state: ContextMenuState, drawing: GraphicsLayer, 
         val insets = WindowInsets.safeDrawing
         Layout(
             modifier = Modifier
-                .drawBehind { if (lifting) drawRect(colors.scrim, alpha = lift.value * ScrimFraction) }
+                .drawBehind {
+                    if (lifting) drawRect(colors.scrim, alpha = lift.value * ScrimFraction)
+                }
                 .pointerInput(Unit) { detectTapGestures { close() } },
             content = {
                 if (lifting) {
@@ -223,7 +231,8 @@ private fun ContextMenuOverlay(state: ContextMenuState, drawing: GraphicsLayer, 
                                 val p = lift.value
                                 scaleX = lerp(1f, liftScale, p)
                                 scaleY = scaleX
-                                shadowElevation = AppContextMenuDefaults.PreviewShadow.toPx() * p.coerceIn(0f, 1f)
+                                shadowElevation =
+                                    AppContextMenuDefaults.PreviewShadow.toPx() * p.coerceIn(0f, 1f)
                                 shape = previewShape
                                 clip = true
                                 ambientShadowColor = colors.shadow
@@ -250,11 +259,15 @@ private fun ContextMenuOverlay(state: ContextMenuState, drawing: GraphicsLayer, 
         ) { measurables, constraints ->
             val anchor = state.anchor
             val previewPlaceable = if (lifting) {
-                measurables.first().measure(Constraints.fixed(anchor.width.roundToInt(), anchor.height.roundToInt()))
+                measurables.first().measure(
+                    Constraints.fixed(anchor.width.roundToInt(), anchor.height.roundToInt()),
+                )
             } else {
                 null
             }
-            val menuPlaceable = measurables.last().measure(Constraints(maxWidth = constraints.maxWidth, maxHeight = constraints.maxHeight))
+            val menuPlaceable = measurables.last().measure(
+                Constraints(maxWidth = constraints.maxWidth, maxHeight = constraints.maxHeight),
+            )
             val width = constraints.maxWidth
             val height = constraints.maxHeight
             val margin = AppContextMenuDefaults.Margin.roundToPx()
@@ -281,7 +294,11 @@ private fun ContextMenuOverlay(state: ContextMenuState, drawing: GraphicsLayer, 
                     } else {
                         (bottom - menuHeight - gap - anchorHeight).coerceAtLeast(top)
                     }
-                    val previewTop = lerp(anchorTop.toFloat(), previewTarget.toFloat(), lift.value.coerceIn(0f, 1f)).roundToInt()
+                    val previewTop = lerp(
+                        anchorTop.toFloat(),
+                        previewTarget.toFloat(),
+                        lift.value.coerceIn(0f, 1f),
+                    ).roundToInt()
                     previewPlaceable.place(left, previewTop)
                     val menuTop = if (menuBelow) {
                         (previewTarget + anchorHeight + gap).coerceAtMost(bottom - menuHeight)
@@ -289,9 +306,15 @@ private fun ContextMenuOverlay(state: ContextMenuState, drawing: GraphicsLayer, 
                         anchorTop - gap - menuHeight
                     }
                     val leading = if (rtl) left + previewPlaceable.width - menuWidth else left
-                    val menuLeft = leading.coerceIn(margin, (width - margin - menuWidth).coerceAtLeast(margin))
+                    val menuLeft = leading.coerceIn(
+                        margin,
+                        (width - margin - menuWidth).coerceAtLeast(margin),
+                    )
                     state.menuOrigin = TransformOrigin(
-                        ((left + previewPlaceable.width / 2f - menuLeft) / menuWidth.coerceAtLeast(1)).coerceIn(0f, 1f),
+                        (
+                            (left + previewPlaceable.width / 2f - menuLeft) /
+                                menuWidth.coerceAtLeast(1)
+                            ).coerceIn(0f, 1f),
                         if (menuBelow) 0f else 1f,
                     )
                     menuPlaceable.place(menuLeft, menuTop)
@@ -300,9 +323,23 @@ private fun ContextMenuOverlay(state: ContextMenuState, drawing: GraphicsLayer, 
                     val y = (anchorTop + state.pointer.y).roundToInt()
                     val fitsRight = x + menuWidth <= width - margin
                     val fitsBelow = y + menuHeight <= bottom
-                    val menuLeft = (if (fitsRight) x else x - menuWidth).coerceIn(margin, (width - margin - menuWidth).coerceAtLeast(margin))
-                    val menuTop = (if (fitsBelow) y else y - menuHeight).coerceIn(top, (bottom - menuHeight).coerceAtLeast(top))
-                    state.menuOrigin = TransformOrigin(if (fitsRight) 0f else 1f, if (fitsBelow) 0f else 1f)
+                    val menuLeft = (if (fitsRight) x else x - menuWidth).coerceIn(
+                        margin,
+                        (
+                            width -
+                                margin -
+                                menuWidth
+                            ).coerceAtLeast(margin),
+                    )
+                    val menuTop = (if (fitsBelow) y else y - menuHeight).coerceIn(
+                        top,
+                        (
+                            bottom -
+                                menuHeight
+                            ).coerceAtLeast(top),
+                    )
+                    state.menuOrigin =
+                        TransformOrigin(if (fitsRight) 0f else 1f, if (fitsBelow) 0f else 1f)
                     menuPlaceable.place(menuLeft, menuTop)
                 }
             }
@@ -315,7 +352,10 @@ private fun ContextMenuOverlay(state: ContextMenuState, drawing: GraphicsLayer, 
  * content's own press feedback still shows; once either is recognised, the rest of the gesture is
  * taken, so the content's tap never fires and the list beneath does not scroll.
  */
-private suspend fun PointerInputScope.detectContextMenu(onLongPress: () -> Unit, onSecondaryClick: (Offset) -> Unit) {
+private suspend fun PointerInputScope.detectContextMenu(
+    onLongPress: () -> Unit,
+    onSecondaryClick: (Offset) -> Unit,
+) {
     awaitEachGesture {
         val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
         if (down.type == PointerType.Mouse) {
@@ -328,9 +368,16 @@ private suspend fun PointerInputScope.detectContextMenu(onLongPress: () -> Unit,
             while (true) {
                 // The content's own press takes the down, so consumption says nothing here; a scroll
                 // or a swipe starts only past the touch slop, which ends the wait just the same.
-                val change = awaitPointerEvent(PointerEventPass.Final).changes.firstOrNull { it.id == down.id }
+                val change = awaitPointerEvent(PointerEventPass.Final).changes.firstOrNull {
+                    it.id ==
+                        down.id
+                }
                 if (change == null || !change.pressed) break
-                if ((change.position - down.position).getDistance() > viewConfiguration.touchSlop) break
+                if ((change.position - down.position).getDistance() >
+                    viewConfiguration.touchSlop
+                ) {
+                    break
+                }
             }
             true
         }
@@ -371,7 +418,12 @@ private fun AppContextMenuPreview() {
         AppContextMenu(
             menu = {
                 AppMenuItem(text = "Copy", onClick = {}, icon = AppIcons.Copy)
-                AppMenuItem(text = "Delete", onClick = {}, icon = AppIcons.Trash, destructive = true)
+                AppMenuItem(
+                    text = "Delete",
+                    onClick = {},
+                    icon = AppIcons.Trash,
+                    destructive = true,
+                )
             },
         ) {
             AppRow(title = "Press and hold for actions", subtitle = "A context menu at rest")

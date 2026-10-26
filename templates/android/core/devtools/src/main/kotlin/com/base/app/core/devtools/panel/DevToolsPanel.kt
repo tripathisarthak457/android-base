@@ -38,16 +38,6 @@ import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
 import com.base.app.core.common.environment.AppEnvironment
-import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
-import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.devtools.DevTools
-import com.base.app.core.devtools.log.NetworkExchange
-import com.base.app.core.devtools.log.NetworkStats
-import com.base.app.core.devtools.screen.CurrentScreen
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 // <opt:ui_components>
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonSize
@@ -60,22 +50,32 @@ import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.selection.AppSegmentedControl
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
+// </opt:ui_components>
+import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
+// <opt:ui_components>
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 // </opt:ui_components>
-// <opt-else:ui_components>
-//~ import com.base.app.core.devtools.kit.AppButton
-//~ import com.base.app.core.devtools.kit.AppCard
-//~ import com.base.app.core.devtools.kit.AppDivider
-//~ import com.base.app.core.devtools.kit.AppMonoText
-//~ import com.base.app.core.devtools.kit.AppRow
-//~ import com.base.app.core.devtools.kit.AppScrollDefaults
-//~ import com.base.app.core.devtools.kit.AppSegmentedControl
-//~ import com.base.app.core.devtools.kit.AppStateView
-//~ import com.base.app.core.devtools.kit.AppStatusPill
-//~ import com.base.app.core.devtools.kit.AppText
-//~ import com.base.app.core.devtools.kit.ButtonSize
-//~ import com.base.app.core.devtools.kit.ButtonVariant
-// </opt-else:ui_components>
+import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.devtools.DevTools
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppButton
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppCard
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppDivider
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppMonoText
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppRow
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppScrollDefaults
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppSegmentedControl
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppStateView
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppStatusPill
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppText
+// <opt:!ui_components>import com.base.app.core.devtools.kit.ButtonSize
+// <opt:!ui_components>import com.base.app.core.devtools.kit.ButtonVariant
+import com.base.app.core.devtools.log.NetworkExchange
+import com.base.app.core.devtools.log.NetworkStats
+import com.base.app.core.devtools.screen.CurrentScreen
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 /**
  * Everything the badge opens onto: the requests, what they cost, the feature flags, what this
@@ -91,7 +91,10 @@ internal fun DevToolsPanel(devTools: DevTools, initialTab: String?, onClose: () 
         onDismissRequest = onClose,
         // The panel draws its own background behind the system bars and pads its content inside
         // them, rather than leaving the platform's grey bands above and below.
-        properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false),
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false,
+            decorFitsSystemWindows = false,
+        ),
     ) {
         val beside = AppTheme.windowClass.width >= WindowWidth.Expanded
         Box(
@@ -130,7 +133,14 @@ private fun ColumnScope.PanelContent(devTools: DevTools, initialTab: String?, on
     val inspecting = inspectingId?.let { id -> exchanges.firstOrNull { it.id == id } }
 
     val back = rememberNavigationEventState(currentInfo = NavigationEventInfo.None)
-    NavigationBackHandler(state = back, isBackEnabled = inspecting != null, onBackCompleted = { inspectingId = null })
+    NavigationBackHandler(
+        state = back,
+        isBackEnabled = inspecting != null,
+        onBackCompleted = {
+            inspectingId =
+                null
+        },
+    )
 
     PanelHeader(
         title = inspecting?.let { it.method + " " + it.path } ?: "Inspector",
@@ -162,8 +172,10 @@ private fun ColumnScope.PanelContent(devTools: DevTools, initialTab: String?, on
         )
 
         PanelTab.Stats -> StatsTab(exchanges)
+
         // <opt:flags>
         PanelTab.Flags -> FlagsTab(flags = devTools.flags, overrides = devTools.flagOverrides)
+
         // </opt:flags>
         PanelTab.Build -> BuildTab(devTools.environment, devTools.currentScreen)
     }
@@ -264,12 +276,18 @@ private fun StatsTab(exchanges: List<NetworkExchange>) {
     val stats = remember(exchanges) { NetworkStats.of(exchanges) }
     Column(
         modifier = Modifier
-            .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
+            .verticalScroll(
+                rememberScrollState(),
+                flingBehavior = AppScrollDefaults.flingBehavior(),
+            )
             .padding(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
     ) {
         StatRow("Requests", stats.total.toString())
-        StatRow("Failed", stats.failures.toString() + " (" + (stats.failureRate * Percent).toInt() + "%)")
+        StatRow(
+            "Failed",
+            stats.failures.toString() + " (" + (stats.failureRate * Percent).toInt() + "%)",
+        )
         // The median rather than the mean: one thirty-second timeout drags an average somewhere
         // no real request ever went, and the number stops describing anything.
         StatRow("Median", stats.medianMillis.toString() + " ms")
@@ -284,7 +302,10 @@ private fun BuildTab(environment: AppEnvironment, currentScreen: CurrentScreen) 
     val screen by currentScreen.name.collectAsStateWithLifecycle()
     Column(
         modifier = Modifier
-            .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
+            .verticalScroll(
+                rememberScrollState(),
+                flingBehavior = AppScrollDefaults.flingBehavior(),
+            )
             .padding(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
     ) {
@@ -324,7 +345,10 @@ private fun ExchangeDetail(exchange: NetworkExchange) {
     SelectionContainer {
         Column(
             modifier = Modifier
-                .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
+                .verticalScroll(
+                    rememberScrollState(),
+                    flingBehavior = AppScrollDefaults.flingBehavior(),
+                )
                 .padding(AppTheme.spacing.lg),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
         ) {
@@ -368,7 +392,13 @@ private fun Map<String, String>.asText(): String =
 /** Bytes below a kilobyte, so a small answer does not read as nothing at all. */
 internal fun formatBytes(bytes: Long): String = when {
     bytes < BytesPerKb -> "$bytes B"
-    bytes < BytesPerKb * BytesPerKb -> String.format(Locale.US, "%.1f kB", bytes / BytesPerKb.toDouble())
+
+    bytes < BytesPerKb * BytesPerKb -> String.format(
+        Locale.US,
+        "%.1f kB",
+        bytes / BytesPerKb.toDouble(),
+    )
+
     else -> String.format(Locale.US, "%.1f MB", bytes / (BytesPerKb * BytesPerKb).toDouble())
 }
 

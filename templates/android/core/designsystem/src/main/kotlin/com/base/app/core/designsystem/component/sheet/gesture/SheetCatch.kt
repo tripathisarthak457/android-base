@@ -15,9 +15,9 @@ import androidx.compose.ui.platform.LocalViewConfiguration
 import androidx.compose.ui.unit.IntSize
 import com.base.app.core.designsystem.component.sheet.SheetController
 import com.base.app.core.designsystem.component.sheet.SheetDetent
+import kotlin.math.abs
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.launch
-import kotlin.math.abs
 
 /**
  * A finger landing anywhere on a moving sheet, content included, stops it where it is, as a
@@ -29,9 +29,11 @@ import kotlin.math.abs
  * It also records what pointer each gesture is: a wheel or a touchpad scroll never
  * resizes a sheet.
  */
-internal fun Modifier.sheetCatch(controller: SheetController): Modifier = this then SheetCatchElement(controller)
+internal fun Modifier.sheetCatch(controller: SheetController): Modifier =
+    this then SheetCatchElement(controller)
 
-private data class SheetCatchElement(val controller: SheetController) : ModifierNodeElement<SheetCatchNode>() {
+private data class SheetCatchElement(val controller: SheetController) :
+    ModifierNodeElement<SheetCatchNode>() {
     override fun create() = SheetCatchNode(controller)
 
     override fun update(node: SheetCatchNode) {
@@ -44,18 +46,30 @@ private data class SheetCatchElement(val controller: SheetController) : Modifier
 }
 
 private class SheetCatchNode(var controller: SheetController) :
-    Modifier.Node(), PointerInputModifierNode, CompositionLocalConsumerModifierNode {
+    Modifier.Node(),
+    PointerInputModifierNode,
+    CompositionLocalConsumerModifierNode {
 
     private var heading: SheetDetent? = null
     private var stopped = false
     private var down = Offset.Zero
 
-    override fun onPointerEvent(pointerEvent: PointerEvent, pass: PointerEventPass, bounds: IntSize) {
+    override fun onPointerEvent(
+        pointerEvent: PointerEvent,
+        pass: PointerEventPass,
+        bounds: IntSize,
+    ) {
         if (pass != PointerEventPass.Initial) return
         val change = pointerEvent.changes.firstOrNull() ?: return
         when (pointerEvent.type) {
             PointerEventType.Scroll -> controller.gesturePointer = PointerType.Mouse
-            PointerEventType.Press -> if (pointerEvent.changes.count { it.pressed } == 1) onDown(change.position, change.type)
+
+            PointerEventType.Press -> if (pointerEvent.changes.count { it.pressed } ==
+                1
+            ) {
+                onDown(change.position, change.type)
+            }
+
             PointerEventType.Move -> if (stopped) {
                 val slop = currentValueOf(LocalViewConfiguration).touchSlop
                 val moved = change.position - down
@@ -68,7 +82,13 @@ private class SheetCatchNode(var controller: SheetController) :
                     resume()
                 }
             }
-            PointerEventType.Release -> if (pointerEvent.changes.none { it.pressed }) onUp(pointerEvent)
+
+            PointerEventType.Release -> if (pointerEvent.changes.none {
+                    it.pressed
+                }
+            ) {
+                onUp(pointerEvent)
+            }
         }
     }
 

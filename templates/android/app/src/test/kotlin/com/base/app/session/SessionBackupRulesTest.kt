@@ -1,11 +1,11 @@
 package com.base.app.session
 
 import com.base.app.core.datastore.session.SESSION_TOKENS_FILE
+import java.io.File
+import javax.xml.parsers.DocumentBuilderFactory
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.w3c.dom.Element
-import java.io.File
-import javax.xml.parsers.DocumentBuilderFactory
 
 class SessionBackupRulesTest {
 

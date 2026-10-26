@@ -88,8 +88,11 @@ internal class CardCutout {
  * the screen's scrim already darkens), so only while it is partly covered is it drawn through a
  * layer of its own size.
  */
-internal fun Modifier.followCovered(anchor: BarAnchor, parallax: Float, scrimAlpha: Float): Modifier =
-    this then FollowCoveredElement(anchor, parallax, scrimAlpha)
+internal fun Modifier.followCovered(
+    anchor: BarAnchor,
+    parallax: Float,
+    scrimAlpha: Float,
+): Modifier = this then FollowCoveredElement(anchor, parallax, scrimAlpha)
 
 private data class FollowCoveredElement(
     val anchor: BarAnchor,
@@ -114,7 +117,9 @@ private class FollowCoveredNode(
     var anchor: BarAnchor,
     var parallax: Float,
     var scrimAlpha: Float,
-) : Modifier.Node(), DrawModifierNode, LayoutAwareModifierNode {
+) : Modifier.Node(),
+    DrawModifierNode,
+    LayoutAwareModifierNode {
 
     private var windowLeft = 0f
     private var windowTop = 0f
@@ -154,7 +159,12 @@ private class FollowCoveredNode(
             drawIntoCanvas { canvas -> canvas.saveLayer(boundsOf(size), layerPaint) }
             translate(left = shift) {
                 this@draw.drawContent()
-                drawRect(Color.Black, size = size, alpha = scrimAlpha * progress, blendMode = BlendMode.SrcAtop)
+                drawRect(
+                    Color.Black,
+                    size = size,
+                    alpha = scrimAlpha * progress,
+                    blendMode = BlendMode.SrcAtop,
+                )
             }
             drawIntoCanvas { canvas -> canvas.restore() }
         }
@@ -172,15 +182,27 @@ private class FollowCoveredNode(
             cutout.bottom - windowTop,
             cutout.corner,
         )
-        clipPath(card, ClipOp.Difference) { this@drawAroundCard.drawDimmed(cutout.scrim, opacity = 1f) }
+        clipPath(card, ClipOp.Difference) {
+            this@drawAroundCard.drawDimmed(cutout.scrim, opacity = 1f)
+        }
         if (cutout.opacity < 1f) {
-            clipPath(card) { this@drawAroundCard.drawDimmed(cutout.scrim, opacity = 1f - cutout.opacity) }
+            clipPath(card) {
+                this@drawAroundCard.drawDimmed(
+                    cutout.scrim,
+                    opacity =
+                        1f - cutout.opacity,
+                )
+            }
         }
     }
 
     /** The bar-sized layer's bounds, made again only when the bar's size changes. */
     private fun boundsOf(size: Size): Rect {
-        if (layerBounds.width != size.width || layerBounds.height != size.height) layerBounds = Rect(Offset.Zero, size)
+        if (layerBounds.width != size.width ||
+            layerBounds.height != size.height
+        ) {
+            layerBounds = Rect(Offset.Zero, size)
+        }
         return layerBounds
     }
 
@@ -188,7 +210,11 @@ private class FollowCoveredNode(
         layerPaint.alpha = opacity
         drawIntoCanvas { canvas -> canvas.saveLayer(boundsOf(size), layerPaint) }
         this@drawDimmed.drawContent()
-        if (scrim > 0f) drawRect(Color.Black, size = size, alpha = scrim, blendMode = BlendMode.SrcAtop)
+        if (scrim >
+            0f
+        ) {
+            drawRect(Color.Black, size = size, alpha = scrim, blendMode = BlendMode.SrcAtop)
+        }
         drawIntoCanvas { canvas -> canvas.restore() }
         layerPaint.alpha = 1f
     }
@@ -201,7 +227,13 @@ private class FollowCoveredNode(
  * would only approximate the card's. Added to the platform path by its coordinates, since the
  * RoundRect that Compose's overload takes would be allocated on each of those frames.
  */
-private fun Path.setRoundedRect(left: Float, top: Float, right: Float, bottom: Float, radius: Float) {
+private fun Path.setRoundedRect(
+    left: Float,
+    top: Float,
+    right: Float,
+    bottom: Float,
+    radius: Float,
+) {
     rewind()
     if (right <= left || bottom <= top) return
     val r = radius.coerceIn(0f, minOf(right - left, bottom - top) / 2f)

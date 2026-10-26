@@ -99,8 +99,14 @@ class SignUpViewModelTest {
         viewModel.onEvent(SignUpEvent.Submit)
         advanceUntilIdle()
 
-        assertEquals(UiText.plural(UiR.plurals.ui_validation_min_length, 2), viewModel.state.value.nameError)
-        assertEquals(UiText.of(UiR.string.ui_validation_password_digit), viewModel.state.value.passwordError)
+        assertEquals(
+            UiText.plural(UiR.plurals.ui_validation_min_length, 2),
+            viewModel.state.value.nameError,
+        )
+        assertEquals(
+            UiText.of(UiR.string.ui_validation_password_digit),
+            viewModel.state.value.passwordError,
+        )
         assertEquals(emptyList<SignUpDetails>(), repository.signUps)
     }
 

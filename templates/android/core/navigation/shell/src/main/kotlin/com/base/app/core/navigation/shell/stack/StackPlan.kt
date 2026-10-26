@@ -42,12 +42,11 @@ internal class StackPlan(
     val beneath: StackPage? get() = pages.getOrNull(pages.lastIndex - 1)
 
     /** The panes [key] is shown with: the page it slides in, or the page that shows it. */
-    private fun pageOf(key: Any): Map<Any, Slot> =
-        when (key) {
-            in upper -> upper
-            in lower -> lower
-            else -> pages.firstOrNull { key in it.shown }?.shown.orEmpty()
-        }
+    private fun pageOf(key: Any): Map<Any, Slot> = when (key) {
+        in upper -> upper
+        in lower -> lower
+        else -> pages.firstOrNull { key in it.shown }?.shown.orEmpty()
+    }
 
     /** Where [key] is laid out: in the page that shows it, or full width while parked. */
     fun slotOf(key: Any): Slot = pageOf(key)[key] ?: Slot.Full
@@ -82,7 +81,11 @@ internal class StackPlan(
 
     /** Detail panes with nothing open, in any page that draws one. */
     val emptyDetails: List<EmptyDetail> =
-        (pages.flatMap { it.shown.keys } + upper.keys + lower.keys).filterIsInstance<EmptyDetail>().distinct()
+        (
+            pages.flatMap {
+                it.shown.keys
+            } + upper.keys + lower.keys
+            ).filterIsInstance<EmptyDetail>().distinct()
 }
 
 /** Where a pane sits in its host: [left] and [width] in px. */
@@ -99,7 +102,11 @@ internal fun stackPages(panes: List<NavPane>, columns: Int): List<IntRange> {
     while (start < panes.size) {
         var end = start
         if (columns >= 2) {
-            while (end + 1 < panes.size && joins(panes[start], panes.subList(start + 1, end + 1), panes[end + 1])) end++
+            while (end + 1 < panes.size &&
+                joins(panes[start], panes.subList(start + 1, end + 1), panes[end + 1])
+            ) {
+                end++
+            }
         }
         pages += start..end
         start = end + 1
@@ -131,7 +138,11 @@ private fun shownPanes(members: List<Any>, kinds: List<NavPane>, columns: Int): 
     val first = members.first()
     // With one column a list is a screen like any other: an empty detail pane beside it would take
     // half a phone's width.
-    if (columns < 2 || (members.size == 1 && kinds.first() != NavPane.List)) return mapOf(first to Slot.Full)
+    if (columns < 2 ||
+        (members.size == 1 && kinds.first() != NavPane.List)
+    ) {
+        return mapOf(first to Slot.Full)
+    }
     return when (kinds.first()) {
         NavPane.List -> {
             val lastDetail = kinds.lastIndexOf(NavPane.Detail)
@@ -139,11 +150,19 @@ private fun shownPanes(members: List<Any>, kinds: List<NavPane>, columns: Int): 
             val detail: Any = if (lastDetail >= 0) members[lastDetail] else EmptyDetail(first)
             when {
                 lastExtra == null -> mapOf(first to Slot.List, detail to Slot.Detail)
-                columns >= 3 -> mapOf(first to Slot.List, detail to Slot.Detail, members[lastExtra] to Slot.Extra)
+
+                columns >= 3 -> mapOf(
+                    first to Slot.List,
+                    detail to Slot.Detail,
+                    members[lastExtra] to Slot.Extra,
+                )
+
                 else -> mapOf(detail to Slot.Detail, members[lastExtra] to Slot.Extra)
             }
         }
+
         NavPane.Main -> mapOf(first to Slot.Main, members.last() to Slot.Supporting)
+
         else -> mapOf(first to Slot.Full)
     }
 }
@@ -171,8 +190,22 @@ internal fun planChange(
     val oldTop = previous.top
     if (oldTop.members.first() == top.members.first()) return atRest
     return if (top.members.first() in previous.keys) {
-        if (!slides(oldTop.members.last())) atRest else StackPlan(keys, pages, Slide.Pop, oldTop.shown, top.shown)
+        if (!slides(
+                oldTop.members.last(),
+            )
+        ) {
+            atRest
+        } else {
+            StackPlan(keys, pages, Slide.Pop, oldTop.shown, top.shown)
+        }
     } else {
-        if (!slides(top.members.last())) atRest else StackPlan(keys, pages, Slide.Push, top.shown, oldTop.shown)
+        if (!slides(
+                top.members.last(),
+            )
+        ) {
+            atRest
+        } else {
+            StackPlan(keys, pages, Slide.Push, top.shown, oldTop.shown)
+        }
     }
 }

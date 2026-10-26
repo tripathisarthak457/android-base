@@ -31,9 +31,19 @@ internal object PerfHudModule {
     ): DevToolsPage = DevToolsPage(
         key = PAGE_KEY,
         title = R.string.perfhud_tab,
-        content = { PerformanceTab(recorder = recorder, exporter = exporter, debugBuild = environment.isDebugBuild) },
+        content = {
+            PerformanceTab(
+                recorder = recorder,
+                exporter = exporter,
+                debugBuild = environment.isDebugBuild,
+            )
+        },
         badgeContent = { openPage ->
-            PerformancePill(recorder = recorder, debugBuild = environment.isDebugBuild, onOpen = openPage)
+            PerformancePill(
+                recorder = recorder,
+                debugBuild = environment.isDebugBuild,
+                onOpen = openPage,
+            )
         },
     )
 

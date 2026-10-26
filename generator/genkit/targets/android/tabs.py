@@ -82,12 +82,35 @@ def icons(names: tuple[str, ...], taken: set[str], glyphs: frozenset[str]) -> di
 
 
 def shell_tab(name: str, icon: str, selected: str) -> str:
-    """A tab for a scaffolded module, labelled with that module's own title string."""
+    """
+    A tab for a scaffolded module, labelled with that module's own title string. One argument a line, as ktlint lays
+    out a call too long for one, so a project with formatting passes its check with the tab in it.
+    """
     pascal = pascal_case(name)
     return (
-        f"        ShellTab(key = {pascal}ListKey, label = {pascal}R.string.{name}_title, "
-        f"icon = AppIcons.{icon}, selectedIcon = AppIcons.{selected}),\n"
+        "        ShellTab(\n"
+        f"            key = {pascal}ListKey,\n"
+        f"            label = {pascal}R.string.{name}_title,\n"
+        f"            icon = AppIcons.{icon},\n"
+        f"            selectedIcon = AppIcons.{selected},\n"
+        "        ),\n"
     )
+
+
+def tab_entries(lines: list[str], start: int, end: int) -> list[tuple[int, int]]:
+    """Each `ShellTab(` call in `lines[start:end]` as its first and last line, on one line or one argument a line."""
+    entries: list[tuple[int, int]] = []
+    index = start
+    while index < end:
+        if lines[index].strip().startswith("ShellTab("):
+            last = index
+            while last < end - 1 and not lines[last].rstrip().endswith(("),", ")")):
+                last += 1
+            entries.append((index, last))
+            index = last + 1
+        else:
+            index += 1
+    return entries
 
 
 def shell_tab_imports(package_name: str, name: str) -> list[str]:

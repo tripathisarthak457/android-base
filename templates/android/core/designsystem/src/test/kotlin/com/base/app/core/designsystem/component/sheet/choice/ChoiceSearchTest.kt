@@ -1,9 +1,9 @@
 package com.base.app.core.designsystem.component.sheet.choice
 
+import java.util.Locale
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import java.util.Locale
 
 /** The choice sheet's search folds case and accents on both sides and reads the supporting text. */
 class ChoiceSearchTest {

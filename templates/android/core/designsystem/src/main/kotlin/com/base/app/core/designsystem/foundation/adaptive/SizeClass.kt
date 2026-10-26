@@ -35,15 +35,33 @@ public data class SizeClass(val width: WindowWidth, val height: WindowHeight) {
         public fun of(widthDp: Float, heightDp: Float): SizeClass {
             val sizeClass = WindowSizeClass.BREAKPOINTS_V2.computeWindowSizeClass(widthDp, heightDp)
             val width = when {
-                sizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXTRA_LARGE_LOWER_BOUND) -> WindowWidth.ExtraLarge
-                sizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_LARGE_LOWER_BOUND) -> WindowWidth.Large
-                sizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND) -> WindowWidth.Expanded
-                sizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND) -> WindowWidth.Medium
+                sizeClass.isWidthAtLeastBreakpoint(
+                    WindowSizeClass.WIDTH_DP_EXTRA_LARGE_LOWER_BOUND,
+                ) -> WindowWidth.ExtraLarge
+
+                sizeClass.isWidthAtLeastBreakpoint(
+                    WindowSizeClass.WIDTH_DP_LARGE_LOWER_BOUND,
+                ) -> WindowWidth.Large
+
+                sizeClass.isWidthAtLeastBreakpoint(
+                    WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND,
+                ) -> WindowWidth.Expanded
+
+                sizeClass.isWidthAtLeastBreakpoint(
+                    WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND,
+                ) -> WindowWidth.Medium
+
                 else -> WindowWidth.Compact
             }
             val height = when {
-                sizeClass.isHeightAtLeastBreakpoint(WindowSizeClass.HEIGHT_DP_EXPANDED_LOWER_BOUND) -> WindowHeight.Expanded
-                sizeClass.isHeightAtLeastBreakpoint(WindowSizeClass.HEIGHT_DP_MEDIUM_LOWER_BOUND) -> WindowHeight.Medium
+                sizeClass.isHeightAtLeastBreakpoint(
+                    WindowSizeClass.HEIGHT_DP_EXPANDED_LOWER_BOUND,
+                ) -> WindowHeight.Expanded
+
+                sizeClass.isHeightAtLeastBreakpoint(
+                    WindowSizeClass.HEIGHT_DP_MEDIUM_LOWER_BOUND,
+                ) -> WindowHeight.Medium
+
                 else -> WindowHeight.Compact
             }
             return SizeClass(width, height)

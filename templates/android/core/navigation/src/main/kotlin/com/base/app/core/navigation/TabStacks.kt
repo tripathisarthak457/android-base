@@ -34,13 +34,18 @@ class TabStacks(
 
     init {
         require(roots.isNotEmpty()) { "TabStacks needs at least one tab." }
-        require(stacks.size == roots.size && stacks.indices.all { stacks[it].firstOrNull() == roots[it] }) {
+        require(
+            stacks.size == roots.size &&
+                stacks.indices.all { stacks[it].firstOrNull() == roots[it] },
+        ) {
             "Each tab's stack starts at that tab's root."
         }
     }
 
     /** Each tab's back stack, in tab order, root first. */
-    val stacks: List<AppBackStack> = stacks.map { AppBackStack(mutableStateListOf<AppNavKey>().apply { addAll(it) }) }
+    val stacks: List<AppBackStack> = stacks.map {
+        AppBackStack(mutableStateListOf<AppNavKey>().apply { addAll(it) })
+    }
 
     /** The tab in front, by its place in [roots]. */
     var selectedIndex by mutableIntStateOf(selected.takeIf { it in roots.indices } ?: 0)
@@ -88,23 +93,29 @@ class TabStacks(
          * to the tab whose root it starts with, so tabs reordered between two runs each get their
          * own; a tab with no saved stack starts at its root.
          */
-        fun saver(roots: List<AppNavKey>, serialization: NavKeySerialization): Saver<TabStacks, ArrayList<String>> =
-            Saver(
-                save = { tabs ->
-                    val parts = listOf(listOf(tabs.roots[tabs.selectedIndex])) + tabs.stacks.map { it.keys }
-                    parts.mapTo(ArrayList()) { serialization.encodeStack(it) ?: return@Saver null }
-                },
-                restore = { saved ->
-                    val decoded = saved.map { serialization.decodeStack(it) }
-                    val stacks = decoded.drop(1).filterNotNull().filter { it.isNotEmpty() }
-                    val selected = decoded.firstOrNull()?.firstOrNull()?.let(roots::indexOf) ?: 0
-                    TabStacks(
-                        roots = roots,
-                        stacks = roots.map { root -> stacks.firstOrNull { it.first() == root } ?: listOf(root) },
-                        selected = selected,
-                    )
-                },
-            )
+        fun saver(
+            roots: List<AppNavKey>,
+            serialization: NavKeySerialization,
+        ): Saver<TabStacks, ArrayList<String>> = Saver(
+            save = { tabs ->
+                val parts =
+                    listOf(listOf(tabs.roots[tabs.selectedIndex])) + tabs.stacks.map { it.keys }
+                parts.mapTo(ArrayList()) { serialization.encodeStack(it) ?: return@Saver null }
+            },
+            restore = { saved ->
+                val decoded = saved.map { serialization.decodeStack(it) }
+                val stacks = decoded.drop(1).filterNotNull().filter { it.isNotEmpty() }
+                val selected = decoded.firstOrNull()?.firstOrNull()?.let(roots::indexOf) ?: 0
+                TabStacks(
+                    roots = roots,
+                    stacks = roots.map { root ->
+                        stacks.firstOrNull { it.first() == root }
+                            ?: listOf(root)
+                    },
+                    selected = selected,
+                )
+            },
+        )
     }
 }
 

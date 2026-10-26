@@ -145,11 +145,12 @@ internal data class MemorySummary(
     val peakPssMb: Float?,
     // <opt:performance&ui_components>
     /** PSS less graphics: what `gates.toml` budgets as the app's own memory. */
+    val appPssMb: Float?,
     // </opt:performance&ui_components>
     // <opt-else:performance&ui_components>
     //~ /** PSS less graphics: the app's own memory, the figure its memory ceiling holds. */
+    //~ val appPssMb: Float?,
     // </opt-else:performance&ui_components>
-    val appPssMb: Float?,
     val gcCount: Long,
     val gcMillis: Long,
     val blockingGcCount: Long,

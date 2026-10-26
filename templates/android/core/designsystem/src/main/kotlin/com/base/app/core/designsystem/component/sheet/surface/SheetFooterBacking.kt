@@ -37,11 +37,17 @@ private data class SheetFooterBackingElement(val surface: SheetSurface, val colo
     }
 }
 
-private class SheetFooterBackingNode(var surface: SheetSurface, var color: Color) : Modifier.Node(), DrawModifierNode {
+private class SheetFooterBackingNode(var surface: SheetSurface, var color: Color) :
+    Modifier.Node(),
+    DrawModifierNode {
     override fun ContentDrawScope.draw() {
         // The frame changes only with a new layout, so this re-records on a settle, never per frame.
         val strip = (surface.scope as? SheetController)?.frame?.bottomInset ?: 0f
-        if (strip > 0f) drawRect(color, topLeft = Offset(0f, size.height), size = Size(size.width, strip))
+        if (strip >
+            0f
+        ) {
+            drawRect(color, topLeft = Offset(0f, size.height), size = Size(size.width, strip))
+        }
         drawContent()
     }
 }

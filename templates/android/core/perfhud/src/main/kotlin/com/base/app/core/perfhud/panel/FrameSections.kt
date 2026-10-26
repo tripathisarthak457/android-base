@@ -12,7 +12,11 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+// <opt:ui_components>
+import com.base.app.core.designsystem.component.text.AppText
+// </opt:ui_components>
 import com.base.app.core.designsystem.theme.AppTheme
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppText
 import com.base.app.core.perfhud.R
 import com.base.app.core.perfhud.frame.FrameStats
 import com.base.app.core.perfhud.frame.ScreenFrames
@@ -23,16 +27,14 @@ import com.base.app.core.perfhud.recording.PerformanceRecorder
 import com.base.app.core.perfhud.recording.PerformanceSnapshot
 import com.base.app.core.perfhud.score.decimal
 import com.base.app.core.perfhud.score.minutesAndSeconds
-// <opt:ui_components>
-import com.base.app.core.designsystem.component.text.AppText
-// </opt:ui_components>
-// <opt-else:ui_components>
-//~ import com.base.app.core.devtools.kit.AppText
-// </opt-else:ui_components>
 
 /** The frame-time graph, the numbers, frames per second, the histogram and jank by screen. */
 @Composable
-internal fun FrameSections(recorder: PerformanceRecorder, snapshot: PerformanceSnapshot, version: () -> Int) {
+internal fun FrameSections(
+    recorder: PerformanceRecorder,
+    snapshot: PerformanceSnapshot,
+    version: () -> Int,
+) {
     val frames = snapshot.frames
     val overall = frames.overall
     Section(title = R.string.perfhud_frame_times, caption = R.string.perfhud_frame_times_caption) {
@@ -42,7 +44,10 @@ internal fun FrameSections(recorder: PerformanceRecorder, snapshot: PerformanceS
         ValueRow(R.string.perfhud_frames, overall.frames.toString())
         ValueRow(R.string.perfhud_recorded, minutesAndSeconds(snapshot.recordedMillis))
         ValueRow(R.string.perfhud_fps, decimal(frames.framesPerSecond, 1))
-        ValueRow(R.string.perfhud_display, stringResource(R.string.perfhud_hz, Math.round(frames.refreshHz)))
+        ValueRow(
+            R.string.perfhud_display,
+            stringResource(R.string.perfhud_hz, Math.round(frames.refreshHz)),
+        )
         ValueRow(R.string.perfhud_janky, countAndPercent(overall.janky, overall.jankyPercent))
         ValueRow(R.string.perfhud_slow, countAndPercent(overall.slow, overall.slowPercent))
         ValueRow(R.string.perfhud_frozen, overall.frozen.toString())
@@ -144,7 +149,8 @@ private fun percentiles(stats: FrameStats): String = stringResource(
 )
 
 @Composable
-internal fun millis(value: Float): String = stringResource(R.string.perfhud_value_millis, decimal(value, 1))
+internal fun millis(value: Float): String =
+    stringResource(R.string.perfhud_value_millis, decimal(value, 1))
 
 private val BarHeight = 6.dp
 private const val MillisPerSecond = 1000f

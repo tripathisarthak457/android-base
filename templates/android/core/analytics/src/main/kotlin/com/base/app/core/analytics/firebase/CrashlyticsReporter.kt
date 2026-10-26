@@ -7,9 +7,8 @@ import javax.inject.Singleton
 
 /** Crashlytics behind the vendor-agnostic seam. [log] writes a breadcrumb rather than a report. */
 @Singleton
-class CrashlyticsReporter @Inject constructor(
-    private val crashlytics: FirebaseCrashlytics,
-) : CrashReporter {
+class CrashlyticsReporter @Inject constructor(private val crashlytics: FirebaseCrashlytics) :
+    CrashReporter {
 
     override fun recordException(throwable: Throwable, message: String?) {
         message?.let(crashlytics::log)

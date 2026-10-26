@@ -29,7 +29,12 @@ class CompositionCountBenchmark {
     val rule = MacrobenchmarkRule()
 
     @Test
-    fun tabSwitch() = measure(setup = { (1 until tabCount()).forEach(::tapTab); tapTab(0) }) {
+    fun tabSwitch() = measure(
+        setup = {
+            (1 until tabCount()).forEach(::tapTab)
+            tapTab(0)
+        },
+    ) {
         repeat(ROUNDS) {
             tapTab(1)
             tapTab(0)

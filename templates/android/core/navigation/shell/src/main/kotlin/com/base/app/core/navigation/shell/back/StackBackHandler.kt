@@ -48,7 +48,8 @@ internal fun StackBackHandler(
     cardEnabled: Boolean,
 ) {
     val scope = rememberCoroutineScope()
-    val handler = remember(stack, host, pop, scope) { StackBackEvents(stack.gate, host, pop, scope) }
+    val handler =
+        remember(stack, host, pop, scope) { StackBackEvents(stack.gate, host, pop, scope) }
     SideEffect { handler.cardEnabled = cardEnabled }
     BackHandlerEffect(handler) { stack.canGoBack || stack.gate.moving }
 }
@@ -71,9 +72,17 @@ private class StackBackEvents(
         val card = host.card
         when (card.phase) {
             BackCardState.Phase.Tracking -> card.track(event)
+
             // A button press can arrive as progress animated by the system: it never shrinks the screen.
             BackCardState.Phase.Idle ->
-                if (event.swipeEdge != NavigationEvent.EDGE_NONE && host.canStartCard()) host.startCard(event, scope) else return
+                if (event.swipeEdge != NavigationEvent.EDGE_NONE &&
+                    host.canStartCard()
+                ) {
+                    host.startCard(event, scope)
+                } else {
+                    return
+                }
+
             BackCardState.Phase.Settling -> return
         }
         // The platform calls this from its progress spring, in the frame's animation phase. Applied
@@ -90,7 +99,9 @@ private class StackBackEvents(
         if (host.card.phase == BackCardState.Phase.Tracking) {
             val released = System.nanoTime()
             // Undispatched: the commit's animations are running before the next frame starts.
-            scope.launch(start = CoroutineStart.UNDISPATCHED) { host.commitCard(pop, released, scope) }
+            scope.launch(start = CoroutineStart.UNDISPATCHED) {
+                host.commitCard(pop, released, scope)
+            }
         } else {
             gate.onBack(pop)
         }

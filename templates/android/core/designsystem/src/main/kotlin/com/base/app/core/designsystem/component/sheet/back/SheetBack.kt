@@ -34,7 +34,8 @@ import kotlinx.coroutines.launch
  */
 @Composable
 internal fun SheetBack(controller: SheetController) {
-    val dispatcher = LocalNavigationEventDispatcherOwner.current?.navigationEventDispatcher ?: return
+    val dispatcher =
+        LocalNavigationEventDispatcherOwner.current?.navigationEventDispatcher ?: return
     val host = LocalOverlayHost.current
     val handler = remember(controller) { SheetBackHandler(controller) }
     DisposableEffect(dispatcher, handler) {
@@ -107,7 +108,11 @@ private class SheetBackHandler(private val controller: SheetController) :
         // A gesture during a present or a settle holds the sheet where it is; the preview runs
         // from there, and a cancel lets it finish where it was going.
         interrupted = state.animating && !state.isLeaving && !state.dragging
-        if (interrupted) controller.scope.launch(start = CoroutineStart.UNDISPATCHED) { state.stopMotion() }
+        if (interrupted) {
+            controller.scope.launch(start = CoroutineStart.UNDISPATCHED) {
+                state.stopMotion()
+            }
+        }
         progress(event.progress)
     }
 
@@ -118,15 +123,27 @@ private class SheetBackHandler(private val controller: SheetController) :
         val state = controller.sheetState
         val springs = controller.springs
         controller.scope.launch {
-            animate(state.backProgress, 0f, animationSpec = springs.sheet.unit) { value, _ -> state.backProgress = value }
+            animate(state.backProgress, 0f, animationSpec = springs.sheet.unit) { value, _ ->
+                state.backProgress =
+                    value
+            }
         }
         controller.scope.launch {
-            animate(state.backFollow, 0f, animationSpec = springs.sheet.pixels) { value, _ -> state.backFollow = value }
+            animate(state.backFollow, 0f, animationSpec = springs.sheet.pixels) { value, _ ->
+                state.backFollow =
+                    value
+            }
         }
         if (interrupted) {
             interrupted = false
             val target = state.targetDetent ?: state.currentDetent
-            if (target != null) controller.scope.launch { state.settleTo(target, velocity = 0f, byPerson = false) }
+            if (target !=
+                null
+            ) {
+                controller.scope.launch {
+                    state.settleTo(target, velocity = 0f, byPerson = false)
+                }
+            }
         }
     }
 
@@ -139,14 +156,28 @@ private class SheetBackHandler(private val controller: SheetController) :
         when (branch) {
             BackBranch.StepDown -> controller.scope.launch {
                 state.collapse()
-                animate(state.backFollow, 0f, animationSpec = controller.springs.sheet.pixels) { value, _ -> state.backFollow = value }
+                animate(state.backFollow, 0f, animationSpec = controller.springs.sheet.pixels) {
+                        value,
+                        _,
+                    ->
+                    state.backFollow =
+                        value
+                }
             }
+
             BackBranch.Guarded -> {
                 controller.scope.launch {
-                    animate(state.backProgress, 0f, animationSpec = controller.springs.sheet.unit) { value, _ -> state.backProgress = value }
+                    animate(state.backProgress, 0f, animationSpec = controller.springs.sheet.unit) {
+                            value,
+                            _,
+                        ->
+                        state.backProgress =
+                            value
+                    }
                 }
                 controller.attempt(SheetDismissSource.Back)
             }
+
             else -> controller.backWithoutPreview(SheetDismissSource.Back)
         }
     }
@@ -156,8 +187,13 @@ private class SheetBackHandler(private val controller: SheetController) :
         val eased = DesignTokens.Sheet.Back.easing.transform(raw.coerceIn(0f, 1f))
         when (branch) {
             BackBranch.Dismiss -> state.backProgress = eased
+
             BackBranch.Guarded -> state.backProgress = eased * DesignTokens.Sheet.Back.guardedShare
-            BackBranch.StepDown -> state.backFollow = DesignTokens.Sheet.Back.persistentFollow.value * controller.density * eased
+
+            BackBranch.StepDown ->
+                state.backFollow =
+                    DesignTokens.Sheet.Back.persistentFollow.value * controller.density * eased
+
             else -> Unit
         }
     }

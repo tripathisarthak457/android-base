@@ -41,8 +41,8 @@ import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
-import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+import kotlinx.coroutines.launch
 
 /** A horizontal pager with a page control under it, driven by the same state. */
 @Composable
@@ -113,7 +113,12 @@ public fun AppPageControl(
             .height(AppPageControlDefaults.MinHeight)
             .semantics {
                 stateDescription = description
-                progressBarRangeInfo = ProgressBarRangeInfo(selected().toFloat(), 0f..(pageCount - 1).toFloat(), pageCount - 2)
+                progressBarRangeInfo =
+                    ProgressBarRangeInfo(
+                        selected().toFloat(),
+                        0f..(pageCount - 1).toFloat(),
+                        pageCount - 2,
+                    )
                 if (onSelect != null) {
                     setProgress { target ->
                         go(target.roundToInt())
@@ -131,7 +136,9 @@ public fun AppPageControl(
                             }
                         }
                         .pointerInput(pageCount, rtl) {
-                            detectHorizontalDragGestures { change, _ -> go(pageAt(change.position.x, size.width.toFloat())) }
+                            detectHorizontalDragGestures { change, _ ->
+                                go(pageAt(change.position.x, size.width.toFloat()))
+                            }
                         }
                 } else {
                     Modifier
@@ -145,7 +152,13 @@ public fun AppPageControl(
         for (page in 0 until pageCount) {
             val index = if (rtl) pageCount - 1 - page else page
             drawCircle(
-                color = if (index == current) colors.contentPrimary else colors.contentPrimary.copy(alpha = 0.3f),
+                color = if (index ==
+                    current
+                ) {
+                    colors.contentPrimary
+                } else {
+                    colors.contentPrimary.copy(alpha = 0.3f)
+                },
                 radius = radius,
                 center = Offset(start + step * page, size.height / 2f),
             )
@@ -170,7 +183,10 @@ private fun AppPageControlPreview() {
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
     ) {
         AppPager(pageCount = 3) { page ->
-            AppSurface(modifier = Modifier.fillMaxWidth().height(AppTheme.sizes.rowHeight * 2), color = AppTheme.colors.fill) {
+            AppSurface(
+                modifier = Modifier.fillMaxWidth().height(AppTheme.sizes.rowHeight * 2),
+                color = AppTheme.colors.fill,
+            ) {
                 AppText(text = "Page ${page + 1}", modifier = Modifier.padding(AppTheme.spacing.lg))
             }
         }

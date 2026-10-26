@@ -48,37 +48,48 @@ internal data class PerformanceReport(
             encodeDefaults = true
         }
 
-        fun of(snapshot: PerformanceSnapshot, generatedAt: String, resources: Resources) = PerformanceReport(
-            schema = SCHEMA,
-            generatedAt = generatedAt,
-            app = snapshot.app,
-            device = snapshot.device,
-            build = snapshot.build,
-            recordedSeconds = snapshot.recordedMillis / MILLIS_PER_SECOND,
-            notes = listOfNotNull(resources.getString(R.string.perfhud_debug_body).takeIf { snapshot.app.debugBuild }),
-            score = ScoreReport(
-                total = snapshot.score.total,
-                grade = snapshot.score.grade?.name,
-                metrics = snapshot.score.metrics.map { scored ->
-                    MetricReport(
-                        metric = scored.metric.name,
-                        unit = scored.metric.unit.name,
-                        value = scored.value,
-                        target = scored.metric.limits?.a,
-                        grade = scored.grade?.name,
-                        points = scored.points,
-                        maxPoints = scored.metric.weight,
-                        fix = if (scored.lost > 0f) resources.getString(scored.metric.fix) else null,
-                        doc = scored.metric.doc,
-                    )
-                },
-            ),
-            frames = snapshot.frames,
-            memory = snapshot.memory,
-            startup = snapshot.startup,
-            network = snapshot.network,
-            strictMode = snapshot.strictMode,
-        )
+        fun of(snapshot: PerformanceSnapshot, generatedAt: String, resources: Resources) =
+            PerformanceReport(
+                schema = SCHEMA,
+                generatedAt = generatedAt,
+                app = snapshot.app,
+                device = snapshot.device,
+                build = snapshot.build,
+                recordedSeconds = snapshot.recordedMillis / MILLIS_PER_SECOND,
+                notes = listOfNotNull(
+                    resources.getString(R.string.perfhud_debug_body).takeIf {
+                        snapshot.app.debugBuild
+                    },
+                ),
+                score = ScoreReport(
+                    total = snapshot.score.total,
+                    grade = snapshot.score.grade?.name,
+                    metrics = snapshot.score.metrics.map { scored ->
+                        MetricReport(
+                            metric = scored.metric.name,
+                            unit = scored.metric.unit.name,
+                            value = scored.value,
+                            target = scored.metric.limits?.a,
+                            grade = scored.grade?.name,
+                            points = scored.points,
+                            maxPoints = scored.metric.weight,
+                            fix = if (scored.lost >
+                                0f
+                            ) {
+                                resources.getString(scored.metric.fix)
+                            } else {
+                                null
+                            },
+                            doc = scored.metric.doc,
+                        )
+                    },
+                ),
+                frames = snapshot.frames,
+                memory = snapshot.memory,
+                startup = snapshot.startup,
+                network = snapshot.network,
+                strictMode = snapshot.strictMode,
+            )
 
         private const val MILLIS_PER_SECOND = 1000f
     }

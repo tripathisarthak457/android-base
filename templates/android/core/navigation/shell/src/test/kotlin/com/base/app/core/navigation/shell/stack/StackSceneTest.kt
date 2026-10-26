@@ -95,7 +95,11 @@ class StackSceneTest {
 
         assertEquals("composed once", 1, probe.compositions)
         assertEquals("never detached", 0, probe.detaches)
-        assertEquals("the page under the top is started, so its data stays current", Lifecycle.State.STARTED, rootLifecycle!!.currentState)
+        assertEquals(
+            "the page under the top is started, so its data stays current",
+            Lifecycle.State.STARTED,
+            rootLifecycle!!.currentState,
+        )
         assertFalse(rootVisible!!.isVisible)
         // What accessibility reads: the parked root's semantics are cleared.
         rule.onNodeWithTag(FeedTab.toString()).assertDoesNotExist()
@@ -187,12 +191,17 @@ private data class ProbeElement(val probe: Probe) : ModifierNodeElement<ProbeNod
     }
 }
 
-private class ProbeNode(var probe: Probe) : Modifier.Node(), LayoutModifierNode {
+private class ProbeNode(var probe: Probe) :
+    Modifier.Node(),
+    LayoutModifierNode {
     override fun onDetach() {
         probe.detaches++
     }
 
-    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+    override fun MeasureScope.measure(
+        measurable: Measurable,
+        constraints: Constraints,
+    ): MeasureResult {
         probe.measures++
         val placeable = measurable.measure(constraints)
         return layout(placeable.width, placeable.height) { placeable.place(0, 0) }

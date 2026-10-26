@@ -3,6 +3,9 @@ package com.base.app.feature.profile
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+// <opt:media>
+import androidx.compose.foundation.layout.Row
+// </opt:media>
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,6 +21,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.animation.AppAppear
 import com.base.app.core.designsystem.component.button.AppButton
+// <opt:media>
+import com.base.app.core.designsystem.component.button.ButtonSize
+import com.base.app.core.designsystem.component.button.ButtonVariant
+// </opt:media>
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.feedback.AppAvatar
 import com.base.app.core.designsystem.component.input.AppTextField
@@ -27,15 +34,12 @@ import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
+// <opt:media>
+import com.base.app.core.media.picker.rememberMediaPicker
+// </opt:media>
 // <opt:coil>
 import com.base.app.core.ui.AppNetworkImage
 // </opt:coil>
-// <opt:media>
-import androidx.compose.foundation.layout.Row
-import com.base.app.core.designsystem.component.button.ButtonSize
-import com.base.app.core.designsystem.component.button.ButtonVariant
-import com.base.app.core.media.picker.rememberMediaPicker
-// </opt:media>
 
 /**
  * The design-system fields take a String, so each field's text is read from the ViewModel's
@@ -56,7 +60,10 @@ internal fun ProfileScreen(
         contentMaxWidth = AppTheme.layout.formMaxWidth,
         modifier = modifier,
         topBar = {
-            AppLargeTitleTopBar(title = stringResource(R.string.profile_title), scrolled = { scroll.value })
+            AppLargeTitleTopBar(
+                title = stringResource(R.string.profile_title),
+                scrolled = { scroll.value },
+            )
         },
     ) {
         // Nothing is drawn until the stored profile has been read, so the fields never flash
@@ -82,7 +89,13 @@ internal fun ProfileScreen(
                         size = AvatarSize,
                         // <opt:coil>
                         content = state.saved.photoUri?.let { uri ->
-                            { AppNetworkImage(url = uri, contentDescription = null, modifier = Modifier.fillMaxSize()) }
+                            {
+                                AppNetworkImage(
+                                    url = uri,
+                                    contentDescription = null,
+                                    modifier = Modifier.fillMaxSize(),
+                                )
+                            }
                         },
                         // </opt:coil>
                     )
@@ -101,14 +114,23 @@ internal fun ProfileScreen(
                     state = name,
                     label = stringResource(R.string.profile_name),
                     placeholder = stringResource(R.string.profile_name_placeholder),
-                    error = if (state.nameError) stringResource(R.string.profile_name_required) else null,
+                    error = if (state.nameError) {
+                        stringResource(
+                            R.string.profile_name_required,
+                        )
+                    } else {
+                        null
+                    },
                     maxLength = ProfileViewModel.NAME_LIMIT,
                 )
                 AppTextField(
                     state = bio,
                     label = stringResource(R.string.profile_bio),
                     placeholder = stringResource(R.string.profile_bio_placeholder),
-                    lineLimits = TextFieldLineLimits.MultiLine(minHeightInLines = 4, maxHeightInLines = 8),
+                    lineLimits = TextFieldLineLimits.MultiLine(
+                        minHeightInLines = 4,
+                        maxHeightInLines = 8,
+                    ),
                     maxLength = ProfileViewModel.BIO_LIMIT,
                 )
                 AppButton(

@@ -23,7 +23,11 @@ class CardStackMathTest {
 
     @Test
     fun `corners start from the display's and end at the card's`() {
-        assertEquals(0.9f * 30f, CardStackMath.corner(0f, displayCorner = 30f, density = 1f), 0.001f)
+        assertEquals(
+            0.9f * 30f,
+            CardStackMath.corner(0f, displayCorner = 30f, density = 1f),
+            0.001f,
+        )
         assertEquals(0f, CardStackMath.corner(0f, displayCorner = 12f, density = 1f), 0f)
         assertEquals(12f, CardStackMath.corner(1f, displayCorner = 30f, density = 1f), 0.001f)
     }
@@ -42,7 +46,17 @@ class CardStackMathTest {
                 for (l in listOf(0f, 0.5f, 1f)) {
                     val merged = fold(overlay to 0.1f * l, scrim to scrim.alpha * u)
                     for (base in listOf(Color(0.2f, 0.6f, 0.9f), Color.White, Color.Black)) {
-                        val expected = over(scrim.copy(alpha = scrim.alpha * u), over(overlay.copy(alpha = 0.1f * l), base))
+                        val expected =
+                            over(
+                                scrim.copy(alpha = scrim.alpha * u),
+                                over(
+                                    overlay.copy(
+                                        alpha =
+                                            0.1f * l,
+                                    ),
+                                    base,
+                                ),
+                            )
                         assertSame(expected, over(merged, base))
                     }
                 }
@@ -72,7 +86,10 @@ class CardStackMathTest {
         assertEquals(0.46f, last, 0.01f)
         var lastU = 0f
         for (step in 0..10) {
-            val alpha = fold(lightOverlay to 0.05f, lightScrim to lightScrim.alpha * step / 10f).alpha
+            val alpha = fold(
+                lightOverlay to 0.05f,
+                lightScrim to lightScrim.alpha * step / 10f,
+            ).alpha
             assertTrue(alpha >= lastU)
             lastU = alpha
         }

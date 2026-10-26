@@ -7,7 +7,9 @@ import org.junit.Test
 class ScrollRuleCasesTest {
 
     private fun findings(path: String, code: String): List<Int> =
-        CodeRules.check(path, code.trimIndent()).filter { it.rule == "scroll-fling" }.map { it.line }
+        CodeRules.check(path, code.trimIndent()).filter {
+            it.rule == "scroll-fling"
+        }.map { it.line }
 
     @Test
     fun `every kind of container that names the fling passes`() {

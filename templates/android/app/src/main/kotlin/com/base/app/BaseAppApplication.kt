@@ -1,51 +1,61 @@
 package com.base.app
 
 import android.app.Application
-import com.base.app.core.common.log.AppLogger
-import com.base.app.core.common.log.Log
-import com.base.app.core.common.log.LogLevel
-import dagger.hilt.android.HiltAndroidApp
-// <opt:analytics|push|flags|offlinequeue|websocket|coil&network>
-// Shared by several optional blocks below. Repeating it inside each would duplicate it when two
-// are on, which is what the `a|b` marker form avoids.
-import javax.inject.Inject
-// </opt:analytics|push|flags|offlinequeue|websocket|coil&network>
-// <opt:analytics|push|flags>
-import com.base.app.core.common.coroutines.ApplicationScope
-import kotlinx.coroutines.launch
-// </opt:analytics|push|flags>
+// <opt:offlinequeue>
+import androidx.work.Configuration
+// </opt:offlinequeue>
+// <opt:coil&network>
+import coil3.ImageLoader
+import coil3.SingletonImageLoader
+import coil3.network.okhttp.OkHttpNetworkFetcherFactory
+// </opt:coil&network>
 // <opt:analytics>
 import com.base.app.core.analytics.AnalyticsTracker
 import com.base.app.core.analytics.CrashReporter
-import com.base.app.core.datastore.settings.AppSettingsStore
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 // </opt:analytics>
-// <opt:push>
-import com.base.app.core.notification.channel.NotificationChannels
-import com.base.app.core.notification.push.PushRegistration
-// </opt:push>
+// <opt:analytics|flags|push>
+import com.base.app.core.common.coroutines.ApplicationScope
+// </opt:analytics|flags|push>
+import com.base.app.core.common.log.AppLogger
+import com.base.app.core.common.log.Log
+import com.base.app.core.common.log.LogLevel
+// <opt:analytics>
+import com.base.app.core.datastore.settings.AppSettingsStore
+// </opt:analytics>
 // <opt:flags>
 import com.base.app.core.flags.FeatureFlags
 // </opt:flags>
 // <opt:offlinequeue>
-import androidx.work.Configuration
 import com.base.app.core.network.queue.OfflineQueueWorkerFactory
 // </opt:offlinequeue>
 // <opt:websocket>
 import com.base.app.core.network.websocket.RealtimeLifecycle
 // </opt:websocket>
+// <opt:push>
+import com.base.app.core.notification.channel.NotificationChannels
+import com.base.app.core.notification.push.PushRegistration
+// </opt:push>
+import dagger.hilt.android.HiltAndroidApp
+// <opt:analytics|coil&network|flags|offlinequeue|push|websocket>
+import javax.inject.Inject
+// </opt:analytics|coil&network|flags|offlinequeue|push|websocket>
+// <opt:analytics>
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+// </opt:analytics>
+// <opt:analytics|flags|push>
+import kotlinx.coroutines.launch
+// </opt:analytics|flags|push>
 // <opt:coil&network>
-import coil3.ImageLoader
-import coil3.SingletonImageLoader
-import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import okhttp3.OkHttpClient
 // </opt:coil&network>
 
 /** The composition root. Deliberately thin. */
 @HiltAndroidApp
 // <opt:offlinequeue>
-class BaseAppApplication : Application(), Configuration.Provider {
+class BaseAppApplication :
+    Application(),
+    Configuration.Provider {
 // </opt:offlinequeue>
 // <opt:!offlinequeue>class BaseAppApplication : Application() {
 
@@ -105,12 +115,15 @@ class BaseAppApplication : Application(), Configuration.Provider {
         // <opt:analytics>
         // Every error the app logs becomes a breadcrumb on the next crash report, without a second
         // call at each site. Only what nothing handled is recorded as an error of its own.
-        Log.logger = AndroidLogger(verbose = BuildConfig.DEBUG) { message -> crashReporter.log(message) }
+        Log.logger =
+            AndroidLogger(verbose = BuildConfig.DEBUG) { message -> crashReporter.log(message) }
 
         // The choice in settings reaches both collectors before anything is sent, and follows every
         // change after.
         appScope.launch {
-            settings.settings.map { it.analyticsEnabled }.distinctUntilChanged().collect { enabled ->
+            settings.settings.map {
+                it.analyticsEnabled
+            }.distinctUntilChanged().collect { enabled ->
                 analytics.setEnabled(enabled)
                 crashReporter.setEnabled(enabled)
             }
@@ -162,11 +175,22 @@ private class AndroidLogger(
     override fun log(level: LogLevel, tag: String, message: String, throwable: Throwable?) {
         when (level) {
             LogLevel.Debug -> if (verbose) android.util.Log.d(tag, message, throwable)
+
             LogLevel.Info -> if (verbose) android.util.Log.i(tag, message, throwable)
+
             LogLevel.Warn -> if (verbose) android.util.Log.w(tag, message, throwable)
+
             LogLevel.Error -> {
                 android.util.Log.e(tag, message, throwable)
-                onError?.invoke(if (throwable == null) "$tag: $message" else "$tag: $message: $throwable")
+                onError?.invoke(
+                    if (throwable ==
+                        null
+                    ) {
+                        "$tag: $message"
+                    } else {
+                        "$tag: $message: $throwable"
+                    },
+                )
             }
         }
     }

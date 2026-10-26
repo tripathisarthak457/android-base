@@ -51,15 +51,20 @@ fun MacrobenchmarkScope.tapTab(index: Int) {
 
 fun MacrobenchmarkScope.openFirstRow() {
     val list = waitFor(By.res("primary_list"), "the root list (primary_list)")
-    val row = checkNotNull(list.findObject(By.clickable(true))) { "primary_list has no row to open." }
+    val row =
+        checkNotNull(list.findObject(By.clickable(true))) { "primary_list has no row to open." }
     row.click()
-    check(device.wait(Until.gone(By.res("primary_list")), TIMEOUT_MS)) { "The first row did not open a screen." }
+    check(device.wait(Until.gone(By.res("primary_list")), TIMEOUT_MS)) {
+        "The first row did not open a screen."
+    }
     awaitTransition()
 }
 
 /** Opens the first related row of the detail screen on top. */
 fun MacrobenchmarkScope.openRelated() {
-    val row = findScrolling(By.res("related_row")) ?: error("The detail screen has no related_row to open.")
+    val row =
+        findScrolling(By.res("related_row"))
+            ?: error("The detail screen has no related_row to open.")
     row.click()
     // The screen the row was on is now covered by the one it opened, which takes it out of the
     // accessibility tree.
@@ -98,7 +103,9 @@ fun MacrobenchmarkScope.slowEdgeSwipeBack(cancel: Boolean = false) {
     val reach = device.displayWidth * 45 / 100
     val out = (0..SLOW_SWIPE_POINTS).map { step -> Point(2 + reach * step / SLOW_SWIPE_POINTS, y) }
     val path = if (cancel) out + out.reversed().drop(1) else out
-    check(device.swipe(path.toTypedArray(), SLOW_SWIPE_SEGMENT_STEPS)) { "The back swipe was not delivered." }
+    check(device.swipe(path.toTypedArray(), SLOW_SWIPE_SEGMENT_STEPS)) {
+        "The back swipe was not delivered."
+    }
     if (!cancel) assertSwipedBack()
     awaitTransition()
 }
@@ -109,7 +116,8 @@ fun MacrobenchmarkScope.slowEdgeSwipeBack(cancel: Boolean = false) {
  */
 fun MacrobenchmarkScope.backSwipeDuringPush() {
     val list = waitFor(By.res("primary_list"), "the root list (primary_list)")
-    val row = checkNotNull(list.findObject(By.clickable(true))) { "primary_list has no row to open." }
+    val row =
+        checkNotNull(list.findObject(By.clickable(true))) { "primary_list has no row to open." }
     val y = device.displayHeight / 2
     row.click()
     SystemClock.sleep(SWIPE_AFTER_TAP_MS)

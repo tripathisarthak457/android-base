@@ -58,8 +58,20 @@ private fun barLookFor(
     val surface = if (raisedInDark) colors.surfaceElevated else colors.surface
     return BarLook(
         floating = floating,
-        surface = if (treatment == BarTreatment.Translucent) surface.copy(alpha = TranslucentAlpha) else surface,
-        border = if (raisedInDark) colors.sheen.copy(alpha = AppTabBarDefaults.DarkOutlineAlpha) else colors.separator,
+        surface = if (treatment ==
+            BarTreatment.Translucent
+        ) {
+            surface.copy(alpha = TranslucentAlpha)
+        } else {
+            surface
+        },
+        border = if (raisedInDark) {
+            colors.sheen.copy(
+                alpha = AppTabBarDefaults.DarkOutlineAlpha,
+            )
+        } else {
+            colors.separator
+        },
         shadow = floating && colors.isLight,
         shape = shape,
         indicator = if (solid) colors.barIndicator else colors.accentSubtle,

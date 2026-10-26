@@ -152,7 +152,9 @@ public fun AppTheme(
         if (outermost) {
             // Only the outermost theme sets the edge, so a screen that chose Android's stretch keeps
             // it inside a nested theme.
-            CompositionLocalProvider(LocalOverscrollFactory provides AppOverscroll) { AppOverlayHost(content) }
+            CompositionLocalProvider(LocalOverscrollFactory provides AppOverscroll) {
+                AppOverlayHost(content)
+            }
         } else {
             content()
         }

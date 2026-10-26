@@ -118,7 +118,11 @@ public fun AppTextField(
                 if (onSubmit != null && hardwareKeyboard) {
                     Modifier.onPreviewKeyEvent { event ->
                         val enter = event.key == Key.Enter || event.key == Key.NumPadEnter
-                        if (!enter || event.isShiftPressed || event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
+                        if (!enter || event.isShiftPressed ||
+                            event.type != KeyEventType.KeyDown
+                        ) {
+                            return@onPreviewKeyEvent false
+                        }
                         submit?.invoke()
                         true
                     }
@@ -145,7 +149,13 @@ public fun AppTextField(
             placeholder = placeholder,
             supporting = error ?: helper,
             isError = error != null,
-            counter = if (showCounter && maxLength != null) "${state.text.length}/$maxLength" else null,
+            counter = if (showCounter &&
+                maxLength != null
+            ) {
+                "${state.text.length}/$maxLength"
+            } else {
+                null
+            },
             prefix = prefix,
             suffix = suffix,
             leadingIcon = leadingIcon,
@@ -179,7 +189,13 @@ internal fun fieldDecorator(
     val spacing = AppTheme.spacing
     val treatment = AppTheme.style.field
     val shape = AppTheme.shapes.sm
-    val strokeWidth = if (focused || isError) AppTheme.style.borderWidthStrong else AppTheme.style.borderWidth
+    val strokeWidth = if (focused ||
+        isError
+    ) {
+        AppTheme.style.borderWidthStrong
+    } else {
+        AppTheme.style.borderWidth
+    }
     val edge = animateColorAsState(
         targetValue = when {
             isError -> colors.danger.content
@@ -200,7 +216,11 @@ internal fun fieldDecorator(
     return TextFieldDecorator { innerTextField ->
         Column(verticalArrangement = Arrangement.spacedBy(spacing.sm)) {
             label?.let {
-                AppText(text = it, style = AppTheme.typography.footnote, color = colors.contentSecondary)
+                AppText(
+                    text = it,
+                    style = AppTheme.typography.footnote,
+                    color = colors.contentSecondary,
+                )
             }
             Row(
                 modifier = Modifier
@@ -208,7 +228,15 @@ internal fun fieldDecorator(
                     .fillMaxWidth()
                     .heightIn(min = AppTheme.sizes.fieldHeight)
                     .fieldBox(treatment, shape, fill, edge, strokeWidth.value)
-                    .padding(horizontal = if (treatment == FieldTreatment.Underlined) spacing.xxs else spacing.md),
+                    .padding(
+                        horizontal = if (treatment ==
+                            FieldTreatment.Underlined
+                        ) {
+                            spacing.xxs
+                        } else {
+                            spacing.md
+                        },
+                    ),
                 horizontalArrangement = Arrangement.spacedBy(spacing.sm),
                 // A multi-line field grows downwards from its first line, so everything beside the
                 // text lines up with that line rather than with the middle of the box.
@@ -224,7 +252,14 @@ internal fun fieldDecorator(
                         size = AppTheme.sizes.icon.scaledLike(textStyle),
                     )
                 }
-                prefix?.let { AppText(text = it, modifier = besideText, style = textStyle, color = colors.contentSecondary) }
+                prefix?.let {
+                    AppText(
+                        text = it,
+                        modifier = besideText,
+                        style = textStyle,
+                        color = colors.contentSecondary,
+                    )
+                }
                 Box(
                     modifier = Modifier.weight(1f).padding(vertical = spacing.md),
                     contentAlignment = if (multiline) Alignment.TopStart else Alignment.CenterStart,
@@ -239,7 +274,14 @@ internal fun fieldDecorator(
                     }
                     innerTextField()
                 }
-                suffix?.let { AppText(text = it, modifier = besideText, style = textStyle, color = colors.contentSecondary) }
+                suffix?.let {
+                    AppText(
+                        text = it,
+                        modifier = besideText,
+                        style = textStyle,
+                        color = colors.contentSecondary,
+                    )
+                }
                 trailing?.let { Box(besideText) { it() } }
             }
             AnimatedVisibility(visible = supporting != null || counter != null) {
@@ -253,7 +295,13 @@ internal fun fieldDecorator(
                         style = AppTheme.typography.footnote,
                         color = if (isError) colors.danger.content else colors.contentSecondary,
                     )
-                    counter?.let { AppText(text = it, style = AppTheme.typography.footnote, color = colors.contentSecondary) }
+                    counter?.let {
+                        AppText(
+                            text = it,
+                            style = AppTheme.typography.footnote,
+                            color = colors.contentSecondary,
+                        )
+                    }
                 }
             }
         }
@@ -288,6 +336,7 @@ private fun Modifier.fieldBox(
                 val y = size.height - stroke / 2f
                 drawLine(edge.value, Offset(0f, y), Offset(size.width, y), stroke)
             }
+
             else -> {
                 if (fill.alpha > 0f) drawOutline(outline, fill)
                 drawOutline(outline, edge.value, style = Stroke(stroke))
@@ -303,13 +352,33 @@ private fun AppTextFieldPreview() {
         modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
     ) {
-        AppTextField(state = rememberTextFieldState(), label = "Email", placeholder = "you@example.com", leadingIcon = AppIcons.Mail)
-        AppTextField(state = rememberTextFieldState("Ada"), label = "First name", helper = "As it appears on your card")
-        AppTextField(state = rememberTextFieldState("ada@"), label = "Email", error = "Enter a full email address")
-        AppTextField(state = rememberTextFieldState("12.50"), label = "Price", prefix = "€", suffix = "per month")
+        AppTextField(
+            state = rememberTextFieldState(),
+            label = "Email",
+            placeholder = "you@example.com",
+            leadingIcon = AppIcons.Mail,
+        )
+        AppTextField(
+            state = rememberTextFieldState("Ada"),
+            label = "First name",
+            helper = "As it appears on your card",
+        )
+        AppTextField(
+            state = rememberTextFieldState("ada@"),
+            label = "Email",
+            error = "Enter a full email address",
+        )
+        AppTextField(
+            state = rememberTextFieldState("12.50"),
+            label = "Price",
+            prefix = "€",
+            suffix = "per month",
+        )
         AppTextField(state = rememberTextFieldState("Locked"), label = "Account", enabled = false)
         AppTextField(
-            state = rememberTextFieldState("A note long enough to wrap onto a second line inside the field, as a bio would."),
+            state = rememberTextFieldState(
+                "A note long enough to wrap onto a second line inside the field, as a bio would.",
+            ),
             label = "Bio",
             lineLimits = TextFieldLineLimits.MultiLine(maxHeightInLines = 4),
             maxLength = 160,

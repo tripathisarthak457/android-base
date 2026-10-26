@@ -40,9 +40,9 @@ import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.foundation.layout.LocalTabVisible
 import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
+import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlin.math.roundToInt
 
 /**
  * iOS's activity indicator: eight spokes, the brightest stepping round. It steps rather than spins,
@@ -95,7 +95,13 @@ internal fun DrawScope.drawActivitySpokes(
 ) {
     val width = radius / 5f
     for (i in 0 until revealed.coerceAtMost(ActivitySpokes)) {
-        val spokeAlpha = if (head == null) SpokeAlphas[0] else SpokeAlphas[(head - i).mod(ActivitySpokes)]
+        val spokeAlpha = if (head ==
+            null
+        ) {
+            SpokeAlphas[0]
+        } else {
+            SpokeAlphas[(head - i).mod(ActivitySpokes)]
+        }
         rotate(degrees = i * 360f / ActivitySpokes, pivot = center) {
             drawLine(
                 color = color,
@@ -112,7 +118,9 @@ internal fun DrawScope.drawActivitySpokes(
 internal const val ActivitySpokes = 8
 
 /** Newest to oldest, as iOS fades the trail behind the brightest spoke. */
-private val SpokeAlphas = floatArrayOf(147f, 122f, 97f, 72f, 47f, 47f, 47f, 47f).map { it / 255f }.toFloatArray()
+private val SpokeAlphas = floatArrayOf(147f, 122f, 97f, 72f, 47f, 47f, 47f, 47f).map {
+    it / 255f
+}.toFloatArray()
 
 /**
  * A determinate bar. The fill glides to each new value of [progress] on the layout spring. The
@@ -128,18 +136,35 @@ public fun AppLinearProgress(
 ) {
     val springs = AppTheme.springs
     val current by rememberUpdatedState(progress)
-    val shown = remember { Animatable(Snapshot.withoutReadObservation { current().coerceIn(0f, 1f) }) }
+    val shown =
+        remember { Animatable(Snapshot.withoutReadObservation { current().coerceIn(0f, 1f) }) }
     LaunchedEffect(shown, springs) {
-        snapshotFlow { current().coerceIn(0f, 1f) }.collectLatest { shown.animateTo(it, springs.layout.unit) }
+        snapshotFlow {
+            current().coerceIn(0f, 1f)
+        }.collectLatest { shown.animateTo(it, springs.layout.unit) }
     }
-    val announced by remember { derivedStateOf { (current().coerceIn(0f, 1f) * AnnouncedSteps).roundToInt() / AnnouncedSteps } }
-    Canvas(modifier.fillMaxWidth().height(AppProgressDefaults.LinearHeight).progressSemantics(announced)) {
+    val announced by remember {
+        derivedStateOf {
+            (current().coerceIn(0f, 1f) * AnnouncedSteps).roundToInt() /
+                AnnouncedSteps
+        }
+    }
+    Canvas(
+        modifier.fillMaxWidth().height(
+            AppProgressDefaults.LinearHeight,
+        ).progressSemantics(announced),
+    ) {
         val radius = CornerRadius(size.height / 2f)
         drawRoundRect(trackColor, cornerRadius = radius)
         val width = size.width * shown.value
         if (width > 0f) {
             val start = if (layoutDirection == LayoutDirection.Rtl) size.width - width else 0f
-            drawRoundRect(color, topLeft = Offset(start, 0f), size = Size(width, size.height), cornerRadius = radius)
+            drawRoundRect(
+                color,
+                topLeft = Offset(start, 0f),
+                size = Size(width, size.height),
+                cornerRadius = radius,
+            )
         }
     }
 }

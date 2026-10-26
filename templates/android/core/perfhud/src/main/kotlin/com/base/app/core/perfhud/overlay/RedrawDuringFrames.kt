@@ -28,7 +28,8 @@ import androidx.compose.ui.platform.InspectorInfo
 internal fun Modifier.redrawDuringFrames(periodMillis: Long): Modifier =
     this then RedrawDuringFramesElement(periodMillis)
 
-private data class RedrawDuringFramesElement(val periodMillis: Long) : ModifierNodeElement<RedrawDuringFramesNode>() {
+private data class RedrawDuringFramesElement(val periodMillis: Long) :
+    ModifierNodeElement<RedrawDuringFramesNode>() {
 
     override fun create() = RedrawDuringFramesNode(periodMillis)
 
@@ -42,9 +43,10 @@ private data class RedrawDuringFramesElement(val periodMillis: Long) : ModifierN
     }
 }
 
-private class RedrawDuringFramesNode(
-    var periodMillis: Long,
-) : Modifier.Node(), DrawModifierNode, ViewTreeObserver.OnPreDrawListener {
+private class RedrawDuringFramesNode(var periodMillis: Long) :
+    Modifier.Node(),
+    DrawModifierNode,
+    ViewTreeObserver.OnPreDrawListener {
 
     private var view: View? = null
     private var lastRedrawNanos = 0L

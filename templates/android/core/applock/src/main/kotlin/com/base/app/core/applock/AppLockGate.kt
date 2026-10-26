@@ -2,8 +2,23 @@ package com.base.app.core.applock
 
 import androidx.activity.compose.LocalActivity
 import androidx.biometric.BiometricPrompt
+// <opt:ui_components>
+import androidx.compose.foundation.background
+// </opt:ui_components>
+// <opt:!ui_components>import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusGroup
+// <opt:ui_components>
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.layout.Arrangement
+// </opt:ui_components>
 import androidx.compose.foundation.layout.Box
+// <opt:ui_components>
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.widthIn
+// </opt:ui_components>
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
@@ -14,12 +29,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+// <opt:ui_components>
+import androidx.compose.ui.Alignment
+// </opt:ui_components>
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
+// <opt:ui_components>
+import androidx.compose.ui.input.pointer.pointerInput
+// </opt:ui_components>
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
+// <opt:!ui_components>import androidx.compose.ui.semantics.semantics
+// <opt:!ui_components>import androidx.compose.ui.semantics.stateDescription
+// <opt:ui_components>
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+// </opt:ui_components>
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -27,18 +54,6 @@ import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
 // <opt:ui_components>
-import androidx.compose.foundation.background
-import androidx.compose.foundation.focusable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.overlay.SuspendOverlays
 import com.base.app.core.designsystem.component.text.AppIcon
@@ -46,12 +61,7 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 // </opt:ui_components>
-// <opt-else:ui_components>
-//~ import com.base.app.core.ui.PlaceholderScreen
-//~ import androidx.compose.foundation.clickable
-//~ import androidx.compose.ui.semantics.semantics
-//~ import androidx.compose.ui.semantics.stateDescription
-// </opt-else:ui_components>
+// <opt:!ui_components>import com.base.app.core.ui.PlaceholderScreen
 
 /**
  * Covers [content] with the unlock screen while [lock] says so. The decision for the first frame is
@@ -63,11 +73,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * The activity must be a [FragmentActivity], which `BiometricPrompt` runs in.
  */
 @Composable
-fun AppLockGate(
-    lock: AppLock,
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
-) {
+fun AppLockGate(lock: AppLock, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     val locked by lock.locked.collectAsStateWithLifecycle(initialValue = lock.isLockedNow())
     // <opt:ui_components>
     // An alert or a toast left up when the app locked would otherwise draw over the cover and stay
@@ -112,7 +118,9 @@ private fun UnlockScreen(lock: AppLock) {
             activity,
             ContextCompat.getMainExecutor(activity),
             object : BiometricPrompt.AuthenticationCallback() {
-                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                override fun onAuthenticationSucceeded(
+                    result: BiometricPrompt.AuthenticationResult,
+                ) {
                     problem = null
                     currentLock.unlocked()
                 }

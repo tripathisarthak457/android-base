@@ -41,20 +41,37 @@ internal class SheetNestedScroll(private val controller: SheetController) : Nest
     private var closing: CompletableDeferred<Unit>? = null
 
     override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-        if (source != NestedScrollSource.UserInput || available.y >= 0f || !movable()) return Offset.Zero
+        if (source != NestedScrollSource.UserInput || available.y >= 0f ||
+            !movable()
+        ) {
+            return Offset.Zero
+        }
         val state = controller.sheetState
         val stops = state.stops ?: return Offset.Zero
         val growing = resizes() && state.anchored.offset > stops.top + RestPx
         if (state.stretch <= 0f && !growing) return Offset.Zero
         val scope = session() ?: return Offset.Zero
-        return Offset(0f, state.dragBy(available.y, bandAbove = false) { amount -> scope.moveBy(amount) })
+        return Offset(
+            0f,
+            state.dragBy(available.y, bandAbove = false) { amount ->
+                scope.moveBy(amount)
+            },
+        )
     }
 
-    override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+    override fun onPostScroll(
+        consumed: Offset,
+        available: Offset,
+        source: NestedScrollSource,
+    ): Offset {
         if (consumed.y < 0f) scrolled -= consumed.y
         if (consumed.y > 0f) scrolled = (scrolled - consumed.y).coerceAtLeast(0f)
         if (available.y > 0f) scrolled = 0f
-        if (source != NestedScrollSource.UserInput || available.y <= 0f || !movable()) return Offset.Zero
+        if (source != NestedScrollSource.UserInput || available.y <= 0f ||
+            !movable()
+        ) {
+            return Offset.Zero
+        }
         val scope = session() ?: return Offset.Zero
         val state = controller.sheetState
         return Offset(0f, state.dragBy(available.y) { amount -> scope.moveBy(amount) })
@@ -110,7 +127,10 @@ internal class SheetNestedScroll(private val controller: SheetController) : Nest
     private fun AnchoredDragScope.moveBy(amount: Float): Float {
         val anchored = controller.sheetState.anchored
         val from = anchored.offset
-        val to = (from + amount).coerceIn(anchored.anchors.minPosition(), anchored.anchors.maxPosition())
+        val to = (from + amount).coerceIn(
+            anchored.anchors.minPosition(),
+            anchored.anchors.maxPosition(),
+        )
         dragTo(to)
         return to - from
     }
@@ -118,7 +138,8 @@ internal class SheetNestedScroll(private val controller: SheetController) : Nest
     private fun movable(): Boolean {
         val state = controller.sheetState
         val pointer = controller.gesturePointer
-        return controller.dragEnabled && !state.presenting && (pointer == PointerType.Touch || pointer == PointerType.Stylus)
+        return controller.dragEnabled && !state.presenting &&
+            (pointer == PointerType.Touch || pointer == PointerType.Stylus)
     }
 
     /** A modal sheet under a finger grows first, unless TalkBack explores by touch. */

@@ -10,10 +10,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+// <opt:appstatus>
+import androidx.compose.runtime.getValue
+// </opt:appstatus>
 import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
+// <opt:appstatus>
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+// </opt:appstatus>
+// <opt:applock>
+import com.base.app.core.applock.AppLock
+import com.base.app.core.applock.AppLockGate
+// </opt:applock>
 import com.base.app.core.datastore.settings.AppSettings
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.ThemeMode
@@ -26,25 +36,21 @@ import com.base.app.core.navigation.NavRegistry
 import com.base.app.core.navigation.OpenDeepLinks
 import com.base.app.core.navigation.PendingDeepLink
 import com.base.app.core.navigation.rememberAppBackStack
-// <opt:devtools>
-import com.base.app.core.ui.tooling.DevTooling
-// </opt:devtools>
-import com.base.app.startup.Startup
-// <opt:applock>
-import com.base.app.core.applock.AppLock
-import com.base.app.core.applock.AppLockGate
-// </opt:applock>
 // <opt:appstatus>
-import androidx.compose.runtime.getValue
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.base.app.core.network.appstatus.ApiSignals
-import com.base.app.core.ui.appstatus.AppStatusGate
 // </opt:appstatus>
 // <opt:playstore>
 import com.base.app.core.playstore.PlayStorePrompts
 import com.base.app.core.playstore.review.ReviewPrompt
 import com.base.app.core.playstore.update.AppUpdates
 // </opt:playstore>
+// <opt:appstatus>
+import com.base.app.core.ui.appstatus.AppStatusGate
+// </opt:appstatus>
+// <opt:devtools>
+import com.base.app.core.ui.tooling.DevTooling
+// </opt:devtools>
+import com.base.app.startup.Startup
 
 /**
  * Everything above the navigation host: the theme, the system bars, and the one back stack the app

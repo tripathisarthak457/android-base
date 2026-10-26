@@ -10,11 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.base.app.core.designsystem.R
+import com.base.app.core.designsystem.component.sheet.action.AppActionSheet as SheetActionSheet
+import com.base.app.core.designsystem.component.sheet.action.SheetAction as ActionSheetAction
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.designsystem.component.sheet.action.AppActionSheet as SheetActionSheet
-import com.base.app.core.designsystem.component.sheet.action.SheetAction as ActionSheetAction
 
 /** One choice in the earlier [AppActionSheet]. */
 @Deprecated(

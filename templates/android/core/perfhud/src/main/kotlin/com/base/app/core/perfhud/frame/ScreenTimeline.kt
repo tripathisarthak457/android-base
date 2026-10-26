@@ -25,7 +25,14 @@ internal class ScreenTimeline {
      * after it, and they were drawn for the screen in front then.
      */
     fun restart(name: String?) {
-        recent = if (name == null) NONE else Recent(names = arrayOf(name), sinceNanos = longArrayOf(Long.MIN_VALUE))
+        recent =
+            if (name ==
+                null
+            ) {
+                NONE
+            } else {
+                Recent(names = arrayOf(name), sinceNanos = longArrayOf(Long.MIN_VALUE))
+            }
     }
 
     /** [name] is in front from [atNanos] (`System.nanoTime`) on. A repeat of the screen in front is ignored. */
@@ -38,7 +45,15 @@ internal class ScreenTimeline {
         val from = count - kept
         recent = Recent(
             names = Array(kept + 1) { if (it < kept) current.names[from + it] else name },
-            sinceNanos = LongArray(kept + 1) { if (it < kept) current.sinceNanos[from + it] else atNanos },
+            sinceNanos = LongArray(kept + 1) {
+                if (it <
+                    kept
+                ) {
+                    current.sinceNanos[from + it]
+                } else {
+                    atNanos
+                }
+            },
         )
     }
 

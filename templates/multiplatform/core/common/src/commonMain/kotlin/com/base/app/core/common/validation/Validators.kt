@@ -29,8 +29,9 @@ object Validators {
     fun required(): Validator<CharSequence> =
         Validator { value -> if (value.isNotBlank()) null else ValidationError.Required }
 
-    fun minLength(length: Int): Validator<CharSequence> =
-        Validator { value -> if (value.trim().length >= length) null else ValidationError.TooShort(length) }
+    fun minLength(length: Int): Validator<CharSequence> = Validator { value ->
+        if (value.trim().length >= length) null else ValidationError.TooShort(length)
+    }
 
     /**
      * A deliberately permissive email check. Full RFC 5322 validation rejects addresses that work

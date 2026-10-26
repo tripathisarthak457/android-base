@@ -2,12 +2,12 @@ package com.base.app.core.navigation
 
 import androidx.compose.runtime.Composable
 import com.base.app.core.common.navigation.AppNavKey
+import kotlin.reflect.KClass
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.modules.PolymorphicModuleBuilder
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.serializer
-import kotlin.reflect.KClass
 
 /**
  * One feature's destinations. A feature builds one of these and contributes it to a Hilt
@@ -67,7 +67,9 @@ class NavGraphBuilder internal constructor() {
         presentation: Presentation? = null,
         noinline content: @Composable (T) -> Unit,
     ) {
-        register(T::class, serializer<T>(), transition, pane, presentation) { key -> content(key as T) }
+        register(T::class, serializer<T>(), transition, pane, presentation) { key ->
+            content(key as T)
+        }
     }
 
     @PublishedApi
@@ -79,7 +81,9 @@ class NavGraphBuilder internal constructor() {
         presentation: Presentation?,
         content: @Composable (AppNavKey) -> Unit,
     ) {
-        require(destinations.put(type, Destination(transition, pane, presentation, content)) == null) {
+        require(
+            destinations.put(type, Destination(transition, pane, presentation, content)) == null,
+        ) {
             "${type.simpleName} is registered twice in the same nav graph."
         }
         serializers += { subclass(type, serializer) }
@@ -87,7 +91,9 @@ class NavGraphBuilder internal constructor() {
 
     internal fun build(): NavGraphEntry = NavGraphEntry(
         destinations = destinations.toMap(),
-        keys = SerializersModule { polymorphic(AppNavKey::class) { serializers.forEach { it(this) } } },
+        keys = SerializersModule {
+            polymorphic(AppNavKey::class) { serializers.forEach { it(this) } }
+        },
     )
 }
 
@@ -115,11 +121,10 @@ class NavRegistry(graphs: Set<NavGraphEntry>) {
     }
 
     @NavigationHostApi
-    fun destinationFor(key: AppNavKey): Destination =
-        destinations[key::class] ?: error(
-            "No destination registered for ${key::class.simpleName}. Add it to the feature's " +
-                "navGraph { } block and contribute that with @Provides @IntoSet.",
-        )
+    fun destinationFor(key: AppNavKey): Destination = destinations[key::class] ?: error(
+        "No destination registered for ${key::class.simpleName}. Add it to the feature's " +
+            "navGraph { } block and contribute that with @Provides @IntoSet.",
+    )
 
     @NavigationHostApi
     fun presentationOf(key: AppNavKey): Presentation? = destinations[key::class]?.presentation

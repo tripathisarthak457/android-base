@@ -56,7 +56,11 @@ class SheetNestedScrollTest {
                     state = state,
                     properties = AppSheetProperties(contentInteraction = interaction),
                 ) {
-                    LazyColumn(Modifier.testTag("list"), state = list, contentPadding = contentPadding) {
+                    LazyColumn(
+                        Modifier.testTag("list"),
+                        state = list,
+                        contentPadding = contentPadding,
+                    ) {
                         items(60, key = { it }) { AppRow(title = "Row $it") }
                     }
                 }
@@ -77,7 +81,8 @@ class SheetNestedScrollTest {
         settle()
     }
 
-    private fun listAtTop() = list.firstVisibleItemIndex == 0 && list.firstVisibleItemScrollOffset == 0
+    private fun listAtTop() =
+        list.firstVisibleItemIndex == 0 && list.firstVisibleItemScrollOffset == 0
 
     @Test
     fun `B-28 with Resizes a scroll up grows the sheet before the list moves`() {

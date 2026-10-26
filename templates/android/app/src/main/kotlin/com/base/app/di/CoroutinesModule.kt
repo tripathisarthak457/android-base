@@ -1,5 +1,8 @@
 package com.base.app.di
 
+// <opt:analytics>
+import com.base.app.core.analytics.CrashReporter
+// </opt:analytics>
 import com.base.app.core.common.coroutines.AppDispatchers
 import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.common.log.Log
@@ -7,14 +10,11 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import javax.inject.Singleton
-// <opt:analytics>
-import com.base.app.core.analytics.CrashReporter
-// </opt:analytics>
 
 /**
  * Classes get their dispatchers injected as [AppDispatchers] instead of naming `Dispatchers.*`, so a
@@ -39,12 +39,15 @@ object CoroutinesModule {
      */
     @Provides
     @Singleton
+    // <opt:analytics>
     fun provideApplicationScope(
         dispatchers: AppDispatchers,
-        // <opt:analytics>
         crashReporter: CrashReporter,
-        // </opt:analytics>
     ): ApplicationScope = ApplicationScope(
+    // </opt:analytics>
+    // <opt-else:analytics>
+    //~ fun provideApplicationScope(dispatchers: AppDispatchers): ApplicationScope = ApplicationScope(
+    // </opt-else:analytics>
         CoroutineScope(
             SupervisorJob() + dispatchers.default + CoroutineExceptionHandler { _, throwable ->
                 Log.e("Uncaught in the application scope", throwable)

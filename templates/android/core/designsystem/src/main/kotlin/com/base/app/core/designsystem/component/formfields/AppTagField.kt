@@ -38,7 +38,10 @@ public fun AppTagField(
     enabled: Boolean = true,
 ) {
     val full = tags.size >= maxTags
-    Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
+    ) {
         if (tags.isNotEmpty()) {
             // A tag's remove target is 48 dp, past the chip's edges: rows this far apart keep each
             // target whole and clear of the next row's.
@@ -48,7 +51,12 @@ public fun AppTagField(
                 verticalArrangement = Arrangement.spacedBy(AppTagFieldDefaults.TargetOverhang * 2),
             ) {
                 tags.forEach { tag ->
-                    AppChip(label = tag, onClick = null, enabled = enabled, onRemove = { onTagsChange(tags - tag) })
+                    AppChip(
+                        label = tag,
+                        onClick = null,
+                        enabled = enabled,
+                        onRemove = { onTagsChange(tags - tag) },
+                    )
                 }
             }
         }
@@ -81,13 +89,23 @@ private fun AppTagFieldPreview() {
         modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
     ) {
-        AppTagField(tags = emptyList(), onTagsChange = {}, input = rememberTextFieldState(), label = "Tags")
+        AppTagField(
+            tags = emptyList(),
+            onTagsChange = {},
+            input = rememberTextFieldState(),
+            label = "Tags",
+        )
         AppTagField(
             tags = listOf("hiking", "weekend", "a much longer tag than the others"),
             onTagsChange = {},
             input = rememberTextFieldState("ca"),
             label = "Tags",
         )
-        AppTagField(tags = listOf("archived"), onTagsChange = {}, input = rememberTextFieldState(), enabled = false)
+        AppTagField(
+            tags = listOf("archived"),
+            onTagsChange = {},
+            input = rememberTextFieldState(),
+            enabled = false,
+        )
     }
 }

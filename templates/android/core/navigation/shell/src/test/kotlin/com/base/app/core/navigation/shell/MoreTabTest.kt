@@ -49,7 +49,12 @@ class MoreTabTest {
             AppTheme {
                 val shell = rememberShellState(tabs, registry, serialization, generation = 1)
                 state = shell
-                AppShell(tabs = tabs, state = shell, registry = registry, navigator = AppNavigator())
+                AppShell(
+                    tabs = tabs,
+                    state = shell,
+                    registry = registry,
+                    navigator = AppNavigator(),
+                )
             }
         }
         rule.waitForIdle()
@@ -101,7 +106,12 @@ class MoreTabTest {
             AppTheme {
                 val shell = rememberShellState(tabs, registry, serialization, generation = 1)
                 state = shell
-                AppShell(tabs = tabs, state = shell, registry = registry, navigator = AppNavigator())
+                AppShell(
+                    tabs = tabs,
+                    state = shell,
+                    registry = registry,
+                    navigator = AppNavigator(),
+                )
             }
         }
         rule.runOnIdle {

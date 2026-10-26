@@ -20,6 +20,7 @@ internal sealed interface SignInEvent : UiEvent {
     data object Submit : SignInEvent
     data object CreateAccountClicked : SignInEvent
     data object ForgotPasswordClicked : SignInEvent
+
     // <opt:googlesignin>
     data class GoogleIdTokenReceived(val idToken: String) : SignInEvent
     data object GoogleFailed : SignInEvent

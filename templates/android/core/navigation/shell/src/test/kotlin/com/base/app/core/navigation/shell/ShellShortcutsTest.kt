@@ -51,9 +51,15 @@ class ShellShortcutsTest {
         rule.setContent {
             AppTheme {
                 CompositionLocalProvider(LocalAppShortcuts provides shortcuts) {
-                    val shell = rememberShellState(testTabs, registry, testSerialization, generation = 1)
+                    val shell =
+                        rememberShellState(testTabs, registry, testSerialization, generation = 1)
                     state = shell
-                    AppShell(tabs = testTabs, state = shell, registry = registry, navigator = AppNavigator())
+                    AppShell(
+                        tabs = testTabs,
+                        state = shell,
+                        registry = registry,
+                        navigator = AppNavigator(),
+                    )
                 }
             }
         }
@@ -65,12 +71,18 @@ class ShellShortcutsTest {
     fun `Ctrl and a digit show that tab, and a digit past the last tab does nothing`() {
         val state = showShell()
 
-        rule.runOnIdle { assertTrue(shortcuts.handle(key(KeyEvent.KEYCODE_2, KeyEvent.META_CTRL_ON))) }
+        rule.runOnIdle {
+            assertTrue(shortcuts.handle(key(KeyEvent.KEYCODE_2, KeyEvent.META_CTRL_ON)))
+        }
         rule.runOnIdle { assertEquals(1, state.selectedIndex) }
-        rule.runOnIdle { assertTrue(shortcuts.handle(key(KeyEvent.KEYCODE_1, KeyEvent.META_CTRL_ON))) }
+        rule.runOnIdle {
+            assertTrue(shortcuts.handle(key(KeyEvent.KEYCODE_1, KeyEvent.META_CTRL_ON)))
+        }
         rule.runOnIdle { assertEquals(0, state.selectedIndex) }
 
-        rule.runOnIdle { assertFalse(shortcuts.handle(key(KeyEvent.KEYCODE_3, KeyEvent.META_CTRL_ON))) }
+        rule.runOnIdle {
+            assertFalse(shortcuts.handle(key(KeyEvent.KEYCODE_3, KeyEvent.META_CTRL_ON)))
+        }
         rule.runOnIdle { assertEquals(0, state.selectedIndex) }
     }
 
@@ -81,11 +93,15 @@ class ShellShortcutsTest {
         rule.runOnIdle { state.submit(NavCommand.Navigate(Post(2))) }
         rule.waitForIdle()
 
-        rule.runOnIdle { assertTrue(shortcuts.handle(key(KeyEvent.KEYCODE_LEFT_BRACKET, KeyEvent.META_CTRL_ON))) }
+        rule.runOnIdle {
+            assertTrue(shortcuts.handle(key(KeyEvent.KEYCODE_LEFT_BRACKET, KeyEvent.META_CTRL_ON)))
+        }
         rule.waitForIdle()
         rule.runOnIdle { assertEquals(Post(1), state.current.current) }
 
-        rule.runOnIdle { assertTrue(shortcuts.handle(key(KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.META_ALT_ON))) }
+        rule.runOnIdle {
+            assertTrue(shortcuts.handle(key(KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.META_ALT_ON)))
+        }
         rule.waitForIdle()
         rule.runOnIdle { assertEquals(1, state.current.size) }
     }
@@ -96,7 +112,9 @@ class ShellShortcutsTest {
         rule.onNodeWithTag(FIELD).requestFocus()
         rule.runOnIdle { assertTrue(fieldFocused) }
 
-        rule.runOnIdle { assertTrue(shortcuts.handle(key(KeyEvent.KEYCODE_2, KeyEvent.META_CTRL_ON))) }
+        rule.runOnIdle {
+            assertTrue(shortcuts.handle(key(KeyEvent.KEYCODE_2, KeyEvent.META_CTRL_ON)))
+        }
 
         rule.runOnIdle { assertFalse(fieldFocused) }
     }

@@ -12,6 +12,8 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.datastore.settings.AppSettingsStore
 import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,8 +22,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * When the app is covered by its unlock screen.
@@ -51,14 +51,17 @@ class AppLock internal constructor(
     ) : this(
         settings = settings,
         deviceCanAuthenticate = {
-            BiometricManager.from(context).canAuthenticate(allowedAuthenticators()) == BiometricManager.BIOMETRIC_SUCCESS
+            BiometricManager.from(context).canAuthenticate(allowedAuthenticators()) ==
+                BiometricManager.BIOMETRIC_SUCCESS
         },
         clock = SystemClock::elapsedRealtime,
         scope = scope,
     ) {
         // The process lifecycle accepts observers on the main thread only; whoever injects this
         // first may not be on it. A cold start needs no event: it starts challenged.
-        ContextCompat.getMainExecutor(context).execute { ProcessLifecycleOwner.get().lifecycle.addObserver(this) }
+        ContextCompat.getMainExecutor(context).execute {
+            ProcessLifecycleOwner.get().lifecycle.addObserver(this)
+        }
     }
 
     /** When the current challenge began, on the [clock]; null while the app is not challenged. */

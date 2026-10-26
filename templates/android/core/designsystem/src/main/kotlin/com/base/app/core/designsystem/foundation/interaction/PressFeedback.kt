@@ -25,7 +25,8 @@ public enum class PressFeedback {
  * which is why controls use [pressable] and say what they want.
  */
 public object NoIndication : IndicationNodeFactory {
-    override fun create(interactionSource: InteractionSource): DelegatableNode = object : Modifier.Node() {}
+    override fun create(interactionSource: InteractionSource): DelegatableNode =
+        object : Modifier.Node() {}
 
     override fun equals(other: Any?): Boolean = other === this
 

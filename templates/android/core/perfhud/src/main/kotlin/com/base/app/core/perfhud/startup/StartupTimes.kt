@@ -6,8 +6,8 @@ import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.serialization.Serializable
 import javax.inject.Inject
+import kotlinx.serialization.Serializable
 
 /**
  * The app's recent starts as the system timed them, from Android 15's `ApplicationStartInfo`:
@@ -20,7 +20,11 @@ import javax.inject.Inject
 internal class StartupTimes @Inject constructor(@ApplicationContext private val context: Context) {
 
     fun read(): StartupSummary {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) return StartupSummary.Unsupported
+        if (Build.VERSION.SDK_INT <
+            Build.VERSION_CODES.VANILLA_ICE_CREAM
+        ) {
+            return StartupSummary.Unsupported
+        }
         val starts = context.getSystemService(ActivityManager::class.java)
             .getHistoricalProcessStartReasons(MAX_STARTS)
             .mapNotNull(::recordOf)

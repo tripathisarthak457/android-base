@@ -1,5 +1,6 @@
 package com.base.app.core.designsystem.component.sheet.surface
 
+import android.graphics.Path as PlatformPath
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -19,7 +20,6 @@ import com.base.app.core.designsystem.component.sheet.layout.SurfaceRect
 import com.base.app.core.designsystem.component.sheet.layout.surfaceBottomInBounds
 import com.base.app.core.designsystem.theme.SheetMaterial
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
-import android.graphics.Path as PlatformPath
 
 /**
  * The sheet's surface: the shadow where one is allowed, the body, the rim, and the clip its content

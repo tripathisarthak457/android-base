@@ -43,7 +43,11 @@ class ContextMenuTest {
         rule.setThemed {
             Column {
                 AppContextMenu(menu = { AppMenuItem(text = "Share", onClick = { shared++ }) }) {
-                    AppRow(title = "Report", onClick = { opened++ }, modifier = Modifier.testTag("row"))
+                    AppRow(
+                        title = "Report",
+                        onClick = { opened++ },
+                        modifier = Modifier.testTag("row"),
+                    )
                 }
             }
         }
@@ -74,7 +78,12 @@ class ContextMenuTest {
     fun `a screen reader opens it as the row's own long-click action`() {
         row()
         rule.onNodeWithTag("row")
-            .assert(SemanticsMatcher("has a long-click labelled Show menu") { it.config[SemanticsActions.OnLongClick].label == "Show menu" })
+            .assert(
+                SemanticsMatcher("has a long-click labelled Show menu") {
+                    it.config[SemanticsActions.OnLongClick].label ==
+                        "Show menu"
+                },
+            )
             .assert(SemanticsMatcher.keyIsDefined(SemanticsActions.OnClick))
             .performSemanticsAction(SemanticsActions.OnLongClick)
         rule.mainClock.advanceTimeBy(1_000)
@@ -84,7 +93,10 @@ class ContextMenuTest {
     @Test
     fun `content that is not a control is merged into one node that offers the menu`() {
         rule.setThemed {
-            AppContextMenu(menu = { AppMenuItem(text = "Share", onClick = {}) }, modifier = Modifier.testTag("bubble")) {
+            AppContextMenu(
+                menu = { AppMenuItem(text = "Share", onClick = {}) },
+                modifier = Modifier.testTag("bubble"),
+            ) {
                 AppText("See you at eight")
             }
         }

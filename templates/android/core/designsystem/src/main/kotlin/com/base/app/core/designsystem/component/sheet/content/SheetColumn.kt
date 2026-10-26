@@ -31,7 +31,8 @@ import com.base.app.core.designsystem.theme.AppTheme
 /** The enclosing sheet's contentPadding; zero outside a sheet. */
 @Composable
 @ReadOnlyComposable
-public fun sheetContentPadding(): PaddingValues = LocalSheetSurface.current?.scope?.contentPadding ?: NoPadding
+public fun sheetContentPadding(): PaddingValues =
+    LocalSheetSurface.current?.scope?.contentPadding ?: NoPadding
 
 /**
  * A scrolling column with the sheet's contentPadding applied inside the scroll: a form, a settings
@@ -77,8 +78,16 @@ private const val FooterItemKey = "sheet_footer"
 @AppComponentPreviews
 @Composable
 private fun SheetColumnPreview() {
-    Box(modifier = Modifier.background(AppTheme.colors.background).fillMaxWidth().height(AppTheme.sizes.rowHeight * 8)) {
-        AppSheet(visible = true, onDismissRequest = {}, header = { AppSheetHeader(title = "Account") }) {
+    Box(
+        modifier = Modifier.background(
+            AppTheme.colors.background,
+        ).fillMaxWidth().height(AppTheme.sizes.rowHeight * 8),
+    ) {
+        AppSheet(
+            visible = true,
+            onDismissRequest = {},
+            header = { AppSheetHeader(title = "Account") },
+        ) {
             SheetColumn(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
                 AppRow(title = "Name", value = "Ada Lovelace")
                 AppRow(title = "Email", value = "ada@example.com")

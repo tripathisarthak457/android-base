@@ -34,14 +34,21 @@ internal class OutlineBones(private val shape: Shape) : Bones {
     override fun DrawScope.draw(brush: Brush, dx: Float, lineRadius: Float) {
         when (val outline = outlineFor(this)) {
             is Outline.Rectangle -> drawRect(brush, topLeft = Offset(dx, 0f), size = size)
+
             is Outline.Rounded -> {
                 val path = path
                 if (path == null) {
-                    drawRoundRect(brush, Offset(dx, 0f), size, outline.roundRect.topLeftCornerRadius)
+                    drawRoundRect(
+                        brush,
+                        Offset(dx, 0f),
+                        size,
+                        outline.roundRect.topLeftCornerRadius,
+                    )
                 } else {
                     drawMoved(path, brush, dx)
                 }
             }
+
             is Outline.Generic -> drawMoved(outline.path, brush, dx)
         }
     }
@@ -68,7 +75,14 @@ internal class OutlineBones(private val shape: Shape) : Bones {
             outlineDirection = scope.layoutDirection
             outlineDensity = scope.density
             // drawRoundRect takes one corner radius, so a shape whose corners differ is drawn as its path.
-            path = if (it is Outline.Rounded && !it.roundRect.isSimple) Path().apply { addOutline(it) } else null
+            path =
+                if (it is Outline.Rounded &&
+                    !it.roundRect.isSimple
+                ) {
+                    Path().apply { addOutline(it) }
+                } else {
+                    null
+                }
         }
     }
 }
@@ -77,7 +91,12 @@ internal class OutlineBones(private val shape: Shape) : Bones {
 internal class LineBones(private val top: Float, private val bottom: Float) : Bones {
     override fun DrawScope.draw(brush: Brush, dx: Float, lineRadius: Float) {
         val height = bottom - top
-        drawRoundRect(brush, Offset(dx, top), Size(size.width, height), lineCorner(lineRadius, height))
+        drawRoundRect(
+            brush,
+            Offset(dx, top),
+            Size(size.width, height),
+            lineCorner(lineRadius, height),
+        )
     }
 }
 
@@ -123,7 +142,12 @@ internal class TextBones : Bones {
             // fixed height cuts off would draw over whatever lies below the box.
             if (right <= left || top >= size.height) continue
             val height = minOf(bottom, size.height) - top
-            drawRoundRect(brush, Offset(left + dx, top), Size(right - left, height), lineCorner(lineRadius, height))
+            drawRoundRect(
+                brush,
+                Offset(left + dx, top),
+                Size(right - left, height),
+                lineCorner(lineRadius, height),
+            )
         }
     }
 

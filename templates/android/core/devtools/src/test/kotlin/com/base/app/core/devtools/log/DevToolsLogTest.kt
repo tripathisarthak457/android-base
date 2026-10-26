@@ -11,7 +11,14 @@ class DevToolsLogTest {
 
     @Test
     fun `credentials in headers never reach the log`() {
-        log.record(exchange(requestHeaders = mapOf("Authorization" to "Bearer abc", "Accept" to "application/json")))
+        log.record(
+            exchange(
+                requestHeaders = mapOf(
+                    "Authorization" to "Bearer abc",
+                    "Accept" to "application/json",
+                ),
+            ),
+        )
 
         val recorded = log.exchanges.value.single()
         assertFalse(recorded.requestHeaders.getValue("Authorization").contains("abc"))

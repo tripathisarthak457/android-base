@@ -1,5 +1,6 @@
 package com.base.app.core.designsystem.component.sheet.stack
 
+import android.graphics.Path as PlatformPath
 import android.os.Build
 import android.view.RoundedCorner
 import androidx.compose.ui.Modifier
@@ -24,7 +25,6 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.Constraints
 import com.base.app.core.designsystem.foundation.layout.ShellSeamApi
 import com.base.app.core.designsystem.theme.LocalReduceMotion
-import android.graphics.Path as PlatformPath
 
 /**
  * Recedes this layout behind the sheet above [level], as iOS's card stack does, and draws the dim
@@ -41,7 +41,8 @@ import android.graphics.Path as PlatformPath
 public fun Modifier.cardStackPresenter(stack: SheetStack, level: Int = 0): Modifier =
     this then RecedeElement(stack, level) then DimElement(stack, level) then ContentLayerElement
 
-private data class RecedeElement(val stack: SheetStack, val level: Int) : ModifierNodeElement<RecedeNode>() {
+private data class RecedeElement(val stack: SheetStack, val level: Int) :
+    ModifierNodeElement<RecedeNode>() {
     override fun create() = RecedeNode(stack, level)
 
     override fun update(node: RecedeNode) {
@@ -56,7 +57,9 @@ private data class RecedeElement(val stack: SheetStack, val level: Int) : Modifi
 }
 
 private class RecedeNode(var stack: SheetStack, var level: Int) :
-    Modifier.Node(), LayoutModifierNode, CompositionLocalConsumerModifierNode {
+    Modifier.Node(),
+    LayoutModifierNode,
+    CompositionLocalConsumerModifierNode {
 
     private var safeTop = 0f
 
@@ -75,7 +78,10 @@ private class RecedeNode(var stack: SheetStack, var level: Int) :
         }
     }
 
-    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+    override fun MeasureScope.measure(
+        measurable: Measurable,
+        constraints: Constraints,
+    ): MeasureResult {
         val placeable = measurable.measure(constraints)
         return layout(placeable.width, placeable.height) {
             safeTop = WindowInsetsRulers.SafeDrawing.current.top.current(0f)
@@ -84,7 +90,8 @@ private class RecedeNode(var stack: SheetStack, var level: Int) :
     }
 }
 
-private data class DimElement(val stack: SheetStack, val level: Int) : ModifierNodeElement<DimNode>() {
+private data class DimElement(val stack: SheetStack, val level: Int) :
+    ModifierNodeElement<DimNode>() {
     override fun create() = DimNode(stack, level)
 
     override fun update(node: DimNode) = node.update(stack, level)
@@ -100,7 +107,10 @@ private data class DimElement(val stack: SheetStack, val level: Int) : ModifierN
  * the sheet above draws no dim of its own while a presenter draws it here.
  */
 private class DimNode(private var stack: SheetStack, private var level: Int) :
-    Modifier.Node(), DrawModifierNode, LayoutModifierNode, CompositionLocalConsumerModifierNode {
+    Modifier.Node(),
+    DrawModifierNode,
+    LayoutModifierNode,
+    CompositionLocalConsumerModifierNode {
 
     private val geometry = PresenterGeometry()
     private val platformPath = PlatformPath()
@@ -119,10 +129,16 @@ private class DimNode(private var stack: SheetStack, private var level: Int) :
 
     override fun onDetach() = stack.release(level, geometry)
 
-    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+    override fun MeasureScope.measure(
+        measurable: Measurable,
+        constraints: Constraints,
+    ): MeasureResult {
         // Read where a rotation or a move to another display measures again, never only on attach.
         displayCorner = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            currentValueOf(LocalView).rootWindowInsets?.getRoundedCorner(RoundedCorner.POSITION_TOP_LEFT)?.radius?.toFloat() ?: 0f
+            currentValueOf(
+                LocalView,
+            ).rootWindowInsets?.getRoundedCorner(RoundedCorner.POSITION_TOP_LEFT)?.radius?.toFloat()
+                ?: 0f
         } else {
             0f
         }
@@ -144,7 +160,15 @@ private class DimNode(private var stack: SheetStack, private var level: Int) :
             if (expansion > 0f && !reduceMotion) {
                 val radius = CardStackMath.corner(expansion, displayCorner, density)
                 platformPath.rewind()
-                platformPath.addRoundRect(0f, 0f, size.width, size.height, radius, radius, PlatformPath.Direction.CW)
+                platformPath.addRoundRect(
+                    0f,
+                    0f,
+                    size.width,
+                    size.height,
+                    radius,
+                    radius,
+                    PlatformPath.Direction.CW,
+                )
                 clipPath(clip) { this@draw.drawContent() }
             } else {
                 this@draw.drawContent()
@@ -169,8 +193,13 @@ private object ContentLayerElement : ModifierNodeElement<ContentLayerNode>() {
     override fun equals(other: Any?): Boolean = other === this
 }
 
-private class ContentLayerNode : Modifier.Node(), LayoutModifierNode {
-    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+private class ContentLayerNode :
+    Modifier.Node(),
+    LayoutModifierNode {
+    override fun MeasureScope.measure(
+        measurable: Measurable,
+        constraints: Constraints,
+    ): MeasureResult {
         val placeable = measurable.measure(constraints)
         return layout(placeable.width, placeable.height) { placeable.placeWithLayer(0, 0) }
     }

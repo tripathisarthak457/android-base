@@ -3,8 +3,8 @@ package com.base.app.feature.sample.detail
 import com.base.app.core.common.LoadState
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.mvi.MviViewModel
-import com.base.app.data.sample.api.model.SampleItem
 import com.base.app.data.sample.api.SampleRepository
+import com.base.app.data.sample.api.model.SampleItem
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -40,7 +40,10 @@ internal class SampleDetailViewModel @AssistedInject constructor(
             setState { copy(loadState = LoadState.Loading) }
 
             when (val result = repository.item(itemId)) {
-                is AppResult.Success -> setState { copy(loadState = LoadState.Success, item = result.value) }
+                is AppResult.Success -> setState {
+                    copy(loadState = LoadState.Success, item = result.value)
+                }
+
                 is AppResult.Failure -> {
                     setState { copy(loadState = LoadState.Error(result.error)) }
                     return@launchLatest

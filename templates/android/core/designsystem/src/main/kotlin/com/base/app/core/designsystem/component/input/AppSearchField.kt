@@ -89,17 +89,34 @@ public fun AppSearchField(
     val wellShape = AppTheme.shapes.sm
     val cancelRoom = remember { CancelRoom() }
 
-    Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(spacing.sm)) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(spacing.sm),
+    ) {
         Layout(
             modifier = Modifier
                 .fillMaxWidth()
                 .clipToBounds()
                 .drawWithCache {
-                    val corner = CornerRadius((wellShape as? CornerBasedShape)?.topStart?.toPx(size, this) ?: 0f)
+                    val corner =
+                        CornerRadius(
+                            (wellShape as? CornerBasedShape)?.topStart?.toPx(size, this) ?: 0f,
+                        )
                     onDrawBehind {
                         val wellWidth = size.width - cancelRoom.width * progress.value
-                        val start = if (layoutDirection == LayoutDirection.Ltr) 0f else size.width - wellWidth
-                        drawRoundRect(colors.fill, Offset(start, 0f), Size(wellWidth, size.height), corner)
+                        val start = if (layoutDirection ==
+                            LayoutDirection.Ltr
+                        ) {
+                            0f
+                        } else {
+                            size.width - wellWidth
+                        }
+                        drawRoundRect(
+                            colors.fill,
+                            Offset(start, 0f),
+                            Size(wellWidth, size.height),
+                            corner,
+                        )
                     }
                 },
             content = {
@@ -125,11 +142,18 @@ public fun AppSearchField(
                                 AppIcons.Search,
                                 contentDescription = null,
                                 tint = colors.contentSecondary,
-                                size = AppTheme.sizes.iconSmall.scaledLike(AppTheme.typography.body),
+                                size = AppTheme.sizes.iconSmall.scaledLike(
+                                    AppTheme.typography.body,
+                                ),
                             )
                             Box(Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
                                 if (state.text.isEmpty()) {
-                                    AppText(text = placeholder, style = AppTheme.typography.body, color = colors.contentSecondary, maxLines = 1)
+                                    AppText(
+                                        text = placeholder,
+                                        style = AppTheme.typography.body,
+                                        color = colors.contentSecondary,
+                                        maxLines = 1,
+                                    )
                                 }
                                 innerTextField()
                             }
@@ -137,13 +161,23 @@ public fun AppSearchField(
                                 visible = state.text.isNotEmpty(),
                                 // The field keeps Cancel's room even unfocused; the clear button
                                 // rides out to the well's end with it.
-                                modifier = Modifier.offset { IntOffset(((1f - progress.value) * cancelRoom.width).roundToInt(), 0) },
+                                modifier = Modifier.offset {
+                                    IntOffset(
+                                        (
+                                            (1f - progress.value) *
+                                                cancelRoom.width
+                                            ).roundToInt(),
+                                        0,
+                                    )
+                                },
                                 enter = transitions.popIn,
                                 exit = transitions.popOut,
                             ) {
                                 FieldIconButton(
                                     icon = AppIcons.XCircle,
-                                    contentDescription = stringResource(R.string.designsystem_clear_search),
+                                    contentDescription = stringResource(
+                                        R.string.designsystem_clear_search,
+                                    ),
                                     onClick = { state.clearText() },
                                     textStyle = AppTheme.typography.body,
                                 )
@@ -171,7 +205,15 @@ public fun AppSearchField(
             val cancel = measurables.getOrNull(1)?.measure(Constraints())
             val room = cancel?.let { it.width + gap } ?: 0
             cancelRoom.width = room.toFloat()
-            val field = measurables[0].measure(constraints.copy(minWidth = 0, maxWidth = (constraints.maxWidth - room).coerceAtLeast(0)))
+            val field = measurables[0].measure(
+                constraints.copy(
+                    minWidth = 0,
+                    maxWidth = (
+                        constraints.maxWidth -
+                            room
+                        ).coerceAtLeast(0),
+                ),
+            )
             val height = maxOf(field.height, cancel?.height ?: 0)
             layout(constraints.maxWidth, height) {
                 field.placeRelative(0, (height - field.height) / 2)
@@ -183,8 +225,16 @@ public fun AppSearchField(
             }
         }
         if (scopes.isNotEmpty()) {
-            AnimatedVisibility(visible = focused || state.text.isNotEmpty(), enter = transitions.expandIn, exit = transitions.collapseOut) {
-                AppSegmentedControl(options = scopes, selected = selectedScope, onSelect = onScopeChange)
+            AnimatedVisibility(
+                visible = focused || state.text.isNotEmpty(),
+                enter = transitions.expandIn,
+                exit = transitions.collapseOut,
+            ) {
+                AppSegmentedControl(
+                    options = scopes,
+                    selected = selectedScope,
+                    onSelect = onScopeChange,
+                )
             }
         }
     }

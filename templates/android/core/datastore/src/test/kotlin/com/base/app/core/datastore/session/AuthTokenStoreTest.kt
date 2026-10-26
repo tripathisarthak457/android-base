@@ -6,6 +6,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.base.app.core.common.coroutines.AppDispatchers
 import com.base.app.core.datastore.crypto.ValueCipher
 import com.base.app.core.testing.testDispatchers
+import java.io.File
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -18,8 +20,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
-import java.io.File
-import kotlin.coroutines.CoroutineContext
 
 class AuthTokenStoreTest {
 

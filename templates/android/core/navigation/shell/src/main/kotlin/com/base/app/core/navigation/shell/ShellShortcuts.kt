@@ -13,10 +13,20 @@ import com.base.app.core.navigation.ShortcutEffect
  * does, and Ctrl+Shift+S shows or folds the sidebar where the window has room for one.
  */
 @Composable
-internal fun ShellShortcuts(labels: List<String>, state: ShellState, onToggleSidebar: (() -> Unit)?) {
+internal fun ShellShortcuts(
+    labels: List<String>,
+    state: ShellState,
+    onToggleSidebar: (() -> Unit)?,
+) {
     labels.take(TabKeys.size).forEachIndexed { index, label ->
         val shortcut = remember(index, label) { Shortcut(TabKeys[index], label, ctrl = true) }
-        ShortcutEffect(shortcut) { if (index != state.selectedIndex || state.moreShown) state.select(index) }
+        ShortcutEffect(shortcut) {
+            if (index != state.selectedIndex ||
+                state.moreShown
+            ) {
+                state.select(index)
+            }
+        }
     }
     val back = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     if (back != null) {
@@ -28,11 +38,18 @@ internal fun ShellShortcuts(labels: List<String>, state: ShellState, onToggleSid
     }
     if (onToggleSidebar != null) {
         val label = stringResource(
-            if (state.chrome == NavigationChrome.Sidebar) R.string.shell_hide_sidebar else R.string.shell_show_sidebar,
+            if (state.chrome ==
+                NavigationChrome.Sidebar
+            ) {
+                R.string.shell_hide_sidebar
+            } else {
+                R.string.shell_show_sidebar
+            },
         )
         val sidebar = remember(label) { Shortcut(Key.S, label, ctrl = true, shift = true) }
         ShortcutEffect(sidebar, onToggleSidebar)
     }
 }
 
-private val TabKeys = listOf(Key.One, Key.Two, Key.Three, Key.Four, Key.Five, Key.Six, Key.Seven, Key.Eight, Key.Nine)
+private val TabKeys =
+    listOf(Key.One, Key.Two, Key.Three, Key.Four, Key.Five, Key.Six, Key.Seven, Key.Eight, Key.Nine)

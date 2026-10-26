@@ -43,14 +43,20 @@ internal object SheetGeometry {
      * [radius] below the bounds at Large. It stays put in the bounds while the sheet moves, so a
      * floating sheet never shows a gap beneath itself.
      */
-    fun floatingBottom(restingBottom: Float, boundsHeight: Float, radius: Float, expansion: Float, placedTop: Float): Float =
-        lerp(restingBottom, boundsHeight + radius, expansion) - placedTop
+    fun floatingBottom(
+        restingBottom: Float,
+        boundsHeight: Float,
+        radius: Float,
+        expansion: Float,
+        placedTop: Float,
+    ): Float = lerp(restingBottom, boundsHeight + radius, expansion) - placedTop
 
     /**
      * The surface's bottom edge in layer pixels while the sheet is attached: past the bounds' bottom
      * however far the sheet is pulled up into its rubber band, so the window cuts it, never a gap.
      */
-    fun attachedBottom(layerHeight: Float, radius: Float, bandRoom: Float): Float = layerHeight + radius + bandRoom
+    fun attachedBottom(layerHeight: Float, radius: Float, bandRoom: Float): Float =
+        layerHeight + radius + bandRoom
 }
 
 /** A round rect written in place every frame, so drawing a moving sheet allocates nothing. */
@@ -78,5 +84,6 @@ internal class SurfaceRect {
     }
 
     fun same(left: Float, top: Float, right: Float, bottom: Float, radius: Float): Boolean =
-        this.left == left && this.top == top && this.right == right && this.bottom == bottom && this.radius == radius
+        this.left == left && this.top == top && this.right == right && this.bottom == bottom &&
+            this.radius == radius
 }

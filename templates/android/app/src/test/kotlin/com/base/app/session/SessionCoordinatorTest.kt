@@ -10,15 +10,15 @@ import com.base.app.core.common.session.SessionState
 import com.base.app.core.datastore.FakePreferencesDataStore
 import com.base.app.core.datastore.session.AuthTokens
 import com.base.app.core.datastore.session.FakeAuthTokenStore
+// <opt:network>
+import com.base.app.core.network.auth.SessionEvents
+// </opt:network>
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
-// <opt:network>
-import com.base.app.core.network.auth.SessionEvents
-// </opt:network>
 
 class SessionCoordinatorTest {
 
@@ -43,17 +43,18 @@ class SessionCoordinatorTest {
     }
 
     @Test
-    fun `someone else signing in over a session that never signed out finds nothing of it`() = runTest {
-        val session = coordinator()
-        tokens.save(tokensFor("ada"))
-        runCurrent()
+    fun `someone else signing in over a session that never signed out finds nothing of it`() =
+        runTest {
+            val session = coordinator()
+            tokens.save(tokensFor("ada"))
+            runCurrent()
 
-        tokens.save(tokensFor("grace"))
-        runCurrent()
+            tokens.save(tokensFor("grace"))
+            runCurrent()
 
-        assertEquals(1, clears)
-        assertEquals(SessionState.SignedIn(2), session.state.value)
-    }
+            assertEquals(1, clears)
+            assertEquals(SessionState.SignedIn(2), session.state.value)
+        }
 
     @Test
     fun `a renewed session for the same person keeps their data`() = runTest {
@@ -90,5 +91,6 @@ class SessionCoordinatorTest {
             // </opt:network>
         ).also { runCurrent() }
 
-    private fun tokensFor(owner: String) = AuthTokens(accessToken = "a", refreshToken = "r", owner = owner)
+    private fun tokensFor(owner: String) =
+        AuthTokens(accessToken = "a", refreshToken = "r", owner = owner)
 }

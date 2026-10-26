@@ -21,6 +21,9 @@ import com.base.app.core.designsystem.component.feedback.AppSkeletonCircle
 import com.base.app.core.designsystem.setThemed
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.tokens.DesignTokens.Motion
+import kotlin.math.abs
+import kotlin.math.floor
+import kotlin.math.roundToInt
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -28,9 +31,6 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
-import kotlin.math.abs
-import kotlin.math.floor
-import kotlin.math.roundToInt
 
 /**
  * The band, as drawn, is one band: every pixel of every bone has the colour the sweep gives its
@@ -56,8 +56,14 @@ class SkeletonCoherenceTest {
             clock = LocalShimmerClock.current
             bone = AppTheme.colors.skeleton
             Box(Modifier.fillMaxSize()) {
-                AppSkeleton(Modifier.offset(0.dp, ReferenceTop).size(411.dp, ReferenceHeight), shape = RectangleShape)
-                AppSkeleton(Modifier.offset(LineLeft, LineTop).size(LineWidth, LineHeight), shape = RectangleShape)
+                AppSkeleton(
+                    Modifier.offset(0.dp, ReferenceTop).size(411.dp, ReferenceHeight),
+                    shape = RectangleShape,
+                )
+                AppSkeleton(
+                    Modifier.offset(LineLeft, LineTop).size(LineWidth, LineHeight),
+                    shape = RectangleShape,
+                )
                 AppSkeletonCircle(Modifier.offset(CircleLeft, CircleTop), size = CircleSize)
             }
         }
@@ -77,7 +83,13 @@ class SkeletonCoherenceTest {
             captures++
             val pixels = rule.onRoot().captureToImage().toPixelMap()
             val phases = PhaseColours()
-            val reference = Region(0f, px(ReferenceTop.value), px(411f), px(ReferenceTop.value + ReferenceHeight.value))
+            val reference =
+                Region(
+                    0f,
+                    px(ReferenceTop.value),
+                    px(411f),
+                    px(ReferenceTop.value + ReferenceHeight.value),
+                )
             reference.forEachInside(pixels, inset = 2) { x, y, colour -> phases.add(x, y, colour) }
 
             val line = Region(
@@ -94,7 +106,12 @@ class SkeletonCoherenceTest {
             val radius = px(CircleSize.value) / 2
             val centreX = px(CircleLeft.value) + radius
             val centreY = px(CircleTop.value) + radius
-            val circle = Region(centreX - radius, centreY - radius, centreX + radius, centreY + radius)
+            val circle = Region(
+                centreX - radius,
+                centreY - radius,
+                centreX + radius,
+                centreY + radius,
+            )
             circle.forEachInside(pixels, inset = 0) { x, y, colour ->
                 val dx = x + 0.5f - centreX
                 val dy = y + 0.5f - centreY
@@ -120,9 +137,17 @@ class SkeletonCoherenceTest {
             bone = AppTheme.colors.skeleton
             highlight = AppTheme.colors.skeletonHighlight
             Box(Modifier.fillMaxSize()) {
-                AppSkeleton(Modifier.offset(0.dp, ReferenceTop).size(411.dp, ReferenceHeight), shape = RectangleShape)
-                Box(Modifier.offset(AreaLeft, AreaTop).size(AreaWidth, AreaHeight).shimmerBounds()) {
-                    AppSkeleton(Modifier.fillMaxWidth().height(AreaBlockHeight), shape = RectangleShape)
+                AppSkeleton(
+                    Modifier.offset(0.dp, ReferenceTop).size(411.dp, ReferenceHeight),
+                    shape = RectangleShape,
+                )
+                Box(
+                    Modifier.offset(AreaLeft, AreaTop).size(AreaWidth, AreaHeight).shimmerBounds(),
+                ) {
+                    AppSkeleton(
+                        Modifier.fillMaxWidth().height(AreaBlockHeight),
+                        shape = RectangleShape,
+                    )
                     AppSkeleton(
                         Modifier.offset(AreaLineLeft, AreaLineTop).size(LineWidth, LineHeight),
                         shape = RectangleShape,
@@ -144,9 +169,21 @@ class SkeletonCoherenceTest {
         val window = Band(Region(0f, 0f, root.width.toFloat(), root.height.toFloat()), band)
         val inArea = Band(area, band)
         val outside = with(rule.density) {
-            Region(0f, ReferenceTop.toPx(), root.width.toFloat(), (ReferenceTop + ReferenceHeight).toPx())
+            Region(
+                0f,
+                ReferenceTop.toPx(),
+                root.width.toFloat(),
+                (ReferenceTop + ReferenceHeight).toPx(),
+            )
         }
-        val block = with(rule.density) { Region(area.left, area.top, area.right, area.top + AreaBlockHeight.toPx()) }
+        val block = with(rule.density) {
+            Region(
+                area.left,
+                area.top,
+                area.right,
+                area.top + AreaBlockHeight.toPx(),
+            )
+        }
         val line = with(rule.density) {
             Region(
                 left = area.left + AreaLineLeft.toPx(),
@@ -214,7 +251,8 @@ class SkeletonCoherenceTest {
             return Color(sum[0] / sum[3], sum[1] / sum[3], sum[2] / sum[3])
         }
 
-        private fun phase(x: Int, y: Int) = floor((x + 0.5f) * TiltCos + (y + 0.5f) * TiltSin).toInt()
+        private fun phase(x: Int, y: Int) =
+            floor((x + 0.5f) * TiltCos + (y + 0.5f) * TiltSin).toInt()
     }
 
     /**
@@ -224,7 +262,12 @@ class SkeletonCoherenceTest {
     private class Band(private val area: Region, private val band: Float) {
         fun colour(x: Int, y: Int, progress: Float, bone: Color, highlight: Color): Color {
             val phase = (x + 0.5f - area.left) * TiltCos + (y + 0.5f - area.top) * TiltSin
-            val start = SweepGeometry.start(progress, area.right - area.left, area.bottom - area.top, band)
+            val start = SweepGeometry.start(
+                progress,
+                area.right - area.left,
+                area.bottom - area.top,
+                band,
+            )
             val t = (phase - start) / band
             val lift = if (t <= 0f || t >= 1f) 0f else 1f - abs(2f * t - 1f)
             // A gradient blends the encoded sRGB values, so the expected colour is blended the same way.
@@ -238,8 +281,10 @@ class SkeletonCoherenceTest {
 
     private class Region(val left: Float, val top: Float, val right: Float, val bottom: Float) {
         fun forEachInside(pixels: PixelMap, inset: Int, action: (Int, Int, Color) -> Unit) {
-            for (y in top.roundToInt() + inset until minOf(bottom.roundToInt() - inset, pixels.height)) {
-                for (x in left.roundToInt() + inset until minOf(right.roundToInt() - inset, pixels.width)) {
+            for (y in top.roundToInt() + inset until
+                minOf(bottom.roundToInt() - inset, pixels.height)) {
+                for (x in left.roundToInt() + inset until
+                    minOf(right.roundToInt() - inset, pixels.width)) {
                     action(x, y, pixels[x, y])
                 }
             }

@@ -26,9 +26,7 @@ import javax.inject.Singleton
  * is nothing beyond the platform's own frame metrics.
  */
 @Singleton
-class FrameJankRecorder @Inject internal constructor(
-    private val analytics: AnalyticsTracker,
-) {
+class FrameJankRecorder @Inject internal constructor(private val analytics: AnalyticsTracker) {
     private val counts = HashMap<String, FrameCounts>()
     private var reportingWhenHidden = false
 
@@ -83,19 +81,22 @@ class FrameJankRecorder @Inject internal constructor(
             analytics.track(
                 AnalyticsEvent(
                     name = EVENT_NAME,
-                    parameters = mapOf("state" to state, "frames" to counted.frames, "janky" to counted.janky),
+                    parameters = mapOf(
+                        "state" to state,
+                        "frames" to counted.frames,
+                        "janky" to counted.janky,
+                    ),
                 ),
             )
         }
     }
 
-    private fun FrameData.stateKey(): String =
-        if (states.isEmpty()) {
-            IDLE_STATE
-        } else {
-            // Analytics vendors cap a parameter value at about a hundred characters.
-            states.joinToString(separator = ",") { it.key + "=" + it.value }.take(MAX_STATE_LENGTH)
-        }
+    private fun FrameData.stateKey(): String = if (states.isEmpty()) {
+        IDLE_STATE
+    } else {
+        // Analytics vendors cap a parameter value at about a hundred characters.
+        states.joinToString(separator = ",") { it.key + "=" + it.value }.take(MAX_STATE_LENGTH)
+    }
 
     private class FrameCounts {
         var frames = 0

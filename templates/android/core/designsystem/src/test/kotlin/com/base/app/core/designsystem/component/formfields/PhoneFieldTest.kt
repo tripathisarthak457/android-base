@@ -35,7 +35,9 @@ class PhoneFieldTest {
 
     @Test
     fun `a screen reader names the number and the code each by its own label`() {
-        rule.setThemed { AppPhoneField(dialCode = "+44", onDialCodeChange = {}, number = TextFieldState()) }
+        rule.setThemed {
+            AppPhoneField(dialCode = "+44", onDialCodeChange = {}, number = TextFieldState())
+        }
         rule.onNode(hasSetTextAction() and hasText("Phone number")).assertExists()
         rule.onNode(dialCode and hasText("Code") and hasText("+44")).assertExists()
     }
@@ -43,7 +45,12 @@ class PhoneFieldTest {
     @Test
     fun `the two boxes stay level when only one part has a label`() {
         rule.setThemed {
-            AppPhoneField(dialCode = "+44", onDialCodeChange = {}, number = TextFieldState(), dialCodeLabel = null)
+            AppPhoneField(
+                dialCode = "+44",
+                onDialCodeChange = {},
+                number = TextFieldState(),
+                dialCodeLabel = null,
+            )
         }
         // Each part's box is the bottom of its node: neither shows anything beneath its box here.
         val code = rule.onNode(dialCode).getUnclippedBoundsInRoot()
@@ -54,7 +61,12 @@ class PhoneFieldTest {
     @Test
     fun `an error under the number leaves the code's box level with the number's`() {
         rule.setThemed {
-            AppPhoneField(dialCode = "+44", onDialCodeChange = {}, number = TextFieldState(), error = "Enter the whole number")
+            AppPhoneField(
+                dialCode = "+44",
+                onDialCodeChange = {},
+                number = TextFieldState(),
+                error = "Enter the whole number",
+            )
         }
         rule.waitForIdle()
         val code = rule.onNode(dialCode).getUnclippedBoundsInRoot()

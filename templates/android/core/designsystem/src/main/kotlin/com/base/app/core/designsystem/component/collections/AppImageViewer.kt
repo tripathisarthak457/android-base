@@ -51,9 +51,9 @@ import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
-import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.pow
+import kotlinx.coroutines.launch
 
 /**
  * A full-screen picture: pinch or double-tap to zoom, drag to look around the zoomed picture
@@ -97,7 +97,13 @@ public fun AppImageViewer(
             val startPan = pan
             // Keep the tapped point under the finger as the picture zooms in on it.
             val centre = Offset(size.width / 2f, size.height / 2f)
-            val targetPan = if (target > 1f) bounded((centre - focus) * (target - 1f), target) else Offset.Zero
+            val targetPan = if (target >
+                1f
+            ) {
+                bounded((centre - focus) * (target - 1f), target)
+            } else {
+                Offset.Zero
+            }
             zoom.snapTo(0f)
             zoom.animateTo(1f, springs.sheet.unit) {
                 scale = startScale + (target - startScale) * value
@@ -112,7 +118,13 @@ public fun AppImageViewer(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .drawBehind { drawRect(colors.mediaBackdrop, alpha = 1f - (abs(pull) / DismissFade).coerceIn(0f, MaxFade)) },
+            .drawBehind {
+                drawRect(
+                    colors.mediaBackdrop,
+                    alpha =
+                        1f - (abs(pull) / DismissFade).coerceIn(0f, MaxFade),
+                )
+            },
     ) {
         Box(
             modifier = Modifier
@@ -125,18 +137,44 @@ public fun AppImageViewer(
                 )
                 .onSizeChanged { size = it }
                 .pointerInput(Unit) {
-                    detectTapGestures(onDoubleTap = { at -> settleZoom(if (scale > 1.01f) 1f else DoubleTapZoom, at) })
+                    detectTapGestures(
+                        onDoubleTap = { at ->
+                            settleZoom(
+                                if (scale >
+                                    1.01f
+                                ) {
+                                    1f
+                                } else {
+                                    DoubleTapZoom
+                                },
+                                at,
+                            )
+                        },
+                    )
                 }
                 .pointerInput(Unit) {
                     // Ctrl and the mouse wheel or a trackpad zoom about the pointer, as desktop viewers do.
                     awaitPointerEventScope {
                         while (true) {
                             val event = awaitPointerEvent()
-                            if (event.type != PointerEventType.Scroll || !event.keyboardModifiers.isCtrlPressed) continue
+                            if (event.type != PointerEventType.Scroll ||
+                                !event.keyboardModifiers.isCtrlPressed
+                            ) {
+                                continue
+                            }
                             val change = event.changes.first()
-                            val target = (scale * WheelZoomStep.pow(-change.scrollDelta.y)).coerceIn(1f, MaxZoom)
+                            val target = (
+                                scale * WheelZoomStep.pow(
+                                    -change.scrollDelta.y,
+                                )
+                                ).coerceIn(1f, MaxZoom)
                             val centre = Offset(size.width / 2f, size.height / 2f)
-                            pan = bounded((pan - (change.position - centre)) * (target / scale) + (change.position - centre), target)
+                            pan =
+                                bounded(
+                                    (pan - (change.position - centre)) * (target / scale) +
+                                        (change.position - centre),
+                                    target,
+                                )
                             scale = target
                             change.consume()
                         }
@@ -150,14 +188,18 @@ public fun AppImageViewer(
                         var pulling = false
                         do {
                             val event = awaitPointerEvent()
-                            event.changes.firstOrNull()?.let { velocity.addPosition(it.uptimeMillis, it.position) }
+                            event.changes.firstOrNull()?.let {
+                                velocity.addPosition(it.uptimeMillis, it.position)
+                            }
                             val zoomChange = event.calculateZoom()
                             val panChange = event.calculatePan()
                             if (event.changes.size > 1 || scale > 1f) {
                                 scale = (scale * zoomChange).coerceIn(1f, MaxZoom)
                                 pan = bounded(pan + panChange, scale)
                                 event.changes.forEach { if (it.positionChanged()) it.consume() }
-                            } else if (panChange.y != 0f && (pulling || abs(panChange.y) > abs(panChange.x))) {
+                            } else if (panChange.y != 0f &&
+                                (pulling || abs(panChange.y) > abs(panChange.x))
+                            ) {
                                 pulling = true
                                 pull += panChange.y
                                 event.changes.forEach { it.consume() }
@@ -169,7 +211,12 @@ public fun AppImageViewer(
                             if (abs(pull + speed * ProjectionSeconds) > DismissDistance) {
                                 dismiss()
                             } else {
-                                scope.launch { animate(pull, 0f, speed, springs.sheet.pixels) { value, _ -> pull = value } }
+                                scope.launch {
+                                    animate(pull, 0f, speed, springs.sheet.pixels) { value, _ ->
+                                        pull =
+                                            value
+                                    }
+                                }
                             }
                         }
                     }

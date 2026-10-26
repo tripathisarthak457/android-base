@@ -10,7 +10,8 @@ class StackPlanTest {
 
     @Test
     fun `a list and the details over it share a page when there is room for two`() {
-        val panes = listOf(NavPane.Single, NavPane.List, NavPane.Detail, NavPane.Detail, NavPane.Detail)
+        val panes =
+            listOf(NavPane.Single, NavPane.List, NavPane.Detail, NavPane.Detail, NavPane.Detail)
 
         assertEquals(listOf(0..0, 1..4), stackPages(panes, columns = 2))
         assertEquals(listOf(0..0, 1..1, 2..2, 3..3, 4..4), stackPages(panes, columns = 1))
@@ -18,7 +19,10 @@ class StackPlanTest {
 
     @Test
     fun `a detail with no list under it is a page of its own`() {
-        assertEquals(listOf(0..0, 1..1), stackPages(listOf(NavPane.Single, NavPane.Detail), columns = 2))
+        assertEquals(
+            listOf(0..0, 1..1),
+            stackPages(listOf(NavPane.Single, NavPane.Detail), columns = 2),
+        )
     }
 
     @Test
@@ -28,7 +32,10 @@ class StackPlanTest {
         assertEquals(mapOf("list" to Slot.List, "b" to Slot.Detail), pages.single().shown)
 
         val empty = pagesOf(listOf("list"), listOf(NavPane.List), columns = 2)
-        assertEquals(mapOf("list" to Slot.List, EmptyDetail("list") to Slot.Detail), empty.single().shown)
+        assertEquals(
+            mapOf("list" to Slot.List, EmptyDetail("list") to Slot.Detail),
+            empty.single().shown,
+        )
     }
 
     @Test
@@ -37,8 +44,17 @@ class StackPlanTest {
         assertEquals(mapOf("list" to Slot.Full), root.single().shown)
 
         val pushed = pagesOf(listOf("list", "a"), listOf(NavPane.List, NavPane.Detail), columns = 1)
-        assertEquals(listOf(mapOf<Any, Slot>("list" to Slot.Full), mapOf<Any, Slot>("a" to Slot.Full)), pushed.map { it.shown })
-        assertTrue(planChange(null, listOf("list"), listOf(NavPane.List), columns = 1) { true }.emptyDetails.isEmpty())
+        assertEquals(
+            listOf(mapOf<Any, Slot>("list" to Slot.Full), mapOf<Any, Slot>("a" to Slot.Full)),
+            pushed.map {
+                it.shown
+            },
+        )
+        assertTrue(
+            planChange(null, listOf("list"), listOf(NavPane.List), columns = 1) {
+                true
+            }.emptyDetails.isEmpty(),
+        )
     }
 
     @Test
@@ -55,7 +71,10 @@ class StackPlanTest {
             mapOf("a" to Slot.Detail, "history" to Slot.Extra),
             pagesOf(keys, panes, columns = 2).single().shown,
         )
-        assertEquals(listOf(0..0, 1..1), stackPages(listOf(NavPane.List, NavPane.Extra), columns = 3))
+        assertEquals(
+            listOf(0..0, 1..1),
+            stackPages(listOf(NavPane.List, NavPane.Extra), columns = 3),
+        )
     }
 
     @Test
@@ -111,7 +130,12 @@ class StackPlanTest {
         val tablet = planChange(phone, listOf("list", "post"), panes, columns = 2) { true }
 
         assertEquals(Slide.None, tablet.slide)
-        assertEquals(Slide.None, planChange(tablet, listOf("list", "post"), panes, columns = 1) { true }.slide)
+        assertEquals(
+            Slide.None,
+            planChange(tablet, listOf("list", "post"), panes, columns = 1) {
+                true
+            }.slide,
+        )
     }
 
     @Test
@@ -131,7 +155,13 @@ class StackPlanTest {
         assertEquals(setOf("still"), plan.upper.keys)
     }
 
-    private fun change(from: List<Any>, to: List<Any>, slides: (Any) -> Boolean = { true }): StackPlan {
+    private fun change(
+        from: List<Any>,
+        to: List<Any>,
+        slides: (Any) -> Boolean = {
+            true
+        },
+    ): StackPlan {
         val before = planChange(null, from, from.map { NavPane.Single }, columns = 1, slides)
         return planChange(before, to, to.map { NavPane.Single }, columns = 1, slides)
     }

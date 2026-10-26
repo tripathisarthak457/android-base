@@ -38,11 +38,27 @@ class WheelPickerRecompositionTest {
     fun `turning a wheel recomposes only for the value it lands on`() {
         var selected by mutableIntStateOf(3)
         rule.setThemed {
-            AppWheelPicker(items = (0..40).toList(), selectedIndex = selected, onSelectedChange = { selected = it }, modifier = Modifier.testTag("wheel"), label = { "$it" })
+            AppWheelPicker(
+                items = (0..40).toList(),
+                selectedIndex = selected,
+                onSelectedChange = {
+                    selected =
+                        it
+                },
+                modifier = Modifier.testTag("wheel"),
+                label = { "$it" },
+            )
         }
         rule.waitForIdle()
         counter.reset()
-        rule.onNodeWithTag("wheel").performTouchInput { swipeUp(startY = bottom - 10f, endY = top + 10f, durationMillis = 600) }
+        rule.onNodeWithTag("wheel").performTouchInput {
+            swipeUp(
+                startY = bottom - 10f,
+                endY =
+                    top + 10f,
+                durationMillis = 600,
+            )
+        }
         rule.mainClock.advanceTimeBy(3_000)
         assertTrue("the wheel did not move", selected > 3)
         assertTrue("landing recomposed ${counter.executed()}", counter.count("AppWheelPicker") <= 1)

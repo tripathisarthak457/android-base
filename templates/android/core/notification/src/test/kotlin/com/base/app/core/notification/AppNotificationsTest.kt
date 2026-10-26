@@ -45,8 +45,14 @@ class AppNotificationsTest {
         )
 
         val notification = posted.getNotification(1)
-        assertEquals("Order shipped", notification.extras.getCharSequence(Notification.EXTRA_TITLE).toString())
-        assertEquals("It arrives on Friday.", notification.extras.getCharSequence(Notification.EXTRA_BIG_TEXT).toString())
+        assertEquals(
+            "Order shipped",
+            notification.extras.getCharSequence(Notification.EXTRA_TITLE).toString(),
+        )
+        assertEquals(
+            "It arrives on Friday.",
+            notification.extras.getCharSequence(Notification.EXTRA_BIG_TEXT).toString(),
+        )
         assertEquals(NotificationChannelSpec.Urgent.id, notification.channelId)
     }
 
@@ -71,7 +77,12 @@ class AppNotificationsTest {
         grant()
         val link = Uri.parse("https://example.com/orders/7")
 
-        notifications.post(id = 1, title = "Order shipped", body = "It arrives on Friday.", link = link)
+        notifications.post(
+            id = 1,
+            title = "Order shipped",
+            body = "It arrives on Friday.",
+            link = link,
+        )
 
         val tap = shadowOf(posted.getNotification(1).contentIntent).savedIntent
         assertEquals(Intent.ACTION_VIEW, tap.action)

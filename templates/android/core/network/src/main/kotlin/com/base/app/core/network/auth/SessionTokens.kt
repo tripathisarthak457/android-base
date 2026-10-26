@@ -2,10 +2,10 @@ package com.base.app.core.network.auth
 
 import com.base.app.core.datastore.session.AuthTokenStore
 import com.base.app.core.datastore.session.AuthTokens
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 /**
  * The one way the app renews its tokens: every request refused with a 401 comes here, and so does

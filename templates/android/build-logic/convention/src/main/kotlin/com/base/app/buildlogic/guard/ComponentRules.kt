@@ -74,8 +74,9 @@ internal object ComponentRules {
         ),
         Rule(
             id = "composition-read",
-            advice = "read a moving value inside graphicsLayer { }, offset { } or layout { }, so a " +
-                "change redraws or re-places rather than recomposes",
+            advice =
+                "read a moving value inside graphicsLayer { }, offset { } or layout { }, so a " +
+                    "change redraws or re-places rather than recomposes",
             applies = composeApi,
             lines = pattern(COMPOSITION_READ),
             reference = "jetpack-compose-performance/references/animation.md",
@@ -186,9 +187,14 @@ internal object ComponentRules {
      */
     private fun unusedModifiers(source: KotlinSource): List<Int> =
         Declarations.composables(source).mapNotNull { function ->
-            val parameter = function.parameters.firstOrNull { it.name == "modifier" && it.type == "Modifier" }
+            val parameter = function.parameters.firstOrNull {
+                it.name == "modifier" &&
+                    it.type == "Modifier"
+            }
             val body = parameter?.let { Declarations.body(source, function) }
-            if (body == null || MODIFIER_READ.containsMatchIn(source.code.substring(body.first, body.last + 1))) {
+            if (body == null ||
+                MODIFIER_READ.containsMatchIn(source.code.substring(body.first, body.last + 1))
+            ) {
                 null
             } else {
                 source.lineOf(parameter.offset)

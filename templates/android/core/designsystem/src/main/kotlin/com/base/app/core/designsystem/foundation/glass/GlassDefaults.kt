@@ -80,7 +80,8 @@ public object GlassDefaults {
     @ReadOnlyComposable
     public fun contentShadow(): Shadow? = if (AppTheme.colors.isLight) ContentShadow else null
 
-    private fun rim(colors: AppColors): Color = colors.sheen.copy(alpha = if (colors.isLight) 0.85f else 0.20f)
+    private fun rim(colors: AppColors): Color =
+        colors.sheen.copy(alpha = if (colors.isLight) 0.85f else 0.20f)
 
     private val ChromeShadow = Shadow(radius = 16.dp, offset = DpOffset(0.dp, 4.dp), alpha = 0.10f)
     private val ContentShadow = Shadow(radius = 10.dp, offset = DpOffset(0.dp, 3.dp), alpha = 0.08f)

@@ -16,9 +16,11 @@ internal object AnalyticsSessionModule {
 
     @Provides
     @IntoSet
-    fun provideAnalyticsUserClearing(analytics: AnalyticsTracker, crashes: CrashReporter): SessionScopedStore =
-        SessionScopedStore {
-            analytics.setUserId(null)
-            crashes.setUserId(null)
-        }
+    fun provideAnalyticsUserClearing(
+        analytics: AnalyticsTracker,
+        crashes: CrashReporter,
+    ): SessionScopedStore = SessionScopedStore {
+        analytics.setUserId(null)
+        crashes.setUserId(null)
+    }
 }

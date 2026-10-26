@@ -7,18 +7,20 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.common.log.Log
 import com.base.app.core.common.session.SessionScopedStore
+// <opt:auth>
+import com.base.app.core.datastore.session.AuthTokenStore
+// </opt:auth>
 import com.google.firebase.messaging.FirebaseMessaging
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Qualifier
 import javax.inject.Singleton
+import kotlinx.coroutines.CancellationException
 // <opt:auth>
-import com.base.app.core.datastore.session.AuthTokenStore
 import kotlinx.coroutines.flow.filter
 // </opt:auth>
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 /** Where this install's push address goes: the backend sends to it with FCM's `Message.fid`. */
 fun interface PushTokenSink {

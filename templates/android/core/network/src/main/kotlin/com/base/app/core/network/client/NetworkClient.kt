@@ -24,7 +24,10 @@ interface NetworkClient {
     suspend fun execute(request: NetworkRequest): AppResult<NetworkResponse>
 
     /** Sends [request] and decodes a successful body through the app's `ResponseUnwrapper`. */
-    suspend fun <T> execute(request: NetworkRequest, deserializer: DeserializationStrategy<T>): AppResult<T>
+    suspend fun <T> execute(
+        request: NetworkRequest,
+        deserializer: DeserializationStrategy<T>,
+    ): AppResult<T>
 }
 
 suspend inline fun <reified T> NetworkClient.get(

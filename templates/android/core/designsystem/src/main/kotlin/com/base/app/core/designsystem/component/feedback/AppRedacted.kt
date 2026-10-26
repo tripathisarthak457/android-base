@@ -51,7 +51,13 @@ public fun AppRedacted(
     content: @Composable () -> Unit,
 ) {
     val hidden = if (active) {
-        Modifier.clearAndSetSemantics { if (contentDescription != null) this.contentDescription = contentDescription }
+        Modifier.clearAndSetSemantics {
+            if (contentDescription !=
+                null
+            ) {
+                this.contentDescription = contentDescription
+            }
+        }
     } else {
         Modifier
     }

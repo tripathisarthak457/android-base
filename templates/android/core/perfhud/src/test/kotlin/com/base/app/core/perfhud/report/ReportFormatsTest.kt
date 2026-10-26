@@ -43,13 +43,23 @@ class ReportFormatsTest {
 
         assertEquals(PerformanceReport.SCHEMA, json.getValue("schema").jsonPrimitive.int)
         val screens = json.getValue("frames").jsonObject.getValue("screens").jsonArray
-        assertEquals(listOf("Home", "Detail"), screens.map { it.jsonObject.getValue("name").jsonPrimitive.content })
+        assertEquals(
+            listOf("Home", "Detail"),
+            screens.map {
+                it.jsonObject.getValue("name").jsonPrimitive.content
+            },
+        )
         val janky = json.getValue("score").jsonObject.getValue("metrics").jsonArray
             .map { it.jsonObject }
             .single { it.getValue("metric").jsonPrimitive.content == "JankyFrames" }
         assertEquals("C", janky.getValue("grade").jsonPrimitive.content)
-        assertTrue(janky.getValue("fix").jsonPrimitive.content.startsWith("Open Janky frames by screen"))
-        assertEquals("docs/PERFORMANCE-OVERLAY.md#janky-frames", janky.getValue("doc").jsonPrimitive.content)
+        assertTrue(
+            janky.getValue("fix").jsonPrimitive.content.startsWith("Open Janky frames by screen"),
+        )
+        assertEquals(
+            "docs/PERFORMANCE-OVERLAY.md#janky-frames",
+            janky.getValue("doc").jsonPrimitive.content,
+        )
     }
 
     @Test
@@ -70,15 +80,23 @@ class ReportFormatsTest {
         val score = markdown.indexOf("## Optimisation score")
         val frames = markdown.indexOf("## Frames")
         assertTrue(markdown, score in 0 until frames)
-        assertTrue(markdown, markdown.indexOf("| Detail |") in frames until markdown.indexOf("| Home |"))
-        assertTrue(markdown, markdown.contains("- **Janky frames** −12.5 of 25. Open Janky frames by screen"))
+        assertTrue(
+            markdown,
+            markdown.indexOf("| Detail |") in frames until markdown.indexOf("| Home |"),
+        )
+        assertTrue(
+            markdown,
+            markdown.contains("- **Janky frames** −12.5 of 25. Open Janky frames by screen"),
+        )
     }
 
     @Test
     fun `each screen's row counts its slow, frozen and long frames`() {
         val markdown = MarkdownReport(resources).write(snapshot(), GENERATED_AT)
 
-        val detail = markdown.lines().single { it.startsWith("| Detail |") }.split('|').map(String::trim)
+        val detail = markdown.lines().single {
+            it.startsWith("| Detail |")
+        }.split('|').map(String::trim)
         assertEquals(listOf("4 (4.00%)", "1", "2"), detail.subList(4, 7))
     }
 
@@ -86,13 +104,18 @@ class ReportFormatsTest {
     fun `before the frames are graded neither format gives a score`() {
         val snapshot = snapshot(frameCount = 120)
 
-        val json = Json.parseToJsonElement(PerformanceReport.of(snapshot, GENERATED_AT, resources).toJson()).jsonObject
+        val json = Json.parseToJsonElement(
+            PerformanceReport.of(snapshot, GENERATED_AT, resources).toJson(),
+        ).jsonObject
         val markdown = MarkdownReport(resources).write(snapshot, GENERATED_AT)
 
         val score = json.getValue("score").jsonObject
         assertEquals(JsonNull, score.getValue("total"))
         assertEquals(JsonNull, score.getValue("grade"))
-        assertTrue(markdown, markdown.contains("Not enough recorded to score yet: the score needs 300 frames"))
+        assertTrue(
+            markdown,
+            markdown.contains("Not enough recorded to score yet: the score needs 300 frames"),
+        )
     }
 
     @Test
@@ -104,7 +127,10 @@ class ReportFormatsTest {
 
         val markdown = MarkdownReport(resources).write(snapshot(examples = examples), GENERATED_AT)
 
-        assertTrue(markdown, markdown.contains("- `DiskRead at com.example.app.Store.load(Store.kt:12)`"))
+        assertTrue(
+            markdown,
+            markdown.contains("- `DiskRead at com.example.app.Store.load(Store.kt:12)`"),
+        )
         assertTrue(markdown, markdown.contains("- `Network at an unknown frame`"))
     }
 
@@ -131,7 +157,12 @@ class ReportFormatsTest {
                 ),
             ),
         )
-        val build = BuildFacts(debuggable = debugBuild, minified = !debugBuild, profile = ProfileStatus.Compiled)
+        val build =
+            BuildFacts(
+                debuggable = debugBuild,
+                minified = !debugBuild,
+                profile = ProfileStatus.Compiled,
+            )
         val strictMode = StrictModeSummary(
             supported = true,
             violations = examples.size,
@@ -152,17 +183,18 @@ class ReportFormatsTest {
         )
     }
 
-    private fun stats(frames: Int, janky: Int, slow: Int = 0, frozen: Int = 0, longWork: Int = 0) = FrameStats(
-        frames = frames,
-        janky = janky,
-        slow = slow,
-        frozen = frozen,
-        longWork = longWork,
-        p50Millis = 3f,
-        p90Millis = 4f,
-        p99Millis = 7f,
-        worstMillis = 12f,
-    )
+    private fun stats(frames: Int, janky: Int, slow: Int = 0, frozen: Int = 0, longWork: Int = 0) =
+        FrameStats(
+            frames = frames,
+            janky = janky,
+            slow = slow,
+            frozen = frozen,
+            longWork = longWork,
+            p50Millis = 3f,
+            p90Millis = 4f,
+            p99Millis = 7f,
+            worstMillis = 12f,
+        )
 
     private companion object {
         const val GENERATED_AT = "2026-10-18T15:00:00+05:30"

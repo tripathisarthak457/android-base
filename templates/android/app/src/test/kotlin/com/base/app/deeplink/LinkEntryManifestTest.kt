@@ -1,11 +1,11 @@
 package com.base.app.deeplink
 
+import java.io.File
+import javax.xml.parsers.DocumentBuilderFactory
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.w3c.dom.Element
-import java.io.File
-import javax.xml.parsers.DocumentBuilderFactory
 
 /**
  * The launcher icon must bring the task back as it was, and a link must still reach the running
@@ -15,8 +15,12 @@ class LinkEntryManifestTest {
 
     private val activities: Map<String, Element> by lazy {
         val factory = DocumentBuilderFactory.newInstance().apply { isNamespaceAware = true }
-        val nodes = factory.newDocumentBuilder().parse(File("src/main/AndroidManifest.xml")).getElementsByTagName("activity")
-        (0 until nodes.length).map { nodes.item(it) as Element }.associateBy { it.androidAttr("name") }
+        val nodes = factory.newDocumentBuilder().parse(
+            File("src/main/AndroidManifest.xml"),
+        ).getElementsByTagName("activity")
+        (0 until nodes.length).map {
+            nodes.item(it) as Element
+        }.associateBy { it.androidAttr("name") }
     }
 
     @Test
@@ -37,10 +41,14 @@ class LinkEntryManifestTest {
 
     private fun Element.androidAttr(name: String): String = getAttributeNS(ANDROID, name)
 
-    private fun Element.viewSchemes(): List<String> =
-        children("intent-filter")
-            .filter { filter -> filter.children("action").any { it.androidAttr("name") == "android.intent.action.VIEW" } }
-            .flatMap { filter -> filter.children("data").map { it.androidAttr("scheme") } }
+    private fun Element.viewSchemes(): List<String> = children("intent-filter")
+        .filter { filter ->
+            filter.children("action").any {
+                it.androidAttr("name") ==
+                    "android.intent.action.VIEW"
+            }
+        }
+        .flatMap { filter -> filter.children("data").map { it.androidAttr("scheme") } }
 
     private fun Element.children(tag: String): List<Element> {
         val nodes = getElementsByTagName(tag)

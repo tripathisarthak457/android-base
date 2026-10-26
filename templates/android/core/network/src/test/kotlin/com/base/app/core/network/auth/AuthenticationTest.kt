@@ -18,7 +18,8 @@ import org.junit.Test
 class AuthenticationTest {
 
     private val store = FakeAuthTokenStore(tokens())
-    private val refresher = TokenRefresher { TokenRefreshResult.Success("A2", "R2", expiresAtEpochMillis = null) }
+    private val refresher =
+        TokenRefresher { TokenRefreshResult.Success("A2", "R2", expiresAtEpochMillis = null) }
     private val seen = mutableListOf<HttpRequestData>()
 
     private fun client(refuseToken: String? = null) = HttpClient(
@@ -31,7 +32,9 @@ class AuthenticationTest {
                 respond("{}", HttpStatusCode.OK)
             }
         },
-    ) { expectSuccess = false }.apply { authenticate(API_HOST, SessionTokens(store, refresher, SessionEvents())) }
+    ) {
+        expectSuccess = false
+    }.apply { authenticate(API_HOST, SessionTokens(store, refresher, SessionEvents())) }
 
     @Test
     fun `the session's token goes to the api host and nowhere else`() = runTest {
@@ -51,7 +54,12 @@ class AuthenticationTest {
         val response = client.get("https://$API_HOST/items")
 
         assertEquals(HttpStatusCode.OK, response.status)
-        assertEquals(listOf("Bearer A1", "Bearer A2"), seen.map { it.headers[HttpHeaders.Authorization] })
+        assertEquals(
+            listOf("Bearer A1", "Bearer A2"),
+            seen.map {
+                it.headers[HttpHeaders.Authorization]
+            },
+        )
     }
 
     @Test

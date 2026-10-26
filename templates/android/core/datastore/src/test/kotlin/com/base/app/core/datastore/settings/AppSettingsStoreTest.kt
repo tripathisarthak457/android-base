@@ -2,6 +2,7 @@ package com.base.app.core.datastore.settings
 
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import com.base.app.core.common.coroutines.ApplicationScope
+import java.io.File
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
@@ -10,7 +11,6 @@ import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
-import java.io.File
 
 class AppSettingsStoreTest {
 
@@ -19,7 +19,9 @@ class AppSettingsStoreTest {
 
     @Test
     fun `the settings are in memory once read, for callers that cannot wait`() = runTest {
-        val dataStore = PreferenceDataStoreFactory.create(scope = backgroundScope) { File(folder.root, "settings.preferences_pb") }
+        val dataStore = PreferenceDataStoreFactory.create(scope = backgroundScope) {
+            File(folder.root, "settings.preferences_pb")
+        }
         val store = AppSettingsStore(dataStore, ApplicationScope(backgroundScope))
         assertNull(store.current)
 

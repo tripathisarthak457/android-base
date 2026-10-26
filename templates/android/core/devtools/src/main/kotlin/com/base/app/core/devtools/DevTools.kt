@@ -6,13 +6,13 @@ import com.base.app.core.devtools.badge.DevToolsOverlay
 import com.base.app.core.devtools.log.DevToolsLog
 import com.base.app.core.devtools.page.DevToolsPage
 import com.base.app.core.devtools.screen.CurrentScreen
-import com.base.app.core.ui.tooling.DevTooling
-import javax.inject.Inject
-import javax.inject.Singleton
 // <opt:flags>
 import com.base.app.core.flags.FeatureFlags
 import com.base.app.core.flags.FlagOverrides
 // </opt:flags>
+import com.base.app.core.ui.tooling.DevTooling
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /** Everything the inspector shows, and the app root's way in to it. */
 @Singleton

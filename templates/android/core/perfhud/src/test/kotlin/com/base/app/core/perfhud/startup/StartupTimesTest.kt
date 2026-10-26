@@ -18,7 +18,10 @@ class StartupTimesTest {
             ),
         )
 
-        assertEquals(StartRecord(StartType.Cold, initialDisplayMillis = 350f, fullDisplayMillis = 600f), record)
+        assertEquals(
+            StartRecord(StartType.Cold, initialDisplayMillis = 350f, fullDisplayMillis = 600f),
+            record,
+        )
     }
 
     @Test

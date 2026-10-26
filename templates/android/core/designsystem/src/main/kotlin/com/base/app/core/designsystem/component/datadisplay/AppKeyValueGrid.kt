@@ -59,9 +59,18 @@ private fun AppKeyValueGridPreview() {
         modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
     ) {
-        AppKeyValueGrid(entries = listOf("Order" to "#4021", "Placed" to "25 Oct", "Status" to "Shipped"))
         AppKeyValueGrid(
-            entries = listOf("Delivery address" to "Flat 2, 14 Long Acre Road, Littleton-upon-Severn", "Phone" to "+44 7700 900123"),
+            entries = listOf(
+                "Order" to "#4021",
+                "Placed" to "25 Oct",
+                "Status" to "Shipped",
+            ),
+        )
+        AppKeyValueGrid(
+            entries = listOf(
+                "Delivery address" to "Flat 2, 14 Long Acre Road, Littleton-upon-Severn",
+                "Phone" to "+44 7700 900123",
+            ),
             striped = false,
         )
     }

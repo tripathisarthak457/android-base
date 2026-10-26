@@ -10,6 +10,8 @@ import com.base.app.core.common.coroutines.AppDispatchers
 import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.common.network.NetworkMonitor
 import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,8 +20,6 @@ import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.shareIn
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Whether any network that claims internet access is up. A hint for the UI and a trigger for
@@ -74,7 +74,11 @@ internal class ConnectivityNetworkMonitor @Inject constructor(
         .flowOn(dispatchers.io)
         // The last answer is forgotten when the registration goes, so a reader after a quiet spell
         // waits for a fresh one rather than reading a stale "offline".
-        .shareIn(scope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS, replayExpirationMillis = 0), replay = 1)
+        .shareIn(
+            scope,
+            SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS, replayExpirationMillis = 0),
+            replay = 1,
+        )
 
     private companion object {
         // Long enough that requests a few seconds apart reuse the registration.
@@ -82,5 +86,7 @@ internal class ConnectivityNetworkMonitor @Inject constructor(
     }
 }
 
-private fun ConnectivityManager.hasInternet(): Boolean =
-    activeNetwork?.let(::getNetworkCapabilities)?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
+private fun ConnectivityManager.hasInternet(): Boolean = activeNetwork?.let(
+    ::getNetworkCapabilities,
+)?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) ==
+    true

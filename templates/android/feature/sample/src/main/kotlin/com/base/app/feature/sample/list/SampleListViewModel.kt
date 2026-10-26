@@ -11,13 +11,13 @@ import com.base.app.core.mvi.MessageKind
 import com.base.app.core.mvi.MviViewModel
 import com.base.app.core.mvi.UiText
 import com.base.app.core.ui.toUiText
-import com.base.app.data.sample.api.model.SampleItem
 import com.base.app.data.sample.api.SampleRepository
+import com.base.app.data.sample.api.model.SampleItem
 import com.base.app.feature.sample.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import javax.inject.Inject
 
 /** The reference ViewModel. Every feature in this project is shaped like this one. */
 @HiltViewModel
@@ -31,15 +31,31 @@ internal class SampleListViewModel @Inject constructor(
      * because it is a request away and a restored one would be stale.
      */
     @OptIn(SavedStateHandleSaveableApi::class)
-    val query: TextFieldState = savedStateHandle.saveable(QUERY, saver = TextFieldState.Saver) { TextFieldState() }
+    val query: TextFieldState = savedStateHandle.saveable(QUERY, saver = TextFieldState.Saver) {
+        TextFieldState()
+    }
 
     init {
-        observe(combine(repository.items, snapshotFlow { query.text.toString() }, ::Pair)) { (items, text) ->
+        observe(
+            combine(
+                repository.items,
+                snapshotFlow {
+                    query.text.toString()
+                },
+                ::Pair,
+            ),
+        ) { (items, text) ->
             copy(
                 items = items,
                 visibleItems = items.matching(text),
                 // Rows already stored are shown while the refresh runs, instead of a skeleton.
-                loadState = if (loadState == LoadState.Loading && items.isNotEmpty()) LoadState.Refreshing else loadState,
+                loadState = if (loadState == LoadState.Loading &&
+                    items.isNotEmpty()
+                ) {
+                    LoadState.Refreshing
+                } else {
+                    loadState
+                },
             )
         }
         onFirstObserved { load(refreshing = false) }
@@ -56,7 +72,15 @@ internal class SampleListViewModel @Inject constructor(
     private fun load(refreshing: Boolean) {
         launchLatest(LOAD) {
             setState {
-                copy(loadState = if (refreshing || items.isNotEmpty()) LoadState.Refreshing else LoadState.Loading)
+                copy(
+                    loadState = if (refreshing ||
+                        items.isNotEmpty()
+                    ) {
+                        LoadState.Refreshing
+                    } else {
+                        LoadState.Loading
+                    },
+                )
             }
 
             val result = repository.refresh()

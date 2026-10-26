@@ -118,7 +118,8 @@ internal class OverlayEntry(
 }
 
 /** The window's overlay host, or null outside an `AppTheme` (a bare preview). */
-public val LocalOverlayHost: ProvidableCompositionLocal<OverlayHostState?> = staticCompositionLocalOf<OverlayHostState?> { null }
+public val LocalOverlayHost: ProvidableCompositionLocal<OverlayHostState?> =
+    staticCompositionLocalOf<OverlayHostState?> { null }
 
 /** Installed by the outermost `AppTheme` around everything the app draws. */
 @Suppress("ktlint:compose:content-slot-reused") // Drawn once; entry.content is an overlay's.
@@ -155,7 +156,9 @@ internal fun AppOverlayHost(content: @Composable () -> Unit) {
             ) {
                 state.overlays.forEach { entry ->
                     key(entry.key) {
-                        Box(Modifier.parkedOverlay(entry.away), propagateMinConstraints = true) { entry.content() }
+                        Box(Modifier.parkedOverlay(entry.away), propagateMinConstraints = true) {
+                            entry.content()
+                        }
                     }
                 }
                 Box(Modifier.parkedOverlay(suspended), propagateMinConstraints = true) {
@@ -180,7 +183,11 @@ internal fun AppOverlayHost(content: @Composable () -> Unit) {
  */
 @Suppress("ktlint:compose:parameter-naming") // onRemoved: once the call site has left.
 @Composable
-internal fun HostedOverlay(modal: () -> Boolean, onRemoved: (() -> Unit)? = null, content: @Composable () -> Unit) {
+internal fun HostedOverlay(
+    modal: () -> Boolean,
+    onRemoved: (() -> Unit)? = null,
+    content: @Composable () -> Unit,
+) {
     val host = LocalOverlayHost.current
     if (host == null) {
         content()

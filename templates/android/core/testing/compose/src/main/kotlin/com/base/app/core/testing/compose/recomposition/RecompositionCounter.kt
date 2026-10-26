@@ -3,10 +3,10 @@ package com.base.app.core.testing.compose.recomposition
 import androidx.compose.runtime.Composer
 import androidx.compose.runtime.CompositionTracer
 import androidx.compose.runtime.InternalComposeTracingApi
+import java.util.concurrent.ConcurrentHashMap
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Counts the composables that execute while a test runs, from the trace marker the Compose
@@ -32,22 +32,25 @@ class RecompositionCounter : TestRule {
         override fun traceEventEnd() = Unit
     }
 
-    override fun apply(base: Statement, description: Description): Statement = object : Statement() {
-        override fun evaluate() {
-            Composer.setTracer(tracer)
-            try {
-                base.evaluate()
-            } finally {
-                Composer.setTracer(null)
+    override fun apply(base: Statement, description: Description): Statement =
+        object : Statement() {
+            override fun evaluate() {
+                Composer.setTracer(tracer)
+                try {
+                    base.evaluate()
+                } finally {
+                    Composer.setTracer(null)
+                }
             }
         }
-    }
 
     fun reset() = executions.clear()
 
     fun snapshot(): Map<String, Int> = HashMap(executions)
 
-    fun count(name: String): Int = executions.entries.sumOf { (executed, times) -> if (executed.matches(name)) times else 0 }
+    fun count(name: String): Int = executions.entries.sumOf { (executed, times) ->
+        if (executed.matches(name)) times else 0
+    }
 }
 
 /** True when this fully qualified name is [name], or ends in `.name`. */

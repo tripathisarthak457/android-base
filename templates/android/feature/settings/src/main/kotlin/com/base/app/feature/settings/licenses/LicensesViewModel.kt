@@ -7,9 +7,9 @@ import com.base.app.core.common.log.Log
 import com.base.app.core.mvi.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
-import javax.inject.Inject
 
 /** Reads the licence list the build generated into assets. */
 @HiltViewModel

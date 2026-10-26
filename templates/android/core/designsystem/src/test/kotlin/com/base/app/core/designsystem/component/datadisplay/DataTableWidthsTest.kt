@@ -21,8 +21,14 @@ class DataTableWidthsTest {
 
     @Test
     fun `a column grows to fit its widest figure and never shrinks below its own width`() {
-        assertEquals(listOf(160.dp, 140.dp), widenedToFit(listOf(160.dp, 124.dp), listOf(null, 140.dp)))
-        assertEquals(listOf(160.dp, 124.dp), widenedToFit(listOf(160.dp, 124.dp), listOf(null, 100.dp)))
+        assertEquals(
+            listOf(160.dp, 140.dp),
+            widenedToFit(listOf(160.dp, 124.dp), listOf(null, 140.dp)),
+        )
+        assertEquals(
+            listOf(160.dp, 124.dp),
+            widenedToFit(listOf(160.dp, 124.dp), listOf(null, 100.dp)),
+        )
     }
 
     @Test

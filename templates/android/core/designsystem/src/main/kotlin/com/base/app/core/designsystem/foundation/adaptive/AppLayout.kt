@@ -39,10 +39,23 @@ public data class AppLayout(
     public companion object {
         /** Material's pane widths and Apple's readable widths, per width class. */
         public fun forClass(sizeClass: SizeClass): AppLayout = when (sizeClass.width) {
-            WindowWidth.Compact -> Base.copy(gutter = 16.dp, readableMaxWidth = Dp.Infinity, contentMaxWidth = Dp.Infinity)
+            WindowWidth.Compact -> Base.copy(
+                gutter = 16.dp,
+                readableMaxWidth = Dp.Infinity,
+                contentMaxWidth = Dp.Infinity,
+            )
+
             WindowWidth.Medium -> Base.copy(gutter = 24.dp, contentMaxWidth = Dp.Infinity)
+
             WindowWidth.Expanded -> Base
-            WindowWidth.Large -> Base.copy(gutter = 32.dp, listPaneWidth = 412.dp, supportingPaneWidth = 412.dp, formSheetWidth = 600.dp)
+
+            WindowWidth.Large -> Base.copy(
+                gutter = 32.dp,
+                listPaneWidth = 412.dp,
+                supportingPaneWidth = 412.dp,
+                formSheetWidth = 600.dp,
+            )
+
             WindowWidth.ExtraLarge -> Base.copy(
                 gutter = 32.dp,
                 listPaneWidth = 412.dp,

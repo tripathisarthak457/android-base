@@ -2,6 +2,9 @@ package com.base.app
 
 import android.annotation.SuppressLint
 import android.app.UiModeManager
+// <opt:language>
+import android.content.Context
+// </opt:language>
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -11,6 +14,10 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.KeyboardShortcutGroup
 import android.view.Menu
+// <opt:applock>
+import android.view.WindowManager
+// </opt:applock>
+// <opt:!applock>import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -18,8 +25,17 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.withFrameNanos
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+// <opt:applock>
+import androidx.fragment.app.FragmentActivity
+// </opt:applock>
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
+// <opt:analytics>
+import com.base.app.core.analytics.jank.FrameJankRecorder
+// </opt:analytics>
+// <opt:applock>
+import com.base.app.core.applock.AppLock
+// </opt:applock>
 import com.base.app.core.datastore.settings.AppSettings
 import com.base.app.core.datastore.settings.AppSettingsStore
 import com.base.app.core.navigation.AppNavigator
@@ -27,35 +43,9 @@ import com.base.app.core.navigation.AppShortcuts
 import com.base.app.core.navigation.NavKeySerialization
 import com.base.app.core.navigation.NavRegistry
 import com.base.app.core.navigation.PendingDeepLink
-import com.base.app.startup.StartupViewModel
-import com.base.app.ui.AppRoot
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 // <opt:ui_components>
 import com.base.app.core.navigation.shell.ShellConfig
-import com.base.app.startup.ShellConfigOverride
-import com.base.app.startup.ShellObserver
 // </opt:ui_components>
-// <opt:devtools>
-import com.base.app.core.ui.tooling.DevTooling
-import java.util.Optional
-import kotlin.jvm.optionals.getOrNull
-// </opt:devtools>
-// <opt:applock>
-import android.view.WindowManager
-import androidx.fragment.app.FragmentActivity
-import com.base.app.core.applock.AppLock
-// </opt:applock>
-// <opt-else:applock>
-//~ import androidx.activity.ComponentActivity
-// </opt-else:applock>
-// <opt:language>
-import android.content.Context
-import com.base.app.core.ui.locale.AppLocales
-// </opt:language>
 // <opt:appstatus>
 import com.base.app.core.network.appstatus.ApiSignals
 // </opt:appstatus>
@@ -63,14 +53,38 @@ import com.base.app.core.network.appstatus.ApiSignals
 import com.base.app.core.playstore.review.ReviewPrompt
 import com.base.app.core.playstore.update.AppUpdates
 // </opt:playstore>
-// <opt:analytics>
-import com.base.app.core.analytics.jank.FrameJankRecorder
-// </opt:analytics>
+// <opt:language>
+import com.base.app.core.ui.locale.AppLocales
+// </opt:language>
+// <opt:devtools>
+import com.base.app.core.ui.tooling.DevTooling
+// </opt:devtools>
+// <opt:ui_components>
+import com.base.app.startup.ShellConfigOverride
+import com.base.app.startup.ShellObserver
+// </opt:ui_components>
+import com.base.app.startup.StartupViewModel
+import com.base.app.ui.AppRoot
+import dagger.hilt.android.AndroidEntryPoint
+// <opt:devtools>
+import java.util.Optional
+// </opt:devtools>
+import javax.inject.Inject
+// <opt:devtools>
+import kotlin.jvm.optionals.getOrNull
+// </opt:devtools>
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
-/** The only Activity. */
+// <opt:applock>
+/** The only Activity: a FragmentActivity only because BiometricPrompt runs in one. */
+// </opt:applock>
+// <opt-else:applock>
+//~ /** The only Activity. */
+// </opt-else:applock>
 @AndroidEntryPoint
 // <opt:applock>
-// A FragmentActivity only because BiometricPrompt runs in one.
 class MainActivity : FragmentActivity() {
 // </opt:applock>
 // <opt:!applock>class MainActivity : ComponentActivity() {
@@ -155,7 +169,9 @@ class MainActivity : FragmentActivity() {
         // screenshots: a lock that leaves the last screen legible in recents is a lock in name only.
         // With it off, people can screenshot and screen-share the app like any other.
         lifecycleScope.launch {
-            settingsStore.settings.map { it.appLockEnabled }.distinctUntilChanged().collect { locked ->
+            settingsStore.settings.map {
+                it.appLockEnabled
+            }.distinctUntilChanged().collect { locked ->
                 if (locked) {
                     window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
                 } else {
@@ -184,7 +200,9 @@ class MainActivity : FragmentActivity() {
                 serialization = serialization,
                 pendingDeepLink = pendingDeepLink,
                 // <opt:ui_components>
-                shellConfig = shellConfigOverrides.fold(ShellConfig()) { config, override -> override.adjust(config) },
+                shellConfig = shellConfigOverrides.fold(ShellConfig()) { config, override ->
+                    override.adjust(config)
+                },
                 shellObservers = shellObservers,
                 // </opt:ui_components>
                 shortcuts = shortcuts,
@@ -240,10 +258,15 @@ class MainActivity : FragmentActivity() {
      * what the framework method is for.
      */
     @SuppressLint("RestrictedApi")
-    override fun dispatchKeyEvent(event: KeyEvent): Boolean = shortcuts.handle(event) || super.dispatchKeyEvent(event)
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean =
+        shortcuts.handle(event) || super.dispatchKeyEvent(event)
 
     /** What the system's Shortcuts Helper (Meta+/) lists for the app. */
-    override fun onProvideKeyboardShortcuts(data: MutableList<KeyboardShortcutGroup>, menu: Menu?, deviceId: Int) {
+    override fun onProvideKeyboardShortcuts(
+        data: MutableList<KeyboardShortcutGroup>,
+        menu: Menu?,
+        deviceId: Int,
+    ) {
         super.onProvideKeyboardShortcuts(data, menu, deviceId)
         data += shortcuts.group(getString(R.string.app_name))
     }

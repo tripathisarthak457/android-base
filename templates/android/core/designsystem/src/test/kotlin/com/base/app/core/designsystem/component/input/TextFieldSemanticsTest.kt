@@ -26,14 +26,20 @@ class TextFieldSemanticsTest {
 
     @Test
     fun `the label and placeholder belong to the field a screen reader announces`() {
-        rule.setThemed { AppTextField(state = TextFieldState(), label = "Email", placeholder = "you@example.com") }
+        rule.setThemed {
+            AppTextField(state = TextFieldState(), label = "Email", placeholder = "you@example.com")
+        }
         rule.onNode(hasSetTextAction() and hasText("Email")).assert(hasText("you@example.com"))
     }
 
     @Test
     fun `an error is reported as the field's error`() {
-        rule.setThemed { AppTextField(state = TextFieldState(), label = "Email", error = "Enter a valid address") }
-        rule.onNode(hasSetTextAction()).assert(SemanticsMatcher.expectValue(SemanticsProperties.Error, "Enter a valid address"))
+        rule.setThemed {
+            AppTextField(state = TextFieldState(), label = "Email", error = "Enter a valid address")
+        }
+        rule.onNode(
+            hasSetTextAction(),
+        ).assert(SemanticsMatcher.expectValue(SemanticsProperties.Error, "Enter a valid address"))
     }
 
     @Test

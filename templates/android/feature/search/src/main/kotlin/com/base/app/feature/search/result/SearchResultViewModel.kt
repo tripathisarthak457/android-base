@@ -35,7 +35,10 @@ internal class SearchResultViewModel @AssistedInject constructor(
         launchLatest(LOAD) {
             setState { copy(loadState = LoadState.Loading) }
             when (val result = repository.result(id)) {
-                is AppResult.Success -> setState { copy(loadState = LoadState.Success, result = result.value) }
+                is AppResult.Success -> setState {
+                    copy(loadState = LoadState.Success, result = result.value)
+                }
+
                 is AppResult.Failure -> setState { copy(loadState = LoadState.Error(result.error)) }
             }
         }

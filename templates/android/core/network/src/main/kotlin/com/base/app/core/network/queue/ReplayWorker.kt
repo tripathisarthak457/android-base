@@ -13,11 +13,11 @@ import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import com.base.app.core.common.log.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CancellationException
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
+import kotlinx.coroutines.CancellationException
 
 /** Runs a replay pass when the device has a network, and again, further apart, while entries remain. */
 internal class ReplayWorker(
@@ -49,12 +49,16 @@ class ReplayScheduler @Inject internal constructor(
 ) {
     fun replaySoon() {
         val request = OneTimeWorkRequestBuilder<ReplayWorker>()
-            .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())
+            .setConstraints(
+                Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build(),
+            )
             .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, FIRST_RETRY_SECONDS, TimeUnit.SECONDS)
             .build()
         // Appended rather than kept: a pass already running may have read the queue before this
         // entry arrived, and would finish without sending it.
-        WorkManager.getInstance(context).enqueueUniqueWork(WORK_NAME, ExistingWorkPolicy.APPEND_OR_REPLACE, request)
+        WorkManager.getInstance(
+            context,
+        ).enqueueUniqueWork(WORK_NAME, ExistingWorkPolicy.APPEND_OR_REPLACE, request)
     }
 
     private companion object {

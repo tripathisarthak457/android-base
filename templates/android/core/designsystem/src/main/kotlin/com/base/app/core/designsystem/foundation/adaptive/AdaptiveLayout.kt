@@ -21,8 +21,8 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.unit.Constraints
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -46,7 +46,8 @@ public fun Modifier.centeredMaxWidth(maxWidth: Dp): Modifier = this
 public val shouldUseTwoPanes: Boolean
     @Composable get() {
         val container = AppTheme.containerClass
-        return container.hasRoomForTwoPanes || (container.isShort && container.width >= WindowWidth.Medium)
+        return container.hasRoomForTwoPanes ||
+            (container.isShort && container.width >= WindowWidth.Medium)
     }
 
 /**
@@ -75,7 +76,14 @@ public fun AppTwoPane(
     val posture = AppTheme.posture
     val hinge = posture.hinge
     if (hinge != null && posture.kind != WindowPosture.Kind.Flat) {
-        HingeSplit(firstContent, secondContent, hinge, vertical = posture.kind == WindowPosture.Kind.Book, modifier)
+        HingeSplit(
+            firstContent,
+            secondContent,
+            hinge,
+            vertical =
+                posture.kind == WindowPosture.Kind.Book,
+            modifier,
+        )
         return
     }
     if (sideBySide) {
@@ -113,14 +121,19 @@ private fun HingeSplit(
     var origin by remember { mutableFloatStateOf(0f) }
     Layout(
         contents = listOf(first, second),
-        modifier = modifier.onPlaced { origin = it.positionInWindow().let { at -> if (vertical) at.x else at.y } },
+        modifier = modifier.onPlaced {
+            origin =
+                it.positionInWindow().let { at -> if (vertical) at.x else at.y }
+        },
     ) { (firstSlot, secondSlot), constraints ->
         val width = constraints.maxWidth
         val height = constraints.maxHeight
         val start = (if (vertical) hinge.left else hinge.top) - origin
         val end = (if (vertical) hinge.right else hinge.bottom) - origin
         val extent = if (vertical) width else height
-        val split = start > 0f && end < extent && constraints.hasBoundedWidth && constraints.hasBoundedHeight
+        val split =
+            start > 0f && end < extent && constraints.hasBoundedWidth &&
+                constraints.hasBoundedHeight
         val before = if (split) start.toInt() else extent / 2
         val after = if (split) end.toInt() else extent / 2
         // The hinge is fixed in the window, so the halves are placed by absolute side: in a
@@ -130,7 +143,14 @@ private fun HingeSplit(
             if (vertical) Constraints.fixed(before, height) else Constraints.fixed(width, before),
         )
         val trailing = (if (firstLeads) secondSlot else firstSlot).first().measure(
-            if (vertical) Constraints.fixed(width - after, height) else Constraints.fixed(width, height - after),
+            if (vertical) {
+                Constraints.fixed(width - after, height)
+            } else {
+                Constraints.fixed(
+                    width,
+                    height - after,
+                )
+            },
         )
         layout(width, height) {
             leading.place(0, 0)

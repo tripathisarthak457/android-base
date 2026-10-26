@@ -43,13 +43,20 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens
  * is scrolled under it, read in draw.
  */
 @Composable
-internal fun SheetHeaderHost(controller: SheetController, header: (@Composable AppSheetScope.() -> Unit)?) {
+internal fun SheetHeaderHost(
+    controller: SheetController,
+    header: (@Composable AppSheetScope.() -> Unit)?,
+) {
     val provided = controller.slots.header
     if (provided == null && header == null) {
         SideEffect { controller.slots.markComposed() }
         return
     }
-    Box(Modifier.consumeWindowInsets(WindowInsets.safeDrawing.only(WindowInsetsSides.Top)).scrollEdgeFade(controller)) {
+    Box(
+        Modifier.consumeWindowInsets(
+            WindowInsets.safeDrawing.only(WindowInsetsSides.Top),
+        ).scrollEdgeFade(controller),
+    ) {
         SheetLocals(controller) {
             if (provided != null) provided.Compose(controller) else header?.invoke(controller)
         }
@@ -63,7 +70,10 @@ internal fun SheetHeaderHost(controller: SheetController, header: (@Composable A
  * composed at the end of the content instead, by [SheetColumn] or [sheetFooterItem].
  */
 @Composable
-internal fun SheetFooterHost(controller: SheetController, footer: (@Composable AppSheetScope.() -> Unit)?) {
+internal fun SheetFooterHost(
+    controller: SheetController,
+    footer: (@Composable AppSheetScope.() -> Unit)?,
+) {
     if (!controller.footerPinned) {
         SideEffect { controller.slots.markComposed() }
         return
@@ -73,7 +83,10 @@ internal fun SheetFooterHost(controller: SheetController, footer: (@Composable A
 }
 
 @Composable
-internal fun SheetFooterContent(controller: SheetController, footer: (@Composable AppSheetScope.() -> Unit)?) {
+internal fun SheetFooterContent(
+    controller: SheetController,
+    footer: (@Composable AppSheetScope.() -> Unit)?,
+) {
     val provided = controller.slots.footer
     if (provided == null && footer == null) return
     Box(Modifier.consumeWindowInsets(WindowInsets.navigationBars.union(WindowInsets.ime))) {
@@ -90,12 +103,17 @@ internal fun SheetFooterContent(controller: SheetController, footer: (@Composabl
  * it.
  */
 @Composable
-internal fun SheetContentHost(controller: SheetController, content: @Composable AppSheetScope.() -> Unit) {
+internal fun SheetContentHost(
+    controller: SheetController,
+    content: @Composable AppSheetScope.() -> Unit,
+) {
     Box(
         Modifier
             .nestedScroll(controller.nestedScroll)
             .consumeWindowInsets(
-                WindowInsets.safeDrawing.only(WindowInsetsSides.Top).union(WindowInsets.navigationBars).union(WindowInsets.ime),
+                WindowInsets.safeDrawing.only(
+                    WindowInsetsSides.Top,
+                ).union(WindowInsets.navigationBars).union(WindowInsets.ime),
             )
             .sheetBringIntoView(controller),
     ) {
@@ -133,12 +151,20 @@ internal fun sheetOwnerVisibility(): EntryVisibility {
 private fun SheetLocals(controller: SheetController, content: @Composable () -> Unit) {
     val owner = sheetOwnerVisibility()
     val tab = LocalTabVisible.current
-    val visibility = remember(tab, controller) { TabVisibility { tab.isVisible && !controller.isCovered } }
+    val visibility = remember(tab, controller) {
+        TabVisibility {
+            tab.isVisible &&
+                !controller.isCovered
+        }
+    }
     val presenting = remember(controller, owner) {
         SheetPresenting(
             content = EntryVisibility(
                 tabSelected = { owner.isTabSelected },
-                uncovered = { owner.isUncovered && !controller.isCovered && controller.sheetState.parkProgress == 0f },
+                uncovered = {
+                    owner.isUncovered && !controller.isCovered &&
+                        controller.sheetState.parkProgress == 0f
+                },
                 settled = { owner.isSettled },
             ),
             owner = EntryVisibility(
@@ -165,12 +191,21 @@ private fun SheetLocals(controller: SheetController, content: @Composable () -> 
 private fun Modifier.scrollEdgeFade(controller: SheetController): Modifier = drawWithCache {
     val color = controller.style?.colors?.container ?: Color.Transparent
     val height = DesignTokens.Sheet.Header.scrollEdgeHeight.toPx()
-    val fade = Brush.verticalGradient(listOf(color, Color.Transparent), startY = size.height, endY = size.height + height)
+    val fade = Brush.verticalGradient(
+        listOf(color, Color.Transparent),
+        startY = size.height,
+        endY =
+            size.height + height,
+    )
     val fadeSize = Size(size.width, height)
     val topLeft = Offset(0f, size.height)
     onDrawWithContent {
         drawContent()
         val scrolled = controller.contentScrolled
-        if (scrolled > 0f) drawRect(brush = fade, topLeft = topLeft, size = fadeSize, alpha = scrolled)
+        if (scrolled >
+            0f
+        ) {
+            drawRect(brush = fade, topLeft = topLeft, size = fadeSize, alpha = scrolled)
+        }
     }
 }

@@ -148,7 +148,8 @@ internal val LocalAppColors = staticCompositionLocalOf { SurfaceTone.Cool.colors
 //~  * status text, outlines) already darkened or lightened until they keep their contrast on every one
 //~  * of them; `PaletteContrastTest` holds them to it.
 //~  */
-//~ public fun appColors(dark: Boolean): AppColors = if (dark) DesignTokens.Palette.dark else DesignTokens.Palette.light
+//~ public fun appColors(dark: Boolean): AppColors =
+//~     if (dark) DesignTokens.Palette.dark else DesignTokens.Palette.light
 //~
 //~ internal val LocalAppColors = staticCompositionLocalOf { appColors(dark = false) }
 // </opt-else:ui_components>

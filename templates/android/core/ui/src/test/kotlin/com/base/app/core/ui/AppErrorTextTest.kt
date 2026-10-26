@@ -2,9 +2,9 @@ package com.base.app.core.ui
 
 import com.base.app.core.common.result.AppError
 import com.base.app.core.mvi.UiText
+import java.io.IOException
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.io.IOException
 
 class AppErrorTextTest {
 

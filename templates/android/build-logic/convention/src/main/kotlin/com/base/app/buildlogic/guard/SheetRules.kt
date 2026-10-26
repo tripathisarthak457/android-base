@@ -175,7 +175,7 @@ internal object SheetRules {
                 char == '}' -> depth--
                 char == '(' -> parens++
                 char == ')' -> parens--
-                depth == 0 && parens == 0 && char.isUpperCase() && (index == 0 || !code[index - 1].isLetterOrDigit() && code[index - 1] != '.') -> {
+                depth == 0 && parens == 0 && char.isUpperCase() && (index == 0 || (!code[index - 1].isLetterOrDigit() && code[index - 1] != '.')) -> {
                     val name = NAME.find(code, index)?.value.orEmpty()
                     val after = code.substring(index + name.length).trimStart()
                     if (after.startsWith("(") || after.startsWith("{")) calls += name to index

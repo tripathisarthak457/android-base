@@ -1,9 +1,9 @@
 package com.base.app.buildlogic.guard
 
+import java.io.File
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import java.io.File
 
 /**
  * docs/DESIGN-SYSTEM.md is where a component is learned: a template to copy, its test, and a

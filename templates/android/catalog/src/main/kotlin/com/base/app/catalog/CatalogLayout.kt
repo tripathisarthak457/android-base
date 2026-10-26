@@ -27,7 +27,8 @@ fun catalogContentPadding(base: PaddingValues): PaddingValues {
 }
 
 @Stable
-private class ReadoutClearance(private val chrome: PaddingValues, private val reach: Dp) : PaddingValues {
+private class ReadoutClearance(private val chrome: PaddingValues, private val reach: Dp) :
+    PaddingValues {
     override fun calculateLeftPadding(layoutDirection: LayoutDirection): Dp =
         chrome.calculateLeftPadding(layoutDirection)
 
@@ -76,7 +77,9 @@ fun MasonryColumns(
         val columnWidth = (width - gap * (columns - 1)) / columns
         val heights = IntArray(columns)
         val placed = measurables.map { measurable ->
-            val placeable = measurable.measure(Constraints(minWidth = columnWidth, maxWidth = columnWidth))
+            val placeable = measurable.measure(
+                Constraints(minWidth = columnWidth, maxWidth = columnWidth),
+            )
             val column = heights.indices.minBy { heights[it] }
             val y = heights[column]
             heights[column] = y + placeable.height + gap

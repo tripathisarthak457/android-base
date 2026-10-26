@@ -22,14 +22,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.perfhud.R
-import com.base.app.core.perfhud.recording.PerformanceRecorder
-import com.base.app.core.perfhud.recording.PerformanceSnapshot
-import com.base.app.core.perfhud.report.ReportExporter
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 // <opt:ui_components>
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonSize
@@ -39,15 +31,21 @@ import com.base.app.core.designsystem.component.list.AppToggleRow
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 // </opt:ui_components>
-// <opt-else:ui_components>
-//~ import com.base.app.core.devtools.kit.AppButton
-//~ import com.base.app.core.devtools.kit.AppCard
-//~ import com.base.app.core.devtools.kit.AppScrollDefaults
-//~ import com.base.app.core.devtools.kit.AppText
-//~ import com.base.app.core.devtools.kit.AppToggleRow
-//~ import com.base.app.core.devtools.kit.ButtonSize
-//~ import com.base.app.core.devtools.kit.ButtonVariant
-// </opt-else:ui_components>
+import com.base.app.core.designsystem.theme.AppTheme
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppButton
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppCard
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppScrollDefaults
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppText
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppToggleRow
+// <opt:!ui_components>import com.base.app.core.devtools.kit.ButtonSize
+// <opt:!ui_components>import com.base.app.core.devtools.kit.ButtonVariant
+import com.base.app.core.perfhud.R
+import com.base.app.core.perfhud.recording.PerformanceRecorder
+import com.base.app.core.perfhud.recording.PerformanceSnapshot
+import com.base.app.core.perfhud.report.ReportExporter
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * The Performance tab of the inspector: the score, the graphs and every number behind them.
@@ -57,7 +55,11 @@ import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
  * app nothing when nobody is looking at them.
  */
 @Composable
-internal fun PerformanceTab(recorder: PerformanceRecorder, exporter: ReportExporter, debugBuild: Boolean) {
+internal fun PerformanceTab(
+    recorder: PerformanceRecorder,
+    exporter: ReportExporter,
+    debugBuild: Boolean,
+) {
     val recording by recorder.recording.collectAsStateWithLifecycle()
     var snapshot by remember { mutableStateOf<PerformanceSnapshot?>(null) }
     // Read by the graphs in their draw phase: a new reading redraws them without recomposing them.
@@ -76,7 +78,10 @@ internal fun PerformanceTab(recorder: PerformanceRecorder, exporter: ReportExpor
 
     Column(
         modifier = Modifier
-            .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
+            .verticalScroll(
+                rememberScrollState(),
+                flingBehavior = AppScrollDefaults.flingBehavior(),
+            )
             .padding(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.lg),
     ) {
@@ -125,7 +130,9 @@ private fun Controls(recorder: PerformanceRecorder, exporter: ReportExporter, re
         )
         Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
             AppButton(
-                text = stringResource(if (exporting) R.string.perfhud_exporting else R.string.perfhud_export),
+                text = stringResource(
+                    if (exporting) R.string.perfhud_exporting else R.string.perfhud_export,
+                ),
                 onClick = {
                     exporting = true
                     scope.launch {
@@ -156,7 +163,11 @@ private fun Controls(recorder: PerformanceRecorder, exporter: ReportExporter, re
         }
         exportResult?.let { result ->
             SelectionContainer {
-                AppText(text = result, style = AppTheme.typography.subheadline, color = AppTheme.colors.contentSecondary)
+                AppText(
+                    text = result,
+                    style = AppTheme.typography.subheadline,
+                    color = AppTheme.colors.contentSecondary,
+                )
             }
         }
     }

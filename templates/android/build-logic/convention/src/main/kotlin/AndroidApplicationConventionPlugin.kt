@@ -45,12 +45,16 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             androidResources.localeFilters += AppConfig.LOCALES
 
             // Licence texts and the Kotlin builtins descriptors are read by nothing at runtime.
-            packaging.resources.excludes += listOf("META-INF/**/LICENSE*", "kotlin/**.kotlin_builtins")
+            packaging.resources.excludes +=
+                listOf("META-INF/**/LICENSE*", "kotlin/**.kotlin_builtins")
 
             buildTypes.getByName("release").apply {
                 isMinifyEnabled = true
                 isShrinkResources = true
-                proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+                proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro",
+                )
             }
 
             // The app's lint sees every module it depends on, so a check that needs the whole
@@ -64,7 +68,10 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
         extensions.configure<ApplicationAndroidComponentsExtension> {
             beforeVariants { variant ->
                 if (!hasUnitTests) variant.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable = false
-                if (!hasDeviceTests) variant.deviceTests[DeviceTestBuilder.ANDROID_TEST_TYPE]?.enable = false
+                if (!hasDeviceTests) {
+                    variant.deviceTests[DeviceTestBuilder.ANDROID_TEST_TYPE]?.enable =
+                        false
+                }
             }
             // Layout Inspector reads the AndroidX version files to recognise Compose, so only
             // release builds drop them.

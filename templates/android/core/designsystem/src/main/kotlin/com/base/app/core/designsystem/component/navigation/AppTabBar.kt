@@ -59,8 +59,8 @@ import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.BarTreatment
-import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+import kotlinx.coroutines.launch
 
 /**
  * One tab: [selectedIcon] is the filled glyph, [icon] the outlined one. [section] is the heading it

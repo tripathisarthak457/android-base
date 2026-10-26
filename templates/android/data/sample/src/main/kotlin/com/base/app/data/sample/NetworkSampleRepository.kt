@@ -7,11 +7,11 @@ import com.base.app.data.sample.api.SampleRepository
 import com.base.app.data.sample.api.model.SampleItem
 import com.base.app.data.sample.remote.SampleApi
 import com.base.app.data.sample.remote.toDomain
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Straight from the network, with the last answer kept in memory for this process. Without a
@@ -19,15 +19,17 @@ import javax.inject.Singleton
  * of an unchanged list.
  */
 @Singleton
-internal class NetworkSampleRepository @Inject constructor(
-    private val api: SampleApi,
-) : SampleRepository {
+internal class NetworkSampleRepository @Inject constructor(private val api: SampleApi) :
+    SampleRepository {
 
     private val fetched = MutableStateFlow<List<SampleItem>>(emptyList())
 
     override val items: Flow<List<SampleItem>> = fetched.asStateFlow()
 
-    override suspend fun refresh(): AppResult<Unit> = api.items().map { dtos -> fetched.value = dtos.map { it.toDomain() } }
+    override suspend fun refresh(): AppResult<Unit> = api.items().map { dtos ->
+        fetched.value =
+            dtos.map { it.toDomain() }
+    }
 
     override fun peek(id: Int): SampleItem? = fetched.value.firstOrNull { it.id == id }
 

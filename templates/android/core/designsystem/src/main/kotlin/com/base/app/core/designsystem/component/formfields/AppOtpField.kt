@@ -81,8 +81,17 @@ public fun AppOtpField(
         snapshotFlow { state.text.toString() }.collect { if (it.length == length) filled(it) }
     }
 
-    Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
-        label?.let { AppText(text = it, style = AppTheme.typography.footnote, color = colors.contentSecondary) }
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
+    ) {
+        label?.let {
+            AppText(
+                text = it,
+                style = AppTheme.typography.footnote,
+                color = colors.contentSecondary,
+            )
+        }
         BasicTextField(
             state = state,
             modifier = Modifier
@@ -114,9 +123,18 @@ public fun AppOtpField(
                                 modifier = Modifier
                                     .weight(1f)
                                     .heightIn(min = AppOtpFieldDefaults.BoxHeight)
-                                    .background(if (enabled) colors.surface else colors.fill, AppTheme.shapes.sm)
+                                    .background(
+                                        if (enabled) colors.surface else colors.fill,
+                                        AppTheme.shapes.sm,
+                                    )
                                     .border(
-                                        width = if (next || isError) AppTheme.style.borderWidthStrong else AppTheme.style.borderWidth,
+                                        width = if (next ||
+                                            isError
+                                        ) {
+                                            AppTheme.style.borderWidthStrong
+                                        } else {
+                                            AppTheme.style.borderWidth
+                                        },
                                         color = when {
                                             isError -> colors.danger.content
                                             next -> colors.accent
@@ -127,7 +145,13 @@ public fun AppOtpField(
                                 contentAlignment = Alignment.Center,
                             ) {
                                 when {
-                                    digit != null -> AppText(text = digit.toString(), style = AppTheme.typography.title2, color = colors.contentPrimary, textAlign = TextAlign.Center)
+                                    digit != null -> AppText(
+                                        text = digit.toString(),
+                                        style = AppTheme.typography.title2,
+                                        color = colors.contentPrimary,
+                                        textAlign = TextAlign.Center,
+                                    )
+
                                     next -> Caret()
                                 }
                             }
@@ -137,7 +161,11 @@ public fun AppOtpField(
             },
         )
         supporting?.let {
-            AppText(text = it, style = AppTheme.typography.footnote, color = if (isError) colors.danger.content else colors.contentSecondary)
+            AppText(
+                text = it,
+                style = AppTheme.typography.footnote,
+                color = if (isError) colors.danger.content else colors.contentSecondary,
+            )
         }
     }
 }
@@ -175,7 +203,6 @@ public object AppOtpFieldDefaults {
     public val BoxHeight: Dp = 48.dp
 }
 
-
 @AppComponentPreviews
 @Composable
 private fun AppOtpFieldPreview() {
@@ -183,9 +210,24 @@ private fun AppOtpFieldPreview() {
         modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
     ) {
-        AppOtpField(state = rememberTextFieldState(), label = "Code", supporting = "Sent to +44 7700 900123", autoFocus = false)
+        AppOtpField(
+            state = rememberTextFieldState(),
+            label = "Code",
+            supporting = "Sent to +44 7700 900123",
+            autoFocus = false,
+        )
         AppOtpField(state = rememberTextFieldState("4821"), autoFocus = false)
-        AppOtpField(state = rememberTextFieldState("482199"), isError = true, supporting = "That code has expired", autoFocus = false)
-        AppOtpField(state = rememberTextFieldState("12"), length = 4, enabled = false, autoFocus = false)
+        AppOtpField(
+            state = rememberTextFieldState("482199"),
+            isError = true,
+            supporting = "That code has expired",
+            autoFocus = false,
+        )
+        AppOtpField(
+            state = rememberTextFieldState("12"),
+            length = 4,
+            enabled = false,
+            autoFocus = false,
+        )
     }
 }

@@ -8,6 +8,7 @@ import com.base.app.core.datastore.session.AuthTokenStore
 import com.base.app.core.datastore.settings.AppSettings
 import com.base.app.core.datastore.settings.AppSettingsStore
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -16,15 +17,12 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /** Everything the first frame depends on. The splash is held until all of it has arrived. */
-data class Startup(
-    val settings: AppSettings,
-    val identity: EntryIdentity,
-)
+data class Startup(val settings: AppSettings, val identity: EntryIdentity)
 
 // <opt:ui_components>
+
 /**
  * Which app the person is in. Each is its own host, and moving between them is a host swap, never a
  * navigation: nothing pushes the sign-in screen into a tab, and signing in does not push the tabs
@@ -44,6 +42,7 @@ sealed interface EntryIdentity {
     data object SignedOut : EntryIdentity
 
     // <opt:ui_components>
+
     /** [generation] changes with every new session, so the next person starts with fresh tabs. */
     // </opt:ui_components>
     // <opt-else:ui_components>

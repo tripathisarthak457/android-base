@@ -62,12 +62,20 @@ public fun AppTabRow(
     val density = LocalDensity.current
     val needed = remember(tabs, style, density, labelPadding) {
         val padding = with(density) { labelPadding.roundToPx() } * 2
-        tabs.map { measurer.measure(it, style, maxLines = 1, softWrap = false).size.width + padding }
+        tabs.map {
+            measurer.measure(it, style, maxLines = 1, softWrap = false).size.width + padding
+        }
     }
 
     BoxWithConstraints(modifier = modifier.fillMaxWidth()) {
         val total = constraints.maxWidth
-        val weights = if (needed.max() * tabs.size <= total) List(tabs.size) { 1f } else needed.map { it.toFloat() }
+        val weights = if (needed.max() * tabs.size <=
+            total
+        ) {
+            List(tabs.size) { 1f }
+        } else {
+            needed.map { it.toFloat() }
+        }
         val widths = weights.map { total * it / weights.sum() }
         val starts = widths.runningFold(0f) { start, width -> start + width }
 
@@ -122,9 +130,14 @@ public fun AppTabRow(
                     val tabStart = starts[from] + (starts[to] - starts[from]) * fraction
                     val tabWidth = widths[from] + (widths[to] - widths[from]) * fraction
                     val indicatorWidth = (tabWidth * IndicatorWidthFraction).roundToInt()
-                    val placeable = measurable.measure(constraints.copy(minWidth = indicatorWidth, maxWidth = indicatorWidth))
+                    val placeable = measurable.measure(
+                        constraints.copy(minWidth = indicatorWidth, maxWidth = indicatorWidth),
+                    )
                     layout(constraints.maxWidth, placeable.height) {
-                        placeable.placeRelative((tabStart + (tabWidth - indicatorWidth) / 2f).roundToInt(), 0)
+                        placeable.placeRelative(
+                            (tabStart + (tabWidth - indicatorWidth) / 2f).roundToInt(),
+                            0,
+                        )
                     }
                 }
                 .height(AppTabRowDefaults.IndicatorHeight)

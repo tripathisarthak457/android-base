@@ -104,6 +104,16 @@ the consistency matrix generates its `noui-*` shapes in both its quick and its f
 `python3 tools/compare_generations.py --before <a checkout from before> --after .` proves that the
 projects with components did not change by a byte.
 
+**Formatting.** The template is in ktlint's Android Studio style, and `./gradlew spotlessCheck` in
+`templates/android` holds its live code to it (`./gradlew spotlessApply` fixes the layout). ktlint
+cannot see what a marker turns off in the template: `//~` fallback lines, inline `// <opt:!x>` lines
+and the files under `generator/variants/`, and around markers it can pass a line that a generated
+project's check wraps. A generated project's own `spotlessCheck` holds all of those, so after
+changing one, generate a project that has it, with `formatting` on, run `spotlessCheck` there and
+carry any change back by hand. An optional import stays at its sorted place in the list, in a
+fence of its own if need be (`tests/test_android_imports.py`): ktlint will not reorder a list that
+holds markers.
+
 A new optional feature needs all of:
 
 1. Its code in `templates/android/`, behind markers, and any whole directories or files it owns.

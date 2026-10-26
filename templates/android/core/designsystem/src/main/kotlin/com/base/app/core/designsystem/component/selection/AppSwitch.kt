@@ -63,7 +63,13 @@ public fun AppSwitch(
     val onChange by rememberUpdatedState(onCheckedChange)
     val motion = remember { SwitchMotion(checked) }
     val springs = AppTheme.springs
-    val travel = with(LocalDensity.current) { (AppSwitchDefaults.TrackWidth - AppSwitchDefaults.ThumbSize - AppSwitchDefaults.ThumbInset * 2).toPx() }
+    val travel = with(LocalDensity.current) {
+        (
+            AppSwitchDefaults.TrackWidth -
+                AppSwitchDefaults.ThumbSize -
+                AppSwitchDefaults.ThumbInset * 2
+            ).toPx()
+    }
     val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
 
     fun toggle(on: Boolean) {
@@ -101,7 +107,11 @@ public fun AppSwitch(
                                 if (landed != checked) toggle(landed)
                                 // The thumb leaves at the finger's speed; the checked change that follows
                                 // retargets the same animation without dropping it.
-                                motion.position.animateTo(target, springs.thumb.unit, initialVelocity = speed)
+                                motion.position.animateTo(
+                                    target,
+                                    springs.thumb.unit,
+                                    initialVelocity = speed,
+                                )
                             },
                         )
                 } else {
@@ -130,7 +140,11 @@ internal class SwitchMotion(checked: Boolean) {
         val now = (start + step).coerceIn(0f, 1f)
         drag = now
         val away = if (checked) 1f - now else now
-        if (away >= CommitFraction) crossed = true else if (away <= RevertFraction) crossed = false
+        if (away >= CommitFraction) {
+            crossed = true
+        } else if (away <= RevertFraction) {
+            crossed = false
+        }
     }
 
     /** Ends a drag: whether the switch lands on, given where the thumb is and where it was thrown. */
@@ -161,16 +175,29 @@ internal fun SwitchTrack(
     val springs = AppTheme.springs
     val widen = remember { Animatable(0f) }
     LaunchedEffect(interactionSource, springs) {
-        interactionSource.collectHeld { held -> launch { widen.animateTo(if (held) 1f else 0f, springs.press.unit) } }
+        interactionSource.collectHeld { held ->
+            launch { widen.animateTo(if (held) 1f else 0f, springs.press.unit) }
+        }
     }
-    LaunchedEffect(checked) { motion.position.animateTo(if (checked) 1f else 0f, springs.thumb.unit) }
+    LaunchedEffect(checked) {
+        motion.position.animateTo(if (checked) 1f else 0f, springs.thumb.unit)
+    }
     val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
 
-    Canvas(modifier = modifier.size(width = AppSwitchDefaults.TrackWidth, height = AppSwitchDefaults.TrackHeight)) {
+    Canvas(
+        modifier = modifier.size(
+            width = AppSwitchDefaults.TrackWidth,
+            height = AppSwitchDefaults.TrackHeight,
+        ),
+    ) {
         val fraction = motion.drag ?: motion.position.value
         val visual = if (rtl) 1f - fraction else fraction
         val radius = CornerRadius(size.height / 2f)
-        drawRoundRect(color = lerp(colors.fill, colors.accent, fraction), size = size, cornerRadius = radius)
+        drawRoundRect(
+            color = lerp(colors.fill, colors.accent, fraction),
+            size = size,
+            cornerRadius = radius,
+        )
         if (fraction < 1f) {
             drawRoundRect(
                 color = colors.outline.copy(alpha = colors.outline.alpha * (1f - fraction)),
@@ -192,7 +219,12 @@ internal fun SwitchTrack(
             size = Size(thumbWidth, thumbHeight),
             cornerRadius = thumbRadius,
         )
-        drawRoundRect(color = colors.thumb, topLeft = Offset(left, top), size = Size(thumbWidth, thumbHeight), cornerRadius = thumbRadius)
+        drawRoundRect(
+            color = colors.thumb,
+            topLeft = Offset(left, top),
+            size = Size(thumbWidth, thumbHeight),
+            cornerRadius = thumbRadius,
+        )
     }
 }
 
@@ -202,6 +234,7 @@ public object AppSwitchDefaults {
     public val TrackHeight: Dp = 31.dp
     public val ThumbSize: Dp = 27.dp
     public val ThumbInset: Dp = 2.dp
+
     // How much the thumb grows towards the middle while held, as iOS's does.
     public val ThumbStretch: Dp = 7.dp
 }

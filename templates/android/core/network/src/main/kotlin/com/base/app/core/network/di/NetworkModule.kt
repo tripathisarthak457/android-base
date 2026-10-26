@@ -2,6 +2,9 @@ package com.base.app.core.network.di
 
 import com.base.app.core.common.network.NetworkMonitor
 import com.base.app.core.common.session.SessionScopedStore
+// <opt:appstatus>
+import com.base.app.core.network.appstatus.AppStatusRules
+// </opt:appstatus>
 import com.base.app.core.network.auth.KtorTokenRefresher
 import com.base.app.core.network.auth.TokenRefresher
 import com.base.app.core.network.client.InFlightRequests
@@ -10,9 +13,16 @@ import com.base.app.core.network.client.NetworkClient
 import com.base.app.core.network.client.NetworkConfig
 import com.base.app.core.network.client.RetryPolicy
 import com.base.app.core.network.monitor.ConnectivityNetworkMonitor
+// <opt:offlinequeue>
+import com.base.app.core.network.queue.OfflineQueue
+import com.base.app.core.network.queue.RequestQueue
+// </opt:offlinequeue>
 import com.base.app.core.network.recording.NetworkObserver
 import com.base.app.core.network.response.PassthroughUnwrapper
 import com.base.app.core.network.response.ResponseUnwrapper
+// <opt:websocket>
+import com.base.app.core.network.websocket.AppWebSocket
+// </opt:websocket>
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -21,16 +31,6 @@ import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 import dagger.multibindings.Multibinds
 import javax.inject.Singleton
-// <opt:websocket>
-import com.base.app.core.network.websocket.AppWebSocket
-// </opt:websocket>
-// <opt:appstatus>
-import com.base.app.core.network.appstatus.AppStatusRules
-// </opt:appstatus>
-// <opt:offlinequeue>
-import com.base.app.core.network.queue.OfflineQueue
-import com.base.app.core.network.queue.RequestQueue
-// </opt:offlinequeue>
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -76,7 +76,8 @@ internal interface NetworkModule {
 
         @Provides
         @Singleton
-        fun provideRetryPolicy(config: NetworkConfig): RetryPolicy = RetryPolicy(maxRetries = config.maxRetries)
+        fun provideRetryPolicy(config: NetworkConfig): RetryPolicy =
+            RetryPolicy(maxRetries = config.maxRetries)
         // <opt:appstatus>
 
         /** HTTP's own signals. A backend that says "update" or "maintenance" with a code in its body lists the code here. */

@@ -36,20 +36,23 @@ public class ChromeInset {
  * Chrome over the bottom edge: the tab bar, its accessory, or the keyboard when it hides the bar. One holder per
  * window, provided by AppTheme and written only by the shell, so a toast host above the shell can read it too.
  */
-public val LocalBottomChrome: ProvidableCompositionLocal<ChromeInset> = staticCompositionLocalOf { ChromeInset() }
+public val LocalBottomChrome: ProvidableCompositionLocal<ChromeInset> =
+    staticCompositionLocalOf { ChromeInset() }
 
 /**
  * Chrome over the top edge of the current screen: its top bar. Every AppScaffold provides its own holder, so two
  * screens composed during a push or pop never write the same state.
  */
-public val LocalTopChrome: ProvidableCompositionLocal<ChromeInset> = staticCompositionLocalOf { ChromeInset() }
+public val LocalTopChrome: ProvidableCompositionLocal<ChromeInset> =
+    staticCompositionLocalOf { ChromeInset() }
 
 /**
  * The top bar of the settled screen in front, for the whole window, the way [LocalBottomChrome] publishes the
  * bottom: an overlay above the navigation hosts (a debug badge, a banner) keeps clear of a large title and its
  * search field with it. Written only by the shell, from [ScreenChrome.topBar], once the screens have stopped moving.
  */
-public val LocalWindowTopChrome: ProvidableCompositionLocal<ChromeInset> = staticCompositionLocalOf { ChromeInset() }
+public val LocalWindowTopChrome: ProvidableCompositionLocal<ChromeInset> =
+    staticCompositionLocalOf { ChromeInset() }
 
 /**
  * Whether the screen it is provided to is on display: its tab is in front and nothing covers it in its stack. Hidden
@@ -65,7 +68,8 @@ public class TabVisibility(private val visible: () -> Boolean) {
 }
 
 /** Whether the content here is on screen: false inside a hidden tab or a covered screen; see [TabVisibility]. */
-public val LocalTabVisible: ProvidableCompositionLocal<TabVisibility> = staticCompositionLocalOf { AlwaysVisible }
+public val LocalTabVisible: ProvidableCompositionLocal<TabVisibility> =
+    staticCompositionLocalOf { AlwaysVisible }
 
 private val AlwaysVisible = TabVisibility { true }
 
@@ -109,7 +113,8 @@ public class ScreenChrome {
 }
 
 /** Provided to every screen of a navigation stack; outside one, a holder nobody reads. */
-public val LocalScreenChrome: ProvidableCompositionLocal<ScreenChrome> = staticCompositionLocalOf { ScreenChrome() }
+public val LocalScreenChrome: ProvidableCompositionLocal<ScreenChrome> =
+    staticCompositionLocalOf { ScreenChrome() }
 
 /**
  * Reports [state], the screen's primary scrolling container, as what runs under the bottom chrome:
@@ -143,7 +148,8 @@ public data class PaneContext(
 )
 
 /** Provided to every screen of a navigation stack; the default is a screen on its own. */
-public val LocalPaneContext: ProvidableCompositionLocal<PaneContext> = staticCompositionLocalOf { PaneContext() }
+public val LocalPaneContext: ProvidableCompositionLocal<PaneContext> =
+    staticCompositionLocalOf { PaneContext() }
 
 /**
  * The colour the host of the current screen has already painted under it edge to edge (a navigation
@@ -151,7 +157,8 @@ public val LocalPaneContext: ProvidableCompositionLocal<PaneContext> = staticCom
  * such a screen paints no background of its own: the second fill would cost the GPU a whole window
  * on every frame of every transition, where it is least affordable.
  */
-public val LocalPaintedBackground: ProvidableCompositionLocal<Color> = staticCompositionLocalOf { Color.Unspecified }
+public val LocalPaintedBackground: ProvidableCompositionLocal<Color> =
+    staticCompositionLocalOf { Color.Unspecified }
 
 /**
  * [base] plus the chrome at both ends, for a scrolling container's contentPadding. The bottom is
@@ -180,9 +187,11 @@ private class ChromePadding(
     private val navigationBars: WindowInsets,
     private val density: Density,
 ) : PaddingValues {
-    override fun calculateLeftPadding(layoutDirection: LayoutDirection): Dp = base.calculateLeftPadding(layoutDirection)
+    override fun calculateLeftPadding(layoutDirection: LayoutDirection): Dp =
+        base.calculateLeftPadding(layoutDirection)
 
-    override fun calculateRightPadding(layoutDirection: LayoutDirection): Dp = base.calculateRightPadding(layoutDirection)
+    override fun calculateRightPadding(layoutDirection: LayoutDirection): Dp =
+        base.calculateRightPadding(layoutDirection)
 
     override fun calculateTopPadding(): Dp = base.calculateTopPadding() + top.value
 

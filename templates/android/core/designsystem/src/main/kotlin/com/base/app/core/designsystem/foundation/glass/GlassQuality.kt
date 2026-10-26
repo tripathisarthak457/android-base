@@ -52,7 +52,8 @@ public enum class GlassQuality {
  * The tier glass draws at. Static: a tier changes a handful of times in a session at most, and
  * everything that reads it restyles when it does.
  */
-public val LocalGlassQuality: ProvidableCompositionLocal<GlassQuality> = staticCompositionLocalOf { GlassQuality.Frosted }
+public val LocalGlassQuality: ProvidableCompositionLocal<GlassQuality> =
+    staticCompositionLocalOf { GlassQuality.Frosted }
 
 /**
  * The tier this window can afford, re-evaluated when one of its inputs changes.

@@ -29,6 +29,8 @@ import com.base.app.core.navigation.shell.ROBOLECTRIC_SDK
 import com.base.app.core.navigation.shell.stack.StackHost
 import com.base.app.core.navigation.shell.testRegistry
 import com.base.app.core.navigation.shell.transition.ScreenMotion
+import kotlin.math.abs
+import kotlin.math.roundToInt
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -37,8 +39,6 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
-import kotlin.math.abs
-import kotlin.math.roundToInt
 
 /**
  * What the back card leaves on screen: the page beneath is drawn only where the card does not cover

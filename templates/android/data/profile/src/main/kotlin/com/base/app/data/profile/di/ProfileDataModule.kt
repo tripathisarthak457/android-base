@@ -1,8 +1,14 @@
 package com.base.app.data.profile.di
 
+// <opt:media>
+import android.content.Context
+// </opt:media>
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+// <opt:media>
+import com.base.app.core.common.coroutines.AppDispatchers
+// </opt:media>
 import com.base.app.core.common.session.SessionScopedStore
 import com.base.app.core.datastore.DataStoreFiles
 import com.base.app.data.profile.DefaultProfileRepository
@@ -11,16 +17,18 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+// <opt:media>
+import dagger.hilt.android.qualifiers.ApplicationContext
+// </opt:media>
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
+// <opt:media>
+import java.io.File
+// </opt:media>
 import javax.inject.Qualifier
 import javax.inject.Singleton
 // <opt:media>
-import android.content.Context
-import com.base.app.core.common.coroutines.AppDispatchers
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.withContext
-import java.io.File
 // </opt:media>
 
 @Qualifier
@@ -46,12 +54,14 @@ internal interface ProfileDataModule {
         @Provides
         @Singleton
         @ProfileStore
-        fun provideProfileStore(files: DataStoreFiles): DataStore<Preferences> = files.preferences("profile")
+        fun provideProfileStore(files: DataStoreFiles): DataStore<Preferences> =
+            files.preferences("profile")
         // <opt:media>
 
         @Provides
         @AvatarDirectory
-        fun provideAvatarDirectory(@ApplicationContext context: Context): File = File(context.filesDir, "avatar")
+        fun provideAvatarDirectory(@ApplicationContext context: Context): File =
+            File(context.filesDir, "avatar")
         // </opt:media>
 
         /** The profile is the signed-in person's, so it goes when they sign out. */

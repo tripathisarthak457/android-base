@@ -6,16 +6,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.metrics.performance.JankStats
-import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import java.lang.ref.WeakReference
-import javax.inject.Inject
-import javax.inject.Singleton
 // <opt:analytics>
 import com.base.app.core.analytics.jank.FrameJankRecorder
 // </opt:analytics>
+import dagger.hilt.android.qualifiers.ApplicationContext
+import java.lang.ref.WeakReference
+import javax.inject.Inject
+import javax.inject.Singleton
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 /**
  * The app's frames, while [start]ed, from the window of the activity in front; nothing at all
@@ -25,12 +25,16 @@ import com.base.app.core.analytics.jank.FrameJankRecorder
  * read too (see [ScreenTimeline]). All calls on the main thread.
  */
 @Singleton
+// <opt:analytics>
 internal class FrameFeed @Inject constructor(
     @ApplicationContext context: Context,
-    // <opt:analytics>
     private val jankRecorder: FrameJankRecorder,
-    // </opt:analytics>
 ) : Application.ActivityLifecycleCallbacks {
+// </opt:analytics>
+// <opt-else:analytics>
+//~ internal class FrameFeed @Inject constructor(@ApplicationContext context: Context) :
+//~     Application.ActivityLifecycleCallbacks {
+// </opt-else:analytics>
 
     private var listener: JankStats.OnFrameListener? = null
     private var resumed: WeakReference<Activity>? = null

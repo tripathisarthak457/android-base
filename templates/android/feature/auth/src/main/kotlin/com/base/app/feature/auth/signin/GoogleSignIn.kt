@@ -1,3 +1,6 @@
+// Named for the request it makes; GoogleOutcome is only what the request comes to.
+@file:Suppress("ktlint:standard:filename")
+
 package com.base.app.feature.auth.signin
 
 import android.content.Context
@@ -28,7 +31,9 @@ internal suspend fun requestGoogleIdToken(context: Context, serverClientId: Stri
         .build()
 
     return try {
-        val credential = CredentialManager.create(context).getCredential(context, request).credential
+        val credential = CredentialManager.create(
+            context,
+        ).getCredential(context, request).credential
         if (credential is CustomCredential &&
             credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
         ) {

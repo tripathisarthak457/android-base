@@ -47,7 +47,11 @@ public fun AppBottomActionBar(
             .hairline(HairlineEdge.Top)
             .sheetFooterBacking(sheet, container)
             .background(container)
-            .windowInsetsPadding(WindowInsets.navigationBars.union(WindowInsets.ime).only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal))
+            .windowInsetsPadding(
+                WindowInsets.navigationBars.union(
+                    WindowInsets.ime,
+                ).only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal),
+            )
             .padding(horizontal = AppTheme.spacing.gutter, vertical = AppTheme.spacing.md),
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm, Alignment.End),
         verticalAlignment = Alignment.CenterVertically,
@@ -60,7 +64,12 @@ public fun AppBottomActionBar(
 private fun AppBottomActionBarPreview() {
     Column(modifier = Modifier.background(AppTheme.colors.background)) {
         AppBottomActionBar {
-            AppButton(text = "Cancel", onClick = {}, modifier = Modifier.weight(1f), variant = ButtonVariant.Tinted)
+            AppButton(
+                text = "Cancel",
+                onClick = {},
+                modifier = Modifier.weight(1f),
+                variant = ButtonVariant.Tinted,
+            )
             AppButton(text = "Place order", onClick = {}, modifier = Modifier.weight(1f))
         }
     }

@@ -21,13 +21,11 @@ import kotlinx.coroutines.withTimeout
  * are read digit by digit.
  */
 @Immutable
-public data class AppFonts(
-    val sans: FontFamily,
-    val mono: FontFamily,
-)
+public data class AppFonts(val sans: FontFamily, val mono: FontFamily)
 
 /** What a preview, a test, or a process whose fonts did not arrive in time draws with. */
-public val PlatformFonts: AppFonts = AppFonts(sans = FontFamily.SansSerif, mono = FontFamily.Monospace)
+public val PlatformFonts: AppFonts =
+    AppFonts(sans = FontFamily.SansSerif, mono = FontFamily.Monospace)
 // <opt:googlefonts>
 
 private val Provider = GoogleFont.Provider(
@@ -38,7 +36,11 @@ private val Provider = GoogleFont.Provider(
 
 private fun googleFamily(name: String, weights: List<FontWeight>): FontFamily {
     val font = GoogleFont(name, bestEffort = true)
-    return FontFamily(weights.map { weight -> Font(googleFont = font, fontProvider = Provider, weight = weight) })
+    return FontFamily(
+        weights.map { weight ->
+            Font(googleFont = font, fontProvider = Provider, weight = weight)
+        },
+    )
 }
 // </opt:googlefonts>
 
@@ -60,8 +62,10 @@ public class FontPreload(private val downloaded: AppFonts) {
      * device with no font provider, or one that answers late, gets the platform families; it never
      * fails the launch.
      */
-    public suspend fun run(resolver: FontFamily.Resolver, budget: Duration = PreloadBudget): Boolean =
-        run(budget) { resolver.preload(it) }
+    public suspend fun run(
+        resolver: FontFamily.Resolver,
+        budget: Duration = PreloadBudget,
+    ): Boolean = run(budget) { resolver.preload(it) }
 
     internal suspend fun run(budget: Duration, load: suspend (FontFamily) -> Unit): Boolean {
         chosen?.let { return it === downloaded }
@@ -102,7 +106,10 @@ public val PreloadBudget: Duration = 150.milliseconds
  */
 public val AppFontPreload: FontPreload = FontPreload(
     AppFonts(
-        sans = googleFamily(DesignTokens.Defaults.fontName, sansWeights(AppTheme.defaults.designStyle.style().voice)),
+        sans = googleFamily(
+            DesignTokens.Defaults.fontName,
+            sansWeights(AppTheme.defaults.designStyle.style().voice),
+        ),
         mono = googleFamily(DesignTokens.Defaults.monoFontName, MonoWeights),
     ),
 )

@@ -10,7 +10,8 @@ import androidx.compose.ui.text.TextStyle
 /** The colour text and icons take when they are not told otherwise, and the style text inherits. */
 public val LocalContentColor: ProvidableCompositionLocal<Color> = compositionLocalOf { Color.Black }
 
-public val LocalTextStyle: ProvidableCompositionLocal<TextStyle> = compositionLocalOf { TextStyle.Default }
+public val LocalTextStyle: ProvidableCompositionLocal<TextStyle> =
+    compositionLocalOf { TextStyle.Default }
 
 /** Sets the content colour, and optionally the text style, for a subtree. */
 @Composable

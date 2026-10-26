@@ -17,6 +17,7 @@ internal data class ProfileState(
 
 internal sealed interface ProfileEvent : UiEvent {
     data object Save : ProfileEvent
+
     // <opt:media>
     data class PhotoPicked(val uri: String?) : ProfileEvent
     // </opt:media>

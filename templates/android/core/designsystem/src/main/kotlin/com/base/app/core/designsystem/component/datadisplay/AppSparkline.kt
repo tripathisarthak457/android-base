@@ -110,8 +110,16 @@ private fun AppSparklinePreview() {
         modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
     ) {
-        AppSparkline(values = listOf(3f, 5f, 4f, 8f, 6f, 9f, 12f), modifier = Modifier.fillMaxWidth())
-        AppSparkline(values = listOf(9f, 7f, 8f, 4f, 2f), modifier = Modifier.fillMaxWidth(), color = AppTheme.colors.danger.base, fill = false)
+        AppSparkline(
+            values = listOf(3f, 5f, 4f, 8f, 6f, 9f, 12f),
+            modifier = Modifier.fillMaxWidth(),
+        )
+        AppSparkline(
+            values = listOf(9f, 7f, 8f, 4f, 2f),
+            modifier = Modifier.fillMaxWidth(),
+            color = AppTheme.colors.danger.base,
+            fill = false,
+        )
         AppSparkline(values = listOf(5f), modifier = Modifier.fillMaxWidth())
     }
 }

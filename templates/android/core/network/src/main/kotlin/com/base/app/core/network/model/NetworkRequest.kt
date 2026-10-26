@@ -36,8 +36,11 @@ sealed interface RequestBody {
 
     /** Bytes sent as they are, such as a photo `PUT` to a pre-signed storage URL. */
     class Raw(val contentType: String, val bytes: ByteArray) : RequestBody {
-        override fun equals(other: Any?): Boolean =
-            this === other || (other is Raw && contentType == other.contentType && bytes.contentEquals(other.bytes))
+        override fun equals(other: Any?): Boolean = this === other ||
+            (
+                other is Raw && contentType == other.contentType &&
+                    bytes.contentEquals(other.bytes)
+                )
 
         override fun hashCode(): Int = 31 * contentType.hashCode() + bytes.contentHashCode()
     }
@@ -57,15 +60,14 @@ sealed interface MultipartPart {
         val bytes: ByteArray,
     ) : MultipartPart {
         // A data class would compare the bytes by reference, so two identical parts would differ.
-        override fun equals(other: Any?): Boolean =
-            this === other ||
-                (
-                    other is File &&
-                        name == other.name &&
-                        fileName == other.fileName &&
-                        contentType == other.contentType &&
-                        bytes.contentEquals(other.bytes)
-                    )
+        override fun equals(other: Any?): Boolean = this === other ||
+            (
+                other is File &&
+                    name == other.name &&
+                    fileName == other.fileName &&
+                    contentType == other.contentType &&
+                    bytes.contentEquals(other.bytes)
+                )
 
         override fun hashCode(): Int {
             var result = name.hashCode()

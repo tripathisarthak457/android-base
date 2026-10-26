@@ -48,9 +48,15 @@ class ResizeContinuityTest {
         rule.setContent {
             DeviceConfigurationOverride(DeviceConfigurationOverride.WindowSize(size)) {
                 AppTheme {
-                    val shell = rememberShellState(testTabs, registry, testSerialization, generation = 1)
+                    val shell =
+                        rememberShellState(testTabs, registry, testSerialization, generation = 1)
                     state = shell
-                    AppShell(tabs = testTabs, state = shell, registry = registry, navigator = AppNavigator())
+                    AppShell(
+                        tabs = testTabs,
+                        state = shell,
+                        registry = registry,
+                        navigator = AppNavigator(),
+                    )
                 }
             }
         }

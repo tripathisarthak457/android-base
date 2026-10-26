@@ -71,7 +71,9 @@ public class SheetStack internal constructor() {
         if (!sheet.coversPresenter()) return Float.POSITIVE_INFINITY
         val geometry = presenters.getOrNull(level) ?: return Float.POSITIVE_INFINITY
         val expansion = if (geometry.reduceMotion) 0f else recede(level)
-        val top = sheet.visibleTop() - geometry.windowTop - CardStackMath.translationY(expansion, geometry.safeTop)
+        val top =
+            sheet.visibleTop() - geometry.windowTop -
+                CardStackMath.translationY(expansion, geometry.safeTop)
         return top / CardStackMath.scale(expansion) + sheet.cornerRadius
     }
 
@@ -92,7 +94,10 @@ public class SheetStack internal constructor() {
     }
 
     /** True while the shell has receded past sheet.cardStack.statusBarFlip. Changes once per crossing. */
-    public val rootReceded: Boolean by derivedStateOf { recede(0) > DesignTokens.Sheet.CardStack.statusBarFlip }
+    public val rootReceded: Boolean by derivedStateOf {
+        recede(0) >
+            DesignTokens.Sheet.CardStack.statusBarFlip
+    }
 
     /** The container of the sheet covering the window's bottom edge, or null. Changes once per crossing. */
     public val bottomEdgeContainer: Color? by derivedStateOf {
@@ -193,7 +198,8 @@ public class SheetStack internal constructor() {
         claimed = claimed and (1 shl level).inv()
     }
 
-    internal fun isClaimed(level: Int): Boolean = level in presenters.indices && claimed and (1 shl level) != 0
+    internal fun isClaimed(level: Int): Boolean =
+        level in presenters.indices && claimed and (1 shl level) != 0
 
     private companion object {
         const val InitialCapacity = 8
@@ -212,4 +218,5 @@ internal class PresenterGeometry {
 
 /** The outermost AppTheme's stack, or null outside one (a bare preview). */
 @ShellSeamApi
-public val LocalSheetStack: ProvidableCompositionLocal<SheetStack?> = staticCompositionLocalOf { null }
+public val LocalSheetStack: ProvidableCompositionLocal<SheetStack?> =
+    staticCompositionLocalOf { null }

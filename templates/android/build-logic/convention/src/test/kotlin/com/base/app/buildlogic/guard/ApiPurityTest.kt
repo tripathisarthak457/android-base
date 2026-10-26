@@ -31,7 +31,12 @@ class ApiPurityTest {
         """.trimIndent()
 
         assertEquals(
-            listOf("android.net.Uri", "androidx.compose.runtime.Immutable", "javax.inject.Inject", "dagger.Binds"),
+            listOf(
+                "android.net.Uri",
+                "androidx.compose.runtime.Immutable",
+                "javax.inject.Inject",
+                "dagger.Binds",
+            ),
             ApiPurity.violations(source).map { it.import },
         )
     }
@@ -46,7 +51,10 @@ class ApiPurityTest {
         """.trimIndent()
 
         assertEquals(
-            listOf(Violation(3, "com.acme.app.feature.orders.list.OrderListViewModel"), Violation(4, "com.acme.app.data.orders.api.OrderId")),
+            listOf(
+                Violation(3, "com.acme.app.feature.orders.list.OrderListViewModel"),
+                Violation(4, "com.acme.app.data.orders.api.OrderId"),
+            ),
             ApiPurity.violations(source),
         )
     }
@@ -59,7 +67,12 @@ class ApiPurityTest {
             import com.acme.app.core.navigation.AppNavigator
         """.trimIndent()
 
-        assertEquals(listOf("com.acme.app.core.navigation.AppNavigator"), ApiPurity.violations(source).map { it.import })
+        assertEquals(
+            listOf("com.acme.app.core.navigation.AppNavigator"),
+            ApiPurity.violations(source).map {
+                it.import
+            },
+        )
     }
 
     @Test

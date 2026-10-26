@@ -12,6 +12,7 @@ its first domain.
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 from ...core.copy import write_text
@@ -57,7 +58,23 @@ def write_tables(project: Path, spec: Spec) -> None:
                 ("__ABOUT__", _about(name)),
             ):
                 text = text.replace(token, value)
-            write_text(directory / f"{pascal_case(name)}{suffix}.kt", text)
+            write_text(directory / f"{pascal_case(name)}{suffix}.kt", _one_line_when_it_fits(text))
+
+
+#: The projects' line length (`max_line_length` in .editorconfig).
+_MAX_LINE = 100
+_CLASS_HEADER = re.compile(r"^(?P<head>data class \w+\()\n(?P<params>(?:    .+,\n)+)\)$", re.MULTILINE)
+
+
+def _one_line_when_it_fits(text: str) -> str:
+    """A class header on one line when it fits, as ktlint's class-signature rule wants it; otherwise as written."""
+
+    def joined(match: re.Match[str]) -> str:
+        params = [line.strip().rstrip(",") for line in match["params"].splitlines()]
+        line = f"{match['head']}{', '.join(params)})"
+        return line if len(line) <= _MAX_LINE else match.group(0)
+
+    return _CLASS_HEADER.sub(joined, text)
 
 
 def _tables(spec: Spec) -> list[str]:

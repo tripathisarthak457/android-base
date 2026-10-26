@@ -39,12 +39,12 @@ import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
-import kotlinx.coroutines.flow.drop
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.asin
 import kotlin.math.cos
 import kotlin.math.sin
+import kotlinx.coroutines.flow.drop
 
 /**
  * A wheel that snaps to whichever item is centred, as iOS's picker does: one font throughout, the
@@ -66,15 +66,31 @@ public fun <T> AppWheelPicker(
 ) {
     if (items.isEmpty()) return
 
-    val listState = rememberLazyListState(initialFirstVisibleItemIndex = selectedIndex.coerceIn(0, items.lastIndex))
+    val listState =
+        rememberLazyListState(
+            initialFirstVisibleItemIndex = selectedIndex.coerceIn(0, items.lastIndex),
+        )
     val springs = AppTheme.springs
     val flingBehavior = remember(listState, springs) {
-        snapFlingBehavior(SnapLayoutInfoProvider(listState), springs.flingFast, springs.thumb.pixels)
+        snapFlingBehavior(
+            SnapLayoutInfoProvider(listState),
+            springs.flingFast,
+            springs.thumb.pixels,
+        )
     }
     val haptics = rememberAppHaptics()
     val density = LocalDensity.current
     val style = AppTheme.typography.body
-    val rowHeight = if (itemHeight != Dp.Unspecified) itemHeight else maxOf(AppWheelPickerDefaults.MinRowHeight, with(density) { style.lineHeight.toDp() } + AppWheelPickerDefaults.RowPadding)
+    val rowHeight = if (itemHeight !=
+        Dp.Unspecified
+    ) {
+        itemHeight
+    } else {
+        maxOf(
+            AppWheelPickerDefaults.MinRowHeight,
+            with(density) { style.lineHeight.toDp() } + AppWheelPickerDefaults.RowPadding,
+        )
+    }
     val current by rememberUpdatedState(selectedIndex)
     val onChange by rememberUpdatedState(onSelectedChange)
 
@@ -104,7 +120,11 @@ public fun <T> AppWheelPicker(
     // the same control moving.
     LaunchedEffect(selectedIndex, placed) {
         if (!placed || listState.isScrollInProgress) return@LaunchedEffect
-        if (centred != selectedIndex) listState.animateScrollToItem(selectedIndex.coerceIn(0, items.lastIndex))
+        if (centred !=
+            selectedIndex
+        ) {
+            listState.animateScrollToItem(selectedIndex.coerceIn(0, items.lastIndex))
+        }
     }
 
     val rowPx = with(density) { rowHeight.toPx() }
@@ -216,7 +236,12 @@ private fun AppWheelPickerPreview() {
         modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
     ) {
-        AppWheelPicker(items = (1..12).toList(), selectedIndex = 3, onSelectedChange = {}, modifier = Modifier.weight(1f)) { "$it" }
+        AppWheelPicker(
+            items = (1..12).toList(),
+            selectedIndex = 3,
+            onSelectedChange = {},
+            modifier = Modifier.weight(1f),
+        ) { "$it" }
         AppWheelPicker(
             items = listOf("Small", "Medium", "Large", "Extra large for the whole family"),
             selectedIndex = 1,

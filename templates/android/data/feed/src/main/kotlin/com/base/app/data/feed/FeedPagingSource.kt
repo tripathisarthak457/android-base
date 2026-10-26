@@ -10,9 +10,8 @@ import com.base.app.data.feed.api.model.FeedPost
 import com.base.app.data.feed.remote.dto.FeedPostDto
 import com.base.app.data.feed.remote.toDomain
 
-internal class FeedPagingSource(
-    private val networkClient: NetworkClient,
-) : PagingSource<Int, FeedPost>() {
+internal class FeedPagingSource(private val networkClient: NetworkClient) :
+    PagingSource<Int, FeedPost>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, FeedPost> {
         val page = params.key ?: FIRST_PAGE

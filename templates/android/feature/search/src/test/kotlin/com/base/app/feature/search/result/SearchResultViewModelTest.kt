@@ -23,7 +23,8 @@ class SearchResultViewModelTest {
 
     @Test
     fun `the result loads once the screen collects the state, and not before`() = runTest {
-        val viewModel = SearchResultViewModel(FakeSearchRepository(results = listOf(result)), id = 3)
+        val viewModel =
+            SearchResultViewModel(FakeSearchRepository(results = listOf(result)), id = 3)
         advanceUntilIdle()
         assertEquals(LoadState.Idle, viewModel.state.value.loadState)
         assertNull(viewModel.state.value.result)
@@ -38,7 +39,8 @@ class SearchResultViewModelTest {
 
     @Test
     fun `back asks the route to go back`() = runTest {
-        val viewModel = SearchResultViewModel(FakeSearchRepository(results = listOf(result)), id = 3)
+        val viewModel =
+            SearchResultViewModel(FakeSearchRepository(results = listOf(result)), id = 3)
 
         viewModel.effects.test {
             viewModel.onEvent(SearchResultEvent.BackClicked)

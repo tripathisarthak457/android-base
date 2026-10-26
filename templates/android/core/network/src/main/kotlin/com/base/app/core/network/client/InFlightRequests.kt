@@ -4,14 +4,14 @@ import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.common.session.SessionScopedStore
 import com.base.app.core.network.model.NetworkResponse
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Identical reads made while one is already on its way wait for that one instead of sending their
@@ -22,9 +22,8 @@ import javax.inject.Singleton
  * before sign-out is never handed to the next person's identical read.
  */
 @Singleton
-class InFlightRequests @Inject constructor(
-    private val scope: ApplicationScope,
-) : SessionScopedStore {
+class InFlightRequests @Inject constructor(private val scope: ApplicationScope) :
+    SessionScopedStore {
 
     private val mutex = Mutex()
     private val running = mutableMapOf<String, Deferred<AppResult<NetworkResponse>>>()
@@ -38,7 +37,13 @@ class InFlightRequests @Inject constructor(
                 try {
                     call()
                 } finally {
-                    mutex.withLock { if (running[key] === coroutineContext[Job]) running.remove(key) }
+                    mutex.withLock {
+                        if (running[key] ===
+                            coroutineContext[Job]
+                        ) {
+                            running.remove(key)
+                        }
+                    }
                 }
             }.also { running[key] = it }
         }

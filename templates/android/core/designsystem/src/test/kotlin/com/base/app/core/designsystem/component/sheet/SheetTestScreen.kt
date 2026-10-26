@@ -50,7 +50,9 @@ internal class SheetTestScreen(
         AppTheme(mode = ThemeMode.Light, reduceMotion = false) {
             scope = rememberCoroutineScope()
             state = rememberAppSheetState(detents)
-            NavigationBackHandler(state = rememberNavigationEventState(NavigationEventInfo.None)) { poppedBeneath++ }
+            NavigationBackHandler(state = rememberNavigationEventState(NavigationEventInfo.None)) {
+                poppedBeneath++
+            }
             AppSheet(
                 visible = visible,
                 onDismissRequest = {

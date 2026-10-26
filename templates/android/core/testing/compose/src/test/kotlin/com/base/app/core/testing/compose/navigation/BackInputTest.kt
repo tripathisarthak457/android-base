@@ -22,7 +22,10 @@ class BackInputTest {
 
     private val received = mutableListOf<String>()
 
-    private val handler = object : NavigationEventHandler<NavigationEventInfo.None>(NavigationEventInfo.None, true) {
+    private val handler = object : NavigationEventHandler<NavigationEventInfo.None>(
+        NavigationEventInfo.None,
+        true,
+    ) {
         override fun onBackStarted(event: NavigationEvent) {
             received += "started edge=${event.swipeEdge}"
         }
@@ -54,7 +57,13 @@ class BackInputTest {
         val back = install()
         compose.mainClock.autoAdvance = false
 
-        compose.swipeBack(back, steps = 4, reach = 0.5f, commit = false, edge = NavigationEvent.EDGE_RIGHT)
+        compose.swipeBack(
+            back,
+            steps = 4,
+            reach = 0.5f,
+            commit = false,
+            edge = NavigationEvent.EDGE_RIGHT,
+        )
 
         assertEquals(
             listOf(

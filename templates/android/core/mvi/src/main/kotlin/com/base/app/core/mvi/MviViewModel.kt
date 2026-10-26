@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.base.app.core.common.log.Log
 import com.base.app.core.common.result.AppError
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
@@ -22,8 +24,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 
 /**
  * Base class for every screen's ViewModel: [state] to render, [effects] to act on once, and
@@ -176,6 +176,8 @@ abstract class MviViewModel<S : UiState, E : UiEvent, F : UiEffect>(initial: S) 
     }
 
     private companion object {
-        val WhileObserved = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5.seconds.inWholeMilliseconds)
+        val WhileObserved = SharingStarted.WhileSubscribed(
+            stopTimeoutMillis = 5.seconds.inWholeMilliseconds,
+        )
     }
 }

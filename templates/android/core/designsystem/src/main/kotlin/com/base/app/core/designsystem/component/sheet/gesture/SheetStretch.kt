@@ -14,7 +14,10 @@ import kotlin.math.abs
  * overscroll and pull to refresh use too, so every edge in the app resists alike. [room] is the
  * asymptote `d`: what shows approaches it however far the finger goes.
  */
-internal class SheetBand(private val room: Float, private val resistance: Float = DesignTokens.Motion.rubberBand) {
+internal class SheetBand(
+    private val room: Float,
+    private val resistance: Float = DesignTokens.Motion.rubberBand,
+) {
 
     /** What shows for [pull] pixels of finger travel past the edge. */
     fun shown(pull: Float): Float {
@@ -55,22 +58,32 @@ internal class SheetStretch(
     override val isInProgress: Boolean
         get() = state.stretch != 0f
 
-    override fun applyToScroll(delta: Offset, source: NestedScrollSource, performScroll: (Offset) -> Offset): Offset {
+    override fun applyToScroll(
+        delta: Offset,
+        source: NestedScrollSource,
+        performScroll: (Offset) -> Offset,
+    ): Offset {
         val along = if (horizontal) delta.x else delta.y
         if (!state.dragging) {
             state.dragging = true
             state.gestureStart = state.currentDetent
         }
         onDragDelta(along)
-        val consumed = state.dragBy(along) { amount -> performScroll(axis(amount)).let { if (horizontal) it.x else it.y } }
+        val consumed = state.dragBy(along) { amount ->
+            performScroll(axis(amount)).let { if (horizontal) it.x else it.y }
+        }
         return axis(consumed)
     }
 
-    override suspend fun applyToFling(velocity: Velocity, performFling: suspend (Velocity) -> Velocity) {
+    override suspend fun applyToFling(
+        velocity: Velocity,
+        performFling: suspend (Velocity) -> Velocity,
+    ) {
         state.release(if (horizontal) velocity.x else velocity.y)
     }
 
-    private fun axis(amount: Float): Offset = if (horizontal) Offset(amount, 0f) else Offset(0f, amount)
+    private fun axis(amount: Float): Offset =
+        if (horizontal) Offset(amount, 0f) else Offset(0f, amount)
 }
 
 /**
@@ -80,7 +93,11 @@ internal class SheetStretch(
  * may not close resists instead; past the tallest only with [bandAbove], which a list's scroll leaves
  * out so the list scrolls the rest. Returns how much of [delta] the sheet took.
  */
-internal fun AppSheetState.dragBy(delta: Float, bandAbove: Boolean = true, moveAnchored: (Float) -> Float): Float {
+internal fun AppSheetState.dragBy(
+    delta: Float,
+    bandAbove: Boolean = true,
+    moveAnchored: (Float) -> Float,
+): Float {
     val stops = stops ?: return 0f
     if (delta == 0f || anchored.offset.isNaN()) return 0f
     var remaining = delta
@@ -98,12 +115,15 @@ internal fun AppSheetState.dragBy(delta: Float, bandAbove: Boolean = true, moveA
     val left = remaining - moveAnchored(remaining)
     when {
         left < 0f && bandAbove -> stretch = -SheetBand(stops.roomAbove).shown(-left)
+
         left < 0f -> {
             trackTarget()
             return delta - left
         }
+
         left > 0f && !anchored.anchors.hasPositionFor(SheetStop.Hidden) ->
             stretch = SheetBand(stops.hidden - stops.lowest).shown(left)
+
         left > 0f -> {
             trackTarget()
             return delta - left
@@ -128,4 +148,5 @@ private fun AppSheetState.trackTarget() {
     heading(if (target is SheetRelease.Stop) stops.detents[target.index] else null)
 }
 
-private val NoFlick = ReleaseThresholds(detentFlick = Float.MAX_VALUE, dismissFlick = Float.MAX_VALUE)
+private val NoFlick =
+    ReleaseThresholds(detentFlick = Float.MAX_VALUE, dismissFlick = Float.MAX_VALUE)

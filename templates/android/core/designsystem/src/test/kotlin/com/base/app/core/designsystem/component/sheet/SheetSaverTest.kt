@@ -23,7 +23,10 @@ class SheetSaverTest {
     fun `B-62 every detent round-trips with whether the sheet was shown`() {
         for (detent in listed) {
             for (shown in listOf(true, false)) {
-                assertEquals(shown to detent, SheetStateKey.decode(SheetStateKey.encode(shown, detent), listed))
+                assertEquals(
+                    shown to detent,
+                    SheetStateKey.decode(SheetStateKey.encode(shown, detent), listed),
+                )
             }
         }
     }

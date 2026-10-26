@@ -17,19 +17,48 @@ import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+// <opt:ui_components>
+import androidx.compose.ui.geometry.Offset
+// </opt:ui_components>
+// <opt:!ui_components>import androidx.compose.ui.input.InputMode
+// <opt:!ui_components>import androidx.compose.ui.input.InputModeManager
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+// <opt:!ui_components>import androidx.compose.ui.platform.LocalInputModeManager
 import androidx.compose.ui.platform.testTag
+// <opt:!ui_components>import androidx.compose.ui.semantics.SemanticsActions
+// <opt:!ui_components>import androidx.compose.ui.semantics.getOrNull
+// <opt:!ui_components>import androidx.compose.ui.test.SemanticsMatcher
+// <opt:!ui_components>import androidx.compose.ui.test.assert
+// <opt:ui_components>
+import androidx.compose.ui.test.assertIsDisplayed
+// </opt:ui_components>
+import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.click
+// <opt:ui_components>
+import androidx.compose.ui.test.getUnclippedBoundsInRoot
+// </opt:ui_components>
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+// <opt:ui_components>
+import androidx.compose.ui.test.onNodeWithText
+// </opt:ui_components>
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.fragment.app.FragmentActivity
 import androidx.test.ext.junit.runners.AndroidJUnit4
+// <opt:!ui_components>import androidx.test.platform.app.InstrumentationRegistry
 import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.datastore.FakePreferencesDataStore
 import com.base.app.core.datastore.settings.AppSettingsStore
+// <opt:ui_components>
+import com.base.app.core.designsystem.component.overlay.AppAlert
+import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
+import com.base.app.core.designsystem.component.overlay.ToastMessage
+import com.base.app.core.designsystem.component.sheet.AppSheet
+import com.base.app.core.designsystem.component.text.AppText
+// </opt:ui_components>
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -46,31 +75,6 @@ import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.android.controller.ActivityController
 import org.robolectric.annotation.Config
-// <opt:ui_components>
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsFocused
-import androidx.compose.ui.test.getUnclippedBoundsInRoot
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
-import com.base.app.core.designsystem.component.overlay.AppAlert
-import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
-import com.base.app.core.designsystem.component.overlay.ToastMessage
-import com.base.app.core.designsystem.component.sheet.AppSheet
-import com.base.app.core.designsystem.component.text.AppText
-// </opt:ui_components>
-// <opt-else:ui_components>
-//~ import androidx.compose.ui.input.InputMode
-//~ import androidx.compose.ui.input.InputModeManager
-//~ import androidx.compose.ui.platform.LocalInputModeManager
-//~ import androidx.compose.ui.semantics.SemanticsActions
-//~ import androidx.compose.ui.semantics.getOrNull
-//~ import androidx.compose.ui.test.SemanticsMatcher
-//~ import androidx.compose.ui.test.assert
-//~ import androidx.compose.ui.test.assertIsFocused
-//~ import androidx.compose.ui.test.performClick
-//~ import androidx.test.platform.app.InstrumentationRegistry
-// </opt-else:ui_components>
 
 /**
  * The cover is the lock: whatever the app shows underneath must be out of reach of a finger, a
@@ -118,7 +122,9 @@ class AppLockGateTest {
                 focusManager.moveFocus(FocusDirection.Down)
             }
         }
-        compose.runOnIdle { assertFalse("Keyboard focus moved into the locked content.", contentEverFocused) }
+        compose.runOnIdle {
+            assertFalse("Keyboard focus moved into the locked content.", contentEverFocused)
+        }
     }
 
     @Test
@@ -140,7 +146,9 @@ class AppLockGateTest {
         lockAgain(lock)
 
         compose.onNodeWithTag(ContentTag).assertDoesNotExist()
-        compose.runOnIdle { assertFalse("The field kept focus, and the keyboard with it.", contentFocused) }
+        compose.runOnIdle {
+            assertFalse("The field kept focus, and the keyboard with it.", contentFocused)
+        }
     }
 // <opt:ui_components>
 
@@ -348,8 +356,15 @@ class AppLockGateTest {
     private fun lockedApp(): AppLock {
         val settings = AppSettingsStore(FakePreferencesDataStore(), ApplicationScope(scope))
         scope.launch { settings.setAppLockEnabled(true) }
-        check(settings.current?.appLockEnabled == true) { "The lock setting must be in place before the app starts." }
-        return AppLock(settings, deviceCanAuthenticate = { true }, clock = { now }, scope = ApplicationScope(scope))
+        check(settings.current?.appLockEnabled == true) {
+            "The lock setting must be in place before the app starts."
+        }
+        return AppLock(
+            settings,
+            deviceCanAuthenticate = { true },
+            clock = { now },
+            scope = ApplicationScope(scope),
+        )
     }
 
     // The content asks for focus as soon as it is composed, as a screen with a search or sign-in

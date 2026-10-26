@@ -31,7 +31,10 @@ class TabSwitchBenchmark {
         },
     ) {
         val tabs = tabCount()
-        repeat(2) { (1 until tabs).forEach(::tapTab); tapTab(0) }
+        repeat(2) {
+            (1 until tabs).forEach(::tapTab)
+            tapTab(0)
+        }
     }
 
     private companion object {

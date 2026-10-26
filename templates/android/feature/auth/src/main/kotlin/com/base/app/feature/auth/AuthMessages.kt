@@ -12,14 +12,22 @@ import com.base.app.core.ui.toUiText
  * get sentences they can act on; anything else shows the server's message, or [fallback].
  */
 internal fun AppError.authMessage(@StringRes fallback: Int): UiText = when {
-    this is AppError.Http && status == HTTP_UNAUTHORIZED -> UiText.of(R.string.auth_wrong_credentials)
-    this is AppError.Http && status == HTTP_TOO_MANY_REQUESTS -> UiText.of(R.string.auth_too_many_attempts)
+    this is AppError.Http && status == HTTP_UNAUTHORIZED -> UiText.of(
+        R.string.auth_wrong_credentials,
+    )
+
+    this is AppError.Http && status == HTTP_TOO_MANY_REQUESTS -> UiText.of(
+        R.string.auth_too_many_attempts,
+    )
+
     else -> toUiText(UiText.of(fallback))
 }
 
 /** The server's message for [field] from a validation response, keyed by the name the request used. */
 internal fun AppError.fieldError(field: String): UiText? =
-    (this as? AppError.Http)?.fieldErrors?.get(field)?.firstOrNull { it.isNotBlank() }?.let(UiText::Dynamic)
+    (this as? AppError.Http)?.fieldErrors?.get(field)?.firstOrNull {
+        it.isNotBlank()
+    }?.let(UiText::Dynamic)
 
 /**
  * A field's message: nothing until the person has tried to submit once ([shown]), then whatever

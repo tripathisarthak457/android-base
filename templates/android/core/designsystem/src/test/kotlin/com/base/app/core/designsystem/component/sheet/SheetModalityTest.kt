@@ -43,7 +43,10 @@ class SheetModalityTest {
         rule.setContent {
             AppTheme(mode = ThemeMode.Light, reduceMotion = false) {
                 scope = rememberCoroutineScope()
-                state = rememberAppSheetState(listOf(SheetDetent.Peek, SheetDetent.Medium, SheetDetent.Large))
+                state =
+                    rememberAppSheetState(
+                        listOf(SheetDetent.Peek, SheetDetent.Medium, SheetDetent.Large),
+                    )
                 Box(Modifier.fillMaxSize().testTag("screen").clickable { taps++ })
                 AppSheet(
                     visible = true,
@@ -69,7 +72,9 @@ class SheetModalityTest {
 
     private fun tapNearTop() {
         // A modal sheet hides the screen from the merged tree; the touch still lands where it is.
-        rule.onNodeWithTag("screen", useUnmergedTree = true).performTouchInput { click(Offset(centerX, 4f)) }
+        rule.onNodeWithTag("screen", useUnmergedTree = true).performTouchInput {
+            click(Offset(centerX, 4f))
+        }
         rule.waitForIdle()
     }
 

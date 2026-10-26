@@ -1,18 +1,20 @@
 package com.base.app.feature.settings
 
 import androidx.compose.runtime.Composable
+// <opt:language>
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+// </opt:language>
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.ui.MviScreen
 // <opt:!ui_components>import com.base.app.core.ui.PlaceholderScreen
+// <opt:language>
+import com.base.app.core.ui.locale.AppLocales
+// </opt:language>
 // <opt:licenses>
 import com.base.app.feature.settings.api.LicensesKey
 // </opt:licenses>
-// <opt:language>
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.platform.LocalContext
-import com.base.app.core.ui.locale.AppLocales
-// </opt:language>
 
 @Composable
 internal fun SettingsRoute(
@@ -21,7 +23,9 @@ internal fun SettingsRoute(
 ) {
     // <opt:language>
     val context = LocalContext.current
-    LaunchedEffect(Unit) { viewModel.onEvent(SettingsEvent.LanguageRead(AppLocales.current(context))) }
+    LaunchedEffect(Unit) {
+        viewModel.onEvent(SettingsEvent.LanguageRead(AppLocales.current(context)))
+    }
     // </opt:language>
 
     MviScreen(

@@ -1,12 +1,12 @@
 package com.base.app.core.flags
 
 import com.base.app.core.common.session.SessionScopedStore
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Values set by hand in the inspector's Flags tab, over whatever the source says. Only builds that

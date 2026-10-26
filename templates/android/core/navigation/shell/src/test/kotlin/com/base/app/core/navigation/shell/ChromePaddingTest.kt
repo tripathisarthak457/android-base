@@ -78,7 +78,10 @@ class ChromePaddingTest {
         val navigationBar = 48
         rule.runOnIdle {
             val insets = WindowInsetsCompat.Builder()
-                .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.of(0, 0, 0, navigationBar))
+                .setInsets(
+                    WindowInsetsCompat.Type.navigationBars(),
+                    Insets.of(0, 0, 0, navigationBar),
+                )
                 .build()
             ViewCompat.dispatchApplyWindowInsets(view, insets)
         }
@@ -87,8 +90,14 @@ class ChromePaddingTest {
 
         rule.runOnIdle { chrome.value = 80.dp }
         rule.waitForIdle()
-        assertEquals("chrome taller than the bar: the chrome", full - with(rule.density) { 80.dp.toPx() }, contentBottom(), 0.5f)
+        assertEquals(
+            "chrome taller than the bar: the chrome",
+            full - with(rule.density) { 80.dp.toPx() },
+            contentBottom(),
+            0.5f,
+        )
     }
 
-    private fun contentBottom(): Float = rule.onNodeWithTag(CONTENT).fetchSemanticsNode().boundsInRoot.bottom
+    private fun contentBottom(): Float =
+        rule.onNodeWithTag(CONTENT).fetchSemanticsNode().boundsInRoot.bottom
 }

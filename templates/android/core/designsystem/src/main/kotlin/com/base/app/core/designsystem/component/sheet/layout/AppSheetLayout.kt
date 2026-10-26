@@ -69,7 +69,11 @@ public fun AppSheetLayout(
 @AppComponentPreviews
 @Composable
 private fun AppSheetLayoutPreview() {
-    Box(modifier = Modifier.background(AppTheme.colors.background).fillMaxWidth().height(AppTheme.sizes.rowHeight * 8)) {
+    Box(
+        modifier = Modifier.background(
+            AppTheme.colors.background,
+        ).fillMaxWidth().height(AppTheme.sizes.rowHeight * 8),
+    ) {
         AppSheetLayout(
             state = rememberAppSheetState(),
             onDismissRequest = {},

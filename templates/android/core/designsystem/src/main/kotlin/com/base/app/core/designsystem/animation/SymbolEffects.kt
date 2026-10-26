@@ -64,17 +64,30 @@ public fun AppSymbolReplace(
             if (reduceMotion) {
                 fadeIn(springs.fadeIn()) togetherWith fadeOut(springs.fadeOut()) using null
             } else {
-                (fadeIn(springs.fadeIn()) + scaleIn(springs.emphasis.unit, initialScale = ReplacedScale)) togetherWith
-                    (fadeOut(springs.fadeOut()) + scaleOut(springs.emphasis.unit, targetScale = ReplacedScale)) using null
+                (
+                    fadeIn(springs.fadeIn()) +
+                        scaleIn(springs.emphasis.unit, initialScale = ReplacedScale)
+                    ) togetherWith
+                    (
+                        fadeOut(springs.fadeOut()) +
+                            scaleOut(springs.emphasis.unit, targetScale = ReplacedScale)
+                        ) using
+                    null
             }
         },
         label = "symbolReplace",
     ) { shown ->
-        AppIcon(imageVector = shown, contentDescription = contentDescription, tint = tint, size = size)
+        AppIcon(
+            imageVector = shown,
+            contentDescription = contentDescription,
+            tint = tint,
+            size = size,
+        )
     }
 }
 
-private data class SymbolBounceElement(val trigger: Any?) : ModifierNodeElement<SymbolBounceNode>() {
+private data class SymbolBounceElement(val trigger: Any?) :
+    ModifierNodeElement<SymbolBounceNode>() {
     override fun create() = SymbolBounceNode(trigger)
 
     override fun update(node: SymbolBounceNode) = node.update(trigger)
@@ -86,7 +99,9 @@ private data class SymbolBounceElement(val trigger: Any?) : ModifierNodeElement<
 }
 
 private class SymbolBounceNode(private var trigger: Any?) :
-    Modifier.Node(), LayoutModifierNode, CompositionLocalConsumerModifierNode {
+    Modifier.Node(),
+    LayoutModifierNode,
+    CompositionLocalConsumerModifierNode {
     private val scale = Animatable(1f)
 
     fun update(trigger: Any?) {
@@ -100,7 +115,10 @@ private class SymbolBounceNode(private var trigger: Any?) :
         }
     }
 
-    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+    override fun MeasureScope.measure(
+        measurable: Measurable,
+        constraints: Constraints,
+    ): MeasureResult {
         val placeable = measurable.measure(constraints)
         return layout(placeable.width, placeable.height) {
             placeable.placeWithLayer(0, 0) {
@@ -122,7 +140,15 @@ private fun AppSymbolReplacePreview() {
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
     ) {
         AppSymbolReplace(icon = AppIcons.Heart, contentDescription = "Like")
-        AppSymbolReplace(icon = AppIcons.StarFilled, contentDescription = "Starred", tint = AppTheme.colors.warning.base)
-        AppSymbolReplace(icon = AppIcons.Check, contentDescription = "Done", size = AppTheme.sizes.iconLarge)
+        AppSymbolReplace(
+            icon = AppIcons.StarFilled,
+            contentDescription = "Starred",
+            tint = AppTheme.colors.warning.base,
+        )
+        AppSymbolReplace(
+            icon = AppIcons.Check,
+            contentDescription = "Done",
+            size = AppTheme.sizes.iconLarge,
+        )
     }
 }

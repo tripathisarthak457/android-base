@@ -36,7 +36,11 @@ internal class PillText(
 
     private val paint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
         this.typeface = typeface
-        textSize = with(density) { style.fontSize.takeIf { it.type == TextUnitType.Sp }?.toPx() ?: FallbackSize.toPx() }
+        textSize =
+            with(density) {
+                style.fontSize.takeIf { it.type == TextUnitType.Sp }?.toPx()
+                    ?: FallbackSize.toPx()
+            }
         letterSpacing = when (style.letterSpacing.type) {
             TextUnitType.Em -> style.letterSpacing.value
             TextUnitType.Sp -> with(density) { style.letterSpacing.toPx() } / textSize
@@ -71,7 +75,13 @@ internal class PillText(
 
     /** The first line: [framesPerSecond] against [refreshHz], or idle at [refreshHz]. */
     fun DrawScope.drawRate(framesPerSecond: Int, refreshHz: Int, isIdle: Boolean, color: Color) {
-        val line = if (isIdle) idle.also { it.write(refreshHz) } else fps.also { it.write(framesPerSecond, refreshHz) }
+        val line = if (isIdle) {
+            idle.also {
+                it.write(refreshHz)
+            }
+        } else {
+            fps.also { it.write(framesPerSecond, refreshHz) }
+        }
         drawCentred(line, color, top = 0f)
     }
 
@@ -84,7 +94,14 @@ internal class PillText(
     private fun DrawScope.drawCentred(line: LineFormat, color: Color, top: Float) {
         paint.color = color.toArgb()
         val x = (size.width - measured(line)) / 2f
-        drawContext.canvas.nativeCanvas.drawText(line.chars, 0, line.length, x, top + baseline, paint)
+        drawContext.canvas.nativeCanvas.drawText(
+            line.chars,
+            0,
+            line.length,
+            x,
+            top + baseline,
+            paint,
+        )
     }
 
     private fun measured(line: LineFormat): Float = paint.measureText(line.chars, 0, line.length)

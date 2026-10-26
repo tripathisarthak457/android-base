@@ -26,9 +26,11 @@ internal class SheetMeasureEnvironment(
 ) {
     fun safeTop(density: Density): Float = safeArea.getTop(density).toFloat()
 
-    fun safeLeft(density: Density, direction: LayoutDirection): Float = safeArea.getLeft(density, direction).toFloat()
+    fun safeLeft(density: Density, direction: LayoutDirection): Float =
+        safeArea.getLeft(density, direction).toFloat()
 
-    fun safeRight(density: Density, direction: LayoutDirection): Float = safeArea.getRight(density, direction).toFloat()
+    fun safeRight(density: Density, direction: LayoutDirection): Float =
+        safeArea.getRight(density, direction).toFloat()
 
     fun navigationBottom(density: Density): Float = navigationBars.getBottom(density).toFloat()
 

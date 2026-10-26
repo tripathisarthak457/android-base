@@ -34,9 +34,15 @@ public fun AppRadio(
 ) {
     val colors = AppTheme.colors
     val haptics = rememberAppHaptics()
-    val dot = animateFloatAsState(if (selected) 1f else 0f, AppTheme.springs.thumb.unit, label = "radio")
+    val dot =
+        animateFloatAsState(if (selected) 1f else 0f, AppTheme.springs.thumb.unit, label = "radio")
     val interaction = if (enabled && onClick != null) {
-        Modifier.selectable(selected = selected, indication = null, interactionSource = null, role = Role.RadioButton) {
+        Modifier.selectable(
+            selected = selected,
+            indication = null,
+            interactionSource = null,
+            role = Role.RadioButton,
+        ) {
             if (!selected) haptics.perform(AppHaptic.Selection)
             onClick()
         }
@@ -48,8 +54,23 @@ public fun AppRadio(
         Canvas(Modifier.size(AppCheckboxDefaults.Size)) {
             val radius = size.minDimension / 2f
             val p = dot.value
-            drawCircle(lerp(colors.outline, colors.accent, p.coerceIn(0f, 1f)), radius - (AppRadioDefaults.RingWidth / 2).toPx(), style = Stroke(AppRadioDefaults.RingWidth.toPx()))
-            if (p > 0f) drawCircle(colors.accent, radius * 0.5f * p, Offset(size.width / 2f, size.height / 2f))
+            drawCircle(
+                lerp(colors.outline, colors.accent, p.coerceIn(0f, 1f)),
+                radius - (AppRadioDefaults.RingWidth / 2).toPx(),
+                style = Stroke(AppRadioDefaults.RingWidth.toPx()),
+            )
+            if (p >
+                0f
+            ) {
+                drawCircle(
+                    colors.accent,
+                    radius * 0.5f * p,
+                    Offset(
+                        size.width / 2f,
+                        size.height / 2f,
+                    ),
+                )
+            }
         }
     }
 }
@@ -70,6 +91,10 @@ private fun AppRadioPreview() {
         AppRadio(selected = false, onClick = {}, label = "Express delivery")
         AppRadio(selected = false, onClick = {}, label = "Collect in store", enabled = false)
         AppRadio(selected = true, onClick = null)
-        AppRadio(selected = false, onClick = {}, label = "Leave it with a neighbour if nobody answers the door")
+        AppRadio(
+            selected = false,
+            onClick = {},
+            label = "Leave it with a neighbour if nobody answers the door",
+        )
     }
 }

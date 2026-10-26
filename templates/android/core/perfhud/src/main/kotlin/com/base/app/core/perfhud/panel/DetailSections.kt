@@ -17,7 +17,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+// <opt:ui_components>
+import com.base.app.core.designsystem.component.text.AppMonoText
+import com.base.app.core.designsystem.component.text.AppText
+// </opt:ui_components>
 import com.base.app.core.designsystem.theme.AppTheme
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppMonoText
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppText
 import com.base.app.core.perfhud.R
 import com.base.app.core.perfhud.checks.BuildFacts
 import com.base.app.core.perfhud.checks.StrictModeSummary
@@ -30,17 +36,13 @@ import com.base.app.core.perfhud.report.profileText
 import com.base.app.core.perfhud.score.decimal
 import com.base.app.core.perfhud.startup.StartRecord
 import com.base.app.core.perfhud.startup.StartupSummary
-// <opt:ui_components>
-import com.base.app.core.designsystem.component.text.AppMonoText
-import com.base.app.core.designsystem.component.text.AppText
-// </opt:ui_components>
-// <opt-else:ui_components>
-//~ import com.base.app.core.devtools.kit.AppMonoText
-//~ import com.base.app.core.devtools.kit.AppText
-// </opt-else:ui_components>
 
 @Composable
-internal fun ColumnScope.MemorySection(recorder: PerformanceRecorder, memory: MemorySummary?, version: () -> Int) {
+internal fun ColumnScope.MemorySection(
+    recorder: PerformanceRecorder,
+    memory: MemorySummary?,
+    version: () -> Int,
+) {
     Section(title = R.string.perfhud_memory, caption = R.string.perfhud_memory_caption) {
         MemoryGraph(memory = recorder.memory, version = version)
         Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md)) {
@@ -52,7 +54,10 @@ internal fun ColumnScope.MemorySection(recorder: PerformanceRecorder, memory: Me
     if (memory == null) return
     Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.xs)) {
         ValueRow(R.string.perfhud_java_heap, nowAndPeak(memory.javaHeapMb, memory.peakJavaHeapMb))
-        ValueRow(R.string.perfhud_native_heap, nowAndPeak(memory.nativeHeapMb, memory.peakNativeHeapMb))
+        ValueRow(
+            R.string.perfhud_native_heap,
+            nowAndPeak(memory.nativeHeapMb, memory.peakNativeHeapMb),
+        )
         ValueRow(R.string.perfhud_pss, nowAndPeak(memory.pssMb, memory.peakPssMb))
         ValueRow(R.string.perfhud_app_pss, megabytes(memory.appPssMb))
         ValueRow(
@@ -90,7 +95,11 @@ internal fun NetworkSection(network: NetworkTimings) {
         }
         ValueRow(
             R.string.perfhud_requests,
-            stringResource(R.string.perfhud_count_and_part, network.requests, network.failures.toString()),
+            stringResource(
+                R.string.perfhud_count_and_part,
+                network.requests,
+                network.failures.toString(),
+            ),
         )
         ValueRow(
             R.string.perfhud_request_times,
@@ -108,7 +117,10 @@ internal fun NetworkSection(network: NetworkTimings) {
                     R.string.perfhud_endpoint_value,
                     endpoint.requests,
                     stringResource(R.string.perfhud_value_millis, endpoint.medianMillis.toString()),
-                    stringResource(R.string.perfhud_value_millis, endpoint.slowestMillis.toString()),
+                    stringResource(
+                        R.string.perfhud_value_millis,
+                        endpoint.slowestMillis.toString(),
+                    ),
                 ),
             )
         }
@@ -123,7 +135,9 @@ internal fun StrictModeSection(strictMode: StrictModeSummary) {
             return@Section
         }
         ValueRow(R.string.perfhud_violations, strictMode.violations.toString())
-        strictMode.byKind.forEach { (kind, count) -> ValueRow(label = kind, value = count.toString()) }
+        strictMode.byKind.forEach { (kind, count) ->
+            ValueRow(label = kind, value = count.toString())
+        }
         if (strictMode.examples.isNotEmpty()) {
             // Worded by the same function as the report's, so the two cannot drift apart.
             val resources = LocalResources.current
@@ -229,7 +243,8 @@ private fun start(record: StartRecord?): String = if (record == null) {
     stringResource(
         R.string.perfhud_start_value,
         millis(record.initialDisplayMillis),
-        record.fullDisplayMillis?.let { millis(it) } ?: stringResource(R.string.perfhud_start_not_reported),
+        record.fullDisplayMillis?.let { millis(it) }
+            ?: stringResource(R.string.perfhud_start_not_reported),
     )
 }
 
@@ -245,7 +260,8 @@ private fun megabytes(value: Float?): String = if (value == null) {
 }
 
 @Composable
-private fun yesNo(value: Boolean): String = stringResource(if (value) R.string.perfhud_yes else R.string.perfhud_no)
+private fun yesNo(value: Boolean): String =
+    stringResource(if (value) R.string.perfhud_yes else R.string.perfhud_no)
 
 private val LegendDot = 8.dp
 private const val ValueWeight = 1.4f

@@ -1,8 +1,10 @@
-import org.gradle.api.Plugin
-import org.gradle.api.Project
 // <opt:crashlytics>
 import com.android.build.api.dsl.ApplicationExtension
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
+// </opt:crashlytics>
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+// <opt:crashlytics>
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.configure
 // </opt:crashlytics>
@@ -20,7 +22,9 @@ class AndroidFirebaseConventionPlugin : Plugin<Project> {
 
         // Uploading the R8 mapping needs a real Firebase project and a network, which local and CI
         // builds have no business needing: the release pipeline passes -PcrashlyticsUpload=true.
-        val upload = providers.gradleProperty("crashlyticsUpload").map(String::toBoolean).getOrElse(false)
+        val upload = providers.gradleProperty(
+            "crashlyticsUpload",
+        ).map(String::toBoolean).getOrElse(false)
         extensions.configure<ApplicationExtension> {
             buildTypes.configureEach {
                 (this as ExtensionAware).extensions.configure<CrashlyticsExtension> {

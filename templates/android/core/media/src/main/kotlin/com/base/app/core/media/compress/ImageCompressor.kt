@@ -13,8 +13,6 @@ import com.base.app.core.common.log.Log
 import com.base.app.core.common.result.AppError
 import com.base.app.core.common.result.AppResult
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
 import javax.inject.Inject
@@ -22,6 +20,8 @@ import javax.inject.Singleton
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.withContext
 
 /** Turns a picked or captured image into a file worth uploading or keeping. */
 @Singleton
@@ -61,8 +61,10 @@ class ImageCompressor @Inject constructor(
         AppResult.Failure(AppError.Storage(failure))
     }
 
-    private fun newUpload(format: ImageFormat): File =
-        File(File(context.cacheDir, UPLOAD_DIRECTORY), "upload_${System.currentTimeMillis()}.${format.extension}")
+    private fun newUpload(format: ImageFormat): File = File(
+        File(context.cacheDir, UPLOAD_DIRECTORY),
+        "upload_${System.currentTimeMillis()}.${format.extension}",
+    )
 
     /**
      * Decodes at the target size rather than at full size and then scaling: a 48-megapixel photo
@@ -71,7 +73,11 @@ class ImageCompressor @Inject constructor(
      */
     private fun decode(source: Uri, maxDimension: Int): Bitmap =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            ImageDecoder.decodeBitmap(ImageDecoder.createSource(context.contentResolver, source)) { decoder, info, _ ->
+            ImageDecoder.decodeBitmap(ImageDecoder.createSource(context.contentResolver, source)) {
+                    decoder,
+                    info,
+                    _,
+                ->
                 val scale = min(1f, maxDimension.toFloat() / max(info.size.width, info.size.height))
                 decoder.setTargetSize(
                     (info.size.width * scale).roundToInt().coerceAtLeast(1),
@@ -86,38 +92,59 @@ class ImageCompressor @Inject constructor(
 
     private fun decodeBeforePie(source: Uri, maxDimension: Int): Bitmap {
         val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-        context.contentResolver.openInputStream(source)?.use { BitmapFactory.decodeStream(it, null, bounds) }
+        context.contentResolver.openInputStream(source)?.use {
+            BitmapFactory.decodeStream(it, null, bounds)
+        }
         val options = BitmapFactory.Options().apply {
             inSampleSize = sampleSizeFor(bounds.outWidth, bounds.outHeight, maxDimension)
         }
-        val sampled = context.contentResolver.openInputStream(source)?.use { BitmapFactory.decodeStream(it, null, options) }
-            ?: error("The image could not be decoded.")
+        val sampled =
+            context.contentResolver.openInputStream(source)?.use {
+                BitmapFactory.decodeStream(it, null, options)
+            }
+                ?: error("The image could not be decoded.")
 
         // Scaling and turning upright in one pass keeps at most two bitmaps alive at once.
         val matrix = orientationOf(source)
         val scale = min(1f, maxDimension.toFloat() / max(sampled.width, sampled.height))
         if (scale < 1f) matrix.postScale(scale, scale)
         if (matrix.isIdentity) return sampled
-        return Bitmap.createBitmap(sampled, 0, 0, sampled.width, sampled.height, matrix, true).also {
+        return Bitmap.createBitmap(
+            sampled,
+            0,
+            0,
+            sampled.width,
+            sampled.height,
+            matrix,
+            true,
+        ).also {
             if (it !== sampled) sampled.recycle()
         }
     }
 
     private fun orientationOf(source: Uri): Matrix {
         val orientation = context.contentResolver.openInputStream(source)?.use {
-            ExifInterface(it).getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+            ExifInterface(
+                it,
+            ).getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
         } ?: ExifInterface.ORIENTATION_NORMAL
         return Matrix().apply {
             when (orientation) {
                 ExifInterface.ORIENTATION_ROTATE_90 -> postRotate(90f)
+
                 ExifInterface.ORIENTATION_ROTATE_180 -> postRotate(180f)
+
                 ExifInterface.ORIENTATION_ROTATE_270 -> postRotate(270f)
+
                 ExifInterface.ORIENTATION_FLIP_HORIZONTAL -> postScale(-1f, 1f)
+
                 ExifInterface.ORIENTATION_FLIP_VERTICAL -> postScale(1f, -1f)
+
                 ExifInterface.ORIENTATION_TRANSPOSE -> {
                     postRotate(90f)
                     postScale(-1f, 1f)
                 }
+
                 ExifInterface.ORIENTATION_TRANSVERSE -> {
                     postRotate(270f)
                     postScale(-1f, 1f)
@@ -152,7 +179,11 @@ class ImageCompressor @Inject constructor(
         /** The largest power of two that keeps the decoded image at or above the target. */
         fun sampleSizeFor(width: Int, height: Int, maxDimension: Int): Int {
             var sample = 1
-            while (width > 0 && height > 0 && max(width, height) / (sample * 2) >= maxDimension) sample *= 2
+            while (width > 0 && height > 0 &&
+                max(width, height) / (sample * 2) >= maxDimension
+            ) {
+                sample *= 2
+            }
             return sample
         }
     }

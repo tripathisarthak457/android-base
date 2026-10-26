@@ -38,7 +38,13 @@ internal class LineFormat(format: String) {
                 continue
             }
             val dollar = format.indexOf('$', startIndex = at)
-            val index = if (dollar > at + 1) format.substring(at + 1, dollar).toIntOrNull() else null
+            val index = if (dollar >
+                at + 1
+            ) {
+                format.substring(at + 1, dollar).toIntOrNull()
+            } else {
+                null
+            }
             require(index != null && index >= 1 && format.getOrNull(dollar + 1) == 'd') {
                 "Unsupported conversion at $at in \"$format\": only %n\$d and %% are."
             }
@@ -48,7 +54,11 @@ internal class LineFormat(format: String) {
             at = dollar + 2
         }
         literals += literal.toString().toCharArray()
-        require(arguments.all { it < MaxArguments }) { "At most $MaxArguments arguments: \"$format\"" }
+        require(
+            arguments.all {
+                it < MaxArguments
+            },
+        ) { "At most $MaxArguments arguments: \"$format\"" }
         this.literals = literals.toTypedArray()
         this.arguments = arguments.toIntArray()
         chars = CharArray(literals.sumOf { it.size } + arguments.size * MaxIntChars)

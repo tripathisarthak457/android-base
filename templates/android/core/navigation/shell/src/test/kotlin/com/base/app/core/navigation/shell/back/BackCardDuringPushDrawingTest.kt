@@ -28,6 +28,8 @@ import com.base.app.core.navigation.shell.ROBOLECTRIC_SDK
 import com.base.app.core.navigation.shell.stack.StackHost
 import com.base.app.core.navigation.shell.testRegistry
 import com.base.app.core.navigation.shell.transition.ScreenMotion
+import kotlin.math.abs
+import kotlin.math.roundToInt
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -35,8 +37,6 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
-import kotlin.math.abs
-import kotlin.math.roundToInt
 
 /**
  * A back swipe that starts while the pushed screen is still sliding in (requirement 32), from the

@@ -43,8 +43,14 @@ data class CatalogEnvironment(
                     "dark" -> ThemeMode.Dark
                     else -> base.themeMode
                 },
-                designStyle = AppDesignStyle.entries.firstOrNull { it.name == intent.getStringExtra("style") } ?: base.designStyle,
-                motionStyle = AppMotionStyle.entries.firstOrNull { it.name == intent.getStringExtra("motion") } ?: base.motionStyle,
+                designStyle =
+                    AppDesignStyle.entries.firstOrNull { it.name == intent.getStringExtra("style") }
+                        ?: base.designStyle,
+                motionStyle =
+                    AppMotionStyle.entries.firstOrNull {
+                        it.name == intent.getStringExtra("motion")
+                    }
+                        ?: base.motionStyle,
                 rtl = intent.getBooleanExtra("rtl", base.rtl),
                 fontScale = intent.getFloatExtra("fontScale", base.fontScale),
                 reduceMotion = intent.getBooleanExtra("reduceMotion", base.reduceMotion),
@@ -52,7 +58,16 @@ data class CatalogEnvironment(
         }
 
         val Saver: Saver<CatalogEnvironment, List<Any>> = Saver(
-            save = { listOf(it.themeMode.name, it.designStyle.name, it.motionStyle.name, it.rtl, it.fontScale, it.reduceMotion) },
+            save = {
+                listOf(
+                    it.themeMode.name,
+                    it.designStyle.name,
+                    it.motionStyle.name,
+                    it.rtl,
+                    it.fontScale,
+                    it.reduceMotion,
+                )
+            },
             restore = {
                 CatalogEnvironment(
                     themeMode = ThemeMode.valueOf(it[0] as String),
@@ -84,7 +99,8 @@ fun ProvideEnvironment(
     val density = LocalDensity.current
     CompositionLocalProvider(
         LocalCatalogEnvironment provides environment,
-        LocalLayoutDirection provides if (environment.rtl) LayoutDirection.Rtl else LayoutDirection.Ltr,
+        LocalLayoutDirection provides
+            if (environment.rtl) LayoutDirection.Rtl else LayoutDirection.Ltr,
         LocalDensity provides Density(density.density, environment.fontScale),
     ) {
         AppTheme(

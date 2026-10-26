@@ -6,9 +6,9 @@ import android.content.Intent
 import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.perfhud.recording.PerformanceRecorder
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * The adb path to the overlay, for scripts on a debug build:
@@ -46,6 +46,7 @@ internal class ReportReceiver : BroadcastReceiver() {
                 if (!intent.hasExtra(EXTRA_RECORDING)) return
                 recorder.setRecording(intent.getBooleanExtra(EXTRA_RECORDING, false))
             }
+
             ACTION_EXPORT -> {
                 val pending = goAsync()
                 scope.launch {

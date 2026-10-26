@@ -52,22 +52,49 @@ class SheetPlacementPolicyTest {
 
     @Test
     fun `explicit placements are honoured, and the sides need an expanded width`() {
-        assertEquals(SheetPlacement.Center, resolvePlacement(SheetPlacement.Center, true, phone, false))
-        assertEquals(SheetPlacement.Bottom, resolvePlacement(SheetPlacement.Bottom, true, tablet, false))
-        assertEquals(SheetPlacement.Bottom, resolvePlacement(SheetPlacement.End, true, smallTablet, false))
+        assertEquals(
+            SheetPlacement.Center,
+            resolvePlacement(SheetPlacement.Center, true, phone, false),
+        )
+        assertEquals(
+            SheetPlacement.Bottom,
+            resolvePlacement(SheetPlacement.Bottom, true, tablet, false),
+        )
+        assertEquals(
+            SheetPlacement.Bottom,
+            resolvePlacement(SheetPlacement.End, true, smallTablet, false),
+        )
         assertEquals(SheetPlacement.End, resolvePlacement(SheetPlacement.End, true, tablet, false))
-        assertEquals(SheetPlacement.Start, resolvePlacement(SheetPlacement.Start, false, tablet, false))
+        assertEquals(
+            SheetPlacement.Start,
+            resolvePlacement(SheetPlacement.Start, false, tablet, false),
+        )
     }
 
     @Test
     fun `a vertical hinge puts the sheet in the presenter's half, else the larger, else the end`() {
         val hinge = Rect(590f, 0f, 610f, 900f)
-        assertEquals(Rect(0f, 0f, 590f, 900f), hingeHalf(1200f, 900f, hinge, presenterX = 100f, LayoutDirection.Ltr))
-        assertEquals(Rect(610f, 0f, 1200f, 900f), hingeHalf(1200f, 900f, hinge, presenterX = 900f, LayoutDirection.Ltr))
+        assertEquals(
+            Rect(0f, 0f, 590f, 900f),
+            hingeHalf(1200f, 900f, hinge, presenterX = 100f, LayoutDirection.Ltr),
+        )
+        assertEquals(
+            Rect(610f, 0f, 1200f, 900f),
+            hingeHalf(1200f, 900f, hinge, presenterX = 900f, LayoutDirection.Ltr),
+        )
         val offCentre = Rect(490f, 0f, 510f, 900f)
-        assertEquals(Rect(510f, 0f, 1200f, 900f), hingeHalf(1200f, 900f, offCentre, presenterX = null, LayoutDirection.Ltr))
-        assertEquals(Rect(610f, 0f, 1200f, 900f), hingeHalf(1200f, 900f, hinge, null, LayoutDirection.Ltr))
-        assertEquals(Rect(0f, 0f, 590f, 900f), hingeHalf(1200f, 900f, hinge, null, LayoutDirection.Rtl))
+        assertEquals(
+            Rect(510f, 0f, 1200f, 900f),
+            hingeHalf(1200f, 900f, offCentre, presenterX = null, LayoutDirection.Ltr),
+        )
+        assertEquals(
+            Rect(610f, 0f, 1200f, 900f),
+            hingeHalf(1200f, 900f, hinge, null, LayoutDirection.Ltr),
+        )
+        assertEquals(
+            Rect(0f, 0f, 590f, 900f),
+            hingeHalf(1200f, 900f, hinge, null, LayoutDirection.Rtl),
+        )
     }
 
     @Test

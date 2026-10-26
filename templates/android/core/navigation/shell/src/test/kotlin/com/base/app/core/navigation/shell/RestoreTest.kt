@@ -31,9 +31,20 @@ class RestoreTest {
         var state: ShellState? = null
         restoration.setContent {
             AppTheme {
-                val shell = rememberShellState(tabs = testTabs, registry = registry, serialization = testSerialization, generation = 1)
+                val shell =
+                    rememberShellState(
+                        tabs = testTabs,
+                        registry = registry,
+                        serialization = testSerialization,
+                        generation = 1,
+                    )
                 state = shell
-                AppShell(tabs = testTabs, state = shell, registry = registry, navigator = AppNavigator())
+                AppShell(
+                    tabs = testTabs,
+                    state = shell,
+                    registry = registry,
+                    navigator = AppNavigator(),
+                )
             }
         }
         rule.runOnIdle {
@@ -67,7 +78,13 @@ class RestoreTest {
         var state: ShellState? = null
         restoration.setContent {
             AppTheme {
-                val shell = rememberShellState(tabs = tabs, registry = registry, serialization = testSerialization, generation = 1)
+                val shell =
+                    rememberShellState(
+                        tabs = tabs,
+                        registry = registry,
+                        serialization = testSerialization,
+                        generation = 1,
+                    )
                 state = shell
             }
         }

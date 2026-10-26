@@ -25,13 +25,19 @@ class StartupViewModelTest {
     @get:Rule
     val main = MainDispatcherRule(UnconfinedTestDispatcher())
 
-    private val settings = AppSettingsStore(FakePreferencesDataStore(), ApplicationScope(CoroutineScope(main.testDispatcher)))
+    private val settings =
+        AppSettingsStore(
+            FakePreferencesDataStore(),
+            ApplicationScope(CoroutineScope(main.testDispatcher)),
+        )
     private val tokens = FakeAuthTokenStore(SESSION)
 
     private fun startup(
         saved: SavedStateHandle = SavedStateHandle(),
         hooks: Set<LaunchHook> = emptySet(),
-    ): StartupViewModel = StartupViewModel(settings, tokens, hooks, saved).also { it.onLaunch(Intent()) }
+    ): StartupViewModel = StartupViewModel(settings, tokens, hooks, saved).also {
+        it.onLaunch(Intent())
+    }
 
     @Test
     fun `nothing is decided until the launch hooks have run`() = runTest(main.testDispatcher) {

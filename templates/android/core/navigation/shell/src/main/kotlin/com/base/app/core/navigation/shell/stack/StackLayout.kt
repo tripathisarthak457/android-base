@@ -66,7 +66,13 @@ internal fun StackLayout(
     // pop changes it on frames that compose anyway; a back gesture composes this layout again as
     // it starts and as it ends, never on the frames between.
     val sliding = plan.slide != Slide.None && scene.settled !== plan
-    val rate = if (sliding || scene.card.active) FrameRateCategory.High else FrameRateCategory.Default
+    val rate = if (sliding ||
+        scene.card.active
+    ) {
+        FrameRateCategory.High
+    } else {
+        FrameRateCategory.Default
+    }
     val panes = rememberPaneContexts(plan, shown)
     Layout(
         modifier = modifier.preferredFrameRate(rate),
@@ -94,7 +100,11 @@ internal fun StackLayout(
         scene.width = width.toFloat()
         scene.height = height.toFloat()
         scene.rtl = layoutDirection == LayoutDirection.Rtl
-        if (scene.density.density != density || scene.density.fontScale != fontScale) scene.density = Density(density, fontScale)
+        if (scene.density.density != density ||
+            scene.density.fontScale != fontScale
+        ) {
+            scene.density = Density(density, fontScale)
+        }
         val pane = listPaneWidth.roundToPx()
         val keys = shown.map { it.contentKey } + plan.emptyDetails
         val bounds = keys.map { plan.boundsOf(it, width, pane) }
@@ -104,7 +114,8 @@ internal fun StackLayout(
         layout(width, height) {
             placeables.forEachIndexed { index, placeable ->
                 val x = bounds[index].left
-                scene.lefts[keys[index]] = (if (scene.rtl) width - x - placeable.width else x).toFloat()
+                scene.lefts[keys[index]] =
+                    (if (scene.rtl) width - x - placeable.width else x).toFloat()
                 scene.widths[keys[index]] = placeable.width.toFloat()
                 placeable.placeRelative(x, 0)
             }
@@ -124,7 +135,8 @@ private fun EntrySlot(
 ) {
     val key = entry.contentKey
     val lifecycle = rememberEntryLifecycle(scene, key)
-    val visibility = remember(scene, key, tab) { TabVisibility { tab.isVisible && key in scene.top } }
+    val visibility =
+        remember(scene, key, tab) { TabVisibility { tab.isVisible && key in scene.top } }
     val divided = plan.followsAnotherPane(key)
     val divider = AppTheme.colors.separator
     val draw = remember(scene, key, isLight, divided, divider) {
@@ -140,7 +152,12 @@ private fun EntrySlot(
 }
 
 @Composable
-private fun EmptyDetailSlot(key: EmptyDetail, scene: StackScene, plan: StackPlan, isLight: Boolean) {
+private fun EmptyDetailSlot(
+    key: EmptyDetail,
+    scene: StackScene,
+    plan: StackPlan,
+    isLight: Boolean,
+) {
     val divider = AppTheme.colors.separator
     val background = AppTheme.colors.background
     val divided = plan.followsAnotherPane(key)
@@ -175,17 +192,24 @@ private fun Modifier.sceneDraw(
     isLight: Boolean,
     divided: Boolean,
     divider: Color,
-): Modifier =
-    this
-        .graphicsLayer { with(scene) { pose(key) } }
-        .drawWithContent {
-            with(scene) { drawOver(key, isLight) }
-            if (divided) drawPaneDivider(divider)
-        }
-        .graphicsLayer {
-            // allow(offscreen-layer): the back card's subject only, while its gesture lasts
-            compositingStrategy = if (scene.card.textures(key)) CompositingStrategy.Offscreen else CompositingStrategy.Auto
-        }
+): Modifier = this
+    .graphicsLayer { with(scene) { pose(key) } }
+    .drawWithContent {
+        with(scene) { drawOver(key, isLight) }
+        if (divided) drawPaneDivider(divider)
+    }
+    .graphicsLayer {
+        // allow(offscreen-layer): the back card's subject only, while its gesture lasts
+        compositingStrategy =
+            if (scene.card.textures(
+                    key,
+                )
+            ) {
+                CompositingStrategy.Offscreen
+            } else {
+                CompositingStrategy.Auto
+            }
+    }
 
 private fun DrawScope.drawPaneDivider(color: Color) {
     val width = 1f.coerceAtLeast(density)
@@ -199,7 +223,10 @@ private fun DrawScope.drawPaneDivider(color: Color) {
  * screen again in the first frame of its pop, the frame that has to start the slide.
  */
 @Composable
-private fun rememberPaneContexts(plan: StackPlan, shown: List<NavEntry<AppNavKey>>): Map<Any, PaneContext> {
+private fun rememberPaneContexts(
+    plan: StackPlan,
+    shown: List<NavEntry<AppNavKey>>,
+): Map<Any, PaneContext> {
     val kept = remember { HashMap<Any, PaneContext>() }
     return remember(plan, shown) {
         val contexts = paneContexts(plan, shown)
@@ -217,12 +244,17 @@ private fun rememberPaneContexts(plan: StackPlan, shown: List<NavEntry<AppNavKey
  * Each shown entry's pane: its role, whether another pane of its page shares the window, how many
  * details deep it is, and, for a list, the key of the detail open beside it.
  */
-private fun paneContexts(plan: StackPlan, shown: List<NavEntry<AppNavKey>>): HashMap<Any, PaneContext> {
+private fun paneContexts(
+    plan: StackPlan,
+    shown: List<NavEntry<AppNavKey>>,
+): HashMap<Any, PaneContext> {
     val entries = shown.associateBy { it.contentKey }
     val contexts = HashMap<Any, PaneContext>(shown.size)
     for (page in plan.pages) {
         val beside = !page.single
-        val selected = page.shown.entries.firstOrNull { it.value == Slot.Detail }?.key?.let { entries[it]?.navKey }
+        val selected = page.shown.entries.firstOrNull {
+            it.value == Slot.Detail
+        }?.key?.let { entries[it]?.navKey }
         var details = 0
         for (key in page.members) {
             val entry = entries[key] ?: continue
@@ -270,7 +302,8 @@ private fun rememberEntryLifecycle(scene: StackScene, key: Any): LifecycleOwner 
     val parent = LocalLifecycleOwner.current
     val owner = remember(parent) { CappedLifecycle() }
     DisposableEffect(parent, owner) {
-        val observer = LifecycleEventObserver { source, _ -> owner.follow(source.lifecycle.currentState) }
+        val observer =
+            LifecycleEventObserver { source, _ -> owner.follow(source.lifecycle.currentState) }
         parent.lifecycle.addObserver(observer)
         onDispose {
             parent.lifecycle.removeObserver(observer)

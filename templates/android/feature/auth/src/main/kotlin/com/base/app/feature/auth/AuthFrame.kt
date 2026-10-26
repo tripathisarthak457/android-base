@@ -76,7 +76,10 @@ internal fun AuthFrame(
                     modifier = Modifier
                         .widthIn(max = AppTheme.layout.formMaxWidth)
                         .fillMaxWidth()
-                        .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior()),
+                        .verticalScroll(
+                            rememberScrollState(),
+                            flingBehavior = AppScrollDefaults.flingBehavior(),
+                        ),
                 ) {
                     Column(
                         modifier = Modifier
@@ -101,7 +104,8 @@ internal fun AuthFrame(
 private fun BrandPanel(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     // The launcher label, so the panel always names the app it is in without a string of its own.
-    val appName = remember(context) { context.applicationInfo.loadLabel(context.packageManager).toString() }
+    val appName =
+        remember(context) { context.applicationInfo.loadLabel(context.packageManager).toString() }
 
     AppSurface(modifier = modifier, shape = RectangleShape, color = AppTheme.colors.accent) {
         Box(

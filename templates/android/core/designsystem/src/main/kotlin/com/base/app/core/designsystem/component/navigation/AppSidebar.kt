@@ -93,13 +93,19 @@ public fun AppSidebar(
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Vertical + WindowInsetsSides.Start))
+                .windowInsetsPadding(
+                    WindowInsets.safeDrawing.only(
+                        WindowInsetsSides.Vertical + WindowInsetsSides.Start,
+                    ),
+                )
                 .width(width)
                 .padding(vertical = spacing.lg),
         ) {
             if (header != null) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = spacing.sm).padding(bottom = spacing.md),
+                    modifier = Modifier.fillMaxWidth().padding(
+                        horizontal = spacing.sm,
+                    ).padding(bottom = spacing.md),
                     horizontalArrangement = Arrangement.spacedBy(spacing.xs),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
@@ -110,7 +116,10 @@ public fun AppSidebar(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
+                    .verticalScroll(
+                        rememberScrollState(),
+                        flingBehavior = AppScrollDefaults.flingBehavior(),
+                    )
                     .focusRestorer()
                     .focusGroup()
                     .selectableGroup()
@@ -121,13 +130,17 @@ public fun AppSidebar(
                                 color = look.indicator,
                                 topLeft = Offset(0f, top),
                                 size = Size(size.width, bottom - top),
-                                cornerRadius = CornerRadius(AppSidebarDefaults.HighlightCorner.toPx()),
+                                cornerRadius = CornerRadius(
+                                    AppSidebarDefaults.HighlightCorner.toPx(),
+                                ),
                             )
                         }
                     },
             ) {
                 items.forEachIndexed { index, item ->
-                    if (item.section != null && item.section != items.getOrNull(index - 1)?.section) {
+                    if (item.section != null &&
+                        item.section != items.getOrNull(index - 1)?.section
+                    ) {
                         BasicText(
                             text = item.section,
                             style = AppTheme.typography.caption2,
@@ -161,7 +174,13 @@ public fun AppSidebar(
                 }
             }
             if (footer != null) {
-                Box(Modifier.fillMaxWidth().padding(horizontal = spacing.sm).padding(top = spacing.md)) { footer() }
+                Box(
+                    Modifier.fillMaxWidth().padding(
+                        horizontal = spacing.sm,
+                    ).padding(top = spacing.md),
+                ) {
+                    footer()
+                }
             }
         }
         Box(Modifier.fillMaxHeight().width(1.dp).background(look.border))
@@ -182,14 +201,26 @@ public object AppSidebarDefaults {
 }
 
 @Composable
-private fun SidebarRow(item: TabItem, selected: Boolean, look: BarLook, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun SidebarRow(
+    item: TabItem,
+    selected: Boolean,
+    look: BarLook,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val color = if (selected) look.selectedContent else look.content
     val filter = remember(color) { ColorFilter.tint(color) }
     Row(
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = AppSidebarDefaults.RowHeight)
-            .selectable(selected = selected, onClick = onClick, role = Role.Tab, interactionSource = null, indication = null)
+            .selectable(
+                selected = selected,
+                onClick = onClick,
+                role = Role.Tab,
+                interactionSource = null,
+                indication = null,
+            )
             .padding(horizontal = AppTheme.spacing.md),
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
         verticalAlignment = Alignment.CenterVertically,
@@ -227,7 +258,14 @@ private class SidebarHighlight(count: Int, selected: Int) {
     }
 
     suspend fun moveTo(index: Int, animate: Boolean) {
-        if (animate) position.animateTo(index.toFloat(), TabBarSprings.Selection) else position.snapTo(index.toFloat())
+        if (animate) {
+            position.animateTo(
+                index.toFloat(),
+                TabBarSprings.Selection,
+            )
+        } else {
+            position.snapTo(index.toFloat())
+        }
     }
 
     inline fun bounds(block: (top: Float, bottom: Float) -> Unit) {
@@ -240,7 +278,6 @@ private class SidebarHighlight(count: Int, selected: Int) {
         if (bottom > 0f) block(lerp(tops[low], tops[high], fraction), bottom)
     }
 }
-
 
 @AppComponentPreviews
 @Composable

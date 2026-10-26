@@ -81,7 +81,10 @@ class SheetFooterBackingTest {
         val navigationBar = with(rule.density) { NavigationBar.roundToPx() }
         rule.runOnIdle {
             val insets = WindowInsetsCompat.Builder()
-                .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.of(0, 0, 0, navigationBar))
+                .setInsets(
+                    WindowInsetsCompat.Type.navigationBars(),
+                    Insets.of(0, 0, 0, navigationBar),
+                )
                 .build()
             ViewCompat.dispatchApplyWindowInsets(checkNotNull(view), insets)
         }
@@ -97,8 +100,16 @@ class SheetFooterBackingTest {
         )
         val pixels = rule.onRoot().captureToImage().toPixelMap()
         val x = pixels.width / 2
-        for (y in listOf(pixels.height - navigationBar + 1, pixels.height - navigationBar / 2, pixels.height - 1)) {
-            assertEquals("the strip at y $y of ${pixels.height}", container.toArgb(), pixels[x, y].toArgb())
+        for (y in listOf(
+            pixels.height - navigationBar + 1,
+            pixels.height - navigationBar / 2,
+            pixels.height - 1,
+        )) {
+            assertEquals(
+                "the strip at y $y of ${pixels.height}",
+                container.toArgb(),
+                pixels[x, y].toArgb(),
+            )
         }
     }
 

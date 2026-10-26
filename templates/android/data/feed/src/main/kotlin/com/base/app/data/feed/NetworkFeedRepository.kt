@@ -6,9 +6,9 @@ import androidx.paging.PagingData
 import com.base.app.core.network.client.NetworkClient
 import com.base.app.data.feed.api.FeedRepository
 import com.base.app.data.feed.api.model.FeedPost
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Pages through the same public API the reference feature reads, ten posts at a time, straight from

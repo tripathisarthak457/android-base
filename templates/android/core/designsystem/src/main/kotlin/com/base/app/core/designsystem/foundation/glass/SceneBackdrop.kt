@@ -42,10 +42,8 @@ import com.kyant.backdrop.Backdrop
  * to redraw itself on that motion.
  */
 @Stable
-internal class SceneBackdrop(
-    val layer: GraphicsLayer,
-    private val background: () -> Color,
-) : Backdrop {
+internal class SceneBackdrop(val layer: GraphicsLayer, private val background: () -> Color) :
+    Backdrop {
 
     // Snapshot state, so that a sample drawn while nothing recorded the scene draws again once
     // something does.
@@ -76,10 +74,12 @@ internal class SceneBackdrop(
         val scene = recorder.requireLayoutCoordinates()
         if (!scene.canBeSampledBy(surface)) return
         val offset = scene.localPositionOf(surface, Offset.Zero)
-        withTransform({
-            if (layerBlock != null) undoScale(layerBlock)
-            translate(-offset.x, -offset.y)
-        }) {
+        withTransform(
+            {
+                if (layerBlock != null) undoScale(layerBlock)
+                translate(-offset.x, -offset.y)
+            },
+        ) {
             drawLayer(layer)
         }
     }
@@ -127,9 +127,8 @@ private fun LayoutCoordinates.canBeSampledBy(surface: LayoutCoordinates): Boolea
 internal fun Modifier.recordScene(scene: SceneBackdrop): Modifier =
     this then RecordSceneElement(scene)
 
-private data class RecordSceneElement(
-    val scene: SceneBackdrop,
-) : ModifierNodeElement<RecordSceneNode>() {
+private data class RecordSceneElement(val scene: SceneBackdrop) :
+    ModifierNodeElement<RecordSceneNode>() {
     override fun create() = RecordSceneNode(scene)
 
     override fun update(node: RecordSceneNode) = node.update(scene)

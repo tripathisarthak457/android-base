@@ -3,13 +3,13 @@ package com.base.app.core.navigation
 import android.net.Uri
 import com.base.app.core.common.navigation.AppNavKey
 import dagger.hilt.android.scopes.ActivityRetainedScoped
+import java.util.Optional
+import javax.inject.Inject
+import kotlin.jvm.optionals.getOrNull
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
-import java.util.Optional
-import javax.inject.Inject
-import kotlin.jvm.optionals.getOrNull
 
 /**
  * A link, normalised: `baseapp://items/12` and `https://baseapp.example.com/items/12` both read as
@@ -35,12 +35,16 @@ class DeepLink(val segments: List<String>, val parameters: Map<String, String>) 
             // A custom-scheme link puts its first token in the host; an https link in the path.
             val segments = when {
                 scheme.equals(origin.scheme, ignoreCase = true) -> listOfNotNull(uri.host) + path
+
                 scheme.equals("https", ignoreCase = true) &&
                     uri.host.equals(origin.host, ignoreCase = true) -> path
+
                 else -> return null
             }
             if (segments.isEmpty()) return null
-            val parameters = uri.queryParameterNames.associateWith { uri.getQueryParameter(it).orEmpty() }
+            val parameters = uri.queryParameterNames.associateWith {
+                uri.getQueryParameter(it).orEmpty()
+            }
             return DeepLink(segments, parameters)
         }
     }
@@ -72,6 +76,7 @@ fun interface DeepLinkRoute {
 }
 
 // <opt:ui_components>
+
 /**
  * A link waiting for the app to be able to open it. It is held, not navigated to, when it arrives:
  * pushed onto the sign-in or onboarding stack it would load with no session and be gone by the time

@@ -76,7 +76,14 @@ internal fun StackHost(
     val scope = rememberCoroutineScope()
     SideEffect {
         scene.motion = motion
-        scene.apply(plan, entries, shown.filter { it.hidesBar }.mapTo(HashSet()) { it.contentKey }, scope)
+        scene.apply(
+            plan,
+            entries,
+            shown.filter {
+                it.hidesBar
+            }.mapTo(HashSet()) { it.contentKey },
+            scope,
+        )
     }
     if (anchor != null) {
         DisposableEffect(anchor, scene) {
@@ -174,6 +181,7 @@ internal val NavEntry<*>.navKey: AppNavKey get() = metadata.getValue(KEY_METADAT
 
 internal val NavEntry<*>.hidesBar: Boolean get() = metadata[HIDES_BAR_METADATA] == true
 
-internal val NavEntry<*>.pane: NavPane get() = metadata[PANE_METADATA_KEY] as? NavPane ?: NavPane.Single
+internal val NavEntry<*>.pane: NavPane get() = metadata[PANE_METADATA_KEY] as? NavPane
+    ?: NavPane.Single
 
 internal val NeverHidesBar: (AppNavKey) -> Boolean = { false }

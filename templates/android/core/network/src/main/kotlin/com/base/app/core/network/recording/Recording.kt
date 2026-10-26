@@ -76,7 +76,8 @@ internal fun HttpClient.recordFailures(observers: Set<NetworkObserver>) {
     }
 }
 
-private fun HttpRequest.carriesCredentials(): Boolean = attributes.getOrNull(CredentialsAttribute) == true
+private fun HttpRequest.carriesCredentials(): Boolean =
+    attributes.getOrNull(CredentialsAttribute) == true
 
 /**
  * Text as itself; anything else by its type and size. The content's class name would read as an
@@ -84,7 +85,9 @@ private fun HttpRequest.carriesCredentials(): Boolean = attributes.getOrNull(Cre
  */
 private fun OutgoingContent.describe(): String? = when (this) {
     is TextContent -> text
+
     is OutgoingContent.NoContent -> null
+
     else -> buildString {
         append(contentType?.toString() ?: "binary")
         contentLength?.let { append(", ").append(it).append(" bytes") }

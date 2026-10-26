@@ -54,7 +54,10 @@ public fun AppLoadingOverlay(
         val springs = AppTheme.springs
         val scrim = AppTheme.colors.scrim
         val transition = rememberTransition(state, label = "loadingOverlay")
-        val shown = transition.animateFloat(transitionSpec = { springs.dialog.unit }, label = "loadingShown") { if (it) 1f else 0f }
+        val shown = transition.animateFloat(
+            transitionSpec = { springs.dialog.unit },
+            label = "loadingShown",
+        ) { if (it) 1f else 0f }
 
         Box(
             modifier = modifier
@@ -62,7 +65,11 @@ public fun AppLoadingOverlay(
                 .drawBehind { drawRect(scrim, alpha = shown.value.coerceIn(0f, 1f)) }
                 .pointerInput(Unit) {
                     awaitPointerEventScope {
-                        while (true) awaitPointerEvent(PointerEventPass.Initial).changes.forEach { it.consume() }
+                        while (true) {
+                            awaitPointerEvent(PointerEventPass.Initial).changes.forEach {
+                                it.consume()
+                            }
+                        }
                     }
                 },
             contentAlignment = Alignment.Center,
@@ -83,7 +90,12 @@ public fun AppLoadingOverlay(
                 ) {
                     AppActivityIndicator(size = AppLoadingOverlayDefaults.IndicatorSize)
                     label?.let {
-                        AppText(text = it, style = AppTheme.typography.subheadline, color = AppTheme.colors.contentSecondary, textAlign = TextAlign.Center)
+                        AppText(
+                            text = it,
+                            style = AppTheme.typography.subheadline,
+                            color = AppTheme.colors.contentSecondary,
+                            textAlign = TextAlign.Center,
+                        )
                     }
                 }
             }

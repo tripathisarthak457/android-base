@@ -4,13 +4,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.base.app.core.common.navigation.AppNavKey
 import dagger.hilt.android.scopes.ActivityRetainedScoped
+import javax.inject.Inject
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.job
-import javax.inject.Inject
 
 /** What a ViewModel can ask navigation to do. */
 sealed interface NavCommand {
@@ -112,7 +112,10 @@ class AppNavigator @Inject constructor() {
  * and is dropped with it rather than applied to the host that replaces it.
  */
 @NavigationHostApi
-suspend fun AppNavigator.applyWhileStarted(lifecycle: Lifecycle, apply: suspend (NavCommand) -> Unit) {
+suspend fun AppNavigator.applyWhileStarted(
+    lifecycle: Lifecycle,
+    apply: suspend (NavCommand) -> Unit,
+) {
     val host = currentCoroutineContext().job
     lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
         applyEach(putBack = { host.isActive }, apply = apply)

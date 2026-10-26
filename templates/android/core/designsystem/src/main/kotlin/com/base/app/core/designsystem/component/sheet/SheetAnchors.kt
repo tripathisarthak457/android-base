@@ -27,8 +27,26 @@ internal fun AppSheetState.syncAnchors(keep: SheetStop) {
         anchored.settledValue == SheetStop.Hidden
     val anchors = DraggableAnchors {
         if (withHidden) SheetStop.Hidden at stops.hidden
-        for (index in 0 until stops.count) SheetStop.At(stops.detents[index]) at stops.offsets[index]
+        for (index in 0 until stops.count) {
+            SheetStop.At(stops.detents[index]) at
+                stops.offsets[index]
+        }
     }
-    val kept = if (keep is SheetStop.At && !stops.has(keep.detent)) SheetStop.At(activeFor(keep.detent)) else keep
-    anchored.updateAnchors(anchors, if (kept == SheetStop.Hidden && !withHidden) SheetStop.At(stops.detents[0]) else kept)
+    val kept = if (keep is SheetStop.At &&
+        !stops.has(keep.detent)
+    ) {
+        SheetStop.At(activeFor(keep.detent))
+    } else {
+        keep
+    }
+    anchored.updateAnchors(
+        anchors,
+        if (kept == SheetStop.Hidden &&
+            !withHidden
+        ) {
+            SheetStop.At(stops.detents[0])
+        } else {
+            kept
+        },
+    )
 }

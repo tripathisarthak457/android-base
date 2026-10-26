@@ -56,8 +56,17 @@ class SheetPresentTest {
         val travel = stops.hidden - stops.offsetOf(SheetDetent.Medium)
         val first = offsets.indexOfFirst { !it.isNaN() && it < stops.hidden }
         assertTrue("never moved: $offsets", first >= 0)
-        assertTrue("hidden before it moves: $offsets", offsets.take(first).all { it.isNaN() || it == stops.hidden })
-        assertTrue("first moving frame ${offsets[first]} of $travel", stops.hidden - offsets[first] <= travel * 0.04f)
+        assertTrue(
+            "hidden before it moves: $offsets",
+            offsets.take(first).all {
+                it.isNaN() ||
+                    it == stops.hidden
+            },
+        )
+        assertTrue(
+            "first moving frame ${offsets[first]} of $travel",
+            stops.hidden - offsets[first] <= travel * 0.04f,
+        )
     }
 
     @Test

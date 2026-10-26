@@ -22,14 +22,23 @@ class RetryPolicy(
      * How long to wait before retry number [attempt] (0 for the first), or null to stop.
      * [retryAfterSeconds] is the server's `Retry-After`, already parsed.
      */
-    fun delayBefore(attempt: Int, method: HttpMethodType, status: Int?, retryAfterSeconds: Long?): Long? {
+    fun delayBefore(
+        attempt: Int,
+        method: HttpMethodType,
+        status: Int?,
+        retryAfterSeconds: Long?,
+    ): Long? {
         if (attempt >= maxRetries || method !in REPEATABLE) return null
         if (status != null && status !in TRANSIENT_STATUSES) return null
 
         retryAfterSeconds?.let { seconds ->
             return (seconds * MILLIS_PER_SECOND).coerceIn(0, maxDelayMillis)
         }
-        val ceiling = (baseDelayMillis shl attempt.coerceAtMost(MAX_SHIFT)).coerceAtMost(maxDelayMillis)
+        val ceiling = (
+            baseDelayMillis shl attempt.coerceAtMost(
+                MAX_SHIFT,
+            )
+            ).coerceAtMost(maxDelayMillis)
         // Half fixed, half random: never a zero wait, never everyone at once.
         return ceiling / 2 + random.nextLong(ceiling / 2 + 1)
     }
@@ -38,7 +47,8 @@ class RetryPolicy(
         const val DEFAULT_MAX_RETRIES = 2
         private const val MILLIS_PER_SECOND = 1_000L
         private const val MAX_SHIFT = 10
-        private val REPEATABLE = setOf(HttpMethodType.GET, HttpMethodType.PUT, HttpMethodType.DELETE)
+        private val REPEATABLE =
+            setOf(HttpMethodType.GET, HttpMethodType.PUT, HttpMethodType.DELETE)
         private val TRANSIENT_STATUSES = setOf(408, 429, 500, 502, 503, 504)
     }
 }

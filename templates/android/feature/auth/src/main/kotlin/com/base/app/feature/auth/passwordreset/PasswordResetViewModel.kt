@@ -15,8 +15,8 @@ import com.base.app.feature.auth.authMessage
 import com.base.app.feature.auth.errorFor
 import com.base.app.feature.auth.fieldError
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.drop
 import javax.inject.Inject
+import kotlinx.coroutines.flow.drop
 
 /**
  * Request a password-reset link. Success says a link *has been sent if the address is registered*,
@@ -26,10 +26,14 @@ import javax.inject.Inject
 internal class PasswordResetViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     savedStateHandle: SavedStateHandle,
-) : MviViewModel<PasswordResetState, PasswordResetEvent, PasswordResetEffect>(PasswordResetState()) {
+) : MviViewModel<PasswordResetState, PasswordResetEvent, PasswordResetEffect>(
+    PasswordResetState(),
+) {
 
     @OptIn(SavedStateHandleSaveableApi::class)
-    val email: TextFieldState = savedStateHandle.saveable(EMAIL, saver = TextFieldState.Saver) { TextFieldState() }
+    val email: TextFieldState = savedStateHandle.saveable(EMAIL, saver = TextFieldState.Saver) {
+        TextFieldState()
+    }
 
     // Errors stay quiet until the first submit, then follow the text as it is corrected.
     private var showErrors = false
@@ -60,6 +64,7 @@ internal class PasswordResetViewModel @Inject constructor(
         launchExclusive(SUBMIT, busy = { copy(submitting = it) }) {
             when (val result = authRepository.requestPasswordReset(email.text.toString())) {
                 is AppResult.Success -> setState { copy(sent = true) }
+
                 is AppResult.Failure -> {
                     val fieldError = result.error.fieldError(EMAIL)
                     setState {

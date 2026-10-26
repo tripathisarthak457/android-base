@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import androidx.profileinstaller.ProfileVerifier
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.serialization.Serializable
 import javax.inject.Inject
+import kotlinx.serialization.Serializable
 
 /**
  * The facts about this build that decide how fast it can be at all, whatever its code does:

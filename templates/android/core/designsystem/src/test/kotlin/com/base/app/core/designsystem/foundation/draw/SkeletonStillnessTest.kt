@@ -131,7 +131,10 @@ class SkeletonStillnessTest {
         rule.mainClock.advanceTimeByFrame()
         val light = bone
         // Drawn once in the light theme, so the bone's layer holds a recording a repaint must replace.
-        assertEquals(light.toArgb(), rule.onNodeWithTag("bone").captureToImage().toPixelMap()[10, 10].toArgb())
+        assertEquals(
+            light.toArgb(),
+            rule.onNodeWithTag("bone").captureToImage().toPixelMap()[10, 10].toArgb(),
+        )
 
         mode = ThemeMode.Dark
         rule.waitForIdle()

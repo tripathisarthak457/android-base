@@ -7,6 +7,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.base.app.core.common.coroutines.AppDispatchers
 import com.base.app.core.datastore.crypto.ValueCipher
 import com.base.app.core.datastore.di.SessionTokensDataStore
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
@@ -16,8 +18,6 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** One session's tokens, read and written together so a refresh never pairs an old token with a new one. */
 @Serializable
@@ -87,7 +87,9 @@ internal class DataStoreAuthTokenStore @Inject constructor(
 ) : AuthTokenStore {
 
     override val tokens: Flow<AuthTokens?> = dataStore.data
-        .map { preferences -> preferences[TOKENS]?.let { sealed -> decode(sealed) ?: discard(sealed) } }
+        .map { preferences ->
+            preferences[TOKENS]?.let { sealed -> decode(sealed) ?: discard(sealed) }
+        }
         .distinctUntilChanged()
         .flowOn(dispatchers.io)
 
@@ -106,7 +108,9 @@ internal class DataStoreAuthTokenStore @Inject constructor(
     // the switch as much as the encode before it.
     override suspend fun replace(expected: AuthTokens, replacement: AuthTokens?): Boolean =
         withContext(dispatchers.io) {
-            val sealed = replacement?.let { cipher.encrypt(Json.encodeToString(AuthTokens.serializer(), it)) }
+            val sealed = replacement?.let {
+                cipher.encrypt(Json.encodeToString(AuthTokens.serializer(), it))
+            }
             var swapped = false
             dataStore.edit { preferences ->
                 if (preferences[TOKENS]?.let(::decode) == expected) {

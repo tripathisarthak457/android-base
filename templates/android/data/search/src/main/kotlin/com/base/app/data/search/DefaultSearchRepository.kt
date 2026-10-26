@@ -14,10 +14,10 @@ import com.base.app.data.search.di.RecentSearchesStore
 import com.base.app.data.search.recent.RecentSearches
 import com.base.app.data.search.remote.dto.SearchHitDto
 import com.base.app.data.search.remote.toDomain
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 /**
  * Searches the public demo API's full-text `q` parameter. Point [search] at your own endpoint; the

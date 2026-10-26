@@ -284,6 +284,30 @@ class CodeRulesTest {
     }
 
     @Test
+    fun `a marker above the import list covers its rules on every import in the list`() {
+        // ktlint keeps comments out of an import list, so the reason for an import stands above it.
+        val source = "package a\n\n" +
+            "// allow(designsystem-imports): one verdict kept across launches, by the store alone\n" +
+            "import android.content.Context\n" +
+            "import android.content.SharedPreferences\n" +
+            "import java.io.File\n\n" +
+            "private val p = 0\n"
+
+        assertEquals(emptyList<Finding>(), CodeRules.check(DESIGN_SYSTEM, source))
+    }
+
+    @Test
+    fun `a marker above the import list covers nothing below the list`() {
+        val source = "// allow(raw-dp): the brand mark is drawn to the logo's own spec\n" +
+            "import androidx.compose.ui.unit.dp\n\n" +
+            "private val p = 16.dp\n"
+
+        val findings = CodeRules.check(FEATURE, source)
+
+        assertEquals(listOf(1 to "allow", 4 to "raw-dp"), findings.map { it.line to it.rule })
+    }
+
+    @Test
     fun `patterns inside comments and strings are not code`() {
         val source = """
             // Dispatchers.IO and Modifier.clickable { } in a comment

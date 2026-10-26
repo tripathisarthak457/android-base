@@ -31,17 +31,16 @@ import com.base.app.core.designsystem.theme.StatusColors
 
 /** A count in a red pill: "3", "99+". */
 @Composable
-public fun AppBadge(
-    count: Int,
-    modifier: Modifier = Modifier,
-    maxCount: Int = 99,
-) {
+public fun AppBadge(count: Int, modifier: Modifier = Modifier, maxCount: Int = 99) {
     val danger = AppTheme.colors.danger
     val bone = LocalRedacted.current
     val redacted = if (bone) Modifier.skeleton(AppTheme.shapes.pill) else Modifier
     Box(
         modifier = modifier
-            .defaultMinSize(minWidth = AppBadgeDefaults.MinSize, minHeight = AppBadgeDefaults.MinSize)
+            .defaultMinSize(
+                minWidth = AppBadgeDefaults.MinSize,
+                minHeight = AppBadgeDefaults.MinSize,
+            )
             .then(redacted)
             .background(danger.base, AppTheme.shapes.pill)
             .padding(horizontal = AppBadgeDefaults.HorizontalPadding),
@@ -74,7 +73,9 @@ public fun AppBadgedBox(
             visible = count > 0,
             enter = transitions.popIn,
             exit = transitions.popOut,
-            modifier = Modifier.align(Alignment.TopEnd).offset(x = AppBadgeDefaults.CountOffsetX, y = AppBadgeDefaults.CountOffsetY),
+            modifier = Modifier.align(
+                Alignment.TopEnd,
+            ).offset(x = AppBadgeDefaults.CountOffsetX, y = AppBadgeDefaults.CountOffsetY),
         ) {
             AppBadge(count = count, maxCount = maxCount)
         }
@@ -95,9 +96,19 @@ public fun AppDotBadge(
             visible = visible,
             enter = transitions.popIn,
             exit = transitions.popOut,
-            modifier = Modifier.align(Alignment.TopEnd).offset(x = AppBadgeDefaults.DotOffsetX, y = AppBadgeDefaults.DotOffsetY),
+            modifier = Modifier.align(
+                Alignment.TopEnd,
+            ).offset(x = AppBadgeDefaults.DotOffsetX, y = AppBadgeDefaults.DotOffsetY),
         ) {
-            Box(Modifier.size(AppBadgeDefaults.DotSize).background(AppTheme.colors.danger.base, AppTheme.shapes.pill).clearAndSetSemantics {})
+            Box(
+                Modifier.size(
+                    AppBadgeDefaults.DotSize,
+                ).background(
+                    AppTheme.colors.danger.base,
+                    AppTheme.shapes.pill,
+                ).clearAndSetSemantics {
+                },
+            )
         }
     }
 }
@@ -116,13 +127,28 @@ public fun AppStatusPill(
         modifier = modifier
             .then(redacted)
             .background(status.subtle, AppTheme.shapes.pill)
-            .padding(horizontal = AppBadgeDefaults.PillHorizontalPadding, vertical = AppBadgeDefaults.PillVerticalPadding),
+            .padding(
+                horizontal = AppBadgeDefaults.PillHorizontalPadding,
+                vertical = AppBadgeDefaults.PillVerticalPadding,
+            ),
         horizontalArrangement = Arrangement.spacedBy(AppBadgeDefaults.PillIconSpacing),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         ContentUnderBone(bone) {
-            icon?.let { AppIcon(it, contentDescription = null, tint = status.content, size = AppBadgeDefaults.PillIconSize) }
-            AppText(text = text, style = AppTheme.typography.caption1, color = status.content, maxLines = 1)
+            icon?.let {
+                AppIcon(
+                    it,
+                    contentDescription = null,
+                    tint = status.content,
+                    size = AppBadgeDefaults.PillIconSize,
+                )
+            }
+            AppText(
+                text = text,
+                style = AppTheme.typography.caption1,
+                color = status.content,
+                maxLines = 1,
+            )
         }
     }
 }
@@ -153,7 +179,9 @@ private fun AppBadgePreview() {
             AppBadge(count = 3)
             AppBadge(count = 120)
             AppBadgedBox(count = 8) { AppIcon(AppIcons.Bell, contentDescription = "Notifications") }
-            AppDotBadge(visible = true) { AppIcon(AppIcons.Message, contentDescription = "Messages") }
+            AppDotBadge(visible = true) {
+                AppIcon(AppIcons.Message, contentDescription = "Messages")
+            }
         }
         Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
             AppStatusPill(text = "Paid", status = AppTheme.colors.success, icon = AppIcons.Check)

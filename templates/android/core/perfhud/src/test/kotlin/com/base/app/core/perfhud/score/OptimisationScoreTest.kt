@@ -34,12 +34,25 @@ class OptimisationScoreTest {
         ),
         startup = StartupSummary(
             supported = true,
-            cold = StartRecord(StartType.Cold, initialDisplayMillis = 350f, fullDisplayMillis = null),
-            warm = StartRecord(StartType.Warm, initialDisplayMillis = 150f, fullDisplayMillis = null),
+            cold = StartRecord(
+                StartType.Cold,
+                initialDisplayMillis = 350f,
+                fullDisplayMillis = null,
+            ),
+            warm = StartRecord(
+                StartType.Warm,
+                initialDisplayMillis = 150f,
+                fullDisplayMillis = null,
+            ),
             hot = null,
         ),
         build = BuildFacts(debuggable = false, minified = true, profile = ProfileStatus.Compiled),
-        strictMode = StrictModeSummary(supported = true, violations = 0, byKind = emptyMap(), examples = emptyList()),
+        strictMode = StrictModeSummary(
+            supported = true,
+            violations = 0,
+            byKind = emptyMap(),
+            examples = emptyList(),
+        ),
     )
 
     private var clock = 0L
@@ -68,7 +81,13 @@ class OptimisationScoreTest {
     @Test
     fun `a debuggable build loses its build checks and says why`() {
         val score = OptimisationScore.of(
-            healthy.copy(build = BuildFacts(debuggable = true, minified = false, profile = ProfileStatus.NotCompiled)),
+            healthy.copy(
+                build = BuildFacts(
+                    debuggable = true,
+                    minified = false,
+                    profile = ProfileStatus.NotCompiled,
+                ),
+            ),
         )
 
         val lost = score.losses.map { it.metric }.toSet()
@@ -79,7 +98,13 @@ class OptimisationScoreTest {
     @Test
     fun `a profile waiting for compilation is half a pass`() {
         val score = OptimisationScore.of(
-            healthy.copy(build = BuildFacts(debuggable = false, minified = true, profile = ProfileStatus.Enqueued)),
+            healthy.copy(
+                build = BuildFacts(
+                    debuggable = false,
+                    minified = true,
+                    profile = ProfileStatus.Enqueued,
+                ),
+            ),
         )
 
         assertEquals(Grade.C, score.metrics.single { it.metric == Metric.BaselineProfile }.grade)
@@ -103,16 +128,23 @@ class OptimisationScoreTest {
 
     @Test
     fun `what was not measured is left out rather than counted as lost`() {
-        val score = OptimisationScore.of(healthy.copy(startup = StartupSummary.Unsupported, memory = null))
+        val score = OptimisationScore.of(
+            healthy.copy(startup = StartupSummary.Unsupported, memory = null),
+        )
 
         assertEquals(100, score.total)
         val unmeasured = score.metrics.filter { it.grade == null }.map { it.metric }.toSet()
-        assertEquals(setOf(Metric.ColdStart, Metric.WarmStart, Metric.AppMemory, Metric.BlockingGc), unmeasured)
+        assertEquals(
+            setOf(Metric.ColdStart, Metric.WarmStart, Metric.AppMemory, Metric.BlockingGc),
+            unmeasured,
+        )
     }
 
     @Test
     fun `too few frames are not graded`() {
-        val score = OptimisationScore.of(healthy.copy(frames = frames(count = Metric.MIN_FRAMES - 1, janky = 50)))
+        val score = OptimisationScore.of(
+            healthy.copy(frames = frames(count = Metric.MIN_FRAMES - 1, janky = 50)),
+        )
 
         assertNull(score.metrics.single { it.metric == Metric.JankyFrames }.grade)
     }
@@ -129,7 +161,10 @@ class OptimisationScoreTest {
     fun `passing build checks are no score before the frames are graded`() {
         // What the recorder hands over right after launch: the build read, StrictMode clean, a
         // start record, and too few frames to judge.
-        val launched = healthy.copy(frames = frames(count = Metric.MIN_FRAMES - 1, janky = 0), memory = null)
+        val launched = healthy.copy(
+            frames = frames(count = Metric.MIN_FRAMES - 1, janky = 0),
+            memory = null,
+        )
         val noFrames = launched.copy(frames = null)
 
         for (inputs in listOf(launched, noFrames)) {
@@ -179,7 +214,10 @@ class OptimisationScoreTest {
         }.summary()
 
         val grades = listOf(lastAt60, lastAt120).map { frames ->
-            OptimisationScore.of(healthy.copy(frames = frames)).metrics.single { it.metric == Metric.UiThreadP99 }
+            OptimisationScore.of(healthy.copy(frames = frames)).metrics.single {
+                it.metric ==
+                    Metric.UiThreadP99
+            }
         }
 
         assertEquals(1.44f, grades[0].value!!, 0.03f)

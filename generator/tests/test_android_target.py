@@ -89,6 +89,14 @@ class SettingsTest(unittest.TestCase):
             build = (generate(Path(temp), features=["formatting"]) / "build.gradle.kts").read_text(encoding="utf-8")
         self.assertIn("spotless {", build)
         self.assertNotIn("isEnforceCheck", build)
+        # It has no markers, so ktlint holds its imports' order and its comments' spacing like any other rule.
+        self.assertNotIn("standard:import-ordering", build)
+        self.assertNotIn("comment-spacing", build)
+
+    def test_the_template_enforces_its_own_formatting_check(self):
+        build = (ANDROID.template_dir / "build.gradle.kts").read_text(encoding="utf-8")
+        self.assertIn("spotless {", build)
+        self.assertNotIn("isEnforceCheck", build)
 
 
 class ScaffoldTest(unittest.TestCase):
@@ -121,6 +129,16 @@ class DatabaseTest(unittest.TestCase):
         )
         self.assertEqual(["        OrderHistoryEntity::class,\n"], regions["database-entities"])
         self.assertEqual(["    abstract fun orderHistory(): OrderHistoryDao\n"], regions["database-daos"])
+
+    def test_an_entity_is_laid_out_as_ktlint_lays_it_out(self):
+        # One line when it fits the projects' 100 columns, one property a line when it does not.
+        with tempfile.TemporaryDirectory() as temp:
+            short = generate(Path(temp) / "s", features=["database"], feature_modules=["orders"])
+            long = generate(Path(temp) / "l", features=["database"], feature_modules=["subscription_renewal_history"])
+            orders = next(short.rglob("OrdersEntity.kt")).read_text(encoding="utf-8")
+            history = next(long.rglob("SubscriptionRenewalHistoryEntity.kt")).read_text(encoding="utf-8")
+        self.assertIn("data class OrdersEntity(@PrimaryKey val id: String, val title: String, val body: String)\n", orders)
+        self.assertIn("data class SubscriptionRenewalHistoryEntity(\n    @PrimaryKey val id: String,\n", history)
 
     def test_a_database_with_no_other_table_gets_the_starter_one(self):
         regions = database.regions(spec(features=["database"]))
@@ -366,8 +384,10 @@ class ProjectScriptsTest(unittest.TestCase):
         with redirect_stdout(io.StringIO()):
             self.assertEqual(0, main(["wallet", "--tab", "--project", str(project)]))
         text = self.destinations(project)
-        order = [text.index(key) for key in ("ShellTab(key = SampleListKey", "ShellTab(key = OrdersListKey", "ShellTab(key = WalletListKey", "ShellTab(key = SettingsKey")]
+        order = [text.index(key) for key in ("key = SampleListKey", "key = OrdersListKey", "key = WalletListKey", "key = SettingsKey")]
         self.assertEqual(sorted(order), order)
+        # One argument a line, as ktlint lays out a call too long for one: the project's spotlessCheck stays green.
+        self.assertIn("        ShellTab(\n            key = WalletListKey,\n", text)
         self.assertIn("import com.acme.field.feature.wallet.api.WalletListKey", text)
         self.assertIn("icon = AppIcons.CreditCard", text)
 
@@ -383,7 +403,7 @@ class ProjectScriptsTest(unittest.TestCase):
         with redirect_stdout(io.StringIO()) as out:
             self.assertEqual(0, main(["wallet", "--tab", "--project", str(project)]))
         self.assertIn("add the tabs by hand", out.getvalue())
-        self.assertNotIn("WalletListKey, label", self.destinations(project))
+        self.assertNotIn("key = WalletListKey", self.destinations(project))
 
     def test_a_new_module_ships_every_language_the_project_does(self):
         from add_feature import main
@@ -436,7 +456,7 @@ class ProjectScriptsTest(unittest.TestCase):
         remaining = self.destinations(project)
         self.assertNotIn("Wallet", remaining)
         self.assertNotIn("Purse", remaining)
-        self.assertIn("ShellTab(key = OrdersListKey", remaining)
+        self.assertIn("key = OrdersListKey,", remaining)
 
     def test_a_missing_tab_file_still_gets_the_gradle_edits(self):
         # Stopping at a renamed AppDestinations would leave the module half removed: its directory

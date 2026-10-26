@@ -49,11 +49,28 @@ public fun AppTimePicker(
     val current by rememberUpdatedState(time)
 
     // 0 and 12 both show as 12 on a twelve-hour clock; hours is 1..12, so the index is one less.
-    fun hourIndex(t: LocalTime) = if (use24Hour) t.hour else (if (t.hour % 12 == 0) 12 else t.hour % 12) - 1
+    fun hourIndex(t: LocalTime) = if (use24Hour) {
+        t.hour
+    } else {
+        (
+            if (t.hour % 12 ==
+                0
+            ) {
+                12
+            } else {
+                t.hour % 12
+            }
+            ) -
+            1
+    }
     fun minuteIndex(t: LocalTime) = minutes.indexOfFirst { it >= t.minute }.coerceAtLeast(0)
     fun periodIndex(t: LocalTime) = if (t.hour < 12) 0 else 1
 
-    fun emit(hourAt: Int = hourIndex(current), minuteAt: Int = minuteIndex(current), periodAt: Int = periodIndex(current)) {
+    fun emit(
+        hourAt: Int = hourIndex(current),
+        minuteAt: Int = minuteIndex(current),
+        periodAt: Int = periodIndex(current),
+    ) {
         val hour = hours[hourAt]
         val resolved = when {
             use24Hour -> hour
@@ -75,7 +92,12 @@ public fun AppTimePicker(
             modifier = Modifier.weight(1f),
             label = { it.toString().padStart(2, '0') },
         )
-        AppText(text = ":", style = AppTheme.typography.title2, color = AppTheme.colors.contentSecondary, modifier = Modifier.padding(bottom = AppTimePickerDefaults.SeparatorLift))
+        AppText(
+            text = ":",
+            style = AppTheme.typography.title2,
+            color = AppTheme.colors.contentSecondary,
+            modifier = Modifier.padding(bottom = AppTimePickerDefaults.SeparatorLift),
+        )
         AppWheelPicker(
             items = minutes,
             selectedIndex = minuteIndex(time),
@@ -105,12 +127,24 @@ public fun AppTimePill(
 ) {
     var open by rememberSaveable { mutableStateOf(false) }
     val locale = rememberCurrentLocale()
-    val label = remember(time, locale) { time.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(locale)) }
+    val label =
+        remember(time, locale) {
+            time.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(locale))
+        }
     val transitions = rememberAppTransitions()
     Column(modifier = modifier) {
         PickerPill(text = label, open = open, onClick = { open = !open })
-        AnimatedVisibility(visible = open, enter = transitions.expandIn, exit = transitions.collapseOut) {
-            AppTimePicker(time = time, onTimeChange = onTimeChange, minuteStep = minuteStep, modifier = Modifier.padding(top = AppTheme.spacing.sm))
+        AnimatedVisibility(
+            visible = open,
+            enter = transitions.expandIn,
+            exit = transitions.collapseOut,
+        ) {
+            AppTimePicker(
+                time = time,
+                onTimeChange = onTimeChange,
+                minuteStep = minuteStep,
+                modifier = Modifier.padding(top = AppTheme.spacing.sm),
+            )
         }
     }
 }
@@ -118,7 +152,10 @@ public fun AppTimePill(
 /** Whether this locale writes times on a 24-hour clock. */
 private fun Locale.uses24HourClock(): Boolean {
     val sample = runCatching {
-        LocalTime.of(13, 0).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(this))
+        LocalTime.of(
+            13,
+            0,
+        ).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(this))
     }.getOrNull() ?: return true
     // 13:00 renders as "1:00 PM" on a twelve-hour locale and "13:00" on a twenty-four-hour one;
     // any letter is the period marker, whatever language it is in.

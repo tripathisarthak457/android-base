@@ -104,9 +104,20 @@ private fun AppBarChartPreview() {
         modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
     ) {
-        AppBarChart(entries = listOf("Mon" to 4f, "Tue" to 9f, "Wed" to 0f, "Thu" to 12f, "Fri" to 7f))
         AppBarChart(
-            entries = listOf("Organic search" to 1_840f, "Newsletters and referral partners" to 620f),
+            entries = listOf(
+                "Mon" to 4f,
+                "Tue" to 9f,
+                "Wed" to 0f,
+                "Thu" to 12f,
+                "Fri" to 7f,
+            ),
+        )
+        AppBarChart(
+            entries = listOf(
+                "Organic search" to 1_840f,
+                "Newsletters and referral partners" to 620f,
+            ),
             barColor = AppTheme.colors.secondary,
         )
     }

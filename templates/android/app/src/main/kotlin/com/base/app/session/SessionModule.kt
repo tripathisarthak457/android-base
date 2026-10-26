@@ -35,6 +35,7 @@ interface SessionModule {
         @Provides
         @Singleton
         @SessionOwnerStore
-        fun provideSessionOwnerStore(files: DataStoreFiles): DataStore<Preferences> = files.preferences("session_owner")
+        fun provideSessionOwnerStore(files: DataStoreFiles): DataStore<Preferences> =
+            files.preferences("session_owner")
     }
 }

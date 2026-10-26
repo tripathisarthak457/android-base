@@ -16,4 +16,5 @@ public fun interface HostMotion {
 }
 
 @ShellSeamApi
-public val LocalHostMotion: ProvidableCompositionLocal<HostMotion> = staticCompositionLocalOf { HostMotion { _, _ -> } }
+public val LocalHostMotion: ProvidableCompositionLocal<HostMotion> =
+    staticCompositionLocalOf { HostMotion { _, _ -> } }

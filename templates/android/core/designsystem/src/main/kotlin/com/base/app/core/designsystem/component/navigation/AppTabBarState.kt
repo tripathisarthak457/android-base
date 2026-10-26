@@ -17,11 +17,11 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.theme.TabBarSprings
+import kotlin.math.abs
+import kotlin.math.sign
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlin.math.abs
-import kotlin.math.sign
 
 /**
  * The bar's minimize state. [nestedScrollConnection] goes around the content that drives it; the
@@ -37,7 +37,10 @@ import kotlin.math.sign
  * moves while the user is scrolling.
  */
 @Stable
-public class AppTabBarState internal constructor(private val density: Density, private val scope: CoroutineScope) {
+public class AppTabBarState internal constructor(
+    private val density: Density,
+    private val scope: CoroutineScope,
+) {
 
     @get:FrequentlyChangingValue
     public var collapse: Float by mutableFloatStateOf(0f)
@@ -62,7 +65,11 @@ public class AppTabBarState internal constructor(private val density: Density, p
     private var motion: Job? = null
 
     public val nestedScrollConnection: NestedScrollConnection = object : NestedScrollConnection {
-        override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+        override fun onPostScroll(
+            consumed: Offset,
+            available: Offset,
+            source: NestedScrollSource,
+        ): Offset {
             if (behavior == BarMinimize.Never) return Offset.Zero
             // Scroll up that the content could not take: it is at the top.
             if (available.y > 0f) {
@@ -72,7 +79,14 @@ public class AppTabBarState internal constructor(private val density: Density, p
             val readOn = -consumed.y
             if (readOn == 0f) return Offset.Zero
             drift = if (sign(drift) == sign(readOn)) drift + readOn else readOn
-            if (abs(drift) >= with(density) { AppTabBarStateDefaults.Hysteresis.toPx() }) fold(minimized = drift > 0f)
+            if (abs(drift) >=
+                with(density) { AppTabBarStateDefaults.Hysteresis.toPx() }
+            ) {
+                fold(
+                    minimized =
+                        drift > 0f,
+                )
+            }
             return Offset.Zero
         }
     }
@@ -116,4 +130,3 @@ public fun rememberAppTabBarState(): AppTabBarState {
 internal object AppTabBarStateDefaults {
     val Hysteresis = 10.dp
 }
-

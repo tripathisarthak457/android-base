@@ -73,10 +73,19 @@ public class AppSheetStyle internal constructor(
         floatingInset: Dp = this.floatingInset,
         maxWidth: Dp = this.maxWidth,
         shadow: Shadow? = this.shadow,
-    ): AppSheetStyle = AppSheetStyle(material, colors, containerBrush, cornerRadius, floatingInset, maxWidth, shadow)
+    ): AppSheetStyle = AppSheetStyle(
+        material,
+        colors,
+        containerBrush,
+        cornerRadius,
+        floatingInset,
+        maxWidth,
+        shadow,
+    )
 
     override fun equals(other: Any?): Boolean = other is AppSheetStyle &&
-        material == other.material && colors == other.colors && containerBrush == other.containerBrush &&
+        material == other.material && colors == other.colors &&
+        containerBrush == other.containerBrush &&
         cornerRadius == other.cornerRadius && floatingInset == other.floatingInset &&
         maxWidth == other.maxWidth && shadow == other.shadow
 

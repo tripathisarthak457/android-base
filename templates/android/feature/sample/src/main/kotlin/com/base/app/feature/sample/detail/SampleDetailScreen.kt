@@ -52,7 +52,13 @@ internal fun SampleDetailScreen(
         when (val loadState = state.loadState) {
             is LoadState.Error -> AppStateView(
                 message = loadState.error.text(),
-                kind = if (loadState.error == AppError.Offline) StateKind.Offline else StateKind.Error,
+                kind = if (loadState.error ==
+                    AppError.Offline
+                ) {
+                    StateKind.Offline
+                } else {
+                    StateKind.Error
+                },
                 onAction = { onEvent(SampleDetailEvent.Retry) },
             )
 

@@ -98,7 +98,9 @@ class BackCardTest {
 
         val applied = rule.runOnUiThread {
             var applied = 0
-            val observer = Snapshot.registerApplyObserver { changed, _ -> if (changed.isNotEmpty()) applied++ }
+            val observer = Snapshot.registerApplyObserver { changed, _ ->
+                if (changed.isNotEmpty()) applied++
+            }
             try {
                 input.backProgressed(event(0.5f, NavigationEvent.EDGE_LEFT))
                 applied

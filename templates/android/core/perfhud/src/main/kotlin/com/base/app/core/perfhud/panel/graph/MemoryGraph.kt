@@ -72,12 +72,19 @@ internal fun MemoryGraph(memory: MemoryLog, version: () -> Int, modifier: Modifi
                     for (i in 0 until series.count) {
                         val value = series.pssMb[i]
                         if (value.isNaN()) continue
-                        drawCircle(pss, radius = dot, center = Offset(start + i * step, yOf(value, top)))
+                        drawCircle(
+                            pss,
+                            radius = dot,
+                            center = Offset(start + i * step, yOf(value, top)),
+                        )
                     }
                     drawLine(axis, Offset(0f, size.height), Offset(size.width, size.height), stroke)
                     val topMb = Math.round(top)
                     val scaleLayout = scale?.takeIf { topMb == scaleMb }
-                        ?: measurer.measure(String.format(Locale.ROOT, megabytes, topMb.toString()), labelStyle)
+                        ?: measurer.measure(
+                            String.format(Locale.ROOT, megabytes, topMb.toString()),
+                            labelStyle,
+                        )
                     scaleMb = topMb
                     scale = scaleLayout
                     drawText(scaleLayout, color = label, topLeft = Offset.Zero)
@@ -86,7 +93,14 @@ internal fun MemoryGraph(memory: MemoryLog, version: () -> Int, modifier: Modifi
     )
 }
 
-private fun DrawScope.trace(path: Path, values: FloatArray, count: Int, start: Float, step: Float, top: Float) {
+private fun DrawScope.trace(
+    path: Path,
+    values: FloatArray,
+    count: Int,
+    start: Float,
+    step: Float,
+    top: Float,
+) {
     path.rewind()
     for (i in 0 until count) {
         val x = start + i * step

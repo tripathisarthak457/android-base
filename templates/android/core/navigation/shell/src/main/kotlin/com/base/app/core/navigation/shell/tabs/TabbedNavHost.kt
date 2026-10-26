@@ -30,7 +30,8 @@ internal fun TabbedNavHost(
     modifier: Modifier = Modifier,
 ) {
     val more = tabs.size
-    val warmUp = remember(state.overflowFrom) { List(minOf(state.overflowFrom, MAX_WARM_TABS)) { it } }
+    val warmUp =
+        remember(state.overflowFrom) { List(minOf(state.overflowFrom, MAX_WARM_TABS)) { it } }
     val selected = remember(state, more) { { if (state.moreShown) more else state.selectedIndex } }
     KeptTabs(
         selected = selected,
@@ -50,10 +51,17 @@ internal fun TabbedNavHost(
     ) { index ->
         if (index == more) {
             CompositionLocalProvider(LocalScreenChrome provides state.moreScreen) {
-                MoreList(tabs = tabs, labels = labels, from = state.overflowFrom, onSelect = state::select)
+                MoreList(
+                    tabs = tabs,
+                    labels = labels,
+                    from = state.overflowFrom,
+                    onSelect = state::select,
+                )
             }
         } else {
-            CompositionLocalProvider(LocalTabReselections provides state.tabStacks.reselections(index)) {
+            CompositionLocalProvider(
+                LocalTabReselections provides state.tabStacks.reselections(index),
+            ) {
                 StackHost(
                     stack = state.tabs[index],
                     registry = registry,

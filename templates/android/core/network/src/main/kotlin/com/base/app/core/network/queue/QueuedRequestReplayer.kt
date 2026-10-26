@@ -12,12 +12,12 @@ import com.base.app.core.network.client.NetworkJson
 import com.base.app.core.network.model.HttpMethodType
 import com.base.app.core.network.model.NetworkRequest
 import com.base.app.core.network.model.RequestBody
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Instant
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 /**
  * Sends what the offline queue holds, oldest first, for the person signed in now.
@@ -54,16 +54,32 @@ class QueuedRequestReplayer @Inject internal constructor(
                 entry.attempts >= MAX_ATTEMPTS
             ) {
                 Log.w("Gave up on queued ${entry.method} ${entry.path}", tag = TAG)
-                dao.markRefused(entry.id, now.toEpochMilliseconds(), status = null, code = null, message = null)
+                dao.markRefused(
+                    entry.id,
+                    now.toEpochMilliseconds(),
+                    status = null,
+                    code = null,
+                    message = null,
+                )
                 return@forEachIndexed
             }
             when (val result = client.execute(entry.toRequest())) {
                 is AppResult.Success -> dao.delete(entry.id)
+
                 is AppResult.Failure -> {
                     val refusal = result.error as? AppError.Http
                     if (refusal != null && refusal.refusesEntry()) {
-                        Log.w("Server refused queued ${entry.method} ${entry.path}: ${refusal.status}", tag = TAG)
-                        dao.markRefused(entry.id, now.toEpochMilliseconds(), refusal.status, refusal.code, refusal.message)
+                        Log.w(
+                            "Server refused queued ${entry.method} ${entry.path}: ${refusal.status}",
+                            tag = TAG,
+                        )
+                        dao.markRefused(
+                            entry.id,
+                            now.toEpochMilliseconds(),
+                            refusal.status,
+                            refusal.code,
+                            refusal.message,
+                        )
                     } else {
                         dao.countAttempt(entry.id)
                         return@withLock waiting.size - index
@@ -90,7 +106,8 @@ class QueuedRequestReplayer @Inject internal constructor(
 }
 
 /** A 4xx about the request itself, rather than about the moment it was sent. */
-private fun AppError.Http.refusesEntry(): Boolean = status in REFUSED_RANGE && status !in MOMENTARY_REFUSALS
+private fun AppError.Http.refusesEntry(): Boolean =
+    status in REFUSED_RANGE && status !in MOMENTARY_REFUSALS
 
 private val REFUSED_RANGE = 400..499
 private val MOMENTARY_REFUSALS = setOf(401, 408, 426, 429)

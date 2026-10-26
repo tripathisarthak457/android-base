@@ -18,7 +18,14 @@ class AppSpringsTest {
     @Test
     fun `full-screen moves never bounce`() {
         val springs = DefaultSprings
-        listOf(springs.screen, springs.sheet, springs.dialog, springs.layout, springs.thumb, springs.press).forEach {
+        listOf(
+            springs.screen,
+            springs.sheet,
+            springs.dialog,
+            springs.layout,
+            springs.thumb,
+            springs.press,
+        ).forEach {
             assertEquals(0f, it.bounce, 0f)
         }
     }

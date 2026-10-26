@@ -28,7 +28,8 @@ class FakeSearchRepository(
         return AppResult.Success(results)
     }
 
-    override suspend fun result(id: Int): AppResult<SearchResult> = AppResult.Success(results.first())
+    override suspend fun result(id: Int): AppResult<SearchResult> =
+        AppResult.Success(results.first())
 
     override suspend fun remember(query: String) {
         writes?.await()

@@ -67,11 +67,16 @@ class RedactedInputTest {
             Column {
                 Box(Modifier.testTag("card")) {
                     AppRedacted(active = redacted) {
-                        AppCard(onClick = { cardClicks++ }, modifier = Modifier.size(CardWidth, CardHeight)) {}
+                        AppCard(
+                            onClick = { cardClicks++ },
+                            modifier = Modifier.size(CardWidth, CardHeight),
+                        ) {}
                     }
                 }
                 Box(Modifier.testTag("button")) {
-                    AppRedacted(active = redacted) { AppButton(text = "Save", onClick = { buttonClicks++ }) }
+                    AppRedacted(active = redacted) {
+                        AppButton(text = "Save", onClick = { buttonClicks++ })
+                    }
                 }
             }
         }
@@ -96,7 +101,9 @@ class RedactedInputTest {
                     .focusRequester(requester)
                     .onFocusChanged { focused = it.hasFocus },
             ) {
-                AppRedacted(active = redacted) { AppButton(text = "Save", onClick = { buttonClicks++ }) }
+                AppRedacted(active = redacted) {
+                    AppButton(text = "Save", onClick = { buttonClicks++ })
+                }
             }
         }
         rule.runOnIdle { requester.requestFocus() }
@@ -124,7 +131,10 @@ class RedactedInputTest {
         rule.setThemed {
             Box(Modifier.testTag("card")) {
                 AppRedacted(active = redacted) {
-                    AppCard(onClick = { cardClicks++ }, modifier = Modifier.size(CardWidth, CardHeight)) {
+                    AppCard(
+                        onClick = { cardClicks++ },
+                        modifier = Modifier.size(CardWidth, CardHeight),
+                    ) {
                         Box(Modifier.fillMaxSize().onPlaced { probe = it })
                     }
                 }
@@ -134,7 +144,10 @@ class RedactedInputTest {
         rule.onNodeWithTag("card").performTouchInput { down(center) }
         rule.mainClock.advanceTimeBy(HoldMillis)
         val pressed = contentWidth { probe }
-        assertTrue("the card did not shrink under the finger: $pressed of $rest", pressed < rest - 1f)
+        assertTrue(
+            "the card did not shrink under the finger: $pressed of $rest",
+            pressed < rest - 1f,
+        )
 
         redacted = true
         rule.mainClock.advanceTimeBy(SettleMillis)

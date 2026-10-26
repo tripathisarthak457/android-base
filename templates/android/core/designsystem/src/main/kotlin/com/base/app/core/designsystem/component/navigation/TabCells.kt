@@ -27,8 +27,8 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.asAndroidPath
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.AlignmentLine
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.MeasurePolicy
@@ -51,12 +51,12 @@ import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.AutoSizeStep
 import com.base.app.core.designsystem.theme.TabBarSprings
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 /**
  * The tabs are drawn twice from one layout: the base layer in the resting colours, outlined
@@ -183,7 +183,9 @@ internal fun TabCells(
         modifier = modifier,
         content = {
             items.forEachIndexed { index, item ->
-                val showLabel = labels == TabLabels.Always || (labels == TabLabels.Selected && index == selected)
+                val showLabel =
+                    labels == TabLabels.Always ||
+                        (labels == TabLabels.Selected && index == selected)
                 val cell = if (onTap != null) {
                     Modifier
                         .testTag("tab_$index")
@@ -194,7 +196,16 @@ internal fun TabCells(
                             interactionSource = null,
                             indication = null,
                         )
-                        .then(if (showLabel) Modifier else Modifier.semantics { contentDescription = item.label })
+                        .then(
+                            if (showLabel) {
+                                Modifier
+                            } else {
+                                Modifier.semantics {
+                                    contentDescription =
+                                        item.label
+                                }
+                            },
+                        )
                 } else {
                     Modifier.clearAndSetSemantics {}
                 }
@@ -250,7 +261,8 @@ private fun TabCell(
                 val density = LocalDensity.current
                 val style = AppTheme.typography.caption2
                 CompositionLocalProvider(
-                    LocalDensity provides Density(density.density, density.fontScale.coerceAtMost(MAX_LABEL_SCALE)),
+                    LocalDensity provides
+                        Density(density.density, density.fontScale.coerceAtMost(MAX_LABEL_SCALE)),
                 ) {
                     BasicText(
                         text = if (uppercase) item.label.uppercase() else item.label,
@@ -273,14 +285,21 @@ private fun TabCell(
         val icon = measurables[0].measure(Constraints())
         // A label never reaches past the pill: it keeps the pill's gap to the slot edge and the
         // pill's own padding inside it.
-        val labelRoom = (width - 2 * (AppTabBarDefaults.SlotGap + AppTabBarDefaults.LabelPaddingMin).roundToPx()).coerceAtLeast(0)
+        val labelRoom = (
+            width -
+                2 * (AppTabBarDefaults.SlotGap + AppTabBarDefaults.LabelPaddingMin).roundToPx()
+            ).coerceAtLeast(0)
         val label = measurables.getOrNull(1)?.measure(Constraints(maxWidth = labelRoom))
-        val content = icon.height + (label?.let { AppTabBarDefaults.LabelGap.roundToPx() + it.height } ?: 0)
+        val content =
+            icon.height + (label?.let { AppTabBarDefaults.LabelGap.roundToPx() + it.height } ?: 0)
         val top = (height - content) / 2
         val contentStart = (width - (label?.width ?: icon.width).coerceAtLeast(icon.width)) / 2
         layout(width, height, mapOf(ContentStart to contentStart)) {
             icon.placeRelative((width - icon.width) / 2, top)
-            label?.placeRelative((width - label.width) / 2, top + icon.height + AppTabBarDefaults.LabelGap.roundToPx())
+            label?.placeRelative(
+                (width - label.width) / 2,
+                top + icon.height + AppTabBarDefaults.LabelGap.roundToPx(),
+            )
         }
     }
 }
@@ -299,10 +318,28 @@ internal class TabMeasure(
     /** Px of rail height the cells may use before they scroll; written by the rail's viewport. */
     var railViewport by mutableIntStateOf(Constraints.Infinity)
 
-    private val basePolicy = if (vertical) railPolicy(writesSlots = true) else barPolicy(writesSlots = true)
-    private val selectedPolicy = if (vertical) railPolicy(writesSlots = false) else barPolicy(writesSlots = false)
+    private val basePolicy = if (vertical) {
+        railPolicy(
+            writesSlots = true,
+        )
+    } else {
+        barPolicy(writesSlots = true)
+    }
+    private val selectedPolicy = if (vertical) {
+        railPolicy(
+            writesSlots = false,
+        )
+    } else {
+        barPolicy(writesSlots = false)
+    }
 
-    fun policy(layer: TabLayer): MeasurePolicy = if (layer == TabLayer.Base) basePolicy else selectedPolicy
+    fun policy(layer: TabLayer): MeasurePolicy = if (layer ==
+        TabLayer.Base
+    ) {
+        basePolicy
+    } else {
+        selectedPolicy
+    }
 
     private fun barPolicy(writesSlots: Boolean) = MeasurePolicy { measurables, constraints ->
         val width = constraints.maxWidth
@@ -316,7 +353,10 @@ internal class TabMeasure(
             placeables.forEachIndexed { index, placeable ->
                 val content = (slot - 2 * placeable.contentStart()).toFloat()
                 val pill = (content + 2 * AppTabBarDefaults.LabelPadding.toPx())
-                    .coerceIn(AppTabBarDefaults.MinPillWidth.toPx(), AppTabBarDefaults.MaxPillWidth.toPx())
+                    .coerceIn(
+                        AppTabBarDefaults.MinPillWidth.toPx(),
+                        AppTabBarDefaults.MaxPillWidth.toPx(),
+                    )
                     .coerceAtLeast(content + 2 * AppTabBarDefaults.LabelPaddingMin.toPx())
                     .coerceAtMost(slot - 2 * AppTabBarDefaults.SlotGap.toPx())
                 starts[index] = index * slot + (slot - pill) / 2f
@@ -332,9 +372,15 @@ internal class TabMeasure(
             placeables.forEachIndexed { index, placeable ->
                 if (index == current) {
                     // Folding, the selected tab moves to the middle of the narrowing capsule.
-                    placeable.placeRelative(lerp(index * slot.toFloat(), (folded - slot) / 2f, collapse).toInt(), 0)
+                    placeable.placeRelative(
+                        lerp(index * slot.toFloat(), (folded - slot) / 2f, collapse).toInt(),
+                        0,
+                    )
                 } else {
-                    placeable.placeRelativeWithLayer(index * slot, 0) { alpha = (1f - collapse * 2f).coerceIn(0f, 1f) }
+                    placeable.placeRelativeWithLayer(index * slot, 0) {
+                        alpha =
+                            (1f - collapse * 2f).coerceIn(0f, 1f)
+                    }
                 }
             }
         }
@@ -346,7 +392,10 @@ internal class TabMeasure(
         // Items shrink toward their minimum before the rail scrolls, so a short window keeps every
         // tab in view as long as it can.
         val fit = if (railViewport == Constraints.Infinity) Int.MAX_VALUE else railViewport / count
-        val item = fit.coerceIn(AppTabBarDefaults.RailItemMinHeight.roundToPx(), AppTabBarDefaults.RailItemHeight.roundToPx())
+        val item = fit.coerceIn(
+            AppTabBarDefaults.RailItemMinHeight.roundToPx(),
+            AppTabBarDefaults.RailItemHeight.roundToPx(),
+        )
         val placeables = measurables.map { it.measure(Constraints.fixed(width, item)) }
         if (writesSlots) {
             val inset = AppTabBarDefaults.RailPillInset.toPx()
@@ -356,7 +405,9 @@ internal class TabMeasure(
             publish(PillSlots(starts, ends, cross, width - cross))
         }
         layout(width, item * placeables.size) {
-            placeables.forEachIndexed { index, placeable -> placeable.placeRelative(0, index * item) }
+            placeables.forEachIndexed { index, placeable ->
+                placeable.placeRelative(0, index * item)
+            }
         }
     }
 
@@ -390,7 +441,8 @@ internal fun Path.setPill(
     val rest = slots.lengthAt((from + to) / 2f)
     if (rest > 0f) {
         val stretch = (end - start) / rest
-        val thin = (crossEnd - crossStart) * IndicatorEdges.SQUASH * (stretch - 1f).coerceAtLeast(0f) / 2f
+        val thin =
+            (crossEnd - crossStart) * IndicatorEdges.SQUASH * (stretch - 1f).coerceAtLeast(0f) / 2f
         crossStart += thin
         crossEnd -= thin
     }
@@ -436,13 +488,13 @@ private fun Path.addCapsule(left: Float, top: Float, right: Float, bottom: Float
 /** Where a cell's content (its label, or its glyph without one) starts, so the pill can fit it. */
 private val ContentStart = VerticalAlignmentLine(::min)
 
-private fun Placeable.contentStart(): Int = get(ContentStart).takeIf { it != AlignmentLine.Unspecified } ?: 0
+private fun Placeable.contentStart(): Int =
+    get(ContentStart).takeIf { it != AlignmentLine.Unspecified } ?: 0
 
 private const val MAX_LABEL_SCALE = 1.3f
 
 /** How far a label that does not fit is set below its size, before it is ellipsized. */
 private const val MIN_LABEL_SHRINK = 0.85f
-
 
 @AppComponentPreviews
 @Composable
@@ -457,14 +509,39 @@ private fun TabCellsPreview() {
     val bounce = remember { TabBounce(items.size) }
     // One measure per bar, as each bar has: two base layers writing their pill slots into one
     // measure would remeasure each other forever.
-    val labelled = remember { TabMeasure(vertical = false, state = null, selected = { 1 }, slots = mutableStateOf(PillSlots.Empty)) }
-    val iconsOnly = remember { TabMeasure(vertical = false, state = null, selected = { 1 }, slots = mutableStateOf(PillSlots.Empty)) }
+    val labelled =
+        remember {
+            TabMeasure(
+                vertical = false,
+                state = null,
+                selected = { 1 },
+                slots = mutableStateOf(PillSlots.Empty),
+            )
+        }
+    val iconsOnly =
+        remember {
+            TabMeasure(
+                vertical = false,
+                state = null,
+                selected = { 1 },
+                slots = mutableStateOf(PillSlots.Empty),
+            )
+        }
     Column(
         modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
     ) {
         TabCells(items, 1, TabLayer.Base, TabLabels.Always, look, bounce, labelled, onTap = {})
-        TabCells(items, 1, TabLayer.Selected, TabLabels.Always, look, bounce, labelled, onTap = null)
+        TabCells(
+            items,
+            1,
+            TabLayer.Selected,
+            TabLabels.Always,
+            look,
+            bounce,
+            labelled,
+            onTap = null,
+        )
         TabCells(items, 1, TabLayer.Base, TabLabels.Never, look, bounce, iconsOnly, onTap = {})
     }
 }

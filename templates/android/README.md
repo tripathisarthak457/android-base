@@ -120,7 +120,8 @@ commit as its cause.
 
 Spotless runs ktlint in Android Studio's style over every Kotlin and Gradle file, so the IDE's
 reformat and the build agree, and the Compose Rules for ktlint, which check how a composable takes
-and uses its parameters. `.editorconfig` holds both, and names each Compose rule turned off and why.
+and uses its parameters. `.editorconfig` holds both, and names each rule turned off and why. ktlint
+wraps code at 100 columns; a comment or a string it cannot wrap is left as written.
 <!-- </opt:formatting> -->
 <!-- <opt:!formatting> -->
 ```bash

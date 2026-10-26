@@ -195,7 +195,13 @@ class ShellState internal constructor(
             val tab = rootKeys.indexOf(command.key)
             if (tab >= 0) return showRoot(tab)
         }
-        val host = if (command is NavCommand.Navigate && isPresented(command.key)) presented else front
+        val host = if (command is NavCommand.Navigate &&
+            isPresented(command.key)
+        ) {
+            presented
+        } else {
+            front
+        }
         val verdict = guard(command, host)
         if (verdict != Verdict.Apply) return verdict
         if (command is NavCommand.ResetTo && host !== presented) {
@@ -292,7 +298,14 @@ fun rememberShellState(
         shellSaver(rootKeys, registry, serialization, generation)
     }
     return rememberSaveable(rootKeys, generation, saver = saver) {
-        newShellState(TabStacks(rootKeys), registry, generation, more = false, sidebar = null, presented = emptyList())
+        newShellState(
+            TabStacks(rootKeys),
+            registry,
+            generation,
+            more = false,
+            sidebar = null,
+            presented = emptyList(),
+        )
     }
 }
 
@@ -305,7 +318,12 @@ internal fun newShellState(
     presented: List<AppNavKey>,
 ): ShellState = ShellState(
     tabStacks = tabStacks,
-    presented = AppBackStack(mutableStateListOf<AppNavKey>().apply { addAll(presented) }, floor = 0),
+    presented = AppBackStack(
+        mutableStateListOf<AppNavKey>().apply {
+            addAll(presented)
+        },
+        floor = 0,
+    ),
     initialMore = more,
     initialSidebar = sidebar,
     generation = generation,

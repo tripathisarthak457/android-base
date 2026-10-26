@@ -1,10 +1,10 @@
 package com.base.app.core.devtools.screen
 
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * The destination on top of the app's back stack, by name, as the app's root reports it. The

@@ -99,7 +99,10 @@ class PerfLogcatTest {
         logcat.onSecond(frames, memory, screen = "Detail")
 
         assertEquals(1, lines.size)
-        assertTrue(lines.single(), lines.single().startsWith("screen=Home frames=100 janky=1.0% frameP50="))
+        assertTrue(
+            lines.single(),
+            lines.single().startsWith("screen=Home frames=100 janky=1.0% frameP50="),
+        )
     }
 
     @Test
@@ -110,7 +113,10 @@ class PerfLogcatTest {
 
         repeat(5) { logcat.onSecond(frames, memory, screen = "Home") }
 
-        assertTrue(lines.single(), lines.single().startsWith("window=5s frames=100 fps=120.0 janky=0.0% "))
+        assertTrue(
+            lines.single(),
+            lines.single().startsWith("window=5s frames=100 fps=120.0 janky=0.0% "),
+        )
     }
 
     private fun draw(frames: Int, screen: String, missedDeadline: Boolean = false) {

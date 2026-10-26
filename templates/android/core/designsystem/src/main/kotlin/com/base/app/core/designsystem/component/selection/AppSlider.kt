@@ -74,7 +74,9 @@ public fun AppSlider(
     // glides the thumb over rather than teleporting it.
     var dragging by remember { mutableStateOf(false) }
     val shown = remember { Animatable(fraction) }
-    LaunchedEffect(fraction, dragging) { if (dragging) shown.snapTo(fraction) else shown.animateTo(fraction, springs.thumb.unit) }
+    LaunchedEffect(fraction, dragging) {
+        if (dragging) shown.snapTo(fraction) else shown.animateTo(fraction, springs.thumb.unit)
+    }
 
     fun snapped(raw: Float): Float {
         val clamped = raw.coerceIn(0f, 1f)
@@ -91,7 +93,10 @@ public fun AppSlider(
     }
 
     val shadowContext = LocalGraphicsContext.current.shadowContext
-    val thumbShadow = remember(shadowContext) { shadowContext.createDropShadowPainter(CircleShape, AppSliderDefaults.ThumbShadow) }
+    val thumbShadow =
+        remember(shadowContext) {
+            shadowContext.createDropShadowPainter(CircleShape, AppSliderDefaults.ThumbShadow)
+        }
     Canvas(
         modifier = modifier
             .fillMaxWidth()
@@ -117,10 +122,11 @@ public fun AppSlider(
                         awaitEachGesture {
                             val down = awaitFirstDown()
                             var overSlop = 0f
-                            val drag = awaitHorizontalTouchSlopOrCancellation(down.id) { change, over ->
-                                change.consume()
-                                overSlop = over
-                            }
+                            val drag =
+                                awaitHorizontalTouchSlopOrCancellation(down.id) { change, over ->
+                                    change.consume()
+                                    overSlop = over
+                                }
                             if (drag != null) {
                                 dragging = true
                                 emit(fractionAt(drag.position.x + overSlop))
@@ -153,9 +159,19 @@ public fun AppSlider(
         val x = inset + usable * (if (rtl) 1f - f else f)
         val y = size.height / 2f
         val radius = CornerRadius(track / 2f)
-        drawRoundRect(colors.fill, topLeft = Offset(inset, y - track / 2f), size = Size(usable, track), cornerRadius = radius)
+        drawRoundRect(
+            colors.fill,
+            topLeft = Offset(inset, y - track / 2f),
+            size = Size(usable, track),
+            cornerRadius = radius,
+        )
         val activeStart = if (rtl) x else inset
-        drawRoundRect(colors.accent, topLeft = Offset(activeStart, y - track / 2f), size = Size(usable * f, track), cornerRadius = radius)
+        drawRoundRect(
+            colors.accent,
+            topLeft = Offset(activeStart, y - track / 2f),
+            size = Size(usable * f, track),
+            cornerRadius = radius,
+        )
         translate(left = x - inset, top = y - inset) {
             with(thumbShadow) { draw(Size(thumb, thumb)) }
         }
@@ -173,10 +189,12 @@ public fun AppSlider(
 public object AppSliderDefaults {
     // iOS's thumb: a soft blur that lifts it off a white page, and a faint ring that still outlines
     // it where the blur is too light to see.
-    public val ThumbShadow: Shadow = Shadow(radius = 2.dp, alpha = 0.15f, offset = DpOffset(0.dp, 1.dp))
+    public val ThumbShadow: Shadow =
+        Shadow(radius = 2.dp, alpha = 0.15f, offset = DpOffset(0.dp, 1.dp))
     public const val ThumbRingAlpha: Float = 0.04f
     public val ThumbSize: Dp = 28.dp
     public val TrackHeight: Dp = 4.dp
+
     /** Room above and below the thumb for its shadow and the finger. */
     public val VerticalSlack: Dp = 16.dp
     public val RingWidth: Dp = 0.5.dp

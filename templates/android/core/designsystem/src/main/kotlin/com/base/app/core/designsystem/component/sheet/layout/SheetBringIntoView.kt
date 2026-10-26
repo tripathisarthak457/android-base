@@ -17,7 +17,8 @@ import com.base.app.core.designsystem.component.sheet.SheetController
  * detent that shows it, else the tallest, then goes on to the parent. Keyboard Tab past the last
  * visible row therefore raises the sheet rather than focusing a row off the window.
  */
-internal fun Modifier.sheetBringIntoView(controller: SheetController): Modifier = this then SheetBringIntoViewElement(controller)
+internal fun Modifier.sheetBringIntoView(controller: SheetController): Modifier =
+    this then SheetBringIntoViewElement(controller)
 
 private data class SheetBringIntoViewElement(val controller: SheetController) :
     ModifierNodeElement<SheetBringIntoViewNode>() {
@@ -32,12 +33,21 @@ private data class SheetBringIntoViewElement(val controller: SheetController) :
     }
 }
 
-private class SheetBringIntoViewNode(var controller: SheetController) : Modifier.Node(), BringIntoViewModifierNode {
-    override suspend fun bringIntoView(childCoordinates: LayoutCoordinates, boundsProvider: () -> Rect?) {
+private class SheetBringIntoViewNode(var controller: SheetController) :
+    Modifier.Node(),
+    BringIntoViewModifierNode {
+    override suspend fun bringIntoView(
+        childCoordinates: LayoutCoordinates,
+        boundsProvider: () -> Rect?,
+    ) {
         val rect = boundsProvider() ?: return
         raiseToShow(childCoordinates.localToWindow(Offset(rect.left, rect.bottom)).y)
         val own = requireLayoutCoordinates()
-        bringIntoView { boundsProvider()?.let { own.localBoundingBoxOf(childCoordinates).let { box -> it.translate(box.topLeft) } } }
+        bringIntoView {
+            boundsProvider()?.let {
+                own.localBoundingBoxOf(childCoordinates).let { box -> it.translate(box.topLeft) }
+            }
+        }
     }
 
     private suspend fun raiseToShow(bottom: Float) {
@@ -46,8 +56,9 @@ private class SheetBringIntoViewNode(var controller: SheetController) : Modifier
         val frame = controller.frame ?: return
         if (stops.single || state.isMoving || !state.canMoveProgrammatically()) return
         val placed = state.placedTop()
-        val visibleBottom = state.boundsTop + minOf(frame.restBottom, frame.boundsHeight - controller.imeHeight) -
-            if (frame.footerPinned) frame.footerHeight else 0f
+        val visibleBottom =
+            state.boundsTop + minOf(frame.restBottom, frame.boundsHeight - controller.imeHeight) -
+                if (frame.footerPinned) frame.footerHeight else 0f
         if (bottom <= visibleBottom) return
         var choice = stops.detents[0]
         for (index in stops.count - 1 downTo 0) {

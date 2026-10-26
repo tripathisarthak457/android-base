@@ -95,11 +95,7 @@ internal fun FeedScreen(
 }
 
 @Composable
-private fun FeedCard(
-    post: FeedPost,
-    expanded: Boolean,
-    onToggle: () -> Unit,
-) {
+private fun FeedCard(post: FeedPost, expanded: Boolean, onToggle: () -> Unit) {
     val author = stringResource(R.string.feed_author, post.authorId)
     AppCard(modifier = Modifier.fillMaxWidth()) {
         Column(
@@ -130,7 +126,9 @@ private fun FeedCard(
                 overflow = TextOverflow.Ellipsis,
             )
             AppButton(
-                text = stringResource(if (expanded) R.string.feed_show_less else R.string.feed_show_more),
+                text = stringResource(
+                    if (expanded) R.string.feed_show_less else R.string.feed_show_more,
+                ),
                 onClick = onToggle,
                 variant = ButtonVariant.Plain,
                 size = ButtonSize.Small,
@@ -155,7 +153,9 @@ private fun LoadingFeed() {
         userScrollEnabled = false,
     ) {
         items(PlaceholderRows, key = { it }) {
-            AppRedacted(active = true) { FeedCard(post = FeedPlaceholder, expanded = false, onToggle = {}) }
+            AppRedacted(active = true) {
+                FeedCard(post = FeedPlaceholder, expanded = false, onToggle = {})
+            }
         }
     }
 }

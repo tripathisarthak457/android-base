@@ -17,6 +17,9 @@ max_line_length = 100
 ktlint_code_style = android_studio
 # Composables are nouns in PascalCase, which ktlint's function-naming rule would otherwise reject.
 ktlint_function_naming_ignore_when_annotated_with = Composable
+# Constants are named in PascalCase like every other value Compose code declares (Compose's API
+# guidelines), not in the SCREAMING_SNAKE_CASE ktlint's property-naming rule asks for.
+ktlint_standard_property-naming = disabled
 # <opt:!formatting># ktlint's own rules are the formatting feature's; without it only the Compose rules below run.
 # <opt:!formatting>ktlint_standard = disabled
 ij_kotlin_code_style_defaults = KOTLIN_OFFICIAL

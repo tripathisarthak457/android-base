@@ -80,13 +80,20 @@ public fun <T> AppReorderableList(
         modifier = modifier.appScrollIndicator(state).pointerInput(state) {
             detectDragGesturesAfterLongPress(
                 onDragStart = { offset ->
-                    val hit = state.layoutInfo.visibleItemsInfo.firstOrNull { offset.y.toInt() in it.offset..(it.offset + it.size) }
-                        ?: return@detectDragGesturesAfterLongPress
+                    val hit =
+                        state.layoutInfo.visibleItemsInfo.firstOrNull {
+                            offset.y.toInt() in
+                                it.offset..(it.offset + it.size)
+                        }
+                            ?: return@detectDragGesturesAfterLongPress
                     drag.start(hit.key, hit.offset)
                     haptics.perform(AppHaptic.Threshold)
                     drag.autoScroll = scope.launch {
                         while (true) {
-                            val speed = drag.edgeSpeed(AppReorderableListDefaults.AutoScrollEdge.toPx(), AppReorderableListDefaults.MaxScroll.toPx())
+                            val speed = drag.edgeSpeed(
+                                AppReorderableListDefaults.AutoScrollEdge.toPx(),
+                                AppReorderableListDefaults.MaxScroll.toPx(),
+                            )
                             withFrameMillis { }
                             if (speed != 0f) state.scrollBy(speed)
                         }
@@ -107,7 +114,15 @@ public fun <T> AppReorderableList(
             Box(
                 modifier = Modifier
                     .zIndex(if (lifted) 1f else 0f)
-                    .then(if (lifted) Modifier else Modifier.animateItem(placementSpec = springs.layout.offset))
+                    .then(
+                        if (lifted) {
+                            Modifier
+                        } else {
+                            Modifier.animateItem(
+                                placementSpec = springs.layout.offset,
+                            )
+                        },
+                    )
                     .graphicsLayer {
                         if (lifted) {
                             translationY = drag.translation()
@@ -118,8 +133,29 @@ public fun <T> AppReorderableList(
                     }
                     .semantics {
                         customActions = buildList {
-                            if (index > 0) add(CustomAccessibilityAction(moveUp) { move(index, index - 1); true })
-                            if (index < items.lastIndex) add(CustomAccessibilityAction(moveDown) { move(index, index + 1); true })
+                            if (index >
+                                0
+                            ) {
+                                add(
+                                    CustomAccessibilityAction(moveUp) {
+                                        move(index, index - 1)
+                                        true
+                                    },
+                                )
+                            }
+                            if (index <
+                                items.lastIndex
+                            ) {
+                                add(
+                                    CustomAccessibilityAction(moveDown) {
+                                        move(
+                                            index,
+                                            index + 1,
+                                        )
+                                        true
+                                    },
+                                )
+                            }
                         }
                     },
             ) {
@@ -160,7 +196,16 @@ private class ReorderDrag(private val list: LazyListState) {
         val middle = startOffset + travelled + item.size / 2f
         val target = list.layoutInfo.visibleItemsInfo.firstOrNull { other ->
             other.key != key && middle.toInt() in other.offset..(other.offset + other.size) &&
-                (if (other.index > item.index) middle > other.offset + other.size / 2f else middle < other.offset + other.size / 2f)
+                (
+                    if (other.index >
+                        item.index
+                    ) {
+                        middle > other.offset + other.size / 2f
+                    } else {
+                        middle <
+                            other.offset + other.size / 2f
+                    }
+                    )
         } ?: return null
         val from = keys.indexOf(key)
         val to = keys.indexOf(target.key)
@@ -174,8 +219,14 @@ private class ReorderDrag(private val list: LazyListState) {
         val top = startOffset + travelled
         val bottom = top + item.size
         return when {
-            top < info.viewportStartOffset + edge -> -max * ((info.viewportStartOffset + edge - top) / edge).coerceIn(0f, 1f)
-            bottom > info.viewportEndOffset - edge -> max * ((bottom - (info.viewportEndOffset - edge)) / edge).coerceIn(0f, 1f)
+            top < info.viewportStartOffset + edge ->
+                -max *
+                    ((info.viewportStartOffset + edge - top) / edge).coerceIn(0f, 1f)
+
+            bottom > info.viewportEndOffset - edge ->
+                max *
+                    ((bottom - (info.viewportEndOffset - edge)) / edge).coerceIn(0f, 1f)
+
             else -> 0f
         }
     }
@@ -190,7 +241,10 @@ private class ReorderDrag(private val list: LazyListState) {
         }
         settle = scope.launch {
             val from = translation()
-            animate(from, 0f, animationSpec = spec) { value, _ -> travelled = item.offset - startOffset + value }
+            animate(from, 0f, animationSpec = spec) { value, _ ->
+                travelled =
+                    item.offset - startOffset + value
+            }
             key = null
         }
     }
@@ -210,7 +264,11 @@ private const val LiftScale = 1.02f
 private fun AppReorderableListPreview() {
     Column(modifier = Modifier.background(AppTheme.colors.background)) {
         AppReorderableList(
-            items = listOf("Breakfast", "Groceries", "Pick up the parcel from the post office before it closes"),
+            items = listOf(
+                "Breakfast",
+                "Groceries",
+                "Pick up the parcel from the post office before it closes",
+            ),
             key = { it },
             onMove = { _, _ -> },
             modifier = Modifier.height(AppTheme.sizes.rowHeight * 4),

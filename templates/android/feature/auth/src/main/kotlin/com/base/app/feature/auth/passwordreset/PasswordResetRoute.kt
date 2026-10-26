@@ -19,7 +19,7 @@ internal fun PasswordResetRoute(
                 PasswordResetEffect.NavigateBack -> navigator.navigateUp()
             }
         },
-    // <opt:ui_components>
+        // <opt:ui_components>
     ) { state, onEvent ->
         PasswordResetScreen(state = state, email = viewModel.email, onEvent = onEvent)
     }

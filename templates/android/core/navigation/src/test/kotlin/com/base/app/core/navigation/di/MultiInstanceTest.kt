@@ -10,6 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
+import javax.inject.Inject
 import org.junit.Assert.assertNotSame
 import org.junit.Assert.assertSame
 import org.junit.Rule
@@ -18,7 +19,6 @@ import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import javax.inject.Inject
 
 /**
  * Two windows of the app (multi-instance on a tablet, two desktop windows) navigate on their own:

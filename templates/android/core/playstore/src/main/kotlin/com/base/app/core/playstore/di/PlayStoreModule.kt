@@ -22,5 +22,6 @@ internal object PlayStoreModule {
     @Provides
     @Singleton
     @PlayStoreData
-    fun providePlayStoreData(files: DataStoreFiles): DataStore<Preferences> = files.preferences("playstore")
+    fun providePlayStoreData(files: DataStoreFiles): DataStore<Preferences> =
+        files.preferences("playstore")
 }

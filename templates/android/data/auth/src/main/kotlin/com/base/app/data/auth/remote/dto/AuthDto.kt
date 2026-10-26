@@ -17,26 +17,15 @@ internal data class TokenResponseDto(
 )
 
 @Serializable
-internal data class SignInRequestDto(
-    val email: String,
-    val password: String,
-)
+internal data class SignInRequestDto(val email: String, val password: String)
 
 @Serializable
-internal data class SignUpRequestDto(
-    val name: String,
-    val email: String,
-    val password: String,
-)
+internal data class SignUpRequestDto(val name: String, val email: String, val password: String)
 
 @Serializable
-internal data class EmailRequestDto(
-    val email: String,
-)
+internal data class EmailRequestDto(val email: String)
 // <opt:googlesignin>
 
 @Serializable
-internal data class GoogleSignInRequestDto(
-    @SerialName("id_token") val idToken: String,
-)
+internal data class GoogleSignInRequestDto(@SerialName("id_token") val idToken: String)
 // </opt:googlesignin>

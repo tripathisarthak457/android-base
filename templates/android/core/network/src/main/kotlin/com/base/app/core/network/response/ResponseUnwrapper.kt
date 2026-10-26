@@ -44,7 +44,11 @@ class PassthroughUnwrapper : ResponseUnwrapper {
             status = status,
             code = error?.firstText(CODE_KEYS),
             message = error?.firstText(MESSAGE_KEYS) ?: root?.firstText(MESSAGE_KEYS),
-            fieldErrors = (error?.get(ERRORS_KEY) ?: root?.get(ERRORS_KEY))?.asFieldErrors().orEmpty(),
+            fieldErrors = (
+                error?.get(
+                    ERRORS_KEY,
+                ) ?: root?.get(ERRORS_KEY)
+                )?.asFieldErrors().orEmpty(),
         )
     }
 
@@ -98,8 +102,9 @@ private fun String.parseObjectOrNull(): JsonObject? {
     }
 }
 
-private fun JsonObject.firstText(keys: List<String>): String? =
-    keys.firstNotNullOfOrNull { key -> (get(key) as? JsonPrimitive)?.content?.takeIf(String::isNotBlank) }
+private fun JsonObject.firstText(keys: List<String>): String? = keys.firstNotNullOfOrNull { key ->
+    (get(key) as? JsonPrimitive)?.content?.takeIf(String::isNotBlank)
+}
 
 /** Reads `{"field": ["message"]}` and `{"field": "message"}` alike. */
 private fun JsonElement.asFieldErrors(): Map<String, List<String>> {
@@ -107,7 +112,11 @@ private fun JsonElement.asFieldErrors(): Map<String, List<String>> {
     return fields.mapNotNull { (field, value) ->
         val messages = when (value) {
             is JsonPrimitive -> listOfNotNull(value.content.takeIf(String::isNotBlank))
-            is JsonArray -> value.mapNotNull { (it as? JsonPrimitive)?.content?.takeIf(String::isNotBlank) }
+
+            is JsonArray -> value.mapNotNull {
+                (it as? JsonPrimitive)?.content?.takeIf(String::isNotBlank)
+            }
+
             else -> emptyList()
         }
         messages.takeIf { it.isNotEmpty() }?.let { field to it }

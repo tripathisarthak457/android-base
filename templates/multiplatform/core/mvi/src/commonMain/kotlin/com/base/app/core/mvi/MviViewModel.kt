@@ -139,6 +139,8 @@ abstract class MviViewModel<S : UiState, E : UiEvent, F : UiEffect>(initial: S) 
     }
 
     private companion object {
-        val WhileObserved = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5.seconds.inWholeMilliseconds)
+        val WhileObserved = SharingStarted.WhileSubscribed(
+            stopTimeoutMillis = 5.seconds.inWholeMilliseconds,
+        )
     }
 }

@@ -4,10 +4,22 @@ import android.app.Activity
 import android.app.Application
 import android.os.Looper
 import android.view.FrameMetrics
+// <opt:analytics>
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
+// </opt:analytics>
 import androidx.metrics.performance.JankStats
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+// <opt:analytics>
+import com.base.app.core.analytics.jank.FrameJankRecorder
+// </opt:analytics>
 import org.junit.Assert.assertEquals
+// <opt:analytics>
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+// </opt:analytics>
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,14 +28,6 @@ import org.robolectric.Shadows.shadowOf
 import org.robolectric.android.controller.ActivityController
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.FrameMetricsBuilder
-// <opt:analytics>
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
-import com.base.app.core.analytics.jank.FrameJankRecorder
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
-// </opt:analytics>
 
 /**
  * What the feed does to the window decides whether the perf gates measure the app with the overlay
@@ -65,7 +69,10 @@ class FrameFeedTest {
         jankRecorder.track(activity.get().window, analyticsLifecycle.lifecycle)
         analyticsLifecycle.lifecycle.currentState = Lifecycle.State.RESUMED
         // </opt:analytics>
-        JankStats.createAndTrack(activity.get().window) { frame -> statesPerFrame += frame.states.size }
+        JankStats.createAndTrack(activity.get().window) { frame ->
+            statesPerFrame +=
+                frame.states.size
+        }
         settle()
     }
 
@@ -169,7 +176,10 @@ class FrameFeedTest {
         // Far past any clock the states were stamped with, so a frame sees every state put
         // before it and none removed before it; each one later than the last, as frames are.
         vsync += FRAME_NANOS
-        val metrics = FrameMetricsBuilder().setMetric(FrameMetrics.INTENDED_VSYNC_TIMESTAMP, vsync).build()
+        val metrics = FrameMetricsBuilder().setMetric(
+            FrameMetrics.INTENDED_VSYNC_TIMESTAMP,
+            vsync,
+        ).build()
         shadowOf(activity.get().window).reportOnFrameMetricsAvailable(metrics)
     }
 

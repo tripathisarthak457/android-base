@@ -1,17 +1,21 @@
 package com.base.app.core.devtools.di
 
 import com.base.app.core.devtools.DevTools
-import com.base.app.core.ui.tooling.DevTooling
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 // <opt:network>
 import com.base.app.core.devtools.log.DevToolsLog
 import com.base.app.core.devtools.log.NetworkExchange
 import com.base.app.core.network.recording.HttpExchange
 import com.base.app.core.network.recording.NetworkObserver
+// </opt:network>
+import com.base.app.core.ui.tooling.DevTooling
+import dagger.Binds
+import dagger.Module
+// <opt:network>
 import dagger.Provides
+// </opt:network>
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+// <opt:network>
 import dagger.multibindings.IntoSet
 // </opt:network>
 

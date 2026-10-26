@@ -55,7 +55,8 @@ internal val LocalContainerActions = compositionLocalOf<ContainerActions?> { nul
 internal fun Modifier.containerActionsSemantics(actions: ContainerActions?): Modifier =
     if (actions == null) this else this then ContainerActionsElement(actions)
 
-private class ContainerActionsElement(val actions: ContainerActions) : ModifierNodeElement<ContainerActionsNode>() {
+private class ContainerActionsElement(val actions: ContainerActions) :
+    ModifierNodeElement<ContainerActionsNode>() {
     override fun create() = ContainerActionsNode(actions)
 
     override fun update(node: ContainerActionsNode) = node.update(actions)
@@ -64,12 +65,15 @@ private class ContainerActionsElement(val actions: ContainerActions) : ModifierN
         name = "containerActionsSemantics"
     }
 
-    override fun equals(other: Any?): Boolean = other is ContainerActionsElement && other.actions === actions
+    override fun equals(other: Any?): Boolean =
+        other is ContainerActionsElement && other.actions === actions
 
     override fun hashCode(): Int = System.identityHashCode(actions)
 }
 
-private class ContainerActionsNode(private var actions: ContainerActions) : Modifier.Node(), SemanticsModifierNode {
+private class ContainerActionsNode(private var actions: ContainerActions) :
+    Modifier.Node(),
+    SemanticsModifierNode {
 
     override val shouldMergeDescendantSemantics: Boolean
         get() = !actions.isClaimed

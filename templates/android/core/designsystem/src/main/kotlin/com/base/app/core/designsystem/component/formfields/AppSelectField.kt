@@ -79,11 +79,25 @@ public fun <T> AppSelectField(
         Box(
             Modifier
                 .fillMaxWidth()
-                .pressable(onClick = { expanded = true }, feedback = PressFeedback.None, enabled = enabled, role = Role.DropdownList)
+                .pressable(
+                    onClick = { expanded = true },
+                    feedback = PressFeedback.None,
+                    enabled = enabled,
+                    role = Role.DropdownList,
+                )
                 .disabledAlpha(enabled),
         ) {
             decorator.Decoration {
-                if (shown != null) AppText(text = shown, style = AppTheme.typography.body, color = AppTheme.colors.contentPrimary, maxLines = 1)
+                if (shown !=
+                    null
+                ) {
+                    AppText(
+                        text = shown,
+                        style = AppTheme.typography.body,
+                        color = AppTheme.colors.contentPrimary,
+                        maxLines = 1,
+                    )
+                }
             }
         }
         AppMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
@@ -128,7 +142,9 @@ public fun AppPhoneField(
             options = dialCodes,
             onSelect = onDialCodeChange,
             // The code and its chevron grow with the text, so a fixed box would cut the longest code.
-            modifier = Modifier.alignBy(FieldBoxTop).width(AppPhoneFieldDefaults.DialCodeWidth.scaledLike(AppTheme.typography.body)),
+            modifier = Modifier.alignBy(
+                FieldBoxTop,
+            ).width(AppPhoneFieldDefaults.DialCodeWidth.scaledLike(AppTheme.typography.body)),
             label = dialCodeLabel,
             enabled = enabled,
         )
@@ -141,7 +157,10 @@ public fun AppPhoneField(
             enabled = enabled,
             maxLength = MaxNumberLength,
             inputTransformation = DigitsOnly,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone, imeAction = ImeAction.Done),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Phone,
+                imeAction = ImeAction.Done,
+            ),
         )
     }
 }
@@ -168,11 +187,43 @@ private fun AppSelectFieldPreview() {
         modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
     ) {
-        AppSelectField(value = null, options = listOf("Small", "Medium", "Large"), onSelect = {}, label = "Size")
-        AppSelectField(value = "Medium", options = listOf("Small", "Medium", "Large"), onSelect = {}, label = "Size", helper = "Fits true to size")
-        AppSelectField(value = null, options = listOf("UK", "France"), onSelect = {}, label = "Country", error = "Choose where to ship")
-        AppSelectField(value = "Large", options = listOf("Large"), onSelect = {}, label = "Size", enabled = false)
-        AppPhoneField(dialCode = "+44", onDialCodeChange = {}, number = rememberTextFieldState("7700 900123"))
-        AppPhoneField(dialCode = "+1", onDialCodeChange = {}, number = rememberTextFieldState("555"), error = "Enter the full number")
+        AppSelectField(
+            value = null,
+            options = listOf("Small", "Medium", "Large"),
+            onSelect = {},
+            label = "Size",
+        )
+        AppSelectField(
+            value = "Medium",
+            options = listOf("Small", "Medium", "Large"),
+            onSelect = {},
+            label = "Size",
+            helper = "Fits true to size",
+        )
+        AppSelectField(
+            value = null,
+            options = listOf("UK", "France"),
+            onSelect = {},
+            label = "Country",
+            error = "Choose where to ship",
+        )
+        AppSelectField(
+            value = "Large",
+            options = listOf("Large"),
+            onSelect = {},
+            label = "Size",
+            enabled = false,
+        )
+        AppPhoneField(
+            dialCode = "+44",
+            onDialCodeChange = {},
+            number = rememberTextFieldState("7700 900123"),
+        )
+        AppPhoneField(
+            dialCode = "+1",
+            onDialCodeChange = {},
+            number = rememberTextFieldState("555"),
+            error = "Enter the full number",
+        )
     }
 }

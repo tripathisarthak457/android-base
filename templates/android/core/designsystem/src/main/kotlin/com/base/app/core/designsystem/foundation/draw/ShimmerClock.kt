@@ -20,10 +20,7 @@ import kotlinx.coroutines.launch
  * @param window the window's size in dp, read once per sweep: a large window sweeps longer, so the
  *   band crosses it at the speed it crosses a phone.
  */
-internal class ShimmerClock(
-    private val scope: CoroutineScope,
-    private val window: () -> DpSize,
-) {
+internal class ShimmerClock(private val scope: CoroutineScope, private val window: () -> DpSize) {
     /** Where the band is in the sweep in flight, eased, from 0 to 1; NaN between sweeps. */
     var progress = Float.NaN
         private set

@@ -96,13 +96,23 @@ public fun AppActionSheet(
 }
 
 @Composable
-private fun AppSheetScope.ActionSheetContent(actions: List<SheetAction>, title: String?, message: String?, cancelLabel: String) {
+private fun AppSheetScope.ActionSheetContent(
+    actions: List<SheetAction>,
+    title: String?,
+    message: String?,
+    cancelLabel: String,
+) {
     val sheet = sheetContentPadding()
     val inset = AppTheme.spacing.sm
     val padding = remember(sheet, inset) { GroupPadding(sheet, inset) }
     val cancel = remember(cancelLabel) { SheetAction(cancelLabel, onClick = {}) }
     SheetColumn(contentPadding = padding, verticalArrangement = Arrangement.spacedBy(inset)) {
-        AppSurface(modifier = Modifier.fillMaxWidth(), shape = AppTheme.shapes.lg, color = AppTheme.colors.surfaceElevated, clipContent = true) {
+        AppSurface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = AppTheme.shapes.lg,
+            color = AppTheme.colors.surfaceElevated,
+            clipContent = true,
+        ) {
             Column {
                 if (title != null || message != null) ActionHeading(title, message)
                 actions.forEachIndexed { index, action ->
@@ -117,7 +127,12 @@ private fun AppSheetScope.ActionSheetContent(actions: List<SheetAction>, title: 
                 }
             }
         }
-        AppSurface(modifier = Modifier.fillMaxWidth(), shape = AppTheme.shapes.lg, color = AppTheme.colors.surfaceElevated, clipContent = true) {
+        AppSurface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = AppTheme.shapes.lg,
+            color = AppTheme.colors.surfaceElevated,
+            clipContent = true,
+        ) {
             ActionRow(action = cancel, divider = false, bold = true, onClick = ::dismiss)
         }
     }
@@ -139,7 +154,14 @@ internal fun ActionHeading(title: String?, message: String?) {
                 textAlign = TextAlign.Center,
             )
         }
-        message?.let { AppText(text = it, style = AppTheme.typography.footnote, color = colors.contentSecondary, textAlign = TextAlign.Center) }
+        message?.let {
+            AppText(
+                text = it,
+                style = AppTheme.typography.footnote,
+                color = colors.contentSecondary,
+                textAlign = TextAlign.Center,
+            )
+        }
     }
 }
 
@@ -158,18 +180,31 @@ internal fun ActionRow(
         modifier = modifier
             .fillMaxWidth()
             .then(if (divider) Modifier.hairline(HairlineEdge.Top) else Modifier)
-            .pressable(onClick = onClick, feedback = PressFeedback.Highlight, enabled = action.enabled)
+            .pressable(
+                onClick = onClick,
+                feedback = PressFeedback.Highlight,
+                enabled = action.enabled,
+            )
             .semantics { if (action.selected) selected = true }
             .disabledAlpha(action.enabled)
             .heightIn(min = DesignTokens.Sheet.ActionSheet.rowHeight)
             .padding(horizontal = AppTheme.spacing.lg, vertical = AppTheme.spacing.sm),
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm, Alignment.CenterHorizontally),
+        horizontalArrangement = Arrangement.spacedBy(
+            AppTheme.spacing.sm,
+            Alignment.CenterHorizontally,
+        ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         action.icon?.let { AppIcon(it, contentDescription = null, tint = color) }
         AppText(
             text = action.label,
-            style = if (bold) AppTheme.typography.body.copy(fontWeight = FontWeight.SemiBold) else AppTheme.typography.body,
+            style = if (bold) {
+                AppTheme.typography.body.copy(
+                    fontWeight = FontWeight.SemiBold,
+                )
+            } else {
+                AppTheme.typography.body
+            },
             color = color,
             textAlign = TextAlign.Center,
         )
@@ -182,7 +217,8 @@ internal fun ActionRow(
 }
 
 /** The groups keep a narrow margin, as iOS's do, and the sheet's bottom padding. */
-private class GroupPadding(private val sheet: PaddingValues, private val inset: Dp) : PaddingValues {
+private class GroupPadding(private val sheet: PaddingValues, private val inset: Dp) :
+    PaddingValues {
     override fun calculateLeftPadding(layoutDirection: LayoutDirection): Dp = inset
 
     override fun calculateTopPadding(): Dp = 0.dp
@@ -197,7 +233,8 @@ private val ActionFit = SheetDetent.Custom("action-fit") {
     minOf(contentHeight, maxHeight * DesignTokens.Sheet.ActionSheet.maxFitFraction)
 }
 
-private val ScrollingProperties = AppSheetProperties(contentInteraction = SheetContentInteraction.Scrolls)
+private val ScrollingProperties =
+    AppSheetProperties(contentInteraction = SheetContentInteraction.Scrolls)
 
 /** The action sheet's heading. */
 public object AppActionSheetDefaults {
@@ -207,14 +244,22 @@ public object AppActionSheetDefaults {
 @AppComponentPreviews
 @Composable
 private fun AppActionSheetPreview() {
-    Box(modifier = Modifier.background(AppTheme.colors.background).fillMaxWidth().height(AppTheme.sizes.rowHeight * 8)) {
+    Box(
+        modifier = Modifier.background(
+            AppTheme.colors.background,
+        ).fillMaxWidth().height(AppTheme.sizes.rowHeight * 8),
+    ) {
         AppActionSheet(
             visible = true,
             actions = listOf(
                 SheetAction(label = "Take photo", onClick = {}, icon = AppIcons.Camera),
                 SheetAction(label = "Choose from library", onClick = {}, icon = AppIcons.ImageIcon),
                 SheetAction(label = "Remove photo", onClick = {}, destructive = true),
-                SheetAction(label = "Use the photo from your account", onClick = {}, enabled = false),
+                SheetAction(
+                    label = "Use the photo from your account",
+                    onClick = {},
+                    enabled = false,
+                ),
             ),
             onDismissRequest = {},
             title = "Profile photo",

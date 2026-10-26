@@ -11,6 +11,8 @@ import com.base.app.core.network.model.NetworkRequest
 import com.base.app.core.network.model.NetworkResponse
 import com.base.app.core.network.model.RequestBody
 import com.base.app.core.network.tokens
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
@@ -19,8 +21,6 @@ import kotlinx.serialization.DeserializationStrategy
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
-import kotlin.time.Duration.Companion.days
-import kotlin.time.Instant
 
 class QueuedRequestReplayerTest {
 
@@ -46,7 +46,8 @@ class QueuedRequestReplayerTest {
     fun `a request the server refuses is kept with its answer and the pass goes on`() = runTest {
         dao.insert(entry("/refused"))
         dao.insert(entry("/b"))
-        client.failures["/refused"] = AppError.Http(status = 422, code = "invalid", message = "Odometer went back")
+        client.failures["/refused"] =
+            AppError.Http(status = 422, code = "invalid", message = "Odometer went back")
 
         replayer.replayPending()
 
@@ -137,7 +138,13 @@ class QueuedRequestReplayerTest {
 
     @Test
     fun `the body, headers and query survive the round trip`() = runTest {
-        dao.insert(entry("/notes/1?draft=true", headersJson = """{"Idempotency-Key":"k1"}""", body = """{"a":1}"""))
+        dao.insert(
+            entry(
+                "/notes/1?draft=true",
+                headersJson = """{"Idempotency-Key":"k1"}""",
+                body = """{"a":1}""",
+            ),
+        )
 
         replayer.replayPending()
 
@@ -169,11 +176,14 @@ class QueuedRequestReplayerTest {
         override suspend fun execute(request: NetworkRequest): AppResult<NetworkResponse> {
             sent += request
             onSend(request)
-            return failures[request.path]?.let { AppResult.Failure(it) } ?: AppResult.Success(NetworkResponse(200, "{}"))
+            return failures[request.path]?.let { AppResult.Failure(it) }
+                ?: AppResult.Success(NetworkResponse(200, "{}"))
         }
 
-        override suspend fun <T> execute(request: NetworkRequest, deserializer: DeserializationStrategy<T>): AppResult<T> =
-            error("The replayer sends raw requests.")
+        override suspend fun <T> execute(
+            request: NetworkRequest,
+            deserializer: DeserializationStrategy<T>,
+        ): AppResult<T> = error("The replayer sends raw requests.")
     }
 
     private class FakeQueueDao : QueuedRequestDao {
@@ -187,18 +197,45 @@ class QueuedRequestReplayerTest {
         }
 
         override suspend fun sendable(owner: String?): List<QueuedRequestEntity> =
-            rows.value.filter { it.refusedAtEpochMillis == null && (it.owner == null || it.owner == owner) }
+            rows.value.filter {
+                it.refusedAtEpochMillis == null &&
+                    (it.owner == null || it.owner == owner)
+            }
 
         override fun observe(owner: String?): Flow<List<QueuedRequestEntity>> =
             rows.map { all -> all.filter { it.owner == null || it.owner == owner } }
 
-        override suspend fun countAttempt(id: Long) = update(id) { it.copy(attempts = it.attempts + 1) }
+        override suspend fun countAttempt(id: Long) = update(id) {
+            it.copy(
+                attempts =
+                    it.attempts + 1,
+            )
+        }
 
-        override suspend fun markRefused(id: Long, at: Long, status: Int?, code: String?, message: String?) =
-            update(id) { it.copy(refusedAtEpochMillis = at, refusedStatus = status, refusedCode = code, refusedMessage = message) }
+        override suspend fun markRefused(
+            id: Long,
+            at: Long,
+            status: Int?,
+            code: String?,
+            message: String?,
+        ) = update(id) {
+            it.copy(
+                refusedAtEpochMillis = at,
+                refusedStatus = status,
+                refusedCode = code,
+                refusedMessage = message,
+            )
+        }
 
-        override suspend fun requeue(id: Long) =
-            update(id) { it.copy(refusedAtEpochMillis = null, refusedStatus = null, refusedCode = null, refusedMessage = null, attempts = 0) }
+        override suspend fun requeue(id: Long) = update(id) {
+            it.copy(
+                refusedAtEpochMillis = null,
+                refusedStatus = null,
+                refusedCode = null,
+                refusedMessage = null,
+                attempts = 0,
+            )
+        }
 
         override suspend fun delete(id: Long) {
             rows.value = rows.value.filterNot { it.id == id }

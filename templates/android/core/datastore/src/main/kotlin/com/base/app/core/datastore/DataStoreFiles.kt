@@ -10,9 +10,9 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import com.base.app.core.common.coroutines.AppDispatchers
 import com.base.app.core.common.coroutines.ApplicationScope
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.plus
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.plus
 
 /**
  * Makes one preferences file per concern, such as `search` or `profile`. A file per concern rather

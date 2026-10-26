@@ -44,7 +44,10 @@ public fun AppRating(
         repeat(max) { index ->
             val fill = (rating - index).coerceIn(0f, 1f)
             val tapModifier = if (onRatingChange != null) {
-                Modifier.pressable(onClick = { onRatingChange(index + 1) }, feedback = PressFeedback.Scale)
+                Modifier.pressable(
+                    onClick = { onRatingChange(index + 1) },
+                    feedback = PressFeedback.Scale,
+                )
             } else {
                 Modifier
             }

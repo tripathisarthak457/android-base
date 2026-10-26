@@ -29,7 +29,8 @@ internal interface NotificationModule {
         @Provides
         @Singleton
         @PushStore
-        fun providePushStore(files: DataStoreFiles): DataStore<Preferences> = files.preferences("push")
+        fun providePushStore(files: DataStoreFiles): DataStore<Preferences> =
+            files.preferences("push")
 
         /**
          * Where the installation id goes. This one only logs it: replace the body with a call into

@@ -5,29 +5,33 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.LocalActivity
+// <opt:ui_components>
+import androidx.compose.foundation.background
+// </opt:ui_components>
+// <opt:!ui_components>import androidx.compose.foundation.clickable
+// <opt:ui_components>
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.safeDrawingPadding
+// </opt:ui_components>
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+// <opt:ui_components>
+import androidx.compose.ui.input.pointer.pointerInput
+// </opt:ui_components>
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
-import com.base.app.core.network.appstatus.AppStatus
-import com.base.app.core.ui.R
 // <opt:ui_components>
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.ui.input.pointer.pointerInput
 import com.base.app.core.designsystem.component.feedback.AppStateView
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 // </opt:ui_components>
-// <opt-else:ui_components>
-//~ import androidx.compose.foundation.clickable
-//~ import com.base.app.core.ui.PlaceholderScreen
-// </opt-else:ui_components>
+import com.base.app.core.network.appstatus.AppStatus
+// <opt:!ui_components>import com.base.app.core.ui.PlaceholderScreen
+import com.base.app.core.ui.R
 
 /**
  * Covers the app when the server says this version is no longer supported, or that it is down for
@@ -105,7 +109,11 @@ fun AppStatusGate(status: AppStatus, onRetry: () -> Unit, modifier: Modifier = M
 /** The Play Store app when it is installed, its website otherwise. */
 private fun Context.openStoreListing() {
     val app = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName"))
-    val web = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName"))
+    val web =
+        Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("https://play.google.com/store/apps/details?id=$packageName"),
+        )
     try {
         startActivity(app)
     } catch (noStore: ActivityNotFoundException) {

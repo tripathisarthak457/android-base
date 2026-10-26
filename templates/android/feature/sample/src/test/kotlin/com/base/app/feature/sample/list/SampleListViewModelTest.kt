@@ -10,6 +10,7 @@ import com.base.app.core.common.result.AppResult
 import com.base.app.core.testing.MainDispatcherRule
 import com.base.app.data.sample.api.FakeSampleRepository
 import com.base.app.data.sample.api.model.SampleItem
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.test.TestScope
@@ -20,7 +21,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import kotlin.time.Duration.Companion.seconds
 
 /** The reference ViewModel test. Every feature's tests are shaped like these. */
 class SampleListViewModelTest {
@@ -35,7 +35,8 @@ class SampleListViewModelTest {
 
     @Test
     fun `the first look at the screen loads and lands in Success`() = runTest {
-        val viewModel = SampleListViewModel(FakeSampleRepository(AppResult.Success(items)), SavedStateHandle())
+        val viewModel =
+            SampleListViewModel(FakeSampleRepository(AppResult.Success(items)), SavedStateHandle())
 
         shown(viewModel)
         advanceUntilIdle()
@@ -77,7 +78,11 @@ class SampleListViewModelTest {
 
     @Test
     fun `an empty response is Empty, not Success with no rows`() = runTest {
-        val viewModel = SampleListViewModel(FakeSampleRepository(AppResult.Success(emptyList())), SavedStateHandle())
+        val viewModel =
+            SampleListViewModel(
+                FakeSampleRepository(AppResult.Success(emptyList())),
+                SavedStateHandle(),
+            )
 
         shown(viewModel)
         advanceUntilIdle()
@@ -87,7 +92,11 @@ class SampleListViewModelTest {
 
     @Test
     fun `a failed first load surfaces the error`() = runTest {
-        val viewModel = SampleListViewModel(FakeSampleRepository(AppResult.Failure(AppError.Offline)), SavedStateHandle())
+        val viewModel =
+            SampleListViewModel(
+                FakeSampleRepository(AppResult.Failure(AppError.Offline)),
+                SavedStateHandle(),
+            )
 
         shown(viewModel)
         advanceUntilIdle()
@@ -126,7 +135,8 @@ class SampleListViewModelTest {
 
     @Test
     fun `typing filters without touching the loaded list`() = runTest {
-        val viewModel = SampleListViewModel(FakeSampleRepository(AppResult.Success(items)), SavedStateHandle())
+        val viewModel =
+            SampleListViewModel(FakeSampleRepository(AppResult.Success(items)), SavedStateHandle())
         shown(viewModel)
         advanceUntilIdle()
 
@@ -139,7 +149,8 @@ class SampleListViewModelTest {
 
     @Test
     fun `tapping a row emits a navigation effect`() = runTest {
-        val viewModel = SampleListViewModel(FakeSampleRepository(AppResult.Success(items)), SavedStateHandle())
+        val viewModel =
+            SampleListViewModel(FakeSampleRepository(AppResult.Success(items)), SavedStateHandle())
 
         viewModel.effects.test {
             viewModel.onEvent(SampleListEvent.ItemClicked(2))

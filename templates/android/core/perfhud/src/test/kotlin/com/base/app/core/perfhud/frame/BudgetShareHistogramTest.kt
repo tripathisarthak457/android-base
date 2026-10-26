@@ -11,7 +11,10 @@ class BudgetShareHistogramTest {
         assertEquals(50, BudgetShareHistogram.bucketOf(1f))
         assertEquals(BudgetShareHistogram.BUCKETS - 2, BudgetShareHistogram.bucketOf(3.999f))
         assertEquals(BudgetShareHistogram.BUCKETS - 1, BudgetShareHistogram.bucketOf(4f))
-        assertEquals(BudgetShareHistogram.BUCKETS - 1, BudgetShareHistogram.bucketOf(Float.POSITIVE_INFINITY))
+        assertEquals(
+            BudgetShareHistogram.BUCKETS - 1,
+            BudgetShareHistogram.bucketOf(Float.POSITIVE_INFINITY),
+        )
         assertEquals(0, BudgetShareHistogram.bucketOf(Float.NaN))
     }
 

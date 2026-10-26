@@ -5,10 +5,10 @@ import androidx.compose.runtime.snapshotFlow
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.navigation.shell.ShellState
 import com.base.app.startup.ShellObserver
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonPrimitive
 import javax.inject.Inject
 import kotlin.math.roundToInt
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonPrimitive
 
 // <opt:performance>
 /**
@@ -42,12 +42,20 @@ class ShellLog @Inject constructor() : ShellObserver {
 
     private fun describe(state: ShellState): String =
         "generation=${state.generation} tab=${state.selectedIndex} " +
-            "stacks=${JsonArray(state.stacks.map(::keys))} presented=${keys(state.presentedKeys)} roots=${keys(state.roots)} " +
+            "stacks=${JsonArray(
+                state.stacks.map(::keys),
+            )} presented=${keys(state.presentedKeys)} roots=${keys(state.roots)} " +
             "more=${state.moreShown} chrome=${state.chrome}" +
-            state.windowMetrics?.sizeDp?.let { " window=${it.width.value.roundToInt()}x${it.height.value.roundToInt()}dp" }.orEmpty() +
+            state.windowMetrics?.sizeDp?.let {
+                " window=${it.width.value.roundToInt()}x${it.height.value.roundToInt()}dp"
+            }.orEmpty() +
             state.window?.let { " class=${it.width}x${it.height}" }.orEmpty()
 
-    private fun keys(stack: List<AppNavKey>): JsonArray = JsonArray(stack.map { JsonPrimitive(it.toString()) })
+    private fun keys(stack: List<AppNavKey>): JsonArray = JsonArray(
+        stack.map {
+            JsonPrimitive(it.toString())
+        },
+    )
 
     private companion object {
         const val TAG = "perf.shell"

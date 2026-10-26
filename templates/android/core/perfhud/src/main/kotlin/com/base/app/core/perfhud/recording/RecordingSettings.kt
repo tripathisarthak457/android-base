@@ -3,9 +3,9 @@ package com.base.app.core.perfhud.recording
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import com.base.app.core.datastore.DataStoreFiles
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.flow.first
 
 /** The developer's choice to record or not, kept across launches. Main-safe. */
 @Singleton

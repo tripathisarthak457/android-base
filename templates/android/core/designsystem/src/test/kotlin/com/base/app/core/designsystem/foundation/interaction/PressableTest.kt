@@ -48,13 +48,20 @@ class PressableTest {
     fun `a tap clicks once and a small control still gets a 48dp target`() {
         var clicks = 0
         rule.setThemed {
-            Box(Modifier.testTag("target").pressable(onClick = { clicks++ }, feedback = PressFeedback.Scale)) {
+            Box(
+                Modifier.testTag("target").pressable(
+                    onClick = { clicks++ },
+                    feedback = PressFeedback.Scale,
+                ),
+            ) {
                 Box(Modifier.size(20.dp))
             }
         }
         rule.onNodeWithTag("target").performClick()
         assertEquals(1, clicks)
-        rule.onNodeWithTag("target").assert(SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.Button))
+        rule.onNodeWithTag(
+            "target",
+        ).assert(SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.Button))
         val bounds = rule.onNodeWithTag("target").getUnclippedBoundsInRoot()
         assertTrue(bounds.width >= 48.dp && bounds.height >= 48.dp)
     }
@@ -64,7 +71,12 @@ class PressableTest {
         var clicks = 0
         rule.setThemed {
             Box(Modifier.padding(start = 40.dp)) {
-                Box(Modifier.testTag("link").inlinePressable(onClick = { clicks++ }, feedback = PressFeedback.Dim)) {
+                Box(
+                    Modifier.testTag("link").inlinePressable(
+                        onClick = { clicks++ },
+                        feedback = PressFeedback.Dim,
+                    ),
+                ) {
                     Box(Modifier.size(width = 24.dp, height = 16.dp))
                 }
             }
@@ -82,7 +94,13 @@ class PressableTest {
     fun `a disabled control takes no click and says it is disabled`() {
         var clicks = 0
         rule.setThemed {
-            Box(Modifier.testTag("target").pressable(onClick = { clicks++ }, feedback = PressFeedback.Dim, enabled = false)) {
+            Box(
+                Modifier.testTag("target").pressable(
+                    onClick = { clicks++ },
+                    feedback = PressFeedback.Dim,
+                    enabled = false,
+                ),
+            ) {
                 Box(Modifier.size(40.dp))
             }
         }
@@ -96,7 +114,13 @@ class PressableTest {
         var clicks = 0
         var longs = 0
         rule.setThemed {
-            Box(Modifier.testTag("target").pressable(onClick = { clicks++ }, feedback = PressFeedback.Highlight, onLongClick = { longs++ })) {
+            Box(
+                Modifier.testTag("target").pressable(
+                    onClick = { clicks++ },
+                    feedback = PressFeedback.Highlight,
+                    onLongClick = { longs++ },
+                ),
+            ) {
                 Box(Modifier.size(60.dp))
             }
         }
@@ -109,7 +133,12 @@ class PressableTest {
     fun `pressing and releasing never recomposes the control`() {
         var compositions = 0
         rule.setThemed {
-            Box(Modifier.testTag("target").pressable(onClick = {}, feedback = PressFeedback.Scale)) {
+            Box(
+                Modifier.testTag("target").pressable(
+                    onClick = {},
+                    feedback = PressFeedback.Scale,
+                ),
+            ) {
                 SideEffect { compositions++ }
                 Box(Modifier.size(60.dp))
             }
@@ -132,7 +161,13 @@ class PressableTest {
         rule.setThemed {
             val source = remember { MutableInteractionSource() }
             LaunchedEffect(source) { source.interactions.collect { seen += it } }
-            Box(Modifier.testTag("target").pressable(onClick = {}, feedback = PressFeedback.Highlight, interactionSource = source)) {
+            Box(
+                Modifier.testTag("target").pressable(
+                    onClick = {},
+                    feedback = PressFeedback.Highlight,
+                    interactionSource = source,
+                ),
+            ) {
                 Box(Modifier.size(60.dp))
             }
         }

@@ -33,7 +33,11 @@ class FieldAccessoryTest {
     private var bodyGrowth = 1f
 
     /** The glyph itself, not the 48dp touch target around it. */
-    private fun glyphWidth(contentDescription: String, fontScale: Float, field: @Composable () -> Unit): Dp {
+    private fun glyphWidth(
+        contentDescription: String,
+        fontScale: Float,
+        field: @Composable () -> Unit,
+    ): Dp {
         rule.setThemed {
             val base = LocalDensity.current
             CompositionLocalProvider(LocalDensity provides Density(base.density, fontScale)) {
@@ -42,7 +46,10 @@ class FieldAccessoryTest {
                 field()
             }
         }
-        return rule.onNodeWithContentDescription(contentDescription, useUnmergedTree = true).getUnclippedBoundsInRoot().width
+        return rule.onNodeWithContentDescription(
+            contentDescription,
+            useUnmergedTree = true,
+        ).getUnclippedBoundsInRoot().width
     }
 
     @Test
@@ -60,7 +67,8 @@ class FieldAccessoryTest {
 
     @Test
     fun `at 2x the clear button grows with the search field's text`() {
-        val width = glyphWidth("Clear search", fontScale = 2f) { AppSearchField(TextFieldState("tea")) }
+        val width =
+            glyphWidth("Clear search", fontScale = 2f) { AppSearchField(TextFieldState("tea")) }
         assertEquals(16f * bodyGrowth, width.value, 0.5f)
     }
 }

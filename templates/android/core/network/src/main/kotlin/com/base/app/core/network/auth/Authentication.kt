@@ -17,7 +17,9 @@ import io.ktor.http.HttpStatusCode
  */
 internal fun HttpClient.authenticate(apiHost: String, tokens: SessionTokens) {
     plugin(HttpSend).intercept { request ->
-        if (request.url.host != apiHost || request.attributes.getOrNull(SkipAuthAttribute) == true) {
+        if (request.url.host != apiHost ||
+            request.attributes.getOrNull(SkipAuthAttribute) == true
+        ) {
             return@intercept execute(request)
         }
         val sent = tokens.current() ?: return@intercept execute(request)

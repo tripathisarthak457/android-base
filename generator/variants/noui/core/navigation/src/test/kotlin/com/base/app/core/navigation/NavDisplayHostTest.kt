@@ -8,6 +8,7 @@ import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import com.base.app.core.common.navigation.AppNavKey
+import java.util.Optional
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotSame
 import org.junit.Rule
@@ -15,7 +16,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import java.util.Optional
 
 /**
  * The one-stack host: navigation commands, no fade between screens, system Back, a deep link, and

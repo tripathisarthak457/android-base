@@ -29,6 +29,7 @@ internal sealed interface SettingsEvent : UiEvent {
     data object SignOutConfirmed : SettingsEvent
 
     // <opt:language>
+
     /** The language lives in the platform rather than the store, so the route reads it. */
     data class LanguageRead(val tag: String?) : SettingsEvent
     data class LanguagePicked(val tag: String?) : SettingsEvent
@@ -39,6 +40,7 @@ internal sealed interface SettingsEvent : UiEvent {
     // </opt:licenses>
 }
 
+// <opt:language|licenses>
 internal sealed interface SettingsEffect : UiEffect {
     // <opt:language>
     data class ApplyLanguage(val tag: String?) : SettingsEffect
@@ -48,3 +50,7 @@ internal sealed interface SettingsEffect : UiEffect {
     data object OpenLicenses : SettingsEffect
     // </opt:licenses>
 }
+// </opt:language|licenses>
+// <opt-else:language|licenses>
+//~ internal sealed interface SettingsEffect : UiEffect
+// </opt-else:language|licenses>

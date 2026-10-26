@@ -2,6 +2,7 @@ package com.base.app.buildlogic.guard
 
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
+import javax.xml.parsers.DocumentBuilderFactory
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.Project
@@ -16,7 +17,6 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.register
 import org.w3c.dom.Element
 import org.w3c.dom.NodeList
-import javax.xml.parsers.DocumentBuilderFactory
 
 /**
  * Registers `verifyManifestRules`, which reads every variant's merged manifest, libraries' entries

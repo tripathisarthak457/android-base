@@ -25,7 +25,8 @@ class SampleDetailViewModelTest {
 
     @Test
     fun `nothing loads until the screen collects the state`() = runTest {
-        val viewModel = SampleDetailViewModel(FakeSampleRepository(AppResult.Success(items)), itemId = 4)
+        val viewModel =
+            SampleDetailViewModel(FakeSampleRepository(AppResult.Success(items)), itemId = 4)
 
         advanceUntilIdle()
 
@@ -35,7 +36,8 @@ class SampleDetailViewModelTest {
 
     @Test
     fun `related rows are the items that follow, wrapping at the end`() = runTest {
-        val viewModel = SampleDetailViewModel(FakeSampleRepository(AppResult.Success(items)), itemId = 4)
+        val viewModel =
+            SampleDetailViewModel(FakeSampleRepository(AppResult.Success(items)), itemId = 4)
 
         shown(viewModel)
         advanceUntilIdle()
@@ -46,7 +48,11 @@ class SampleDetailViewModelTest {
 
     @Test
     fun `a failed load shows the error and no related rows`() = runTest {
-        val viewModel = SampleDetailViewModel(FakeSampleRepository(AppResult.Failure(AppError.Offline)), itemId = 1)
+        val viewModel =
+            SampleDetailViewModel(
+                FakeSampleRepository(AppResult.Failure(AppError.Offline)),
+                itemId = 1,
+            )
 
         shown(viewModel)
         advanceUntilIdle()

@@ -47,11 +47,8 @@ public fun Modifier.glassSurface(
  * The rim and the outer shadow of [glassSurface] alone, for chrome whose body is the blurred scene
  * it samples: the backdrop is drawn as this modifier's content, between the shadow and the rim.
  */
-internal fun Modifier.glassEdges(
-    shape: Shape,
-    colors: GlassColors,
-    shadow: Shadow?,
-): Modifier = this then GlassSurfaceElement(shape, colors, shadow, drawsBody = false)
+internal fun Modifier.glassEdges(shape: Shape, colors: GlassColors, shadow: Shadow?): Modifier =
+    this then GlassSurfaceElement(shape, colors, shadow, drawsBody = false)
 
 private data class GlassSurfaceElement(
     val shape: Shape,
@@ -137,10 +134,9 @@ private class GlassSurfaceNode(
     }
 
     // Shared through the window's shadow context, which rasterises each size and shape once.
-    private fun obtainShadowPainter(shadow: Shadow): DropShadowPainter =
-        shadowPainter
-            ?: requireGraphicsContext().shadowContext.createDropShadowPainter(shape, shadow)
-                .also { shadowPainter = it }
+    private fun obtainShadowPainter(shadow: Shadow): DropShadowPainter = shadowPainter
+        ?: requireGraphicsContext().shadowContext.createDropShadowPainter(shape, shadow)
+            .also { shadowPainter = it }
 }
 
 /** How much of the rim's strength is left at the bottom edge. */

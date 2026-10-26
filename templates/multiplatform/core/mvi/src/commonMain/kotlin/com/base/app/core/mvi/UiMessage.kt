@@ -25,7 +25,4 @@ data class UiMessage(
 enum class MessageKind { Success, Error, Warning, Info }
 
 /** An optional button on the message: "Retry", "Undo". */
-data class MessageAction(
-    val label: UiText,
-    val onClick: () -> Unit,
-)
+data class MessageAction(val label: UiText, val onClick: () -> Unit)

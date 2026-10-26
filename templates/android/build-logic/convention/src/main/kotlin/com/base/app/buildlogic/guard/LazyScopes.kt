@@ -8,31 +8,37 @@ package com.base.app.buildlogic.guard
 internal object LazyScopes {
 
     /** `items(…)` and `itemsIndexed(…)` over data that pass no `key`. */
-    fun unkeyed(source: KotlinSource): List<Int> =
-        calls(source)
-            .filter { it.name == "items" || it.name == "itemsIndexed" }
-            .filter { call -> call.arguments != null && !KEY.containsMatchIn(call.arguments) && !isCount(call.arguments) }
-            .map { source.lineOf(it.offset) }
-            .distinct()
+    fun unkeyed(source: KotlinSource): List<Int> = calls(source)
+        .filter { it.name == "items" || it.name == "itemsIndexed" }
+        .filter { call ->
+            call.arguments != null && !KEY.containsMatchIn(call.arguments) &&
+                !isCount(call.arguments)
+        }
+        .map { source.lineOf(it.offset) }
+        .distinct()
 
     /** Item calls without a `contentType` in a scope that has two or more of them. */
-    fun untyped(source: KotlinSource): List<Int> =
-        calls(source)
-            .groupBy { it.scope }
-            .values
-            .filter { it.size >= 2 }
-            .flatten()
-            .filter { call -> call.arguments == null || !CONTENT_TYPE.containsMatchIn(call.arguments) }
-            .map { source.lineOf(it.offset) }
-            .distinct()
-            .sorted()
+    fun untyped(source: KotlinSource): List<Int> = calls(source)
+        .groupBy { it.scope }
+        .values
+        .filter { it.size >= 2 }
+        .flatten()
+        .filter { call ->
+            call.arguments == null ||
+                !CONTENT_TYPE.containsMatchIn(call.arguments)
+        }
+        .map { source.lineOf(it.offset) }
+        .distinct()
+        .sorted()
 
     private class Call(val name: String, val offset: Int, val arguments: String?, val scope: Int)
 
     private fun calls(source: KotlinSource): List<Call> {
         val code = source.code
         val found = CALL.findAll(code)
-            .filterNot { FUN.containsMatchIn(code.substring(maxOf(0, it.range.first - 8), it.range.first)) }
+            .filterNot {
+                FUN.containsMatchIn(code.substring(maxOf(0, it.range.first - 8), it.range.first))
+            }
             .toList()
         if (found.isEmpty()) return emptyList()
 
@@ -41,7 +47,15 @@ internal object LazyScopes {
         val blocks = ArrayDeque<Int>()
         for (index in code.indices) {
             when (code[index]) {
-                '{' -> blocks.addLast(if (isLazyBlock(code, index)) index else blocks.lastOrNull() ?: -1)
+                '{' -> blocks.addLast(
+                    if (isLazyBlock(code, index)) {
+                        index
+                    } else {
+                        blocks.lastOrNull()
+                            ?: -1
+                    },
+                )
+
                 '}' -> blocks.removeLastOrNull()
             }
             scopeAt[index] = blocks.lastOrNull() ?: -1
@@ -51,7 +65,13 @@ internal object LazyScopes {
             val scope = scopeAt[match.range.first]
             if (scope < 0) return@mapNotNull null
             val bracket = match.range.last
-            val arguments = if (code[bracket] == '(') code.substring(bracket + 1, Declarations.closing(code, bracket)) else null
+            val arguments = if (code[bracket] ==
+                '('
+            ) {
+                code.substring(bracket + 1, Declarations.closing(code, bracket))
+            } else {
+                null
+            }
             Call(match.groupValues[1], match.range.first, arguments, scope)
         }
     }

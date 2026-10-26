@@ -1,5 +1,8 @@
 package com.base.app.feature.settings
 
+// <opt:language|licenses>
+import app.cash.turbine.test
+// </opt:language|licenses>
 import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.datastore.FakePreferencesDataStore
 import com.base.app.core.datastore.settings.AppSettings
@@ -15,9 +18,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-// <opt:language|licenses>
-import app.cash.turbine.test
-// </opt:language|licenses>
 
 class SettingsViewModelTest {
 

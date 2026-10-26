@@ -42,7 +42,8 @@ internal class ChromeSlide(private val scope: CoroutineScope) {
     /** What the sidebar toggle (button or Ctrl+Shift+S) runs on a window wide enough for one. */
     @Composable
     fun toggle(state: ShellState, chrome: NavigationChrome): () -> Unit {
-        val delta = with(LocalDensity.current) { (sidebarWidth() - AppTabBarDefaults.RailWidth).toPx() }
+        val delta =
+            with(LocalDensity.current) { (sidebarWidth() - AppTabBarDefaults.RailWidth).toPx() }
         val reduceMotion = AppTheme.reduceMotion
         return remember(state, chrome, delta, reduceMotion) {
             {
@@ -66,9 +67,11 @@ internal fun rememberChromeSlide(): ChromeSlide {
 }
 
 /** Moves the content with [slide], mirrored on a right-to-left layout. */
-internal fun Modifier.followSlide(slide: ChromeSlide): Modifier = this then FollowSlideElement(slide)
+internal fun Modifier.followSlide(slide: ChromeSlide): Modifier =
+    this then FollowSlideElement(slide)
 
-private data class FollowSlideElement(val slide: ChromeSlide) : ModifierNodeElement<FollowSlideNode>() {
+private data class FollowSlideElement(val slide: ChromeSlide) :
+    ModifierNodeElement<FollowSlideNode>() {
     override fun create() = FollowSlideNode(slide)
 
     override fun update(node: FollowSlideNode) {
@@ -80,24 +83,35 @@ private data class FollowSlideElement(val slide: ChromeSlide) : ModifierNodeElem
     }
 }
 
-private class FollowSlideNode(var slide: ChromeSlide) : Modifier.Node(), LayoutModifierNode {
+private class FollowSlideNode(var slide: ChromeSlide) :
+    Modifier.Node(),
+    LayoutModifierNode {
 
     private var toward = 1f
 
     // Reads the offset in the layer, so a frame of the slide changes one layer property.
-    private val layer: GraphicsLayerScope.() -> Unit = { translationX = toward * slide.offset.value }
+    private val layer: GraphicsLayerScope.() -> Unit = {
+        translationX = toward * slide.offset.value
+    }
 
-    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+    override fun MeasureScope.measure(
+        measurable: Measurable,
+        constraints: Constraints,
+    ): MeasureResult {
         val placeable = measurable.measure(constraints)
         toward = if (layoutDirection == LayoutDirection.Rtl) -1f else 1f
-        return layout(placeable.width, placeable.height) { placeable.placeWithLayer(0, 0, layerBlock = layer) }
+        return layout(placeable.width, placeable.height) {
+            placeable.placeWithLayer(0, 0, layerBlock = layer)
+        }
     }
 }
 
 /** Paints [color], the chrome's surface, into the gap the content leaves while the sidebar folds. */
-internal fun Modifier.fillGap(slide: ChromeSlide, color: Color): Modifier = this then FillGapElement(slide, color)
+internal fun Modifier.fillGap(slide: ChromeSlide, color: Color): Modifier =
+    this then FillGapElement(slide, color)
 
-private data class FillGapElement(val slide: ChromeSlide, val color: Color) : ModifierNodeElement<FillGapNode>() {
+private data class FillGapElement(val slide: ChromeSlide, val color: Color) :
+    ModifierNodeElement<FillGapNode>() {
     override fun create() = FillGapNode(slide, color)
 
     override fun update(node: FillGapNode) {
@@ -110,7 +124,9 @@ private data class FillGapElement(val slide: ChromeSlide, val color: Color) : Mo
     }
 }
 
-private class FillGapNode(var slide: ChromeSlide, var color: Color) : Modifier.Node(), DrawModifierNode {
+private class FillGapNode(var slide: ChromeSlide, var color: Color) :
+    Modifier.Node(),
+    DrawModifierNode {
     override fun ContentDrawScope.draw() {
         val gap = slide.offset.value
         if (gap > 0f) {

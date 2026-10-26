@@ -28,8 +28,19 @@ import com.base.app.core.designsystem.theme.AppTheme
  * or a sidebar shows them as tabs again with nothing lost.
  */
 @Composable
-internal fun MoreList(tabs: List<ShellTab>, labels: List<String>, from: Int, onSelect: (Int) -> Unit) {
-    val chevron = if (LocalLayoutDirection.current == LayoutDirection.Rtl) AppIcons.ChevronLeft else AppIcons.ChevronRight
+internal fun MoreList(
+    tabs: List<ShellTab>,
+    labels: List<String>,
+    from: Int,
+    onSelect: (Int) -> Unit,
+) {
+    val chevron = if (LocalLayoutDirection.current ==
+        LayoutDirection.Rtl
+    ) {
+        AppIcons.ChevronLeft
+    } else {
+        AppIcons.ChevronRight
+    }
     AppScaffold(
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
         topBar = { AppTopBar(title = stringResource(R.string.shell_more)) },
@@ -55,7 +66,11 @@ internal fun MoreList(tabs: List<ShellTab>, labels: List<String>, from: Int, onS
                     showChevron = false,
                     leading = {
                         AppBadgedBox(count = tab.badgeCount) {
-                            AppIcon(imageVector = tab.icon, contentDescription = null, tint = accent)
+                            AppIcon(
+                                imageVector = tab.icon,
+                                contentDescription = null,
+                                tint = accent,
+                            )
                         }
                     },
                     trailing = {

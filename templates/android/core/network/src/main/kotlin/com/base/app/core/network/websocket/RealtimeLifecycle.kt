@@ -5,6 +5,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.datastore.session.AuthTokenStore
+import javax.inject.Inject
+import javax.inject.Singleton
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -12,9 +15,6 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import javax.inject.Singleton
-import kotlin.time.Duration.Companion.seconds
 
 /**
  * Keeps [AppWebSocket] open only while the app is in front. Leaving closes it after a grace period,
@@ -47,7 +47,9 @@ class RealtimeLifecycle @Inject constructor(
             },
         )
         scope.launch {
-            tokenStore.tokens.map { it?.owner }.distinctUntilChanged().drop(1).filterNotNull().collect {
+            tokenStore.tokens.map {
+                it?.owner
+            }.distinctUntilChanged().drop(1).filterNotNull().collect {
                 socket.reopen()
             }
         }

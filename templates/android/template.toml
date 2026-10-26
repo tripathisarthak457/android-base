@@ -29,7 +29,8 @@ required = [
   "shell-tabs", "start-destination", "start-destination-import",
   "readme-title", "readme-styles", "readme-theme-call", "readme-version", "readme-modules",
   "readme-signing-generated", "readme-signing-manual", "readme-features",
-  "formatting-check",                                                             # build.gradle.kts
+  "template-import-order", "template-comment-spacing",                            # build.gradle.kts
+  "template-gradle-comment-spacing",                                              # build.gradle.kts
 ]
 
 [files]

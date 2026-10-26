@@ -46,17 +46,22 @@ fun rememberMediaPicker(onResult: (List<Uri>) -> Unit): MediaPicker {
     // coming back the photo would be dropped for want of knowing where it went.
     var pendingCapture by rememberSaveable { mutableStateOf<Uri?>(null) }
 
-    val pickImage = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-        uri?.let { currentOnResult(listOf(it)) }
-    }
-    val pickImages = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(MAX_SELECTION)) { uris ->
-        if (uris.isNotEmpty()) currentOnResult(uris)
-    }
-    val takePhoto = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { saved ->
-        val uri = pendingCapture
-        pendingCapture = null
-        if (saved && uri != null) currentOnResult(listOf(uri))
-    }
+    val pickImage =
+        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            uri?.let { currentOnResult(listOf(it)) }
+        }
+    val pickImages =
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.PickMultipleVisualMedia(MAX_SELECTION),
+        ) { uris ->
+            if (uris.isNotEmpty()) currentOnResult(uris)
+        }
+    val takePhoto =
+        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { saved ->
+            val uri = pendingCapture
+            pendingCapture = null
+            if (saved && uri != null) currentOnResult(listOf(uri))
+        }
 
     return remember(context) {
         val imagesOnly = PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)

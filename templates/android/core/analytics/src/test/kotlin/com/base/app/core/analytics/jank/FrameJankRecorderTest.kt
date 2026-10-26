@@ -65,7 +65,8 @@ class FrameJankRecorderTest {
         )
     }
 
-    private class RecordingTracker(private val events: MutableList<AnalyticsEvent>) : AnalyticsTracker {
+    private class RecordingTracker(private val events: MutableList<AnalyticsEvent>) :
+        AnalyticsTracker {
         override fun track(event: AnalyticsEvent) {
             events += event
         }

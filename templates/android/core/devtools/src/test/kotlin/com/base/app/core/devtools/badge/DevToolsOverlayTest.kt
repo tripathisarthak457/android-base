@@ -21,30 +21,28 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.base.app.core.common.environment.AppEnvironment
+// <opt:ui_components>
+import com.base.app.core.designsystem.foundation.interaction.PressFeedback
+import com.base.app.core.designsystem.foundation.interaction.pressable
+// </opt:ui_components>
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.devtools.DevTools
+// <opt:!ui_components>import com.base.app.core.devtools.kit.PressFeedback
+// <opt:!ui_components>import com.base.app.core.devtools.kit.pressable
 import com.base.app.core.devtools.log.DevToolsLog
 import com.base.app.core.devtools.page.DevToolsPage
 import com.base.app.core.devtools.screen.CurrentScreen
+// <opt:flags>
+import com.base.app.core.flags.FlagOverrides
+import com.base.app.core.flags.LocalFeatureFlags
+// </opt:flags>
+import kotlin.math.abs
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
-import kotlin.math.abs
-// <opt:ui_components>
-import com.base.app.core.designsystem.foundation.interaction.PressFeedback
-import com.base.app.core.designsystem.foundation.interaction.pressable
-// </opt:ui_components>
-// <opt-else:ui_components>
-//~ import com.base.app.core.devtools.kit.PressFeedback
-//~ import com.base.app.core.devtools.kit.pressable
-// </opt-else:ui_components>
-// <opt:flags>
-import com.base.app.core.flags.FlagOverrides
-import com.base.app.core.flags.LocalFeatureFlags
-// </opt:flags>
 
 @RunWith(AndroidJUnit4::class)
 @Config(sdk = [ROBOLECTRIC_SDK])
@@ -61,7 +59,11 @@ class DevToolsOverlayTest {
         assertTrue("The badge starts docked at the end edge.", before.left > 100.dp)
 
         badge.performTouchInput {
-            swipe(start = center, end = center + Offset(-200.dp.toPx(), -100.dp.toPx()), durationMillis = 600)
+            swipe(
+                start = center,
+                end = center + Offset(-200.dp.toPx(), -100.dp.toPx()),
+                durationMillis = 600,
+            )
         }
         compose.waitForIdle()
 
@@ -82,7 +84,11 @@ class DevToolsOverlayTest {
         assertExcluded(view, badge)
 
         badge.performTouchInput {
-            swipe(start = center, end = center + Offset(-200.dp.toPx(), -100.dp.toPx()), durationMillis = 600)
+            swipe(
+                start = center,
+                end = center + Offset(-200.dp.toPx(), -100.dp.toPx()),
+                durationMillis = 600,
+            )
         }
         compose.waitForIdle()
 
@@ -96,7 +102,12 @@ class DevToolsOverlayTest {
             title = android.R.string.ok,
             content = { BasicText("probe page content") },
             badgeContent = { openPage ->
-                BasicText("probe line", Modifier.testTag("probe_line").pressable(onClick = openPage, feedback = PressFeedback.Scale))
+                BasicText(
+                    "probe line",
+                    Modifier.testTag(
+                        "probe_line",
+                    ).pressable(onClick = openPage, feedback = PressFeedback.Scale),
+                )
             },
         )
         compose.setContent { AppTheme { DevToolsOverlay(devTools(pages = setOf(page))) } }
@@ -126,15 +137,23 @@ class DevToolsOverlayTest {
     private fun assertExcluded(view: View, badge: SemanticsNodeInteraction) {
         val bounds = badge.fetchSemanticsNode().boundsInRoot
         val excluded = view.systemGestureExclusionRects.map { it.toComposeRect() }
-        assertTrue("$bounds is not within the excluded $excluded.", excluded.any { it.covers(bounds) })
+        assertTrue(
+            "$bounds is not within the excluded $excluded.",
+            excluded.any {
+                it.covers(bounds)
+            },
+        )
     }
 
     // The exclusion is in whole pixels.
     private fun Rect.covers(other: Rect) =
-        left <= other.left + 1 && top <= other.top + 1 && right >= other.right - 1 && bottom >= other.bottom - 1
+        left <= other.left + 1 && top <= other.top + 1 && right >= other.right - 1 &&
+            bottom >= other.bottom - 1
 
-    private fun assertNear(actual: Dp, expected: Dp, tolerance: Dp) =
-        assertTrue("Moved $actual, expected about $expected.", abs((actual - expected).value) <= tolerance.value)
+    private fun assertNear(actual: Dp, expected: Dp, tolerance: Dp) = assertTrue(
+        "Moved $actual, expected about $expected.",
+        abs((actual - expected).value) <= tolerance.value,
+    )
 }
 
 // Robolectric refuses SDK 36 and above on a Java 17 toolchain, which is what this project builds with.

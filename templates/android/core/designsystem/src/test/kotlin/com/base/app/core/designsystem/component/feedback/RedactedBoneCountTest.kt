@@ -56,9 +56,18 @@ class RedactedBoneCountTest {
                         onClick = {},
                         variant = ButtonVariant.Filled,
                     )
-                    AppChip(label = "Nearby", onClick = {}, leadingIcon = AppIcons.Search, onRemove = {})
+                    AppChip(
+                        label = "Nearby",
+                        onClick = {},
+                        leadingIcon = AppIcons.Search,
+                        onRemove = {},
+                    )
                     AppBadge(count = 3)
-                    AppStatusPill(text = "Delivered", status = AppTheme.colors.success, icon = AppIcons.Check)
+                    AppStatusPill(
+                        text = "Delivered",
+                        status = AppTheme.colors.success,
+                        icon = AppIcons.Check,
+                    )
                     AppAvatar(name = "Ada Lovelace")
                 }
             }

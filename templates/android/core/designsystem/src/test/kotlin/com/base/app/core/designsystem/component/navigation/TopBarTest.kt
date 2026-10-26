@@ -37,10 +37,15 @@ class TopBarTest {
                 AppIconButton(AppIcons.Edit, contentDescription = "Edit", onClick = {})
             }
         }
-        val title = rule.onNodeWithText("A title long enough to reach well past the middle of a narrow phone").getUnclippedBoundsInRoot()
+        val title = rule.onNodeWithText(
+            "A title long enough to reach well past the middle of a narrow phone",
+        ).getUnclippedBoundsInRoot()
         val firstAction = rule.onNodeWithContentDescription("Share").getUnclippedBoundsInRoot()
         val back = rule.onNodeWithContentDescription("Navigate back").getUnclippedBoundsInRoot()
-        assertTrue("title ends at ${title.right}, action starts at ${firstAction.left}", title.right <= firstAction.left)
+        assertTrue(
+            "title ends at ${title.right}, action starts at ${firstAction.left}",
+            title.right <= firstAction.left,
+        )
         assertTrue(title.left >= back.right)
     }
 }

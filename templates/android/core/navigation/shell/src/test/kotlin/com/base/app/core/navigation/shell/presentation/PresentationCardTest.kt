@@ -45,9 +45,15 @@ class PresentationCardTest {
         val registry = testRegistry()
         rule.setContent {
             AppTheme {
-                val shell = rememberShellState(testTabs, registry, testSerialization, generation = 1)
+                val shell =
+                    rememberShellState(testTabs, registry, testSerialization, generation = 1)
                 state = shell
-                AppShell(tabs = testTabs, state = shell, registry = registry, navigator = AppNavigator())
+                AppShell(
+                    tabs = testTabs,
+                    state = shell,
+                    registry = registry,
+                    navigator = AppNavigator(),
+                )
             }
         }
         rule.runOnIdle {
@@ -120,7 +126,11 @@ class PresentationCardTest {
         assertEquals("before the gesture", emptyList<Int>(), rule.texturesAround(cover))
 
         swipe(0.3f, 0.6f)
-        assertEquals("while the card is up, 0 the innermost layer", listOf(0), rule.texturesAround(cover))
+        assertEquals(
+            "while the card is up, 0 the innermost layer",
+            listOf(0),
+            rule.texturesAround(cover),
+        )
 
         rule.runOnIdle {
             input.backProgressed(event(0.2f))

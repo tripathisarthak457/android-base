@@ -69,7 +69,16 @@ internal fun LoadingScreen(onBack: (() -> Unit)?) {
             modifier = Modifier
                 .fillMaxSize()
                 .testTag("loading_list")
-                .then(if (loaded) Modifier else Modifier.clearAndSetSemantics { contentDescription = "Loading" }),
+                .then(
+                    if (loaded) {
+                        Modifier
+                    } else {
+                        Modifier.clearAndSetSemantics {
+                            contentDescription =
+                                "Loading"
+                        }
+                    },
+                ),
             contentPadding = catalogContentPadding(PaddingValues(AppTheme.spacing.gutter)),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
             userScrollEnabled = loaded,
@@ -87,7 +96,10 @@ private fun ConversationRow(conversation: Conversation) {
     AppCard(onClick = {}, modifier = Modifier.fillMaxWidth()) {
         Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md)) {
             AppAvatar(name = conversation.sender)
-            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.xs)) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.xs),
+            ) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
                     verticalAlignment = Alignment.CenterVertically,
@@ -123,7 +135,11 @@ private class Conversation(val sender: String, val time: String, val preview: St
 // One-line and two-line previews mixed, as an inbox has them: each redacted row draws the bones of
 // its own lines.
 private val Conversations = listOf(
-    Conversation("Maya Chen", "09:41", "Running ten minutes late. Start without me and I will catch up on the notes."),
+    Conversation(
+        "Maya Chen",
+        "09:41",
+        "Running ten minutes late. Start without me and I will catch up on the notes.",
+    ),
     Conversation("Tomás Rivera", "09:12", "The slides are in the shared folder."),
     Conversation(
         "Priya Nair",

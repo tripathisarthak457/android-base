@@ -4,28 +4,28 @@ import com.base.app.R
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.navigation.shell.ShellTab
-// <generated:start-destination-import>
-// <opt:sample>
-import com.base.app.feature.sample.api.SampleListKey
-// </opt:sample>
-// <opt:paging>
-import com.base.app.feature.feed.api.FeedKey
-// </opt:paging>
-// <opt:search>
-import com.base.app.feature.search.api.SearchKey
-// </opt:search>
-// <opt:profile>
-import com.base.app.feature.profile.api.ProfileKey
-// </opt:profile>
-// <opt:settings>
-import com.base.app.feature.settings.api.SettingsKey
-// </opt:settings>
 // <opt:auth>
 import com.base.app.feature.auth.api.SignInKey
 // </opt:auth>
+// <opt:paging>
+import com.base.app.feature.feed.api.FeedKey
+// </opt:paging>
 // <opt:onboarding>
 import com.base.app.feature.onboarding.api.OnboardingKey
 // </opt:onboarding>
+// <opt:profile>
+import com.base.app.feature.profile.api.ProfileKey
+// </opt:profile>
+// <opt:sample>
+import com.base.app.feature.sample.api.SampleListKey
+// </opt:sample>
+// <opt:search>
+import com.base.app.feature.search.api.SearchKey
+// </opt:search>
+// <opt:settings>
+import com.base.app.feature.settings.api.SettingsKey
+// </opt:settings>
+// <generated:start-destination-import>
 
 /** The app's shape, in one file. */
 object AppDestinations {
@@ -66,17 +66,13 @@ object AppDestinations {
     /** Where a first launch starts. */
     val onboarding: AppNavKey = resolveOnboarding()
 
-    private fun resolveSignIn(): AppNavKey {
-        // <opt:auth>
-        return SignInKey
-        // </opt:auth>
-        // <opt:!auth>        return start
-    }
+    // <opt:auth>
+    private fun resolveSignIn(): AppNavKey = SignInKey
+    // </opt:auth>
+    // <opt:!auth>    private fun resolveSignIn(): AppNavKey = start
 
-    private fun resolveOnboarding(): AppNavKey {
-        // <opt:onboarding>
-        return OnboardingKey
-        // </opt:onboarding>
-        // <opt:!onboarding>        return start
-    }
+    // <opt:onboarding>
+    private fun resolveOnboarding(): AppNavKey = OnboardingKey
+    // </opt:onboarding>
+    // <opt:!onboarding>    private fun resolveOnboarding(): AppNavKey = start
 }

@@ -94,7 +94,11 @@ private class GlyphPainter(
     override fun DrawScope.onDraw() {
         drawRect(background)
         val glyphSize = glyph.intrinsicSize
-        translate(left = (size.width - glyphSize.width) / 2, top = (size.height - glyphSize.height) / 2) {
+        translate(
+            left = (size.width - glyphSize.width) / 2,
+            top =
+                (size.height - glyphSize.height) / 2,
+        ) {
             with(glyph) { draw(glyphSize, colorFilter = filter) }
         }
     }

@@ -10,9 +10,9 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.MouseButton
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.click
 import androidx.compose.ui.test.performKeyInput
 import androidx.compose.ui.test.performMouseInput
 import androidx.compose.ui.test.performTouchInput
@@ -103,7 +103,11 @@ class InputTest {
         val field = TextFieldState("Hello")
         var submitted = 0
         rule.setContent {
-            AppTheme(mode = ThemeMode.Light, reduceMotion = true, input = InputTraits(hardwareKeyboard = true)) {
+            AppTheme(
+                mode = ThemeMode.Light,
+                reduceMotion = true,
+                input = InputTraits(hardwareKeyboard = true),
+            ) {
                 AppTextField(
                     state = field,
                     lineLimits = TextFieldLineLimits.MultiLine(),
@@ -116,7 +120,9 @@ class InputTest {
         rule.onNodeWithTag("field").performKeyInput { pressKey(Key.Enter) }
         assertEquals(1, submitted)
         assertEquals("Hello", field.text.toString())
-        rule.onNodeWithTag("field").performKeyInput { withKeyDown(Key.ShiftLeft) { pressKey(Key.Enter) } }
+        rule.onNodeWithTag("field").performKeyInput {
+            withKeyDown(Key.ShiftLeft) { pressKey(Key.Enter) }
+        }
         assertEquals(1, submitted)
         assertEquals(true, field.text.contains('\n'))
     }

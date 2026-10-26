@@ -7,10 +7,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.test.hasScrollAction
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.TestSdk
@@ -41,16 +41,35 @@ class WheelPickerTest {
         val minutes = (0..59).toList()
         rule.setThemed {
             Row {
-                AppWheelPicker(items = hours, selectedIndex = hour, onSelectedChange = { hour = it }, modifier = Modifier.width(80.dp).testTag("hours"), label = { "$it" })
-                AppWheelPicker(items = minutes, selectedIndex = minute, onSelectedChange = { minute = it }, modifier = Modifier.width(80.dp).testTag("minutes"), label = { "$it" })
+                AppWheelPicker(
+                    items = hours,
+                    selectedIndex = hour,
+                    onSelectedChange = { hour = it },
+                    modifier = Modifier.width(80.dp).testTag("hours"),
+                    label = { "$it" },
+                )
+                AppWheelPicker(
+                    items = minutes,
+                    selectedIndex = minute,
+                    onSelectedChange = {
+                        minute =
+                            it
+                    },
+                    modifier = Modifier.width(80.dp).testTag("minutes"),
+                    label = { "$it" },
+                )
             }
         }
-        rule.onNode(hasScrollAction() and hasAnyAncestor(hasTestTag("minutes"))).performScrollToIndex(30)
+        rule.onNode(
+            hasScrollAction() and hasAnyAncestor(hasTestTag("minutes")),
+        ).performScrollToIndex(30)
         rule.mainClock.advanceTimeBy(2_000)
         rule.waitForIdle()
         assertEquals(30, minute)
 
-        rule.onNode(hasScrollAction() and hasAnyAncestor(hasTestTag("hours"))).performScrollToIndex(7)
+        rule.onNode(
+            hasScrollAction() and hasAnyAncestor(hasTestTag("hours")),
+        ).performScrollToIndex(7)
         rule.mainClock.advanceTimeBy(2_000)
         rule.waitForIdle()
         assertEquals(7, hour)
@@ -62,7 +81,13 @@ class WheelPickerTest {
         var index by mutableStateOf(3)
         val items = (0..9).toList()
         rule.setThemed {
-            AppWheelPicker(items = items, selectedIndex = index, onSelectedChange = { index = it }, modifier = Modifier.testTag("wheel"), label = { "$it" })
+            AppWheelPicker(
+                items = items,
+                selectedIndex = index,
+                onSelectedChange = { index = it },
+                modifier = Modifier.testTag("wheel"),
+                label = { "$it" },
+            )
         }
         val wheel = rule.onNode(hasScrollAction() and hasAnyAncestor(hasTestTag("wheel")))
         wheel.performScrollToIndex(6)

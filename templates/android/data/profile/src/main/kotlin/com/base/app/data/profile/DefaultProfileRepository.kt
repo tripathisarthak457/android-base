@@ -1,25 +1,33 @@
 package com.base.app.data.profile
 
+// <opt:media>
+import androidx.core.net.toUri
+// </opt:media>
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.base.app.data.profile.api.ProfileRepository
-import com.base.app.data.profile.api.model.Profile
-import com.base.app.data.profile.di.ProfileStore
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
 // <opt:media>
-import androidx.core.net.toUri
 import com.base.app.core.common.coroutines.AppDispatchers
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.media.compress.ImageCompression
 import com.base.app.core.media.compress.ImageCompressor
+// </opt:media>
+import com.base.app.data.profile.api.ProfileRepository
+import com.base.app.data.profile.api.model.Profile
+// <opt:media>
 import com.base.app.data.profile.di.AvatarDirectory
-import kotlinx.coroutines.withContext
+// </opt:media>
+import com.base.app.data.profile.di.ProfileStore
+// <opt:media>
 import java.io.File
+// </opt:media>
+import javax.inject.Inject
+import javax.inject.Singleton
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+// <opt:media>
+import kotlinx.coroutines.withContext
 // </opt:media>
 
 /** The profile, kept on the device in a file of its own that sign-out empties. */
@@ -57,7 +65,13 @@ internal class DefaultProfileRepository @Inject constructor(
         }
         // A new name for each photo, so an image loader holding the old one in memory cannot show it.
         val destination = File(avatars, "avatar_${System.nanoTime()}.jpg")
-        return when (val copied = compressor.compress(picked.toUri(), ImageCompression.Avatar, destination)) {
+        return when (
+            val copied = compressor.compress(
+                picked.toUri(),
+                ImageCompression.Avatar,
+                destination,
+            )
+        ) {
             is AppResult.Success -> {
                 store.edit { it[PHOTO] = copied.value.toUri().toString() }
                 deleteAvatarsExcept(keep = copied.value)

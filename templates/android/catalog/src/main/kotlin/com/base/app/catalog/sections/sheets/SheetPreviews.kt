@@ -55,7 +55,10 @@ private fun PersistentSheetPreview() {
     AppSheet(
         visible = true,
         onDismissRequest = {},
-        state = rememberAppSheetState(listOf(SheetDetent.Peek, SheetDetent.Medium, SheetDetent.Large), SheetDetent.Medium),
+        state = rememberAppSheetState(
+            listOf(SheetDetent.Peek, SheetDetent.Medium, SheetDetent.Large),
+            SheetDetent.Medium,
+        ),
         modality = SheetModality.NonModal(upThrough = SheetDetent.Medium),
         dismissible = false,
         style = AppSheetDefaults.style(material = SheetMaterial.Frosted),

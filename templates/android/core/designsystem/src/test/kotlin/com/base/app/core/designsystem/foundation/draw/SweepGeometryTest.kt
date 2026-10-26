@@ -1,10 +1,10 @@
 package com.base.app.core.designsystem.foundation.draw
 
 import com.base.app.core.designsystem.theme.tokens.DesignTokens.Motion
+import kotlin.math.tan
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import kotlin.math.tan
 
 /**
  * The band's place, worked out from each bone's own origin as the bones draw it, against where the
@@ -22,27 +22,75 @@ class SweepGeometryTest {
     fun `two bones at different places sample the same band`() {
         for (progress in listOf(0.2f, 0.45f, 0.7f)) {
             // An 80 dp line on the left and a 300 dp card further right, on the same row.
-            val near = bandCentre(progress, x = 16 * density, y = 300 * density, row = 300 * density, rtl = false)
-            val far = bandCentre(progress, x = 220 * density, y = 300 * density, row = 300 * density, rtl = false)
+            val near =
+                bandCentre(
+                    progress,
+                    x = 16 * density,
+                    y = 300 * density,
+                    row = 300 * density,
+                    rtl = false,
+                )
+            val far =
+                bandCentre(
+                    progress,
+                    x = 220 * density,
+                    y = 300 * density,
+                    row = 300 * density,
+                    rtl = false,
+                )
             assertEquals("at $progress", near, far, Tolerance)
-            assertEquals("at $progress", expectedCentre(progress, row = 300 * density, rtl = false), near, Tolerance)
+            assertEquals(
+                "at $progress",
+                expectedCentre(progress, row = 300 * density, rtl = false),
+                near,
+                Tolerance,
+            )
         }
     }
 
     @Test
     fun `a bone further down sees the band further back, by the tilt`() {
         val progress = 0.5f
-        val upper = bandCentre(progress, x = 16 * density, y = 300 * density, row = 300 * density, rtl = false)
-        val lower = bandCentre(progress, x = 16 * density, y = 500 * density, row = 500 * density, rtl = false)
-        val lean = 200 * density * tan(Math.toRadians(Motion.skeletonTiltDegrees.toDouble())).toFloat()
+        val upper =
+            bandCentre(
+                progress,
+                x = 16 * density,
+                y = 300 * density,
+                row = 300 * density,
+                rtl = false,
+            )
+        val lower =
+            bandCentre(
+                progress,
+                x = 16 * density,
+                y = 500 * density,
+                row = 500 * density,
+                rtl = false,
+            )
+        val lean =
+            200 * density * tan(Math.toRadians(Motion.skeletonTiltDegrees.toDouble())).toFloat()
         assertEquals(upper - lean, lower, Tolerance)
     }
 
     @Test
     fun `right to left, the band is mirrored and enters at the right edge`() {
         for (progress in listOf(0.1f, 0.5f, 0.9f)) {
-            val ltr = bandCentre(progress, x = 40 * density, y = 120 * density, row = 140 * density, rtl = false)
-            val rtl = bandCentre(progress, x = 40 * density, y = 120 * density, row = 140 * density, rtl = true)
+            val ltr =
+                bandCentre(
+                    progress,
+                    x = 40 * density,
+                    y = 120 * density,
+                    row = 140 * density,
+                    rtl = false,
+                )
+            val rtl =
+                bandCentre(
+                    progress,
+                    x = 40 * density,
+                    y = 120 * density,
+                    row = 140 * density,
+                    rtl = true,
+                )
             assertEquals("at $progress", width - ltr, rtl, Tolerance)
         }
         val early = bandCentre(0.1f, x = 0f, y = 0f, row = 0f, rtl = true)
@@ -71,7 +119,9 @@ class SweepGeometryTest {
     }
 
     private fun expectedCentre(progress: Float, row: Float, rtl: Boolean): Float {
-        val centre = (SweepGeometry.start(progress, width, height, band) + band / 2 - row * TiltSin) / TiltCos
+        val centre =
+            (SweepGeometry.start(progress, width, height, band) + band / 2 - row * TiltSin) /
+                TiltCos
         return if (rtl) width - centre else centre
     }
 

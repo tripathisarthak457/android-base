@@ -3,17 +3,15 @@ package com.base.app.core.flags.di
 import com.base.app.core.common.session.SessionScopedStore
 import com.base.app.core.flags.FeatureFlags
 import com.base.app.core.flags.FlagOverrides
+// <opt:!remoteconfig>import com.base.app.core.flags.LocalFeatureFlags
+// <opt:remoteconfig>
+import com.base.app.core.flags.remoteconfig.RemoteConfigFeatureFlags
+// </opt:remoteconfig>
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
-// <opt:remoteconfig>
-import com.base.app.core.flags.remoteconfig.RemoteConfigFeatureFlags
-// </opt:remoteconfig>
-// <opt-else:remoteconfig>
-//~ import com.base.app.core.flags.LocalFeatureFlags
-// </opt-else:remoteconfig>
 
 /** Binds where flag values come from. Switching vendors replaces the one binding below. */
 @Module
@@ -26,8 +24,8 @@ internal interface FlagsModule {
     // </opt:remoteconfig>
     // <opt-else:remoteconfig>
     //~
-    //~     @Binds
-    //~     fun bindFeatureFlags(flags: LocalFeatureFlags): FeatureFlags
+    //~ @Binds
+    //~ fun bindFeatureFlags(flags: LocalFeatureFlags): FeatureFlags
     // </opt-else:remoteconfig>
 
     @Binds

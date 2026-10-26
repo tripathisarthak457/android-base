@@ -37,6 +37,7 @@ enum class ImageFormat(val mimeType: String, val extension: String) {
 
     internal fun toCompressFormat(): Bitmap.CompressFormat = when (this) {
         Jpeg -> Bitmap.CompressFormat.JPEG
+
         // WEBP_LOSSY exists from API 30; below it the deprecated WEBP is the same lossy encoder.
         Webp -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             Bitmap.CompressFormat.WEBP_LOSSY

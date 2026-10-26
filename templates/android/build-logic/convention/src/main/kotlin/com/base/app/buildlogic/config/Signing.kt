@@ -1,9 +1,9 @@
 package com.base.app.buildlogic.config
 
 import com.android.build.api.dsl.ApplicationExtension
-import org.gradle.api.Project
 import java.io.File
 import java.util.Properties
+import org.gradle.api.Project
 
 /**
  * Signing, read from a `keystore.properties` that is never committed.

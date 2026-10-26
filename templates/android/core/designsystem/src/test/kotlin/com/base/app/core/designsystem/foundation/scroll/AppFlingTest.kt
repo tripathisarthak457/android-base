@@ -51,7 +51,10 @@ class AppFlingTest {
                             .fillMaxWidth()
                             .height(RowHeight)
                             .testTag("row $index")
-                            .pressable(onClick = { clicked += index }, feedback = PressFeedback.Highlight),
+                            .pressable(
+                                onClick = { clicked += index },
+                                feedback = PressFeedback.Highlight,
+                            ),
                     )
                 }
             }
@@ -59,14 +62,21 @@ class AppFlingTest {
         // Time moves only when the test moves it: waiting for idle would otherwise run the fling out.
         rule.mainClock.autoAdvance = false
         rule.onNodeWithTag("list").performTouchInput {
-            swipeWithVelocity(start = Offset(centerX, bottom - 20f), end = Offset(centerX, centerY), endVelocity = GentleRelease)
+            swipeWithVelocity(
+                start = Offset(centerX, bottom - 20f),
+                end = Offset(centerX, centerY),
+                endVelocity = GentleRelease,
+            )
         }
         val rowPx = with(rule.density) { RowHeight.roundToPx() }
         val released = list.firstVisibleItemIndex * rowPx + list.firstVisibleItemScrollOffset
         rule.mainClock.advanceTimeBy(SettledMillis)
         val settled = list.firstVisibleItemIndex * rowPx + list.firstVisibleItemScrollOffset
         assertTrue("the release carried the list on", settled > released)
-        assertFalse("still flinging $SettledMillis ms after a gentle release", list.isScrollInProgress)
+        assertFalse(
+            "still flinging $SettledMillis ms after a gentle release",
+            list.isScrollInProgress,
+        )
 
         val target = list.firstVisibleItemIndex + 2
         rule.onNodeWithTag("row $target").performClick()

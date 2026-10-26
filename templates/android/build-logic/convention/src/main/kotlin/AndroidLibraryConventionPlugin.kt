@@ -46,13 +46,15 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             // namespace is set by the module's build file, after this convention has run.
             if (hasResources) {
                 finalizeDsl { library ->
-                    library.resourcePrefix = checkNotNull(library.namespace) { "$path sets no namespace" }
-                        .substringAfterLast('.') + "_"
+                    library.resourcePrefix =
+                        checkNotNull(library.namespace) { "$path sets no namespace" }
+                            .substringAfterLast('.') + "_"
                 }
             }
             beforeVariants { variant ->
                 // Release compiles the same sources as debug, so its unit tests would only run them twice.
-                variant.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable = hasUnitTests && variant.buildType == "debug"
+                variant.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable =
+                    hasUnitTests && variant.buildType == "debug"
                 variant.deviceTests[DeviceTestBuilder.ANDROID_TEST_TYPE]?.enable = hasDeviceTests
             }
         }

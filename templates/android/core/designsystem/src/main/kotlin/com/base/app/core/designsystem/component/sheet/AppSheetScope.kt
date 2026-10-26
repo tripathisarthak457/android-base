@@ -51,7 +51,11 @@ public val LocalSheetSurface: CompositionLocal<SheetSurface?> = LocalSheetSurfac
 
 /** One per sheet, remembered: the declared material and container, never what animates. */
 @Stable
-public class SheetSurface internal constructor(public val material: SheetMaterial, public val container: Color, public val scope: AppSheetScope)
+public class SheetSurface internal constructor(
+    public val material: SheetMaterial,
+    public val container: Color,
+    public val scope: AppSheetScope,
+)
 
 /** The scope a header or footer provider draws in when it is not inside a sheet: it draws in place. */
 internal object OutsideSheetScope : AppSheetScope {

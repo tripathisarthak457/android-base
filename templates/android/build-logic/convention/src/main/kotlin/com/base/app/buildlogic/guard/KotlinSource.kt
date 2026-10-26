@@ -23,7 +23,10 @@ internal class KotlinSource(val text: String) {
     /** Every `//` comment by its 1-based line. */
     val lineComments: Map<Int, Comment>
 
-    private val lineStarts: IntArray = text.indices.filter { text[it] == '\n' }.map { it + 1 }.let { intArrayOf(0) + it }
+    private val lineStarts: IntArray = text.indices.filter { text[it] == '\n' }.map { it + 1 }.let {
+        intArrayOf(0) +
+            it
+    }
 
     init {
         val scan = Scanner(text).also { it.run() }
@@ -71,7 +74,10 @@ internal class KotlinSource(val text: String) {
         val content: String by lazy {
             when (kind) {
                 Kind.LINE -> raw.removePrefix("//").trim()
-                Kind.BLOCK, Kind.KDOC -> raw.removePrefix("/**").removePrefix("/*").removeSuffix("*/")
+
+                Kind.BLOCK, Kind.KDOC -> raw.removePrefix(
+                    "/**",
+                ).removePrefix("/*").removeSuffix("*/")
                     .lines()
                     .joinToString("\n") { it.trim().removePrefix("*").trim() }
                     .trim()
@@ -135,26 +141,33 @@ internal class KotlinSource(val text: String) {
                     blankComment(i, end)
                     i = end
                 }
+
                 c == '/' && next == '*' -> blockComment()
+
                 text.startsWith("\"\"\"", i) -> {
                     stack.addLast(Frame(Mode.RAW_STRING))
                     i += 3
                 }
+
                 c == '"' -> {
                     stack.addLast(Frame(Mode.STRING))
                     i++
                 }
+
                 c == '\'' -> charLiteral()
+
                 c == '`' -> {
                     // A backticked name can hold spaces and punctuation; none of it is code.
                     val end = text.indexOf('`', i + 1).let { if (it < 0) text.length - 1 else it }
                     blankString(i + 1, end)
                     i = end + 1
                 }
+
                 c == '{' && frame.mode == Mode.TEMPLATE -> {
                     frame.braces++
                     i++
                 }
+
                 c == '}' && frame.mode == Mode.TEMPLATE -> {
                     if (frame.braces == 0) {
                         stack.removeLast()
@@ -164,6 +177,7 @@ internal class KotlinSource(val text: String) {
                     }
                     i++
                 }
+
                 else -> i++
             }
         }
@@ -177,11 +191,13 @@ internal class KotlinSource(val text: String) {
                         depth++
                         i += 2
                     }
+
                     text.startsWith("*/", i) -> {
                         depth--
                         i += 2
                         if (depth == 0) break
                     }
+
                     else -> i++
                 }
             }
@@ -204,16 +220,20 @@ internal class KotlinSource(val text: String) {
                     blankString(i, minOf(i + 2, text.length))
                     i += 2
                 }
+
                 c == '"' -> {
                     stack.removeLast()
                     i++
                 }
+
                 c == '$' && text.getOrNull(i + 1) == '{' -> openTemplate()
+
                 // An unterminated literal ends at the line, as the compiler would report it.
                 c == '\n' -> {
                     stack.removeLast()
                     i++
                 }
+
                 else -> {
                     blankString(i, i + 1)
                     i++
@@ -232,8 +252,11 @@ internal class KotlinSource(val text: String) {
                     stack.removeLast()
                     i = end
                 }
+
                 c == '$' && text.getOrNull(i + 1) == '{' -> openTemplate()
+
                 c == '\n' -> i++
+
                 else -> {
                     blankString(i, i + 1)
                     i++

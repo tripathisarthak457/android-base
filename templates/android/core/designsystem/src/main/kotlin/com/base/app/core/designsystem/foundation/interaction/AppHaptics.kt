@@ -52,23 +52,54 @@ internal fun AppHaptic.constant(): Int {
     val sdk = Build.VERSION.SDK_INT
     return when (this) {
         AppHaptic.Selection ->
-            if (sdk >= 34) HapticFeedbackConstants.SEGMENT_TICK else HapticFeedbackConstants.CLOCK_TICK
+            if (sdk >=
+                34
+            ) {
+                HapticFeedbackConstants.SEGMENT_TICK
+            } else {
+                HapticFeedbackConstants.CLOCK_TICK
+            }
+
         AppHaptic.ToggleOn ->
-            if (sdk >= 34) HapticFeedbackConstants.TOGGLE_ON else HapticFeedbackConstants.CONTEXT_CLICK
+            if (sdk >=
+                34
+            ) {
+                HapticFeedbackConstants.TOGGLE_ON
+            } else {
+                HapticFeedbackConstants.CONTEXT_CLICK
+            }
+
         AppHaptic.ToggleOff ->
-            if (sdk >= 34) HapticFeedbackConstants.TOGGLE_OFF else HapticFeedbackConstants.CONTEXT_CLICK
+            if (sdk >=
+                34
+            ) {
+                HapticFeedbackConstants.TOGGLE_OFF
+            } else {
+                HapticFeedbackConstants.CONTEXT_CLICK
+            }
+
         AppHaptic.Threshold ->
-            if (sdk >= 34) HapticFeedbackConstants.GESTURE_THRESHOLD_ACTIVATE else HapticFeedbackConstants.CONTEXT_CLICK
+            if (sdk >=
+                34
+            ) {
+                HapticFeedbackConstants.GESTURE_THRESHOLD_ACTIVATE
+            } else {
+                HapticFeedbackConstants.CONTEXT_CLICK
+            }
+
         AppHaptic.Confirm ->
             if (sdk >= 30) HapticFeedbackConstants.CONFIRM else HapticFeedbackConstants.VIRTUAL_KEY
+
         AppHaptic.Reject ->
             if (sdk >= 30) HapticFeedbackConstants.REJECT else HapticFeedbackConstants.LONG_PRESS
+
         AppHaptic.LongPress -> HapticFeedbackConstants.LONG_PRESS
     }
 }
 
 /** Whether the app plays haptics at all. Set once, by `AppTheme(hapticsEnabled = …)`. */
-public val LocalHapticsEnabled: ProvidableCompositionLocal<Boolean> = staticCompositionLocalOf { true }
+public val LocalHapticsEnabled: ProvidableCompositionLocal<Boolean> =
+    staticCompositionLocalOf { true }
 
 /** The haptics for the current theme. Cheap; read it wherever a control needs to speak. */
 @Composable

@@ -198,11 +198,19 @@ internal object CodeRules {
         }
 
         val markers = allowMarkers(source)
+        // ktlint keeps comments out of an import list, so a marker on the line above the first import
+        // speaks for every import in the list.
+        val imports = source.codeLines.indices.filter { source.codeLines[it].trimStart().startsWith("import ") }
+            .map { it + 1 }
+            .toSet()
+        val listMarker = imports.minOrNull()?.let { it - 1 }
         val used = mutableSetOf<Pair<Int, String>>()
         val kept = found.filter { finding ->
-            val marker = markers[finding.line - 1]
+            val above = finding.line - 1
+            val line = if (finding.line in imports && above !in markers && listMarker != null) listMarker else above
+            val marker = markers[line]
             val silenced = marker != null && finding.rule in marker.rules && marker.reason.isNotBlank()
-            if (silenced) used += (finding.line - 1) to finding.rule
+            if (silenced) used += line to finding.rule
             !silenced
         }
 

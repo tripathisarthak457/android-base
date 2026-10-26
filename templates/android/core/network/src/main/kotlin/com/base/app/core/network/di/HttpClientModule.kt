@@ -26,21 +26,23 @@ import io.ktor.client.plugins.UserAgent
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+// <opt:websocket>
+import io.ktor.client.plugins.websocket.WebSockets
+import io.ktor.client.plugins.websocket.pingInterval
+// </opt:websocket>
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 import io.ktor.http.Url
-import kotlinx.coroutines.withContext
-import okhttp3.Cache
-import okhttp3.CertificatePinner
-import okhttp3.OkHttpClient
 import java.io.File
 import javax.inject.Qualifier
 import javax.inject.Singleton
 // <opt:websocket>
-import io.ktor.client.plugins.websocket.WebSockets
-import io.ktor.client.plugins.websocket.pingInterval
 import kotlin.time.Duration.Companion.seconds
 // </opt:websocket>
+import kotlinx.coroutines.withContext
+import okhttp3.Cache
+import okhttp3.CertificatePinner
+import okhttp3.OkHttpClient
 
 /** Sends the session's token and renews it on a 401. What every repository's calls go through. */
 @Qualifier
@@ -70,10 +72,15 @@ internal object HttpClientModule {
      */
     @Provides
     @Singleton
-    fun provideOkHttpClient(config: NetworkConfig, cache: Cache): OkHttpClient = OkHttpClient.Builder()
-        .cache(cache)
-        .apply { if (config.certificatePins.isNotEmpty()) certificatePinner(config.certificatePinner()) }
-        .build()
+    fun provideOkHttpClient(config: NetworkConfig, cache: Cache): OkHttpClient =
+        OkHttpClient.Builder()
+            .cache(cache)
+            .apply {
+                if (config.certificatePins.isNotEmpty()) {
+                    certificatePinner(config.certificatePinner())
+                }
+            }
+            .build()
 
     @Provides
     @Singleton
@@ -107,13 +114,14 @@ internal object HttpClientModule {
     @Provides
     @Singleton
     @RealtimeClient
-    fun provideRealtimeClient(okHttp: OkHttpClient, config: NetworkConfig): HttpClient = HttpClient(OkHttp) {
-        engine { preconfigured = okHttp }
-        // Without pings a connection a NAT dropped in silence is never noticed, and the socket waits
-        // for frames that cannot arrive.
-        install(WebSockets) { pingInterval = PING_INTERVAL }
-        installUserAgent(config)
-    }
+    fun provideRealtimeClient(okHttp: OkHttpClient, config: NetworkConfig): HttpClient =
+        HttpClient(OkHttp) {
+            engine { preconfigured = okHttp }
+            // Without pings a connection a NAT dropped in silence is never noticed, and the
+            // socket waits for frames that cannot arrive.
+            install(WebSockets) { pingInterval = PING_INTERVAL }
+            installUserAgent(config)
+        }
     // </opt:websocket>
 
     /**
@@ -132,7 +140,10 @@ internal object HttpClientModule {
     fun provideHttpCacheClearing(cache: Cache, dispatchers: AppDispatchers): SessionScopedStore =
         SessionScopedStore { withContext(dispatchers.io) { cache.evictAll() } }
 
-    private fun HttpClientConfig<OkHttpConfig>.installCommon(okHttp: OkHttpClient, config: NetworkConfig) {
+    private fun HttpClientConfig<OkHttpConfig>.installCommon(
+        okHttp: OkHttpClient,
+        config: NetworkConfig,
+    ) {
         // Ktor's default throws on any non-2xx, which turns an ordinary 404 or 422 into an exception
         // that has to be caught to recover the status and the body.
         expectSuccess = false
@@ -167,9 +178,10 @@ internal object HttpClientModule {
         if (agent.isNotEmpty()) install(UserAgent) { this.agent = agent }
     }
 
-    private fun NetworkConfig.certificatePinner(): CertificatePinner = CertificatePinner.Builder().apply {
-        certificatePins.forEach { (host, pins) -> add(host, *pins.toTypedArray()) }
-    }.build()
+    private fun NetworkConfig.certificatePinner(): CertificatePinner =
+        CertificatePinner.Builder().apply {
+            certificatePins.forEach { (host, pins) -> add(host, *pins.toTypedArray()) }
+        }.build()
 
     private const val HTTP_CACHE_DIRECTORY = "http"
     private const val APP_VERSION_HEADER = "X-App-Version"

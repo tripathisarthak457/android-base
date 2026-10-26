@@ -179,8 +179,20 @@ public class AppSheetState @RememberInComposition constructor(
             val y = anchored.offset
             if (y.isNaN()) return 0f
             val large = stops.offsets[stops.largeIndex]
-            val partial = if (stops.largeIndex + 1 < stops.count) stops.offsets[stops.largeIndex + 1] else stops.hidden
-            return if (partial <= large) 1f else ((partial - y) / (partial - large)).coerceIn(0f, 1f)
+            val partial = if (stops.largeIndex + 1 <
+                stops.count
+            ) {
+                stops.offsets[stops.largeIndex + 1]
+            } else {
+                stops.hidden
+            }
+            return if (partial <=
+                large
+            ) {
+                1f
+            } else {
+                ((partial - y) / (partial - large)).coerceIn(0f, 1f)
+            }
         }
 
     /** Written in measure: false for a form sheet or a side panel, which never expand. */
@@ -269,7 +281,10 @@ public class AppSheetState @RememberInComposition constructor(
         leaving = false
         fade = 1f
         stretch = 0f
-        anchored.anchoredDrag(SheetStop.At(stop), MutatePriority.PreventUserInput) { anchors, latest ->
+        anchored.anchoredDrag(SheetStop.At(stop), MutatePriority.PreventUserInput) {
+                anchors,
+                latest,
+            ->
             dragTo(anchors.positionOf(latest))
         }
         arrive(stop)
@@ -288,7 +303,11 @@ public class AppSheetState @RememberInComposition constructor(
     public suspend fun collapse(): Boolean {
         val stops = stops ?: return false
         val index = stops.indexOf(currentDetent ?: return false)
-        if (stops.single || index < 0 || index == stops.count - 1 || !canMoveProgrammatically()) return false
+        if (stops.single || index < 0 || index == stops.count - 1 ||
+            !canMoveProgrammatically()
+        ) {
+            return false
+        }
         settleTo(stops.detents[index + 1], anchored.lastVelocity, byPerson = false)
         return true
     }
@@ -314,7 +333,10 @@ public class AppSheetState @RememberInComposition constructor(
             }
         }
         if (!changed) return
-        val replacedResolver = latest.any { it is SheetDetent.Custom && resolved.none { old -> old === it } }
+        val replacedResolver = latest.any {
+            it is SheetDetent.Custom &&
+                resolved.none { old -> old === it }
+        }
         resolved = latest
         if (replacedResolver) resolverGeneration++
     }
@@ -364,7 +386,12 @@ public class AppSheetState @RememberInComposition constructor(
             restore = { saved ->
                 val (wasShown, detent) = SheetStateKey.decode(saved, detents)
                 val initial = if (detent != null && detent in detents) detent else detents.first()
-                AppSheetState(detents, initial).also { if (wasShown) it.restoredDetent = detent ?: initial }
+                AppSheetState(detents, initial).also {
+                    if (wasShown) {
+                        it.restoredDetent =
+                            detent ?: initial
+                    }
+                }
             },
         )
     }
@@ -380,7 +407,10 @@ public fun rememberAppSheetState(
     detents: List<SheetDetent> = AppSheetDefaults.Detents,
     initialDetent: SheetDetent = detents.first(),
 ): AppSheetState {
-    val state = rememberSaveable(saver = AppSheetState.Saver(detents)) { AppSheetState(detents, initialDetent) }
+    val state =
+        rememberSaveable(saver = AppSheetState.Saver(detents)) {
+            AppSheetState(detents, initialDetent)
+        }
     SideEffect { state.updateDetents(detents) }
     return state
 }

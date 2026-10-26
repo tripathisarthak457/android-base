@@ -23,8 +23,10 @@ internal fun resolvePlacement(
     tabletop: Boolean,
 ): SheetPlacement = when (requested) {
     SheetPlacement.Bottom, SheetPlacement.Center -> requested
+
     SheetPlacement.Start, SheetPlacement.End ->
         if (sizeClass.width >= WindowWidth.Expanded) requested else SheetPlacement.Bottom
+
     else -> when {
         tabletop -> SheetPlacement.Bottom
         sizeClass.height == WindowHeight.Compact -> SheetPlacement.Bottom

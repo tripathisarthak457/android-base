@@ -39,8 +39,8 @@ import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.shell.stack.coverScrimAlpha
 import com.base.app.core.navigation.shell.transition.ScreenMotion
-import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+import kotlinx.coroutines.launch
 
 /**
  * The tabs in the window's chrome: the floating bar, the rail or the sidebar. When the chrome has
@@ -72,21 +72,53 @@ internal fun ShellBar(
             TabItem(labels[index], tab.icon, tab.selectedIcon, tab.badgeCount, sections[index])
         }
         if (hasMore) {
-            visible + TabItem(moreLabel, AppIcons.MoreHorizontal, badgeCount = tabs.drop(shown).sumOf { it.badgeCount })
+            visible +
+                TabItem(
+                    moreLabel,
+                    AppIcons.MoreHorizontal,
+                    badgeCount = tabs.drop(shown).sumOf {
+                        it.badgeCount
+                    },
+                )
         } else {
             visible
         }
     }
-    val selected = if (hasMore && (state.moreShown || state.selectedIndex >= shown)) shown else state.selectedIndex
-    val onSelect: (Int) -> Unit = { index -> if (hasMore && index == shown) state.showMore() else state.select(index) }
+    val selected = if (hasMore &&
+        (state.moreShown || state.selectedIndex >= shown)
+    ) {
+        shown
+    } else {
+        state.selectedIndex
+    }
+    val onSelect: (Int) -> Unit = { index ->
+        if (hasMore &&
+            index == shown
+        ) {
+            state.showMore()
+        } else {
+            state.select(index)
+        }
+    }
     val sideHeader: (@Composable BarActionScope.() -> Unit)? =
         if (onToggleSidebar == null && trailingAction == null) {
             null
         } else {
             {
                 if (onToggleSidebar != null) {
-                    val label = if (chrome == NavigationChrome.Sidebar) R.string.shell_hide_sidebar else R.string.shell_show_sidebar
-                    Action(AppIcons.Menu, stringResource(label), onToggleSidebar, tag = "sidebar_toggle")
+                    val label = if (chrome ==
+                        NavigationChrome.Sidebar
+                    ) {
+                        R.string.shell_hide_sidebar
+                    } else {
+                        R.string.shell_show_sidebar
+                    }
+                    Action(
+                        AppIcons.Menu,
+                        stringResource(label),
+                        onToggleSidebar,
+                        tag = "sidebar_toggle",
+                    )
                 }
                 trailingAction?.invoke(this)
             }
@@ -99,7 +131,11 @@ internal fun ShellBar(
             onReselect = onSelect,
             modifier = modifier
                 .testTag("tab_bar")
-                .followCovered(state.barAnchor, motion.parallax, coverScrimAlpha(AppTheme.colors.isLight))
+                .followCovered(
+                    state.barAnchor,
+                    motion.parallax,
+                    coverScrimAlpha(AppTheme.colors.isLight),
+                )
                 .hideUnderKeyboard(WindowInsets.ime, motion.fraction)
                 .parkWhenCovered(state.barAnchor),
             labels = config.barLabels,
@@ -109,6 +145,7 @@ internal fun ShellBar(
             trailingAction = trailingAction,
             accessory = accessory,
         )
+
         NavigationChrome.Rail -> AppTabBar(
             items = items,
             selected = selected,
@@ -121,6 +158,7 @@ internal fun ShellBar(
             trailingAction = sideHeader,
             accessory = accessory,
         )
+
         NavigationChrome.Sidebar -> AppSidebar(
             items = items,
             selected = selected,
@@ -136,8 +174,13 @@ internal fun ShellBar(
 
 /** The sidebar's width for the window: wider on the widest windows. */
 @Composable
-internal fun sidebarWidth(): Dp =
-    if (AppTheme.windowClass.width == WindowWidth.ExtraLarge) AppSidebarDefaults.WideWidth else AppSidebarDefaults.Width
+internal fun sidebarWidth(): Dp = if (AppTheme.windowClass.width ==
+    WindowWidth.ExtraLarge
+) {
+    AppSidebarDefaults.WideWidth
+} else {
+    AppSidebarDefaults.Width
+}
 
 /**
  * The keyboard rises over the bar: the bar moves down with it in the layout phase and is
@@ -166,7 +209,8 @@ private data class HideUnderKeyboardElement(
 }
 
 private class HideUnderKeyboardNode(var ime: WindowInsets, var spring: AnimationSpec<Float>) :
-    Modifier.Node(), LayoutModifierNode {
+    Modifier.Node(),
+    LayoutModifierNode {
 
     private val animated = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
 
@@ -177,11 +221,16 @@ private class HideUnderKeyboardNode(var ime: WindowInsets, var spring: Animation
         if (animated) return
         val density = requireDensity()
         coroutineScope.launch {
-            snapshotFlow { ime.getBottom(density) > 0 }.collect { up -> sunk.animateTo(if (up) 1f else 0f, spring) }
+            snapshotFlow {
+                ime.getBottom(density) > 0
+            }.collect { up -> sunk.animateTo(if (up) 1f else 0f, spring) }
         }
     }
 
-    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+    override fun MeasureScope.measure(
+        measurable: Measurable,
+        constraints: Constraints,
+    ): MeasureResult {
         val placeable = measurable.measure(constraints)
         return layout(placeable.width, placeable.height) {
             val keyboard = if (animated) {
@@ -189,7 +238,10 @@ private class HideUnderKeyboardNode(var ime: WindowInsets, var spring: Animation
             } else {
                 (placeable.height * sunk.value).roundToInt()
             }
-            placeable.placeWithLayer(0, keyboard) { alpha = if (keyboard >= placeable.height) 0f else 1f }
+            placeable.placeWithLayer(0, keyboard) {
+                alpha =
+                    if (keyboard >= placeable.height) 0f else 1f
+            }
         }
     }
 }
@@ -201,9 +253,11 @@ private class HideUnderKeyboardNode(var ime: WindowInsets, var spring: Animation
  * or recorded. All of it follows [anchor] in the layer and semantics phases, so it recomposes
  * nothing either.
  */
-private fun Modifier.parkWhenCovered(anchor: BarAnchor): Modifier = this then ParkWhenCoveredElement(anchor)
+private fun Modifier.parkWhenCovered(anchor: BarAnchor): Modifier =
+    this then ParkWhenCoveredElement(anchor)
 
-private data class ParkWhenCoveredElement(val anchor: BarAnchor) : ModifierNodeElement<ParkWhenCoveredNode>() {
+private data class ParkWhenCoveredElement(val anchor: BarAnchor) :
+    ModifierNodeElement<ParkWhenCoveredNode>() {
     override fun create() = ParkWhenCoveredNode(anchor)
 
     override fun update(node: ParkWhenCoveredNode) {
@@ -217,7 +271,10 @@ private data class ParkWhenCoveredElement(val anchor: BarAnchor) : ModifierNodeE
 }
 
 private class ParkWhenCoveredNode(var anchor: BarAnchor) :
-    Modifier.Node(), LayoutModifierNode, SemanticsModifierNode, ObserverModifierNode {
+    Modifier.Node(),
+    LayoutModifierNode,
+    SemanticsModifierNode,
+    ObserverModifierNode {
 
     private var parked = false
 
@@ -246,8 +303,13 @@ private class ParkWhenCoveredNode(var anchor: BarAnchor) :
         }
     }
 
-    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+    override fun MeasureScope.measure(
+        measurable: Measurable,
+        constraints: Constraints,
+    ): MeasureResult {
         val placeable = measurable.measure(constraints)
-        return layout(placeable.width, placeable.height) { placeable.placeWithLayer(0, 0, layerBlock = layer) }
+        return layout(placeable.width, placeable.height) {
+            placeable.placeWithLayer(0, 0, layerBlock = layer)
+        }
     }
 }

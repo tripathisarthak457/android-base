@@ -105,7 +105,8 @@ enum class AppFlavor(
         webSocketUrl = "wss://api.example.com/ws",
         // </generated:socket-url-playstore>
         signingKeyName = "playstore",
-    );
+    ),
+    ;
 
     /** True for the two variants that are actually shipped, and only those. */
     val isShippable: Boolean get() = this == PROD || this == PLAYSTORE

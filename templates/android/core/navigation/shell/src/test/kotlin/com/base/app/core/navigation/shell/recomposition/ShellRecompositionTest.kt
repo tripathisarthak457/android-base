@@ -67,9 +67,15 @@ class ShellRecompositionTest {
         rule.setContent {
             DeviceConfigurationOverride(DeviceConfigurationOverride.WindowSize(windowSize)) {
                 AppTheme {
-                    val shell = rememberShellState(testTabs, registry, testSerialization, generation = 1)
+                    val shell =
+                        rememberShellState(testTabs, registry, testSerialization, generation = 1)
                     state = shell
-                    AppShell(tabs = testTabs, state = shell, registry = registry, navigator = AppNavigator())
+                    AppShell(
+                        tabs = testTabs,
+                        state = shell,
+                        registry = registry,
+                        navigator = AppNavigator(),
+                    )
                 }
             }
         }
@@ -97,7 +103,8 @@ class ShellRecompositionTest {
         rule.onNodeWithTag("tab_1").performSemanticsAction(SemanticsActions.OnClick)
         rule.onNodeWithTag("tab_0").performSemanticsAction(SemanticsActions.OnClick)
 
-        val frames = journey { rule.onNodeWithTag("tab_1").performSemanticsAction(SemanticsActions.OnClick) }
+        val frames =
+            journey { rule.onNodeWithTag("tab_1").performSemanticsAction(SemanticsActions.OnClick) }
 
         assertEquals(listOf(0), frames.indices.filter { frames[it].isNotEmpty() })
         assertEquals(0, frames.sumOf { it.count("ProbeScreen") })
@@ -107,7 +114,8 @@ class ShellRecompositionTest {
     fun `a first visit to a tab built while idle composes none of its screens`() {
         showShell()
 
-        val frames = journey { rule.onNodeWithTag("tab_1").performSemanticsAction(SemanticsActions.OnClick) }
+        val frames =
+            journey { rule.onNodeWithTag("tab_1").performSemanticsAction(SemanticsActions.OnClick) }
 
         frames.assertQuietBetweenEnds()
         assertEquals(0, frames.sumOf { it.count("ProbeScreen") })
@@ -152,7 +160,8 @@ class ShellRecompositionTest {
         rule.onNodeWithTag("tab_1").performSemanticsAction(SemanticsActions.OnClick)
         rule.onNodeWithTag("tab_0").performSemanticsAction(SemanticsActions.OnClick)
 
-        val frames = journey { rule.onNodeWithTag("tab_1").performSemanticsAction(SemanticsActions.OnClick) }
+        val frames =
+            journey { rule.onNodeWithTag("tab_1").performSemanticsAction(SemanticsActions.OnClick) }
 
         assertTrue(frames.sumOf { it.count("TabCell") } <= 2)
     }
@@ -197,7 +206,13 @@ class ShellRecompositionTest {
 
             val frames = idle(IDLE_MILLIS)
 
-            assertEquals("tab $tab", emptyList<Map<String, Int>>(), frames.filter { it.isNotEmpty() })
+            assertEquals(
+                "tab $tab",
+                emptyList<Map<String, Int>>(),
+                frames.filter {
+                    it.isNotEmpty()
+                },
+            )
         }
     }
 

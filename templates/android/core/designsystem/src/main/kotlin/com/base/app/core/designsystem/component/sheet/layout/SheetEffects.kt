@@ -14,9 +14,9 @@ import com.base.app.core.designsystem.component.sheet.SheetDetent
 import com.base.app.core.designsystem.component.sheet.stack.SheetStack
 import com.base.app.core.designsystem.foundation.layout.LocalHostMotion
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
+import kotlin.math.abs
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlin.math.abs
 
 /**
  * The sheet's place in its window's stack while it shows. Leaving composition while
@@ -34,7 +34,14 @@ internal fun SheetStackEntry(controller: SheetController, stack: SheetStack?, ow
     }
     LaunchedEffect(controller, stack, ownerLevel) {
         snapshotFlow { controller.sheetState.isVisible }.collect { visible ->
-            if (visible) stack.register(controller.stacked, ownerLevel) else stack.unregister(controller.stacked)
+            if (visible) {
+                stack.register(
+                    controller.stacked,
+                    ownerLevel,
+                )
+            } else {
+                stack.unregister(controller.stacked)
+            }
         }
     }
 }
@@ -51,11 +58,21 @@ internal fun SheetMotionEffects(controller: SheetController, expandForKeyboard: 
     val hostMotion = LocalHostMotion.current
     LaunchedEffect(controller, expandForKeyboard) {
         launch {
-            snapshotFlow { controller.entry.isTabSelected && !controller.entry.isUncovered && !state.isLeaving }
+            snapshotFlow {
+                controller.entry.isTabSelected && !controller.entry.isUncovered &&
+                    !state.isLeaving
+            }
                 .collectLatest { covered ->
                     val target = if (covered) 1f else 0f
                     if (state.parkProgress != target) {
-                        animate(state.parkProgress, target, animationSpec = controller.springs.sheet.unit) { value, _ ->
+                        animate(
+                            state.parkProgress,
+                            target,
+                            animationSpec = controller.springs.sheet.unit,
+                        ) {
+                                value,
+                                _,
+                            ->
                             state.parkProgress = value
                         }
                     }
@@ -72,7 +89,11 @@ internal fun SheetMotionEffects(controller: SheetController, expandForKeyboard: 
                     } else {
                         val back = before
                         before = null
-                        if (back != null && state.currentDetent == stops.detents[0]) state.animateTo(back)
+                        if (back != null &&
+                            state.currentDetent == stops.detents[0]
+                        ) {
+                            state.animateTo(back)
+                        }
                     }
                 }
             }
@@ -80,7 +101,13 @@ internal fun SheetMotionEffects(controller: SheetController, expandForKeyboard: 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
             launch {
                 snapshotFlow { controller.liftGoal }.collectLatest { goal ->
-                    animate(state.lift, goal, animationSpec = controller.springs.screen.pixels) { value, _ -> state.lift = value }
+                    animate(state.lift, goal, animationSpec = controller.springs.screen.pixels) {
+                            value,
+                            _,
+                        ->
+                        state.lift =
+                            value
+                    }
                 }
             }
         }
@@ -93,12 +120,18 @@ internal fun SheetMotionEffects(controller: SheetController, expandForKeyboard: 
         }
     }
     LaunchedEffect(controller, hostMotion) {
-        snapshotFlow { controller.movesHost() }.collect { moving -> hostMotion.report(state, moving) }
+        snapshotFlow {
+            controller.movesHost()
+        }.collect { moving -> hostMotion.report(state, moving) }
     }
     val context = LocalContext.current
-    val accessibility = remember(context) { context.getSystemService(AccessibilityManager::class.java) }
+    val accessibility =
+        remember(context) { context.getSystemService(AccessibilityManager::class.java) }
     DisposableEffect(controller, accessibility) {
-        val listener = AccessibilityManager.TouchExplorationStateChangeListener { controller.touchExploration = it }
+        val listener = AccessibilityManager.TouchExplorationStateChangeListener {
+            controller.touchExploration =
+                it
+        }
         controller.touchExploration = accessibility?.isTouchExplorationEnabled == true
         accessibility?.addTouchExplorationStateChangeListener(listener)
         onDispose { accessibility?.removeTouchExplorationStateChangeListener(listener) }
@@ -117,7 +150,10 @@ private fun SheetController.movesHost(): Boolean {
     val offset = state.anchored.offset
     if (offset.isNaN()) return false
     val parking = state.parkProgress > Remaining && state.parkProgress < 1f - Remaining
-    val showing = state.presenting && abs(offset - (state.targetDetent?.let { stops.offsetOf(it) } ?: offset)) / travel > Remaining
+    val showing =
+        state.presenting &&
+            abs(offset - (state.targetDetent?.let { stops.offsetOf(it) } ?: offset)) / travel >
+            Remaining
     val leaving = state.isLeaving && (stops.hidden - offset) / travel > Remaining
     return parking || showing || leaving
 }

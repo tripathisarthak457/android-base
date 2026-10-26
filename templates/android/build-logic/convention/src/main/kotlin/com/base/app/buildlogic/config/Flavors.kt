@@ -19,7 +19,8 @@ internal fun Project.configureFlavors(extension: ApplicationExtension) {
             dimension = AppFlavor.DIMENSION
             flavor.applicationIdSuffix?.let { applicationIdSuffix = it }
 
-            val apiBaseUrl = apiBaseUrlOverride?.takeUnless { flavor.isShippable } ?: flavor.apiBaseUrl
+            val apiBaseUrl =
+                apiBaseUrlOverride?.takeUnless { flavor.isShippable } ?: flavor.apiBaseUrl
             buildConfigField("String", "API_BASE_URL", "\"$apiBaseUrl\"")
             buildConfigField("String", "WEB_SOCKET_URL", "\"${flavor.webSocketUrl}\"")
             buildConfigField("String", "ENVIRONMENT", "\"${flavor.flavorName}\"")
@@ -58,8 +59,11 @@ internal fun Project.configureVariants(components: ApplicationAndroidComponentsE
         }
         val isShippableRelease = flavor?.isShippable == true && variant.buildType == "release"
         val versionName =
-            if (isShippableRelease) AppConfig.VERSION_NAME
-            else "${AppConfig.VERSION_NAME}-${variant.name}"
+            if (isShippableRelease) {
+                AppConfig.VERSION_NAME
+            } else {
+                "${AppConfig.VERSION_NAME}-${variant.name}"
+            }
 
         variant.outputs.forEach { output ->
             output.versionCode.set(AppConfig.VERSION_CODE)

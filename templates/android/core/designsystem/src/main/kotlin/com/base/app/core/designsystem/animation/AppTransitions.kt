@@ -31,11 +31,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.semantics
@@ -77,10 +77,26 @@ public class AppTransitions internal constructor(
 
     /** For something arriving from the bottom edge: a banner, a bar. */
     public val riseIn: EnterTransition
-        get() = if (reduceMotion) EnterTransition.None else slideInVertically(springs.sheet.offset) { it }
+        get() = if (reduceMotion) {
+            EnterTransition.None
+        } else {
+            slideInVertically(
+                springs.sheet.offset,
+            ) {
+                it
+            }
+        }
 
     public val sinkOut: ExitTransition
-        get() = if (reduceMotion) ExitTransition.None else slideOutVertically(springs.sheet.offset) { it }
+        get() = if (reduceMotion) {
+            ExitTransition.None
+        } else {
+            slideOutVertically(
+                springs.sheet.offset,
+            ) {
+                it
+            }
+        }
 
     /** For an element that should read as appearing, not moving: a badge, a checkmark. */
     public val popIn: EnterTransition
@@ -98,19 +114,17 @@ public class AppTransitions internal constructor(
         }
 
     /** A lateral move inside one screen: step 2 of a form replacing step 1. */
-    public fun slideIn(forward: Boolean = true): EnterTransition =
-        if (reduceMotion) {
-            EnterTransition.None
-        } else {
-            slideInHorizontally(springs.screen.offset) { width -> if (forward) width else -width }
-        }
+    public fun slideIn(forward: Boolean = true): EnterTransition = if (reduceMotion) {
+        EnterTransition.None
+    } else {
+        slideInHorizontally(springs.screen.offset) { width -> if (forward) width else -width }
+    }
 
-    public fun slideOut(forward: Boolean = true): ExitTransition =
-        if (reduceMotion) {
-            ExitTransition.None
-        } else {
-            slideOutHorizontally(springs.screen.offset) { width -> if (forward) -width else width }
-        }
+    public fun slideOut(forward: Boolean = true): ExitTransition = if (reduceMotion) {
+        ExitTransition.None
+    } else {
+        slideOutHorizontally(springs.screen.offset) { width -> if (forward) -width else width }
+    }
 }
 
 private const val PopScale = 0.85f
@@ -173,7 +187,8 @@ public fun AppStaggeredColumn(
     val total = (span + stagger * springs.staggerMaxItems).toFloat()
     // Linear overall, eased per item: each item eases over its own slice of the timeline, which a
     // value that was already eased would distort.
-    val progress = rememberAppearProgress(delayMillis = 0, durationMillis = total.toInt(), linear = true)
+    val progress =
+        rememberAppearProgress(delayMillis = 0, durationMillis = total.toInt(), linear = true)
     val lift = with(LocalDensity.current) { springs.appearOffset.toPx() }
 
     Column(modifier = modifier) {

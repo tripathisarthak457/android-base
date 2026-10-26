@@ -6,6 +6,7 @@ theme draws with, its contrast-derived roles already worked out.
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 from . import number
@@ -82,7 +83,7 @@ def emit(tokens: dict[str, Any], package: str, header: str = HEADER) -> str:
         lines.append("")
         lines.extend(_indent(section))
     lines.append("}")
-    return "\n".join(lines) + "\n"
+    return "\n".join(_wrapped(lines)) + "\n"
 
 
 def emit_skeleton(tokens: dict[str, Any], package: str, header: str = SKELETON_HEADER) -> str:
@@ -132,7 +133,7 @@ def emit_skeleton(tokens: dict[str, Any], package: str, header: str = SKELETON_H
         lines.append("")
         lines.extend(_indent(section))
     lines.append("}")
-    return "\n".join(lines) + "\n"
+    return "\n".join(_wrapped(lines)) + "\n"
 
 
 def _skeleton_type(type_tokens: dict[str, Any], voice: str) -> list[str]:
@@ -197,6 +198,38 @@ def _skeleton_palette(themes: dict[str, Any]) -> list[str]:
 
 def _indent(lines: list[str]) -> list[str]:
     return [f"    {line}" if line else "" for line in lines]
+
+
+#: The projects' line length (`max_line_length` in .editorconfig), past which ktlint puts each argument on its own line.
+MAX_LINE = 100
+_CALL = re.compile(r"^(?P<head>\s*.*?\w\()(?P<args>.*)\)(?P<tail>,?)$")
+
+
+def _wrapped(lines: list[str]) -> list[str]:
+    """Each call longer than a line, one argument per line, as ktlint formats it, so the copy passes spotlessCheck."""
+    out: list[str] = []
+    for line in lines:
+        match = _CALL.match(line) if len(line) > MAX_LINE and not line.lstrip().startswith("//") else None
+        if match is None:
+            out.append(line)
+            continue
+        indent = line[: len(line) - len(line.lstrip())]
+        out.append(match["head"])
+        out.extend(f"{indent}    {argument}," for argument in _arguments(match["args"]))
+        out.append(f"{indent}){match['tail']}")
+    return out
+
+
+def _arguments(text: str) -> list[str]:
+    """`text` split at its top-level commas."""
+    parts, depth, start = [], 0, 0
+    for index, char in enumerate(text):
+        depth += {"(": 1, ")": -1}.get(char, 0)
+        if char == "," and depth == 0:
+            parts.append(text[start:index].strip())
+            start = index + 1
+    parts.append(text[start:].strip())
+    return [part for part in parts if part]
 
 
 def _float(value: float) -> str:

@@ -54,7 +54,8 @@ internal data class RefreshSpinnerElement(
 internal class RefreshSpinnerNode(
     private val indicator: RefreshIndicator,
     private var color: ColorProducer,
-) : Modifier.Node(), DrawModifierNode {
+) : Modifier.Node(),
+    DrawModifierNode {
 
     fun update(color: ColorProducer) {
         if (color == this.color) return
@@ -74,11 +75,22 @@ internal class RefreshSpinnerNode(
         clipRect(bottom = uncovered) {
             drawActivitySpokes(
                 center = center,
-                radius = if (retracting) radius * (gap / AppPullToRefreshDefaults.Rest.toPx()).coerceIn(0f, 1f) else radius,
+                radius = if (retracting) {
+                    radius *
+                        (gap / AppPullToRefreshDefaults.Rest.toPx()).coerceIn(0f, 1f)
+                } else {
+                    radius
+                },
                 color = color(),
                 head = if (spinning) indicator.head else null,
                 revealed = if (spinning) ActivitySpokes else ceil(ActivitySpokes * pulled).toInt(),
-                alpha = if (spinning) 1f else FastOutSlowInEasing.transform((pulled / FadeInFraction).coerceAtMost(1f)),
+                alpha = if (spinning) {
+                    1f
+                } else {
+                    FastOutSlowInEasing.transform(
+                        (pulled / FadeInFraction).coerceAtMost(1f),
+                    )
+                },
             )
         }
     }

@@ -1,19 +1,21 @@
 package com.base.app.data.sample.di
 
-import com.base.app.data.sample.api.SampleRepository
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 // <opt:database>
 import com.base.app.core.database.AppDatabase
 import com.base.app.core.database.sample.SampleDao
+// </opt:database>
+// <opt:!database>import com.base.app.data.sample.NetworkSampleRepository
+// <opt:database>
 import com.base.app.data.sample.OfflineFirstSampleRepository
+// </opt:database>
+import com.base.app.data.sample.api.SampleRepository
+import dagger.Binds
+import dagger.Module
+// <opt:database>
 import dagger.Provides
 // </opt:database>
-// <opt-else:database>
-//~ import com.base.app.data.sample.NetworkSampleRepository
-// </opt-else:database>
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)

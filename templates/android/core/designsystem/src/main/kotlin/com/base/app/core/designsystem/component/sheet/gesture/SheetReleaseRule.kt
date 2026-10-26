@@ -54,7 +54,11 @@ internal fun releaseTarget(
     val top = offsets[0]
     val lowest = offsets[offsets.size - 1]
     if (offset < top) return ReleaseDecision(SheetRelease.Stop(0))
-    if (offset > lowest) return belowLowest(offset, velocity, offsets, hidden, dismissAllowed, thresholds)
+    if (offset >
+        lowest
+    ) {
+        return belowLowest(offset, velocity, offsets, hidden, dismissAllowed, thresholds)
+    }
     if (velocity >= thresholds.detentFlick) {
         for (index in offsets.indices) {
             if (offsets[index] > offset + RestPx) return ReleaseDecision(SheetRelease.Stop(index))
@@ -85,7 +89,9 @@ private fun belowLowest(
     val travel = (hidden - lowest).coerceAtLeast(1f)
     // Judged where the sheet was let go, not where it would coast: a slow drag most of the way out
     // closes it, a quick small flick that has not gone far does not.
-    val wouldClose = velocity >= thresholds.dismissFlick || (offset - lowest) / travel >= thresholds.dismissPosition
+    val wouldClose =
+        velocity >= thresholds.dismissFlick ||
+            (offset - lowest) / travel >= thresholds.dismissPosition
     return when {
         !wouldClose -> ReleaseDecision(SheetRelease.Stop(last))
         dismissAllowed -> ReleaseDecision(SheetRelease.Dismiss)

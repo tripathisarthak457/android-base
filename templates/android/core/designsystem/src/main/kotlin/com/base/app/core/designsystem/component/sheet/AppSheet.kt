@@ -186,11 +186,13 @@ public fun <T : Any> AppSheet(
     LaunchedEffect(state, item) {
         when {
             item == null -> state.hide()
+
             shown != null && shown != item && state.isVisible -> {
                 state.hide()
                 shown = item
                 state.show()
             }
+
             else -> {
                 shown = item
                 state.show()
@@ -225,7 +227,11 @@ public fun <T : Any> AppSheet(
 @AppComponentPreviews
 @Composable
 private fun AppSheetPreview() {
-    Box(modifier = Modifier.background(AppTheme.colors.background).fillMaxWidth().height(AppTheme.sizes.rowHeight * 10)) {
+    Box(
+        modifier = Modifier.background(
+            AppTheme.colors.background,
+        ).fillMaxWidth().height(AppTheme.sizes.rowHeight * 10),
+    ) {
         AppSheet(
             visible = true,
             onDismissRequest = {},

@@ -18,6 +18,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.base.app.core.designsystem.animation.busyOverlay
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonVariant
+// <opt:googlesignin>
+import com.base.app.core.designsystem.component.container.AppDivider
+// </opt:googlesignin>
 import com.base.app.core.designsystem.component.feedback.AppBanner
 import com.base.app.core.designsystem.component.feedback.AppTone
 import com.base.app.core.designsystem.component.input.AppSecureField
@@ -27,9 +30,6 @@ import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.asString
 import com.base.app.feature.auth.AuthFrame
 import com.base.app.feature.auth.R
-// <opt:googlesignin>
-import com.base.app.core.designsystem.component.container.AppDivider
-// </opt:googlesignin>
 
 /**
  * The design-system fields take a String, so each field's text is read from the ViewModel's

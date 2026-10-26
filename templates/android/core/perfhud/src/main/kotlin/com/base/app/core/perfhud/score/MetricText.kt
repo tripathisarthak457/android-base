@@ -60,11 +60,20 @@ internal val Metric.doc: String
 /** [value] in the metric's unit, as the panel and the report print it. */
 internal fun Resources.formatValue(metric: Metric, value: Float): String = when (metric.unit) {
     MetricUnit.Percent -> getString(R.string.perfhud_value_percent, decimal(value, 2))
+
     MetricUnit.BudgetShare -> getString(R.string.perfhud_value_budget, decimal(value, 2))
-    MetricUnit.PerThousandFrames -> getString(R.string.perfhud_value_per_thousand, decimal(value, 1))
+
+    MetricUnit.PerThousandFrames -> getString(
+        R.string.perfhud_value_per_thousand,
+        decimal(value, 1),
+    )
+
     MetricUnit.Millis -> getString(R.string.perfhud_value_millis, decimal(value, 0))
+
     MetricUnit.Megabytes -> getString(R.string.perfhud_value_megabytes, decimal(value, 1))
+
     MetricUnit.Count -> getString(R.string.perfhud_value_count, decimal(value, 0))
+
     MetricUnit.Check -> getString(
         when {
             value >= 1f -> R.string.perfhud_value_pass
@@ -81,12 +90,18 @@ internal fun Resources.formatTarget(metric: Metric): String {
 }
 
 /** A number with [places] decimals, in the format a log or a JSON reader expects whatever the locale. */
-internal fun decimal(value: Float, places: Int): String = String.format(Locale.ROOT, "%.${places}f", value)
+internal fun decimal(value: Float, places: Int): String =
+    String.format(Locale.ROOT, "%.${places}f", value)
 
 /** [millis] as minutes and seconds, `m:ss`. */
 internal fun minutesAndSeconds(millis: Long): String {
     val seconds = millis / MILLIS_PER_SECOND
-    return String.format(Locale.ROOT, "%d:%02d", seconds / SECONDS_PER_MINUTE, seconds % SECONDS_PER_MINUTE)
+    return String.format(
+        Locale.ROOT,
+        "%d:%02d",
+        seconds / SECONDS_PER_MINUTE,
+        seconds % SECONDS_PER_MINUTE,
+    )
 }
 
 private const val DOC = "docs/PERFORMANCE-OVERLAY.md"

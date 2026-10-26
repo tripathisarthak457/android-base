@@ -25,7 +25,11 @@ internal class CodeRulesBaseline(accepted: Map<Pair<String, String>, Int>) {
         findings.forEach { (path, found) ->
             found.groupBy { it.rule }.forEach { (rule, group) ->
                 val allowed = accepted[compact(path) to rule] ?: 0
-                if (group.size > allowed) reports += group.map { "$path:${it.line} ${it.rule}: ${it.message}" }
+                if (group.size >
+                    allowed
+                ) {
+                    reports += group.map { "$path:${it.line} ${it.rule}: ${it.message}" }
+                }
             }
         }
         accepted.forEach { (key, allowed) ->
@@ -33,7 +37,8 @@ internal class CodeRulesBaseline(accepted: Map<Pair<String, String>, Int>) {
             val found = scanned[path] ?: return@forEach
             val count = found.count { it.rule == rule }
             if (count < allowed) {
-                reports += "$path $rule: $FILE accepts $allowed, the file now has $count; lower the count or delete the line"
+                reports +=
+                    "$path $rule: $FILE accepts $allowed, the file now has $count; lower the count or delete the line"
             }
         }
         return reports
@@ -49,15 +54,18 @@ internal class CodeRulesBaseline(accepted: Map<Pair<String, String>, Int>) {
 
         private fun compact(path: String): String = path.replace(SPLIT_MODULE, "$1/")
 
-        fun parse(text: String): CodeRulesBaseline =
-            CodeRulesBaseline(
-                text.lines()
-                    .map { it.trim() }
-                    .filter { it.isNotEmpty() && !it.startsWith("#") }
-                    .associate { line ->
-                        val match = requireNotNull(ENTRY.matchEntire(line)) { "$FILE: '$line' is not '<path> <rule> <count>'" }
-                        (match.groupValues[1] to match.groupValues[2]) to match.groupValues[3].toInt()
-                    },
-            )
+        fun parse(text: String): CodeRulesBaseline = CodeRulesBaseline(
+            text.lines()
+                .map { it.trim() }
+                .filter { it.isNotEmpty() && !it.startsWith("#") }
+                .associate { line ->
+                    val match =
+                        requireNotNull(ENTRY.matchEntire(line)) {
+                            "$FILE: '$line' is not '<path> <rule> <count>'"
+                        }
+                    (match.groupValues[1] to match.groupValues[2]) to
+                        match.groupValues[3].toInt()
+                },
+        )
     }
 }

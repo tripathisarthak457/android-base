@@ -23,7 +23,9 @@ public class AppPreviewTheme : PreviewWrapperProvider {
     @Composable
     override fun Wrap(content: @Composable () -> Unit) {
         val locale = LocalConfiguration.current.locales[0]
-        val direction = if (TextUtils.getLayoutDirectionFromLocale(locale) == View.LAYOUT_DIRECTION_RTL) {
+        val direction = if (TextUtils.getLayoutDirectionFromLocale(locale) ==
+            View.LAYOUT_DIRECTION_RTL
+        ) {
             LayoutDirection.Rtl
         } else {
             LayoutDirection.Ltr

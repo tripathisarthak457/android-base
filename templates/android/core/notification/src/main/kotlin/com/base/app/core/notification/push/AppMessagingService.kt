@@ -7,9 +7,9 @@ import com.base.app.core.notification.channel.NotificationChannelSpec
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.random.Random
+import kotlinx.coroutines.launch
 
 /** Receives pushes while the app runs; FCM shows a `notification` payload by itself when it does not. */
 @AndroidEntryPoint

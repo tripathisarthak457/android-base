@@ -165,7 +165,6 @@ licensee {
     allow("BSD-3-Clause")
     allow("EPL-1.0")
     allow("CC0-1.0")
-
     // These three state their licence as a URL rather than an SPDX id, so each is allowed by hand.
     allowUrl("https://developer.android.com/studio/terms.html") {
         because("The Android Software Development Kit License, on Google's own artifacts.")

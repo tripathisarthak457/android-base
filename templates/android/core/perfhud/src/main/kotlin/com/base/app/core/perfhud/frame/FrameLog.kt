@@ -99,7 +99,14 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
     fun readLive(nowNanos: Long, into: LiveStats) = synchronized(lock) {
         val all = histograms[ALL].total
         into.jankyPercent = if (all == 0) 0f else jankyCount[ALL] * PERCENT / all
-        into.refreshHz = if (written == 0L) 0 else Math.round(MILLIS_PER_SECOND / intervalMillis[slot(written - 1)])
+        into.refreshHz =
+            if (written ==
+                0L
+            ) {
+                0
+            } else {
+                Math.round(MILLIS_PER_SECOND / intervalMillis[slot(written - 1)])
+            }
 
         val since = nowNanos - LIVE_WINDOW_NANOS
         var frames = 0
@@ -118,8 +125,10 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
             frame--
         }
         into.framesPerSecond = when {
-            frames < MIN_LIVE_FRAMES || busy < MIN_LIVE_BUSY_NANOS || nowNanos - newest > IDLE_AFTER_NANOS ->
+            frames < MIN_LIVE_FRAMES || busy < MIN_LIVE_BUSY_NANOS ||
+                nowNanos - newest > IDLE_AFTER_NANOS ->
                 LiveStats.IDLE
+
             else -> Math.round(frames * NANOS_PER_SECOND / busy)
         }
     }
@@ -158,7 +167,10 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
             val at = slot(frame)
             val start = starts[at]
             if (start < windowStart) break
-            val second = ((start - windowStart) / NANOS_PER_SECOND_LONG).toInt().coerceIn(0, seconds - 1)
+            val second = ((start - windowStart) / NANOS_PER_SECOND_LONG).toInt().coerceIn(
+                0,
+                seconds - 1,
+            )
             into.frames[second]++
             into.busyNanos[second] += busyOf(at, next)
             next = start
@@ -174,7 +186,8 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
     }
 
     /** Copies the whole recording's main-thread-time histogram into [into], for the histogram graph. */
-    fun copyMainThreadHistogram(into: FrameHistogram) = synchronized(lock) { uiHistogram.copyInto(into) }
+    fun copyMainThreadHistogram(into: FrameHistogram) =
+        synchronized(lock) { uiHistogram.copyInto(into) }
 
     /** Copies the running totals into [into], so a reader can take the difference between two. */
     fun copyTotals(into: FrameTotals) = synchronized(lock) {
@@ -210,7 +223,13 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
             uiP99Millis = uiHistogram.percentile(P99),
             uiP90BudgetShare = uiShareHistogram.percentile(P90),
             uiP99BudgetShare = uiShareHistogram.percentile(P99),
-            framesPerSecond = if (busyNanos == 0L) 0f else (all - 1).coerceAtLeast(0) * NANOS_PER_SECOND / busyNanos,
+            framesPerSecond = if (busyNanos ==
+                0L
+            ) {
+                0f
+            } else {
+                (all - 1).coerceAtLeast(0) * NANOS_PER_SECOND / busyNanos
+            },
             refreshHz = if (written == 0L) 0f else MILLIS_PER_SECOND / shortestIntervalMillis,
             screens = perScreen,
         )
@@ -246,7 +265,11 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
      */
     private fun busyOf(at: Int, nextStart: Long): Long {
         val interval = intervalMillis[at] * NANOS_PER_MILLI
-        val rounded = (ceil(totalMillis[at] / intervalMillis[at]).coerceAtLeast(1f) * interval).toLong()
+        val rounded = (
+            ceil(
+                totalMillis[at] / intervalMillis[at],
+            ).coerceAtLeast(1f) * interval
+            ).toLong()
         return if (nextStart == Long.MIN_VALUE) rounded else min(nextStart - starts[at], rounded)
     }
 

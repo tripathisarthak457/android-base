@@ -72,10 +72,10 @@ import com.base.app.core.designsystem.theme.AppMotionStyle
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.springs
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
-import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.roundToInt
 import kotlin.math.sign
+import kotlinx.coroutines.launch
 
 /**
  * One action a swipe reveals. A [destructive] action is red; otherwise [tone] picks the colour, the
@@ -132,7 +132,9 @@ public class AppSwipeActionsState @RememberInComposition constructor() {
 }
 
 @Composable
-public fun rememberAppSwipeActionsState(): AppSwipeActionsState = remember { AppSwipeActionsState() }
+public fun rememberAppSwipeActionsState(): AppSwipeActionsState = remember {
+    AppSwipeActionsState()
+}
 
 /**
  * A row with actions behind it: [leading] revealed by swiping towards the trailing edge, [trailing]
@@ -227,7 +229,11 @@ public fun AppSwipeActions(
         state.travel += if (rtl) -delta else delta
         state.offset = shown(state.travel)
         val threshold = fullSwipeAt()
-        if (allowFullSwipe && (abs(before) < threshold) != (abs(state.offset) < threshold)) haptics.perform(AppHaptic.Threshold)
+        if (allowFullSwipe &&
+            (abs(before) < threshold) != (abs(state.offset) < threshold)
+        ) {
+            haptics.perform(AppHaptic.Threshold)
+        }
     }
 
     CompositionLocalProvider(LocalContainerActions provides spokenActions) {
@@ -235,7 +241,12 @@ public fun AppSwipeActions(
             enabled = enabled && (leading.isNotEmpty() || trailing.isNotEmpty()),
             menu = {
                 (leading + trailing).forEach { action ->
-                    AppMenuItem(text = action.label, onClick = action.onClick, icon = action.icon, destructive = action.destructive)
+                    AppMenuItem(
+                        text = action.label,
+                        onClick = action.onClick,
+                        icon = action.icon,
+                        destructive = action.destructive,
+                    )
                 }
             },
             modifier = modifier,
@@ -248,8 +259,16 @@ public fun AppSwipeActions(
             ) {
                 // The buttons behind the row are its actions, not controls the actions belong to.
                 CompositionLocalProvider(LocalContainerActions provides null) {
-                    if (leading.isNotEmpty()) ActionPanel(leading, start = true, actionWidth, { state.offset.coerceAtLeast(0f) }, ::perform)
-                    if (trailing.isNotEmpty()) ActionPanel(trailing, start = false, actionWidth, { (-state.offset).coerceAtLeast(0f) }, ::perform)
+                    if (leading.isNotEmpty()) {
+                        ActionPanel(leading, start = true, actionWidth, {
+                            state.offset.coerceAtLeast(0f)
+                        }, ::perform)
+                    }
+                    if (trailing.isNotEmpty()) {
+                        ActionPanel(trailing, start = false, actionWidth, {
+                            (-state.offset).coerceAtLeast(0f)
+                        }, ::perform)
+                    }
                 }
 
                 Box(
@@ -276,11 +295,19 @@ public fun AppSwipeActions(
                                 val coast = offset + logicalVelocity * ProjectionSeconds
                                 when {
                                     side.isEmpty() || offset == 0f -> settleTo(0f, logicalVelocity)
+
                                     allowFullSwipe && abs(offset) > fullSwipeAt() -> {
                                         settleTo(sign * width, logicalVelocity)
                                         side.first().onClick()
                                     }
-                                    coast * sign > revealOf(side) * RestFraction -> settleTo(sign * revealOf(side), logicalVelocity)
+
+                                    coast * sign > revealOf(
+                                        side,
+                                    ) * RestFraction -> settleTo(
+                                        sign * revealOf(side),
+                                        logicalVelocity,
+                                    )
+
                                     else -> settleTo(0f, logicalVelocity)
                                 }
                             },
@@ -294,8 +321,11 @@ public fun AppSwipeActions(
                                         var moved = 0f
                                         while (true) {
                                             val event = awaitPointerEvent(PointerEventPass.Initial)
-                                            val change = event.changes.firstOrNull { it.id == down.id } ?: break
-                                            moved += abs(change.position.x - change.previousPosition.x)
+                                            val change =
+                                                event.changes.firstOrNull { it.id == down.id }
+                                                    ?: break
+                                            moved +=
+                                                abs(change.position.x - change.previousPosition.x)
                                             if (!change.pressed) {
                                                 if (moved < touchSlop) {
                                                     change.consume()
@@ -338,7 +368,9 @@ private fun BoxScope.ActionPanel(
             .matchParentSize()
             .layout { measurable, constraints ->
                 val visible = revealed().toInt().coerceIn(0, constraints.maxWidth)
-                val placeable = measurable.measure(constraints.copy(minWidth = visible, maxWidth = visible))
+                val placeable = measurable.measure(
+                    constraints.copy(minWidth = visible, maxWidth = visible),
+                )
                 layout(constraints.maxWidth, placeable.height) {
                     placeable.placeRelative(if (start) 0 else constraints.maxWidth - visible, 0)
                 }
@@ -358,10 +390,18 @@ private fun BoxScope.ActionPanel(
                     // The row offers every action to a screen reader as a custom action.
                     .semantics { hideFromAccessibility() },
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(AppSwipeActionsDefaults.LabelSpacing, Alignment.CenterVertically),
+                verticalArrangement = Arrangement.spacedBy(
+                    AppSwipeActionsDefaults.LabelSpacing,
+                    Alignment.CenterVertically,
+                ),
             ) {
                 AppIcon(action.icon, contentDescription = null, tint = content)
-                AppText(text = action.label, style = AppTheme.typography.caption1, color = content, maxLines = 1)
+                AppText(
+                    text = action.label,
+                    style = AppTheme.typography.caption1,
+                    color = content,
+                    maxLines = 1,
+                )
             }
         }
     }
@@ -398,12 +438,26 @@ private fun AppSwipeActionsPreview() {
             leading = listOf(SwipeAction(label = "Pin", icon = AppIcons.Bookmark, onClick = {})),
             trailing = listOf(
                 SwipeAction(label = "Archive", icon = AppIcons.Folder, onClick = {}),
-                SwipeAction(label = "Delete", icon = AppIcons.Trash, onClick = {}, destructive = true),
+                SwipeAction(
+                    label = "Delete",
+                    icon = AppIcons.Trash,
+                    onClick = {},
+                    destructive = true,
+                ),
             ),
         ) {
             AppRow(title = "Swipe me either way", subtitle = "Lunch on Friday?")
         }
-        AppSwipeActions(trailing = listOf(SwipeAction(label = "Delete", icon = AppIcons.Trash, onClick = {})), enabled = false) {
+        AppSwipeActions(
+            trailing = listOf(
+                SwipeAction(
+                    label = "Delete",
+                    icon = AppIcons.Trash,
+                    onClick = {},
+                ),
+            ),
+            enabled = false,
+        ) {
             AppRow(title = "Locked row")
         }
     }

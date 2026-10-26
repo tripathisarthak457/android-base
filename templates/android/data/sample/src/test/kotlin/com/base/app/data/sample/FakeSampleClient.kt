@@ -28,9 +28,14 @@ internal class FakeSampleClient(var posts: List<SampleDto>) : NetworkClient {
         return AppResult.Success(NetworkResponse(200, body))
     }
 
-    override suspend fun <T> execute(request: NetworkRequest, deserializer: DeserializationStrategy<T>): AppResult<T> =
-        when (val result = execute(request)) {
-            is AppResult.Success -> AppResult.Success(NetworkJson.decodeFromString(deserializer, result.value.body))
-            is AppResult.Failure -> result
-        }
+    override suspend fun <T> execute(
+        request: NetworkRequest,
+        deserializer: DeserializationStrategy<T>,
+    ): AppResult<T> = when (val result = execute(request)) {
+        is AppResult.Success -> AppResult.Success(
+            NetworkJson.decodeFromString(deserializer, result.value.body),
+        )
+
+        is AppResult.Failure -> result
+    }
 }

@@ -14,10 +14,10 @@ import com.google.android.play.core.ktx.launchReview
 import com.google.android.play.core.ktx.requestReview
 import com.google.android.play.core.review.ReviewManagerFactory
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CancellationException
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.days
+import kotlinx.coroutines.CancellationException
 
 /**
  * Asks for a Play Store rating once the app has been opened a few times, and not again for months.
@@ -72,4 +72,7 @@ internal val TIME_BETWEEN_ASKING = 90.days
 /** Play allows only a few prompts a year per person and drops the rest without saying so. */
 internal fun shouldAskForReview(launches: Int, lastAskedMillis: Long?, nowMillis: Long): Boolean =
     launches >= LAUNCHES_BEFORE_ASKING &&
-        (lastAskedMillis == null || nowMillis - lastAskedMillis >= TIME_BETWEEN_ASKING.inWholeMilliseconds)
+        (
+            lastAskedMillis == null ||
+                nowMillis - lastAskedMillis >= TIME_BETWEEN_ASKING.inWholeMilliseconds
+            )

@@ -32,8 +32,13 @@ private object MinimumTouchTargetElement : ModifierNodeElement<MinimumTouchTarge
     override fun hashCode() = 2
 }
 
-private class MinimumTouchTargetNode : Modifier.Node(), LayoutModifierNode {
-    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+private class MinimumTouchTargetNode :
+    Modifier.Node(),
+    LayoutModifierNode {
+    override fun MeasureScope.measure(
+        measurable: Measurable,
+        constraints: Constraints,
+    ): MeasureResult {
         val placeable = measurable.measure(constraints)
         val target = MinimumTouchTargetDefaults.Size.roundToPx()
         val width = constraints.constrainWidth(maxOf(placeable.width, target))

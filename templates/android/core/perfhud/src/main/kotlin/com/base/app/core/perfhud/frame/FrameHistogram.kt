@@ -42,7 +42,8 @@ internal class FrameHistogram {
      * The frame time below which [fraction] of the frames fall, interpolated within the bucket
      * it lands in; 0 with no frames.
      */
-    fun percentile(fraction: Float): Float = percentileOf(counts, total, fraction, ::lowerEdge, ::upperEdge)
+    fun percentile(fraction: Float): Float =
+        percentileOf(counts, total, fraction, ::lowerEdge, ::upperEdge)
 
     companion object {
         private const val FINE_END = 32f
@@ -61,21 +62,40 @@ internal class FrameHistogram {
 
         fun bucketOf(millis: Float): Int = when {
             millis.isNaN() || millis < 0f -> 0
+
             millis < FINE_END -> (millis / FINE_STEP).toInt()
+
             millis < MEDIUM_END -> FINE_BUCKETS + ((millis - FINE_END) / MEDIUM_STEP).toInt()
-            millis < COARSE_END -> FINE_BUCKETS + MEDIUM_BUCKETS + ((millis - MEDIUM_END) / COARSE_STEP).toInt()
+
+            millis < COARSE_END ->
+                FINE_BUCKETS + MEDIUM_BUCKETS +
+                    ((millis - MEDIUM_END) / COARSE_STEP).toInt()
+
             else -> BUCKETS - 1
         }
 
         fun lowerEdge(bucket: Int): Float = when {
             bucket < FINE_BUCKETS -> bucket * FINE_STEP
-            bucket < FINE_BUCKETS + MEDIUM_BUCKETS -> FINE_END + (bucket - FINE_BUCKETS) * MEDIUM_STEP
-            bucket < BUCKETS - 1 -> MEDIUM_END + (bucket - FINE_BUCKETS - MEDIUM_BUCKETS) * COARSE_STEP
+
+            bucket < FINE_BUCKETS + MEDIUM_BUCKETS ->
+                FINE_END +
+                    (bucket - FINE_BUCKETS) * MEDIUM_STEP
+
+            bucket < BUCKETS - 1 ->
+                MEDIUM_END +
+                    (bucket - FINE_BUCKETS - MEDIUM_BUCKETS) * COARSE_STEP
+
             else -> COARSE_END
         }
 
         /** The last bucket has no upper edge; a frame in it is reported at [COARSE_END]. */
-        fun upperEdge(bucket: Int): Float = if (bucket >= BUCKETS - 1) COARSE_END else lowerEdge(bucket + 1)
+        fun upperEdge(bucket: Int): Float = if (bucket >=
+            BUCKETS - 1
+        ) {
+            COARSE_END
+        } else {
+            lowerEdge(bucket + 1)
+        }
     }
 }
 

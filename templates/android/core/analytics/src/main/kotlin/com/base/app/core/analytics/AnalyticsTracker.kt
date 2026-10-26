@@ -1,10 +1,7 @@
 package com.base.app.core.analytics
 
 /** One event worth recording. */
-data class AnalyticsEvent(
-    val name: String,
-    val parameters: Map<String, Any?> = emptyMap(),
-) {
+data class AnalyticsEvent(val name: String, val parameters: Map<String, Any?> = emptyMap()) {
     init {
         require(name.isNotBlank()) { "An analytics event needs a name." }
     }

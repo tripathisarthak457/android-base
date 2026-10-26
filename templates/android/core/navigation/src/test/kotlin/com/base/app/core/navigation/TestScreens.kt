@@ -15,7 +15,9 @@ internal fun Screen(key: AppNavKey) {
 }
 
 /** Two features' graphs: Feed's (the feed, its posts and the player) and Profile's, with Compose presented. */
-internal fun testGraphs(screen: @Composable (AppNavKey) -> Unit = { Screen(it) }): Set<NavGraphEntry> = setOf(
+internal fun testGraphs(
+    screen: @Composable (AppNavKey) -> Unit = { Screen(it) },
+): Set<NavGraphEntry> = setOf(
     navGraph {
         entry<FeedTab> { screen(it) }
         entry<Post> { screen(it) }

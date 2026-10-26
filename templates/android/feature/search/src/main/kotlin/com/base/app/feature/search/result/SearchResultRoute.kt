@@ -11,9 +11,10 @@ import com.base.app.core.ui.MviScreen
 internal fun SearchResultRoute(
     id: Int,
     navigator: AppNavigator,
-    viewModel: SearchResultViewModel = hiltViewModel<SearchResultViewModel, SearchResultViewModel.Factory>(
-        creationCallback = { factory -> factory.create(id) },
-    ),
+    viewModel: SearchResultViewModel =
+        hiltViewModel<SearchResultViewModel, SearchResultViewModel.Factory>(
+            creationCallback = { factory -> factory.create(id) },
+        ),
 ) {
     MviScreen(
         viewModel = viewModel,
@@ -22,7 +23,7 @@ internal fun SearchResultRoute(
                 SearchResultEffect.NavigateBack -> navigator.navigateUp()
             }
         },
-    // <opt:ui_components>
+        // <opt:ui_components>
     ) { state, onEvent ->
         SearchResultScreen(state = state, onEvent = onEvent)
     }

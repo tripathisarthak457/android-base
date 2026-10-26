@@ -1,10 +1,10 @@
 package com.base.app.core.perfhud.frame
 
+import kotlin.math.abs
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import kotlin.math.abs
 
 class FrameLogTest {
 
@@ -108,7 +108,14 @@ class FrameLogTest {
     fun `the ring keeps the newest frames once it wraps`() {
         val small = FrameLog(capacity = 8)
         repeat(20) { index ->
-            small.add(index * INTERVAL, MILLI, (index + 1) * MILLI, INTERVAL, missedDeadline = false, screen = null)
+            small.add(
+                index * INTERVAL,
+                MILLI,
+                (index + 1) * MILLI,
+                INTERVAL,
+                missedDeadline = false,
+                screen = null,
+            )
         }
         val series = FrameSeries(capacity = 5)
 

@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.base.app.core.designsystem.TestSdk
+import java.lang.management.ManagementFactory
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,7 +26,6 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
-import java.lang.management.ManagementFactory
 
 /**
  * A sweep frame allocates nothing on the heap: drawing a bone with the band across it costs what
@@ -40,7 +40,8 @@ class SkeletonDrawAllocationTest {
     private val density = Density(2.75f)
     private val bone = Color(0xFFD7DADF)
     private val plain = SolidColor(bone)
-    private val sweep = SweepBrush(bone, Color(0xFFE5E8ED), band = 240 * density.density, rtl = false)
+    private val sweep =
+        SweepBrush(bone, Color(0xFFE5E8ED), band = 240 * density.density, rtl = false)
 
     @Test
     fun `a shaped bone draws the band without allocating`() =
@@ -69,7 +70,12 @@ class SkeletonDrawAllocationTest {
     private fun assertNoMoreThanPlain(bones: Bones) {
         val canvas = Canvas(ImageBitmap(Width, Height))
         val extra = LongArray(Rounds)
-        CanvasDrawScope().draw(density, LayoutDirection.Ltr, canvas, Size(Width.toFloat(), Height.toFloat())) {
+        CanvasDrawScope().draw(
+            density,
+            LayoutDirection.Ltr,
+            canvas,
+            Size(Width.toFloat(), Height.toFloat()),
+        ) {
             // The first draws build the outline, the shader and the native objects behind them.
             repeat(Draws) { index ->
                 drawPlain(bones)
@@ -77,7 +83,8 @@ class SkeletonDrawAllocationTest {
             }
             for (round in 0 until Rounds) {
                 val plainBytes = allocatedBytes { repeat(Draws) { drawPlain(bones) } }
-                val sweptBytes = allocatedBytes { repeat(Draws) { index -> drawSweptFrame(bones, index) } }
+                val sweptBytes =
+                    allocatedBytes { repeat(Draws) { index -> drawSweptFrame(bones, index) } }
                 extra[round] = sweptBytes - plainBytes
             }
         }

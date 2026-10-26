@@ -29,6 +29,8 @@ import com.base.app.core.perfhud.score.ScoreInputs
 import com.base.app.core.perfhud.startup.StartupSummary
 import com.base.app.core.perfhud.startup.StartupTimes
 import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
@@ -40,8 +42,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 // <opt:performance&ui_components>
 /**
@@ -194,7 +194,9 @@ internal class PerformanceRecorder @Inject constructor(
     }
 
     fun logExport(report: ExportedReport) {
-        logcat.note("exported json=${report.json.absolutePath} markdown=${report.markdown.absolutePath}")
+        logcat.note(
+            "exported json=${report.json.absolutePath} markdown=${report.markdown.absolutePath}",
+        )
     }
 
     private fun applyLaunchOptions(intent: Intent) {
@@ -229,7 +231,9 @@ internal class PerformanceRecorder @Inject constructor(
         if (environment.isDebugBuild) logcat.note(DEBUG_NOTE)
         val previous = stopping
         work = scope.launch(dispatchers.main) {
-            launch { currentScreen.name.filterNotNull().collect { screens.enter(it, System.nanoTime()) } }
+            launch {
+                currentScreen.name.filterNotNull().collect { screens.enter(it, System.nanoTime()) }
+            }
             // Nothing is drawn in the background, and PSS there would only measure what the
             // system trimmed: the sampler stops until an activity is started again.
             launch(dispatchers.default) {
@@ -277,8 +281,8 @@ internal class PerformanceRecorder @Inject constructor(
         }
     }
 
-    private fun recordedMillis(): Long =
-        recordedBefore + if (_recording.value) SystemClock.elapsedRealtime() - recordingSince else 0L
+    private fun recordedMillis(): Long = recordedBefore +
+        if (_recording.value) SystemClock.elapsedRealtime() - recordingSince else 0L
 
     private companion object {
         const val LAUNCH_EXTRA = "perf.hud"
@@ -289,7 +293,8 @@ internal class PerformanceRecorder @Inject constructor(
         /** A start record only changes with a new start, which a panel left open sees within this. */
         const val STARTUP_REFRESH_MILLIS = 10_000L
 
-        const val DEBUG_NOTE = "debug build: frame numbers are pessimistic (no R8, no baseline profile, " +
-            "mostly interpreted); measure devRelease"
+        const val DEBUG_NOTE =
+            "debug build: frame numbers are pessimistic (no R8, no baseline profile, " +
+                "mostly interpreted); measure devRelease"
     }
 }

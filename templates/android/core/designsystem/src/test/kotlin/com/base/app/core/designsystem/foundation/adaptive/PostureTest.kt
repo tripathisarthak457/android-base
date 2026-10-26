@@ -10,6 +10,11 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.TestSdk
+// <opt:ui_components>
+import com.base.app.core.designsystem.component.sheet.AppSheet
+import com.base.app.core.designsystem.component.sheet.SheetDetent
+import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
+// </opt:ui_components>
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.ThemeMode
 import org.junit.Assert.assertEquals
@@ -18,11 +23,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-// <opt:ui_components>
-import com.base.app.core.designsystem.component.sheet.AppSheet
-import com.base.app.core.designsystem.component.sheet.SheetDetent
-import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
-// </opt:ui_components>
 
 /** A half-open foldable: ADAPTIVE-PLAN 7. At mdpi a pixel is a dp, so the hinge reads in either. */
 @RunWith(RobolectricTestRunner::class)
@@ -32,8 +32,18 @@ class PostureTest {
     @get:Rule
     val rule = createComposeRule()
 
-    private fun setContent(posture: WindowPosture, content: @androidx.compose.runtime.Composable () -> Unit) {
-        rule.setContent { AppTheme(mode = ThemeMode.Light, reduceMotion = true, posture = posture, content = content) }
+    private fun setContent(
+        posture: WindowPosture,
+        content: @androidx.compose.runtime.Composable () -> Unit,
+    ) {
+        rule.setContent {
+            AppTheme(
+                mode = ThemeMode.Light,
+                reduceMotion = true,
+                posture = posture,
+                content = content,
+            )
+        }
     }
 
     private fun twoPane(posture: WindowPosture) = setContent(posture) {

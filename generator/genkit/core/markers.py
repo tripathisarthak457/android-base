@@ -343,7 +343,8 @@ def _lines(text: str) -> list[str]:
 def collapse(lines: list[tuple[str, bool]], seams: set[int]) -> list[tuple[str, bool]]:
     """
     Tidies the blank lines next to where something was removed, and nowhere else: a blank run is cut
-    to one line, and dropped entirely after `{` or before `}`. Untouched code keeps its spacing.
+    to one line, and dropped entirely after `{`, before `}` or at the end of the file. Untouched code
+    keeps its spacing.
     """
     def blank(index: int) -> bool:
         return not lines[index][0].strip()
@@ -360,7 +361,7 @@ def collapse(lines: list[tuple[str, bool]], seams: set[int]) -> list[tuple[str, 
         run = list(range(before + 1, after))
         if not run:
             continue
-        if after < count and lines[after][0].lstrip().startswith("}"):
+        if after == count or lines[after][0].lstrip().startswith("}"):
             drop.update(run)
         elif before >= 0 and lines[before][0].rstrip().endswith("{"):
             drop.update(run)

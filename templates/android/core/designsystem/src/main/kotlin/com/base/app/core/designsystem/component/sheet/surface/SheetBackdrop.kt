@@ -61,4 +61,5 @@ public class SheetBackdropHolder internal constructor() {
 }
 
 @ShellSeamApi
-public val LocalSheetBackdrop: ProvidableCompositionLocal<SheetBackdropHolder?> = staticCompositionLocalOf { null }
+public val LocalSheetBackdrop: ProvidableCompositionLocal<SheetBackdropHolder?> =
+    staticCompositionLocalOf { null }

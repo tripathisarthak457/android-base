@@ -1,10 +1,10 @@
 package com.base.app.data.profile.api
 
-import com.base.app.data.profile.api.model.Profile
-import kotlinx.coroutines.flow.Flow
 // <opt:media>
 import com.base.app.core.common.result.AppResult
 // </opt:media>
+import com.base.app.data.profile.api.model.Profile
+import kotlinx.coroutines.flow.Flow
 
 /** The signed-in person's own profile, kept on the device. */
 interface ProfileRepository {

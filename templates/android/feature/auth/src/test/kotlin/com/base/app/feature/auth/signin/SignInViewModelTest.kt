@@ -12,6 +12,7 @@ import com.base.app.data.auth.api.FakeAuthRepository
 import com.base.app.feature.auth.R
 import com.base.app.feature.auth.ROBOLECTRIC_SDK
 import com.base.app.feature.auth.type
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.test.advanceTimeBy
@@ -25,7 +26,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import kotlin.time.Duration.Companion.seconds
 
 class SignInViewModelTest {
 
@@ -60,21 +60,30 @@ class SignInViewModelTest {
     @Test
     fun `a 422 puts the server's messages on the fields it names`() = runTest {
         repository.result = AppResult.Failure(
-            AppError.Http(status = 422, fieldErrors = mapOf("email" to listOf("No account uses this address"))),
+            AppError.Http(
+                status = 422,
+                fieldErrors = mapOf("email" to listOf("No account uses this address")),
+            ),
         )
         val viewModel = filledIn()
 
         viewModel.onEvent(SignInEvent.Submit)
         advanceUntilIdle()
 
-        assertEquals(UiText.Dynamic("No account uses this address"), viewModel.state.value.emailError)
+        assertEquals(
+            UiText.Dynamic("No account uses this address"),
+            viewModel.state.value.emailError,
+        )
         assertNull(viewModel.state.value.error)
     }
 
     @Test
     fun `the server's message on a field outlasts the screen going away`() = runTest {
         repository.result = AppResult.Failure(
-            AppError.Http(status = 422, fieldErrors = mapOf("email" to listOf("No account uses this address"))),
+            AppError.Http(
+                status = 422,
+                fieldErrors = mapOf("email" to listOf("No account uses this address")),
+            ),
         )
         val viewModel = filledIn()
         val screen = viewModel.state.launchIn(backgroundScope)
@@ -90,7 +99,10 @@ class SignInViewModelTest {
         // before the new collector has subscribed.
         runCurrent()
 
-        assertEquals(UiText.Dynamic("No account uses this address"), viewModel.state.value.emailError)
+        assertEquals(
+            UiText.Dynamic("No account uses this address"),
+            viewModel.state.value.emailError,
+        )
     }
 
     @Test
@@ -199,10 +211,11 @@ class SignInViewModelTest {
         assertEquals(emptyList<Pair<String, String>>(), repository.signIns)
     }
 
-    private fun filledIn(): SignInViewModel = SignInViewModel(repository, SavedStateHandle()).apply {
-        email.type("ada@example.com")
-        password.type("secret")
-    }
+    private fun filledIn(): SignInViewModel =
+        SignInViewModel(repository, SavedStateHandle()).apply {
+            email.type("ada@example.com")
+            password.type("secret")
+        }
 }
 
 @RunWith(RobolectricTestRunner::class)
@@ -224,7 +237,8 @@ class SignInProcessDeathTest {
         }
 
         val saved = handle.savedStateProvider().saveState()
-        val restored = SignInViewModel(FakeAuthRepository(), SavedStateHandle.createHandle(saved, null))
+        val restored =
+            SignInViewModel(FakeAuthRepository(), SavedStateHandle.createHandle(saved, null))
 
         assertEquals("ada@example.com", restored.email.text.toString())
         assertEquals("", restored.password.text.toString())

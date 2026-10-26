@@ -45,16 +45,31 @@ plugins {
  * do not.
  */
 spotless {
-    // <generated:formatting-check>
-    // The template's own sources move to ktlint's style in one mechanical commit once the UI work
-    // has merged; until then its check is not part of `check`. Generated projects enforce it.
-    isEnforceCheck = false
-    // </generated:formatting-check>
     kotlin {
         target("**/src/**/*.kt")
         targetExclude("**/build/**")
         ktlint(libs.versions.ktlint.get())
             .customRuleSets(listOf(libs.compose.rules.ktlint.get().toString()))
+            // <generated:template-comment-spacing>
+            // The raw template's `//~` fallback lines, which ktlint would space as `// ~` and so
+            // break; a generated project has none.
+            .editorConfigOverride(mapOf("ktlint_standard_comment-spacing" to "disabled"))
+        // </generated:template-comment-spacing>
+        // ktlint wraps code at max_line_length (.editorconfig); what it cannot wrap, a comment, a
+        // string or a long name, stays as written instead of failing the build.
+        suppressLintsFor {
+            step = "ktlint"
+            shortCode = "standard:max-line-length"
+        }
+        // <generated:template-import-order>
+        // The template's import lists hold its markers, which ktlint takes for comments it will not
+        // sort around. A project has none: the generator orders its imports, and its tests hold the
+        // template's own order.
+        suppressLintsFor {
+            step = "ktlint"
+            shortCode = "standard:import-ordering"
+        }
+        // </generated:template-import-order>
     }
     // <opt:formatting>
     // Formatting: ktlint's Android Studio style over the Gradle files too, read from .editorconfig
@@ -63,6 +78,13 @@ spotless {
         target("*.gradle.kts", "*/**/*.gradle.kts")
         targetExclude("**/build/**")
         ktlint(libs.versions.ktlint.get())
+            // <generated:template-gradle-comment-spacing>
+            .editorConfigOverride(mapOf("ktlint_standard_comment-spacing" to "disabled"))
+        // </generated:template-gradle-comment-spacing>
+        suppressLintsFor {
+            step = "ktlint"
+            shortCode = "standard:max-line-length"
+        }
     }
     // </opt:formatting>
 }

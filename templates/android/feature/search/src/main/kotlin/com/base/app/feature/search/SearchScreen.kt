@@ -66,7 +66,15 @@ internal fun SearchScreen(
         topBar = {
             AppLargeTitleTopBar(
                 title = stringResource(R.string.search_title),
-                scrolled = { if (kind == ContentKind.Results) resultsList.scrolledFromTop() else 0 },
+                scrolled = {
+                    if (kind ==
+                        ContentKind.Results
+                    ) {
+                        resultsList.scrolledFromTop()
+                    } else {
+                        0
+                    }
+                },
                 accessory = {
                     AppSearchField(
                         state = query,
@@ -89,11 +97,19 @@ internal fun SearchScreen(
         ) { kind ->
             when (kind) {
                 ContentKind.Start -> StartContent(state.recent, onEvent)
+
                 ContentKind.Loading -> LoadingResults()
+
                 ContentKind.Error -> (state.loadState as? LoadState.Error)?.let {
                     AppStateView(
                         message = it.error.text(),
-                        kind = if (it.error == AppError.Offline) StateKind.Offline else StateKind.Error,
+                        kind = if (it.error ==
+                            AppError.Offline
+                        ) {
+                            StateKind.Offline
+                        } else {
+                            StateKind.Error
+                        },
                         onAction = { onEvent(SearchEvent.Retry) },
                         actionLabel = stringResource(R.string.search_retry),
                     )
@@ -171,7 +187,11 @@ private fun StartContent(recent: List<String>, onEvent: (SearchEvent) -> Unit) {
 }
 
 @Composable
-private fun Results(results: List<SearchResult>, listState: LazyListState, onEvent: (SearchEvent) -> Unit) {
+private fun Results(
+    results: List<SearchResult>,
+    listState: LazyListState,
+    onEvent: (SearchEvent) -> Unit,
+) {
     ReportScrollEdge(listState)
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -228,7 +248,11 @@ private fun LoadingResults() {
     ) {
         items(PlaceholderRows, key = { it }) {
             AppRedacted(active = true) {
-                ResultCard(result = ResultPlaceholder, onClick = {}, modifier = Modifier.fillMaxWidth())
+                ResultCard(
+                    result = ResultPlaceholder,
+                    onClick = {},
+                    modifier = Modifier.fillMaxWidth(),
+                )
             }
         }
     }

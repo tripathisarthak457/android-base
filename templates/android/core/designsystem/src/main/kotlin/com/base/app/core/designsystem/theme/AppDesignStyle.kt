@@ -77,7 +77,13 @@ private val StylesByDesign = AppDesignStyle.entries.associateWith { design ->
 }
 
 /** A null radius is a pill: as round as the component is tall, whatever its width. */
-private fun Dp?.shape(): Shape = if (this == null) RoundedCornerShape(percent = 50) else RoundedCornerShape(this)
+private fun Dp?.shape(): Shape = if (this ==
+    null
+) {
+    RoundedCornerShape(percent = 50)
+} else {
+    RoundedCornerShape(this)
+}
 
 public enum class CardTreatment {
     /** A hairline outline and no shadow. */

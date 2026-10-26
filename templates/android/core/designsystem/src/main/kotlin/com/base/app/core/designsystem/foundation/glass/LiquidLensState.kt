@@ -18,13 +18,13 @@ import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.MotionDurationScale
 import androidx.compose.ui.layout.ScaleFactor
 import com.base.app.core.designsystem.theme.AppTheme
-import kotlinx.coroutines.currentCoroutineContext
-import kotlinx.coroutines.flow.first
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.flow.first
 
 /**
  * Creates a [LiquidLensState] for a bar of [slotCount] tabs showing [selectedSlot], and runs its
@@ -339,10 +339,16 @@ internal class LiquidLensState(
         val pressureGoal = pressureTarget
         val pressureFrom = pressure
         val nextPressureVelocity = swellSpec.getVelocityFromNanos(
-            elapsedNanos, pressureFrom, pressureGoal, pressureVelocity,
+            elapsedNanos,
+            pressureFrom,
+            pressureGoal,
+            pressureVelocity,
         )
         val nextPressure = swellSpec.getValueFromNanos(
-            elapsedNanos, pressureFrom, pressureGoal, pressureVelocity,
+            elapsedNanos,
+            pressureFrom,
+            pressureGoal,
+            pressureVelocity,
         )
         if (abs(pressureGoal - nextPressure) < PressureThreshold &&
             abs(nextPressureVelocity) < PressureThreshold * StillRate

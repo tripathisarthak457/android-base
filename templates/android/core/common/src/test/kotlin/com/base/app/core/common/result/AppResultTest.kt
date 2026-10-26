@@ -26,7 +26,10 @@ class AppResultTest {
 
     @Test
     fun `errorOrNull is the failure's error, and null for a success`() {
-        assertEquals(AppError.Http(status = 404), AppResult.Failure(AppError.Http(status = 404)).errorOrNull())
+        assertEquals(
+            AppError.Http(status = 404),
+            AppResult.Failure(AppError.Http(status = 404)).errorOrNull(),
+        )
         assertNull(AppResult.Success(Unit).errorOrNull())
     }
 }

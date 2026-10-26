@@ -61,7 +61,11 @@ public fun AppRow(
         interactionModifier = Modifier
             .then(
                 if (onClick != null) {
-                    Modifier.pressable(onClick = onClick, feedback = PressFeedback.Highlight, enabled = enabled)
+                    Modifier.pressable(
+                        onClick = onClick,
+                        feedback = PressFeedback.Highlight,
+                        enabled = enabled,
+                    )
                 } else {
                     Modifier
                 },
@@ -92,7 +96,12 @@ public fun AppRow(
                     }
                     trailing?.invoke()
                     if (showChevron && !destructive) {
-                        AppIcon(AppIcons.ChevronRight, contentDescription = null, tint = colors.contentTertiary, size = AppRowDefaults.ChevronSize)
+                        AppIcon(
+                            AppIcons.ChevronRight,
+                            contentDescription = null,
+                            tint = colors.contentTertiary,
+                            size = AppRowDefaults.ChevronSize,
+                        )
                     }
                 }
             }
@@ -134,7 +143,9 @@ public fun AppToggleRow(
             )
             .disabledAlpha(enabled),
         leading = leading,
-        text = { RowText(title = title, subtitle = subtitle, titleColor = AppTheme.colors.contentPrimary) },
+        text = {
+            RowText(title = title, subtitle = subtitle, titleColor = AppTheme.colors.contentPrimary)
+        },
         trailing = { SwitchTrack(checked = checked, interactionSource = interactionSource) },
     )
 }
@@ -159,7 +170,12 @@ public fun AppChoiceRow(
         modifier = modifier,
         interactionModifier = Modifier
             .semantics { this.selected = selected }
-            .pressable(onClick = onSelect, feedback = PressFeedback.Highlight, enabled = enabled, role = Role.RadioButton)
+            .pressable(
+                onClick = onSelect,
+                feedback = PressFeedback.Highlight,
+                enabled = enabled,
+                role = Role.RadioButton,
+            )
             .disabledAlpha(enabled),
         leading = leading,
         text = { RowText(title = title, subtitle = subtitle, titleColor = colors.contentPrimary) },
@@ -228,7 +244,11 @@ private fun RowLayout(
         val horizontal = spacing.lg.roundToPx()
         val vertical = AppRowDefaults.VerticalPadding.roundToPx()
         val gap = spacing.md.roundToPx()
-        val inner = constraints.copy(minWidth = 0, minHeight = 0).offset(horizontal = -horizontal * 2, vertical = -vertical * 2)
+        val inner = constraints.copy(minWidth = 0, minHeight = 0).offset(
+            horizontal =
+                -horizontal * 2,
+            vertical = -vertical * 2,
+        )
 
         val leadingPlaceable = leadingSlot.firstOrNull()?.measure(inner)
         val trailingPlaceable = trailingSlot.firstOrNull()?.measure(inner)
@@ -241,8 +261,14 @@ private fun RowLayout(
         }
         val textPlaceable = textSlot.first().measure(textConstraints)
 
-        val content = maxOf(leadingPlaceable?.height ?: 0, textPlaceable.height, trailingPlaceable?.height ?: 0)
-        val height = constraints.constrainHeight(maxOf(content + vertical * 2, minHeight.roundToPx()))
+        val content = maxOf(
+            leadingPlaceable?.height ?: 0,
+            textPlaceable.height,
+            trailingPlaceable?.height ?: 0,
+        )
+        val height = constraints.constrainHeight(
+            maxOf(content + vertical * 2, minHeight.roundToPx()),
+        )
         val width = if (constraints.hasBoundedWidth) {
             constraints.maxWidth
         } else {
@@ -254,7 +280,10 @@ private fun RowLayout(
             fun centred(h: Int) = (height - h) / 2
             leadingPlaceable?.placeRelative(horizontal, centred(leadingPlaceable.height))
             textPlaceable.placeRelative(horizontal + leadingWidth, centred(textPlaceable.height))
-            trailingPlaceable?.placeRelative(width - horizontal - trailingPlaceable.width, centred(trailingPlaceable.height))
+            trailingPlaceable?.placeRelative(
+                width - horizontal - trailingPlaceable.width,
+                centred(trailingPlaceable.height),
+            )
         }
     }
 }
@@ -271,7 +300,11 @@ public object AppRowDefaults {
 @Composable
 private fun AppRowPreview() {
     Column(modifier = Modifier.background(AppTheme.colors.background)) {
-        AppRow(title = "Account", onClick = {}, leading = { AppIcon(AppIcons.User, contentDescription = null) })
+        AppRow(
+            title = "Account",
+            onClick = {},
+            leading = { AppIcon(AppIcons.User, contentDescription = null) },
+        )
         AppRow(title = "Language", value = "English", onClick = {})
         AppRow(title = "Storage", subtitle = "2.4 GB of 5 GB used")
         AppRow(title = "Delete account", onClick = {}, destructive = true)
@@ -282,7 +315,13 @@ private fun AppRowPreview() {
             onClick = {},
         )
         AppToggleRow(title = "Dark mode", checked = true, onCheckedChange = {})
-        AppToggleRow(title = "Haptics", checked = false, onCheckedChange = {}, subtitle = "Taps and toggles", enabled = false)
+        AppToggleRow(
+            title = "Haptics",
+            checked = false,
+            onCheckedChange = {},
+            subtitle = "Taps and toggles",
+            enabled = false,
+        )
         AppChoiceRow(title = "Daily", selected = true, onSelect = {})
         AppChoiceRow(title = "Weekly", selected = false, onSelect = {})
     }

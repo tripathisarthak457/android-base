@@ -56,7 +56,8 @@ public sealed interface SheetDetent {
      * detent if its call site recomposes often. [resolve] runs in measure and must read no snapshot
      * state.
      */
-    public class Custom(public val id: String, public val resolve: SheetDetentContext.() -> Dp?) : SheetDetent {
+    public class Custom(public val id: String, public val resolve: SheetDetentContext.() -> Dp?) :
+        SheetDetent {
         override fun equals(other: Any?): Boolean = other is Custom && other.id == id
 
         override fun hashCode(): Int = id.hashCode()

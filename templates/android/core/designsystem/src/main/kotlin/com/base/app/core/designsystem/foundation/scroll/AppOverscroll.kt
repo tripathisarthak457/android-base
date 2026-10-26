@@ -28,12 +28,12 @@ import com.base.app.core.designsystem.theme.AppSprings
 import com.base.app.core.designsystem.theme.LocalAppSprings
 import com.base.app.core.designsystem.theme.forPixelOffset
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.roundToInt
 import kotlin.math.sign
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 /**
  * The iOS edge, which `AppTheme` installs for every scrolling container: content pulled past its
@@ -67,7 +67,11 @@ private class RubberBandOverscroll : OverscrollEffect {
     private val placement = RubberBandNode(this)
 
     val offset: Offset
-        get() = Offset(resist(pull.x, placement.size.width), resist(pull.y, placement.size.height)) + released
+        get() = Offset(
+            resist(pull.x, placement.size.width),
+            resist(pull.y, placement.size.height),
+        ) +
+            released
 
     override val isInProgress: Boolean
         get() = pull != Offset.Zero || released != Offset.Zero
@@ -75,7 +79,11 @@ private class RubberBandOverscroll : OverscrollEffect {
     override val node: DelegatableNode
         get() = placement
 
-    override fun applyToScroll(delta: Offset, source: NestedScrollSource, performScroll: (Offset) -> Offset): Offset {
+    override fun applyToScroll(
+        delta: Offset,
+        source: NestedScrollSource,
+        performScroll: (Offset) -> Offset,
+    ): Offset {
         catchRelease()
         // Scrolling back towards the content takes up the pull before it moves the content again.
         val relaxed = Offset(relax(pull.x, delta.x), relax(pull.y, delta.y))
@@ -84,10 +92,14 @@ private class RubberBandOverscroll : OverscrollEffect {
         val consumed = performScroll(remaining)
         val left = remaining - consumed
         if (source == NestedScrollSource.UserInput && left != Offset.Zero) pull += left
-        return relaxed + consumed + if (source == NestedScrollSource.UserInput) left else Offset.Zero
+        return relaxed + consumed +
+            if (source == NestedScrollSource.UserInput) left else Offset.Zero
     }
 
-    override suspend fun applyToFling(velocity: Velocity, performFling: suspend (Velocity) -> Velocity) {
+    override suspend fun applyToFling(
+        velocity: Velocity,
+        performFling: suspend (Velocity) -> Velocity,
+    ) {
         // Read before the fling: the container can leave composition while it runs, and a detached
         // node has no composition locals to read.
         val springs = placement.springs()
@@ -102,7 +114,11 @@ private class RubberBandOverscroll : OverscrollEffect {
                 velocity.y * slope(pull.y, placement.size.height),
             )
             if (abs(moving.x) < minimum && abs(moving.y) < minimum) {
-                settle(from = shown, initialVelocity = moving, spec = springs.overscrollRelease.forPixelOffset())
+                settle(
+                    from = shown,
+                    initialVelocity = moving,
+                    spec = springs.overscrollRelease.forPixelOffset(),
+                )
                 return
             }
             val spec = springs.bounceBack.forPixelOffset()
@@ -114,7 +130,8 @@ private class RubberBandOverscroll : OverscrollEffect {
             // Thrown back towards the content: a spring started this fast swings the content past
             // its place and back, against the throw. It stops at its place instead, and the speed
             // it still has there carries the content on, as an iOS scroll view does.
-            val through = settle(from = shown, initialVelocity = moving, spec = spec, stopAtRest = true)
+            val through =
+                settle(from = shown, initialVelocity = moving, spec = spec, stopAtRest = true)
             fling = Velocity(through.x.orNoneBelow(minimum), through.y.orNoneBelow(minimum))
             if (fling == Velocity.Zero) return
         }
@@ -124,7 +141,11 @@ private class RubberBandOverscroll : OverscrollEffect {
         val left = fling - performFling(fling)
         val carried = Offset(left.x.orNoneBelow(minimum), left.y.orNoneBelow(minimum))
         if (carried != Offset.Zero) {
-            settle(from = released, initialVelocity = carried.capped(), spec = springs.bounceBack.forPixelOffset())
+            settle(
+                from = released,
+                initialVelocity = carried.capped(),
+                spec = springs.bounceBack.forPixelOffset(),
+            )
         }
     }
 
@@ -145,7 +166,11 @@ private class RubberBandOverscroll : OverscrollEffect {
         var through = Offset.Zero
         coroutineScope {
             settling = launch {
-                AnimationState(Offset.VectorConverter, from, initialVelocity).animateTo(Offset.Zero, spec) {
+                AnimationState(
+                    Offset.VectorConverter,
+                    from,
+                    initialVelocity,
+                ).animateTo(Offset.Zero, spec) {
                     if (stopAtRest && value.x * from.x <= 0f && value.y * from.y <= 0f) {
                         released = Offset.Zero
                         through = velocity
@@ -166,12 +191,21 @@ private class RubberBandOverscroll : OverscrollEffect {
         settling = null
         val shown = offset
         released = Offset.Zero
-        pull = Offset(unresist(shown.x, placement.size.width), unresist(shown.y, placement.size.height))
+        pull =
+            Offset(
+                unresist(shown.x, placement.size.width),
+                unresist(shown.y, placement.size.height),
+            )
     }
 
     /** The part of [delta] that heads back towards the content and so eases the band; it has [delta]'s sign. */
-    private fun relax(pulled: Float, delta: Float): Float =
-        if (pulled == 0f || sign(pulled) == sign(delta)) 0f else -sign(pulled) * minOf(abs(pulled), abs(delta))
+    private fun relax(pulled: Float, delta: Float): Float = if (pulled == 0f ||
+        sign(pulled) == sign(delta)
+    ) {
+        0f
+    } else {
+        -sign(pulled) * minOf(abs(pulled), abs(delta))
+    }
 }
 
 /**
@@ -182,8 +216,10 @@ private class RubberBandOverscroll : OverscrollEffect {
 private fun Float.orNoneBelow(minimum: Float): Float = if (abs(this) < minimum) 0f else this
 
 /** A fling's leftover as it carries past the end, at most [MaxEdgeVelocity] on each axis. */
-private fun Offset.capped(): Offset =
-    Offset(x.coerceIn(-MaxEdgeVelocity, MaxEdgeVelocity), y.coerceIn(-MaxEdgeVelocity, MaxEdgeVelocity))
+private fun Offset.capped(): Offset = Offset(
+    x.coerceIn(-MaxEdgeVelocity, MaxEdgeVelocity),
+    y.coerceIn(-MaxEdgeVelocity, MaxEdgeVelocity),
+)
 
 /** The rubber band iOS uses: the further past the edge, the less the content follows. */
 private fun resist(distance: Float, dimension: Int): Float {
@@ -207,15 +243,22 @@ private fun slope(distance: Float, dimension: Int): Float {
 }
 
 private class RubberBandNode(private val effect: RubberBandOverscroll) :
-    Modifier.Node(), LayoutModifierNode, CompositionLocalConsumerModifierNode {
+    Modifier.Node(),
+    LayoutModifierNode,
+    CompositionLocalConsumerModifierNode {
     var size = IntSize.Zero
         private set
 
     fun springs(): AppSprings = currentValueOf(LocalAppSprings)
 
-    fun minimumReleaseVelocity(): Float = with(currentValueOf(LocalDensity)) { AppOverscrollDefaults.MinimumReleaseVelocity.toPx() }
+    fun minimumReleaseVelocity(): Float = with(currentValueOf(LocalDensity)) {
+        AppOverscrollDefaults.MinimumReleaseVelocity.toPx()
+    }
 
-    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+    override fun MeasureScope.measure(
+        measurable: Measurable,
+        constraints: Constraints,
+    ): MeasureResult {
         val placeable = measurable.measure(constraints)
         size = IntSize(placeable.width, placeable.height)
         return layout(placeable.width, placeable.height) {

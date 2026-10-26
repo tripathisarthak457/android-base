@@ -15,8 +15,19 @@ class SheetReleaseRuleTest {
     private val largeOnly = floatArrayOf(43f)
     private val thresholds = ReleaseThresholds.of(density = 1f, travelLength = 873f)
 
-    private fun release(offset: Float, velocity: Float, offsets: FloatArray = both, dismissAllowed: Boolean = true) =
-        releaseTarget(offset, velocity, offsets, hidden = 873f, dismissAllowed = dismissAllowed, thresholds = thresholds)
+    private fun release(
+        offset: Float,
+        velocity: Float,
+        offsets: FloatArray = both,
+        dismissAllowed: Boolean = true,
+    ) = releaseTarget(
+        offset,
+        velocity,
+        offsets,
+        hidden = 873f,
+        dismissAllowed = dismissAllowed,
+        thresholds = thresholds,
+    )
 
     @Test
     fun `B-22 a slow release lands where it would coast`() {
@@ -76,9 +87,25 @@ class SheetReleaseRuleTest {
     @Test
     fun `B-22 a modal side panel is judged along its width`() {
         val panel = ReleaseThresholds.of(density = 1f, travelLength = 1280f)
-        val out = releaseTarget(0f, 2600f, floatArrayOf(0f), hidden = 376f, dismissAllowed = true, thresholds = panel)
+        val out =
+            releaseTarget(
+                0f,
+                2600f,
+                floatArrayOf(0f),
+                hidden = 376f,
+                dismissAllowed = true,
+                thresholds = panel,
+            )
         assertEquals(SheetRelease.Dismiss, out.target)
-        val stays = releaseTarget(100f, 900f, floatArrayOf(0f), hidden = 376f, dismissAllowed = true, thresholds = panel)
+        val stays =
+            releaseTarget(
+                100f,
+                900f,
+                floatArrayOf(0f),
+                hidden = 376f,
+                dismissAllowed = true,
+                thresholds = panel,
+            )
         assertEquals(SheetRelease.Stop(0), stays.target)
     }
 }

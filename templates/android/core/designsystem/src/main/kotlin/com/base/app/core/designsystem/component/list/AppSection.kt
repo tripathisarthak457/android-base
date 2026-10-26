@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Measurable
+import androidx.compose.ui.layout.ParentDataModifier
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Constraints
@@ -20,7 +21,6 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.isFinite
-import androidx.compose.ui.layout.ParentDataModifier
 import com.base.app.core.designsystem.component.button.AppLinkButton
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.adaptive.centeredMaxWidth
@@ -44,7 +44,11 @@ public fun AppSection(
     content: @Composable () -> Unit,
 ) {
     val spacing = AppTheme.spacing
-    Column(modifier = modifier.readableWidth(AppTheme.layout.readableMaxWidth).padding(horizontal = spacing.gutter)) {
+    Column(
+        modifier = modifier.readableWidth(
+            AppTheme.layout.readableMaxWidth,
+        ).padding(horizontal = spacing.gutter),
+    ) {
         header?.let {
             AppSectionHeader(title = it, modifier = Modifier.padding(horizontal = spacing.lg))
         }
@@ -79,7 +83,9 @@ public fun AppSectionHeader(
 ) {
     val label = if (AppTheme.style.uppercaseLabels) title.uppercase() else title
     Row(
-        modifier = modifier.readableWidth(AppTheme.layout.readableMaxWidth).padding(top = AppTheme.spacing.lg, bottom = AppTheme.spacing.sm),
+        modifier = modifier.readableWidth(
+            AppTheme.layout.readableMaxWidth,
+        ).padding(top = AppTheme.spacing.lg, bottom = AppTheme.spacing.sm),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         // On one baseline: the action's 48dp touch target would otherwise lift its text above the title's.
@@ -123,7 +129,13 @@ private fun SeparatedColumn(modifier: Modifier = Modifier, content: @Composable 
             val fallback = defaultInset.toPx()
             for (i in 0 until lines.count) {
                 val inset = lines.insets[i]?.start?.takeUnless { it.isNaN() } ?: fallback
-                val (start, end) = if (layoutDirection == LayoutDirection.Ltr) inset to size.width else 0f to size.width - inset
+                val (start, end) = if (layoutDirection ==
+                    LayoutDirection.Ltr
+                ) {
+                    inset to size.width
+                } else {
+                    0f to size.width - inset
+                }
                 drawHairline(color, start, end, lines.y[i] - 1f)
             }
         },

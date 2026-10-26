@@ -8,9 +8,7 @@ import com.base.app.benchmark.TARGET_APP_ID
 // <opt:ui_components>
 import com.base.app.benchmark.startToShell
 // </opt:ui_components>
-// <opt-else:ui_components>
-//~ import com.base.app.benchmark.startToStart
-// </opt-else:ui_components>
+// <opt:!ui_components>import com.base.app.benchmark.startToStart
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

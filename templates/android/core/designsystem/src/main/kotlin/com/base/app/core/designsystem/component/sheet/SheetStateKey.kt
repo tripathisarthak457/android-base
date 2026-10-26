@@ -8,23 +8,33 @@ import androidx.compose.ui.unit.Dp
  * because its resolver cannot be saved.
  */
 internal object SheetStateKey {
-    fun encode(shown: Boolean, detent: SheetDetent?): String = "${if (shown) 1 else 0}|${detent?.let(::key).orEmpty()}"
+    fun encode(shown: Boolean, detent: SheetDetent?): String =
+        "${if (shown) 1 else 0}|${detent?.let(::key).orEmpty()}"
 
     fun decode(saved: String, detents: List<SheetDetent>): Pair<Boolean, SheetDetent?> {
         val shown = saved.startsWith("1|")
         val key = saved.substringAfter('|', "")
         val detent = when {
             key == "large" -> SheetDetent.Large
+
             key == "medium" -> SheetDetent.Medium
+
             key == "fit" -> SheetDetent.FitContent
+
             key == "peek" -> SheetDetent.Peek
+
             key.startsWith("fraction:") -> key.removePrefix("fraction:").toFloatOrNull()
                 ?.takeIf { it > 0f && it <= 1f }
                 ?.let { SheetDetent.Fraction(it) }
-            key.startsWith("height:") -> key.removePrefix("height:").toFloatOrNull()?.let { SheetDetent.Height(Dp(it)) }
+
+            key.startsWith("height:") -> key.removePrefix("height:").toFloatOrNull()?.let {
+                SheetDetent.Height(Dp(it))
+            }
+
             key.startsWith("custom:") -> key.removePrefix("custom:").let { id ->
                 detents.firstOrNull { it is SheetDetent.Custom && it.id == id }
             }
+
             else -> null
         }
         return shown to detent

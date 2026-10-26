@@ -2,19 +2,20 @@ package com.base.app.feature.onboarding
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.base.app.core.ui.MviScreen
-// <opt:!ui_components>import com.base.app.core.ui.PlaceholderScreen
 // <opt:push&ui_components>
 import com.base.app.core.notification.permission.NotificationAccess
 import com.base.app.core.notification.permission.rememberNotificationPermission
 // </opt:push&ui_components>
+import com.base.app.core.ui.MviScreen
+// <opt:!ui_components>import com.base.app.core.ui.PlaceholderScreen
 
 @Composable
 internal fun OnboardingRoute(viewModel: OnboardingViewModel = hiltViewModel()) {
     // <opt:push&ui_components>
     // Asked once, at the end, when the person knows what the app is for; whatever they answer,
     // onboarding finishes. Skip does not ask.
-    val notifications = rememberNotificationPermission { viewModel.onEvent(OnboardingEvent.Completed) }
+    val notifications =
+        rememberNotificationPermission { viewModel.onEvent(OnboardingEvent.Completed) }
     // </opt:push&ui_components>
     MviScreen(
         viewModel = viewModel,
@@ -37,7 +38,9 @@ internal fun OnboardingRoute(viewModel: OnboardingViewModel = hiltViewModel()) {
             state = state,
             onEvent = { event ->
                 // <opt:push>
-                if (event == OnboardingEvent.Completed && notifications.access == NotificationAccess.NotGranted) {
+                if (event == OnboardingEvent.Completed &&
+                    notifications.access == NotificationAccess.NotGranted
+                ) {
                     notifications.request()
                     return@OnboardingScreen
                 }

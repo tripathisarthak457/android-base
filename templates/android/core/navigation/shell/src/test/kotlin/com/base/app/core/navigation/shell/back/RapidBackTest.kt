@@ -39,7 +39,9 @@ class RapidBackTest {
     @Test
     fun `a burst of presses mid-pop becomes one pop to the root`() {
         rule.setContent {
-            AppTheme { StackHost(stack = stack, registry = testRegistry(), motion = ScreenMotion()) }
+            AppTheme {
+                StackHost(stack = stack, registry = testRegistry(), motion = ScreenMotion())
+            }
             LaunchedEffect(Unit) { snapshotFlow { stack.size }.collect { sizes += it } }
         }
         rule.waitForIdle()
@@ -57,7 +59,11 @@ class RapidBackTest {
             rule.mainClock.advanceTimeBy(FRAME_MS)
             if (stack.size == 1 && framesToRoot < 0) framesToRoot = 0
             if (framesToRoot >= 0 && !rootShown) {
-                rootShown = rule.onAllNodesWithTag(FeedTab.toString(), useUnmergedTree = true).fetchSemanticsNodes().isNotEmpty()
+                rootShown =
+                    rule.onAllNodesWithTag(
+                        FeedTab.toString(),
+                        useUnmergedTree = true,
+                    ).fetchSemanticsNodes().isNotEmpty()
                 if (!rootShown) framesToRoot++
             } else if (rootShown) {
                 // Once the root arrives it stays: no blank frame, no frame of a screen popped past.
@@ -68,7 +74,10 @@ class RapidBackTest {
         rule.waitForIdle()
 
         assertEquals("one pop, then one pop to the root", listOf(4, 3, 1), sizes)
-        assertTrue("the root is composed within a frame or two of the pop: $framesToRoot", framesToRoot in 0..2)
+        assertTrue(
+            "the root is composed within a frame or two of the pop: $framesToRoot",
+            framesToRoot in 0..2,
+        )
         assertEquals(listOf<AppNavKey>(FeedTab), stack.keys)
         assertFalse("the burst did not leave the app", rule.activity.isFinishing)
     }

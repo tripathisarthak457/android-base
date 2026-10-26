@@ -27,7 +27,12 @@ import androidx.compose.ui.tooling.preview.PreviewWrapper
 @Preview(name = "Tablet", device = Devices.TABLET)
 @Preview(name = "Desktop", device = Devices.DESKTOP)
 @Preview(name = "Phone, font 2x", device = Devices.PHONE, fontScale = 2f)
-@Preview(name = "Phone, dark", device = Devices.PHONE, uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
+@Preview(
+    name = "Phone, dark",
+    device = Devices.PHONE,
+    uiMode =
+        Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
+)
 @PreviewWrapper(AppPreviewTheme::class)
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.ANNOTATION_CLASS, AnnotationTarget.FUNCTION)

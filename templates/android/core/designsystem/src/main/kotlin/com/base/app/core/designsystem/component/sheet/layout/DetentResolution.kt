@@ -95,8 +95,11 @@ internal class SheetStops(
     }
 
     override fun equals(other: Any?): Boolean = other is SheetStops &&
-        detents == other.detents && offsets.contentEquals(other.offsets) && hidden == other.hidden &&
-        largeTop == other.largeTop && restBottom == other.restBottom && largeIndex == other.largeIndex &&
+        detents == other.detents && offsets.contentEquals(
+            other.offsets,
+        ) && hidden == other.hidden &&
+        largeTop == other.largeTop && restBottom == other.restBottom &&
+        largeIndex == other.largeIndex &&
         roomAbove == other.roomAbove && span == other.span && single == other.single
 
     override fun hashCode(): Int {
@@ -138,7 +141,13 @@ internal fun resolveStops(detents: List<SheetDetent>, inputs: DetentInputs): She
     val order = accepted.indices.sortedBy { positions[it] }
     val offsets = FloatArray(order.size) { positions[order[it]] }
     var largeIndex = -1
-    for (index in offsets.indices) if (abs(offsets[index] - inputs.largeTop) < MergePx) largeIndex = index
+    for (index in offsets.indices) {
+        if (abs(offsets[index] - inputs.largeTop) <
+            MergePx
+        ) {
+            largeIndex = index
+        }
+    }
     val stretchLine = inputs.largeTop - DesignTokens.Sheet.Stretch.aboveLarge * inputs.boundsHeight
     return SheetStops(
         detents = order.map { accepted[it] },
@@ -202,7 +211,9 @@ private class DetentResolver(private val inputs: DetentInputs) : SheetDetentCont
     override val fontScale: Float get() = inputs.fontScale
 
     private val maxPx = (inputs.restBottom - inputs.largeTop).coerceAtLeast(0f)
-    private val minPx = (DesignTokens.Sheet.Detent.minHeight.value * inputs.density).coerceAtMost(maxPx)
+    private val minPx = (DesignTokens.Sheet.Detent.minHeight.value * inputs.density).coerceAtMost(
+        maxPx,
+    )
 
     override val maxHeight: Dp get() = maxPx.toDp()
     override val containerHeight: Dp get() = inputs.boundsHeight.toDp()
@@ -211,18 +222,28 @@ private class DetentResolver(private val inputs: DetentInputs) : SheetDetentCont
     override val sizeClass: SizeClass get() = inputs.sizeClass
     override val foldBottom: Dp? get() = inputs.foldBottom?.toDp()
 
-    override fun heightOf(detent: SheetDetent): Dp? =
-        if (detent is SheetDetent.Custom) null else offsetOf(detent)?.let { (inputs.restBottom - it).toDp() }
+    override fun heightOf(detent: SheetDetent): Dp? = if (detent is SheetDetent.Custom) {
+        null
+    } else {
+        offsetOf(detent)?.let {
+            (inputs.restBottom - it).toDp()
+        }
+    }
 
     fun offsetOf(detent: SheetDetent, nominal: Boolean = false): Float? {
         if (detent == SheetDetent.Large) return inputs.largeTop
         if (detent == SheetDetent.Medium) return mediumOffset(nominal)
         val height = when (detent) {
             SheetDetent.FitContent -> inputs.contentHeight
+
             SheetDetent.Peek -> inputs.headerHeight
+
             is SheetDetent.Fraction -> detent.fraction * maxPx
+
             is SheetDetent.Height -> detent.height.value * inputs.density
-            is SheetDetent.Custom -> detent.resolve(this)?.let { it.value * inputs.density } ?: return null
+
+            is SheetDetent.Custom -> detent.resolve(this)?.let { it.value * inputs.density }
+                ?: return null
         }
         return clampToFold(inputs.restBottom - height.coerceIn(minPx, maxPx))
     }

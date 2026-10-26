@@ -38,8 +38,10 @@ internal fun rememberSystemReduceMotion(): State<Boolean> {
     return reduced
 }
 
-private fun animationsOff(resolver: ContentResolver): Boolean =
-    runCatching { Settings.Global.getFloat(resolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f) == 0f }
-        .getOrDefault(false)
+private fun animationsOff(resolver: ContentResolver): Boolean = runCatching {
+    Settings.Global.getFloat(resolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f) ==
+        0f
+}
+    .getOrDefault(false)
 
 internal val LocalReduceMotion = staticCompositionLocalOf<State<Boolean>> { mutableStateOf(false) }

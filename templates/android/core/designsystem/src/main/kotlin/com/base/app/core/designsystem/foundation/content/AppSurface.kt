@@ -45,7 +45,13 @@ public fun AppSurface(
         modifier = modifier
             .then(
                 if (elevation > 0.dp && colors.isLight) {
-                    Modifier.shadow(elevation, shape, clip = false, ambientColor = colors.shadow, spotColor = colors.shadow)
+                    Modifier.shadow(
+                        elevation,
+                        shape,
+                        clip = false,
+                        ambientColor = colors.shadow,
+                        spotColor = colors.shadow,
+                    )
                 } else {
                     Modifier
                 },
@@ -74,9 +80,15 @@ private fun AppSurfacePreview() {
             elevation = AppTheme.elevation.overlay,
             shape = AppTheme.shapes.lg,
         ) {
-            AppText(text = "Raised over the content", modifier = Modifier.padding(AppTheme.spacing.lg))
+            AppText(
+                text = "Raised over the content",
+                modifier = Modifier.padding(AppTheme.spacing.lg),
+            )
         }
-        AppSurface(border = BorderStroke(AppTheme.style.borderWidth, AppTheme.colors.outline), color = AppTheme.colors.background) {
+        AppSurface(
+            border = BorderStroke(AppTheme.style.borderWidth, AppTheme.colors.outline),
+            color = AppTheme.colors.background,
+        ) {
             AppText(text = "Outlined", modifier = Modifier.padding(AppTheme.spacing.lg))
         }
     }

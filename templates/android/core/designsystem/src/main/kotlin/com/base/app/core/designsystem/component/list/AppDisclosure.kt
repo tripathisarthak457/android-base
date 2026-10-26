@@ -52,8 +52,14 @@ public fun AppDisclosure(
         animationSpec = AppTheme.springs.thumb.unit,
         label = "disclosureChevron",
     )
-    val state = stringResource(if (expanded) R.string.designsystem_expanded else R.string.designsystem_collapsed)
-    val action = stringResource(if (expanded) R.string.designsystem_collapse else R.string.designsystem_expand)
+    val state =
+        stringResource(
+            if (expanded) R.string.designsystem_expanded else R.string.designsystem_collapsed,
+        )
+    val action =
+        stringResource(
+            if (expanded) R.string.designsystem_collapse else R.string.designsystem_expand,
+        )
     // The chevron is mirrored in right-to-left layouts, so it turns the other way to point down.
     val direction = if (LocalLayoutDirection.current == LayoutDirection.Rtl) -1f else 1f
 
@@ -70,14 +76,28 @@ public fun AppDisclosure(
                 .semantics { stateDescription = state }
                 .disabledAlpha(enabled)
                 .heightIn(min = AppTheme.sizes.rowHeight)
-                .padding(horizontal = AppTheme.spacing.lg, vertical = AppDisclosureDefaults.VerticalPadding),
+                .padding(
+                    horizontal = AppTheme.spacing.lg,
+                    vertical = AppDisclosureDefaults.VerticalPadding,
+                ),
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(AppDisclosureDefaults.TitleSpacing)) {
-                AppText(text = title, style = AppTheme.typography.body, color = AppTheme.colors.contentPrimary)
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(AppDisclosureDefaults.TitleSpacing),
+            ) {
+                AppText(
+                    text = title,
+                    style = AppTheme.typography.body,
+                    color = AppTheme.colors.contentPrimary,
+                )
                 subtitle?.let {
-                    AppText(text = it, style = AppTheme.typography.subheadline, color = AppTheme.colors.contentSecondary)
+                    AppText(
+                        text = it,
+                        style = AppTheme.typography.subheadline,
+                        color = AppTheme.colors.contentSecondary,
+                    )
                 }
             }
             AppIcon(
@@ -89,8 +109,17 @@ public fun AppDisclosure(
             )
         }
 
-        AnimatedVisibility(visible = expanded, enter = transitions.expandIn, exit = transitions.collapseOut) {
-            Column(modifier = Modifier.padding(horizontal = AppTheme.spacing.lg).padding(bottom = AppTheme.spacing.md), content = content)
+        AnimatedVisibility(
+            visible = expanded,
+            enter = transitions.expandIn,
+            exit = transitions.collapseOut,
+        ) {
+            Column(
+                modifier = Modifier.padding(
+                    horizontal = AppTheme.spacing.lg,
+                ).padding(bottom = AppTheme.spacing.md),
+                content = content,
+            )
         }
     }
 }
@@ -109,13 +138,23 @@ private fun AppDisclosurePreview() {
         modifier = Modifier.background(AppTheme.colors.background).padding(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
     ) {
-        AppDisclosure(title = "Shipping", expanded = false, onExpandedChange = {}, subtitle = "2 to 4 working days") {
+        AppDisclosure(
+            title = "Shipping",
+            expanded = false,
+            onExpandedChange = {},
+            subtitle = "2 to 4 working days",
+        ) {
             AppText(text = "Free over 50.")
         }
         AppDisclosure(title = "Returns", expanded = true, onExpandedChange = {}) {
             AppText(text = "Return anything within 30 days, in its original packaging.")
         }
-        AppDisclosure(title = "Warranty", expanded = false, onExpandedChange = {}, enabled = false) {
+        AppDisclosure(
+            title = "Warranty",
+            expanded = false,
+            onExpandedChange = {},
+            enabled = false,
+        ) {
             AppText(text = "Two years.")
         }
     }

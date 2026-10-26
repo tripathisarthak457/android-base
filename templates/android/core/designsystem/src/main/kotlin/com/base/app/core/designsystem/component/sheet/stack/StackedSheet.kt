@@ -49,7 +49,12 @@ internal class StackedSheet(private val state: AppSheetState) {
     fun active(): Boolean = state.isVisible && !state.parkedInstantly && state.parkProgress < 1f
 
     /** The expansion the presenter recedes by, less however far the sheet has parked. */
-    fun expansion(): Float = if (state.parkedInstantly) 0f else state.expansionFraction * (1f - state.parkProgress)
+    fun expansion(): Float = if (state.parkedInstantly) {
+        0f
+    } else {
+        state.expansionFraction *
+            (1f - state.parkProgress)
+    }
 
     /** How strongly this sheet's scrim shows: its presentation for a modal sheet, the ramp past `upThrough` for a non-modal one. */
     fun presence(): Float {

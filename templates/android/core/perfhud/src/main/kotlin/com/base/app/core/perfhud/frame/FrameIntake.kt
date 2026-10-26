@@ -41,10 +41,12 @@ internal class FrameIntake(
                 total = frame.frameDurationTotalNanos
                 missedDeadline = frame.frameOverrunNanos > 0
             }
+
             is FrameDataApi24 -> {
                 total = frame.frameDurationCpuNanos
                 missedDeadline = total > interval
             }
+
             else -> {
                 total = frame.frameDurationUiNanos
                 missedDeadline = frame.isJank

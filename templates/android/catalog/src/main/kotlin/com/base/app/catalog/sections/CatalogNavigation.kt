@@ -59,8 +59,9 @@ import kotlinx.serialization.Serializable
 internal fun NavigationSection() {
     CatalogGroup(
         title = "Shell",
-        caption = "The app's own shell, transitions and back handling. Push a row, swipe back from the " +
-            "edge, press Back quickly, open a cover over a pushed screen.",
+        caption =
+            "The app's own shell, transitions and back handling. Push a row, swipe back from the " +
+                "edge, press Back quickly, open a cover over a pushed screen.",
     ) {
         Frame(height = 560) { DemoShell() }
     }
@@ -75,13 +76,24 @@ internal fun NavigationSection() {
 
     CatalogGroup(title = "Badges, a trailing action and an accessory") {
         DemoBar(
-            items = DemoItems.mapIndexed { index, item -> if (index == 2) item.copy(badgeCount = 12) else item },
+            items = DemoItems.mapIndexed { index, item ->
+                if (index ==
+                    2
+                ) {
+                    item.copy(badgeCount = 12)
+                } else {
+                    item
+                }
+            },
             trailing = true,
             accessory = true,
         )
     }
 
-    CatalogGroup(title = "Minimize on scroll", caption = "Scroll the list down; scroll up or tap the bar to open it.") {
+    CatalogGroup(
+        title = "Minimize on scroll",
+        caption = "Scroll the list down; scroll up or tap the bar to open it.",
+    ) {
         Frame(height = 420) {
             val state = rememberAppTabBarState()
             var selected by remember { mutableIntStateOf(0) }
@@ -91,7 +103,11 @@ internal fun NavigationSection() {
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
                 flingBehavior = AppScrollDefaults.flingBehavior(),
             ) {
-                items(items = (1..40).toList(), key = { it }, contentType = { DemoRow }) { row -> AppText("Row $row") }
+                items(
+                    items = (1..40).toList(),
+                    key = { it },
+                    contentType = { DemoRow },
+                ) { row -> AppText("Row $row") }
             }
             AppTabBar(
                 items = DemoItems,
@@ -134,7 +150,10 @@ internal fun NavigationSection() {
         }
     }
 
-    CatalogGroup(title = "Floating toolbar", caption = "Actions with the bar's look, for screens without tabs.") {
+    CatalogGroup(
+        title = "Floating toolbar",
+        caption = "Actions with the bar's look, for screens without tabs.",
+    ) {
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             AppFloatingToolbar {
                 Action(AppIcons.Edit, "Edit", onClick = {})
@@ -197,51 +216,63 @@ private fun DemoShell() {
     val graphs = remember(navigator) { demoGraphs(navigator) }
     val registry = remember(graphs) { NavRegistry(graphs) }
     val serialization = remember(graphs) { NavKeySerialization(graphs) }
-    val state = rememberShellState(tabs = DemoTabs, registry = registry, serialization = serialization)
+    val state =
+        rememberShellState(tabs = DemoTabs, registry = registry, serialization = serialization)
     AppShell(tabs = DemoTabs, state = state, registry = registry, navigator = navigator)
 }
 
-private fun demoGraphs(navigator: AppNavigator): Set<NavGraphEntry> =
-    setOf(
-        navGraph {
-            entry<DemoList> {
-                LazyColumn(
-                    contentPadding = PaddingValues(AppTheme.spacing.lg),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
-                    flingBehavior = AppScrollDefaults.flingBehavior(),
-                ) {
-                    items(items = (1..20).toList(), key = { it }, contentType = { DemoRow }) { row ->
-                        AppCard(onClick = { navigator.navigate(DemoDetail(row)) }, modifier = Modifier.fillMaxWidth()) {
-                            AppText("Row $row")
-                        }
+private fun demoGraphs(navigator: AppNavigator): Set<NavGraphEntry> = setOf(
+    navGraph {
+        entry<DemoList> {
+            LazyColumn(
+                contentPadding = PaddingValues(AppTheme.spacing.lg),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
+                flingBehavior = AppScrollDefaults.flingBehavior(),
+            ) {
+                items(
+                    items = (1..20).toList(),
+                    key = { it },
+                    contentType = { DemoRow },
+                ) { row ->
+                    AppCard(
+                        onClick = { navigator.navigate(DemoDetail(row)) },
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        AppText("Row $row")
                     }
                 }
             }
-            entry<DemoDetail> { key ->
-                Column(
-                    modifier = Modifier.fillMaxSize().padding(AppTheme.spacing.lg),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
-                ) {
-                    AppText("Detail ${key.row}", style = AppTheme.typography.headline)
-                    AppButton(text = "Push the next one", onClick = { navigator.navigate(DemoDetail(key.row + 1)) })
-                    AppButton(text = "Open a cover", onClick = { navigator.navigate(DemoCover) })
-                    AppButton(text = "Back", onClick = navigator::navigateUp)
-                }
+        }
+        entry<DemoDetail> { key ->
+            Column(
+                modifier = Modifier.fillMaxSize().padding(AppTheme.spacing.lg),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+            ) {
+                AppText("Detail ${key.row}", style = AppTheme.typography.headline)
+                AppButton(
+                    text = "Push the next one",
+                    onClick = { navigator.navigate(DemoDetail(key.row + 1)) },
+                )
+                AppButton(text = "Open a cover", onClick = { navigator.navigate(DemoCover) })
+                AppButton(text = "Back", onClick = navigator::navigateUp)
             }
-            entry<DemoCover>(presentation = Presentation.Cover) {
-                Column(
-                    modifier = Modifier.fillMaxSize().padding(AppTheme.spacing.lg),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
-                ) {
-                    AppText("A cover, over the bar", style = AppTheme.typography.headline)
-                    AppButton(text = "Close", onClick = navigator::navigateUp)
-                }
+        }
+        entry<DemoCover>(presentation = Presentation.Cover) {
+            Column(
+                modifier = Modifier.fillMaxSize().padding(AppTheme.spacing.lg),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+            ) {
+                AppText("A cover, over the bar", style = AppTheme.typography.headline)
+                AppButton(text = "Close", onClick = navigator::navigateUp)
             }
-            entry<DemoSettings> {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { AppText("Second tab") }
+        }
+        entry<DemoSettings> {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                AppText("Second tab")
             }
-        },
-    )
+        }
+    },
+)
 
 @Serializable
 private data object DemoList : AppNavKey

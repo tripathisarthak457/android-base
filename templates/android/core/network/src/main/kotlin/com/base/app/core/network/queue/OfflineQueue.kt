@@ -9,6 +9,9 @@ import com.base.app.core.network.client.NetworkJson
 import com.base.app.core.network.model.NetworkRequest
 import com.base.app.core.network.model.RequestBody
 import io.ktor.http.encodeURLParameter
+import javax.inject.Inject
+import javax.inject.Singleton
+import kotlin.time.Instant
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -17,9 +20,6 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import javax.inject.Singleton
-import kotlin.time.Instant
 
 /** A queued request as a screen of unsent work shows it. */
 data class QueuedRequest(
@@ -51,7 +51,9 @@ class OfflineQueue @Inject internal constructor(
         // What someone queued before signing out waits for them. When they sign in again within
         // this process, nothing new may be queued to set a replay off, so the sign-in does.
         scope.launch {
-            tokenStore.tokens.map { it?.owner }.distinctUntilChanged().drop(1).filterNotNull().collect { owner ->
+            tokenStore.tokens.map {
+                it?.owner
+            }.distinctUntilChanged().drop(1).filterNotNull().collect { owner ->
                 if (dao.sendable(owner).isNotEmpty()) scheduler.replaySoon()
             }
         }
@@ -94,7 +96,12 @@ private fun QueuedRequestEntity.toQueuedRequest() = QueuedRequest(
     path = path,
     createdAt = Instant.fromEpochMilliseconds(createdAtEpochMillis),
     refusal = refusedAtEpochMillis?.let { at ->
-        QueuedRequest.Refusal(refusedStatus, refusedCode, refusedMessage, Instant.fromEpochMilliseconds(at))
+        QueuedRequest.Refusal(
+            refusedStatus,
+            refusedCode,
+            refusedMessage,
+            Instant.fromEpochMilliseconds(at),
+        )
     },
 )
 

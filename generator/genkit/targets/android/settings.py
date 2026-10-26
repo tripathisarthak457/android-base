@@ -38,8 +38,10 @@ def regions(spec: Spec) -> Regions:
         ],
         # Every library ships its own translations; the APK keeps only the languages the app speaks.
         "locale-filters": [f'        "{resource_qualifier(tag)}",\n' for tag in (SOURCE_LANGUAGE, *spec.languages)],
-        # Only the template's own check skips formatting, while its sources wait for one reformat.
-        "formatting-check": [],
+        # Only the raw template holds markers: import lists with fences, and `//~` fallback lines.
+        "template-import-order": [],
+        "template-comment-spacing": [],
+        "template-gradle-comment-spacing": [],
         **_readme(spec, android),
     }
 

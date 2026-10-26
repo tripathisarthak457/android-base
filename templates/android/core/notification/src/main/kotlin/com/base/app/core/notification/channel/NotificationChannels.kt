@@ -8,9 +8,9 @@ import androidx.core.content.getSystemService
 import com.base.app.core.common.coroutines.AppDispatchers
 import com.base.app.core.notification.R
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.withContext
 
 /** The channels this app posts to: what someone can mute, one by one, in the system's settings. */
 enum class NotificationChannelSpec(
@@ -59,7 +59,11 @@ class NotificationChannels @Inject constructor(
         val manager = context.getSystemService<NotificationManager>() ?: return@withContext
         manager.createNotificationChannels(
             NotificationChannelSpec.entries.map { spec ->
-                NotificationChannel(spec.id, context.getString(spec.channelName), spec.importance).apply {
+                NotificationChannel(
+                    spec.id,
+                    context.getString(spec.channelName),
+                    spec.importance,
+                ).apply {
                     description = context.getString(spec.description)
                 }
             },

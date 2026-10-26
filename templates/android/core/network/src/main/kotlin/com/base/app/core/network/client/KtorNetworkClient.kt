@@ -6,12 +6,18 @@ import com.base.app.core.common.network.NetworkMonitor
 import com.base.app.core.common.result.AppError
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.common.time.AppClock
+// <opt:appstatus>
+import com.base.app.core.network.appstatus.ApiSignals
+// </opt:appstatus>
 import com.base.app.core.network.di.AuthenticatedClient
 import com.base.app.core.network.model.HttpMethodType
 import com.base.app.core.network.model.MultipartPart
 import com.base.app.core.network.model.NetworkRequest
 import com.base.app.core.network.model.NetworkResponse
 import com.base.app.core.network.model.RequestBody
+// <opt:offlinequeue>
+import com.base.app.core.network.queue.RequestQueue
+// </opt:offlinequeue>
 import com.base.app.core.network.response.ResponseUnwrapper
 import com.base.app.core.network.response.retryAfterSeconds
 import io.ktor.client.HttpClient
@@ -29,22 +35,18 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.content.ByteArrayContent
 import io.ktor.http.content.TextContent
+import java.io.IOException
+import java.util.Locale
+import javax.inject.Inject
+import javax.inject.Singleton
+// <opt:offlinequeue>
+import kotlin.uuid.Uuid
+// </opt:offlinequeue>
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.DeserializationStrategy
-import java.io.IOException
-import java.util.Locale
-import javax.inject.Inject
-import javax.inject.Singleton
-// <opt:appstatus>
-import com.base.app.core.network.appstatus.ApiSignals
-// </opt:appstatus>
-// <opt:offlinequeue>
-import com.base.app.core.network.queue.RequestQueue
-import kotlin.uuid.Uuid
-// </opt:offlinequeue>
 
 /**
  * The Ktor implementation, and the only class that knows which HTTP library is in use.

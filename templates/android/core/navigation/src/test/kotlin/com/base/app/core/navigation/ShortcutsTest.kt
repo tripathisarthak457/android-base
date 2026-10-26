@@ -33,9 +33,20 @@ class ShortcutsTest {
 
         assertTrue(shortcuts.handle(key(KeyEvent.KEYCODE_F, KeyEvent.META_CTRL_ON)))
         assertFalse(shortcuts.handle(key(KeyEvent.KEYCODE_F, KeyEvent.META_CTRL_ON, repeat = 1)))
-        assertFalse(shortcuts.handle(key(KeyEvent.KEYCODE_F, KeyEvent.META_CTRL_ON or KeyEvent.META_SHIFT_ON)))
+        assertFalse(
+            shortcuts.handle(
+                key(
+                    KeyEvent.KEYCODE_F,
+                    KeyEvent.META_CTRL_ON or KeyEvent.META_SHIFT_ON,
+                ),
+            ),
+        )
         assertFalse(shortcuts.handle(key(KeyEvent.KEYCODE_F, 0)))
-        assertFalse(shortcuts.handle(key(KeyEvent.KEYCODE_F, KeyEvent.META_CTRL_ON, action = KeyEvent.ACTION_UP)))
+        assertFalse(
+            shortcuts.handle(
+                key(KeyEvent.KEYCODE_F, KeyEvent.META_CTRL_ON, action = KeyEvent.ACTION_UP),
+            ),
+        )
 
         assertEquals(listOf("screen"), ran)
         assertEquals(1, shortcuts.group("App").items.size)
@@ -45,11 +56,17 @@ class ShortcutsTest {
     fun `a screen's shortcut answers only while the screen is resumed`() {
         val shortcuts = AppShortcuts()
         val owner = object : LifecycleOwner {
-            override val lifecycle = LifecycleRegistry.createUnsafe(this).apply { currentState = Lifecycle.State.STARTED }
+            override val lifecycle = LifecycleRegistry.createUnsafe(this).apply {
+                currentState =
+                    Lifecycle.State.STARTED
+            }
         }
         var found = 0
         rule.setContent {
-            CompositionLocalProvider(LocalAppShortcuts provides shortcuts, LocalLifecycleOwner provides owner) {
+            CompositionLocalProvider(
+                LocalAppShortcuts provides shortcuts,
+                LocalLifecycleOwner provides owner,
+            ) {
                 ShortcutEffect(Shortcut(Key.F, "Find", ctrl = true)) { found++ }
             }
         }

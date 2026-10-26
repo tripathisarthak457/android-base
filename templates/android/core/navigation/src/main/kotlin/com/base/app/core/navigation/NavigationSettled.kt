@@ -20,6 +20,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
  *
  * Read it in an effect, never in composition: it changes twice per transition.
  */
-val LocalNavigationSettled: ProvidableCompositionLocal<() -> Boolean> = staticCompositionLocalOf { AlwaysSettled }
+val LocalNavigationSettled: ProvidableCompositionLocal<() -> Boolean> =
+    staticCompositionLocalOf { AlwaysSettled }
 
 private val AlwaysSettled: () -> Boolean = { true }

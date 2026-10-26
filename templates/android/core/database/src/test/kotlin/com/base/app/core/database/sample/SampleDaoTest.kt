@@ -18,7 +18,9 @@ import org.robolectric.annotation.Config
 @Config(sdk = [ROBOLECTRIC_SDK])
 class SampleDaoTest {
 
-    private val database = Room.inMemoryDatabaseBuilder<AppDatabase>(RuntimeEnvironment.getApplication())
+    private val database = Room.inMemoryDatabaseBuilder<AppDatabase>(
+        RuntimeEnvironment.getApplication(),
+    )
         .setDriver(AndroidSQLiteDriver())
         .build()
     private val dao = database.samples()

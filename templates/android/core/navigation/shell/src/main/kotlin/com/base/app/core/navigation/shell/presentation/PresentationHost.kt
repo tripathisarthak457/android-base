@@ -83,7 +83,12 @@ internal fun PresentationHost(
     }
     // A committed card fades out over the shell after its cover has gone. Derived, so a frame that
     // counts itself in or out recomposes the host only when that decides whether the host stays.
-    val gone by remember(presented, host) { derivedStateOf { presented.size == 0 && live == 0 && !host.card.active } }
+    val gone by remember(presented, host) {
+        derivedStateOf {
+            presented.size == 0 && live == 0 &&
+                !host.card.active
+        }
+    }
     if (gone) return
     SideEffect { host.motion = motion }
 
@@ -105,7 +110,11 @@ internal fun PresentationHost(
                 NavEntry(key, contentKey) { Box(Modifier.fillMaxSize()) }
             } else {
                 val destination = registry.destinationFor(key)
-                NavEntry(key = key, contentKey = contentKey, metadata = destinationMetadata(destination)) { shownKey ->
+                NavEntry(
+                    key = key,
+                    contentKey = contentKey,
+                    metadata = destinationMetadata(destination),
+                ) { shownKey ->
                     PresentedFrame(
                         key = shownKey,
                         contentKey = contentKey,
@@ -127,7 +136,8 @@ internal fun PresentationHost(
     )
     val reduceMotion = AppTheme.reduceMotion
     val strategies = remember(sheetStrategy) { listOfNotNull(sheetStrategy) }
-    val sceneState = rememberSceneState(entries, strategies, emptyList(), null, onBack = { gate.onBack(pop) })
+    val sceneState =
+        rememberSceneState(entries, strategies, emptyList(), null, onBack = { gate.onBack(pop) })
     // Bound to no handler, so NavDisplay never seeks a predictive pop of its own: the back card
     // takes the gesture (StackBackHandler below).
     val inert = rememberNavigationEventState(sceneState)
@@ -152,7 +162,12 @@ internal fun PresentationHost(
                 popTransitionSpec = if (reduceMotion) {
                     NavTransitions.noneSpec
                 } else {
-                    remember(motion, gate) { NavTransitions.dismiss(motion) { gate.lastChange == StackChange.GesturePop } }
+                    remember(motion, gate) {
+                        NavTransitions.dismiss(motion) {
+                            gate.lastChange ==
+                                StackChange.GesturePop
+                        }
+                    }
                 },
                 predictivePopTransitionSpec = NavTransitions.noneDuringPredictive,
             )
@@ -196,10 +211,26 @@ private fun PresentedFrame(
         Box(
             Modifier
                 .fillMaxSize()
-                .graphicsLayer { if (card.active && card.subject == key) with(card) { applyCard() } }
+                .graphicsLayer {
+                    if (card.active &&
+                        card.subject == key
+                    ) {
+                        with(card) { applyCard() }
+                    }
+                }
                 // The cover's own layer: under the back card, a texture the card's pose moves and fades.
                 // allow(offscreen-layer): the back card's subject only, while its gesture lasts
-                .graphicsLayer { compositingStrategy = if (card.textures(key)) CompositingStrategy.Offscreen else CompositingStrategy.Auto }
+                .graphicsLayer {
+                    compositingStrategy =
+                        if (card.textures(
+                                key,
+                            )
+                        ) {
+                            CompositingStrategy.Offscreen
+                        } else {
+                            CompositingStrategy.Auto
+                        }
+                }
                 .background(background),
         ) {
             content()

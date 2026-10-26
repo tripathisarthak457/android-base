@@ -16,6 +16,8 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.ktx.AppUpdateResult
 import com.google.android.play.core.ktx.requestUpdateFlow
 import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,8 +27,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.transformWhile
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** Where a flexible update stands, as far as the person is concerned. */
 internal sealed interface UpdateState {
@@ -80,13 +80,25 @@ class AppUpdates @Inject internal constructor(
                 }
                 .collect { result ->
                     when (result) {
-                        is AppUpdateResult.Available -> if (shouldOffer(result.updateInfo.availableVersionCode(), dismissed)) {
-                            if (_state.value == UpdateState.Idle) _state.value = UpdateState.Offer(result)
+                        is AppUpdateResult.Available -> if (shouldOffer(
+                                result.updateInfo.availableVersionCode(),
+                                dismissed,
+                            )
+                        ) {
+                            if (_state.value ==
+                                UpdateState.Idle
+                            ) {
+                                _state.value = UpdateState.Offer(result)
+                            }
                         }
+
                         is AppUpdateResult.Downloaded -> {
                             _state.value = UpdateState.Ready(result)
-                            ProcessLifecycleOwner.get().lifecycle.addObserver(InstallWhenHidden(result))
+                            ProcessLifecycleOwner.get().lifecycle.addObserver(
+                                InstallWhenHidden(result),
+                            )
                         }
+
                         is AppUpdateResult.InProgress, AppUpdateResult.NotAvailable -> Unit
                     }
                 }
@@ -117,7 +129,8 @@ class AppUpdates @Inject internal constructor(
         }
     }
 
-    private inner class InstallWhenHidden(private val downloaded: AppUpdateResult.Downloaded) : DefaultLifecycleObserver {
+    private inner class InstallWhenHidden(private val downloaded: AppUpdateResult.Downloaded) :
+        DefaultLifecycleObserver {
         override fun onStop(owner: LifecycleOwner) {
             owner.lifecycle.removeObserver(this)
             restart(downloaded)

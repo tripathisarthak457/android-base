@@ -98,7 +98,13 @@ public fun AppButton(
         modifier = modifier
             .pressable(
                 onClick = onClick,
-                feedback = if (variant == ButtonVariant.Plain) PressFeedback.Dim else PressFeedback.Scale,
+                feedback = if (variant ==
+                    ButtonVariant.Plain
+                ) {
+                    PressFeedback.Dim
+                } else {
+                    PressFeedback.Scale
+                },
                 enabled = enabled && !loading,
                 role = Role.Button,
             )
@@ -107,7 +113,10 @@ public fun AppButton(
                 if (outlined) {
                     Modifier
                         .offsetShadow(shape, style.offsetShadow, AppTheme.colors.contentPrimary)
-                        .border(BorderStroke(style.borderWidth, AppTheme.colors.contentPrimary), shape)
+                        .border(
+                            BorderStroke(style.borderWidth, AppTheme.colors.contentPrimary),
+                            shape,
+                        )
                 } else {
                     Modifier
                 },
@@ -121,10 +130,15 @@ public fun AppButton(
             ProvideContentColor(content) {
                 Row(
                     modifier = if (loading) Modifier.alpha(0f) else Modifier,
-                    horizontalArrangement = Arrangement.spacedBy(metrics.gap, Alignment.CenterHorizontally),
+                    horizontalArrangement = Arrangement.spacedBy(
+                        metrics.gap,
+                        Alignment.CenterHorizontally,
+                    ),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    leadingIcon?.let { AppIcon(it, contentDescription = null, size = metrics.iconSize) }
+                    leadingIcon?.let {
+                        AppIcon(it, contentDescription = null, size = metrics.iconSize)
+                    }
                     // A label wider than the button wraps rather than losing its end, so at twice the
                     // text size a long label still reads whole.
                     AppText(
@@ -136,7 +150,9 @@ public fun AppButton(
                         },
                         textAlign = TextAlign.Center,
                     )
-                    trailingIcon?.let { AppIcon(it, contentDescription = null, size = metrics.iconSize) }
+                    trailingIcon?.let {
+                        AppIcon(it, contentDescription = null, size = metrics.iconSize)
+                    }
                 }
                 if (loading) AppActivityIndicator(size = metrics.iconSize, color = content)
             }
@@ -218,13 +234,27 @@ private fun IconButton(
         modifier = modifier
             .pressable(
                 onClick = onClick,
-                feedback = if (variant == ButtonVariant.Plain) PressFeedback.Dim else PressFeedback.Scale,
+                feedback = if (variant ==
+                    ButtonVariant.Plain
+                ) {
+                    PressFeedback.Dim
+                } else {
+                    PressFeedback.Scale
+                },
                 enabled = enabled,
                 role = Role.Button,
             )
             .size(diameter)
             .then(redacted)
-            .then(if (container.alpha == 0f) Modifier else Modifier.background(container, CircleShape)),
+            .then(
+                if (container.alpha ==
+                    0f
+                ) {
+                    Modifier
+                } else {
+                    Modifier.background(container, CircleShape)
+                },
+            ),
         contentAlignment = Alignment.Center,
     ) {
         ContentUnderBone(bone) {
@@ -252,7 +282,11 @@ public fun AppLinkButton(
 ) {
     AppText(
         text = text,
-        modifier = modifier.inlinePressable(onClick = onClick, feedback = PressFeedback.Dim, enabled = enabled),
+        modifier = modifier.inlinePressable(
+            onClick = onClick,
+            feedback = PressFeedback.Dim,
+            enabled = enabled,
+        ),
         style = style,
         color = if (enabled) AppTheme.colors.accentContent else AppTheme.colors.contentDisabled,
     )
@@ -309,12 +343,41 @@ public object AppButtonDefaults {
     public fun colors(variant: ButtonVariant): ButtonColors {
         val colors = AppTheme.colors
         return remember(variant, colors) {
-            val disabledContainer = if (variant == ButtonVariant.Plain) Color.Transparent else colors.fill
+            val disabledContainer = if (variant ==
+                ButtonVariant.Plain
+            ) {
+                Color.Transparent
+            } else {
+                colors.fill
+            }
             when (variant) {
-                ButtonVariant.Filled -> ButtonColors(colors.accent, colors.onAccent, disabledContainer, colors.contentDisabled)
-                ButtonVariant.Tinted -> ButtonColors(colors.accentSubtle, colors.accentContent, disabledContainer, colors.contentDisabled)
-                ButtonVariant.Plain -> ButtonColors(Color.Transparent, colors.accentContent, disabledContainer, colors.contentDisabled)
-                ButtonVariant.Destructive -> ButtonColors(colors.danger.subtle, colors.danger.content, disabledContainer, colors.contentDisabled)
+                ButtonVariant.Filled -> ButtonColors(
+                    colors.accent,
+                    colors.onAccent,
+                    disabledContainer,
+                    colors.contentDisabled,
+                )
+
+                ButtonVariant.Tinted -> ButtonColors(
+                    colors.accentSubtle,
+                    colors.accentContent,
+                    disabledContainer,
+                    colors.contentDisabled,
+                )
+
+                ButtonVariant.Plain -> ButtonColors(
+                    Color.Transparent,
+                    colors.accentContent,
+                    disabledContainer,
+                    colors.contentDisabled,
+                )
+
+                ButtonVariant.Destructive -> ButtonColors(
+                    colors.danger.subtle,
+                    colors.danger.content,
+                    disabledContainer,
+                    colors.contentDisabled,
+                )
             }
         }
     }
@@ -324,7 +387,10 @@ public object AppButtonDefaults {
      * the accent. [content] overrides the glyph's colour when it is specified.
      */
     @Composable
-    public fun iconButtonColors(variant: ButtonVariant = ButtonVariant.Plain, content: Color = Color.Unspecified): ButtonColors {
+    public fun iconButtonColors(
+        variant: ButtonVariant = ButtonVariant.Plain,
+        content: Color = Color.Unspecified,
+    ): ButtonColors {
         val colors = colors(variant)
         val glyph = when {
             content.isSpecified -> content
@@ -347,6 +413,7 @@ public object AppButtonDefaults {
                     iconSize = sizes.iconSmall,
                     textStyle = typography.subheadline.copy(fontWeight = FontWeight.SemiBold),
                 )
+
                 ButtonSize.Medium -> Metrics(
                     height = sizes.buttonMedium,
                     padding = PaddingValues(horizontal = 18.dp, vertical = 10.dp),
@@ -354,6 +421,7 @@ public object AppButtonDefaults {
                     iconSize = sizes.icon,
                     textStyle = typography.headline,
                 )
+
                 ButtonSize.Large -> Metrics(
                     height = sizes.buttonLarge,
                     padding = PaddingValues(horizontal = 24.dp, vertical = 14.dp),
@@ -383,16 +451,45 @@ private fun AppButtonPreview() {
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
     ) {
         AppButton(text = "Continue", onClick = {})
-        AppButton(text = "Save as draft", onClick = {}, variant = ButtonVariant.Tinted, leadingIcon = AppIcons.Edit)
-        AppButton(text = "Skip", onClick = {}, variant = ButtonVariant.Plain, size = ButtonSize.Small)
-        AppButton(text = "Delete account", onClick = {}, variant = ButtonVariant.Destructive, size = ButtonSize.Large)
+        AppButton(
+            text = "Save as draft",
+            onClick = {},
+            variant = ButtonVariant.Tinted,
+            leadingIcon = AppIcons.Edit,
+        )
+        AppButton(
+            text = "Skip",
+            onClick = {},
+            variant = ButtonVariant.Plain,
+            size = ButtonSize.Small,
+        )
+        AppButton(
+            text = "Delete account",
+            onClick = {},
+            variant = ButtonVariant.Destructive,
+            size = ButtonSize.Large,
+        )
         AppButton(text = "Continue", onClick = {}, enabled = false)
         AppButton(text = "Paying", onClick = {}, loading = true)
-        AppButton(text = "Send the invitation to every member of the team at once", onClick = {}, trailingIcon = AppIcons.Send)
+        AppButton(
+            text = "Send the invitation to every member of the team at once",
+            onClick = {},
+            trailingIcon = AppIcons.Send,
+        )
         Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
             AppIconButton(icon = AppIcons.Share, contentDescription = "Share", onClick = {})
-            AppIconButton(icon = AppIcons.Plus, contentDescription = "Add", onClick = {}, variant = ButtonVariant.Filled)
-            AppIconButton(icon = AppIcons.Trash, contentDescription = "Delete", onClick = {}, enabled = false)
+            AppIconButton(
+                icon = AppIcons.Plus,
+                contentDescription = "Add",
+                onClick = {},
+                variant = ButtonVariant.Filled,
+            )
+            AppIconButton(
+                icon = AppIcons.Trash,
+                contentDescription = "Delete",
+                onClick = {},
+                enabled = false,
+            )
         }
         AppLinkButton(text = "Forgot password?", onClick = {})
         AppLinkButton(text = "Terms of service", onClick = {}, enabled = false)

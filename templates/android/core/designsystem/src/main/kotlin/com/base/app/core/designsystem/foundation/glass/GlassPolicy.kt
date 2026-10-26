@@ -23,13 +23,19 @@ internal data class GlassInputs(
 internal fun glassQuality(inputs: GlassInputs): GlassQuality = with(inputs) {
     when {
         reduceTransparency -> GlassQuality.Solid
+
         // Below S, Kyant's effects are no-ops and a sampling surface would show the scene sharp.
         sdkInt < Build.VERSION_CODES.S -> GlassQuality.Frosted
+
         lowRamDevice || powerSave || !gpuKeepsUp -> GlassQuality.Frosted
+
         thermalStatus >= PowerManager.THERMAL_STATUS_SEVERE -> GlassQuality.Frosted
+
         // The lens is an AGSL shader, which only Tiramisu runs.
         sdkInt < Build.VERSION_CODES.TIRAMISU -> GlassQuality.LiveNoLens
+
         thermalStatus >= PowerManager.THERMAL_STATUS_MODERATE -> GlassQuality.LiveNoLens
+
         else -> GlassQuality.Live
     }
 }

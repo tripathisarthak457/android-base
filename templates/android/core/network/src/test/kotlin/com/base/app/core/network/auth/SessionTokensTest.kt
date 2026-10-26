@@ -136,7 +136,11 @@ class SessionTokensTest {
     private class ScriptedRefresher : TokenRefresher {
         val presented = mutableListOf<String>()
         var gate: CompletableDeferred<Unit>? = null
-        var answer: TokenRefreshResult = TokenRefreshResult.Success("A2", "R2", expiresAtEpochMillis = null)
+        var answer: TokenRefreshResult = TokenRefreshResult.Success(
+            "A2",
+            "R2",
+            expiresAtEpochMillis = null,
+        )
 
         override suspend fun refresh(refreshToken: String): TokenRefreshResult {
             presented += refreshToken

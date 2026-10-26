@@ -2,6 +2,7 @@ package com.base.app.buildlogic.android
 
 import com.base.app.buildlogic.guard.ModuleKind
 import com.base.app.buildlogic.guard.ModuleShape
+import java.io.File
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.Project
@@ -19,7 +20,6 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.register
 import org.gradle.work.DisableCachingByDefault
-import java.io.File
 
 /**
  * The modules whose composables every screen calls: a parameter compared by identity here costs a

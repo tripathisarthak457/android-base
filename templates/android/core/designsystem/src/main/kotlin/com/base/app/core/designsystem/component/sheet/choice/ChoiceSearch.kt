@@ -14,7 +14,8 @@ internal object ChoiceSearch {
     fun matches(query: String, label: String, supporting: String?, locale: Locale): Boolean {
         val wanted = fold(query.trim(), locale)
         if (wanted.isEmpty()) return true
-        return fold(label, locale).contains(wanted) || (supporting != null && fold(supporting, locale).contains(wanted))
+        return fold(label, locale).contains(wanted) ||
+            (supporting != null && fold(supporting, locale).contains(wanted))
     }
 
     private val Combining = Regex("\\p{Mn}+")

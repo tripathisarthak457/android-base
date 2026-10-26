@@ -1,11 +1,11 @@
 package com.base.app
 
+import java.io.File
+import javax.xml.parsers.DocumentBuilderFactory
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.w3c.dom.Element
-import java.io.File
-import javax.xml.parsers.DocumentBuilderFactory
 
 /**
  * A window that is resized, folded, rotated or given a keyboard keeps its activity, so no tab is
@@ -25,7 +25,17 @@ class WindowManifestTest {
     @Test
     fun `a new window size or night mode does not recreate the activity`() {
         val handled = main.androidAttr("configChanges").split("|").toSet()
-        val needed = setOf("orientation", "screenSize", "smallestScreenSize", "screenLayout", "keyboard", "keyboardHidden", "navigation", "uiMode")
+        val needed =
+            setOf(
+                "orientation",
+                "screenSize",
+                "smallestScreenSize",
+                "screenLayout",
+                "keyboard",
+                "keyboardHidden",
+                "navigation",
+                "uiMode",
+            )
         assertTrue("configChanges lacks ${needed - handled}", handled.containsAll(needed))
     }
 

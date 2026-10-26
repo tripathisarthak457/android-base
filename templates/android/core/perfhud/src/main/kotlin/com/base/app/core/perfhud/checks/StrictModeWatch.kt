@@ -8,11 +8,11 @@ import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.annotation.RequiresApi
 import com.base.app.core.common.coroutines.AppDispatchers
 import com.base.app.core.perfhud.R
-import kotlinx.coroutines.asExecutor
-import kotlinx.serialization.Serializable
 import java.util.concurrent.Executor
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.asExecutor
+import kotlinx.serialization.Serializable
 
 /**
  * StrictMode's main-thread checks while recording, counted: disk and network on the main thread,

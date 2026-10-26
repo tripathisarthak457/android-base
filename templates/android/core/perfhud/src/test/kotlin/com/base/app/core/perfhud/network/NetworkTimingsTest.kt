@@ -27,7 +27,12 @@ class NetworkTimingsTest {
             ),
         )
 
-        assertEquals(listOf("GET /posts", "GET /users/{id}", "POST /posts"), timings.endpoints.map { it.endpoint })
+        assertEquals(
+            listOf("GET /posts", "GET /users/{id}", "POST /posts"),
+            timings.endpoints.map {
+                it.endpoint
+            },
+        )
         assertEquals(2, timings.endpoints.first().requests)
         assertEquals(1, timings.failures)
         assertEquals(1, timings.endpoints.single { it.endpoint == "GET /users/{id}" }.failures)
@@ -56,17 +61,18 @@ class NetworkTimingsTest {
         assertEquals(NetworkTimings.None, NetworkTimings.of(emptyList()))
     }
 
-    private fun exchange(path: String, millis: Long, status: Int = 200, method: String = "GET") = NetworkExchange(
-        method = method,
-        url = "https://api.example.com$path",
-        status = status,
-        startedAtMillis = 0L,
-        durationMillis = millis,
-        requestHeaders = emptyMap(),
-        responseHeaders = emptyMap(),
-        requestBody = null,
-        responseBody = null,
-        responseBytes = 0L,
-        failure = null,
-    )
+    private fun exchange(path: String, millis: Long, status: Int = 200, method: String = "GET") =
+        NetworkExchange(
+            method = method,
+            url = "https://api.example.com$path",
+            status = status,
+            startedAtMillis = 0L,
+            durationMillis = millis,
+            requestHeaders = emptyMap(),
+            responseHeaders = emptyMap(),
+            requestBody = null,
+            responseBody = null,
+            responseBytes = 0L,
+            failure = null,
+        )
 }

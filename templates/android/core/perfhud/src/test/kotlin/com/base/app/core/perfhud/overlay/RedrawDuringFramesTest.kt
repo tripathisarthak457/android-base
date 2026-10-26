@@ -137,9 +137,14 @@ class RedrawDuringFramesTest {
      * read directly; Robolectric runs one fixed SDK, where the field cannot move.
      */
     private fun preDrawListeners(): Int {
-        val field = ViewTreeObserver::class.java.getDeclaredField("mOnPreDrawListeners").apply { isAccessible = true }
+        val field = ViewTreeObserver::class.java.getDeclaredField("mOnPreDrawListeners").apply {
+            isAccessible =
+                true
+        }
         val listeners = field.get(view.viewTreeObserver) ?: return 0
-        return listeners.javaClass.getDeclaredMethod("size").apply { isAccessible = true }.invoke(listeners) as Int
+        return listeners.javaClass.getDeclaredMethod("size").apply {
+            isAccessible = true
+        }.invoke(listeners) as Int
     }
 
     private companion object {

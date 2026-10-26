@@ -6,6 +6,7 @@ import androidx.compose.runtime.snapshots.Snapshot
 import androidx.navigationevent.NavigationEvent
 import com.base.app.core.navigation.back.BackGate
 import com.base.app.core.navigation.shell.ROBOLECTRIC_SDK
+import java.time.Duration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
@@ -19,7 +20,6 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowSystemClock
-import java.time.Duration
 
 /**
  * The card's state on its own, on a frame clock the test steps: what it tells its readers and when,

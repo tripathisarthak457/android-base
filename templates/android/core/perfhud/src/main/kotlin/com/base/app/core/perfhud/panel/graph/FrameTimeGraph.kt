@@ -99,15 +99,30 @@ internal fun FrameTimeGraph(frames: FrameLog, version: () -> Int, modifier: Modi
                     var labelBottom = Float.NEGATIVE_INFINITY
                     for (index in BudgetHz.indices) {
                         val y = size.height * (1f - MillisPerSecond / BudgetHz[index] / ScaleMillis)
-                        drawLine(guide, Offset(gutter, y), Offset(size.width, y), stroke, pathEffect = dash)
+                        drawLine(
+                            guide,
+                            Offset(gutter, y),
+                            Offset(size.width, y),
+                            stroke,
+                            pathEffect = dash,
+                        )
                         val label = labels[index]
                         // The 90 and 120 Hz lines lie closer together than a label is tall, so a label
                         // that would overlap the one above it moves down just clear of it.
                         val top = max(y - label.size.height / 2f, labelBottom)
-                        drawText(label, color = guide, topLeft = Offset(gutter - labelGap - label.size.width, top))
+                        drawText(
+                            label,
+                            color = guide,
+                            topLeft = Offset(gutter - labelGap - label.size.width, top),
+                        )
                         labelBottom = top + label.size.height
                     }
-                    drawLine(axis, Offset(gutter, size.height), Offset(size.width, size.height), stroke)
+                    drawLine(
+                        axis,
+                        Offset(gutter, size.height),
+                        Offset(size.width, size.height),
+                        stroke,
+                    )
                 }
             },
     )

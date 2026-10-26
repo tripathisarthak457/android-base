@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.datastore.settings.AppSettingsStore
+import java.io.File
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestScope
@@ -15,7 +16,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
-import java.io.File
 
 class AppLockTest {
 
@@ -46,16 +46,17 @@ class AppLockTest {
     }
 
     @Test
-    fun `passing the challenge in the system's credential screen does not lock again on return`() = runTest {
-        val lock = lock(enabled = true)
+    fun `passing the challenge in the system's credential screen does not lock again on return`() =
+        runTest {
+            val lock = lock(enabled = true)
 
-        lock.onStop(owner)
-        now += AppLock.GRACE_MILLIS + 1
-        lock.unlocked()
-        lock.onStart(owner)
+            lock.onStop(owner)
+            now += AppLock.GRACE_MILLIS + 1
+            lock.unlocked()
+            lock.onStart(owner)
 
-        assertFalse(lock.isLockedNow())
-    }
+            assertFalse(lock.isLockedNow())
+        }
 
     @Test
     fun `a success reported after the return does not lock again either`() = runTest {
@@ -129,7 +130,9 @@ class AppLockTest {
 
     private fun TestScope.settings(): AppSettingsStore {
         val scope: CoroutineScope = backgroundScope
-        val dataStore = PreferenceDataStoreFactory.create(scope = scope) { File(folder.root, "settings.preferences_pb") }
+        val dataStore = PreferenceDataStoreFactory.create(scope = scope) {
+            File(folder.root, "settings.preferences_pb")
+        }
         return AppSettingsStore(dataStore, ApplicationScope(scope)).also { runCurrent() }
     }
 }

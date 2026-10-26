@@ -78,10 +78,8 @@ public fun AppIcon(
     )
 }
 
-private data class TintedPainterElement(
-    val painter: VectorPainter,
-    val tint: ColorProducer,
-) : ModifierNodeElement<TintedPainterNode>() {
+private data class TintedPainterElement(val painter: VectorPainter, val tint: ColorProducer) :
+    ModifierNodeElement<TintedPainterNode>() {
     override fun create() = TintedPainterNode(painter, tint)
 
     override fun update(node: TintedPainterNode) {
@@ -95,10 +93,9 @@ private data class TintedPainterElement(
     }
 }
 
-private class TintedPainterNode(
-    var painter: VectorPainter,
-    var tint: ColorProducer,
-) : Modifier.Node(), DrawModifierNode {
+private class TintedPainterNode(var painter: VectorPainter, var tint: ColorProducer) :
+    Modifier.Node(),
+    DrawModifierNode {
     private var lastColor = Color.Unspecified
     private var filter: ColorFilter? = null
 

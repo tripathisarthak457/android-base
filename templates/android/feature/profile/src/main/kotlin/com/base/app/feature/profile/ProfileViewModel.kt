@@ -7,18 +7,18 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import com.base.app.core.common.result.AppError
+// <opt:media>
+import com.base.app.core.common.result.errorOrNull
+// </opt:media>
 import com.base.app.core.mvi.MessageKind
 import com.base.app.core.mvi.MviViewModel
 import com.base.app.core.mvi.UiText
 import com.base.app.core.ui.toUiText
 import com.base.app.data.profile.api.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import javax.inject.Inject
-// <opt:media>
-import com.base.app.core.common.result.errorOrNull
-// </opt:media>
 
 /**
  * The fields are edited here and only written on Save, so typing never races the store and a
@@ -31,10 +31,14 @@ internal class ProfileViewModel @Inject constructor(
 ) : MviViewModel<ProfileState, ProfileEvent, ProfileEffect>(ProfileState()) {
 
     @OptIn(SavedStateHandleSaveableApi::class)
-    val name: TextFieldState = savedStateHandle.saveable(NAME, saver = TextFieldState.Saver) { TextFieldState() }
+    val name: TextFieldState = savedStateHandle.saveable(NAME, saver = TextFieldState.Saver) {
+        TextFieldState()
+    }
 
     @OptIn(SavedStateHandleSaveableApi::class)
-    val bio: TextFieldState = savedStateHandle.saveable(BIO, saver = TextFieldState.Saver) { TextFieldState() }
+    val bio: TextFieldState = savedStateHandle.saveable(BIO, saver = TextFieldState.Saver) {
+        TextFieldState()
+    }
 
     init {
         val typed = snapshotFlow { name.text.toString() to bio.text.toString() }

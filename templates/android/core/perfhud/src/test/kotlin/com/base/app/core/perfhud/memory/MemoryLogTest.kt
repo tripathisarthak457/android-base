@@ -10,8 +10,18 @@ class MemoryLogTest {
 
     @Test
     fun `garbage collections are counted from the first sample`() {
-        log.add(reading(heap = 10f, gc = GcCounters(count = 40, millis = 400, blockingCount = 2, blockingMillis = 30)))
-        log.add(reading(heap = 30f, gc = GcCounters(count = 43, millis = 420, blockingCount = 3, blockingMillis = 45)))
+        log.add(
+            reading(
+                heap = 10f,
+                gc = GcCounters(count = 40, millis = 400, blockingCount = 2, blockingMillis = 30),
+            ),
+        )
+        log.add(
+            reading(
+                heap = 30f,
+                gc = GcCounters(count = 43, millis = 420, blockingCount = 3, blockingMillis = 45),
+            ),
+        )
 
         val summary = checkNotNull(log.summary())
 
@@ -25,12 +35,32 @@ class MemoryLogTest {
 
     @Test
     fun `collections between two runs of the sampler are not counted`() {
-        log.add(reading(heap = 10f, gc = GcCounters(count = 40, millis = 400, blockingCount = 2, blockingMillis = 30)))
-        log.add(reading(heap = 10f, gc = GcCounters(count = 42, millis = 410, blockingCount = 2, blockingMillis = 30)))
+        log.add(
+            reading(
+                heap = 10f,
+                gc = GcCounters(count = 40, millis = 400, blockingCount = 2, blockingMillis = 30),
+            ),
+        )
+        log.add(
+            reading(
+                heap = 10f,
+                gc = GcCounters(count = 42, millis = 410, blockingCount = 2, blockingMillis = 30),
+            ),
+        )
         // Recording off, or the app in the background: the collector went on without the sampler.
         log.startRun()
-        log.add(reading(heap = 10f, gc = GcCounters(count = 90, millis = 900, blockingCount = 9, blockingMillis = 99)))
-        log.add(reading(heap = 10f, gc = GcCounters(count = 91, millis = 905, blockingCount = 9, blockingMillis = 99)))
+        log.add(
+            reading(
+                heap = 10f,
+                gc = GcCounters(count = 90, millis = 900, blockingCount = 9, blockingMillis = 99),
+            ),
+        )
+        log.add(
+            reading(
+                heap = 10f,
+                gc = GcCounters(count = 91, millis = 905, blockingCount = 9, blockingMillis = 99),
+            ),
+        )
 
         val summary = checkNotNull(log.summary())
 
@@ -79,5 +109,11 @@ class MemoryLogTest {
         pss: Float = Float.NaN,
         graphics: Float = Float.NaN,
         gc: GcCounters = GcCounters(0, 0, 0, 0),
-    ) = MemoryReading(javaHeapMb = heap, nativeHeapMb = 10f, pssMb = pss, graphicsMb = graphics, gc = gc)
+    ) = MemoryReading(
+        javaHeapMb = heap,
+        nativeHeapMb = 10f,
+        pssMb = pss,
+        graphicsMb = graphics,
+        gc = gc,
+    )
 }

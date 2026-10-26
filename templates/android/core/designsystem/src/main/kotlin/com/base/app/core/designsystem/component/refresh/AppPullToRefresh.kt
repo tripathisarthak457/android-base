@@ -58,13 +58,13 @@ import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.LocalAppSprings
 import com.base.app.core.designsystem.theme.LocalReduceMotion
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
+import kotlin.math.min
+import kotlin.math.pow
+import kotlin.math.roundToInt
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlin.math.min
-import kotlin.math.pow
-import kotlin.math.roundToInt
 
 /**
  * Pull to refresh over any scrolling content, as iOS's refresh control behaves. The content follows
@@ -97,7 +97,9 @@ public fun AppPullToRefresh(
     val measurePolicy = remember(topChrome) { RefreshMeasurePolicy(topChrome) }
     Layout(
         contents = listOf(
-            { Box(Modifier.offset { IntOffset(0, indicator.gap.roundToInt()) }, content = content) },
+            {
+                Box(Modifier.offset { IntOffset(0, indicator.gap.roundToInt()) }, content = content)
+            },
             // Its own layer, so each step of the spinner redraws a few dozen pixels, not the screen.
             { Spacer(Modifier.graphicsLayer().then(RefreshSpinnerElement(indicator, spokeColor))) },
         ),
@@ -117,14 +119,23 @@ public fun AppPullToRefresh(
 
 /** The content as measured, and the spinner centred just below whatever top bar the content runs under. */
 private class RefreshMeasurePolicy(private val topChrome: ChromeInset) : MultiContentMeasurePolicy {
-    override fun MeasureScope.measure(measurables: List<List<Measurable>>, constraints: Constraints): MeasureResult {
+    override fun MeasureScope.measure(
+        measurables: List<List<Measurable>>,
+        constraints: Constraints,
+    ): MeasureResult {
         val (body, spinnerSlot) = measurables
         val content = body.first().measure(constraints)
         val diameter = (AppPullToRefreshDefaults.SpinnerRadius * 2).roundToPx()
         val spinner = spinnerSlot.first().measure(Constraints.fixed(diameter, diameter))
         return layout(content.width, content.height) {
             content.place(0, 0)
-            spinner.place((content.width - diameter) / 2, (topChrome.value + AppPullToRefreshDefaults.SpinnerTop).roundToPx())
+            spinner.place(
+                (content.width - diameter) / 2,
+                (
+                    topChrome.value +
+                        AppPullToRefreshDefaults.SpinnerTop
+                    ).roundToPx(),
+            )
         }
     }
 }
@@ -137,8 +148,14 @@ private data class PullToRefreshElement(
     val refreshLabel: String,
     val refreshingLabel: String,
 ) : ModifierNodeElement<PullToRefreshNode>() {
-    override fun create() =
-        PullToRefreshNode(indicator, refreshing, onRefresh, showExternalRefresh, refreshLabel, refreshingLabel)
+    override fun create() = PullToRefreshNode(
+        indicator,
+        refreshing,
+        onRefresh,
+        showExternalRefresh,
+        refreshLabel,
+        refreshingLabel,
+    )
 
     override fun update(node: PullToRefreshNode) =
         node.update(refreshing, onRefresh, showExternalRefresh, refreshLabel, refreshingLabel)
@@ -256,7 +273,11 @@ private class PullToRefreshNode(
         return Offset(0f, -give)
     }
 
-    override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+    override fun onPostScroll(
+        consumed: Offset,
+        available: Offset,
+        source: NestedScrollSource,
+    ): Offset {
         if (source != NestedScrollSource.UserInput || available.y <= 0f) return Offset.Zero
         beginDrag()
         raw += available.y
@@ -305,8 +326,13 @@ private class PullToRefreshNode(
     private fun visible(travel: Float): Float =
         if (travel <= linear) travel else linear + rubberBand(travel - linear, viewport - linear)
 
-    private fun travelFor(visible: Float): Float =
-        if (visible <= linear) visible else linear + rubberBandInverse(visible - linear, viewport - linear)
+    private fun travelFor(visible: Float): Float = if (visible <=
+        linear
+    ) {
+        visible
+    } else {
+        linear + rubberBandInverse(visible - linear, viewport - linear)
+    }
 
     /** How far the gap moves per pixel of finger travel where it is now: the band's slope. */
     private fun slope(): Float {
@@ -359,7 +385,14 @@ private class PullToRefreshNode(
         spin = coroutineScope.launch {
             // iOS steps the spinner rather than turning it, so it redraws eight times a turn, not every frame.
             while (isActive) {
-                val step = if (currentValueOf(LocalReduceMotion).value) SpinStepMillis * 2 else SpinStepMillis
+                val step = if (currentValueOf(
+                        LocalReduceMotion,
+                    ).value
+                ) {
+                    SpinStepMillis * 2
+                } else {
+                    SpinStepMillis
+                }
                 delay(step)
                 indicator.head = (indicator.head + 1) % ActivitySpokes
             }
@@ -367,7 +400,12 @@ private class PullToRefreshNode(
     }
 
     private fun perform(haptic: AppHaptic) {
-        if (currentValueOf(LocalHapticsEnabled)) currentValueOf(LocalView).performHapticFeedback(haptic.constant())
+        if (currentValueOf(
+                LocalHapticsEnabled,
+            )
+        ) {
+            currentValueOf(LocalView).performHapticFeedback(haptic.constant())
+        }
     }
 
     override fun onDetach() {
@@ -424,7 +462,11 @@ public object AppPullToRefreshDefaults {
 @AppComponentPreviews
 @Composable
 private fun AppPullToRefreshPreview() {
-    Row(modifier = Modifier.background(AppTheme.colors.background).height(AppTheme.sizes.rowHeight * 4)) {
+    Row(
+        modifier = Modifier.background(
+            AppTheme.colors.background,
+        ).height(AppTheme.sizes.rowHeight * 4),
+    ) {
         AppPullToRefresh(isRefreshing = true, onRefresh = {}, modifier = Modifier.weight(1f)) {
             Column {
                 AppRow(title = "Refreshing")

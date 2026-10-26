@@ -26,4 +26,5 @@ public class PaneBounds(
 }
 
 @ShellSeamApi
-public val LocalPaneBounds: ProvidableCompositionLocal<PaneBounds> = staticCompositionLocalOf { PaneBounds({ null }) }
+public val LocalPaneBounds: ProvidableCompositionLocal<PaneBounds> =
+    staticCompositionLocalOf { PaneBounds({ null }) }

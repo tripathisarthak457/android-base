@@ -12,7 +12,9 @@ import androidx.navigation3.runtime.NavEntry
  * below it. An entry's count never changes while it is in the stack, since only what is above it
  * is pushed or popped.
  */
-internal fun <K : Any> List<K>.toNavEntries(provide: (key: K, contentKey: String) -> NavEntry<K>): List<NavEntry<K>> {
+internal fun <K : Any> List<K>.toNavEntries(
+    provide: (key: K, contentKey: String) -> NavEntry<K>,
+): List<NavEntry<K>> {
     val below = HashMap<K, Int>()
     return map { key ->
         val count = below.getOrElse(key) { 0 }

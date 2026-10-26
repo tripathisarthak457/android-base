@@ -85,7 +85,9 @@ internal fun KeptTabs(
         val reduceMotion = AppTheme.reduceMotion
         // Applied with the composition that switches, before that frame is laid out and drawn, so
         // the first frame of the incoming tab is already nudged.
-        SideEffect { reveal.switchTo(front, animate = revealSwitch() && !reduceMotion, position = positionOf) }
+        SideEffect {
+            reveal.switchTo(front, animate = revealSwitch() && !reduceMotion, position = positionOf)
+        }
         LaunchedEffect(reveal, front) { reveal.run(front) }
 
         val latest = rememberUpdatedState(content)
@@ -95,7 +97,9 @@ internal fun KeptTabs(
         // lambda leaves its composition alone, and a warmed tab is taken over as it was built.
         val tabs = remember { HashMap<Int, @Composable () -> Unit>() }
         val tab = { index: Int ->
-            tabs.getOrPut(index) { { KeptTab(index, { selection.value() }, reveal, warming) { latest.value(index) } } }
+            tabs.getOrPut(index) {
+                { KeptTab(index, { selection.value() }, reveal, warming) { latest.value(index) } }
+            }
         }
         WarmUpTabs(warming, warmUp, opened, tab)
 
@@ -166,7 +170,8 @@ private fun rememberTabBackDispatcher(active: Boolean): Array<ProvidedValue<*>> 
     return arrayOf(LocalNavigationEventDispatcherOwner provides owner)
 }
 
-private class TabBackDispatcher(parent: NavigationEventDispatcher) : NavigationEventDispatcherOwner {
+private class TabBackDispatcher(parent: NavigationEventDispatcher) :
+    NavigationEventDispatcherOwner {
     override val navigationEventDispatcher = NavigationEventDispatcher(parent)
 }
 
@@ -181,7 +186,8 @@ internal fun rememberTabLifecycle(active: Boolean): LifecycleOwner {
     val parent = LocalLifecycleOwner.current
     val owner = remember(parent) { CappedLifecycle() }
     DisposableEffect(parent, owner) {
-        val observer = LifecycleEventObserver { source, _ -> owner.follow(source.lifecycle.currentState) }
+        val observer =
+            LifecycleEventObserver { source, _ -> owner.follow(source.lifecycle.currentState) }
         parent.lifecycle.addObserver(observer)
         onDispose {
             parent.lifecycle.removeObserver(observer)
@@ -221,6 +227,9 @@ internal class CappedLifecycle : LifecycleOwner {
     }
 
     fun end() {
-        if (registry.currentState.isAtLeast(Lifecycle.State.CREATED)) registry.currentState = Lifecycle.State.DESTROYED
+        if (registry.currentState.isAtLeast(Lifecycle.State.CREATED)) {
+            registry.currentState =
+                Lifecycle.State.DESTROYED
+        }
     }
 }

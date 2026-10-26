@@ -52,7 +52,8 @@ internal data class NetworkTimings(
         private const val MEDIAN = 0.5
         private const val P90 = 0.9
         private const val ID_SEGMENT = "{id}"
-        private val UUID = Regex("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
+        private val UUID =
+            Regex("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
 
         /**
          * `GET /posts/42/comments` as `GET /posts/{id}/comments`: one endpoint whichever item it was

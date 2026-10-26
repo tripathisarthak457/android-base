@@ -31,7 +31,10 @@ internal class RefreshRate(private val displays: DisplayManager) {
     fun start() {
         update()
         val display = displays.getDisplay(Display.DEFAULT_DISPLAY)
-        supportedHz = display?.supportedModes?.map { it.refreshRate }?.distinct()?.sortedDescending().orEmpty()
+        supportedHz =
+            display?.supportedModes?.map {
+                it.refreshRate
+            }?.distinct()?.sortedDescending().orEmpty()
         // A null handler delivers on the calling thread's looper: the main one.
         displays.registerDisplayListener(listener, null)
     }

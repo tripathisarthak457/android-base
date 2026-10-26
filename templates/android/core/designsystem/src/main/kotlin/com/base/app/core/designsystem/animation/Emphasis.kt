@@ -62,7 +62,9 @@ private data class PopWhenOnElement(val on: Boolean) : ModifierNodeElement<PopWh
 }
 
 private class PopWhenOnNode(private var on: Boolean) :
-    Modifier.Node(), LayoutModifierNode, CompositionLocalConsumerModifierNode {
+    Modifier.Node(),
+    LayoutModifierNode,
+    CompositionLocalConsumerModifierNode {
     private val scale = Animatable(1f)
 
     fun update(on: Boolean) {
@@ -76,7 +78,10 @@ private class PopWhenOnNode(private var on: Boolean) :
         }
     }
 
-    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+    override fun MeasureScope.measure(
+        measurable: Measurable,
+        constraints: Constraints,
+    ): MeasureResult {
         val placeable = measurable.measure(constraints)
         return layout(placeable.width, placeable.height) {
             placeable.placeWithLayer(0, 0) {

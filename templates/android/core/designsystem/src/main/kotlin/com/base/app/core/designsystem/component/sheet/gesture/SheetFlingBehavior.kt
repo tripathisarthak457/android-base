@@ -38,9 +38,17 @@ internal suspend fun AppSheetState.release(velocity: Float) {
     )
     when (val target = decision.target) {
         SheetRelease.Dismiss -> host.closeByPerson(SheetDismissSource.Drag, velocity)
+
         is SheetRelease.Stop -> {
             if (decision.attempted) host.attempt(SheetDismissSource.Drag)
-            val seed = if (stretch == 0f) velocity else velocity * bandFor(stretch).slope(bandFor(stretch).pull(abs(stretch)))
+            val seed = if (stretch ==
+                0f
+            ) {
+                velocity
+            } else {
+                velocity *
+                    bandFor(stretch).slope(bandFor(stretch).pull(abs(stretch)))
+            }
             settleTo(stops.detents[target.index], seed, byPerson = true, from = start)
         }
     }
@@ -106,17 +114,28 @@ internal suspend fun AppSheetState.present(requested: SheetDetent?, turning: Boo
     syncAnchors(SheetStop.At(stop).takeIf { restored != null } ?: anchored.settledValue)
     animating = true
     try {
-        anchored.anchoredDrag(SheetStop.At(stop), MutatePriority.PreventUserInput) { anchors, latest ->
+        anchored.anchoredDrag(SheetStop.At(stop), MutatePriority.PreventUserInput) {
+                anchors,
+                latest,
+            ->
             val to = anchors.positionOf(latest)
             when {
                 restored != null -> dragTo(to)
+
                 host.crossFade -> {
                     dragTo(to)
-                    animate(fade, 1f, animationSpec = host.springs.fadeIn()) { value, _ -> fade = value }
+                    animate(fade, 1f, animationSpec = host.springs.fadeIn()) { value, _ ->
+                        fade =
+                            value
+                    }
                 }
+
                 else -> {
                     fade = 1f
-                    animate(anchored.offset, to, anchored.lastVelocity, host.presentSpring.pixels) { value, speed ->
+                    animate(anchored.offset, to, anchored.lastVelocity, host.presentSpring.pixels) {
+                            value,
+                            speed,
+                        ->
                         dragTo(value, speed)
                     }
                 }
@@ -146,14 +165,21 @@ internal suspend fun AppSheetState.exit(velocity: Float) {
     syncAnchors(anchored.settledValue)
     animating = true
     try {
-        anchored.anchoredDrag(SheetStop.Hidden, MutatePriority.PreventUserInput) { anchors, latest ->
+        anchored.anchoredDrag(SheetStop.Hidden, MutatePriority.PreventUserInput) {
+                anchors,
+                latest,
+            ->
             val to = anchors.positionOf(latest)
             when {
                 host.crossFade -> {
-                    animate(fade, 0f, animationSpec = host.springs.fadeOut()) { value, _ -> fade = value }
+                    animate(fade, 0f, animationSpec = host.springs.fadeOut()) { value, _ ->
+                        fade =
+                            value
+                    }
                     stretch = 0f
                     dragTo(to)
                 }
+
                 else -> {
                     val from = anchored.offset + stretch
                     animate(from, to, velocity, host.springs.sheet.pixels) { value, speed ->
@@ -180,7 +206,12 @@ internal suspend fun AppSheetState.stopMotion() {
  * Places the sheet at [value] along its travel: inside the anchors by moving them, past an edge by
  * the rubber band, so a settle out of a stretch is one continuous curve.
  */
-private fun AppSheetState.moveVisual(scope: AnchoredDragScope, anchors: DraggableAnchors<SheetStop>, value: Float, speed: Float) {
+private fun AppSheetState.moveVisual(
+    scope: AnchoredDragScope,
+    anchors: DraggableAnchors<SheetStop>,
+    value: Float,
+    speed: Float,
+) {
     val min = anchors.minPosition()
     val max = anchors.maxPosition()
     val inside = value.coerceIn(min, max)

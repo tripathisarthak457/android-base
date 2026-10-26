@@ -1,11 +1,7 @@
 package com.base.app.data.sample.api.model
 
 /** The domain model: what the app knows about a sample, with no trace of the wire format. */
-data class SampleItem(
-    val id: Int,
-    val title: String,
-    val body: String,
-) {
+data class SampleItem(val id: Int, val title: String, val body: String) {
     /** What a list row shows when the body is long. Derived here so every screen agrees. */
     val preview: String
         get() = body.replace('\n', ' ').trim().take(PREVIEW_LENGTH).let {

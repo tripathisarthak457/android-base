@@ -40,8 +40,14 @@ private object DragExclusionElement : ModifierNodeElement<DragExclusionNode>() {
     override fun equals(other: Any?): Boolean = other === this
 }
 
-private class DragExclusionNode : Modifier.Node(), PointerInputModifierNode {
-    override fun onPointerEvent(pointerEvent: PointerEvent, pass: PointerEventPass, bounds: IntSize) {
+private class DragExclusionNode :
+    Modifier.Node(),
+    PointerInputModifierNode {
+    override fun onPointerEvent(
+        pointerEvent: PointerEvent,
+        pass: PointerEventPass,
+        bounds: IntSize,
+    ) {
         if (pass == PointerEventPass.Main) pointerEvent.changes.forEach { it.consume() }
     }
 
@@ -50,7 +56,11 @@ private class DragExclusionNode : Modifier.Node(), PointerInputModifierNode {
 
 /** What a scroll inside the region leaves over stays in it, so none reaches the sheet. */
 private object KeepScroll : NestedScrollConnection {
-    override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset = available
+    override fun onPostScroll(
+        consumed: Offset,
+        available: Offset,
+        source: NestedScrollSource,
+    ): Offset = available
 
     override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity = available
 }

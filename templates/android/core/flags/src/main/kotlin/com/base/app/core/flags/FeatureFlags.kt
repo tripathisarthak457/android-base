@@ -1,10 +1,10 @@
 package com.base.app.core.flags
 
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** Where a flag's value comes from. Overrides set in the inspector win over every source. */
 interface FeatureFlags {
@@ -21,13 +21,13 @@ interface FeatureFlags {
 
 /** Every flag as declared, plus the inspector's overrides: the source until a vendor is bound. */
 @Singleton
-class LocalFeatureFlags @Inject constructor(
-    private val overrides: FlagOverrides,
-) : FeatureFlags {
+class LocalFeatureFlags @Inject constructor(private val overrides: FlagOverrides) : FeatureFlags {
 
     override fun <T> get(flag: Flag<T>): T = overrides[flag] ?: flag.default
 
-    override fun <T> observe(flag: Flag<T>): Flow<T> = overrides.changes.map { get(flag) }.distinctUntilChanged()
+    override fun <T> observe(flag: Flag<T>): Flow<T> = overrides.changes.map {
+        get(flag)
+    }.distinctUntilChanged()
 
     override suspend fun refresh(): Boolean = false
 }

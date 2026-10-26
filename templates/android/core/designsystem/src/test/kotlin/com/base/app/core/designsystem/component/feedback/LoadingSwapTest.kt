@@ -69,7 +69,11 @@ class LoadingSwapTest {
         rule.mainClock.advanceTimeBy(SettleMillis)
         val settled = rule.onRoot().captureToImage().toPixelMap()
 
-        assertEquals("pixels that changed after the first frame", 0, first.countDifferences(settled))
+        assertEquals(
+            "pixels that changed after the first frame",
+            0,
+            first.countDifferences(settled),
+        )
     }
 
     private fun PixelMap.countDifferences(other: PixelMap): Int {

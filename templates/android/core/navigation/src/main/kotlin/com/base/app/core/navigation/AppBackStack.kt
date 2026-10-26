@@ -70,8 +70,16 @@ class AppBackStack @NavigationHostApi constructor(
 
     @NavigationHostApi
     fun change(command: NavCommand): StackChange = when (command) {
-        is NavCommand.Navigate -> if (command.popUpTo == null) StackChange.Push else StackChange.Replace
+        is NavCommand.Navigate -> if (command.popUpTo ==
+            null
+        ) {
+            StackChange.Push
+        } else {
+            StackChange.Replace
+        }
+
         NavCommand.Up, is NavCommand.PopTo -> StackChange.Pop
+
         is NavCommand.ResetTo -> StackChange.Replace
     }
 
@@ -97,10 +105,7 @@ class AppBackStack @NavigationHostApi constructor(
  * string.
  */
 @Composable
-fun rememberAppBackStack(
-    startKey: AppNavKey,
-    serialization: NavKeySerialization,
-): AppBackStack {
+fun rememberAppBackStack(startKey: AppNavKey, serialization: NavKeySerialization): AppBackStack {
     val saver = remember(serialization, startKey) { backStackSaver(startKey, serialization) }
     // Keyed on startKey so passing onboarding or sign-in starts a fresh stack.
     return rememberSaveable(startKey, saver = saver) {
@@ -114,7 +119,8 @@ private fun backStackSaver(
 ): Saver<AppBackStack, String> = Saver(
     save = { stack -> serialization.encodeStack(stack.keys) },
     restore = { encoded ->
-        val keys = serialization.decodeStack(encoded)?.takeIf { it.isNotEmpty() } ?: listOf(startKey)
+        val keys =
+            serialization.decodeStack(encoded)?.takeIf { it.isNotEmpty() } ?: listOf(startKey)
         AppBackStack(mutableStateListOf<AppNavKey>().apply { addAll(keys) })
     },
 )

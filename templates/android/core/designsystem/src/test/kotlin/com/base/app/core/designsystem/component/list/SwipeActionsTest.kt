@@ -62,14 +62,27 @@ class SwipeActionsTest {
                     allowFullSwipe = false,
                     modifier = Modifier.testTag("swipe"),
                 ) {
-                    AppRow(title = "Message", onClick = { rowClicks++ }, modifier = Modifier.testTag("row"))
+                    AppRow(
+                        title = "Message",
+                        onClick = { rowClicks++ },
+                        modifier = Modifier.testTag("row"),
+                    )
                 }
             }
         }
-        rule.onNodeWithTag("swipe").performTouchInput { swipeLeft(startX = right - 10f, endX = right - 200f) }
+        rule.onNodeWithTag("swipe").performTouchInput {
+            swipeLeft(
+                startX = right - 10f,
+                endX =
+                    right - 200f,
+            )
+        }
         rule.mainClock.advanceTimeBy(1_000)
         rule.waitForIdle()
-        assertTrue("the row is open", rule.onNodeWithTag("row").getUnclippedBoundsInRoot().left < 0.dp)
+        assertTrue(
+            "the row is open",
+            rule.onNodeWithTag("row").getUnclippedBoundsInRoot().left < 0.dp,
+        )
         rule.onNodeWithTag("row").performClick()
         assertEquals(0, rowClicks)
         rule.mainClock.advanceTimeBy(1_000)
@@ -81,7 +94,14 @@ class SwipeActionsTest {
     fun `the hidden actions are offered to a screen reader`() {
         rule.setThemed {
             AppSwipeActions(
-                trailing = listOf(SwipeAction("Delete", AppIcons.Trash, onClick = {}, destructive = true)),
+                trailing = listOf(
+                    SwipeAction(
+                        "Delete",
+                        AppIcons.Trash,
+                        onClick = {},
+                        destructive = true,
+                    ),
+                ),
                 modifier = Modifier.testTag("swipe"),
             ) {
                 AppRow(title = "Message")
@@ -94,7 +114,14 @@ class SwipeActionsTest {
     fun `a clickable row carries the hidden actions itself, so a screen reader stops on it once`() {
         rule.setThemed {
             AppSwipeActions(
-                trailing = listOf(SwipeAction("Delete", AppIcons.Trash, onClick = {}, destructive = true)),
+                trailing = listOf(
+                    SwipeAction(
+                        "Delete",
+                        AppIcons.Trash,
+                        onClick = {},
+                        destructive = true,
+                    ),
+                ),
                 modifier = Modifier.testTag("swipe"),
             ) {
                 AppRow(title = "Message", onClick = {}, modifier = Modifier.testTag("row"))

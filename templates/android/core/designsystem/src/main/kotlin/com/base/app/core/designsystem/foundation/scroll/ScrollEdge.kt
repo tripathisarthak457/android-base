@@ -38,23 +38,39 @@ public fun Modifier.edgeProtection(
     val topEnd = (topEdge + tail).coerceAtMost(size.height)
     val bottomEnd = (bottomEdge + tail).coerceAtMost(size.height)
     val topBrush = protection(solid, topEdge, topEnd, startY = 0f, endY = topEnd)
-    val bottomBrush = protection(solid, bottomEdge, bottomEnd, startY = size.height, endY = size.height - bottomEnd)
+    val bottomBrush = protection(
+        solid,
+        bottomEdge,
+        bottomEnd,
+        startY = size.height,
+        endY =
+            size.height - bottomEnd,
+    )
     onDrawWithContent {
         drawContent()
         if (topEdge > 0f) drawRect(topBrush, size = Size(size.width, topEnd))
-        if (bottomEdge > 0f) drawRect(bottomBrush, topLeft = Offset(0f, size.height - bottomEnd), size = Size(size.width, bottomEnd))
+        if (bottomEdge >
+            0f
+        ) {
+            drawRect(
+                bottomBrush,
+                topLeft = Offset(0f, size.height - bottomEnd),
+                size = Size(size.width, bottomEnd),
+            )
+        }
     }
 }
 
 /** Opaque under the chrome, a trace of content at its edge, clear by the end of the tail. */
-private fun protection(color: Color, edge: Float, end: Float, startY: Float, endY: Float): Brush = Brush.verticalGradient(
-    0f to color,
-    edge * FadeFrom / end to color,
-    edge / end to color.copy(alpha = color.alpha * (1f - TraceAlpha)),
-    1f to color.copy(alpha = 0f),
-    startY = startY,
-    endY = endY,
-)
+private fun protection(color: Color, edge: Float, end: Float, startY: Float, endY: Float): Brush =
+    Brush.verticalGradient(
+        0f to color,
+        edge * FadeFrom / end to color,
+        edge / end to color.copy(alpha = color.alpha * (1f - TraceAlpha)),
+        1f to color.copy(alpha = 0f),
+        startY = startY,
+        endY = endY,
+    )
 
 /**
  * Content scrolling up under a clear top bar fades out behind it, so the bar's title and buttons

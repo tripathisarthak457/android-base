@@ -22,15 +22,18 @@ class Shortcut(
     val alt: Boolean = false,
 ) {
     internal fun matches(event: KeyEvent): Boolean =
-        event.keyCode == key.nativeKeyCode && event.isCtrlPressed == ctrl && event.isShiftPressed == shift &&
+        event.keyCode == key.nativeKeyCode && event.isCtrlPressed == ctrl &&
+            event.isShiftPressed == shift &&
             event.isAltPressed == alt
 
     internal val metaState: Int
-        get() = (if (ctrl) KeyEvent.META_CTRL_ON else 0) or (if (shift) KeyEvent.META_SHIFT_ON else 0) or
+        get() = (if (ctrl) KeyEvent.META_CTRL_ON else 0) or
+            (if (shift) KeyEvent.META_SHIFT_ON else 0) or
             (if (alt) KeyEvent.META_ALT_ON else 0)
 }
 
 // <opt:ui_components>
+
 /**
  * One window's keyboard shortcuts: the shell's (Ctrl+1…9 for the tabs, Ctrl+[ and Alt+← for Back,
  * Ctrl+Shift+S for the sidebar) and those of the screen in front, which registers its own with
@@ -65,7 +68,11 @@ class AppShortcuts {
     fun group(title: CharSequence): KeyboardShortcutGroup = KeyboardShortcutGroup(
         title,
         registrations.distinctBy { it.shortcut.key to it.shortcut.metaState }.map { registration ->
-            KeyboardShortcutInfo(registration.shortcut.label, registration.shortcut.key.nativeKeyCode, registration.shortcut.metaState)
+            KeyboardShortcutInfo(
+                registration.shortcut.label,
+                registration.shortcut.key.nativeKeyCode,
+                registration.shortcut.metaState,
+            )
         },
     )
 

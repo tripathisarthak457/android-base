@@ -20,7 +20,8 @@ import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
 @Composable
 internal fun BackHandlerEffect(handler: NavigationEventHandler<*>, enabled: () -> Boolean) {
     // Missing only where nothing can send Back at all, such as a preview.
-    val dispatcher = LocalNavigationEventDispatcherOwner.current?.navigationEventDispatcher ?: return
+    val dispatcher =
+        LocalNavigationEventDispatcherOwner.current?.navigationEventDispatcher ?: return
     val isEnabled by rememberUpdatedState(enabled)
     DisposableEffect(dispatcher, handler) {
         handler.isBackEnabled = isEnabled()

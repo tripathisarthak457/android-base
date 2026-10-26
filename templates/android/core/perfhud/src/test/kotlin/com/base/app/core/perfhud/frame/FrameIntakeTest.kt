@@ -11,7 +11,8 @@ class FrameIntakeTest {
 
     private val log = FrameLog(capacity = 64)
     private val screens = ScreenTimeline()
-    private val intake = FrameIntake(log, RefreshRate(mockk<DisplayManager>(relaxed = true)), screens)
+    private val intake =
+        FrameIntake(log, RefreshRate(mockk<DisplayManager>(relaxed = true)), screens)
 
     @Test
     fun `a frame past its deadline is janky, however far past`() {

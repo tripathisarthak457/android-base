@@ -22,15 +22,23 @@ internal object CardStackMath {
      */
     fun corner(expansion: Float, displayCorner: Float, density: Float): Float {
         val minimum = DesignTokens.Sheet.CardStack.deviceCornerMin.value * density
-        val start = if (displayCorner >= minimum) DesignTokens.Sheet.CardStack.deviceCornerFactor * displayCorner else 0f
+        val start = if (displayCorner >=
+            minimum
+        ) {
+            DesignTokens.Sheet.CardStack.deviceCornerFactor * displayCorner
+        } else {
+            0f
+        }
         return lerp(start, DesignTokens.Sheet.CardStack.corner.value * density, expansion)
     }
 
     /** The scale of a sheet covered by another, about its top centre, at the covering sheet's expansion. */
-    fun coveredScale(expansion: Float): Float = 1f - (1f - DesignTokens.Sheet.Stack.coveredScale) * expansion
+    fun coveredScale(expansion: Float): Float =
+        1f - (1f - DesignTokens.Sheet.Stack.coveredScale) * expansion
 
     /** How far a covered sheet lifts, at the covering sheet's expansion, in a bounds of [boundsHeight]. */
-    fun coveredLift(expansion: Float, boundsHeight: Float): Float = DesignTokens.Sheet.Stack.coveredLift * boundsHeight * expansion
+    fun coveredLift(expansion: Float, boundsHeight: Float): Float =
+        DesignTokens.Sheet.Stack.coveredLift * boundsHeight * expansion
 }
 
 /**

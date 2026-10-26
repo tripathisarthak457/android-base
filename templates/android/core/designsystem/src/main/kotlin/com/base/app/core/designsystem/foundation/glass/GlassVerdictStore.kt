@@ -1,7 +1,7 @@
 package com.base.app.core.designsystem.foundation.glass
 
-import android.content.Context
 // allow(designsystem-imports): a verdict kept across launches; no data module sits below this one
+import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build

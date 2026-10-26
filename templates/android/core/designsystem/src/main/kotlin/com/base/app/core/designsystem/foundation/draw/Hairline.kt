@@ -24,10 +24,13 @@ public enum class HairlineEdge { Top, Bottom }
  * from the leading edge (where a row's text begins). Drawn on the element itself, so a list of rows
  * gains no layout nodes for its dividers.
  */
-public fun Modifier.hairline(edge: HairlineEdge = HairlineEdge.Bottom, startInset: Dp = 0.dp): Modifier =
-    this then HairlineElement(edge, startInset)
+public fun Modifier.hairline(
+    edge: HairlineEdge = HairlineEdge.Bottom,
+    startInset: Dp = 0.dp,
+): Modifier = this then HairlineElement(edge, startInset)
 
-private data class HairlineElement(val edge: HairlineEdge, val startInset: Dp) : ModifierNodeElement<HairlineNode>() {
+private data class HairlineElement(val edge: HairlineEdge, val startInset: Dp) :
+    ModifierNodeElement<HairlineNode>() {
     override fun create() = HairlineNode(edge, startInset)
 
     override fun update(node: HairlineNode) {
@@ -42,15 +45,21 @@ private data class HairlineElement(val edge: HairlineEdge, val startInset: Dp) :
     }
 }
 
-private class HairlineNode(
-    var edge: HairlineEdge,
-    var startInset: Dp,
-) : Modifier.Node(), DrawModifierNode, CompositionLocalConsumerModifierNode {
+private class HairlineNode(var edge: HairlineEdge, var startInset: Dp) :
+    Modifier.Node(),
+    DrawModifierNode,
+    CompositionLocalConsumerModifierNode {
     override fun ContentDrawScope.draw() {
         drawContent()
         val inset = startInset.toPx()
         val top = if (edge == HairlineEdge.Top) 0f else size.height - 1f
-        val (start, end) = if (layoutDirection == LayoutDirection.Ltr) inset to size.width else 0f to size.width - inset
+        val (start, end) = if (layoutDirection ==
+            LayoutDirection.Ltr
+        ) {
+            inset to size.width
+        } else {
+            0f to size.width - inset
+        }
         drawHairline(currentValueOf(LocalAppColors).separator, start, end, top)
     }
 }
@@ -62,6 +71,21 @@ private class HairlineNode(
  * same pixels, and a separator is drawn again in every frame its screen moves or scrolls, the
  * frames where a slow GPU has the least time to spare.
  */
-internal fun DrawScope.drawHairline(color: Color, start: Float, end: Float, top: Float, alpha: Float = 1f) {
-    if (end > start) drawRect(color, topLeft = Offset(start, top), size = Size(end - start, 1f), alpha = alpha)
+internal fun DrawScope.drawHairline(
+    color: Color,
+    start: Float,
+    end: Float,
+    top: Float,
+    alpha: Float = 1f,
+) {
+    if (end >
+        start
+    ) {
+        drawRect(
+            color,
+            topLeft = Offset(start, top),
+            size = Size(end - start, 1f),
+            alpha = alpha,
+        )
+    }
 }

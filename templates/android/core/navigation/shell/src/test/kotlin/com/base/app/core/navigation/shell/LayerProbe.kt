@@ -44,7 +44,10 @@ internal fun ComposeTestRule.texturesAround(screen: LayoutInfo): List<Int> = run
                         @Suppress("UNCHECKED_CAST")
                         (property.value as GraphicsLayerScope.() -> Unit).invoke(layer)
                     }
-                    "compositingStrategy" -> layer.compositingStrategy = property.value as CompositingStrategy
+
+                    "compositingStrategy" ->
+                        layer.compositingStrategy =
+                            property.value as CompositingStrategy
                 }
             }
             strategies += layer.compositingStrategy

@@ -37,11 +37,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * Read by TalkBack as one sentence, "Step 2 of 4: Payment", rather than a row of numbers.
  */
 @Composable
-public fun AppStepIndicator(
-    steps: List<String>,
-    currentStep: Int,
-    modifier: Modifier = Modifier,
-) {
+public fun AppStepIndicator(steps: List<String>, currentStep: Int, modifier: Modifier = Modifier) {
     val current = currentStep.coerceIn(0, (steps.size - 1).coerceAtLeast(0))
     val description = steps.getOrNull(current)?.let {
         stringResource(R.string.designsystem_step_of, current + 1, steps.size, it)
@@ -71,7 +67,13 @@ public fun AppStepIndicator(
                     text = label,
                     modifier = Modifier.padding(horizontal = AppStepIndicatorDefaults.LabelInset),
                     style = AppTheme.typography.caption2,
-                    color = if (index == current) AppTheme.colors.contentPrimary else AppTheme.colors.contentSecondary,
+                    color = if (index ==
+                        current
+                    ) {
+                        AppTheme.colors.contentPrimary
+                    } else {
+                        AppTheme.colors.contentSecondary
+                    },
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Center,
@@ -82,7 +84,12 @@ public fun AppStepIndicator(
 }
 
 @Composable
-private fun Connectors(hasBefore: Boolean, hasAfter: Boolean, beforeDone: Boolean, afterDone: Boolean) {
+private fun Connectors(
+    hasBefore: Boolean,
+    hasAfter: Boolean,
+    beforeDone: Boolean,
+    afterDone: Boolean,
+) {
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         ConnectorHalf(visible = hasBefore, done = beforeDone, modifier = Modifier.weight(1f))
         ConnectorHalf(visible = hasAfter, done = afterDone, modifier = Modifier.weight(1f))
@@ -100,7 +107,11 @@ private fun ConnectorHalf(visible: Boolean, done: Boolean, modifier: Modifier = 
         animationSpec = AppTheme.springs.slowFade(),
         label = "stepConnector",
     )
-    Box(modifier = modifier.height(AppStepIndicatorDefaults.ConnectorHeight).drawBehind { drawRect(colour.value) })
+    Box(
+        modifier = modifier.height(AppStepIndicatorDefaults.ConnectorHeight).drawBehind {
+            drawRect(colour.value)
+        },
+    )
 }
 
 @Composable
@@ -124,7 +135,11 @@ private fun StepNode(number: Int, done: Boolean, active: Boolean) {
             .drawBehind {
                 val stroke = ringWidth.toPx()
                 drawCircle(fill.value)
-                drawCircle(ring.value, radius = (size.minDimension - stroke) / 2, style = Stroke(stroke))
+                drawCircle(
+                    ring.value,
+                    radius = (size.minDimension - stroke) / 2,
+                    style = Stroke(stroke),
+                )
             },
         contentAlignment = Alignment.Center,
     ) {
@@ -162,6 +177,9 @@ private fun AppStepIndicatorPreview() {
     ) {
         AppStepIndicator(steps = listOf("Cart", "Address", "Payment"), currentStep = 0)
         AppStepIndicator(steps = listOf("Cart", "Address", "Payment"), currentStep = 1)
-        AppStepIndicator(steps = listOf("Your details", "Delivery address", "Payment method", "Review"), currentStep = 3)
+        AppStepIndicator(
+            steps = listOf("Your details", "Delivery address", "Payment method", "Review"),
+            currentStep = 3,
+        )
     }
 }

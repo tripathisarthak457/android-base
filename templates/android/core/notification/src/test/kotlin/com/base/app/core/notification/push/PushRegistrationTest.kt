@@ -2,14 +2,14 @@ package com.base.app.core.notification.push
 
 import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.datastore.FakePreferencesDataStore
+// <opt:auth>
+import com.base.app.core.datastore.session.FakeAuthTokenStore
+// </opt:auth>
+import java.io.IOException
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.io.IOException
-// <opt:auth>
-import com.base.app.core.datastore.session.FakeAuthTokenStore
-// </opt:auth>
 
 class PushRegistrationTest {
 

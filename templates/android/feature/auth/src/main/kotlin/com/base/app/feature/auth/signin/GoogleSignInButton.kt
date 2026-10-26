@@ -34,7 +34,9 @@ internal fun GoogleSignInButton(
         onClick = {
             if (serverClientId.isBlank()) {
                 // Said to the developer, not the person tapping: they get the ordinary failure.
-                Log.w("Google sign-in is not set up: put the OAuth web client id in auth_google_server_client_id.")
+                Log.w(
+                    "Google sign-in is not set up: put the OAuth web client id in auth_google_server_client_id.",
+                )
                 onFailure()
                 return@AppButton
             }

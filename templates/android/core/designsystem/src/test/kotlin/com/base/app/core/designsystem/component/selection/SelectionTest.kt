@@ -12,13 +12,13 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.isToggleable
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import androidx.compose.ui.test.assertCountEquals
-import androidx.compose.ui.test.click
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
@@ -53,8 +53,16 @@ class SelectionTest {
                 onClick = { rowClicks++ },
                 modifier = Modifier.testTag("row"),
                 trailing = {
-                    AppSwitch(checked = true, onCheckedChange = null, modifier = Modifier.testTag("switch"))
-                    AppCheckbox(checked = false, onCheckedChange = null, modifier = Modifier.testTag("box"))
+                    AppSwitch(
+                        checked = true,
+                        onCheckedChange = null,
+                        modifier = Modifier.testTag("switch"),
+                    )
+                    AppCheckbox(
+                        checked = false,
+                        onCheckedChange = null,
+                        modifier = Modifier.testTag("box"),
+                    )
                 },
             )
         }
@@ -67,7 +75,12 @@ class SelectionTest {
     fun `a toggle row is one switch, named by its title, across its whole width`() {
         var checked = false
         rule.setThemed {
-            AppToggleRow(title = "Dark mode", checked = checked, onCheckedChange = { checked = it }, modifier = Modifier.testTag("row"))
+            AppToggleRow(
+                title = "Dark mode",
+                checked = checked,
+                onCheckedChange = { checked = it },
+                modifier = Modifier.testTag("row"),
+            )
         }
         rule.onAllNodes(isToggleable()).assertCountEquals(1)
         rule.onNodeWithTag("row")
@@ -81,7 +94,11 @@ class SelectionTest {
     fun `selection controls answer taps across 48dp`() {
         rule.setThemed {
             Box {
-                AppCheckbox(checked = true, onCheckedChange = {}, modifier = Modifier.testTag("box"))
+                AppCheckbox(
+                    checked = true,
+                    onCheckedChange = {},
+                    modifier = Modifier.testTag("box"),
+                )
             }
         }
         val bounds = rule.onNodeWithTag("box").getUnclippedBoundsInRoot()
@@ -117,7 +134,11 @@ class SelectionTest {
     fun `starting a vertical scroll over a slider leaves its value alone`() {
         var value by mutableFloatStateOf(0.5f)
         rule.setThemed {
-            AppSlider(value = value, onValueChange = { value = it }, modifier = Modifier.fillMaxWidth().testTag("slider"))
+            AppSlider(
+                value = value,
+                onValueChange = { value = it },
+                modifier = Modifier.fillMaxWidth().testTag("slider"),
+            )
         }
         rule.onNodeWithTag("slider").performTouchInput {
             down(centerRight)

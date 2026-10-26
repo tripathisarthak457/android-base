@@ -25,9 +25,9 @@ import com.base.app.core.designsystem.component.sheet.content.SheetColumn
 import com.base.app.core.designsystem.component.sheet.content.SheetDismissConfirmation
 import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
 import com.base.app.core.designsystem.theme.SheetMaterial
+import java.util.Locale
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.util.Locale
 
 /**
  * The common sheets of the specification's acceptance examples, written exactly as an app writes
@@ -155,6 +155,8 @@ private fun Choices() {
 // Stand-ins for an app's own composables, strings and state.
 
 private object R {
+    // Named as an app's R.string is, so the calls below read as an app's own.
+    @Suppress("ktlint:standard:class-naming")
     object string {
         const val orders_filters = android.R.string.ok
         const val lists_rename = android.R.string.ok

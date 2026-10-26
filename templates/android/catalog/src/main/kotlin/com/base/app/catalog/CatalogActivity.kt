@@ -30,7 +30,10 @@ class CatalogActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         frames = FrameTimes(this)
-        val section = CatalogSection.entries.firstOrNull { it.name == intent.getStringExtra("section") }
+        val section = CatalogSection.entries.firstOrNull {
+            it.name ==
+                intent.getStringExtra("section")
+        }
         val environment = CatalogEnvironment.from(intent)
         // The fonts arrive before the first frame or not at all this launch, as in the app, so no
         // text swaps typeface while it is on screen. Until they are decided the view reads the
@@ -39,7 +42,11 @@ class CatalogActivity : ComponentActivity() {
         // without the status bar and every page would jump by its height.
         setContent {
             if (fontsDecided) {
-                CatalogApp(initialSection = section, initialEnvironment = environment, frames = frames)
+                CatalogApp(
+                    initialSection = section,
+                    initialEnvironment = environment,
+                    frames = frames,
+                )
             } else {
                 Spacer(Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
             }

@@ -54,7 +54,9 @@ public fun AppAvatar(
     val bone = LocalRedacted.current
     val redacted = if (bone) Modifier.skeleton(CircleShape) else Modifier
     AppSurface(
-        modifier = modifier.size(size).clearAndSetSemantics { contentDescription = name }.then(redacted),
+        modifier = modifier.size(size).clearAndSetSemantics {
+            contentDescription = name
+        }.then(redacted),
         shape = AppTheme.shapes.pill,
         color = tint,
         clipContent = content != null,
@@ -67,7 +69,10 @@ public fun AppAvatar(
                 ContentUnderBone(bone) {
                     AppText(
                         text = initials,
-                        style = AppTheme.typography.footnote.copy(fontSize = initialsSize, lineHeight = initialsSize),
+                        style = AppTheme.typography.footnote.copy(
+                            fontSize = initialsSize,
+                            lineHeight = initialsSize,
+                        ),
                         color = colors.contentPrimary,
                         maxLines = 1,
                     )
@@ -91,32 +96,52 @@ public fun AppAvatarGroup(
     val colors = AppTheme.colors
     val shown = names.take(maxShown)
     val hidden = names.size - shown.size
-    val description = pluralStringResource(R.plurals.designsystem_people_count, names.size, names.size)
+    val description =
+        pluralStringResource(R.plurals.designsystem_people_count, names.size, names.size)
     val ring = AppAvatarDefaults.GroupRing
     Layout(
         modifier = modifier.clearAndSetSemantics { contentDescription = description },
         content = {
             shown.forEach { name ->
-                AppAvatar(name = name, size = size, modifier = Modifier.border(ring, colors.background, AppTheme.shapes.pill))
+                AppAvatar(
+                    name = name,
+                    size = size,
+                    modifier = Modifier.border(ring, colors.background, AppTheme.shapes.pill),
+                )
             }
             if (hidden > 0) {
                 AppSurface(
-                    modifier = Modifier.size(size).border(ring, colors.background, AppTheme.shapes.pill),
+                    modifier = Modifier.size(
+                        size,
+                    ).border(ring, colors.background, AppTheme.shapes.pill),
                     shape = AppTheme.shapes.pill,
                     color = colors.fill,
                     contentAlignment = Alignment.Center,
                 ) {
-                    AppText(text = "+$hidden", style = AppTheme.typography.caption1, color = colors.contentPrimary)
+                    AppText(
+                        text = "+$hidden",
+                        style = AppTheme.typography.caption1,
+                        color = colors.contentPrimary,
+                    )
                 }
             }
         },
     ) { measurables, constraints ->
-        val placeables = measurables.map { it.measure(constraints.copy(minWidth = 0, minHeight = 0)) }
+        val placeables = measurables.map {
+            it.measure(constraints.copy(minWidth = 0, minHeight = 0))
+        }
         val step = (size * OverlapStep).roundToPx()
-        val width = if (placeables.isEmpty()) 0 else step * (placeables.size - 1) + placeables.last().width
+        val width = if (placeables.isEmpty()) {
+            0
+        } else {
+            step * (placeables.size - 1) +
+                placeables.last().width
+        }
         val height = placeables.maxOfOrNull { it.height } ?: 0
         layout(width, height) {
-            placeables.forEachIndexed { index, placeable -> placeable.placeRelative(step * index, 0) }
+            placeables.forEachIndexed { index, placeable ->
+                placeable.placeRelative(step * index, 0)
+            }
         }
     }
 }
@@ -174,9 +199,15 @@ private fun AppAvatarPreview() {
         Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
             AppAvatar(name = "Ada Lovelace")
             AppAvatar(name = "grace")
-            AppAvatar(name = "Maximiliana Kowalczyk-Brzęczyszczykiewicz", size = AppTheme.sizes.buttonLarge)
+            AppAvatar(
+                name = "Maximiliana Kowalczyk-Brzęczyszczykiewicz",
+                size = AppTheme.sizes.buttonLarge,
+            )
         }
         AppAvatarGroup(names = listOf("Ada Lovelace", "Grace Hopper", "Alan Turing"))
-        AppAvatarGroup(names = listOf("Ada", "Grace", "Alan", "Edsger", "Barbara", "Donald"), maxShown = 3)
+        AppAvatarGroup(
+            names = listOf("Ada", "Grace", "Alan", "Edsger", "Barbara", "Donald"),
+            maxShown = 3,
+        )
     }
 }

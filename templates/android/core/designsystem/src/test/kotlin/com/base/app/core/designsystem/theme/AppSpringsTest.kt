@@ -18,7 +18,14 @@ class AppSpringsTest {
     fun `full-screen moves never bounce, in any style`() {
         AppMotionStyle.entries.forEach { style ->
             val springs = style.springs()
-            listOf(springs.screen, springs.sheet, springs.dialog, springs.layout, springs.thumb, springs.press).forEach {
+            listOf(
+                springs.screen,
+                springs.sheet,
+                springs.dialog,
+                springs.layout,
+                springs.thumb,
+                springs.press,
+            ).forEach {
                 assertEquals("$style", 0f, it.bounce, 0f)
             }
         }
@@ -27,7 +34,14 @@ class AppSpringsTest {
     @Test
     fun `calm overshoots nowhere and travels slower than standard`() {
         val calm = AppMotionStyle.Calm.springs()
-        listOf(calm.release, calm.thumb, calm.indicatorLead, calm.emphasis, calm.interactive, calm.iconBounceUp)
+        listOf(
+            calm.release,
+            calm.thumb,
+            calm.indicatorLead,
+            calm.emphasis,
+            calm.interactive,
+            calm.iconBounceUp,
+        )
             .forEach { assertEquals(0f, it.bounce, 0f) }
         assertEquals(true, calm.bounceBack.dampingRatio > 1f)
         assertEquals(true, calm.screen.response > AppMotionStyle.Standard.springs().screen.response)

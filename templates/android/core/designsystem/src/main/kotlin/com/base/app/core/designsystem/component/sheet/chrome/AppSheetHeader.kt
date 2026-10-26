@@ -70,7 +70,10 @@ public fun AppSheetHeader(
         ).coerceAtMost(constraints.maxHeight)
         layout(constraints.maxWidth, height) {
             start?.placeRelative(0, (height - start.height) / 2)
-            middle.placeRelative((constraints.maxWidth - middle.width) / 2, (height - middle.height) / 2)
+            middle.placeRelative(
+                (constraints.maxWidth - middle.width) / 2,
+                (height - middle.height) / 2,
+            )
             end?.placeRelative(constraints.maxWidth - end.width, (height - end.height) / 2)
         }
     }
@@ -133,7 +136,18 @@ private fun AppSheetHeaderPreview() {
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
     ) {
         AppSheetHeader(title = "Edit profile")
-        AppSheetHeader(title = "Filters", subtitle = "12 results", leading = { AppButton(text = "Reset", onClick = {}) })
-        AppSheetHeader(title = { AppText(text = "A title written as its own composable, long enough to wrap", style = AppTheme.typography.headline) })
+        AppSheetHeader(
+            title = "Filters",
+            subtitle = "12 results",
+            leading = { AppButton(text = "Reset", onClick = {}) },
+        )
+        AppSheetHeader(
+            title = {
+                AppText(
+                    text = "A title written as its own composable, long enough to wrap",
+                    style = AppTheme.typography.headline,
+                )
+            },
+        )
     }
 }

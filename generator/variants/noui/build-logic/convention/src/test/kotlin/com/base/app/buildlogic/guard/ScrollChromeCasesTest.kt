@@ -10,7 +10,9 @@ import org.junit.Test
 class ScrollChromeCasesTest {
 
     private fun findings(code: String): List<Int> =
-        CodeRules.check(FEATURE, code.trimIndent()).filter { it.rule == "scroll-chrome" }.map { it.line }
+        CodeRules.check(FEATURE, code.trimIndent()).filter {
+            it.rule == "scroll-chrome"
+        }.map { it.line }
 
     @Test
     fun `insets inside the scroll pass, on a list and on a column`() {

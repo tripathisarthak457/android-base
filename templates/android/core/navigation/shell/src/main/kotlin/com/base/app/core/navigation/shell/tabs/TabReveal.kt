@@ -115,7 +115,9 @@ private class KeptTabNode(
     var reveal: TabReveal,
     var warming: TabWarmUp,
     var index: Int,
-) : Modifier.Node(), LayoutModifierNode, SemanticsModifierNode {
+) : Modifier.Node(),
+    LayoutModifierNode,
+    SemanticsModifierNode {
 
     // State, so the layer block that reads it runs again when it changes, without a new layout.
     private var parkedState by mutableStateOf(parked)
@@ -134,7 +136,8 @@ private class KeptTabNode(
                 translationX = -2f * size.width
             }
         } else if (reveal.index == index) {
-            translationX = towardEnd * reveal.direction * TabReveal.SHIFT.toPx() * (1f - reveal.progress)
+            translationX =
+                towardEnd * reveal.direction * TabReveal.SHIFT.toPx() * (1f - reveal.progress)
         }
     }
 
@@ -142,12 +145,18 @@ private class KeptTabNode(
 
     override fun SemanticsPropertyReceiver.applySemantics() = Unit
 
-    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+    override fun MeasureScope.measure(
+        measurable: Measurable,
+        constraints: Constraints,
+    ): MeasureResult {
         val placeable = measurable.measure(constraints)
         towardEnd = if (layoutDirection == LayoutDirection.Rtl) -1f else 1f
-        return layout(placeable.width, placeable.height) { placeable.placeWithLayer(0, 0, layerBlock = layer) }
+        return layout(placeable.width, placeable.height) {
+            placeable.placeWithLayer(0, 0, layerBlock = layer)
+        }
     }
 }
 
 /** iOS's segmented-thumb spring: response 0.28 s, no bounce. */
-private val RevealSpring = spring(dampingRatio = 1f, stiffness = 503.5f, visibilityThreshold = 0.001f)
+private val RevealSpring =
+    spring(dampingRatio = 1f, stiffness = 503.5f, visibilityThreshold = 0.001f)

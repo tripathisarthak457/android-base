@@ -63,7 +63,15 @@ class PullToRefreshTest {
                         Box(
                             Modifier
                                 .height(RowHeight)
-                                .then(if (row == 1) Modifier.onGloballyPositioned { firstRow = it } else Modifier),
+                                .then(
+                                    if (row ==
+                                        1
+                                    ) {
+                                        Modifier.onGloballyPositioned { firstRow = it }
+                                    } else {
+                                        Modifier
+                                    },
+                                ),
                         )
                     }
                 }
@@ -75,7 +83,9 @@ class PullToRefreshTest {
      * Where the first row is drawn now. Read from its coordinates rather than its semantics bounds,
      * which follow layout and placement but not a layer moving on its own.
      */
-    private fun firstRowTop(): Float = rule.runOnUiThread { checkNotNull(firstRow).positionInRoot().y }
+    private fun firstRowTop(): Float = rule.runOnUiThread {
+        checkNotNull(firstRow).positionInRoot().y
+    }
 
     /** Finger travel well past the trigger on any viewport the tests run in. */
     private fun pullFarWithoutLifting() {
@@ -100,16 +110,22 @@ class PullToRefreshTest {
     @Test
     fun `a pull while a refresh runs does not start another, and one after it ends does`() {
         setList()
-        rule.onNodeWithTag("list").performTouchInput { swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600) }
+        rule.onNodeWithTag("list").performTouchInput {
+            swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600)
+        }
         rule.waitForIdle()
-        rule.onNodeWithTag("list").performTouchInput { swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600) }
+        rule.onNodeWithTag("list").performTouchInput {
+            swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600)
+        }
         rule.waitForIdle()
         assertEquals(1, refreshes)
 
         refreshing = false
         rule.mainClock.advanceTimeBy(2_000)
         rule.waitForIdle()
-        rule.onNodeWithTag("list").performTouchInput { swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600) }
+        rule.onNodeWithTag("list").performTouchInput {
+            swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600)
+        }
         rule.waitForIdle()
         assertEquals(2, refreshes)
     }
@@ -118,7 +134,9 @@ class PullToRefreshTest {
     fun `the content rests below the spinner while refreshing, and returns when it ends`() {
         setList()
         val top = firstRowTop()
-        rule.onNodeWithTag("list").performTouchInput { swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600) }
+        rule.onNodeWithTag("list").performTouchInput {
+            swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600)
+        }
         rule.mainClock.advanceTimeBy(1_000)
         rule.waitForIdle()
         assertEquals(top + RestPx, firstRowTop(), 1f)
@@ -133,7 +151,9 @@ class PullToRefreshTest {
     fun `pushing up during a refresh closes the gap before the list scrolls`() {
         setList()
         val top = firstRowTop()
-        rule.onNodeWithTag("list").performTouchInput { swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600) }
+        rule.onNodeWithTag("list").performTouchInput {
+            swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600)
+        }
         rule.mainClock.advanceTimeBy(1_000)
         rule.waitForIdle()
 
@@ -159,10 +179,13 @@ class PullToRefreshTest {
     fun `a flick up during a refresh closes the gap and carries the list on without a pause`() {
         setList()
         val top = firstRowTop()
-        rule.onNodeWithTag("list").performTouchInput { swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600) }
+        rule.onNodeWithTag("list").performTouchInput {
+            swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600)
+        }
         rule.mainClock.advanceTimeBy(1_000)
         rule.waitForIdle()
         val rowPx = with(rule.density) { RowHeight.toPx() }
+
         // How far the content has gone up: through the gap first (negative while it shows), then the list.
         fun travelled(): Float =
             if (list.firstVisibleItemIndex == 0 && list.firstVisibleItemScrollOffset == 0) {
@@ -172,7 +195,14 @@ class PullToRefreshTest {
             }
 
         rule.mainClock.autoAdvance = false
-        rule.onNodeWithTag("list").performTouchInput { swipeUp(startY = top + RestPx + 40f, endY = top + RestPx, durationMillis = 40) }
+        rule.onNodeWithTag("list").performTouchInput {
+            swipeUp(
+                startY = top + RestPx + 40f,
+                endY =
+                    top + RestPx,
+                durationMillis = 40,
+            )
+        }
         rule.mainClock.advanceTimeByFrame()
         val positions = List(HandOverFrames) {
             rule.mainClock.advanceTimeByFrame()
@@ -208,7 +238,9 @@ class PullToRefreshTest {
         // Far enough down that the drag alone cannot reach the top: only its fling does.
         rule.runOnIdle { list.requestScrollToItem(FlingFromRow) }
         rule.waitForIdle()
-        rule.onNodeWithTag("list").performTouchInput { swipeDown(startY = top + 10f, endY = bottom, durationMillis = 80) }
+        rule.onNodeWithTag("list").performTouchInput {
+            swipeDown(startY = top + 10f, endY = bottom, durationMillis = 80)
+        }
         rule.mainClock.advanceTimeBy(3_000)
         rule.waitForIdle()
         assertEquals(0, refreshes)

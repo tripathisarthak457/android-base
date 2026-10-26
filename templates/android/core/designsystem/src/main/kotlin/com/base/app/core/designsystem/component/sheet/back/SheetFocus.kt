@@ -26,25 +26,26 @@ import com.base.app.core.designsystem.component.sheet.SheetModality
  * closes it as the Back key would. While [host]'s overlays are suspended it lets focus go, to the
  * cover that suspended them.
  */
-internal fun Modifier.sheetFocus(controller: SheetController, host: OverlayHostState?): Modifier = this
-    .onFocusChanged { controller.focusInside = it.hasFocus }
-    .focusProperties {
-        onExit = {
-            val traps = controller.modality is SheetModality.Modal || controller.blocking
-            if (traps && host?.suspended != true) cancelFocusChange()
+internal fun Modifier.sheetFocus(controller: SheetController, host: OverlayHostState?): Modifier =
+    this
+        .onFocusChanged { controller.focusInside = it.hasFocus }
+        .focusProperties {
+            onExit = {
+                val traps = controller.modality is SheetModality.Modal || controller.blocking
+                if (traps && host?.suspended != true) cancelFocusChange()
+            }
         }
-    }
-    .focusRequester(controller.surfaceFocus)
-    .focusGroup()
-    .focusable()
-    .onKeyEvent { event ->
-        if (event.key == Key.Escape && event.type == KeyEventType.KeyDown) {
-            controller.backWithoutPreview(SheetDismissSource.Escape)
-            true
-        } else {
-            false
+        .focusRequester(controller.surfaceFocus)
+        .focusGroup()
+        .focusable()
+        .onKeyEvent { event ->
+            if (event.key == Key.Escape && event.type == KeyEventType.KeyDown) {
+                controller.backWithoutPreview(SheetDismissSource.Escape)
+                true
+            } else {
+                false
+            }
         }
-    }
 
 /**
  * While the sheet blocks what is behind it, focus is in it. On the first moving frame the
@@ -57,7 +58,8 @@ internal fun SheetFocusEffect(controller: SheetController) {
     LaunchedEffect(controller, host) {
         snapshotFlow {
             val state = controller.sheetState
-            state.isVisible && !state.isLeaving && state.parkProgress == 0f && !state.parkedInstantly &&
+            state.isVisible && !state.isLeaving && state.parkProgress == 0f &&
+                !state.parkedInstantly &&
                 controller.blocking && host?.suspended != true
         }.collect { inside ->
             if (inside) {

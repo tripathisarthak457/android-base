@@ -56,7 +56,9 @@ androidComponents {
         variant.instrumentationRunnerArguments.put(
             "targetAppId",
             variant.testedApks.map { apks ->
-                checkNotNull(loader.load(apks)?.applicationId) { "The tested APK has no application id." }
+                checkNotNull(loader.load(apks)?.applicationId) {
+                    "The tested APK has no application id."
+                }
             },
         )
     }

@@ -1,11 +1,11 @@
 package com.base.app.core.network.response
 
+import kotlin.time.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
-import kotlin.time.Instant
 
 class ResponseUnwrapperTest {
 
@@ -21,8 +21,14 @@ class ResponseUnwrapperTest {
     fun `passthrough reads a flat error and a nested one alike`() {
         val unwrapper = PassthroughUnwrapper()
 
-        val flat = unwrapper.error(422, """{"message":"Invalid","code":"bad","errors":{"email":"Taken"}}""")
-        val nested = unwrapper.error(409, """{"error":{"code":"conflict","detail":"Already there"}}""")
+        val flat = unwrapper.error(
+            422,
+            """{"message":"Invalid","code":"bad","errors":{"email":"Taken"}}""",
+        )
+        val nested = unwrapper.error(
+            409,
+            """{"error":{"code":"conflict","detail":"Already there"}}""",
+        )
 
         assertEquals("Invalid", flat.message)
         assertEquals("bad", flat.code)
@@ -44,7 +50,10 @@ class ResponseUnwrapperTest {
     fun `an envelope's payload is its data`() {
         val unwrapper = EnvelopeUnwrapper()
 
-        assertEquals(Item(3), unwrapper.payload("""{"status":true,"data":{"id":3}}""", Item.serializer()))
+        assertEquals(
+            Item(3),
+            unwrapper.payload("""{"status":true,"data":{"id":3}}""", Item.serializer()),
+        )
         assertEquals("Nope", unwrapper.error(400, """{"message":"Nope","code":"E1"}""").message)
     }
 

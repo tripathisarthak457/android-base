@@ -56,21 +56,35 @@ public fun AppAnimatedCounter(
     val reduceMotion = AppTheme.reduceMotion
     val measurer = rememberTextMeasurer()
     val figures = remember(style, color) {
-        style.copy(fontFeatureSettings = TabularFigures, color = if (color.isSpecified) color else style.color)
+        style.copy(
+            fontFeatureSettings = TabularFigures,
+            color = if (color.isSpecified) color else style.color,
+        )
     }
     val text = format.format(count)
-    val textLayout = remember(text, figures, measurer) { measurer.measure(text, figures, maxLines = 1, softWrap = false) }
+    val textLayout =
+        remember(text, figures, measurer) {
+            measurer.measure(text, figures, maxLines = 1, softWrap = false)
+        }
     val roll = remember { CounterRoll(count, textLayout) }
     LaunchedEffect(textLayout) {
         val rolls = roll.start(textLayout, count, measurer, figures)
-        if (!rolls || reduceMotion) roll.progress.snapTo(1f) else roll.progress.animateTo(1f, springs.thumb.unit)
+        if (!rolls ||
+            reduceMotion
+        ) {
+            roll.progress.snapTo(1f)
+        } else {
+            roll.progress.animateTo(1f, springs.thumb.unit)
+        }
     }
 
     Spacer(
         modifier = modifier
             .clearAndSetSemantics { contentDescription = text }
             .layout { measurable, _ ->
-                val placeable = measurable.measure(Constraints.fixed(textLayout.size.width, textLayout.size.height))
+                val placeable = measurable.measure(
+                    Constraints.fixed(textLayout.size.width, textLayout.size.height),
+                )
                 layout(placeable.width, placeable.height) { placeable.place(0, 0) }
             }
             .clipToBounds()
@@ -107,7 +121,12 @@ private class CounterRoll(private var value: Long, shown: TextLayoutResult) {
         private set
 
     /** Prepares the roll to [next]; false when no character changes, and nothing needs to roll. */
-    suspend fun start(next: TextLayoutResult, count: Long, measurer: TextMeasurer, style: TextStyle): Boolean {
+    suspend fun start(
+        next: TextLayoutResult,
+        count: Long,
+        measurer: TextMeasurer,
+        style: TextStyle,
+    ): Boolean {
         val previous = shown
         shown = next
         rollsUp = count >= value
@@ -121,7 +140,13 @@ private class CounterRoll(private var value: Long, shown: TextLayoutResult) {
         changed = BooleanArray(new.length) { i -> old.getOrNull(i - shift) != new[i] }
         leaving = Array(old.length) { j ->
             val i = j + shift
-            if (i in new.indices && new[i] == old[j]) null else measurer.measure(old[j].toString(), style, maxLines = 1)
+            if (i in new.indices &&
+                new[i] == old[j]
+            ) {
+                null
+            } else {
+                measurer.measure(old[j].toString(), style, maxLines = 1)
+            }
         }
         leavingX = FloatArray(old.length) { j ->
             val i = j + shift
@@ -129,7 +154,11 @@ private class CounterRoll(private var value: Long, shown: TextLayoutResult) {
                 next.getHorizontalPosition(i, usePrimaryDirection = true)
             } else {
                 // In front of where the new number starts: one figure's width per position.
-                previous.getHorizontalPosition(j, usePrimaryDirection = true) - previous.size.width + next.size.width
+                previous.getHorizontalPosition(
+                    j,
+                    usePrimaryDirection = true,
+                ) - previous.size.width +
+                    next.size.width
             }
         }
         progress.snapTo(0f)
@@ -155,7 +184,11 @@ private fun DrawScope.drawRoll(roll: CounterRoll) {
     for (i in glyphs.indices) {
         val x = layout.getHorizontalPosition(i, usePrimaryDirection = true)
         if (roll.changed[i]) {
-            drawText(glyphs[i], topLeft = Offset(x, -direction * (1f - p) * height), alpha = p.coerceIn(0f, 1f))
+            drawText(
+                glyphs[i],
+                topLeft = Offset(x, -direction * (1f - p) * height),
+                alpha = p.coerceIn(0f, 1f),
+            )
         } else {
             drawText(glyphs[i], topLeft = Offset(x, 0f))
         }
@@ -163,7 +196,11 @@ private fun DrawScope.drawRoll(roll: CounterRoll) {
     val leaving = roll.leaving
     for (j in leaving.indices) {
         val glyph = leaving[j] ?: continue
-        drawText(glyph, topLeft = Offset(roll.leavingX[j], direction * p * height), alpha = (1f - p).coerceIn(0f, 1f))
+        drawText(
+            glyph,
+            topLeft = Offset(roll.leavingX[j], direction * p * height),
+            alpha = (1f - p).coerceIn(0f, 1f),
+        )
     }
 }
 

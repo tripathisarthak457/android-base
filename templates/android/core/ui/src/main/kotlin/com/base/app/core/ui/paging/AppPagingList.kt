@@ -64,10 +64,16 @@ fun <T : Any> AppPagingList(
 
     when {
         nothingYet && refresh is LoadState.Loading -> StateBox(modifier) { loading() }
-        nothingYet && refresh is LoadState.Error -> StateBox(modifier) { failed(refresh.error) { items.retry() } }
-        nothingYet && refresh is LoadState.NotLoading && items.loadState.append.endOfPaginationReached -> {
+
+        nothingYet && refresh is LoadState.Error -> StateBox(modifier) {
+            failed(refresh.error) { items.retry() }
+        }
+
+        nothingYet && refresh is LoadState.NotLoading &&
+            items.loadState.append.endOfPaginationReached -> {
             StateBox(modifier) { empty() }
         }
+
         else -> AppPullToRefresh(
             isRefreshing = refresh is LoadState.Loading && !nothingYet,
             onRefresh = items::refresh,

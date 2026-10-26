@@ -46,7 +46,6 @@ import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.preview.AppComponentPreviews
 import com.base.app.core.designsystem.theme.AppTheme
-import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -54,6 +53,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.format.TextStyle
 import java.time.temporal.WeekFields
+import kotlinx.coroutines.launch
 
 /**
  * A month calendar. Swipe sideways or use the arrows to change month; the week starts on the
@@ -80,8 +80,10 @@ public fun AppDatePicker(
     val weekdays = remember(firstDayOfWeek, locale) {
         (0..6).map { firstDayOfWeek.plus(it.toLong()).getDisplayName(TextStyle.NARROW, locale) }
     }
-    val title = remember(month, locale) { month.format(DateTimeFormatter.ofPattern("LLLL y", locale)) }
-    val dayFormat = remember(locale) { DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale) }
+    val title =
+        remember(month, locale) { month.format(DateTimeFormatter.ofPattern("LLLL y", locale)) }
+    val dayFormat =
+        remember(locale) { DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale) }
 
     Column(modifier = modifier.fillMaxWidth()) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -96,14 +98,18 @@ public fun AppDatePicker(
                 contentDescription = stringResource(R.string.designsystem_previous_month),
                 onClick = { scope.launch { pager.animateScrollToPage(pager.currentPage - 1) } },
                 size = ButtonSize.Small,
-                colors = AppButtonDefaults.iconButtonColors(content = AppTheme.colors.accentContent),
+                colors = AppButtonDefaults.iconButtonColors(
+                    content = AppTheme.colors.accentContent,
+                ),
             )
             AppIconButton(
                 icon = AppIcons.ChevronRight,
                 contentDescription = stringResource(R.string.designsystem_next_month),
                 onClick = { scope.launch { pager.animateScrollToPage(pager.currentPage + 1) } },
                 size = ButtonSize.Small,
-                colors = AppButtonDefaults.iconButtonColors(content = AppTheme.colors.accentContent),
+                colors = AppButtonDefaults.iconButtonColors(
+                    content = AppTheme.colors.accentContent,
+                ),
             )
         }
         Row(modifier = Modifier.fillMaxWidth().padding(vertical = AppTheme.spacing.sm)) {
@@ -130,7 +136,9 @@ public fun AppDatePicker(
                 selectedDate = selectedDate,
                 describe = { dayFormat.format(it) },
                 isSelectable = { date ->
-                    (minDate == null || !date.isBefore(minDate)) && (maxDate == null || !date.isAfter(maxDate)) && isDateEnabled(date)
+                    (minDate == null || !date.isBefore(minDate)) &&
+                        (maxDate == null || !date.isAfter(maxDate)) &&
+                        isDateEnabled(date)
                 },
                 onDateChange = { date ->
                     if (date != selectedDate) haptics.perform(AppHaptic.Selection)
@@ -155,11 +163,18 @@ public fun AppDatePill(
 ) {
     var open by rememberSaveable { mutableStateOf(false) }
     val locale = rememberCurrentLocale()
-    val label = remember(date, locale) { date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale)) }
+    val label =
+        remember(date, locale) {
+            date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale))
+        }
     val transitions = rememberAppTransitions()
     Column(modifier = modifier) {
         PickerPill(text = label, open = open, onClick = { open = !open })
-        AnimatedVisibility(visible = open, enter = transitions.expandIn, exit = transitions.collapseOut) {
+        AnimatedVisibility(
+            visible = open,
+            enter = transitions.expandIn,
+            exit = transitions.collapseOut,
+        ) {
             AppDatePicker(
                 selectedDate = date,
                 onDateChange = {
@@ -183,7 +198,10 @@ internal fun PickerPill(text: String, open: Boolean, onClick: () -> Unit) {
         modifier = Modifier
             .pressable(onClick = onClick, feedback = PressFeedback.Dim)
             .background(colors.fill, AppTheme.shapes.sm)
-            .padding(horizontal = AppDatePickerDefaults.PillHorizontalPadding, vertical = AppDatePickerDefaults.PillVerticalPadding),
+            .padding(
+                horizontal = AppDatePickerDefaults.PillHorizontalPadding,
+                vertical = AppDatePickerDefaults.PillVerticalPadding,
+            ),
         style = AppTheme.typography.body,
         color = if (open) colors.accentContent else colors.contentPrimary,
     )
@@ -201,7 +219,8 @@ private fun MonthGrid(
 ) {
     // Blank cells before the 1st. Adding 7 before the modulo keeps it non-negative for every
     // locale's first day, which a bare subtraction does not.
-    val leadingBlanks = (month.atDay(1).dayOfWeek.value - firstDayOfWeek.value + DaysInWeek) % DaysInWeek
+    val leadingBlanks =
+        (month.atDay(1).dayOfWeek.value - firstDayOfWeek.value + DaysInWeek) % DaysInWeek
     val dayCount = month.lengthOfMonth()
     // Always six rows, so a month with five does not make the pager's height jump.
     Column(
@@ -212,7 +231,10 @@ private fun MonthGrid(
             Row(modifier = Modifier.fillMaxWidth()) {
                 repeat(DaysInWeek) { column ->
                     val day = row * DaysInWeek + column - leadingBlanks + 1
-                    Box(modifier = Modifier.weight(1f).aspectRatio(1f), contentAlignment = Alignment.Center) {
+                    Box(
+                        modifier = Modifier.weight(1f).aspectRatio(1f),
+                        contentAlignment = Alignment.Center,
+                    ) {
                         if (day in 1..dayCount) {
                             val date = month.atDay(day)
                             DayCell(
@@ -263,7 +285,13 @@ private fun DayCell(
     ) {
         AppText(
             text = date.dayOfMonth.toString(),
-            style = if (isSelected || isToday) AppTheme.typography.body.copy(fontWeight = FontWeight.SemiBold) else AppTheme.typography.body,
+            style = if (isSelected ||
+                isToday
+            ) {
+                AppTheme.typography.body.copy(fontWeight = FontWeight.SemiBold)
+            } else {
+                AppTheme.typography.body
+            },
             color = content,
             textAlign = TextAlign.Center,
         )
@@ -276,9 +304,10 @@ private const val MaxRows = 6
 /** How far the calendar pages either way from the month it opened on: a century. */
 private const val MonthsEachWay = 1200
 
-/** The date picker's pill and day grid. */
 /** A day's test tag and resource name. */
 internal const val DayTag = "date_picker_day"
+
+/** The date picker's pill and day grid. */
 
 public object AppDatePickerDefaults {
     public val PillHorizontalPadding: Dp = 12.dp

@@ -16,22 +16,20 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import com.base.app.core.playstore.review.ReviewPrompt
-import com.base.app.core.playstore.update.AppUpdates
-import com.base.app.core.playstore.update.UpdateState
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import kotlin.time.Duration.Companion.seconds
 // <opt:ui_components>
 import com.base.app.core.designsystem.component.feedback.AppTone
 import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
 import com.base.app.core.designsystem.component.overlay.ToastMessage
 // </opt:ui_components>
-// <opt-else:ui_components>
-//~ import com.base.app.core.mvi.MessageKind
-//~ import com.base.app.core.ui.LocalMessagePresenter
-//~ import com.base.app.core.ui.PresentedMessage
-// </opt-else:ui_components>
+// <opt:!ui_components>import com.base.app.core.mvi.MessageKind
+import com.base.app.core.playstore.review.ReviewPrompt
+import com.base.app.core.playstore.update.AppUpdates
+import com.base.app.core.playstore.update.UpdateState
+// <opt:!ui_components>import com.base.app.core.ui.LocalMessagePresenter
+// <opt:!ui_components>import com.base.app.core.ui.PresentedMessage
+import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * Play's update and review prompts, for the app's root. A newer build is offered once per process
@@ -46,19 +44,19 @@ import com.base.app.core.designsystem.component.overlay.ToastMessage
  * against a stopped activity.
  */
 @Composable
-fun PlayStorePrompts(
-    updates: AppUpdates,
-    review: ReviewPrompt,
-) {
+fun PlayStorePrompts(updates: AppUpdates, review: ReviewPrompt) {
     val activity: Activity? = LocalActivity.current
     val state by updates.state.collectAsStateWithLifecycle()
 
     var offeredVersion by rememberSaveable { mutableStateOf<Int?>(null) }
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
-        val version = offeredVersion ?: return@rememberLauncherForActivityResult
-        offeredVersion = null
-        if (result.resultCode != Activity.RESULT_OK) updates.declined(version)
-    }
+    val launcher =
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.StartIntentSenderForResult(),
+        ) { result ->
+            val version = offeredVersion ?: return@rememberLauncherForActivityResult
+            offeredVersion = null
+            if (result.resultCode != Activity.RESULT_OK) updates.declined(version)
+        }
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     LaunchedEffect(updates, review, activity, lifecycle) {

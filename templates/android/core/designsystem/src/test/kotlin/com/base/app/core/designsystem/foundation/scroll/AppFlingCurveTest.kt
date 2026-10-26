@@ -14,6 +14,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.TestSdk
 import com.base.app.core.designsystem.setThemed
+import kotlin.math.ln
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.junit.Assert.assertEquals
@@ -23,7 +24,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import kotlin.math.ln
 
 /**
  * The fling against UIScrollView's normal deceleration, which keeps 0.998 of the speed every
@@ -47,7 +47,9 @@ class AppFlingCurveTest {
         rule.setThemed {
             behavior = AppScrollDefaults.flingBehavior()
             scope = rememberCoroutineScope()
-            Box(Modifier.fillMaxSize().verticalScroll(scroll)) { Spacer(Modifier.fillMaxWidth().height(20_000.dp)) }
+            Box(Modifier.fillMaxSize().verticalScroll(scroll)) {
+                Spacer(Modifier.fillMaxWidth().height(20_000.dp))
+            }
         }
         rule.mainClock.autoAdvance = false
         val start = rule.mainClock.currentTime
@@ -60,11 +62,24 @@ class AppFlingCurveTest {
 
     private fun assertOnTheIosCurve(velocity: Float) {
         val run = fling(velocity)
-        assertEquals("distance of a $velocity px/s fling", (velocity - RestVelocity) / IosRate, run.distance, 2f)
+        assertEquals(
+            "distance of a $velocity px/s fling",
+            (velocity - RestVelocity) / IosRate,
+            run.distance,
+            2f,
+        )
         // Within one frame either side: the fling starts on the next frame and ends on a frame.
         val expectedMillis = ln(velocity / RestVelocity) / IosRate * 1000f
-        assertEquals("duration of a $velocity px/s fling", expectedMillis, run.millis.toFloat(), 2 * FrameMillis)
-        assertTrue("the rest velocity costs at most its own share", velocity / IosRate - run.distance <= RestVelocity / IosRate + 2f)
+        assertEquals(
+            "duration of a $velocity px/s fling",
+            expectedMillis,
+            run.millis.toFloat(),
+            2 * FrameMillis,
+        )
+        assertTrue(
+            "the rest velocity costs at most its own share",
+            velocity / IosRate - run.distance <= RestVelocity / IosRate + 2f,
+        )
     }
 
     @Test

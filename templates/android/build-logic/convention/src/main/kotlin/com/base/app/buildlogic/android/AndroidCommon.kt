@@ -102,7 +102,8 @@ internal fun Project.onRobolectricTests(action: () -> Unit) {
     var applied = false
     configurations.named("testImplementation").configure {
         dependencies.configureEach {
-            val robolectric = group == "org.robolectric" || (this is ProjectDependency && path == COMPOSE_TESTING)
+            val robolectric =
+                group == "org.robolectric" || (this is ProjectDependency && path == COMPOSE_TESTING)
             if (robolectric && !applied) {
                 applied = true
                 action()

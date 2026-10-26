@@ -53,7 +53,8 @@ internal class SheetSlots(private val controller: SheetController) {
     val guard: Guard? get() = guards.lastOrNull { it.uncovered() }
     val stepBack: StepBack? get() = backs.lastOrNull { it.uncovered() }
 
-    private fun pick(entries: List<SlotEntry>): SlotEntry? = entries.lastOrNull { it.uncovered() } ?: entries.lastOrNull()
+    private fun pick(entries: List<SlotEntry>): SlotEntry? =
+        entries.lastOrNull { it.uncovered() } ?: entries.lastOrNull()
 
     fun add(entry: SlotEntry, footer: Boolean) {
         if (!controller.sheetState.isVisible || controller.sheetState.presenting) pending = true
@@ -142,7 +143,10 @@ internal val LocalSheetSlots = staticCompositionLocalOf<SheetSlots?> { null }
  * for screen readers. Outside a sheet it draws in place.
  */
 @Composable
-public fun ProvideSheetHeader(title: String? = null, content: @Composable AppSheetScope.() -> Unit) {
+public fun ProvideSheetHeader(
+    title: String? = null,
+    content: @Composable AppSheetScope.() -> Unit,
+) {
     ProvideSlot(footer = false, title = title, content = content)
 }
 
@@ -153,7 +157,11 @@ public fun ProvideSheetFooter(content: @Composable AppSheetScope.() -> Unit) {
 }
 
 @Composable
-private fun ProvideSlot(footer: Boolean, title: String?, content: @Composable AppSheetScope.() -> Unit) {
+private fun ProvideSlot(
+    footer: Boolean,
+    title: String?,
+    content: @Composable AppSheetScope.() -> Unit,
+) {
     val slots = LocalSheetSlots.current
     if (slots == null) {
         OutsideSheetScope.content()
@@ -163,7 +171,10 @@ private fun ProvideSlot(footer: Boolean, title: String?, content: @Composable Ap
     val holder = rememberSaveableStateHolder()
     val key = currentCompositeKeyHashCode
     val visibility = LocalEntryVisibility.current
-    val entry = remember(slots) { SlotEntry(content, title, locals, holder, key) { visibility.isUncovered } }
+    val entry =
+        remember(slots) {
+            SlotEntry(content, title, locals, holder, key) { visibility.isUncovered }
+        }
     SideEffect {
         entry.content = content
         entry.title = title

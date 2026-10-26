@@ -60,7 +60,10 @@ data class ShellConfig(
     val barMinimize: BarMinimize = BarMinimize.Never,
     val screenResponse: Float? = null,
 ) {
-    internal fun screenMotion(): ScreenMotion = ScreenMotion(response = screenResponse ?: ScreenMotion.DEFAULT_RESPONSE)
+    internal fun screenMotion(): ScreenMotion = ScreenMotion(
+        response =
+            screenResponse ?: ScreenMotion.DEFAULT_RESPONSE,
+    )
 }
 
 /**
@@ -122,7 +125,9 @@ fun AppShell(
 
     val motion = remember(config.screenResponse) { config.screenMotion() }
     val hidesBar = remember(config.hideBarOnPush, state) {
-        { key: AppNavKey -> key is FullScreenKey || (config.hideBarOnPush && key !in state.rootKeys) }
+        { key: AppNavKey ->
+            key is FullScreenKey || (config.hideBarOnPush && key !in state.rootKeys)
+        }
     }
     val labels = tabs.map { stringResource(it.label) }
     val barState = rememberAppTabBarState()
@@ -130,7 +135,15 @@ fun AppShell(
     val minimizes = bar && config.barMinimize == BarMinimize.OnScrollDown
     val slide = rememberChromeSlide()
     val scrolledUnder = rememberScrolledUnder(state)
-    val toggleSidebar = if (sidebarAvailable(window.width, window.height)) slide.toggle(state, chrome) else null
+    val toggleSidebar = if (sidebarAvailable(
+            window.width,
+            window.height,
+        )
+    ) {
+        slide.toggle(state, chrome)
+    } else {
+        null
+    }
 
     ShellRootBack(state)
     WindowChromeWriter(state, barState, wide = !bar)
@@ -201,14 +214,29 @@ fun AppShell(
                                     Modifier
                                         .followSlide(slide)
                                         .clipToBounds()
-                                        .consumeWindowInsets(WindowInsets.safeDrawing.only(WindowInsetsSides.Start))
+                                        .consumeWindowInsets(
+                                            WindowInsets.safeDrawing.only(WindowInsetsSides.Start),
+                                        )
                                 },
                             )
-                            .then(if (minimizes) Modifier.nestedScroll(barState.nestedScrollConnection) else Modifier),
+                            .then(
+                                if (minimizes) {
+                                    Modifier.nestedScroll(
+                                        barState.nestedScrollConnection,
+                                    )
+                                } else {
+                                    Modifier
+                                },
+                            ),
                     )
                 }
             }
         }
-        PresentationHost(state = state, registry = registry, motion = motion, sheetStrategy = sheetStrategy)
+        PresentationHost(
+            state = state,
+            registry = registry,
+            motion = motion,
+            sheetStrategy = sheetStrategy,
+        )
     }
 }

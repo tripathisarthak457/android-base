@@ -10,7 +10,11 @@ import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
  * [sidebarOpen] is that person's choice, null until they make one: open from the large widths,
  * closed below them.
  */
-internal fun chromeFor(width: WindowWidth, height: WindowHeight, sidebarOpen: Boolean?): NavigationChrome = when {
+internal fun chromeFor(
+    width: WindowWidth,
+    height: WindowHeight,
+    sidebarOpen: Boolean?,
+): NavigationChrome = when {
     height == WindowHeight.Compact -> NavigationChrome.Rail
     width == WindowWidth.Compact -> NavigationChrome.Bar
     width == WindowWidth.Medium -> NavigationChrome.Rail

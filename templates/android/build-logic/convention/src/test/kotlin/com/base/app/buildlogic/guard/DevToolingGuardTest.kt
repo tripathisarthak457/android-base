@@ -25,7 +25,10 @@ class DevToolingGuardTest {
 
         val error = assertThrows(GradleException::class.java) { guardOf(app).verify() }
 
-        assertTrue(error.message!!, error.message!!.startsWith("prodRelease depends on :core:devtools."))
+        assertTrue(
+            error.message!!,
+            error.message!!.startsWith("prodRelease depends on :core:devtools."),
+        )
     }
 
     @Test
@@ -45,14 +48,17 @@ class DevToolingGuardTest {
 
     private fun module(root: Project, vararg path: String): Project =
         path.fold(root) { parent, name ->
-            parent.childProjects[name] ?: ProjectBuilder.builder().withName(name).withParent(parent).build()
+            parent.childProjects[name]
+                ?: ProjectBuilder.builder().withName(name).withParent(parent).build()
         }.also { it.pluginManager.apply("java-library") }
 
     private fun guardOf(app: Project): VerifyNoDevToolingTask =
         app.tasks.register<VerifyNoDevToolingTask>("verifyProdReleaseCarriesNoDevTooling") {
             variantName.set("prodRelease")
             dependencyGraph.set(
-                app.configurations.getByName("runtimeClasspath").incoming.resolutionResult.rootComponent,
+                app.configurations.getByName(
+                    "runtimeClasspath",
+                ).incoming.resolutionResult.rootComponent,
             )
             marker.set(app.layout.buildDirectory.file("guards/$name.ok"))
         }.get()

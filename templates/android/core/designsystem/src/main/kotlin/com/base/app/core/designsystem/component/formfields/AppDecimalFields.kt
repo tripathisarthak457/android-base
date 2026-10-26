@@ -57,7 +57,11 @@ public fun AppDecimalField(
 ) {
     val locale = rememberCurrentLocale()
     val input = remember(maxDecimals, maxIntegerDigits, locale) {
-        DecimalInputTransformation(maxDecimals, maxIntegerDigits, DecimalFormatSymbols.getInstance(locale).decimalSeparator)
+        DecimalInputTransformation(
+            maxDecimals,
+            maxIntegerDigits,
+            DecimalFormatSymbols.getInstance(locale).decimalSeparator,
+        )
     }
     val output = remember(locale, grouping) { LocaleDecimalOutput(locale, grouping) }
     AppTextField(
@@ -72,7 +76,16 @@ public fun AppDecimalField(
         suffix = unit,
         inputTransformation = input,
         outputTransformation = output,
-        keyboardOptions = KeyboardOptions(keyboardType = if (maxDecimals > 0) KeyboardType.Decimal else KeyboardType.Number, imeAction = imeAction),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = if (maxDecimals >
+                0
+            ) {
+                KeyboardType.Decimal
+            } else {
+                KeyboardType.Number
+            },
+            imeAction = imeAction,
+        ),
     )
 }
 
@@ -97,15 +110,22 @@ public fun AppMoneyField(
 ) {
     val locale = rememberCurrentLocale()
     val digits = currency.defaultFractionDigits.coerceAtLeast(0)
-    val state = rememberTextFieldState(minorUnits?.let { DecimalInput.fromMinor(it, digits) }.orEmpty())
+    val state =
+        rememberTextFieldState(minorUnits?.let { DecimalInput.fromMinor(it, digits) }.orEmpty())
     val onChange by rememberUpdatedState(onMinorUnitsChange)
     LaunchedEffect(minorUnits, digits) {
         if (DecimalInput.toMinor(state.text.toString(), digits) != minorUnits) {
-            state.setTextAndPlaceCursorAtEnd(minorUnits?.let { DecimalInput.fromMinor(it, digits) }.orEmpty())
+            state.setTextAndPlaceCursorAtEnd(
+                minorUnits?.let {
+                    DecimalInput.fromMinor(it, digits)
+                }.orEmpty(),
+            )
         }
     }
     LaunchedEffect(state, digits) {
-        snapshotFlow { state.text.toString() }.collect { onChange(DecimalInput.toMinor(it, digits)) }
+        snapshotFlow {
+            state.text.toString()
+        }.collect { onChange(DecimalInput.toMinor(it, digits)) }
     }
     AppDecimalField(
         state = state,
@@ -129,7 +149,12 @@ public object DecimalInput {
      * locale's [decimalSeparator] (a `,` in German) is stored as `.`; anything else that is not a
      * digit is dropped, so a pasted "1,234.50" lands as "1234.50"; a second point is refused.
      */
-    public fun accept(candidate: String, maxDecimals: Int, maxIntegerDigits: Int, decimalSeparator: Char = DecimalPoint): String? {
+    public fun accept(
+        candidate: String,
+        maxDecimals: Int,
+        maxIntegerDigits: Int,
+        decimalSeparator: Char = DecimalPoint,
+    ): String? {
         val cleaned = buildString {
             candidate.forEach { c ->
                 when {
@@ -150,7 +175,11 @@ public object DecimalInput {
     public fun toMinor(text: String, digits: Int): Long? {
         if (text.isEmpty() || text == DecimalPoint.toString()) return null
         val whole = text.substringBefore(DecimalPoint).ifEmpty { "0" }.toLongOrNull() ?: return null
-        val fraction = text.substringAfter(DecimalPoint, "").padEnd(digits, '0').take(digits).ifEmpty { "0" }.toLongOrNull() ?: return null
+        val fraction =
+            text.substringAfter(DecimalPoint, "").padEnd(digits, '0').take(digits).ifEmpty {
+                "0"
+            }.toLongOrNull()
+                ?: return null
         return whole * pow10(digits) + fraction
     }
 
@@ -159,11 +188,21 @@ public object DecimalInput {
         val unit = pow10(digits)
         val whole = minor / unit
         val rest = minor % unit
-        return if (rest == 0L) whole.toString() else whole.toString() + DecimalPoint + rest.toString().padStart(digits, '0')
+        return if (rest ==
+            0L
+        ) {
+            whole.toString()
+        } else {
+            whole.toString() + DecimalPoint +
+                rest.toString().padStart(digits, '0')
+        }
     }
 
     /** Where grouping separators go in a whole part of [length] digits: every three from the right. */
-    public fun groupingPositions(length: Int): List<Int> = (length - GroupSize downTo 1 step GroupSize).toList()
+    public fun groupingPositions(length: Int): List<Int> = (
+        length - GroupSize downTo 1 step
+            GroupSize
+        ).toList()
 
     private fun pow10(digits: Int): Long = (1..digits).fold(1L) { acc, _ -> acc * 10 }
 
@@ -177,7 +216,12 @@ private class DecimalInputTransformation(
     private val decimalSeparator: Char,
 ) : InputTransformation {
     override fun TextFieldBuffer.transformInput() {
-        val accepted = DecimalInput.accept(asCharSequence().toString(), maxDecimals, maxIntegerDigits, decimalSeparator)
+        val accepted = DecimalInput.accept(
+            asCharSequence().toString(),
+            maxDecimals,
+            maxIntegerDigits,
+            decimalSeparator,
+        )
         when {
             accepted == null -> revertAllChanges()
             accepted != asCharSequence().toString() -> replace(0, length, accepted)
@@ -186,7 +230,8 @@ private class DecimalInputTransformation(
 }
 
 /** Shows the locale's point and grouping; the stored text keeps `.` and no separators. */
-private class LocaleDecimalOutput(locale: Locale, private val grouping: Boolean) : OutputTransformation {
+private class LocaleDecimalOutput(locale: Locale, private val grouping: Boolean) :
+    OutputTransformation {
     private val symbols = DecimalFormatSymbols.getInstance(locale)
 
     override fun TextFieldBuffer.transformOutput() {
@@ -198,7 +243,9 @@ private class LocaleDecimalOutput(locale: Locale, private val grouping: Boolean)
         if (!grouping) return
         val whole = if (point >= 0) point else text.length
         // Inserted from the right, so earlier positions stay valid.
-        DecimalInput.groupingPositions(whole).forEach { insert(it, symbols.groupingSeparator.toString()) }
+        DecimalInput.groupingPositions(whole).forEach {
+            insert(it, symbols.groupingSeparator.toString())
+        }
     }
 }
 
@@ -220,7 +267,9 @@ public object AppMoneyFieldDefaults {
 }
 
 private fun regionCurrency(locale: Locale): Currency {
-    val region = locale.country.ifEmpty { ULocale.addLikelySubtags(ULocale.forLocale(locale)).country }
+    val region = locale.country.ifEmpty {
+        ULocale.addLikelySubtags(ULocale.forLocale(locale)).country
+    }
     val currency = try {
         Currency.getInstance(Locale.Builder().setRegion(region).build())
     } catch (notARegion: IllegalArgumentException) {
@@ -239,8 +288,18 @@ private fun AppDecimalFieldsPreview() {
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
     ) {
         AppDecimalField(state = rememberTextFieldState("1234.5"), label = "Weight", unit = "kg")
-        AppDecimalField(state = rememberTextFieldState(), label = "Distance", placeholder = "0.0", unit = "km", helper = "Up to two decimals")
-        AppDecimalField(state = rememberTextFieldState("12.345"), label = "Rate", error = "At most two decimals")
+        AppDecimalField(
+            state = rememberTextFieldState(),
+            label = "Distance",
+            placeholder = "0.0",
+            unit = "km",
+            helper = "Up to two decimals",
+        )
+        AppDecimalField(
+            state = rememberTextFieldState("12.345"),
+            label = "Rate",
+            error = "At most two decimals",
+        )
         AppMoneyField(minorUnits = 120450, onMinorUnitsChange = {}, label = "Amount")
         AppMoneyField(minorUnits = null, onMinorUnitsChange = {}, label = "Tip", enabled = false)
     }

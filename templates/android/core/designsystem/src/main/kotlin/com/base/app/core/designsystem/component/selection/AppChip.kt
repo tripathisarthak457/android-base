@@ -76,7 +76,12 @@ public fun AppChip(
                 .then(
                     if (onClick != null) {
                         Modifier
-                            .pressable(onClick = onClick, feedback = PressFeedback.Scale, enabled = enabled, role = Role.Button)
+                            .pressable(
+                                onClick = onClick,
+                                feedback = PressFeedback.Scale,
+                                enabled = enabled,
+                                role = Role.Button,
+                            )
                             .semantics { this.selected = selected }
                     } else {
                         Modifier
@@ -85,13 +90,27 @@ public fun AppChip(
                 .then(redacted)
                 .background(container, shape)
                 .heightIn(min = AppChipDefaults.Height)
-                .padding(start = AppChipDefaults.HorizontalPadding, end = if (onRemove != null) AppChipDefaults.RemoveEndPadding else AppChipDefaults.HorizontalPadding),
+                .padding(
+                    start = AppChipDefaults.HorizontalPadding,
+                    end = if (onRemove !=
+                        null
+                    ) {
+                        AppChipDefaults.RemoveEndPadding
+                    } else {
+                        AppChipDefaults.HorizontalPadding
+                    },
+                ),
             horizontalArrangement = Arrangement.spacedBy(AppChipDefaults.IconSpacing),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             ContentUnderBone(bone) {
                 leadingIcon?.let {
-                    AppIcon(it, contentDescription = null, tint = content, size = AppTheme.sizes.iconSmall)
+                    AppIcon(
+                        it,
+                        contentDescription = null,
+                        tint = content,
+                        size = AppTheme.sizes.iconSmall,
+                    )
                 }
                 AppText(
                     text = label,
@@ -144,13 +163,22 @@ private fun Modifier.removeTarget(): Modifier = layout { measurable, constraints
     val target = AppChipDefaults.RemoveTarget.roundToPx()
     val width = constraints.maxWidth
     val height = constraints.maxHeight
-    val placeable = measurable.measure(Constraints.fixed(maxOf(target, width), maxOf(target, height)))
-    layout(width, height) { placeable.place((width - placeable.width) / 2, (height - placeable.height) / 2) }
+    val placeable = measurable.measure(
+        Constraints.fixed(maxOf(target, width), maxOf(target, height)),
+    )
+    layout(width, height) {
+        placeable.place(
+            (width - placeable.width) / 2,
+            (height - placeable.height) / 2,
+        )
+    }
 }
 
 /** 1 while [interactions] holds a press, fading to 0 after it: a dim read only in the layer. */
 @Composable
-private fun rememberHeldFraction(interactions: InteractionSource): Animatable<Float, AnimationVector1D> {
+private fun rememberHeldFraction(
+    interactions: InteractionSource,
+): Animatable<Float, AnimationVector1D> {
     val springs = AppTheme.springs
     val held = remember { Animatable(0f) }
     LaunchedEffect(interactions, springs) {

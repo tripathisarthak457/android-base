@@ -11,8 +11,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+// <opt:ui_components>
+import com.base.app.core.designsystem.component.container.AppCard
+import com.base.app.core.designsystem.component.container.AppDivider
+import com.base.app.core.designsystem.component.feedback.AppStatusPill
+import com.base.app.core.designsystem.component.text.AppText
+// </opt:ui_components>
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.StatusColors
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppCard
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppDivider
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppStatusPill
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppText
 import com.base.app.core.perfhud.R
 import com.base.app.core.perfhud.score.Grade
 import com.base.app.core.perfhud.score.Metric
@@ -24,18 +34,6 @@ import com.base.app.core.perfhud.score.fix
 import com.base.app.core.perfhud.score.formatTarget
 import com.base.app.core.perfhud.score.formatValue
 import com.base.app.core.perfhud.score.title
-// <opt:ui_components>
-import com.base.app.core.designsystem.component.container.AppCard
-import com.base.app.core.designsystem.component.container.AppDivider
-import com.base.app.core.designsystem.component.feedback.AppStatusPill
-import com.base.app.core.designsystem.component.text.AppText
-// </opt:ui_components>
-// <opt-else:ui_components>
-//~ import com.base.app.core.devtools.kit.AppCard
-//~ import com.base.app.core.devtools.kit.AppDivider
-//~ import com.base.app.core.devtools.kit.AppStatusPill
-//~ import com.base.app.core.devtools.kit.AppText
-// </opt-else:ui_components>
 
 /** The score, then each lost point with what to do about it, then every metric's grade. */
 @Composable
@@ -50,7 +48,11 @@ internal fun ScoreSection(score: OptimisationScore) {
         val grade = score.grade
         if (total == null || grade == null) {
             AppText(
-                text = pluralStringResource(R.plurals.perfhud_score_none, Metric.MIN_FRAMES, Metric.MIN_FRAMES),
+                text = pluralStringResource(
+                    R.plurals.perfhud_score_none,
+                    Metric.MIN_FRAMES,
+                    Metric.MIN_FRAMES,
+                ),
                 style = AppTheme.typography.callout,
                 modifier = Modifier.padding(top = AppTheme.spacing.sm),
             )
@@ -76,7 +78,10 @@ internal fun ScoreSection(score: OptimisationScore) {
         )
         val losses = score.losses
         if (losses.isEmpty()) {
-            AppText(text = stringResource(R.string.perfhud_no_losses), style = AppTheme.typography.subheadline)
+            AppText(
+                text = stringResource(R.string.perfhud_no_losses),
+                style = AppTheme.typography.subheadline,
+            )
         }
         losses.forEach { lost -> Loss(lost) }
 
@@ -101,7 +106,11 @@ private fun Loss(scored: MetricScore) {
                 modifier = Modifier.weight(1f),
             )
             AppText(
-                text = stringResource(R.string.perfhud_lost_points, decimal(scored.lost, 1), metric.weight),
+                text = stringResource(
+                    R.string.perfhud_lost_points,
+                    decimal(scored.lost, 1),
+                    metric.weight,
+                ),
                 style = AppTheme.typography.caption2,
                 color = AppTheme.colors.danger.content,
             )

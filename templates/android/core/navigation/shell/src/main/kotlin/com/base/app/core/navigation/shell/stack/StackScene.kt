@@ -28,11 +28,11 @@ import com.base.app.core.navigation.shell.back.BackCardHost
 import com.base.app.core.navigation.shell.back.BackCardState
 import com.base.app.core.navigation.shell.back.commitPop
 import com.base.app.core.navigation.shell.transition.ScreenMotion
+import kotlin.math.ceil
+import kotlin.math.floor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlin.math.ceil
-import kotlin.math.floor
 
 /**
  * Everything a stack host shows, in one parent that never changes, as iOS keeps a navigation
@@ -121,13 +121,26 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
      */
     fun departing(plan: StackPlan, keys: Set<Any>): List<NavEntry<AppNavKey>> {
         if (plan.slide == Slide.None || settled === plan) return emptyList()
-        return (plan.upper.keys + plan.lower.keys).mapNotNull { key -> if (key in keys) null else appliedEntries[key] }
+        return (plan.upper.keys + plan.lower.keys).mapNotNull { key ->
+            if (key in
+                keys
+            ) {
+                null
+            } else {
+                appliedEntries[key]
+            }
+        }
     }
 
     fun appliedEntry(key: Any): NavEntry<AppNavKey>? = appliedEntries[key]
 
     /** Makes [plan] the one on screen. Called after the composition that drew it, once per plan. */
-    fun apply(plan: StackPlan, entries: List<NavEntry<AppNavKey>>, hiding: Set<Any>, scope: CoroutineScope) {
+    fun apply(
+        plan: StackPlan,
+        entries: List<NavEntry<AppNavKey>>,
+        hiding: Set<Any>,
+        scope: CoroutineScope,
+    ) {
         if (plan === applied) return
         job?.cancel()
         val current = entries.associateBy { it.contentKey }
@@ -146,10 +159,12 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
                 moving = false
                 gate.noMotion()
             }
+
             Slide.Push -> {
                 cover = 0f
                 job = scope.launch { slideTo(1f) }
             }
+
             Slide.Pop -> {
                 cover = 1f
                 job = scope.launch { slideTo(0f) }
@@ -206,7 +221,11 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
      */
     fun barCutout(into: CardCutout): Boolean {
         val subject = card.subject
-        if (!card.active || subject == null || subject !in hidingBar || card.beneath.any { it in hidingBar }) return false
+        if (!card.active || subject == null || subject !in hidingBar ||
+            card.beneath.any { it in hidingBar }
+        ) {
+            return false
+        }
         val w = width
         val h = height
         val scale = card.scale
@@ -226,18 +245,26 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
     /** The lifecycle an entry's content may reach: the top resumed, the page under it started, the rest created. */
     fun capOf(key: Any): Lifecycle.State = when {
         key in top -> Lifecycle.State.RESUMED
+
         // Raised only once the screens stop, so a pop never restarts the collectors of a screen
         // that is still out of sight in the frame that starts it.
         key in beneath && (!moving || key in lower) -> Lifecycle.State.STARTED
+
         else -> Lifecycle.State.CREATED
     }
 
     /** Whether the back card may start: the top page is one entry, and nothing but a push is moving. */
-    override fun canStartCard(): Boolean =
-        !card.active && top.size == 1 && beneath.isNotEmpty() && (!moving || applied?.slide == Slide.Push)
+    override fun canStartCard(): Boolean = !card.active && top.size == 1 && beneath.isNotEmpty() &&
+        (!moving || applied?.slide == Slide.Push)
 
     override fun startCard(event: NavigationEvent, scope: CoroutineScope) {
-        card.start(event, subject = top.single(), beneath = beneath, midPush = moving, scope = scope)
+        card.start(
+            event,
+            subject = top.single(),
+            beneath = beneath,
+            midPush = moving,
+            scope = scope,
+        )
     }
 
     override suspend fun cancelCard() {
@@ -258,10 +285,13 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
                 translationX = toward * w * (1f - cover)
                 if (card.active && key == card.subject) with(card) { applyCard() }
             }
+
             card.active && key in card.beneath ->
                 translationX = beneathShift()
+
             key in lower && cover < 1f ->
                 translationX = -toward * motion.parallax * w * cover
+
             else -> {
                 alpha = 0f
                 translationX = -2f * w
@@ -302,6 +332,7 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
         when {
             // The card shrinks the upper page, so the whole lower page may show around it.
             revealing -> drawContent()
+
             // Whole pixels, so the clip is a scissor, and one more on the covered side, so no
             // rounding of the upper page's position opens a seam between the two.
             to > from -> clipRect(
@@ -310,13 +341,26 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
             ) { this@drawOver.drawContent() }
         }
         if (to > from) {
-            drawRect(Color.Black, Offset(from, 0f), Size(to - from, size.height), alpha = coverScrimAlpha(isLight) * c)
+            drawRect(
+                Color.Black,
+                Offset(from, 0f),
+                Size(to - from, size.height),
+                alpha =
+                    coverScrimAlpha(isLight) * c,
+            )
         }
         val shadow = EdgeShadow.toPx()
         val brush = shadowBrushes.getOrPut(shadow.toInt() * if (rtl) -1 else 1) {
             val dark = Color.Black.copy(alpha = SHADOW_ALPHA)
             Brush.horizontalGradient(
-                colors = if (rtl) listOf(dark, Color.Transparent) else listOf(Color.Transparent, dark),
+                colors = if (rtl) {
+                    listOf(
+                        dark,
+                        Color.Transparent,
+                    )
+                } else {
+                    listOf(Color.Transparent, dark)
+                },
                 startX = 0f,
                 endX = shadow,
             )
@@ -328,7 +372,8 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
     }
 
     /** Where the back card puts the page beneath it: the parallax a running push left it at, easing to rest. */
-    private fun beneathShift(): Float = -(if (rtl) -1f else 1f) * motion.parallax * width * cover * (1f - card.reveal)
+    private fun beneathShift(): Float =
+        -(if (rtl) -1f else 1f) * motion.parallax * width * cover * (1f - card.reveal)
 
     /**
      * Writes into [hole] the part of [key]'s entry, in its own px, that the opaque back card hides
@@ -345,7 +390,10 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
         val scale = card.scale
         val slide = if (subject in upper) (if (rtl) -1f else 1f) * w * (1f - cover) else 0f
         val originX = (lefts[key] ?: 0f) + beneathShift()
-        val centerX = (lefts[subject] ?: 0f) + cardWidth / 2f + slide + with(card) { density.shiftX(cardWidth) } - originX
+        val centerX =
+            (lefts[subject] ?: 0f) + cardWidth / 2f + slide +
+                with(card) { density.shiftX(cardWidth) } -
+                originX
         val centerY = h / 2f + with(card) { density.shiftY(h) }
         val corner = with(card) { density.corner() } * scale
         hole.left = centerX - scale * cardWidth / 2f
@@ -355,7 +403,8 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
         return true
     }
 
-    private fun ContentDrawScope.drawAroundCard(hole: MutableRect) = drawAroundHole(hole, card.scrim.value)
+    private fun ContentDrawScope.drawAroundCard(hole: MutableRect) =
+        drawAroundHole(hole, card.scrim.value)
 
     private fun DrawScope.drawCardScrim() {
         val alpha = card.scrim.value
@@ -364,6 +413,7 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
 
     private companion object {
         val EdgeShadow = 8.dp
+
         /** Faint, as UIKit's: a darker line at the edge reads as a seam, not depth. */
         const val SHADOW_ALPHA = 0.04f
     }
@@ -401,9 +451,24 @@ internal fun ContentDrawScope.drawAroundHole(hole: MutableRect, scrim: Float) {
 }
 
 /** One strip of the page around the card, under the scrim; false when the strip is empty. */
-private fun ContentDrawScope.drawStrip(left: Float, top: Float, right: Float, bottom: Float, scrim: Float): Boolean {
+private fun ContentDrawScope.drawStrip(
+    left: Float,
+    top: Float,
+    right: Float,
+    bottom: Float,
+    scrim: Float,
+): Boolean {
     if (right <= left || bottom <= top) return false
     clipRect(left, top, right, bottom) { this@drawStrip.drawContent() }
-    if (scrim > 0f) drawRect(Color.Black, Offset(left, top), Size(right - left, bottom - top), alpha = scrim)
+    if (scrim >
+        0f
+    ) {
+        drawRect(
+            Color.Black,
+            Offset(left, top),
+            Size(right - left, bottom - top),
+            alpha = scrim,
+        )
+    }
     return true
 }

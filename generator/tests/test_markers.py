@@ -171,6 +171,10 @@ class CollapseTest(unittest.TestCase):
     def test_a_blank_line_after_an_opening_brace_goes(self):
         self.assertEqual("fun x() {\n    a()\n}\n", run("fun x() {\n    // <opt:a>\n    b()\n    // </opt:a>\n\n    a()\n}\n"))
 
+    def test_a_blank_line_left_at_the_end_of_the_file_goes(self):
+        # ktlint, like most formatters, wants a file to end on its last line.
+        self.assertEqual("a()\n", run("a()\n\n// <opt:a>\nb()\n// </opt:a>\n"))
+
     def test_untouched_code_keeps_its_spacing(self):
         # Collapsing every file would reformat code nobody asked the generator to touch.
         source = "class A {\n\n    val x = 1\n\n\n    val y = 2\n}\n"

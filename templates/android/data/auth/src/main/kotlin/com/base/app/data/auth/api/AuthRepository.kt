@@ -4,11 +4,7 @@ import com.base.app.core.common.result.AppResult
 import kotlinx.coroutines.flow.Flow
 
 /** What the caller supplies to create an account. A parameter object, so the order cannot slip. */
-data class SignUpDetails(
-    val name: String,
-    val email: String,
-    val password: String,
-)
+data class SignUpDetails(val name: String, val email: String, val password: String)
 
 /** Signing in, signing up, and knowing whether either has happened. */
 interface AuthRepository {

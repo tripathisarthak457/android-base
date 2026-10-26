@@ -9,7 +9,10 @@ internal object HardcodedCopy {
     fun lines(source: KotlinSource): List<Int> {
         var inPreview = false
         return source.codeAndStringLines.mapIndexedNotNull { index, line ->
-            FUNCTION.find(source.codeLines[index])?.let { inPreview = it.groupValues[1].endsWith("Preview") }
+            FUNCTION.find(source.codeLines[index])?.let {
+                inPreview =
+                    it.groupValues[1].endsWith("Preview")
+            }
             if (inPreview || source.codeLines[index].isBlank()) return@mapIndexedNotNull null
             if (copyIn(line).any(::isProse)) index + 1 else null
         }
@@ -18,7 +21,11 @@ internal object HardcodedCopy {
     /** The literals on [line] that end up on screen: copy parameters, and fallbacks turned into UiText. */
     private fun copyIn(line: String): List<String> = buildList {
         COPY_PARAMETER.findAll(line).forEach { add(it.groupValues[2]) }
-        if (COPY_PARAMETER.containsMatchIn(line)) ELSE_BRANCH.findAll(line).forEach { add(it.groupValues[1]) }
+        if (COPY_PARAMETER.containsMatchIn(line)) {
+            ELSE_BRANCH.findAll(line).forEach {
+                add(it.groupValues[1])
+            }
+        }
         if ("UiText" in line) UI_TEXT_FALLBACK.findAll(line).forEach { add(it.groupValues[1]) }
     }
 

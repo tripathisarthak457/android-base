@@ -31,13 +31,17 @@ public class AppSpring(public val response: Float, public val bounce: Float) {
     public val dampingRatio: Float = 1f - bounce
 
     /** For values on a 0 to 1 scale: a press, a scale, a progress. */
-    public val unit: SpringSpec<Float> = spring(dampingRatio, stiffness, DesignTokens.Motion.visibilityThreshold)
+    public val unit: SpringSpec<Float> =
+        spring(dampingRatio, stiffness, DesignTokens.Motion.visibilityThreshold)
 
     /** For a distance in pixels held as a float. */
-    public val pixels: SpringSpec<Float> = spring(dampingRatio, stiffness, visibilityThreshold = 0.5f)
+    public val pixels: SpringSpec<Float> =
+        spring(dampingRatio, stiffness, visibilityThreshold = 0.5f)
 
-    public val offset: SpringSpec<IntOffset> = spring(dampingRatio, stiffness, IntOffset.VisibilityThreshold)
-    public val size: SpringSpec<IntSize> = spring(dampingRatio, stiffness, IntSize.VisibilityThreshold)
+    public val offset: SpringSpec<IntOffset> =
+        spring(dampingRatio, stiffness, IntOffset.VisibilityThreshold)
+    public val size: SpringSpec<IntSize> =
+        spring(dampingRatio, stiffness, IntSize.VisibilityThreshold)
     public val dp: SpringSpec<Dp> = spring(dampingRatio, stiffness, Dp.VisibilityThreshold)
 }
 
@@ -89,8 +93,10 @@ public class AppSprings internal constructor() {
      * millisecond). [flingFast] is the paging and picker rate (0.99), which stops much sooner.
      * Both end once the content no longer visibly moves.
      */
-    public val fling: DecayAnimationSpec<Float> = exponentialDecay(tokens.flingFriction, FlingRestVelocity)
-    public val flingFast: DecayAnimationSpec<Float> = exponentialDecay(tokens.pagingFriction, FlingRestVelocity)
+    public val fling: DecayAnimationSpec<Float> =
+        exponentialDecay(tokens.flingFriction, FlingRestVelocity)
+    public val flingFast: DecayAnimationSpec<Float> =
+        exponentialDecay(tokens.pagingFriction, FlingRestVelocity)
 
     /** Colour and opacity only; anything that moves uses a spring. */
     public val fadeQuick: Int = tokens.fadeShortMs

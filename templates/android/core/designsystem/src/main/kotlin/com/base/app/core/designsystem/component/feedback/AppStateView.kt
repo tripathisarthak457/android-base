@@ -66,7 +66,15 @@ public fun AppStateView(
         StateKind.Error -> stringResource(R.string.designsystem_error_title)
         StateKind.Offline -> stringResource(R.string.designsystem_offline_title)
     }
-    val action = actionLabel ?: if (kind != StateKind.Empty) stringResource(R.string.designsystem_try_again) else null
+    val action =
+        actionLabel
+            ?: if (kind !=
+                StateKind.Empty
+            ) {
+                stringResource(R.string.designsystem_try_again)
+            } else {
+                null
+            }
     val glyph = icon ?: when (kind) {
         StateKind.Empty -> null
         StateKind.Error -> AppIcons.AlertTriangle
@@ -78,25 +86,48 @@ public fun AppStateView(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = maxHeight)
-                .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
+                .verticalScroll(
+                    rememberScrollState(),
+                    flingBehavior = AppScrollDefaults.flingBehavior(),
+                )
                 .padding(contentPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md, Alignment.CenterVertically),
+            verticalArrangement = Arrangement.spacedBy(
+                AppTheme.spacing.md,
+                Alignment.CenterVertically,
+            ),
         ) {
             when {
                 illustration != null -> illustration()
+
                 glyph != null -> AppSurface(
                     modifier = Modifier.size(AppStateViewDefaults.GlyphBackingSize),
                     shape = AppTheme.shapes.pill,
                     color = if (kind == StateKind.Empty) colors.accentSubtle else colors.fill,
                 ) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        AppIcon(glyph, contentDescription = null, tint = if (kind == StateKind.Empty) colors.accentContent else colors.contentSecondary, size = AppStateViewDefaults.GlyphSize)
+                        AppIcon(
+                            glyph,
+                            contentDescription = null,
+                            tint = if (kind ==
+                                StateKind.Empty
+                            ) {
+                                colors.accentContent
+                            } else {
+                                colors.contentSecondary
+                            },
+                            size = AppStateViewDefaults.GlyphSize,
+                        )
                     }
                 }
             }
             heading?.let {
-                AppText(text = it, style = AppTheme.typography.title3, color = colors.contentPrimary, textAlign = TextAlign.Center)
+                AppText(
+                    text = it,
+                    style = AppTheme.typography.title3,
+                    color = colors.contentPrimary,
+                    textAlign = TextAlign.Center,
+                )
             }
             message?.let {
                 AppText(
@@ -111,7 +142,13 @@ public fun AppStateView(
                 AppButton(
                     text = action,
                     onClick = onAction,
-                    variant = if (kind == StateKind.Empty) ButtonVariant.Tinted else ButtonVariant.Filled,
+                    variant = if (kind ==
+                        StateKind.Empty
+                    ) {
+                        ButtonVariant.Tinted
+                    } else {
+                        ButtonVariant.Filled
+                    },
                     modifier = Modifier.padding(top = AppTheme.spacing.sm),
                 )
             }
@@ -138,7 +175,15 @@ private fun AppStateViewPreview() {
             onAction = {},
             contentPadding = PaddingValues(AppTheme.spacing.lg),
         )
-        AppStateView(kind = StateKind.Error, onAction = {}, contentPadding = PaddingValues(AppTheme.spacing.lg))
-        AppStateView(kind = StateKind.Offline, onAction = {}, contentPadding = PaddingValues(AppTheme.spacing.lg))
+        AppStateView(
+            kind = StateKind.Error,
+            onAction = {},
+            contentPadding = PaddingValues(AppTheme.spacing.lg),
+        )
+        AppStateView(
+            kind = StateKind.Offline,
+            onAction = {},
+            contentPadding = PaddingValues(AppTheme.spacing.lg),
+        )
     }
 }

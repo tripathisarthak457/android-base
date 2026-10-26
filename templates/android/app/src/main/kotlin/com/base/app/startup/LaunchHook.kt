@@ -1,14 +1,14 @@
 package com.base.app.startup
 
 import android.content.Intent
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import dagger.multibindings.Multibinds
 // <opt:ui_components>
 import com.base.app.core.navigation.shell.ShellConfig
 import com.base.app.core.navigation.shell.ShellState
 // </opt:ui_components>
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import dagger.multibindings.Multibinds
 
 // <opt:performance&ui_components>
 /*

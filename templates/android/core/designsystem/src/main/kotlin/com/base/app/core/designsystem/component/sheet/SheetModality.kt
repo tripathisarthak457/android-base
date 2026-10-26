@@ -30,11 +30,13 @@ public sealed interface SheetModality {
         ): NonModal = NonModal(upThrough, aboveBottomChrome)
 
         override fun equals(other: Any?): Boolean =
-            other is NonModal && upThrough == other.upThrough && aboveBottomChrome == other.aboveBottomChrome
+            other is NonModal && upThrough == other.upThrough &&
+                aboveBottomChrome == other.aboveBottomChrome
 
         override fun hashCode(): Int = 31 * upThrough.hashCode() + aboveBottomChrome.hashCode()
 
-        override fun toString(): String = "NonModal(upThrough=$upThrough, aboveBottomChrome=$aboveBottomChrome)"
+        override fun toString(): String =
+            "NonModal(upThrough=$upThrough, aboveBottomChrome=$aboveBottomChrome)"
     }
 }
 

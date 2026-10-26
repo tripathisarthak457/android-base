@@ -61,9 +61,15 @@ internal fun BottomEdgeFade(
             .drawWithCache {
                 val tail = Tail.toPx().coerceAtMost(size.height)
                 val brush = if (docked) {
-                    Brush.verticalGradient(0f to barSurface.copy(alpha = 0f), 1f to barSurface, endY = tail)
+                    Brush.verticalGradient(
+                        0f to barSurface.copy(alpha = 0f),
+                        1f to barSurface,
+                        endY = tail,
+                    )
                 } else {
-                    val background = (state.tabFront?.background ?: Color.Unspecified).takeOrElse { colors.background }
+                    val background = (state.tabFront?.background ?: Color.Unspecified).takeOrElse {
+                        colors.background
+                    }
                     Brush.verticalGradient(
                         0f to background.copy(alpha = 0f),
                         MID_STOP to background.copy(alpha = MID_ALPHA),
@@ -74,7 +80,11 @@ internal fun BottomEdgeFade(
                 val area = if (docked) Size(size.width, tail) else size
                 onDrawBehind {
                     val shown = scrolledUnder()
-                    if (shown > 0f && ime.getBottom(this) == 0) drawRect(brush, Offset.Zero, area, alpha = shown)
+                    if (shown > 0f &&
+                        ime.getBottom(this) == 0
+                    ) {
+                        drawRect(brush, Offset.Zero, area, alpha = shown)
+                    }
                 }
             },
     )

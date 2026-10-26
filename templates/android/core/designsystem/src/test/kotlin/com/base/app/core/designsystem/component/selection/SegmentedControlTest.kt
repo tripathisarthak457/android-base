@@ -50,7 +50,10 @@ class SegmentedControlTest {
         val image = rule.onNodeWithTag("segmented").captureToImage().toPixelMap()
         val clearOfLabels = with(rule.density) { 6.dp.roundToPx() }
         val middle = image.height / 2
-        assertEquals(colors.surfaceElevated.toArgb(), image[image.width / 3 + clearOfLabels, middle].toArgb())
+        assertEquals(
+            colors.surfaceElevated.toArgb(),
+            image[image.width / 3 + clearOfLabels, middle].toArgb(),
+        )
         assertEquals(colors.fill.toArgb(), image[clearOfLabels, middle].toArgb())
     }
 }

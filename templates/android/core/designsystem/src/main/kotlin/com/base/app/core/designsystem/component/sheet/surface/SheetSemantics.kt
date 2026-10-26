@@ -38,7 +38,8 @@ internal fun Modifier.sheetSemantics(
  * While the sheet is hidden or parked, nothing in it is announced. The flag is read from a flow and
  * applied by invalidating these semantics, so a tab switch recomposes nothing in the sheet.
  */
-private data class ParkedSemanticsElement(val controller: SheetController) : ModifierNodeElement<ParkedSemanticsNode>() {
+private data class ParkedSemanticsElement(val controller: SheetController) :
+    ModifierNodeElement<ParkedSemanticsNode>() {
     override fun create() = ParkedSemanticsNode(controller)
 
     override fun update(node: ParkedSemanticsNode) {
@@ -50,7 +51,9 @@ private data class ParkedSemanticsElement(val controller: SheetController) : Mod
     }
 }
 
-private class ParkedSemanticsNode(var controller: SheetController) : Modifier.Node(), SemanticsModifierNode {
+private class ParkedSemanticsNode(var controller: SheetController) :
+    Modifier.Node(),
+    SemanticsModifierNode {
     private var hidden = false
 
     override val shouldClearDescendantSemantics: Boolean

@@ -17,7 +17,7 @@ internal fun SearchRoute(
                 is SearchEffect.OpenResult -> onOpenResult(effect.id)
             }
         },
-    // <opt:ui_components>
+        // <opt:ui_components>
     ) { state, onEvent ->
         SearchScreen(state = state, query = viewModel.query, onEvent = onEvent)
     }

@@ -37,7 +37,11 @@ class ScrollToTopTest {
         lateinit var scope: CoroutineScope
         rule.setThemed {
             scope = rememberCoroutineScope()
-            LazyColumn(Modifier.fillMaxSize(), state = state, flingBehavior = AppScrollDefaults.flingBehavior()) {
+            LazyColumn(
+                Modifier.fillMaxSize(),
+                state = state,
+                flingBehavior = AppScrollDefaults.flingBehavior(),
+            ) {
                 items(500, key = { it }) { index ->
                     SideEffect { composed += index }
                     BasicText("Row $index", Modifier.fillMaxWidth().height(RowHeight))
@@ -56,7 +60,10 @@ class ScrollToTopTest {
         assertEquals(0, state.firstVisibleItemScrollOffset)
         assertTrue("took $frames frames", frames * 16 <= MaxTripMillis)
         // The rows of the two screens it glides over, the screen it lands on and the one it jumped to.
-        assertTrue("composed ${composed.size} rows for a $screen-row screen", composed.size <= screen * 4 + 2)
+        assertTrue(
+            "composed ${composed.size} rows for a $screen-row screen",
+            composed.size <= screen * 4 + 2,
+        )
     }
 
     private companion object {

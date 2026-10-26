@@ -30,8 +30,12 @@ class SheetBackTest {
     private fun startGesture(progress: Float) {
         val dispatcher = rule.activity.onBackPressedDispatcher
         rule.runOnUiThread {
-            dispatcher.dispatchOnBackStarted(BackEventCompat(0f, 400f, 0f, BackEventCompat.EDGE_LEFT))
-            dispatcher.dispatchOnBackProgressed(BackEventCompat(100f, 400f, progress, BackEventCompat.EDGE_LEFT))
+            dispatcher.dispatchOnBackStarted(
+                BackEventCompat(0f, 400f, 0f, BackEventCompat.EDGE_LEFT),
+            )
+            dispatcher.dispatchOnBackProgressed(
+                BackEventCompat(100f, 400f, progress, BackEventCompat.EDGE_LEFT),
+            )
         }
         rule.waitForIdle()
     }

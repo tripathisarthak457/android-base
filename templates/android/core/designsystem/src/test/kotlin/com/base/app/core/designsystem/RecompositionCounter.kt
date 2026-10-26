@@ -3,10 +3,10 @@ package com.base.app.core.designsystem
 import androidx.compose.runtime.Composer
 import androidx.compose.runtime.CompositionTracer
 import androidx.compose.runtime.InternalComposeTracingApi
+import java.util.concurrent.ConcurrentHashMap
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Counts the composable functions that ran, rather than skipped, while a test runs. It reads the
@@ -42,8 +42,15 @@ class RecompositionCounter : TestRule {
     fun reset() = executions.clear()
 
     /** How many times composables whose name ends in [name] ran since the last [reset]. */
-    fun count(name: String): Int =
-        executions.entries.sumOf { (function, times) -> if (function == name || function.endsWith(".$name")) times else 0 }
+    fun count(name: String): Int = executions.entries.sumOf { (function, times) ->
+        if (function == name ||
+            function.endsWith(".$name")
+        ) {
+            times
+        } else {
+            0
+        }
+    }
 
     /** Every composable that ran since the last [reset], for a failure message. */
     fun executed(): Map<String, Int> = HashMap(executions)

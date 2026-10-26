@@ -8,13 +8,24 @@ class DecimalInputTest {
 
     @Test
     fun `digits and one point are kept, and grouping and symbols from a paste are dropped`() {
-        assertEquals("1234.50", DecimalInput.accept("$1,234.50", maxDecimals = 2, maxIntegerDigits = 7))
+        assertEquals(
+            "1234.50",
+            DecimalInput.accept("$1,234.50", maxDecimals = 2, maxIntegerDigits = 7),
+        )
         assertNull(DecimalInput.accept("1.2.3", maxDecimals = 2, maxIntegerDigits = 7))
     }
 
     @Test
     fun `the locale's comma is stored as a point`() {
-        assertEquals("12.5", DecimalInput.accept("12,5", maxDecimals = 2, maxIntegerDigits = 7, decimalSeparator = ','))
+        assertEquals(
+            "12.5",
+            DecimalInput.accept(
+                "12,5",
+                maxDecimals = 2,
+                maxIntegerDigits = 7,
+                decimalSeparator = ',',
+            ),
+        )
     }
 
     @Test

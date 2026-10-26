@@ -177,7 +177,10 @@ class PerformanceRecorderTest {
      * A recorder as a fresh process builds it, with [stored] as the choice an earlier launch kept.
      * Its stored choice is read at the test's next `runCurrent`.
      */
-    private suspend fun TestScope.launch(debugBuild: Boolean, stored: Boolean? = null): PerformanceRecorder {
+    private suspend fun TestScope.launch(
+        debugBuild: Boolean,
+        stored: Boolean? = null,
+    ): PerformanceRecorder {
         val dispatchers = testDispatchers()
         val scope = ApplicationScope(backgroundScope)
         if (!::settings.isInitialized) {

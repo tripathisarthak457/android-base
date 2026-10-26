@@ -14,15 +14,15 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigException
 import com.google.firebase.remoteconfig.remoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
 import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
+import kotlin.coroutines.resume
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.suspendCancellableCoroutine
-import javax.inject.Inject
-import javax.inject.Singleton
-import kotlin.coroutines.resume
 
 /**
  * Flag values from Firebase Remote Config: fetched at start-up, and activated again whenever the
@@ -38,7 +38,12 @@ class RemoteConfigFeatureFlags @Inject constructor(
     /** Set up on first use, on the thread that reads a flag, rather than in whichever constructor injects this first. */
     private val config: FirebaseRemoteConfig by lazy {
         Firebase.remoteConfig.apply {
-            setConfigSettingsAsync(remoteConfigSettings { minimumFetchIntervalInSeconds = fetchInterval() })
+            setConfigSettingsAsync(
+                remoteConfigSettings {
+                    minimumFetchIntervalInSeconds =
+                        fetchInterval()
+                },
+            )
             setDefaultsAsync(Flag.DEFAULTS)
         }
     }
@@ -93,7 +98,13 @@ class RemoteConfigFeatureFlags @Inject constructor(
 
     /** A debuggable build fetches every time, so a value changed in the console shows on the next start. */
     private fun fetchInterval(): Long =
-        if (context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0) 0L else RELEASE_FETCH_INTERVAL_SECONDS
+        if (context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE !=
+            0
+        ) {
+            0L
+        } else {
+            RELEASE_FETCH_INTERVAL_SECONDS
+        }
 
     private companion object {
         const val TAG = "FeatureFlags"

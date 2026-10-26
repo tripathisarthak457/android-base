@@ -1,12 +1,12 @@
 package com.base.app.data.profile.api
 
-import com.base.app.data.profile.api.model.Profile
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import java.io.IOException
 // <opt:media>
 import com.base.app.core.common.result.AppResult
 // </opt:media>
+import com.base.app.data.profile.api.model.Profile
+import java.io.IOException
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 /**
  * A [ProfileRepository] in memory that trims what it saves, as the real one does. With

@@ -140,7 +140,8 @@ class ShellStateTest {
 
     @Test
     fun `a deep link to a tab's root selects that tab`() {
-        val state = shell(stacks = listOf(listOf(FeedTab, Post(1)), listOf(ProfileTab)), selected = 1)
+        val state =
+            shell(stacks = listOf(listOf(FeedTab, Post(1)), listOf(ProfileTab)), selected = 1)
 
         state.open(FeedTab)
 

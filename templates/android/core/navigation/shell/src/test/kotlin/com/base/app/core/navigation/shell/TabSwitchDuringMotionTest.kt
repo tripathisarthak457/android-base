@@ -35,9 +35,15 @@ class TabSwitchDuringMotionTest {
     private fun showShell() {
         rule.setContent {
             AppTheme {
-                val shell = rememberShellState(testTabs, registry, testSerialization, generation = 1)
+                val shell =
+                    rememberShellState(testTabs, registry, testSerialization, generation = 1)
                 state = shell
-                AppShell(tabs = testTabs, state = shell, registry = registry, navigator = AppNavigator())
+                AppShell(
+                    tabs = testTabs,
+                    state = shell,
+                    registry = registry,
+                    navigator = AppNavigator(),
+                )
             }
         }
         rule.waitForIdle()
@@ -55,12 +61,17 @@ class TabSwitchDuringMotionTest {
         rule.mainClock.advanceTimeByFrame()
         rule.runOnIdle { assertEquals(1, state.selectedIndex) }
         rule.mainClock.advanceTimeBy(SLIDE_DONE_MS)
-        rule.runOnIdle { assertFalse("the push ended while its tab was hidden", state.tabs[0].gate.moving) }
+        rule.runOnIdle {
+            assertFalse("the push ended while its tab was hidden", state.tabs[0].gate.moving)
+        }
 
         rule.runOnIdle { state.select(0) }
         rule.mainClock.advanceTimeByFrame()
         rule.runOnIdle { assertFalse(state.tabs[0].gate.moving) }
-        rule.onNodeWithTag(Post(1).toString(), useUnmergedTree = true).assertLeftPositionInRootIsEqualTo(0.dp)
+        rule.onNodeWithTag(
+            Post(1).toString(),
+            useUnmergedTree = true,
+        ).assertLeftPositionInRootIsEqualTo(0.dp)
     }
 
     @Test
@@ -83,7 +94,10 @@ class TabSwitchDuringMotionTest {
         rule.runOnIdle { state.select(0) }
         rule.mainClock.advanceTimeByFrame()
         rule.onNodeWithTag(Post(1).toString(), useUnmergedTree = true).assertDoesNotExist()
-        rule.onNodeWithTag(FeedTab.toString(), useUnmergedTree = true).assertLeftPositionInRootIsEqualTo(0.dp)
+        rule.onNodeWithTag(
+            FeedTab.toString(),
+            useUnmergedTree = true,
+        ).assertLeftPositionInRootIsEqualTo(0.dp)
     }
 }
 

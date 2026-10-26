@@ -32,14 +32,18 @@ internal fun OverlayBackHandler(
     onCancel: () -> Unit = {},
     onBack: () -> Unit,
 ) {
-    val dispatcher = LocalNavigationEventDispatcherOwner.current?.navigationEventDispatcher ?: return
+    val dispatcher =
+        LocalNavigationEventDispatcherOwner.current?.navigationEventDispatcher ?: return
     // Read here, so the handler is switched when the cover comes or goes; that is rare.
     val suspended = LocalOverlayHost.current?.suspended == true
     val progress = rememberUpdatedState(onProgress)
     val cancel = rememberUpdatedState(onCancel)
     val back = rememberUpdatedState(onBack)
     val handler = remember {
-        object : NavigationEventHandler<NavigationEventInfo>(NavigationEventInfo.None, isBackEnabled = enabled) {
+        object : NavigationEventHandler<NavigationEventInfo>(
+            NavigationEventInfo.None,
+            isBackEnabled = enabled,
+        ) {
             override fun onBackStarted(event: NavigationEvent) = progress.value(event.progress)
             override fun onBackProgressed(event: NavigationEvent) = progress.value(event.progress)
             override fun onBackCancelled() = cancel.value()

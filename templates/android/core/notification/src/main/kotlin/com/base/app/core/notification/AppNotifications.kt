@@ -20,9 +20,7 @@ import javax.inject.Singleton
 
 /** Posts the app's notifications. */
 @Singleton
-class AppNotifications @Inject constructor(
-    @ApplicationContext private val context: Context,
-) {
+class AppNotifications @Inject constructor(@ApplicationContext private val context: Context) {
     private val manager = NotificationManagerCompat.from(context)
 
     val hasPermission: Boolean
@@ -79,7 +77,8 @@ class AppNotifications @Inject constructor(
 
     // hasPermission is the check; lint cannot follow it through a property.
     @SuppressLint("MissingPermission")
-    private fun notifyChecked(id: Int, notification: Notification) = manager.notify(id, notification)
+    private fun notifyChecked(id: Int, notification: Notification) =
+        manager.notify(id, notification)
 
     fun cancel(id: Int) = manager.cancel(id)
 
@@ -98,7 +97,8 @@ class AppNotifications @Inject constructor(
             // The running activity takes the link in onNewIntent. Without CLEAR_TOP and SINGLE_TOP a
             // second instance would start on top of it, or on top of a browser tab the app opened.
             .addFlags(
-                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP,
+                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                    Intent.FLAG_ACTIVITY_SINGLE_TOP,
             )
     }
 

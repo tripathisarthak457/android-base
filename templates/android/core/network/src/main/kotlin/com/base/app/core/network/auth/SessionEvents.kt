@@ -1,11 +1,11 @@
 package com.base.app.core.network.auth
 
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** Tells the app's session coordinator that the server has ended the session. */
 @Singleton

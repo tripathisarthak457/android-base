@@ -104,7 +104,7 @@ Strings are Compose resources here, typed StringResource and PluralStringResourc
 Android resource ids, and core/ui resolves them in composition. Android's Context-based resolve()
 has no counterpart: shared code never holds a Context."""
 android = [
-  "        @param:StringRes val id: Int,",
+  "    data class Resource(@param:StringRes val id: Int, val args: List<Any> = emptyList()) : UiText",
   "        @param:PluralsRes val id: Int,",
   "    fun resolve(context: Context): String = when (this) {",
   "        is Dynamic -> value",
@@ -116,7 +116,7 @@ android = [
   "        fun plural(@PluralsRes id: Int, count: Int): UiText = Plural(id, count)",
 ]
 multiplatform = [
-  "        val id: StringResource,",
+  "    data class Resource(val id: StringResource, val args: List<Any> = emptyList()) : UiText",
   "        val id: PluralStringResource,",
   "        fun of(id: StringResource, vararg args: Any): UiText = Resource(id, args.toList())",
   "        fun plural(id: PluralStringResource, count: Int): UiText = Plural(id, count)",

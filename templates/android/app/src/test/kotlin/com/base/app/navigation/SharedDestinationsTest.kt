@@ -1,9 +1,9 @@
 package com.base.app.navigation
 
+import java.io.File
 import org.junit.Assert.assertTrue
 // <opt:!ui_components>import org.junit.Assume.assumeTrue
 import org.junit.Test
-import java.io.File
 
 /**
  * A destination belongs to the feature its key's package names (`<pkg>.feature.<owner>.api`), and
@@ -18,7 +18,12 @@ class SharedDestinationsTest {
     private val sources = listOf("../feature", "../core/navigation")
         .map(::File)
         .filter(File::isDirectory)
-        .flatMap { root -> root.walk().filter { it.isFile && it.extension == "kt" && "/src/main/" in it.invariantSeparatorsPath } }
+        .flatMap { root ->
+            root.walk().filter {
+                it.isFile && it.extension == "kt" &&
+                    "/src/main/" in it.invariantSeparatorsPath
+            }
+        }
         .map { it to it.readText() }
 
     /** Every navigation key declared in a feature's api package, with the feature that owns it. */
@@ -62,9 +67,13 @@ class SharedDestinationsTest {
     private companion object {
         val FEATURE_PACKAGE = Regex("""^package [\w.]+\.feature\.(\w+)""", RegexOption.MULTILINE)
         val API_PACKAGE = Regex("""^package [\w.]+\.feature\.(\w+)\.api\b""", RegexOption.MULTILINE)
+
         // The supertype after the name or the constructor's parameters, so a parameter typed AppNavKey
         // does not make its class a key.
-        val KEY_DECLARATION = Regex("""(?:object|class)\s+(\w+)(?:\s*\([^)]*\))?\s*:\s*(?:AppNavKey|FullScreenKey)\b""")
+        val KEY_DECLARATION =
+            Regex(
+                """(?:object|class)\s+(\w+)(?:\s*\([^)]*\))?\s*:\s*(?:AppNavKey|FullScreenKey)\b""",
+            )
         val ENTRY = Regex("""\bentry<\s*(\w+)\s*>""")
         // <opt:!ui_components>        val FEATURE_INCLUDE = Regex("""^\s*include\(":feature:""", RegexOption.MULTILINE)
     }

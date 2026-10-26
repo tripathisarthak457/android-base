@@ -49,10 +49,19 @@ enum class CatalogSection(val title: String, val summary: String) {
     Bars("Bars and pages", "Inline and large-title top bars, tab row, pager and page control"),
     Navigation("Navigation", "The tab bar in every variant, push, pop, cover and back"),
     Overlays("Overlays", "Alert, menu, context menu, toast, loading"),
-    Sheets("Sheets", "Detents, the card stack, non-modal and side sheets, materials, action and choice sheets"),
+    Sheets(
+        "Sheets",
+        "Detents, the card stack, non-modal and side sheets, materials, action and choice sheets",
+    ),
     Feedback("Feedback", "States, banners, skeletons, spinners, progress, badges, avatars"),
-    Loading("Loading screen", "Redacted rows under a large title: one sweep, and the swap to content"),
-    Motion("Animation", "Transitions, first appearance, list placement, emphasis, deceleration, rubber band"),
+    Loading(
+        "Loading screen",
+        "Redacted rows under a large title: one sweep, and the swap to content",
+    ),
+    Motion(
+        "Animation",
+        "Transitions, first appearance, list placement, emphasis, deceleration, rubber band",
+    ),
     Adaptive("Adaptive", "Panes of any width, foldable postures, the hardware keyboard"),
     // <opt:pickers>
     Pickers("Pickers", "Calendar, wheels, time, compact date and time pills"),
@@ -113,10 +122,19 @@ fun CatalogGroup(
     caption: String? = null,
     content: @Composable () -> Unit,
 ) {
-    Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md)) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+    ) {
         Column {
             AppSectionHeader(title = title)
-            caption?.let { AppText(text = it, style = AppTheme.typography.footnote, color = AppTheme.colors.contentSecondary) }
+            caption?.let {
+                AppText(
+                    text = it,
+                    style = AppTheme.typography.footnote,
+                    color = AppTheme.colors.contentSecondary,
+                )
+            }
         }
         content()
     }

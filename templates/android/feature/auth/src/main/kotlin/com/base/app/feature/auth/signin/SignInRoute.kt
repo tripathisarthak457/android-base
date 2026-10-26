@@ -10,10 +10,7 @@ import com.base.app.feature.auth.api.PasswordResetKey
 import com.base.app.feature.auth.api.SignUpKey
 
 @Composable
-internal fun SignInRoute(
-    navigator: AppNavigator,
-    viewModel: SignInViewModel = hiltViewModel(),
-) {
+internal fun SignInRoute(navigator: AppNavigator, viewModel: SignInViewModel = hiltViewModel()) {
     MviScreen(
         viewModel = viewModel,
         onEffect = { effect ->
@@ -27,13 +24,20 @@ internal fun SignInRoute(
                 //~ // app is for; navigating as well would push onto the stack it replaces.
                 // </opt-else:ui_components>
                 SignInEffect.SignedIn -> Unit
+
                 SignInEffect.OpenSignUp -> navigator.navigate(SignUpKey)
+
                 SignInEffect.OpenPasswordReset -> navigator.navigate(PasswordResetKey)
             }
         },
     // <opt:ui_components>
     ) { state, onEvent ->
-        SignInScreen(state = state, email = viewModel.email, password = viewModel.password, onEvent = onEvent)
+        SignInScreen(
+            state = state,
+            email = viewModel.email,
+            password = viewModel.password,
+            onEvent = onEvent,
+        )
     }
     // </opt:ui_components>
     // <opt-else:ui_components>

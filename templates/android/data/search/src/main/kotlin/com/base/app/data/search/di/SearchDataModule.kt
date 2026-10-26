@@ -32,12 +32,14 @@ internal interface SearchDataModule {
         @Provides
         @Singleton
         @RecentSearchesStore
-        fun provideRecentSearchesStore(files: DataStoreFiles): DataStore<Preferences> = files.preferences("search")
+        fun provideRecentSearchesStore(files: DataStoreFiles): DataStore<Preferences> =
+            files.preferences("search")
 
         /** What someone searched for is theirs, so it goes when they sign out. */
         @Provides
         @IntoSet
-        fun provideRecentSearchesClearing(@RecentSearchesStore store: DataStore<Preferences>): SessionScopedStore =
-            SessionScopedStore { store.edit { it.clear() } }
+        fun provideRecentSearchesClearing(
+            @RecentSearchesStore store: DataStore<Preferences>,
+        ): SessionScopedStore = SessionScopedStore { store.edit { it.clear() } }
     }
 }

@@ -18,8 +18,7 @@ private data object Login : AppNavKey
 /** The navigation semantics, tested without a composition. */
 class AppBackStackTest {
 
-    private fun stackOf(vararg keys: AppNavKey) =
-        AppBackStack(mutableStateListOf(*keys))
+    private fun stackOf(vararg keys: AppNavKey) = AppBackStack(mutableStateListOf(*keys))
 
     @Test
     fun `navigate pushes onto the stack`() {

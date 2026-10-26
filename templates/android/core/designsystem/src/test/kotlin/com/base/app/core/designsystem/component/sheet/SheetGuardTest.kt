@@ -59,7 +59,11 @@ class SheetGuardTest {
     private fun showSheet(dismissible: Boolean = true, confirmation: Boolean = false) {
         rule.setContent {
             AppTheme(mode = ThemeMode.Light, reduceMotion = false) {
-                NavigationBackHandler(state = rememberNavigationEventState(NavigationEventInfo.None)) { poppedBeneath++ }
+                NavigationBackHandler(
+                    state = rememberNavigationEventState(NavigationEventInfo.None),
+                ) {
+                    poppedBeneath++
+                }
                 AppSheet(
                     visible = visible,
                     onDismissRequest = {

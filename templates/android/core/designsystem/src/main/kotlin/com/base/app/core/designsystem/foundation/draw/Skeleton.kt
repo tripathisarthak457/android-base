@@ -77,7 +77,10 @@ internal fun Modifier.textSkeleton(bones: TextBones): Modifier = layered(TextSke
  */
 @Composable
 internal fun ContentUnderBone(bone: Boolean, content: @Composable () -> Unit) {
-    CompositionLocalProvider(LocalRedactedState provides (!bone && LocalRedactedState.current), content = content)
+    CompositionLocalProvider(
+        LocalRedactedState provides (!bone && LocalRedactedState.current),
+        content = content,
+    )
 }
 
 // A sweep frame redraws only the bone: in its own layer, the card or row around it is not re-recorded.
@@ -95,7 +98,10 @@ private data object ShimmerBoundsElement : ModifierNodeElement<ShimmerBoundsNode
     }
 }
 
-private class ShimmerBoundsNode : Modifier.Node(), TraversableNode, LayoutAwareModifierNode {
+private class ShimmerBoundsNode :
+    Modifier.Node(),
+    TraversableNode,
+    LayoutAwareModifierNode {
     override val traverseKey: Any get() = ShimmerBoundsKey
 
     var coordinates: LayoutCoordinates? = null
@@ -121,10 +127,8 @@ private data class OutlineSkeletonElement(val shape: Shape) : ModifierNodeElemen
     }
 }
 
-private data class LineSkeletonElement(
-    val top: Float,
-    val bottom: Float,
-) : ModifierNodeElement<SkeletonNode>() {
+private data class LineSkeletonElement(val top: Float, val bottom: Float) :
+    ModifierNodeElement<SkeletonNode>() {
     override fun create() = SkeletonNode(LineBones(top, bottom))
 
     override fun update(node: SkeletonNode) = node.update(LineBones(top, bottom))
@@ -217,11 +221,22 @@ private class SkeletonNode(private var bones: Bones) :
         val self = requireLayoutCoordinates()
         val bounds = area?.coordinates?.takeIf { it.isAttached }
         val space = bounds ?: root ?: self.findRootCoordinates().also { root = it }
-        val origin = if (bounds != null) bounds.localPositionOf(self, Offset.Zero) else self.positionInRoot()
+        val origin = if (bounds !=
+            null
+        ) {
+            bounds.localPositionOf(self, Offset.Zero)
+        } else {
+            self.positionInRoot()
+        }
         val rtl = layoutDirection == LayoutDirection.Rtl
         drawSwept(
             bones = bones,
-            brush = sweepBrush(colors.skeleton, colors.skeletonHighlight, Motion.skeletonBandWidth.toPx(), rtl),
+            brush = sweepBrush(
+                colors.skeleton,
+                colors.skeletonHighlight,
+                Motion.skeletonBandWidth.toPx(),
+                rtl,
+            ),
             progress = progress,
             x = origin.x,
             y = origin.y,

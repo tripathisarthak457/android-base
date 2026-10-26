@@ -48,7 +48,12 @@ class CardStripsTest {
     fun `a shrunk card draws the page in the four strips around it`() {
         val draws = drawAround(MutableRect(10f, 20f, 90f, 180f))
         assertEquals(
-            listOf(Rect(0, 0, 100, 20), Rect(0, 180, 100, 200), Rect(0, 20, 10, 180), Rect(90, 20, 100, 180)),
+            listOf(
+                Rect(0, 0, 100, 20),
+                Rect(0, 180, 100, 200),
+                Rect(0, 20, 10, 180),
+                Rect(90, 20, 100, 180),
+            ),
             draws,
         )
     }
@@ -58,17 +63,19 @@ class CardStripsTest {
         val clips = mutableListOf<Rect>()
         val canvas = Canvas(ImageBitmap(WIDTH.toInt(), HEIGHT.toInt()))
         CanvasDrawScope().draw(Density(1f), LayoutDirection.Ltr, canvas, Size(WIDTH, HEIGHT)) {
-            PageScope(this) { clips += Rect().also { drawContext.canvas.nativeCanvas.getClipBounds(it) } }
+            PageScope(this) {
+                clips +=
+                    Rect().also { drawContext.canvas.nativeCanvas.getClipBounds(it) }
+            }
                 .drawAroundHole(hole, scrim = 0.2f)
         }
         return clips
     }
 
     /** A draw scope whose content is [page]. */
-    private class PageScope(
-        scope: DrawScope,
-        private val page: DrawScope.() -> Unit,
-    ) : ContentDrawScope, DrawScope by scope {
+    private class PageScope(scope: DrawScope, private val page: DrawScope.() -> Unit) :
+        ContentDrawScope,
+        DrawScope by scope {
         override fun drawContent() = page()
     }
 }

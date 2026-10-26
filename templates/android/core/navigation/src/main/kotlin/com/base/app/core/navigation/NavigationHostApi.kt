@@ -8,7 +8,10 @@ package com.base.app.core.navigation
  * one a project writes) opts in for its whole module; a feature registers with `navGraph { }`,
  * navigates through [AppNavigator] and never opts in.
  */
-@RequiresOptIn("Navigation host API: a feature navigates through AppNavigator", RequiresOptIn.Level.ERROR)
+@RequiresOptIn(
+    "Navigation host API: a feature navigates through AppNavigator",
+    RequiresOptIn.Level.ERROR,
+)
 @Retention(AnnotationRetention.BINARY)
 @Target(
     AnnotationTarget.CLASS,

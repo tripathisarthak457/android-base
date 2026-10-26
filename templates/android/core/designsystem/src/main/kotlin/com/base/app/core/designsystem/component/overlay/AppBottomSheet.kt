@@ -44,7 +44,10 @@ public fun AppBottomSheet(
     dismissOnClickOutside: Boolean = true,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    val properties = remember(dismissOnClickOutside) { AppSheetProperties(scrimTapDismisses = dismissOnClickOutside) }
+    val properties =
+        remember(dismissOnClickOutside) {
+            AppSheetProperties(scrimTapDismisses = dismissOnClickOutside)
+        }
     AppSheet(
         visible = true,
         onDismissRequest = onDismissRequest,
@@ -61,7 +64,11 @@ public fun AppBottomSheet(
 @AppComponentPreviews
 @Composable
 private fun AppBottomSheetPreview() {
-    Box(modifier = Modifier.background(AppTheme.colors.background).fillMaxWidth().height(AppTheme.sizes.rowHeight * 8)) {
+    Box(
+        modifier = Modifier.background(
+            AppTheme.colors.background,
+        ).fillMaxWidth().height(AppTheme.sizes.rowHeight * 8),
+    ) {
         AppBottomSheet(onDismissRequest = {}, title = "Sort by") {
             AppRow(title = "Newest first", onClick = {})
             AppRow(title = "Price, lowest first", onClick = {})

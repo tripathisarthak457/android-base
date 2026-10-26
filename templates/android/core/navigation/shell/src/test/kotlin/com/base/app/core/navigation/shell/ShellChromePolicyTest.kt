@@ -27,16 +27,32 @@ class ShellChromePolicyTest {
     @Test
     fun `a short window gets a rail whatever its width`() {
         for (width in WindowWidth.entries) {
-            assertEquals(width.name, NavigationChrome.Rail, chromeFor(width, WindowHeight.Compact, sidebarOpen = null))
+            assertEquals(
+                width.name,
+                NavigationChrome.Rail,
+                chromeFor(width, WindowHeight.Compact, sidebarOpen = null),
+            )
         }
     }
 
     @Test
     fun `the person's choice opens or folds the sidebar where one fits`() {
-        assertEquals(NavigationChrome.Rail, chromeFor(WindowWidth.Large, WindowHeight.Medium, sidebarOpen = false))
-        assertEquals(NavigationChrome.Sidebar, chromeFor(WindowWidth.Expanded, WindowHeight.Medium, sidebarOpen = true))
-        assertEquals(NavigationChrome.Rail, chromeFor(WindowWidth.Medium, WindowHeight.Medium, sidebarOpen = true))
-        assertEquals(NavigationChrome.Bar, chromeFor(WindowWidth.Compact, WindowHeight.Medium, sidebarOpen = true))
+        assertEquals(
+            NavigationChrome.Rail,
+            chromeFor(WindowWidth.Large, WindowHeight.Medium, sidebarOpen = false),
+        )
+        assertEquals(
+            NavigationChrome.Sidebar,
+            chromeFor(WindowWidth.Expanded, WindowHeight.Medium, sidebarOpen = true),
+        )
+        assertEquals(
+            NavigationChrome.Rail,
+            chromeFor(WindowWidth.Medium, WindowHeight.Medium, sidebarOpen = true),
+        )
+        assertEquals(
+            NavigationChrome.Bar,
+            chromeFor(WindowWidth.Compact, WindowHeight.Medium, sidebarOpen = true),
+        )
         assertTrue(sidebarAvailable(WindowWidth.Expanded, WindowHeight.Medium))
         assertFalse(sidebarAvailable(WindowWidth.Medium, WindowHeight.Expanded))
         assertFalse(sidebarAvailable(WindowWidth.ExtraLarge, WindowHeight.Compact))

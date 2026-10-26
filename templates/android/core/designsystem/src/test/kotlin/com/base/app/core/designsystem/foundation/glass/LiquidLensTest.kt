@@ -484,6 +484,7 @@ class LiquidLensTest {
                 Orientation.Horizontal ->
                     pixels[margin + length + gap, margin + breadth / 2] to
                         pixels[margin + length / 2, margin - gap]
+
                 Orientation.Vertical ->
                     pixels[margin + breadth / 2, margin + length + gap] to
                         pixels[margin - gap, margin + length / 2]

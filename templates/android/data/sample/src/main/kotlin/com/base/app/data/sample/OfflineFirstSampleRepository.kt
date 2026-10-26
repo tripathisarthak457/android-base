@@ -11,6 +11,8 @@ import com.base.app.data.sample.local.toDomain
 import com.base.app.data.sample.local.toEntity
 import com.base.app.data.sample.remote.SampleApi
 import com.base.app.data.sample.remote.toDomain
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,8 +21,6 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * The database is the source of truth: screens read [items] from it, and [refresh] writes the
@@ -46,7 +46,17 @@ internal class OfflineFirstSampleRepository @Inject constructor(
         .map { rows -> rows.map { it.toDomain() } }
         .onStart { reads.update { it.copy(readers = it.readers + 1) } }
         .onEach { read -> reads.update { it.copy(lastRead = read) } }
-        .onCompletion { reads.update { if (it.readers == 1) Reads() else it.copy(readers = it.readers - 1) } }
+        .onCompletion {
+            reads.update {
+                if (it.readers ==
+                    1
+                ) {
+                    Reads()
+                } else {
+                    it.copy(readers = it.readers - 1)
+                }
+            }
+        }
 
     override suspend fun refresh(): AppResult<Unit> = when (val fetched = api.items()) {
         is AppResult.Success -> storing {
@@ -60,7 +70,13 @@ internal class OfflineFirstSampleRepository @Inject constructor(
 
     override suspend fun item(id: Int): AppResult<SampleItem> {
         val saved = dao.byId(id)
-        return if (saved != null) AppResult.Success(saved.toDomain()) else api.item(id).map { it.toDomain() }
+        return if (saved !=
+            null
+        ) {
+            AppResult.Success(saved.toDomain())
+        } else {
+            api.item(id).map { it.toDomain() }
+        }
     }
 
     /** A full disk or a damaged file is a failure to report, not a crash at whoever asked. */

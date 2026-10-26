@@ -17,12 +17,12 @@ import com.base.app.data.auth.remote.dto.GoogleSignInRequestDto
 import com.base.app.data.auth.remote.dto.SignInRequestDto
 import com.base.app.data.auth.remote.dto.SignUpRequestDto
 import com.base.app.data.auth.remote.dto.TokenResponseDto
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.seconds
 import kotlin.uuid.Uuid
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Talks to the auth endpoints and puts what comes back in the token store.
@@ -89,7 +89,9 @@ internal class DefaultAuthRepository @Inject constructor(
                 AuthTokens(
                     accessToken = value.accessToken,
                     refreshToken = value.refreshToken,
-                    expiresAtEpochMillis = value.expiresIn?.let { (clock.now() + it.seconds).toEpochMilliseconds() },
+                    expiresAtEpochMillis = value.expiresIn?.let {
+                        (clock.now() + it.seconds).toEpochMilliseconds()
+                    },
                     owner = value.userId ?: Uuid.random().toString(),
                 ),
             )

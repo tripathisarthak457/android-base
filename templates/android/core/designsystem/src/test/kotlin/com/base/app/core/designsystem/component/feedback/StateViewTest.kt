@@ -21,13 +21,13 @@ import com.base.app.core.designsystem.foundation.layout.LocalTopChrome
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.setThemed
 import com.base.app.core.designsystem.theme.AppTheme
+import kotlin.math.abs
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import kotlin.math.abs
 
 /**
  * A state view that is part of a screen rather than the whole of it, here in a fixed-height box on a
@@ -73,11 +73,17 @@ class StateViewTest {
         val title = rule.onNodeWithText("No messages yet").getBoundsInRoot()
         val action = rule.onNodeWithText("New message").getBoundsInRoot()
         assertTrue("the title at ${title.top} is above the box at ${box.top}", title.top >= box.top)
-        assertTrue("the action at ${action.bottom} is below the box at ${box.bottom}", action.bottom <= box.bottom)
+        assertTrue(
+            "the action at ${action.bottom} is below the box at ${box.bottom}",
+            action.bottom <= box.bottom,
+        )
 
         val above = title.top - box.top
         val below = box.bottom - action.bottom
-        assertTrue("not centred: $above above the title, $below below the action", abs((above - below).value) <= 1f)
+        assertTrue(
+            "not centred: $above above the title, $below below the action",
+            abs((above - below).value) <= 1f,
+        )
     }
 
     private companion object {

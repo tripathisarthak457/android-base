@@ -78,12 +78,23 @@ internal class PerfLogcat(private val write: (String) -> Unit) {
         val busy = current.busyNanos - previous.busyNanos
         // A frame's busy time is known once the next one starts, so the totals hold one fewer than
         // their frame count.
-        val timedFrames = (current.frames - 1).coerceAtLeast(0) - (previous.frames - 1).coerceAtLeast(0)
+        val timedFrames =
+            (current.frames - 1).coerceAtLeast(0) - (previous.frames - 1).coerceAtLeast(0)
         return buildString {
             append("window=").append(WINDOW_SECONDS).append('s')
             append(" frames=").append(frames)
-            append(" fps=").append(if (busy > 0) format(timedFrames * NANOS_PER_SECOND / busy) else "-")
-            append(" janky=").append(format(percent(current.janky - previous.janky, frames))).append('%')
+            append(" fps=").append(
+                if (busy >
+                    0
+                ) {
+                    format(timedFrames * NANOS_PER_SECOND / busy)
+                } else {
+                    "-"
+                },
+            )
+            append(
+                " janky=",
+            ).append(format(percent(current.janky - previous.janky, frames))).append('%')
             append(" frameP50=").append(format(window.percentile(P50)))
             append(" frameP90=").append(format(window.percentile(P90)))
             append(" frameP99=").append(format(window.percentile(P99)))
@@ -137,7 +148,13 @@ internal class PerfLogcat(private val write: (String) -> Unit) {
         private const val P99 = 0.99f
         private const val NANOS_PER_SECOND = 1_000_000_000f
 
-        private fun percent(part: Int, whole: Int): Float = if (whole == 0) 0f else part * 100f / whole
+        private fun percent(part: Int, whole: Int): Float = if (whole ==
+            0
+        ) {
+            0f
+        } else {
+            part * 100f / whole
+        }
 
         private fun format(value: Float): String = String.format(Locale.ROOT, "%.1f", value)
     }

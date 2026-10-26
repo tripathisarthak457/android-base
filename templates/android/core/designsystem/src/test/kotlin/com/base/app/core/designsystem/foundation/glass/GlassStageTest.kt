@@ -282,10 +282,8 @@ class GlassStageTest {
         )
     }
 
-    private data class CountedSampleElement(
-        val scene: SceneBackdrop,
-        val onDraw: () -> Unit,
-    ) : ModifierNodeElement<CountedSampleNode>() {
+    private data class CountedSampleElement(val scene: SceneBackdrop, val onDraw: () -> Unit) :
+        ModifierNodeElement<CountedSampleNode>() {
         override fun create() = CountedSampleNode(scene, onDraw)
 
         override fun update(node: CountedSampleNode) {
@@ -294,10 +292,9 @@ class GlassStageTest {
         }
     }
 
-    private class CountedSampleNode(
-        var scene: SceneBackdrop,
-        var onDraw: () -> Unit,
-    ) : Modifier.Node(), DrawModifierNode {
+    private class CountedSampleNode(var scene: SceneBackdrop, var onDraw: () -> Unit) :
+        Modifier.Node(),
+        DrawModifierNode {
         override fun ContentDrawScope.draw() {
             onDraw()
             with(scene) { drawBackdrop(this@draw, requireLayoutCoordinates(), layerBlock = null) }

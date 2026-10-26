@@ -16,6 +16,10 @@ import io.ktor.http.HttpHeaders
 import io.ktor.websocket.Frame
 import io.ktor.websocket.close
 import io.ktor.websocket.readText
+import javax.inject.Inject
+import javax.inject.Singleton
+import kotlin.math.min
+import kotlin.random.Random
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -28,10 +32,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
-import kotlin.math.min
-import kotlin.random.Random
 
 /** What the socket is doing, for a UI that shows a "reconnecting" indicator. */
 sealed interface SocketState {
@@ -157,7 +157,9 @@ class AppWebSocket @Inject constructor(
             try {
                 val token = if (connection.authenticated) freshToken() else null
                 val extra = connection.headers()
-                val socket = client.webSocketSession(config.resolvedWebSocketUrl + connection.path()) {
+                val socket = client.webSocketSession(
+                    config.resolvedWebSocketUrl + connection.path(),
+                ) {
                     token?.let { headers[HttpHeaders.Authorization] = "Bearer $it" }
                     extra.forEach { (name, value) -> headers[name] = value }
                 }

@@ -19,6 +19,7 @@ from add_feature import find_package_name, normalise
 from genkit.core import prompts
 from genkit.core.copy import write_text
 from genkit.core.spec import SpecError, pascal_case
+from genkit.targets.android import tabs
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -146,13 +147,14 @@ def unregister_tabs(project: Path, package_name: str, names: tuple[str, ...]) ->
     keys = {f"{pascal_case(name)}ListKey" for name in names}
     imports = {f"import {package_name}.feature.{name}." for name in names}
 
-    def is_ours(line: str) -> bool:
-        stripped = line.strip()
-        if any(stripped.startswith(prefix) for prefix in imports):
-            return True
-        return stripped.startswith("ShellTab(") and any(f"= {key}," in stripped for key in keys)
-
-    _drop_lines(path, is_ours)
+    lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
+    ours = {index for index, line in enumerate(lines) if any(line.strip().startswith(prefix) for prefix in imports)}
+    # A tab is one line, or one argument a line as add_feature.py writes it.
+    for first, last in tabs.tab_entries(lines, 0, len(lines)):
+        if any(f"= {key}," in "".join(lines[first:last + 1]) for key in keys):
+            ours.update(range(first, last + 1))
+    if ours:
+        write_text(path, "".join(line for index, line in enumerate(lines) if index not in ours))
 
 
 def _drop_lines(path: Path, matches) -> None:

@@ -3,12 +3,12 @@ package com.base.app.core.network.appstatus
 import com.base.app.core.common.result.AppError
 import com.base.app.core.network.client.NetworkConfig
 import com.base.app.core.network.model.NetworkResponse
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** A state of the whole service rather than of the screen that asked. */
 enum class AppStatus {

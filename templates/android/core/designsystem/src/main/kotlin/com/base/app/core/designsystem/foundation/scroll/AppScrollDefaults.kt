@@ -14,11 +14,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.MotionDurationScale
 import androidx.compose.ui.platform.LocalDensity
 import com.base.app.core.designsystem.theme.AppTheme
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.withContext
 import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.sign
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.withContext
 
 /**
  * How every scrolling container in the app flings. Compose gives a container Android's spline fling
@@ -107,7 +107,10 @@ private class AppFlingBehavior(
         if (SystemClock.uptimeMillis() - interruptedAt > MomentumWindowMillis) return 0f
         if (abs(velocity) < abs(previous) * MomentumMinimumRatio) return 0f
         val previousDp = abs(previous) / density
-        return sign(previous) * minOf(MomentumScale * previousDp.pow(MomentumExponent), MomentumMax) * density
+        return sign(
+            previous,
+        ) * minOf(MomentumScale * previousDp.pow(MomentumExponent), MomentumMax) *
+            density
     }
 }
 

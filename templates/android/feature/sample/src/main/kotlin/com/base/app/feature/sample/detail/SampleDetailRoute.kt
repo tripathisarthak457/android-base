@@ -10,9 +10,10 @@ import com.base.app.feature.sample.api.SampleDetailKey
 internal fun SampleDetailRoute(
     itemId: Int,
     navigator: AppNavigator,
-    viewModel: SampleDetailViewModel = hiltViewModel<SampleDetailViewModel, SampleDetailViewModel.Factory>(
-        creationCallback = { factory -> factory.create(itemId) },
-    ),
+    viewModel: SampleDetailViewModel =
+        hiltViewModel<SampleDetailViewModel, SampleDetailViewModel.Factory>(
+            creationCallback = { factory -> factory.create(itemId) },
+        ),
 ) {
     MviScreen(
         viewModel = viewModel,

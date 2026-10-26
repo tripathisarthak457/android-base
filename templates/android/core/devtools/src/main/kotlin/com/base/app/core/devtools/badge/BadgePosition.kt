@@ -21,7 +21,10 @@ import kotlin.math.roundToInt
  * frame and never recomposed. Only the release starts a coroutine, for the settle.
  */
 @Stable
-internal class BadgePosition(dockedAtEnd: Boolean = true, heightFraction: Float = DefaultHeightFraction) {
+internal class BadgePosition(
+    dockedAtEnd: Boolean = true,
+    heightFraction: Float = DefaultHeightFraction,
+) {
 
     var dockedAtEnd by mutableStateOf(dockedAtEnd)
         private set
@@ -69,7 +72,10 @@ internal class BadgePosition(dockedAtEnd: Boolean = true, heightFraction: Float 
         heightFraction = bounds.fractionOf(freeY)
         settling = true
         try {
-            animate(from, target, initialVelocity = velocityX, animationSpec = spec) { value, _ -> freeX = value }
+            animate(from, target, initialVelocity = velocityX, animationSpec = spec) { value, _ ->
+                freeX =
+                    value
+            }
         } finally {
             // Cancelled by a new drag, which has already taken the position over through hold().
             if (settling) {
@@ -108,7 +114,13 @@ internal class BadgeBounds(
 
     fun yAt(fraction: Float) = minY + (maxY - minY) * fraction
 
-    fun fractionOf(y: Float) = if (maxY > minY) ((y - minY) / (maxY - minY)).coerceIn(0f, 1f) else DefaultHeightFraction
+    fun fractionOf(y: Float) = if (maxY >
+        minY
+    ) {
+        ((y - minY) / (maxY - minY)).coerceIn(0f, 1f)
+    } else {
+        DefaultHeightFraction
+    }
 }
 
 /** A little below the middle: under every title, above every tab bar. */

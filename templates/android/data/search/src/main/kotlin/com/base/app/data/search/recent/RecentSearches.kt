@@ -8,7 +8,11 @@ internal object RecentSearches {
     fun add(current: List<String>, query: String): List<String> {
         val trimmed = query.trim()
         if (trimmed.isEmpty()) return current
-        return (listOf(trimmed) + current.filterNot { it.equals(trimmed, ignoreCase = true) }).take(LIMIT)
+        return (
+            listOf(trimmed) + current.filterNot {
+                it.equals(trimmed, ignoreCase = true)
+            }
+            ).take(LIMIT)
     }
 
     fun remove(current: List<String>, query: String): List<String> =
@@ -18,5 +22,7 @@ internal object RecentSearches {
     // cannot fail to parse.
     fun encode(values: List<String>): String = values.joinToString(SEPARATOR.toString())
 
-    fun decode(raw: String?): List<String> = raw?.split(SEPARATOR)?.filter { it.isNotBlank() }.orEmpty()
+    fun decode(raw: String?): List<String> = raw?.split(SEPARATOR)?.filter {
+        it.isNotBlank()
+    }.orEmpty()
 }

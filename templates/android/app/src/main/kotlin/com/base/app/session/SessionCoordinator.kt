@@ -10,6 +10,11 @@ import com.base.app.core.common.session.SessionController
 import com.base.app.core.common.session.SessionScopedStore
 import com.base.app.core.common.session.SessionState
 import com.base.app.core.datastore.session.AuthTokenStore
+// <opt:network>
+import com.base.app.core.network.auth.SessionEvents
+// </opt:network>
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,11 +25,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import javax.inject.Inject
-import javax.inject.Singleton
-// <opt:network>
-import com.base.app.core.network.auth.SessionEvents
-// </opt:network>
 
 /**
  * Keeps each person's data to that person on a shared phone. Every [SessionScopedStore] is emptied
@@ -85,7 +85,9 @@ class SessionCoordinator @Inject constructor(
         when {
             next == null -> _state.value = SessionState.SignedOut
 
-            next != previous || _state.value == SessionState.SignedOut -> _state.value = SessionState.SignedIn(++generation)
+            next != previous || _state.value == SessionState.SignedOut ->
+                _state.value =
+                    SessionState.SignedIn(++generation)
         }
     }
 

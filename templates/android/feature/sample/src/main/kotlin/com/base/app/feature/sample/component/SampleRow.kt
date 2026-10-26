@@ -12,11 +12,7 @@ import com.base.app.data.sample.api.model.SampleItem
 
 /** One sample as a tappable card: the list's rows and the detail screen's related rows. */
 @Composable
-internal fun SampleRow(
-    item: SampleItem,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+internal fun SampleRow(item: SampleItem, onClick: () -> Unit, modifier: Modifier = Modifier) {
     AppCard(onClick = onClick, modifier = modifier.fillMaxWidth()) {
         AppText(
             text = item.title,

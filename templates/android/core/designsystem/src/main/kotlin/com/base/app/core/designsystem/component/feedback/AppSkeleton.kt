@@ -38,10 +38,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  * loading region announces itself once.
  */
 @Composable
-public fun AppSkeleton(
-    modifier: Modifier = Modifier,
-    shape: Shape = AppSkeletonDefaults.shape,
-) {
+public fun AppSkeleton(modifier: Modifier = Modifier, shape: Shape = AppSkeletonDefaults.shape) {
     Spacer(modifier.clearAndSetSemantics {}.skeleton(shape))
 }
 
@@ -76,12 +73,11 @@ public fun AppSkeletonLine(
     DeprecationLevel.WARNING,
 )
 @Composable
-public fun AppSkeletonLine(
-    height: Dp,
-    modifier: Modifier = Modifier,
-    widthFraction: Float = 1f,
-) {
-    AppSkeleton(modifier = modifier.fillMaxWidth(widthFraction).height(height), shape = AppTheme.shapes.xs)
+public fun AppSkeletonLine(height: Dp, modifier: Modifier = Modifier, widthFraction: Float = 1f) {
+    AppSkeleton(
+        modifier = modifier.fillMaxWidth(widthFraction).height(height),
+        shape = AppTheme.shapes.xs,
+    )
 }
 
 /** A round placeholder, for an avatar or an icon in a circle. */
@@ -102,17 +98,26 @@ public fun AppSkeletonCircle(
 @Composable
 public fun AppSkeletonListItem(modifier: Modifier = Modifier, showLeading: Boolean = true) {
     Row(
-        modifier = modifier.fillMaxWidth().padding(horizontal = AppTheme.spacing.lg, vertical = AppTheme.spacing.md),
+        modifier = modifier.fillMaxWidth().padding(
+            horizontal = AppTheme.spacing.lg,
+            vertical = AppTheme.spacing.md,
+        ),
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (showLeading) AppSkeletonCircle()
-        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
+        ) {
             // Its layout stays as it was until it is removed, fixed heights included.
             @Suppress("DEPRECATION")
             AppSkeletonLine(widthFraction = 0.6f, height = AppSkeletonDefaults.ListItemTitleHeight)
             @Suppress("DEPRECATION")
-            AppSkeletonLine(widthFraction = 0.9f, height = AppSkeletonDefaults.ListItemSubtitleHeight)
+            AppSkeletonLine(
+                widthFraction = 0.9f,
+                height = AppSkeletonDefaults.ListItemSubtitleHeight,
+            )
         }
     }
 }

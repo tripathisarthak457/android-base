@@ -22,7 +22,9 @@ internal fun Screen(key: AppNavKey) {
 }
 
 /** Two features' graphs: Feed's (the feed, its posts and the player) and Profile's, with Compose presented. */
-internal fun testGraphs(screen: @Composable (AppNavKey) -> Unit = { Screen(it) }): Set<NavGraphEntry> = setOf(
+internal fun testGraphs(
+    screen: @Composable (AppNavKey) -> Unit = { Screen(it) },
+): Set<NavGraphEntry> = setOf(
     navGraph {
         entry<FeedTab> { screen(it) }
         entry<Post> { screen(it) }
@@ -34,7 +36,11 @@ internal fun testGraphs(screen: @Composable (AppNavKey) -> Unit = { Screen(it) }
     },
 )
 
-internal fun testRegistry(screen: @Composable (AppNavKey) -> Unit = { Screen(it) }): NavRegistry = NavRegistry(testGraphs(screen))
+internal fun testRegistry(
+    screen: @Composable (AppNavKey) -> Unit = {
+        Screen(it)
+    },
+): NavRegistry = NavRegistry(testGraphs(screen))
 
 /** Feed and Profile tabs. The labels only need to be some string the test can resolve. */
 internal val testTabs = listOf(

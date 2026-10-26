@@ -41,24 +41,22 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
-import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.devtools.DevTools
-import com.base.app.core.devtools.page.DevToolsPage
-import com.base.app.core.devtools.panel.DevToolsPanel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 // <opt:ui_components>
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
 // </opt:ui_components>
-// <opt-else:ui_components>
-//~ import com.base.app.core.devtools.kit.AppText
-//~ import com.base.app.core.devtools.kit.LocalBottomChrome
-//~ import com.base.app.core.devtools.kit.PressFeedback
-//~ import com.base.app.core.devtools.kit.pressable
-// </opt-else:ui_components>
+import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.devtools.DevTools
+// <opt:!ui_components>import com.base.app.core.devtools.kit.AppText
+// <opt:!ui_components>import com.base.app.core.devtools.kit.LocalBottomChrome
+// <opt:!ui_components>import com.base.app.core.devtools.kit.PressFeedback
+// <opt:!ui_components>import com.base.app.core.devtools.kit.pressable
+import com.base.app.core.devtools.page.DevToolsPage
+import com.base.app.core.devtools.panel.DevToolsPanel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 /** The environment badge, and the inspector it opens. Placed last in the root, over every screen. */
 @Composable
@@ -130,7 +128,8 @@ private fun EdgeBadge(
             start = if (rtl) right else left,
             end = if (rtl) left else right,
             top = safe.getTop(density) + with(density) { topBar.toPx() } + marginPx,
-            bottom = safe.getBottom(density) + with(density) { bottomChrome.value.toPx() } + marginPx,
+            bottom =
+                safe.getBottom(density) + with(density) { bottomChrome.value.toPx() } + marginPx,
         )
     }
 
@@ -153,9 +152,17 @@ private fun EdgeBadge(
     ) {
         val shape = when {
             position.held -> RoundedCornerShape(percent = RoundedPercent)
+
             // Flush with the edge it is docked to, rounded on the side facing in.
-            position.dockedAtEnd -> RoundedCornerShape(topStartPercent = RoundedPercent, bottomStartPercent = RoundedPercent)
-            else -> RoundedCornerShape(topEndPercent = RoundedPercent, bottomEndPercent = RoundedPercent)
+            position.dockedAtEnd -> RoundedCornerShape(
+                topStartPercent = RoundedPercent,
+                bottomStartPercent = RoundedPercent,
+            )
+
+            else -> RoundedCornerShape(
+                topEndPercent = RoundedPercent,
+                bottomEndPercent = RoundedPercent,
+            )
         }
         Box(
             contentAlignment = Alignment.Center,
@@ -181,15 +188,25 @@ private fun EdgeBadge(
                         onDrag = { change, drag ->
                             change.consume()
                             velocity.addPointerInputChange(change)
-                            position.moveBy(if (currentRtl) -drag.x else drag.x, drag.y, currentBounds())
+                            position.moveBy(
+                                if (currentRtl) -drag.x else drag.x,
+                                drag.y,
+                                currentBounds(),
+                            )
                         },
                         onDragEnd = {
                             val flingX = velocity.calculateVelocity().x
                             val towardsEnd = if (currentRtl) -flingX else flingX
-                            settle = scope.launch { position.settle(currentBounds(), towardsEnd, currentSettleSpec) }
+                            settle =
+                                scope.launch {
+                                    position.settle(currentBounds(), towardsEnd, currentSettleSpec)
+                                }
                         },
                         onDragCancel = {
-                            settle = scope.launch { position.settle(currentBounds(), 0f, currentSettleSpec) }
+                            settle =
+                                scope.launch {
+                                    position.settle(currentBounds(), 0f, currentSettleSpec)
+                                }
                         },
                     )
                 }

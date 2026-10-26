@@ -42,7 +42,10 @@ class WindowClassTest {
 
     private fun setResizableContent(pane: (() -> Float)? = null) {
         rule.setContent {
-            CompositionLocalProvider(LocalWindowInfo provides window, LocalDensity provides Density(1f)) {
+            CompositionLocalProvider(
+                LocalWindowInfo provides window,
+                LocalDensity provides Density(1f),
+            ) {
                 AppTheme(mode = ThemeMode.Light, reduceMotion = false) {
                     if (pane == null) {
                         Consumer()

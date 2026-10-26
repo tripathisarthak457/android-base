@@ -45,7 +45,11 @@ internal fun SheetScrim(controller: SheetController) {
             }
             .pointerInput(controller) {
                 detectTapGestures {
-                    if (controller.properties.scrimTapDismisses) controller.attemptOrClose(SheetDismissSource.Scrim)
+                    if (controller.properties.scrimTapDismisses) {
+                        controller.attemptOrClose(
+                            SheetDismissSource.Scrim,
+                        )
+                    }
                 }
             }
             .drawBehind {

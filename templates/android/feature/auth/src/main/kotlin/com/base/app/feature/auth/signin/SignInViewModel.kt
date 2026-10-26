@@ -20,8 +20,8 @@ import com.base.app.feature.auth.authMessage
 import com.base.app.feature.auth.errorFor
 import com.base.app.feature.auth.fieldError
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.drop
 import javax.inject.Inject
+import kotlinx.coroutines.flow.drop
 
 @HiltViewModel
 internal class SignInViewModel @Inject constructor(
@@ -30,7 +30,9 @@ internal class SignInViewModel @Inject constructor(
 ) : MviViewModel<SignInState, SignInEvent, SignInEffect>(SignInState()) {
 
     @OptIn(SavedStateHandleSaveableApi::class)
-    val email: TextFieldState = savedStateHandle.saveable(EMAIL, saver = TextFieldState.Saver) { TextFieldState() }
+    val email: TextFieldState = savedStateHandle.saveable(EMAIL, saver = TextFieldState.Saver) {
+        TextFieldState()
+    }
 
     // Not saved: a password does not belong in the bundle the system writes to disk on process death.
     val password = TextFieldState()
@@ -48,7 +50,11 @@ internal class SignInViewModel @Inject constructor(
         observe(snapshotFlow { password.text.toString() }.drop(1)) {
             copy(passwordError = passwordRule.errorFor(it, showErrors))
         }
-        observe(snapshotFlow { email.text.isNotBlank() && password.text.isNotEmpty() }) { copy(canSubmit = it) }
+        observe(
+            snapshotFlow {
+                email.text.isNotBlank() && password.text.isNotEmpty()
+            },
+        ) { copy(canSubmit = it) }
     }
 
     override fun handleEvent(event: SignInEvent) {
@@ -58,7 +64,7 @@ internal class SignInViewModel @Inject constructor(
             SignInEvent.ForgotPasswordClicked -> emit(SignInEffect.OpenPasswordReset)
             // <opt:googlesignin>
             is SignInEvent.GoogleIdTokenReceived -> signInWithGoogle(event.idToken)
-            SignInEvent.GoogleFailed -> setState { copy(error = UiText.of(R.string.auth_google_failed)) }
+            SignInEvent.GoogleFailed -> showGoogleFailure()
             // </opt:googlesignin>
         }
     }
@@ -71,7 +77,10 @@ internal class SignInViewModel @Inject constructor(
         if (emailError != null || passwordError != null) return
 
         launchExclusive(SUBMIT, busy = { copy(submitting = it) }) {
-            val result = authRepository.signIn(email = email.text.toString(), password = password.text.toString())
+            val result = authRepository.signIn(
+                email = email.text.toString(),
+                password = password.text.toString(),
+            )
             when (result) {
                 is AppResult.Success -> emit(SignInEffect.SignedIn)
                 is AppResult.Failure -> showFailure(result.error, R.string.auth_sign_in_failed)
@@ -80,13 +89,21 @@ internal class SignInViewModel @Inject constructor(
     }
     // <opt:googlesignin>
 
+    private fun showGoogleFailure() {
+        setState { copy(error = UiText.of(R.string.auth_google_failed)) }
+    }
+
     private fun signInWithGoogle(idToken: String) {
         setState { copy(error = null) }
         launchExclusive(SUBMIT, busy = { copy(submitting = it) }) {
             val result = authRepository.signInWithGoogle(idToken)
             when (result) {
                 is AppResult.Success -> emit(SignInEffect.SignedIn)
-                is AppResult.Failure -> showFailure(result.error, R.string.auth_google_sign_in_failed)
+
+                is AppResult.Failure -> showFailure(
+                    result.error,
+                    R.string.auth_google_sign_in_failed,
+                )
             }
         }
     }

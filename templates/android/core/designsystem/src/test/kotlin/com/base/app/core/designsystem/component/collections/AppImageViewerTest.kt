@@ -30,7 +30,8 @@ class AppImageViewerTest {
 
     @Test
     fun `in tabletop the picture fills the half above the fold`() {
-        val tabletop = WindowPosture(WindowPosture.Kind.Tabletop, hinge = Rect(0f, 400f, 800f, 420f))
+        val tabletop =
+            WindowPosture(WindowPosture.Kind.Tabletop, hinge = Rect(0f, 400f, 800f, 420f))
         rule.setContent {
             AppTheme(mode = ThemeMode.Light, reduceMotion = true, posture = tabletop) {
                 AppImageViewer(onDismiss = {}) { Box(Modifier.fillMaxSize().testTag("picture")) }

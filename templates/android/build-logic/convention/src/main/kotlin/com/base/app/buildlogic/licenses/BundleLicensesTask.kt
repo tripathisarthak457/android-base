@@ -12,7 +12,9 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.work.DisableCachingByDefault
 
 /** Copies licensee's report into the variant's assets under a name the app reads at runtime. */
-@DisableCachingByDefault(because = "Copies one small file, which is faster than restoring it from the cache.")
+@DisableCachingByDefault(
+    because = "Copies one small file, which is faster than restoring it from the cache.",
+)
 abstract class BundleLicensesTask : DefaultTask() {
 
     @get:InputFiles

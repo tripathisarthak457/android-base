@@ -38,14 +38,21 @@ public fun AppSheetCloseButton(modifier: Modifier = Modifier) {
         modifier = modifier,
         variant = ButtonVariant.Tinted,
         size = ButtonSize.Small,
-        colors = AppButtonDefaults.iconButtonColors(ButtonVariant.Tinted, content = AppTheme.colors.contentSecondary),
+        colors = AppButtonDefaults.iconButtonColors(
+            ButtonVariant.Tinted,
+            content = AppTheme.colors.contentSecondary,
+        ),
     )
 }
 
 @AppComponentPreviews
 @Composable
 private fun AppSheetCloseButtonPreview() {
-    Box(modifier = Modifier.background(AppTheme.colors.background).fillMaxWidth().height(AppTheme.sizes.rowHeight * 6)) {
+    Box(
+        modifier = Modifier.background(
+            AppTheme.colors.background,
+        ).fillMaxWidth().height(AppTheme.sizes.rowHeight * 6),
+    ) {
         AppSheet(
             visible = true,
             onDismissRequest = {},

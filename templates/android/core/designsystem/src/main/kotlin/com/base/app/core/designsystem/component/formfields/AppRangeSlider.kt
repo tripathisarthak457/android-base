@@ -241,7 +241,12 @@ private fun ThumbControl(
 
 private fun DrawScope.drawThumb(center: Offset, radius: Float, fill: Color, ring: Color) {
     drawCircle(color = fill, radius = radius.dp.toPx(), center = center)
-    drawCircle(color = ring, radius = radius.dp.toPx(), center = center, style = Stroke(width = AppRangeSliderDefaults.ThumbRingWidth.toPx()))
+    drawCircle(
+        color = ring,
+        radius = radius.dp.toPx(),
+        center = center,
+        style = Stroke(width = AppRangeSliderDefaults.ThumbRingWidth.toPx()),
+    )
 }
 
 private const val NoThumb = -1

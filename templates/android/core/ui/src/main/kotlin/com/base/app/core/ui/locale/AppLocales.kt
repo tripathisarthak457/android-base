@@ -30,9 +30,23 @@ object AppLocales {
     fun set(context: Context, tag: String?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             context.getSystemService(LocaleManager::class.java)?.applicationLocales =
-                if (tag == null) LocaleList.getEmptyLocaleList() else LocaleList.forLanguageTags(tag)
+                if (tag ==
+                    null
+                ) {
+                    LocaleList.getEmptyLocaleList()
+                } else {
+                    LocaleList.forLanguageTags(tag)
+                }
         } else {
-            prefs(context).edit().apply { if (tag == null) remove(KEY) else putString(KEY, tag) }.apply()
+            prefs(context).edit().apply {
+                if (tag ==
+                    null
+                ) {
+                    remove(KEY)
+                } else {
+                    putString(KEY, tag)
+                }
+            }.apply()
             (context as? Activity)?.recreate()
         }
     }

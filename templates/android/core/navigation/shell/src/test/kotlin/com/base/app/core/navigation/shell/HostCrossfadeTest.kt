@@ -41,9 +41,15 @@ class HostCrossfadeTest {
             AppTheme {
                 HostCrossfade(target = target) { host, receivesCommands ->
                     val start: AppNavKey = if (host == 0) FeedTab else ProfileTab
-                    val stack = rememberAppBackStack(startKey = start, serialization = testSerialization)
+                    val stack =
+                        rememberAppBackStack(startKey = start, serialization = testSerialization)
                     stacks[host] = stack
-                    AppNavigationHost(stack, registry, navigator, receivesCommands = receivesCommands)
+                    AppNavigationHost(
+                        stack,
+                        registry,
+                        navigator,
+                        receivesCommands = receivesCommands,
+                    )
                 }
             }
         }

@@ -26,6 +26,7 @@ from genkit.core import prompts, translations
 from genkit.core.copy import write_text
 from genkit.core.record import RECORD_NAME
 from genkit.core.spec import ARCHITECTURES, Spec, SpecError, validate_module_name
+from genkit.targets.android import imports as kotlin_imports
 from genkit.targets.android import scaffold, strings, tabs
 
 
@@ -292,8 +293,8 @@ def insert_into_dependencies_block(text: str, addition: str) -> str:
     return "".join(lines)
 
 
-_MODULE_TAB = re.compile(r"^\s*ShellTab\(key = \w+ListKey, label = \w+R\.string\.")
-_HOME_TAB = re.compile(r"^\s*ShellTab\(key = SampleListKey,")
+_MODULE_TAB = re.compile(r"ShellTab\(\s*key = \w+ListKey,\s*label = \w+R\.string\.")
+_HOME_TAB = re.compile(r"ShellTab\(\s*key = SampleListKey,")
 _ICON = re.compile(r"\bAppIcons\.(\w+)")
 
 
@@ -325,15 +326,20 @@ def register_tabs(project: Path, package_name: str, names: tuple[str, ...]) -> N
         write_text(path, text)
         return
 
-    entries = [index for index in range(opening + 1, closing) if lines[index].strip().startswith("ShellTab(")]
-    modules = [index for index in entries if _MODULE_TAB.match(lines[index])]
-    home = [index for index in entries if _HOME_TAB.match(lines[index])]
-    anchor = (modules or home or entries[:1] or [opening])[-1]
+    entries = tabs.tab_entries(lines, opening + 1, closing)
+
+    def entry(span: tuple[int, int]) -> str:
+        return "".join(lines[span[0]:span[1] + 1])
+
+    modules = [span for span in entries if _MODULE_TAB.search(entry(span))]
+    home = [span for span in entries if _HOME_TAB.search(entry(span))]
+    anchor = (modules or home or entries[:1] or [(opening, opening)])[-1][1]
 
     taken = set(_ICON.findall("".join(lines[opening:closing])))
     chosen = tabs.icons(names, taken, tabs.available_glyphs(project))
     lines.insert(anchor + 1, "".join(tabs.shell_tab(name, *chosen[name]) for name in names))
-    write_text(path, "".join(lines))
+    # The new imports went after the project's last one; ktlint wants the list in order.
+    write_text(path, kotlin_imports.sort("".join(lines)))
 
 
 def insert_after_last(

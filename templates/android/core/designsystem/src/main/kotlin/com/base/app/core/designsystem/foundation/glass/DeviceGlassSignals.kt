@@ -1,9 +1,9 @@
 package com.base.app.core.designsystem.foundation.glass
 
+// allow(designsystem-imports): battery saver's broadcast arrives as an Intent; only glass reads it
 import android.app.ActivityManager
 import android.content.BroadcastReceiver
 import android.content.Context
-// allow(designsystem-imports): battery saver's broadcast arrives as an Intent; only glass reads it
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
@@ -79,12 +79,11 @@ internal class DeviceGlassSignals(private val context: Context) {
         stopListening = null
     }
 
-    private fun currentThermalStatus(): Int =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            power.currentThermalStatus
-        } else {
-            PowerManager.THERMAL_STATUS_NONE
-        }
+    private fun currentThermalStatus(): Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        power.currentThermalStatus
+    } else {
+        PowerManager.THERMAL_STATUS_NONE
+    }
 
     private fun currentHighContrastText(): Boolean =
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA &&

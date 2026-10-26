@@ -244,7 +244,12 @@ public object AppTagDefaults {
         content: Color = AppTheme.colors.contentPrimary,
         selectedContainer: Color = AppTheme.colors.accent,
         selectedContent: Color = AppTheme.colors.onAccent,
-    ): AppTagColors = AppTagColors(container, content, selectedContainer, selectedContent)
+    ): AppTagColors = AppTagColors(
+        container = container,
+        content = content,
+        selectedContainer = selectedContainer,
+        selectedContent = selectedContent,
+    )
 }
 
 /** A tag the person turns on and off. Stateless: the caller owns [selected] and changes it in [onSelectedChange]. */
@@ -278,7 +283,10 @@ public fun AppTag(
             maxLines = 1,
             modifier = Modifier
                 .height(AppTagDefaults.Height)
-                .background(if (selected) colors.selectedContainer else colors.container, AppTheme.shapes.pill)
+                .background(
+                    if (selected) colors.selectedContainer else colors.container,
+                    AppTheme.shapes.pill,
+                )
                 .padding(horizontal = AppTagDefaults.HorizontalPadding)
                 .wrapContentHeight(),
         )
@@ -289,7 +297,11 @@ public fun AppTag(
 @Composable
 private fun AppTagPreview() {
     var selected by remember { mutableStateOf(true) }
-    AppTag(text = "Nearby", selected = selected, onSelectedChange = { selected = it })
+    AppTag(
+        text = "Nearby",
+        selected = selected,
+        onSelectedChange = { selected = it },
+    )
 }
 ```
 
@@ -309,7 +321,13 @@ class AppTagTest {
     @Test
     fun `a tap asks the caller to turn it on`() {
         var selected by mutableStateOf(false)
-        compose.setThemed { AppTag(text = "Nearby", selected = selected, onSelectedChange = { selected = it }) }
+        compose.setThemed {
+            AppTag(
+                text = "Nearby",
+                selected = selected,
+                onSelectedChange = { selected = it },
+            )
+        }
 
         compose.onNodeWithText("Nearby").assertIsOff().performClick()
 
@@ -318,7 +336,9 @@ class AppTagTest {
 
     @Test
     fun `its touch target is at least the theme's minimum`() {
-        compose.setThemed { AppTag(text = "Nearby", selected = false, onSelectedChange = {}) }
+        compose.setThemed {
+            AppTag(text = "Nearby", selected = false, onSelectedChange = {})
+        }
 
         compose.onNodeWithText("Nearby").assertHeightIsAtLeast(48.dp)
     }
@@ -326,7 +346,9 @@ class AppTagTest {
     @Test
     fun `a change composes nothing after its first frame`() {
         var selected by mutableStateOf(false)
-        compose.setThemed { AppTag(text = "Nearby", selected = selected, onSelectedChange = {}) }
+        compose.setThemed {
+            AppTag(text = "Nearby", selected = selected, onSelectedChange = {})
+        }
         compose.mainClock.autoAdvance = false
         compose.waitForIdle()
         counter.reset()

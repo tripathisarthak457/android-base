@@ -70,15 +70,38 @@ public fun AppScaffold(
     content: @Composable () -> Unit,
 ) {
     val topChrome = remember { ChromeInset() }
-    val bottomChrome = if (bottomBar != null) remember { ChromeInset() } else LocalBottomChrome.current
-    val width = if (contentMaxWidth == Dp.Unspecified) Modifier else Modifier.centeredMaxWidth(contentMaxWidth)
+    val bottomChrome = if (bottomBar !=
+        null
+    ) {
+        remember { ChromeInset() }
+    } else {
+        LocalBottomChrome.current
+    }
+    val width = if (contentMaxWidth ==
+        Dp.Unspecified
+    ) {
+        Modifier
+    } else {
+        Modifier.centeredMaxWidth(contentMaxWidth)
+    }
     val sheet = LocalSheetSurface.current
     // In a sheet the sheet's material shows through, and the sheet already keeps clear of the cutout.
-    val fill = background.takeOrElse { if (sheet != null) Color.Transparent else AppTheme.colors.background }
+    val fill = background.takeOrElse {
+        if (sheet !=
+            null
+        ) {
+            Color.Transparent
+        } else {
+            AppTheme.colors.background
+        }
+    }
         .let { if (it == LocalPaintedBackground.current) Color.Unspecified else it }
     val behindBars = background.takeOrElse { sheet?.container ?: AppTheme.colors.background }
 
-    CompositionLocalProvider(LocalTopChrome provides topChrome, LocalScaffoldBackground provides behindBars) {
+    CompositionLocalProvider(
+        LocalTopChrome provides topChrome,
+        LocalScaffoldBackground provides behindBars,
+    ) {
         Layout(
             contents = listOf(
                 topBar,
@@ -93,7 +116,9 @@ public fun AppScaffold(
                 .then(if (fill.isSpecified) Modifier.background(fill) else Modifier)
                 .then(
                     if (clearDisplayCutout && sheet == null) {
-                        Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
+                        Modifier.windowInsetsPadding(
+                            WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
+                        )
                     } else {
                         Modifier
                     },
@@ -102,9 +127,15 @@ public fun AppScaffold(
             val loose = constraints.copy(minWidth = 0, minHeight = 0)
             val bars = barSlot.map { it.measure(loose) }
             val actions = actionSlot.map { it.measure(loose) }
-            if (bottomBar != null) bottomChrome.value = actions.maxOfOrNull { it.height }?.toDp() ?: Dp(0f)
+            if (bottomBar !=
+                null
+            ) {
+                bottomChrome.value = actions.maxOfOrNull { it.height }?.toDp() ?: Dp(0f)
+            }
 
-            val body = bodySlot.map { it.measure(Constraints.fixed(constraints.maxWidth, constraints.maxHeight)) }
+            val body = bodySlot.map {
+                it.measure(Constraints.fixed(constraints.maxWidth, constraints.maxHeight))
+            }
 
             layout(constraints.maxWidth, constraints.maxHeight) {
                 body.forEach { it.place(0, 0) }
@@ -123,7 +154,13 @@ internal val LocalScaffoldBackground = staticCompositionLocalOf { Color.Unspecif
 private fun AppScaffoldPreview() {
     AppScaffold(
         modifier = Modifier.height(AppTheme.sizes.rowHeight * 6),
-        topBar = { AppText(text = "Orders", style = AppTheme.typography.headline, modifier = Modifier.padding(AppTheme.spacing.lg)) },
+        topBar = {
+            AppText(
+                text = "Orders",
+                style = AppTheme.typography.headline,
+                modifier = Modifier.padding(AppTheme.spacing.lg),
+            )
+        },
         bottomBar = {
             AppBottomActionBar {
                 AppButton(text = "New order", onClick = {}, modifier = Modifier.weight(1f))

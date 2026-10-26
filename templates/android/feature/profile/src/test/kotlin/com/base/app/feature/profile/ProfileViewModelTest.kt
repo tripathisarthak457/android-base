@@ -6,8 +6,8 @@ import androidx.lifecycle.SavedStateHandle
 import com.base.app.core.mvi.MessageKind
 import com.base.app.core.testing.MainDispatcherRule
 import com.base.app.data.profile.api.FakeProfileRepository
-import com.base.app.data.profile.api.model.Profile
 import com.base.app.data.profile.api.ProfileRepository
+import com.base.app.data.profile.api.model.Profile
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.test.TestScope
@@ -27,7 +27,8 @@ class ProfileViewModelTest {
 
     @Test
     fun `the fields wait for the screen before they read the store`() = runTest {
-        val viewModel = ProfileViewModel(FakeProfileRepository(Profile(name = "Ada")), SavedStateHandle())
+        val viewModel =
+            ProfileViewModel(FakeProfileRepository(Profile(name = "Ada")), SavedStateHandle())
 
         advanceUntilIdle()
 
@@ -47,7 +48,11 @@ class ProfileViewModelTest {
     @Test
     fun `text restored after process death is not overwritten by the stored value`() = runTest {
         // The saved state of a process that died mid-edit: the fields were filled before it died.
-        val viewModel = ProfileViewModel(FakeProfileRepository(Profile(name = "Ada")), SavedStateHandle(mapOf("filled" to true)))
+        val viewModel =
+            ProfileViewModel(
+                FakeProfileRepository(Profile(name = "Ada")),
+                SavedStateHandle(mapOf("filled" to true)),
+            )
         viewModel.name.type("Ada Lovelace")
 
         viewModel.state.launchIn(backgroundScope)

@@ -2,13 +2,11 @@ package com.base.app.feature.feed
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.base.app.core.ui.MviScreen
 // <opt:ui_components>
 import androidx.paging.compose.collectAsLazyPagingItems
 // </opt:ui_components>
-// <opt-else:ui_components>
-//~ import com.base.app.core.ui.PlaceholderScreen
-// </opt-else:ui_components>
+import com.base.app.core.ui.MviScreen
+// <opt:!ui_components>import com.base.app.core.ui.PlaceholderScreen
 
 @Composable
 internal fun FeedRoute(viewModel: FeedViewModel = hiltViewModel()) {

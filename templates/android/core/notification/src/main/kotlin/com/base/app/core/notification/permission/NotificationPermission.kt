@@ -47,7 +47,9 @@ class NotificationPermission internal constructor(
     fun request() {
         when (access) {
             NotificationAccess.Granted -> Unit
+
             NotificationAccess.NotGranted -> launch()
+
             NotificationAccess.Blocked -> context.startActivity(
                 Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
                     .putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
@@ -64,6 +66,7 @@ class NotificationPermission internal constructor(
 }
 
 // <opt:onboarding&ui_components|settings&ui_components>
+
 /**
 // <opt:onboarding&settings>
  * The permission to post notifications, asked for in context: onboarding asks once at its end, and
@@ -90,19 +93,30 @@ class NotificationPermission internal constructor(
 //~  */
 // </opt-else:onboarding&ui_components|settings&ui_components>
 @Composable
-fun rememberNotificationPermission(onResult: (granted: Boolean) -> Unit = {}): NotificationPermission {
+fun rememberNotificationPermission(
+    onResult: (granted: Boolean) -> Unit = {},
+): NotificationPermission {
     val context = LocalContext.current
     val currentOnResult by rememberUpdatedState(onResult)
     var permission: NotificationPermission? = null
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-        permission?.access = when {
-            granted -> NotificationAccess.Granted
-            context.findActivity()?.let { ActivityCompat.shouldShowRequestPermissionRationale(it, Manifest.permission.POST_NOTIFICATIONS) } == true ->
-                NotificationAccess.NotGranted
-            else -> NotificationAccess.Blocked
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            permission?.access = when {
+                granted -> NotificationAccess.Granted
+
+                context.findActivity()?.let {
+                    ActivityCompat.shouldShowRequestPermissionRationale(
+                        it,
+                        Manifest.permission.POST_NOTIFICATIONS,
+                    )
+                } ==
+                    true ->
+                    NotificationAccess.NotGranted
+
+                else -> NotificationAccess.Blocked
+            }
+            currentOnResult(granted)
         }
-        currentOnResult(granted)
-    }
     val remembered = remember(context) {
         NotificationPermission(context) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -119,7 +133,8 @@ fun rememberNotificationPermission(onResult: (granted: Boolean) -> Unit = {}): N
 
 private fun Context.currentAccess(): NotificationAccess =
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
-        ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+        ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+        PackageManager.PERMISSION_GRANTED
     ) {
         NotificationAccess.Granted
     } else {

@@ -3,6 +3,7 @@ package com.base.app.core.mvi
 import app.cash.turbine.test
 import com.base.app.core.common.result.AppError
 import com.base.app.core.testing.MainDispatcherRule
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,7 +17,6 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import kotlin.time.Duration.Companion.seconds
 
 class MviViewModelTest {
 
@@ -42,7 +42,12 @@ class MviViewModelTest {
     fun `a second exclusive run is ignored while the first is active`() = runTest {
         val answer = CompletableDeferred<String>()
         var submits = 0
-        val viewModel = TestViewModel(submit = { submits++; answer.await() })
+        val viewModel = TestViewModel(
+            submit = {
+                submits++
+                answer.await()
+            },
+        )
 
         viewModel.onEvent(TestEvent.Submit)
         viewModel.onEvent(TestEvent.Submit)
@@ -57,7 +62,12 @@ class MviViewModelTest {
     @Test
     fun `an exclusive run can start again once the first has finished`() = runTest {
         var submits = 0
-        val viewModel = TestViewModel(submit = { submits++; "ok" })
+        val viewModel = TestViewModel(
+            submit = {
+                submits++
+                "ok"
+            },
+        )
 
         viewModel.onEvent(TestEvent.Submit)
         advanceUntilIdle()
@@ -198,19 +208,20 @@ class MviViewModelTest {
     }
 
     @Test
-    fun `an exception in launched work lands in onUnexpected and the next run still works`() = runTest {
-        var fail = true
-        val viewModel = TestViewModel(load = { if (fail) error("boom") else "recovered" })
+    fun `an exception in launched work lands in onUnexpected and the next run still works`() =
+        runTest {
+            var fail = true
+            val viewModel = TestViewModel(load = { if (fail) error("boom") else "recovered" })
 
-        viewModel.onEvent(TestEvent.Load)
-        advanceUntilIdle()
-        assertTrue(viewModel.unexpected.single().cause is IllegalStateException)
+            viewModel.onEvent(TestEvent.Load)
+            advanceUntilIdle()
+            assertTrue(viewModel.unexpected.single().cause is IllegalStateException)
 
-        fail = false
-        viewModel.onEvent(TestEvent.Load)
-        advanceUntilIdle()
-        assertEquals("recovered", viewModel.state.value.text)
-    }
+            fail = false
+            viewModel.onEvent(TestEvent.Load)
+            advanceUntilIdle()
+            assertEquals("recovered", viewModel.state.value.text)
+        }
 
     @Test
     fun `the same message twice is two messages`() = runTest {
@@ -264,13 +275,18 @@ class MviViewModelTest {
                     val text = load()
                     setState { copy(text = text) }
                 }
+
                 TestEvent.CancelLoad -> cancel("load")
+
                 TestEvent.Submit -> launchExclusive("submit", busy = { copy(busy = it) }) {
                     val text = submit()
                     setState { copy(text = text) }
                 }
+
                 TestEvent.CancelSubmit -> cancel("submit")
+
                 TestEvent.Back -> emit(TestEffect.NavigateBack)
+
                 TestEvent.Saved -> showMessage(UiText.Dynamic("Saved"))
             }
         }

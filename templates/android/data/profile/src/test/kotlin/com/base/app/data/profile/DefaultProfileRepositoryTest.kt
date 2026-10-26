@@ -1,22 +1,28 @@
 package com.base.app.data.profile
 
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Rule
-import org.junit.Test
-import org.junit.rules.TemporaryFolder
-import java.io.File
 // <opt:media>
 import androidx.core.net.toUri
+// </opt:media>
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+// <opt:media>
 import com.base.app.core.common.result.AppError
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.media.compress.ImageCompressor
 import com.base.app.core.testing.testDispatchers
+// </opt:media>
+import java.io.File
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+// <opt:media>
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
+// </opt:media>
+import org.junit.Rule
+import org.junit.Test
+import org.junit.rules.TemporaryFolder
+// <opt:media>
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
@@ -66,15 +72,16 @@ class DefaultProfileRepositoryTest {
     // <opt:media>
 
     @Test
-    fun `a photo that cannot be read is a storage failure and the current avatar stays`() = runTest {
-        val repository = repository()
-        val current = avatarCopy("avatar_1.jpg")
+    fun `a photo that cannot be read is a storage failure and the current avatar stays`() =
+        runTest {
+            val repository = repository()
+            val current = avatarCopy("avatar_1.jpg")
 
-        val result = repository.setPhoto(File(folder.root, "gone.png").toUri().toString())
+            val result = repository.setPhoto(File(folder.root, "gone.png").toUri().toString())
 
-        assertTrue((result as AppResult.Failure).error is AppError.Storage)
-        assertTrue(current.exists())
-    }
+            assertTrue((result as AppResult.Failure).error is AppError.Storage)
+            assertTrue(current.exists())
+        }
 
     @Test
     fun `removing the photo deletes every copy`() = runTest {

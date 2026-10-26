@@ -38,10 +38,10 @@ import com.base.app.core.designsystem.theme.AppSprings
 import com.base.app.core.designsystem.theme.SheetMaterial
 import com.base.app.core.designsystem.theme.springs
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
+import kotlin.math.abs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.launch
-import kotlin.math.abs
 
 /**
  * One sheet's behaviour around its state: the scope its content sees, the decisions about closing
@@ -52,7 +52,8 @@ import kotlin.math.abs
 internal class SheetController(
     override val sheetState: AppSheetState,
     override val scope: CoroutineScope,
-) : AppSheetScope, SheetHost {
+) : AppSheetScope,
+    SheetHost {
 
     var modality: SheetModality by mutableStateOf(SheetModality.Modal)
     var dismissible by mutableStateOf(true)
@@ -197,12 +198,14 @@ internal class SheetController(
 
     val grabberShown: Boolean by derivedStateOf {
         val stops = sheetState.stops
-        grabberWanted && !isCovered && (stops?.let { !it.single && it.count >= 2 } ?: (sheetState.detents.size >= 2))
+        grabberWanted && !isCovered &&
+            (stops?.let { !it.single && it.count >= 2 } ?: (sheetState.detents.size >= 2))
     }
 
     /** The person can drag the sheet now: not while it leaves, is parked or covered, or while the caller holds it. */
     val dragEnabled: Boolean by derivedStateOf {
-        properties.dragEnabled && sheetState.isVisible && !sheetState.isLeaving && !sheetState.parkedInstantly &&
+        properties.dragEnabled && sheetState.isVisible && !sheetState.isLeaving &&
+            !sheetState.parkedInstantly &&
             sheetState.parkProgress == 0f && !isCovered
     }
 

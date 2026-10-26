@@ -46,8 +46,20 @@ internal class BudgetShareHistogram {
             else -> BUCKETS - 1
         }
 
-        private fun lowerEdge(bucket: Int): Float = if (bucket >= LINEAR_BUCKETS) END else bucket * STEP
+        private fun lowerEdge(bucket: Int): Float = if (bucket >=
+            LINEAR_BUCKETS
+        ) {
+            END
+        } else {
+            bucket * STEP
+        }
 
-        private fun upperEdge(bucket: Int): Float = if (bucket >= LINEAR_BUCKETS) END else (bucket + 1) * STEP
+        private fun upperEdge(bucket: Int): Float = if (bucket >=
+            LINEAR_BUCKETS
+        ) {
+            END
+        } else {
+            (bucket + 1) * STEP
+        }
     }
 }

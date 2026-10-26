@@ -12,10 +12,10 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.layout.SubcomposeLayoutState
 import androidx.compose.ui.platform.LocalView
+import kotlin.coroutines.resume
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlin.coroutines.resume
 
 /**
  * Builds the tabs nobody has opened yet while the app is idle, so the first visit to a tab costs

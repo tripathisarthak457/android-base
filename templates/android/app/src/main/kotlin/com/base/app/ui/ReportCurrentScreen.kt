@@ -25,12 +25,17 @@ internal fun ReportCurrentScreen(
 ) {
     val currentTop by rememberUpdatedState(top)
     LaunchedEffect(serialization, tooling) {
-        snapshotFlow { currentTop() }.collect { key -> tooling.onScreenChanged(serialization.screenName(key)) }
+        snapshotFlow {
+            currentTop()
+        }.collect { key -> tooling.onScreenChanged(serialization.screenName(key)) }
     }
 }
 
 @OptIn(ExperimentalSerializationApi::class)
 private fun NavKeySerialization.screenName(key: AppNavKey): String {
-    val serialName = json.serializersModule.getPolymorphic(AppNavKey::class, key)?.descriptor?.serialName
+    val serialName = json.serializersModule.getPolymorphic(
+        AppNavKey::class,
+        key,
+    )?.descriptor?.serialName
     return serialName?.substringAfterLast('.') ?: key::class.java.simpleName
 }

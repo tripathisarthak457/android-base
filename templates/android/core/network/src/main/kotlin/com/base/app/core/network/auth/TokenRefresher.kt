@@ -13,13 +13,13 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.content.TextContent
 import io.ktor.http.isSuccess
-import kotlinx.coroutines.CancellationException
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.CancellationException
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 sealed interface TokenRefreshResult {
 
@@ -59,16 +59,27 @@ internal class KtorTokenRefresher @Inject constructor(
     override suspend fun refresh(refreshToken: String): TokenRefreshResult {
         if (config.refreshTokenPath.isBlank()) return TokenRefreshResult.Refused
         return try {
-            val response = client.post(config.resolvedBaseUrl + config.refreshTokenPath.trimStart('/')) {
+            val response = client.post(
+                config.resolvedBaseUrl + config.refreshTokenPath.trimStart('/'),
+            ) {
                 attributes.put(SkipAuthAttribute, true)
                 attributes.put(CredentialsAttribute, true)
-                setBody(TextContent(NetworkJson.encodeToString(RefreshRequest(refreshToken)), ContentType.Application.Json))
+                setBody(
+                    TextContent(
+                        NetworkJson.encodeToString(RefreshRequest(refreshToken)),
+                        ContentType.Application.Json,
+                    ),
+                )
             }
             when {
                 response.status.value == UNAUTHORIZED -> TokenRefreshResult.Refused
+
                 !response.status.isSuccess() -> TokenRefreshResult.Failed(response.status.value)
+
                 else -> {
-                    val payload = NetworkJson.decodeFromString<RefreshResponse>(response.bodyAsText())
+                    val payload = NetworkJson.decodeFromString<RefreshResponse>(
+                        response.bodyAsText(),
+                    )
                     TokenRefreshResult.Success(
                         accessToken = payload.accessToken,
                         refreshToken = payload.refreshToken ?: refreshToken,
@@ -92,9 +103,7 @@ internal class KtorTokenRefresher @Inject constructor(
 }
 
 @Serializable
-private data class RefreshRequest(
-    @SerialName("refresh_token") val refreshToken: String,
-)
+private data class RefreshRequest(@SerialName("refresh_token") val refreshToken: String)
 
 @Serializable
 private data class RefreshResponse(

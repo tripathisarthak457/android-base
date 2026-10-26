@@ -18,7 +18,10 @@ data class NetworkExchange(
     val failure: String?,
 ) {
     val path: String
-        get() = "/" + url.substringAfter("://").substringAfter('/', missingDelimiterValue = "").substringBefore('?')
+        get() = "/" +
+            url.substringAfter(
+                "://",
+            ).substringAfter('/', missingDelimiterValue = "").substringBefore('?')
 
     val isFailure: Boolean get() = failure != null || (status ?: 0) >= HTTP_ERROR_FLOOR
 

@@ -85,7 +85,15 @@ private suspend fun AppSheetState.moveTo(detent: SheetDetent) {
     try {
         anchored.anchoredDrag(SheetStop.At(detent), MutatePriority.Default) { anchors, latest ->
             syncAnchors(latest)
-            animate(anchored.offset, anchors.positionOf(latest), anchored.lastVelocity, host.springs.sheet.pixels) { value, speed ->
+            animate(
+                anchored.offset,
+                anchors.positionOf(latest),
+                anchored.lastVelocity,
+                host.springs.sheet.pixels,
+            ) {
+                    value,
+                    speed,
+                ->
                 dragTo(value, speed)
             }
         }
@@ -112,7 +120,8 @@ private fun SheetController.updateBoundary(stops: SheetStops, inputs: DetentInpu
 internal fun SheetController.updateFrame(frame: SheetFrameInfo) {
     if (this.frame != frame) this.frame = frame
     val stops = sheetState.stops
-    stacked.drivesCardStack = frame.recedes && properties.recedesPresenter && stops != null && stops.largeIndex >= 0
+    stacked.drivesCardStack =
+        frame.recedes && properties.recedesPresenter && stops != null && stops.largeIndex >= 0
     stacked.spansWidth = frame.spansWidth && frame.isBottom
     stacked.attached = frame.isBottom && !frame.floats
     stacked.cornerRadius = frame.radius
@@ -121,15 +130,18 @@ internal fun SheetController.updateFrame(frame: SheetFrameInfo) {
 }
 
 /** The detent a form sheet or a side panel records for when the window returns it to the bottom edge. */
-internal fun SheetController.recordedDetent(): SheetDetent = sheetState.currentDetent ?: sheetState.initialDetent
+internal fun SheetController.recordedDetent(): SheetDetent =
+    sheetState.currentDetent ?: sheetState.initialDetent
 
 /** Large's top for a sheet stacked on another, in window pixels: the covered sheet's lifted top plus the peek. */
 internal fun SheetController.stackedLargeTop(): Float {
     val stack = stack ?: return Float.NEGATIVE_INFINITY
-    val below = stack.front(stacked.level - 1)?.takeIf { it !== stacked } ?: return Float.NEGATIVE_INFINITY
+    val below =
+        stack.front(stacked.level - 1)?.takeIf { it !== stacked } ?: return Float.NEGATIVE_INFINITY
     val top = below.topStopInWindow()
     if (top.isNaN()) return Float.NEGATIVE_INFINITY
-    return top - DesignTokens.Sheet.Stack.coveredLift * windowSize.height + DesignTokens.Sheet.Stack.peek.value * density
+    return top - DesignTokens.Sheet.Stack.coveredLift * windowSize.height +
+        DesignTokens.Sheet.Stack.peek.value * density
 }
 
 /** Whether the content scrolls before the sheet grows when nothing about the gesture is known yet. */
@@ -140,7 +152,10 @@ internal fun SheetController.scrollsAtRest(): Boolean = when (properties.content
 }
 
 /** Reads the keyboard in placement and lifts the sheet while focus is in it. */
-internal fun SheetController.followKeyboard(scope: Placeable.PlacementScope, frame: SheetFrameInfo) {
+internal fun SheetController.followKeyboard(
+    scope: Placeable.PlacementScope,
+    frame: SheetFrameInfo,
+) {
     val height = windowSize.height
     val keyboard = with(imeSource) { scope.current(height) }
     val target = with(imeSource) { scope.target(height) }
@@ -150,12 +165,24 @@ internal fun SheetController.followKeyboard(scope: Placeable.PlacementScope, fra
     val y = state.anchored.offset
     val lift = when {
         !focusInside || keyboard <= 0f || y.isNaN() -> 0f
-        frame.isBottom -> (keyboard - frame.bottomInset).coerceIn(0f, (y - frame.largeTop).coerceAtLeast(0f))
+
+        frame.isBottom -> (keyboard - frame.bottomInset).coerceIn(
+            0f,
+            (y - frame.largeTop).coerceAtLeast(0f),
+        )
+
         frame.placement == SheetPlacement.Center -> {
             val gap = DesignTokens.Sheet.Keyboard.formLiftGap.value * density
             val cardBottom = y + frame.cardHeight
-            (cardBottom - (frame.boundsHeight - keyboard) + gap).coerceIn(0f, (y - frame.largeTop + DesignTokens.Sheet.Side.inset.value * density).coerceAtLeast(0f))
+            (cardBottom - (frame.boundsHeight - keyboard) + gap).coerceIn(
+                0f,
+                (
+                    y - frame.largeTop +
+                        DesignTokens.Sheet.Side.inset.value * density
+                    ).coerceAtLeast(0f),
+            )
         }
+
         else -> 0f
     }
     // Before API 30 the keyboard's inset jumps with no animation to follow; the lift then springs toward it.
@@ -169,9 +196,16 @@ internal fun SheetController.followKeyboard(scope: Placeable.PlacementScope, fra
 /** A sheet resting on the tab bar rides it while it minimises, less as the sheet expands over it. */
 internal fun SheetController.followBar(frame: SheetFrameInfo) {
     val state = sheetState
+
     @OptIn(ShellSeamApi::class)
     val bar = measureEnvironment?.barFrame
-    val ride = if (frame.onBar && bar != null) (bar.liveTop - bar.settledTop) * (1f - state.expansionFraction) else 0f
+    val ride = if (frame.onBar &&
+        bar != null
+    ) {
+        (bar.liveTop - bar.settledTop) * (1f - state.expansionFraction)
+    } else {
+        0f
+    }
     if (state.barRide != ride) state.barRide = ride
 }
 
@@ -191,12 +225,27 @@ internal fun SheetController.surfaceBottomInBounds(): Float {
     val placed = state.placedTop()
     return when {
         frame.isCard -> placed + frame.cardHeight
+
         !frame.isBottom -> frame.restBottom
+
         floatingNow -> {
-            val resting = SheetGeometry.restingBottom(frame.boundsHeight, frame.restBottom, frame.inset, true, frame.radius, frame.onBar)
+            val resting = SheetGeometry.restingBottom(
+                frame.boundsHeight,
+                frame.restBottom,
+                frame.inset,
+                true,
+                frame.radius,
+                frame.onBar,
+            )
             lerp(resting, frame.boundsHeight + frame.radius, state.expansionFraction)
         }
-        frame.onBar -> lerp(frame.restBottom, frame.boundsHeight + frame.radius, state.expansionFraction)
+
+        frame.onBar -> lerp(
+            frame.restBottom,
+            frame.boundsHeight + frame.radius,
+            state.expansionFraction,
+        )
+
         else -> frame.boundsHeight + frame.radius
     }
 }
@@ -227,5 +276,11 @@ internal fun SheetController.hiddenBehindStack(): Boolean =
 @OptIn(ShellSeamApi::class)
 internal fun SheetController.applyEntryPose(scope: GraphicsLayerScope) {
     val frame = frame ?: return
-    entry.pose.applyTo(scope, Offset(frame.boundsLeft + frame.sheetLeft, sheetState.boundsTop + sheetState.placedTop()))
+    entry.pose.applyTo(
+        scope,
+        Offset(
+            frame.boundsLeft + frame.sheetLeft,
+            sheetState.boundsTop + sheetState.placedTop(),
+        ),
+    )
 }

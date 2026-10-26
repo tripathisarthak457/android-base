@@ -41,7 +41,8 @@ internal interface DataStoreModule {
         @Provides
         @Singleton
         @SettingsDataStore
-        fun provideSettingsDataStore(files: DataStoreFiles): DataStore<Preferences> = files.preferences("settings")
+        fun provideSettingsDataStore(files: DataStoreFiles): DataStore<Preferences> =
+            files.preferences("settings")
 
         @Provides
         @Singleton
